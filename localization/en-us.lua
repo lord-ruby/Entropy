@@ -352,6 +352,9 @@ return {
 				}
 			}
 		},
+		RPlanet = Entropy.MergeLocTables(Entropy.RPlanetLocs, {
+
+		}),
 		RSpectral = {
 			c_entr_define = {
 				name = "#1#define",
@@ -509,7 +512,10 @@ return {
 			k_saved_ruby_7 = "Thanks for playing!",
 			k_saved_ruby_8 = "",
 
-			k_entr_faster_ante_scaling = "Scale blind scores quicker if you have an Entropic joker"
+			k_entr_faster_ante_scaling = "Scale blind scores quicker if you have an Entropic joker",
+
+			k_rplanet = "Star?",
+			b_rplanet_cards = "Star Cards?",	
 		},
 		labels = {
 			entr_pinned = "Invariant",

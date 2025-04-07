@@ -132,3 +132,8 @@ function Entropy.SafeGetNodes(ind, card)
     and card.config.h_popup.nodes[1].nodes[1].nodes[1].nodes and card.config.h_popup.nodes[1].nodes[1].nodes[1].nodes[ind] then
     return card.config.h_popup.nodes[1].nodes[1].nodes[1].nodes[ind] end
 end
+
+function Entropy.MergeLocTables(t1, t2)
+    for i, v in pairs(t2) do table.insert(t1, v) end
+    return t1
+end

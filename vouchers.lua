@@ -165,7 +165,6 @@ function create_inverted_card(area, seed)
         c = pseudorandom_element(Entropy.FlipsidePureInversions, pseudoseed(seed or "twisted"))
     end
     local num = pseudorandom("twisted_rare")
-    print(num - 0.01)
     if num - 0.01 <= 0 then
         c = pseudorandom_element(Entropy.RareInversions, pseudoseed(seed or "twisted"))
     end

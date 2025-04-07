@@ -597,7 +597,7 @@ function G.UIDEF.use_and_sell_buttons(card)
 end
 
 function PackHasBeyond()
-    if not G.pack_cards then return false end
+    if not G.pack_cards or not G.pack_cards.cards then return false end
     for i, v in pairs(G.pack_cards.cards) do
         if v.ability.name == "entr-Beyond" then return true end
     end
@@ -605,7 +605,7 @@ function PackHasBeyond()
 end
 
 function PackHasGateway()
-    if not G.pack_cards then return false end
+    if not G.pack_cards or not G.pack_cards.cards then return false end
     for i, v in pairs(G.pack_cards.cards) do
         if v.ability.name == "cry-Gateway" then return true end
     end

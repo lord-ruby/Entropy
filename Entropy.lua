@@ -2,8 +2,8 @@
 local i = {
     "utils",
     "jokers",
-    "consumable",
     --"reverseTarots",
+    "consumable",
     "reversePlanets",
     "reverseSpectrals",
     "reverseCodes",
