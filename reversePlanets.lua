@@ -77,3 +77,124 @@ function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
 		)
 	end
 end
+
+
+function Entropy.ReversePlanetUse(handname, card)
+  local used_consumable = copier or card
+  local sunlevel = (G.GAME.sunlevel and G.GAME.sunlevel or 0) + 1
+  G.GAME.sunlevel = (G.GAME.sunlevel or 0) + 1
+  delay(0.4)
+  update_hand_text(
+    { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
+    { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = localize('k_level_prefix')..number_format(G.GAME.hands[handname].level, 1000000) }
+  )
+  G.GAME.hands[handname].AscensionPower = (G.GAME.hands[handname].AscensionPower or 0) + card.ability.level
+  delay(1.0)
+  G.E_MANAGER:add_event(Event({
+    trigger = "after",
+    delay = 0.2,
+    func = function()
+      play_sound("tarot1")
+      ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
+      ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
+      Cryptid.pulse_flame(0.01, sunlevel)
+      used_consumable:juice_up(0.8, 0.5)
+      G.E_MANAGER:add_event(Event({
+        trigger = "after",
+        blockable = false,
+        blocking = false,
+        delay = 1.2,
+        func = function()
+          ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
+          ease_colour(G.C.UI_MULT, G.C.RED, 1)
+          return true
+        end,
+      }))
+      return true
+    end,
+  }))
+  update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = to_big(G.GAME.hands[handname].AscensionPower + card.ability.level) })
+  delay(2.6)
+  update_hand_text(
+    { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+    { mult = 0, chips = 0, handname = "", level = "" }
+  )
+end
+
+SMODS.ConsumableType({
+	object_type = "ConsumableType",
+	key = "RPlanet",
+	primary_colour = HEX("845baa"),
+	secondary_colour = HEX("845baa"),
+	collection_rows = { 4, 4 },
+	shop_rate = 0.0,
+	loc_txt = {},
+	default = "c_entr_pluto"
+})
+
+
+function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,level, name)
+  Entropy.RPlanetLocs["c_entr_"..key] = {
+    name = name or handname,
+    text = {
+      "{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+      "{C:attention}#3#",
+      "{C:gold}+#4#{} Ascension Power"
+    }
+  }
+  SMODS.Consumable({
+    key = key,
+    set = "RPlanet",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        level = level or 1,
+        handname = handname
+    },
+    cost = cost,
+    pos = sprite_pos,
+    use = function(self, card, area, copier)
+        if func then func(self, card,area,copier) else Entropy.ReversePlanetUse(card.ability.handname, card) end
+    end,
+    can_use = function(self, card)
+        return true
+	end,
+    loc_vars = function(self, q, card)
+        return {
+          vars = {
+            G.GAME.hands[card.ability.handname].level,
+            G.GAME.hands[card.ability.handname].AscensionPower and (" + "..G.GAME.hands[card.ability.handname].AscensionPower.."") or "",
+            card.ability.handname,
+            card.ability.level,
+            colours = {
+              to_big(G.GAME.hands[card.ability.handname].level < to_big(2)) and G.C.BLACK or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands[card.ability.handname].level)):to_number()]
+            }
+          }
+        }
+    end,
+  })
+end
+Entropy.ReversePlanets = {
+  {name="High Card",key="pluto",sprite_pos={x=6,y=0}},
+  {name="Pair",key="mercury",sprite_pos={x=7,y=0}},
+  {name="Three of a Kind",key="venus",sprite_pos={x=8,y=0}},
+  {name="Full House",key="earth",sprite_pos={x=9,y=0}},
+  {name="Four of a Kind",key="mars",sprite_pos={x=10,y=0}},
+  {name="Flush",key="jupiter",sprite_pos={x=11,y=0}},
+  {name="Straight",key="saturn",sprite_pos={x=12,y=0}},
+  {name="Two Pair",key="uranus",sprite_pos={x=6,y=1}},
+  {name="Straight Flush",key="neptune",sprite_pos={x=7,y=1}},
+  {name="Flush House",key="ceres",sprite_pos={x=8,y=1}},
+  {name="Five of a Kind",key="planet_x",sprite_pos={x=9,y=1}},
+  {name="Flush Five",key="eris",sprite_pos={x=10,y=1}},
+}
+function Entropy.RegisterReversePlanets()
+  Entropy.RPlanetLocs = {}
+    for i, v in pairs(Entropy.ReversePlanets) do
+		Entropy.RegisterReversePlanet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name)
+		Entropy.FlipsideInversions["c_"..v.key] = "c_entr_"..v.key
+	end
+end
+
+Entropy.RegisterReversePlanets()
