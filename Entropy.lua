@@ -664,7 +664,7 @@ SMODS.Sound:take_ownership("cry_music_exotic", {
 
 SMODS.Sound({
 	key = "music_zenith",
-	path = "music_zenith_placeholder.ogg",
+	path = "music_zenith.ogg",
 	volume = 0.8,
 	select_music_track = function()
 		return G.GAME.Ruby and 10^300
