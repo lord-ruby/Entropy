@@ -97,7 +97,7 @@ return {
 				text = {
 					"Scored {C:attention}jacks{} give {X:chips,C:white}XChips{}",
 					"equal to the {C:attention}number{} of played jacks in the hand",
-					"retigger {C:attention}scored{} jacks based on their",
+					"retrigger {C:attention}scored{} jacks based on their",
 					"order in the played hand"
 				}
 			},
