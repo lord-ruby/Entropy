@@ -181,6 +181,7 @@ SMODS.Consumable({
 				G.STATE_COMPLETE = false
                 G.GAME.USING_BREAK = true
                 break_timer = 0
+                G.FUNCS.draw_from_hand_to_deck()
 				return true
 			end,
 		}))
@@ -270,6 +271,21 @@ SMODS.Consumable({
     end,
 })
 function create_UIBox_blind_select()
+    if G.GAME.USING_BREAK then
+        G.E_MANAGER:add_event(Event({
+			trigger = "after",
+            blocking = false,
+            delay = 3,
+			func = function()
+                G.STATE = 7
+                --G.blind_select:remove()
+                --G.blind_prompt_box:remove()
+                G.FUNCS.draw_from_hand_to_deck()
+				return true
+			end,
+		}))
+        G.GAME.USING_BREAK = nil
+    end
   G.blind_prompt_box = UIBox{
     definition =
       {n=G.UIT.ROOT, config = {align = 'cm', colour = G.C.CLEAR, padding = 0.2}, nodes={
@@ -700,27 +716,6 @@ function Game:update(dt)
             G.GAME.RubyAnteTextNum = srandom(1)
         end
         hand_dt2 = 0
-    end
-    if G.hand and G.hand.cards and #G.hand.cards <= 0 and G.GAME.USING_BREAK then
-        G.GAME.USING_BREAK = nil
-    end
-    if G.GAME.USING_BREAK then
-        G.STATE = 7
-        break_timer = break_timer + dt
-    end
-    if break_timer > 0.3 then
-        G.FUNCS.draw_from_hand_to_discard()
-		G.FUNCS.draw_from_discard_to_deck()
-        break_timer = -999999999
-        --if self.HUD_blind then self.HUD_blind:delete() end
-        if self.HUD_blind then self.HUD_blind.states.visible = nil end
-        G.GAME.USING_BREAK = nil
-        G.GAME.ResetCode = true
-    end
-    if G.GAME.ResetCode and G.STATE ~= 7 then
-        G.GAME.ResetCode = nil
-        G.GAME.USING_CODE = nil
-        self.HUD_blind.states.visible = true
     end
     if G.STATE == nil and G.pack_cards == nil and G.GAME.DefineBoosterState then
         G.STATE = G.GAME.DefineBoosterState
