@@ -671,6 +671,16 @@ SMODS.Sound({
 	end,
 })
 SMODS.Sound({
+	key = "music_entropic",
+	path = "music_entropic.ogg",
+	volume = 0.8,
+	select_music_track = function()
+		return Entropy.config
+        and Entropy.config.entropic_music
+        and #Cryptid.advanced_find_joker(nil, "entr_hyper_exotic", nil, nil, true) ~= 0 and 10^200
+	end,
+})
+SMODS.Sound({
 	key = "music_red_room",
 	path = "music_red_room.ogg",
 	volume = 0.8,
@@ -692,6 +702,14 @@ local entrConfigTab = function()
 		active_colour = HEX("40c76d"),
 		ref_table = Entropy.config,
 		ref_value = "ante_scaling",
+		callback = function()
+        end,
+	})
+    entr_nodes[#entr_nodes + 1] = create_toggle({
+		label = localize("k_entr_entropic_music"),
+		active_colour = HEX("40c76d"),
+		ref_table = Entropy.config,
+		ref_value = "entropic_music",
 		callback = function()
         end,
 	})

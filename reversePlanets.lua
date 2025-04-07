@@ -134,7 +134,7 @@ SMODS.ConsumableType({
 })
 
 
-function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,level, name)
+function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,level, name,set_badges)
   --this is bad but im lazy
   SMODS.Consumable({
     key = key,
@@ -148,6 +148,7 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
     },
     cost = cost,
     pos = sprite_pos,
+    set_card_type_badge = set_badges,
     use = function(self, card, area, copier)
         if func then func(self, card,area,copier) else Entropy.ReversePlanetUse(card.ability.handname, card) end
     end,
@@ -162,7 +163,7 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
           vars = {
             G.GAME.hands[card.ability.handname].level,
             G.GAME.hands[card.ability.handname].AscensionPower and (" + "..G.GAME.hands[card.ability.handname].AscensionPower.."") or "",
-            card.ability.handname,
+            localize(card.ability.handname,'poker_hands'),
             card.ability.level,
             colours = {
               to_big(G.GAME.hands[card.ability.handname].level < to_big(2)) and G.C.BLACK or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands[card.ability.handname].level)):to_number()]
@@ -185,12 +186,15 @@ Entropy.ReversePlanets = {
   {name="Flush House",key="ceres",sprite_pos={x=8,y=1}},
   {name="Five of a Kind",key="planet_x",sprite_pos={x=9,y=1}},
   {name="Flush Five",key="eris",sprite_pos={x=10,y=1}},
+  {name="cry_WholeDeck", key="universe",sprite_pos={x=7,y=2},prefix = "c_cry_",set_badges = function(self, card, badges)
+    badges[1] = create_badge(localize("k_planet_multiverse"), get_type_colour(self or card.config, card), nil, 1.2)
+  end}
 }
 function Entropy.RegisterReversePlanets()
   Entropy.RPlanetLocs = {}
     for i, v in pairs(Entropy.ReversePlanets) do
-		Entropy.RegisterReversePlanet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name)
-		Entropy.FlipsideInversions["c_"..v.key] = "c_entr_"..v.key
+		Entropy.RegisterReversePlanet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name,v.set_badges)
+		Entropy.FlipsideInversions[(v.prefix or "c_")..v.key] = "c_entr_"..v.key
 	end
 end
 
