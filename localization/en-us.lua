@@ -152,7 +152,7 @@ return {
 				name = "Marked Cards",
 				text = {
 					"{C:red}Inverted{} consumables have a",
-					"fixed {C:red}25%{} chance to replace",
+					"fixed {C:red}10%{} chance to replace",
 					"their regular counterparts"
 				},
 			},
@@ -167,7 +167,7 @@ return {
 				name = "Supersede",
 				text = {
 					"{C:red}Twisted{} booster packs have a",
-					"fixed {C:red}25%{} chance to replace",
+					"fixed {C:red}20%{} chance to replace",
 					"any other booster pack in the shop"
 				},
 			},

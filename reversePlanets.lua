@@ -79,16 +79,17 @@ function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
 end
 
 
-function Entropy.ReversePlanetUse(handname, card)
+function Entropy.ReversePlanetUse(handname, card, amt)
+  amt = amt or 1
   local used_consumable = copier or card
   local sunlevel = (G.GAME.sunlevel and G.GAME.sunlevel or 0) + 1
   G.GAME.sunlevel = (G.GAME.sunlevel or 0) + 1
   delay(0.4)
   update_hand_text(
     { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-    { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = localize('k_level_prefix')..number_format(G.GAME.hands[handname].level, 1000000) }
+    { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = number_format(G.GAME.hands[handname].level, 1000000) }
   )
-  G.GAME.hands[handname].AscensionPower = (G.GAME.hands[handname].AscensionPower or 0) + card.ability.level
+  G.GAME.hands[handname].AscensionPower = (G.GAME.hands[handname].AscensionPower or 0) + card.ability.level*amt
   delay(1.0)
   G.E_MANAGER:add_event(Event({
     trigger = "after",
@@ -113,7 +114,7 @@ function Entropy.ReversePlanetUse(handname, card)
       return true
     end,
   }))
-  update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = to_big(G.GAME.hands[handname].AscensionPower + card.ability.level) })
+  update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = to_big(G.GAME.hands[handname].AscensionPower + card.ability.level*amt) })
   delay(2.6)
   update_hand_text(
     { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
@@ -149,6 +150,9 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
     pos = sprite_pos,
     use = function(self, card, area, copier)
         if func then func(self, card,area,copier) else Entropy.ReversePlanetUse(card.ability.handname, card) end
+    end,
+    bulk_use = function(self, card, area, copier, number)
+      if func then func(self, card,area,copier,number) else Entropy.ReversePlanetUse(card.ability.handname, card,number) end
     end,
     can_use = function(self, card)
         return true

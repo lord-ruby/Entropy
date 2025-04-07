@@ -49,14 +49,14 @@ local TrumpCardAllow = {
 local matref = Card.set_ability
 function Card:set_ability(center, initial, delay_sprites)
     if self.config and self.config.center and Entropy.FlipsideInversions and Entropy.FlipsideInversions[self.config.center.key]
-    and pseudorandom("marked") < 0.25 and G.GAME.Marked and G.STATE == G.STATES.SHOP and (not self.area or not self.area.config.collection) then
+    and pseudorandom("marked") < 0.10 and G.GAME.Marked and G.STATE == G.STATES.SHOP and (not self.area or not self.area.config.collection) then
         matref(self, G.P_CENTERS[Entropy.FlipsideInversions[self.config.center.key]], initial, delay_sprites)
     elseif self.config and self.config.center
-    and pseudorandom("trump_card") < 0.25 and G.GAME.TrumpCard and G.STATE == G.STATES.SMODS_BOOSTER_OPENED
+    and pseudorandom("trump_card") < 0.10 and G.GAME.TrumpCard and G.STATE == G.STATES.SMODS_BOOSTER_OPENED
     and TrumpCardAllow[center.set] and (not self.area or not self.area.config.collection) then
         matref(self, G.P_CENTERS["c_entr_flipside"], initial, delay_sprites)
     elseif self.config and self.config.center and self.config.center.set == "Booster"
-    and pseudorandom("supersede") < 0.25 and G.GAME.Supersede and G.STATE == G.STATES.SHOP and (not self.area or not self.area.config.collection) then
+    and pseudorandom("supersede") < 0.20 and G.GAME.Supersede and G.STATE == G.STATES.SHOP and (not self.area or not self.area.config.collection) then
         local type = (center.cost == 6 and "jumbo") or (center.cost == 8 and "mega") or "normal"
         matref(self, G.P_CENTERS["p_entr_twisted_pack_"..type], initial, delay_sprites)
     else
@@ -160,13 +160,10 @@ Entropy.RareInversions = {
     ["c_entr_fervour"] = "c_entr_fervour"
 }
 function create_inverted_card(area, seed)
-    local c = pseudorandom_element(Entropy.FlipsidePureInversions, pseudoseed(seed or "twisted"))
-    while not c or not G.P_CENTERS[c] or Entropy.RareInversions[c] do
-        c = pseudorandom_element(Entropy.FlipsidePureInversions, pseudoseed(seed or "twisted"))
-    end
     local num = pseudorandom("twisted_rare")
     if num - 0.01 <= 0 then
-        c = pseudorandom_element(Entropy.RareInversions, pseudoseed(seed or "twisted"))
+        local c = pseudorandom_element(Entropy.RareInversions, pseudoseed(seed or "twisted"))
+        return create_card(G.P_CENTERS[c].set, area or G.pack_cards, nil, nil, true, true, c)
     end
-    return create_card(G.P_CENTERS[c].set, area or G.pack_cards, nil, nil, true, true, c)
+    return create_card("Twisted", area or G.pack_cards, nil, nil, true, true, nil, "twisted")
 end

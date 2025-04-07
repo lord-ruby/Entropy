@@ -92,8 +92,6 @@ Entropy.FlipsideInversions = {
     ["c_cry_reboot"] = "c_entr_bootstrap",
     ["c_cry_pointer"] = "c_entr_define"
 }
-Entropy.FlipsidePureInversions = copy_table(Entropy.FlipsideInversions)
-Entropy.ReverseFlipsideInversions()
 SMODS.Consumable({
     key = "flipside",
     set = "Spectral",
