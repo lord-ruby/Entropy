@@ -653,19 +653,20 @@ function Controller:key_press_update(key, dt)
 end
 
 
-SMODS.Sound:take_ownership("cry_music_exotic", {
+
+SMODS.Sound({
+	key = "music_entropic",
+	path = "music_entropic.ogg",
 	select_music_track = function()
 		return Cryptid_config.Cryptid
-			and Cryptid_config.Cryptid.exotic_music and not G.GAME.Ruby
-			and (#Cryptid.advanced_find_joker(nil, "cry_exotic", nil, nil, true) ~= 0 or #Cryptid.advanced_find_joker(nil, "entr_hyper_exotic", nil, nil, true) ~= 0)
+        and Cryptid_config.Cryptid.exotic_music and not G.GAME.Ruby
+        and #Cryptid.advanced_find_joker(nil, "entr_hyper_exotic", nil, nil, true) ~= 0  and 1^200
 	end,
-},true)
-
+})
 
 SMODS.Sound({
 	key = "music_zenith",
 	path = "music_zenith.ogg",
-	volume = 0.8,
 	select_music_track = function()
 		return G.GAME.Ruby and 10^300
 	end,
@@ -673,7 +674,6 @@ SMODS.Sound({
 SMODS.Sound({
 	key = "music_red_room",
 	path = "music_red_room.ogg",
-	volume = 0.8,
 	select_music_track = function()
 		return G.GAME.round_resets.blind_states.Red == "Current" and 10^5
 	end,
@@ -692,6 +692,14 @@ local entrConfigTab = function()
 		active_colour = HEX("40c76d"),
 		ref_table = Entropy.config,
 		ref_value = "ante_scaling",
+		callback = function()
+        end,
+	})
+    entr_nodes[#entr_nodes + 1] = create_toggle({
+		label = localize("k_entr_entropic_music"),
+		active_colour = HEX("40c76d"),
+		ref_table = Entropy.config,
+		ref_value = "entropic_music",
 		callback = function()
         end,
 	})

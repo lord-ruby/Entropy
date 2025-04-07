@@ -511,6 +511,7 @@ return {
 			k_saved_ruby_8 = "",
 
 			k_entr_faster_ante_scaling = "Scale blind scores quicker if you have an Entropic joker",
+			k_entr_entropic_music = "Entropic Jokers (Joker in Greek by gemstonez)",
 
 			k_rplanet = "Star?",
 			b_rplanet_cards = "Star Cards?",	
