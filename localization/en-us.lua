@@ -97,7 +97,7 @@ return {
 				text = {
 					"Scored {C:attention}jacks{} give {X:chips,C:white}XChips{}",
 					"equal to the {C:attention}number{} of played jacks in the hand",
-					"retigger {C:attention}scored{} jacks based on their",
+					"retrigger {C:attention}scored{} jacks based on their",
 					"order in the played hand"
 				}
 			},
@@ -352,9 +352,104 @@ return {
 				}
 			}
 		},
-		RPlanet = Entropy.MergeLocTables(Entropy.RPlanetLocs, {
-
-		}),
+		RPlanet = {
+			c_entr_pluto = {
+				name = "Regulus",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_mercury = {
+				name = "CZ Hydrae",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_venus = {
+				name = "Vega",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_earth = {
+				name = "Polaris",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_mars = {
+				name = "Rho Cassiopeiae",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_jupiter = {
+				name = "UU Pegasi",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_saturn = {
+				name = "RS Persei",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_uranus = {
+				name = "RT Ophiuchi",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_neptune = {
+				name = "V349 Carinae",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_ceres = {
+				name = "RW Cephei",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_planet_x = {
+				name = "RW Cygni",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_eris = {
+				name = "VX Sagittarii",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+		},
 		RSpectral = {
 			c_entr_define = {
 				name = "#1#define",

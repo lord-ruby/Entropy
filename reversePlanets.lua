@@ -126,7 +126,7 @@ SMODS.ConsumableType({
 	key = "RPlanet",
 	primary_colour = HEX("845baa"),
 	secondary_colour = HEX("845baa"),
-	collection_rows = { 4, 4 },
+	collection_rows = { 6, 6 },
 	shop_rate = 0.0,
 	loc_txt = {},
 	default = "c_entr_pluto"
@@ -134,14 +134,7 @@ SMODS.ConsumableType({
 
 
 function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,level, name)
-  Entropy.RPlanetLocs["c_entr_"..key] = {
-    name = name or handname,
-    text = {
-      "{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
-      "{C:attention}#3#",
-      "{C:gold}+#4#{} Ascension Power"
-    }
-  }
+  --this is bad but im lazy
   SMODS.Consumable({
     key = key,
     set = "RPlanet",
