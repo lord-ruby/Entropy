@@ -70,12 +70,24 @@ function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
 					+ to_big((0.1 + (0.05 * (G.GAME.sunnumber or 0))) * to_big(G.GAME.hands[hand].AscensionPower or 0))
 				)
 		)
+  elseif HasJoker("j_entr_helios") then
+		local curr = 1.5
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center.key == "j_entr_helios" and to_big(v.ability.extra):gt(curr) then curr = v.ability.extra+0.4 end
+        end
+		return math.max(
+			num,
+			num
+				* to_big(
+					(1.75 + ((G.GAME.sunnumber or 0)))):tetrate(
+						to_big(G.GAME.hands[hand].AscensionPower * curr))
+		)
 	else
 		return math.max(
 			num,
 			num * to_big((1.25 + (0.05 * (G.GAME.sunnumber or 0))) ^ to_big(G.GAME.hands[hand].AscensionPower or 0))
 		)
-	end
+  end
 end
 
 
