@@ -352,9 +352,7 @@ return {
 				}
 			}
 		},
-		RPlanet = Entropy.MergeLocTables(Entropy.RPlanetLocs, {
-
-		}),
+		RPlanet = {},
 		RSpectral = {
 			c_entr_define = {
 				name = "#1#define",
