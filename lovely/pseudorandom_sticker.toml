@@ -1,0 +1,14 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability[v] and not SMODS.Stickers[v].hide_badge then"
+position = "at"
+payload = '''
+if self.ability[v] and not SMODS.Stickers[v].hide_badge and (v ~= "cry_rigged" or not self.ability.entr_pseudorandom) then
+'''
+match_indent = true

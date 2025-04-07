@@ -1,0 +1,17 @@
+ 
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "(self.ability.set == 'Voucher' and {G.C.SECONDARY_SET.Voucher, G.C.CLEAR}) or "
+position = "after"
+payload = '''
+(self.ability.set == "RCode" and {G.C.RCode, G.C.CLEAR}) or 
+(self.ability.set == "RSpectral" and {G.C.RSpectral, G.C.CLEAR}) or 
+(self.ability.set == "RTarot" and {G.C.RTarot G.C.CLEAR}) or 
+'''
+match_indent = true

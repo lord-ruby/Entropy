@@ -1,0 +1,18 @@
+{
+    "name": "Entropy",
+    "id": "entr",
+    "version": "1.0.0",
+    "website_url": "",
+    "description": "An unbalanced cryptid addon, Built around the madness gameset.",
+    "prefix": "entr",
+    "author": ["Ruby"],
+    "main_file": "Entropy.lua",
+    "priority": 666666666666666666666,
+    "badge_colour": "FE0001",
+    "dependencies": [
+        "Steamodded"
+    ],
+    "conflicts": [
+        "CelesteCardCollection"
+    ]
+}

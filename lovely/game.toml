@@ -1,0 +1,56 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "table.sort(G.playing_cards, function (a, b) return a.playing_card > b.playing_card end )"
+position = "at"
+payload = '''
+table.sort(G.playing_cards, function (a, b) return (type(a.playing_card) == "number" and a.playing_card or 0) > (type(b.playing_card) == "number" and b.playing_card or 0) end )
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = 'G.GAME.hands[text].played = G.GAME.hands[text].played + 1'
+position = "before"
+payload = 'if not G.GAME.hands[text] then G.GAME.hands[text] = G.GAME.hands["High Card"] end'
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "self.GAME.starting_deck_size = #G.playing_cards"
+position = "before"
+payload = '''
+if G.GAME.modifiers.ccd2 then
+    for k, v in pairs(G.playing_cards) do
+        local key = ""
+        local ptype = pseudorandom_element({
+            "Booster",
+            "Voucher",
+            "Tarot",
+            "Joker",
+            "Consumeable",
+        }, pseudoseed("segfault"))
+        if ptype == "Consumeable" then
+            key = Cryptid.random_consumable("entr_segfault", nil, "c_entr_segfault").key
+        else
+            key = pseudorandom_element(G.P_CENTERS, pseudoseed("segfault"))
+            local tries = 0
+            while key.set ~= ptype or key.no_doe do
+                key = pseudorandom_element(G.P_CENTERS, pseudoseed("segfault"))
+                tries = tries + 1
+            end
+            key = key.key
+        end
+        v:set_ability(G.P_CENTERS[key])
+    end
+end
+'''
+match_indent = true

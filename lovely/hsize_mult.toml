@@ -1,0 +1,60 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "if card.edition.card_limit == -1 and #G.hand.cards < G.hand.config.card_limit then"
+position = "at"
+payload = '''
+if card.edition.card_limit == -1 and #G.hand.cards < G.hand.config.card_limit * (G.GAME.hsize_mult or 1) then
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "local limit = G.hand.config.card_limit - #G.hand.cards"
+position = "at"
+payload = '''
+local limit = G.hand.config.card_limit * (G.GAME.hsize_mult or 1) - #G.hand.cards
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "local card_count = self ~= G.shop_vouchers and {n=G.UIT.R, config={align = self == G.jokers and 'cl' or self == G.hand and 'cm' or 'cr', padding = 0.03, no_fill = true}, nodes={"
+position = "before"
+payload = '''
+if self == G.hand and G.hand then  
+    self.config.true_size = self.config.card_limit * (G.GAME.hsize_mult or 1)
+else
+    self.config.true_size = self.config.card_limit
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "{n=G.UIT.T, config={ref_table = self.config, ref_value = 'card_limit', scale = 0.3, colour = G.C.WHITE}},"
+position = "at"
+payload = '''
+{n=G.UIT.T, config={ref_table = self.config, ref_value = 'true_size', scale = 0.3, colour = G.C.WHITE}},
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "local card_count = math.abs(delta)"
+position = "at"
+payload = '''
+print(G.hand.config.true_size - #G.hand.cards)
+local card_count = G.hand.config.true_size - #G.hand.cards
+'''
+match_indent = true

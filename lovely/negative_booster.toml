@@ -1,0 +1,16 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "local seal = G.P_SEALS[v] or G.P_SEALS[SMODS.Seal.badge_to_key[v] or '']"
+position = "at"
+payload = '''
+for i, v in pairs(info_queue) do
+    if v.key == "e_negative" and _c.set == "Booster" then info_queue[i].key = "e_negative_consumable" end
+end
+'''
+match_indent = true
