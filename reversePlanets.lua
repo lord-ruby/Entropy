@@ -94,8 +94,6 @@ end
 function Entropy.ReversePlanetUse(handname, card, amt)
   amt = amt or 1
   local used_consumable = copier or card
-  local sunlevel = (G.GAME.sunlevel and G.GAME.sunlevel or 0) + 1
-  G.GAME.sunlevel = (G.GAME.sunlevel or 0) + 1
   delay(0.4)
   update_hand_text(
     { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
@@ -147,15 +145,14 @@ SMODS.ConsumableType({
 })
 
 
-function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,level, name,set_badges)
-  --this is bad but im lazy
+function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,level, name,set_badges,loc_vars,config)
   SMODS.Consumable({
     key = key,
     set = "RPlanet",
     unlocked = true,
     discovered = true,
     atlas = "miscc",
-    config = {
+    config = config or {
         level = level or 2,
         handname = handname
     },
@@ -171,7 +168,7 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
     can_use = function(self, card)
         return true
 	end,
-    loc_vars = function(self, q, card)
+    loc_vars = loc_vars or function(self, q, card)
         return {
           vars = {
             G.GAME.hands[card.ability.handname].level,
@@ -187,7 +184,6 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
   })
 end
 Entropy.ReversePlanets = {
-  {name="High Card",key="pluto",sprite_pos={x=6,y=0}},
   {name="Pair",key="mercury",sprite_pos={x=7,y=0}},
   {name="Three of a Kind",key="venus",sprite_pos={x=8,y=0}},
   {name="Full House",key="earth",sprite_pos={x=9,y=0}},
@@ -196,28 +192,241 @@ Entropy.ReversePlanets = {
   {name="Straight",key="saturn",sprite_pos={x=12,y=0}},
   {name="Two Pair",key="uranus",sprite_pos={x=6,y=1}},
   {name="Straight Flush",key="neptune",sprite_pos={x=7,y=1}},
-  {name="Flush House",key="ceres",sprite_pos={x=8,y=1}},
+  {name="High Card",key="pluto",sprite_pos={x=6,y=0}},
   {name="Five of a Kind",key="planet_x",sprite_pos={x=9,y=1}},
+  {name="Flush House",key="ceres",sprite_pos={x=8,y=1}},
   {name="Flush Five",key="eris",sprite_pos={x=10,y=1}},
-  {name="cry_UltPair", key="marsmoons",sprite_pos={x=6,y=2},prefix = "c_cry_",set_badges = function(self, card, badges)
-    badges[1] = create_badge(localize("k_planet_binary_star"), get_type_colour(self or card.config, card), nil, 1.2)
+  {name="", key="planetlua",sprite_pos={x=8,y=2},prefix = "c_cry_",config = {
+    level = 2,
+    odds = 5
+  },
+  loc_vars = function(self,q,card) 
+    return {
+      vars = {
+        card and cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged),
+        card.ability.odds,
+        card.ability.level,
+      }
+    }
+  end,
+  func = function(self,card,area,copier,number)
+    if number and number ~= 1 then
+      Entropy.StarLuaBulk(self,card,area,copier,number)
+    else
+      Entropy.StarLuaSingle(self,card,area,copier)
+    end
+  end
+  },
+  {name="cry_Bulwark", key="asteroidbelt",sprite_pos={x=12,y=1},prefix = "c_cry_",set_badges = function(self, card, badges)
+    badges[1] = create_badge(localize("k_planet_dyson_swarm"), get_type_colour(self or card.config, card), nil, 1.2)
   end},
   {name="cry_Clusterfuck", key="void",sprite_pos={x=11,y=1},prefix = "c_cry_",set_badges = function(self, card, badges)
     badges[1] = create_badge("", get_type_colour(self or card.config, card), nil, 1.2)
   end},
-  {name="cry_Bulwark", key="asteroidbelt",sprite_pos={x=12,y=1},prefix = "c_cry_",set_badges = function(self, card, badges)
-    badges[1] = create_badge(localize("k_planet_dyson_swarm"), get_type_colour(self or card.config, card), nil, 1.2)
+  {name="cry_UltPair", key="marsmoons",sprite_pos={x=6,y=2},prefix = "c_cry_",set_badges = function(self, card, badges)
+    badges[1] = create_badge(localize("k_planet_binary_star"), get_type_colour(self or card.config, card), nil, 1.2)
   end},
   {name="cry_WholeDeck", key="universe",sprite_pos={x=7,y=2},prefix = "c_cry_",set_badges = function(self, card, badges)
     badges[1] = create_badge(localize("k_planet_multiverse"), get_type_colour(self or card.config, card), nil, 1.2)
-  end}
+  end},
 }
 function Entropy.RegisterReversePlanets()
   Entropy.RPlanetLocs = {}
     for i, v in pairs(Entropy.ReversePlanets) do
-		Entropy.RegisterReversePlanet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name,v.set_badges)
+		Entropy.RegisterReversePlanet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name,v.set_badges,v.loc_vars,v.config)
 		Entropy.FlipsideInversions[(v.prefix or "c_")..v.key] = "c_entr_"..v.key
 	end
 end
 
 Entropy.RegisterReversePlanets()
+
+
+function Entropy.StarLuaSingle(self,card,area,copier)
+  local used_consumable = copier or card
+  if
+    pseudorandom("starlua")
+    < cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged)
+      / card.ability.odds
+  then --Code "borrowed" from black hole
+    delay(0.4)
+    update_hand_text(
+      { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
+      { handname = localize("k_all_hands"), chips = "...", mult = "...", level = "", }
+    )
+    for i, v in pairs(G.GAME.hands) do
+      v.AscensionPower = (v.AscensionPower or 0) + card.ability.level
+      v.visible = true
+    end
+    delay(1.0)
+    G.E_MANAGER:add_event(Event({
+      trigger = "after",
+      delay = 0.2,
+      func = function()
+        play_sound("tarot1")
+        ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
+        ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
+        Cryptid.pulse_flame(0.01, 1)
+        used_consumable:juice_up(0.8, 0.5)
+        G.E_MANAGER:add_event(Event({
+          trigger = "after",
+          blockable = false,
+          blocking = false,
+          delay = 1.2,
+          func = function()
+            ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
+            ease_colour(G.C.UI_MULT, G.C.RED, 1)
+            return true
+          end,
+        }))
+        return true
+      end,
+    }))
+    update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+1" })
+    delay(2.6)
+    update_hand_text(
+      { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+      { mult = 0, chips = 0, handname = "", level = "" }
+    )
+  else
+    G.E_MANAGER:add_event(Event({
+      trigger = "after",
+      delay = 0.4,
+      func = function() --"borrowed" from Wheel Of Fortune
+        attention_text({
+          text = localize("k_nope_ex"),
+          scale = 1.3,
+          hold = 1.4,
+          major = used_consumable,
+          backdrop_colour = G.C.SECONDARY_SET.Planet,
+          align = (
+            G.STATE == G.STATES.TAROT_PACK
+            or G.STATE == G.STATES.SPECTRAL_PACK
+            or G.STATE == G.STATES.SMODS_BOOSTER_OPENED
+          )
+              and "tm"
+            or "cm",
+          offset = {
+            x = 0,
+            y = (
+              G.STATE == G.STATES.TAROT_PACK
+              or G.STATE == G.STATES.SPECTRAL_PACK
+              or G.STATE == G.STATES.SMODS_BOOSTER_OPENED
+            )
+                and -0.2
+              or 0,
+          },
+          silent = true,
+        })
+        G.E_MANAGER:add_event(Event({
+          trigger = "after",
+          delay = 0.06 * G.SETTINGS.GAMESPEED,
+          blockable = false,
+          blocking = false,
+          func = function()
+            play_sound("tarot2", 0.76, 0.4)
+            return true
+          end,
+        }))
+        play_sound("tarot2", 1, 0.4)
+        used_consumable:juice_up(0.3, 0.5)
+        return true
+      end,
+    }))
+  end
+end
+
+function Entropy.StarLuaBulk(self,card,area,copier,number)
+  local used_consumable = copier or card
+  if
+    pseudorandom("starlua")
+    < cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged) * number
+      / card.ability.odds
+  then --Code "borrowed" from black hole
+    local quota = (cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged)
+    / card.ability.odds)
+    delay(0.4)
+    update_hand_text(
+      { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
+      { handname = localize("k_all_hands"), chips = "...", mult = "...", level = "", }
+    )
+    for i, v in pairs(G.GAME.hands) do
+      v.AscensionPower = (v.AscensionPower or 0) + card.ability.level*number*quota
+      v.visible = true
+    end
+    delay(1.0)
+    G.E_MANAGER:add_event(Event({
+      trigger = "after",
+      delay = 0.2,
+      func = function()
+        play_sound("tarot1")
+        ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
+        ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
+        Cryptid.pulse_flame(0.01, 1)
+        used_consumable:juice_up(0.8, 0.5)
+        G.E_MANAGER:add_event(Event({
+          trigger = "after",
+          blockable = false,
+          blocking = false,
+          delay = 1.2,
+          func = function()
+            ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
+            ease_colour(G.C.UI_MULT, G.C.RED, 1)
+            return true
+          end,
+        }))
+        return true
+      end,
+    }))
+    update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+1" })
+    delay(2.6)
+    update_hand_text(
+      { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+      { mult = 0, chips = 0, handname = "", level = "" }
+    )
+  else
+    G.E_MANAGER:add_event(Event({
+      trigger = "after",
+      delay = 0.4,
+      func = function() --"borrowed" from Wheel Of Fortune
+        attention_text({
+          text = localize("k_nope_ex"),
+          scale = 1.3,
+          hold = 1.4,
+          major = used_consumable,
+          backdrop_colour = G.C.SECONDARY_SET.Planet,
+          align = (
+            G.STATE == G.STATES.TAROT_PACK
+            or G.STATE == G.STATES.SPECTRAL_PACK
+            or G.STATE == G.STATES.SMODS_BOOSTER_OPENED
+          )
+              and "tm"
+            or "cm",
+          offset = {
+            x = 0,
+            y = (
+              G.STATE == G.STATES.TAROT_PACK
+              or G.STATE == G.STATES.SPECTRAL_PACK
+              or G.STATE == G.STATES.SMODS_BOOSTER_OPENED
+            )
+                and -0.2
+              or 0,
+          },
+          silent = true,
+        })
+        G.E_MANAGER:add_event(Event({
+          trigger = "after",
+          delay = 0.06 * G.SETTINGS.GAMESPEED,
+          blockable = false,
+          blocking = false,
+          func = function()
+            play_sound("tarot2", 0.76, 0.4)
+            return true
+          end,
+        }))
+        play_sound("tarot2", 1, 0.4)
+        used_consumable:juice_up(0.3, 0.5)
+        return true
+      end,
+    }))
+  end
+end

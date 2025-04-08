@@ -135,6 +135,15 @@ return {
 								"{C:attention}Joker{}, {C:attention}booster pack{},",
 								"{C:attention}voucher{}, or {C:attention}consumable{}"
 							}
+			},
+			b_entr_doc = {
+				name = "Deck of Containment",
+				text =  {
+								"Adds an {X:dark_exition,C:white}Entropy{} meter",
+								"{C:red}Beyond{} has higher chances of showing up",
+								"the higher the meter is, Score less {C:blue}chips{} based on"
+								"how high the meter is"
+							}
 			}
 		},
 		RTarot = {
@@ -481,6 +490,15 @@ return {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
+			c_entr_planetlua = {
+				name = "Star.lua",
+				text = {
+					"{C:green}#1# in #2#{} chance to",
+					"upgrade every",
+					"{C:legendary,E:1}poker hand{}",
+					"{C:gold}+#3#{} Ascension Power",
+				}
+			},
 		},
 		RSpectral = {
 			c_entr_define = {
@@ -647,6 +665,8 @@ return {
 			k_planet_multiverse = Cryptid_config.family_mode and "Multiverse" or "The Actual Fucking Multiverse",
 			k_planet_binary_star = "Binary Star System",
 			k_planet_dyson_swarm = "Stellar Megastructure",
+
+			k_entropy = "Entropy"
 		},
 		labels = {
 			entr_pinned = "Invariant",

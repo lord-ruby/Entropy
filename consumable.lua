@@ -22,11 +22,13 @@ SMODS.Consumable({
 				trigger = "before",
 				delay = 0.75,
 				func = function()
-                    if v.config.center.rarity == "cry_exotic" then
-                        check_for_unlock({ type = "what_have_you_done" })
+                    if v.config.center.rarity ~= "entr_hyper_exotic" or G.GAME.selected_back.effect.center.original_key ~= "doc" then
+                        if v.config.center.rarity == "cry_exotic" then
+                            check_for_unlock({ type = "what_have_you_done" })
+                        end
+                        v:start_dissolve(nil, _first_dissolve)
+                        return true
                     end
-					v:start_dissolve(nil, _first_dissolve)
-					return true
 				end,
 			}))
         end
@@ -226,11 +228,11 @@ function CreateShopInversion(key, set, area)
 end
 function HasFlipside()
     Entropy.ReverseFlipsideInversions()
-    if G.consumeables then for i, v in pairs(G.consumeables.cards) do if v.config.center.name == "entr-Flipside" then return true end end end
-    if G.pack_cards then for i, v in pairs(G.pack_cards.cards) do if v.config.center.name == "entr-Flipside" then return true end end end
+    if G.consumeables and G.consumeables.cards then for i, v in pairs(G.consumeables.cards) do if v.config.center.name == "entr-Flipside" then return true end end end
+    if G.pack_cards and G.pack_cards.cards then for i, v in pairs(G.pack_cards.cards) do if v.config.center.name == "entr-Flipside" then return true end end end
     --ccd support
-    if G.deck then for i, v in pairs(G.deck.cards) do if v.ability.consumeable and v.ability.name == "entr-Flipside" then return true end end end
-    if G.hand then for i, v in pairs(G.hand.cards) do if v.ability.consumeable and v.ability.name == "entr-Flipside" then return true end end end
+    if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.consumeable and v.ability.name == "entr-Flipside" then return true end end end
+    if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.consumeable and v.ability.name == "entr-Flipside" then return true end end end
 end
 
 
