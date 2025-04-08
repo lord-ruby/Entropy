@@ -102,6 +102,7 @@ function Entropy.ReversePlanetUse(handname, card, amt)
     { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = number_format(G.GAME.hands[handname].level, 1000000) }
   )
   G.GAME.hands[handname].AscensionPower = (G.GAME.hands[handname].AscensionPower or 0) + card.ability.level*amt
+  G.GAME.hands[handname].visible = true
   delay(1.0)
   G.E_MANAGER:add_event(Event({
     trigger = "after",
@@ -198,6 +199,15 @@ Entropy.ReversePlanets = {
   {name="Flush House",key="ceres",sprite_pos={x=8,y=1}},
   {name="Five of a Kind",key="planet_x",sprite_pos={x=9,y=1}},
   {name="Flush Five",key="eris",sprite_pos={x=10,y=1}},
+  {name="cry_UltPair", key="marsmoons",sprite_pos={x=6,y=2},prefix = "c_cry_",set_badges = function(self, card, badges)
+    badges[1] = create_badge(localize("k_planet_binary_star"), get_type_colour(self or card.config, card), nil, 1.2)
+  end},
+  {name="cry_Clusterfuck", key="void",sprite_pos={x=11,y=1},prefix = "c_cry_",set_badges = function(self, card, badges)
+    badges[1] = create_badge("", get_type_colour(self or card.config, card), nil, 1.2)
+  end},
+  {name="cry_Bulwark", key="asteroidbelt",sprite_pos={x=12,y=1},prefix = "c_cry_",set_badges = function(self, card, badges)
+    badges[1] = create_badge(localize("k_planet_dyson_swarm"), get_type_colour(self or card.config, card), nil, 1.2)
+  end},
   {name="cry_WholeDeck", key="universe",sprite_pos={x=7,y=2},prefix = "c_cry_",set_badges = function(self, card, badges)
     badges[1] = create_badge(localize("k_planet_multiverse"), get_type_colour(self or card.config, card), nil, 1.2)
   end}

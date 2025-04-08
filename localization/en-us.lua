@@ -457,6 +457,30 @@ return {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
+			c_entr_marsmoons = {
+				name = "Mizar & Alcor",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_void = {
+				name = "Dark Matter",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_asteroidbelt = {
+				name = "Dyson Swarm",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
 		},
 		RSpectral = {
 			c_entr_define = {
@@ -618,9 +642,11 @@ return {
 			k_entr_faster_ante_scaling = "Scale blind scores quicker if you have an Entropic joker",
 			k_entr_entropic_music = "Entropic Jokers (Joker in Greek by gemstonez)",
 
-			k_rplanet = "Star?",
+			k_rplanet = "Star",
 			b_rplanet_cards = "Star Cards?",	
 			k_planet_multiverse = Cryptid_config.family_mode and "Multiverse" or "The Actual Fucking Multiverse",
+			k_planet_binary_star = "Binary Star System",
+			k_planet_dyson_swarm = "Stellar Megastructure",
 		},
 		labels = {
 			entr_pinned = "Invariant",
