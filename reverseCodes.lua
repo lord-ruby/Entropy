@@ -18,6 +18,7 @@ SMODS.Consumable({
     config = {
 
     },
+    no_collection = true,
     pos = {x=0,y=1},
     use = function(self, card, area, copier)
         error("\nx.x\nAw Snap!\nSomething went wrong whilst displaying this webpage.\n\nLearn More.")
