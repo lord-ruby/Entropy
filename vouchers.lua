@@ -83,7 +83,7 @@ SMODS.Booster({
     group_key = "k_inverted_pack",
     cost = 4,
     draw_hand = true,
-    weight = 0,
+    weight = 0.75,
     hidden = true,
     kind = "Inverted",
     create_card = function (self, card, i) 
@@ -113,7 +113,7 @@ SMODS.Booster({
     group_key = "k_inverted_pack",
     cost = 6,
     draw_hand = true,
-    weight = 0,
+    weight = 0.5,
     hidden = true,
     kind = "Inverted",
     create_card = function (self, card, i) 
@@ -143,7 +143,7 @@ SMODS.Booster({
     group_key = "k_inverted_pack",
     cost = 8,
     draw_hand = true,
-    weight = 0,
+    weight = 0.25,
     hidden = true,
     kind = "Inverted",
     create_card = function (self, card, i) 

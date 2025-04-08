@@ -32,7 +32,7 @@ SMODS.Back({
 })
 
 --chance of beyond showing up is 1 - 0.99^entropy
---chips exp is 0.01 + 0.99^entropy
+--chips exp is 0.02 + 0.98^entropy
 SMODS.Back({
 	object_type = "Back",
 	name = "Deck of Containment",
@@ -44,13 +44,26 @@ SMODS.Back({
 		G.GAME.entropy = 0
 	end,
 	calculate = function(self,back,context)
-		if context.final_scoring_step and G.GAME.entropy > 0 then
+		if context.final_scoring_step and to_big(G.GAME.entropy) > to_big(1) then
+			if not ({
+				["High Card"]=true,
+				["Pair"]=true,
+				["Three of a Kind"]=true,
+				["Two Pair"]=true,
+				["Four of a Kind"]=true,
+				["Flush"]=true,
+				["Straight"]=true,
+				["Straight Flush"]=true,
+				["Full House"]=true
+			})[context.scoring_name] or G.GAME.hands[context.scoring_name].AscensionPower > 0 then
+				ease_entropy(G.GAME.hands[context.scoring_name].level + (G.GAME.hands[context.scoring_name].AscensionPower or 0) or 1)
+			end
 			G.E_MANAGER:add_event(Event({
 				func = function()
-					play_sound("talisman_echips", 1)
+					play_sound("talisman_echip", 1)
 					attention_text({
 						scale = 1.4,
-						text = "^"..tostring(0.01 + (0.99^G.GAME.entropy)).." Chips",
+						text = "^"..tostring(number_format(0.012 + (0.988^G.GAME.entropy))).." Chips",
 						hold = 2,
 						align = "cm",
 						offset = { x = 0, y = -2.7 },
@@ -64,13 +77,29 @@ SMODS.Back({
 				colour = G.C.DARK_EDITION,
 			}
 		end
+		if context.individual and context.cardarea == G.play then
+			if context.other_card and (context.other_card.edition or context.other_card.ability.set == "Enhanced") then
+				if context.other_card.edition and context.other_card.ability.set == "Enhanced" then ease_entropy(2) else ease_entropy(1) end
+			end
+		end
 	end
 })
+local use_cardref = G.FUNCS.use_card
+G.FUNCS.use_card = function(e, mute, nosave)
+	local card = e.config.ref_table
+	if Entropy.FlipsideInversions[card.config.center.key] and not Entropy.FlipsidePureInversions[card.config.center.key] then
+		ease_entropy(2)
+	end
+	use_cardref(e, mute, nosave)
+end
 SMODS.Booster:take_ownership_by_kind('Spectral', {
 	create_card = function(self, card, i)
 		if pseudorandom("doc") < (1 - 0.99^G.GAME.entropy) and G.GAME.selected_back.effect.center.original_key == "doc" then
-			G.GAME.entropy = 0
+			ease_entropy(-G.GAME.entropy)
 			return create_card("RSpectral", G.pack_cards, nil, nil, true, true, "c_entr_beyond")
+		elseif pseudorandom("doc") < (1 - 0.98^G.GAME.entropy) and G.GAME.selected_back.effect.center.original_key == "doc" then
+			ease_entropy(-4)
+			return create_card("RSpectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
 		end
 		return {set = "Spectral", area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "spe"}
 	end
@@ -233,4 +262,35 @@ function create_UIBox_HUD()
         }}
       }}
     }}
+end
+
+
+function ease_entropy(mod)
+    G.E_MANAGER:add_event(Event({
+      trigger = 'immediate',
+      func = function()
+          local round_UI = G.HUD:get_UIE_by_ID('entropy_UI_count')
+          mod = mod or 0
+          local text = '+'
+          local col = G.C.IMPORTANT
+          if to_big(mod) < to_big(0) then
+              text = ''
+              col = G.C.RED
+          end
+          G.GAME.entropy = G.GAME.entropy + mod
+          G.HUD:recalculate()
+          attention_text({
+            text = text..tostring(math.abs(mod)),
+            scale = 1, 
+            hold = 0.7,
+            cover = round_UI.parent,
+            cover_colour = col,
+            align = 'cm',
+            })
+          --Play a chip sound
+          play_sound('timpani', 0.8)
+          play_sound('generic1')
+          return true
+      end
+    }))
 end
