@@ -48,6 +48,7 @@ local TrumpCardAllow = {
 }
 local matref = Card.set_ability
 function Card:set_ability(center, initial, delay_sprites)
+    G.GAME.entropy = G.GAME.entropy or 0
     if self.config and self.config.center and Entropy.FlipsideInversions and Entropy.FlipsideInversions[self.config.center.key]
     and pseudorandom("marked") < 0.10 and G.GAME.Marked and G.STATE == G.STATES.SHOP and (not self.area or not self.area.config.collection) then
         matref(self, G.P_CENTERS[Entropy.FlipsideInversions[self.config.center.key]], initial, delay_sprites)

@@ -56,6 +56,90 @@ SMODS.Consumable({
     }
 })
 
+SMODS.Consumable({
+    key = "quasar",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        level = 3
+    },
+    soul_rate = 0,
+    hidden = true, 
+	pos = {x=7,y=3},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card, area, copier,amt)
+        local amt = amt or 1
+        local used_consumable = copier or card
+        delay(0.4)
+        local max=0
+        local ind="High Card"
+        for i, v in pairs(G.GAME.hands) do
+            if v.played > max then
+                max = v.played
+                ind = i
+            end
+        end
+        update_hand_text(
+          { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
+          { handname = localize(ind,'poker_hands'), chips = "...", mult = "...", level = "" }
+        )
+        G.GAME.hands[ind].AscensionPower = (G.GAME.hands[ind].AscensionPower or 0) + G.GAME.hands[ind].level * amt * card.ability.level
+        delay(1.0)
+        G.E_MANAGER:add_event(Event({
+          trigger = "after",
+          delay = 0.2,
+          func = function()
+            play_sound("tarot1")
+            ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
+            ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
+            Cryptid.pulse_flame(0.01, sunlevel)
+            used_consumable:juice_up(0.8, 0.5)
+            G.E_MANAGER:add_event(Event({
+              trigger = "after",
+              blockable = false,
+              blocking = false,
+              delay = 1.2,
+              func = function()
+                ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
+                ease_colour(G.C.UI_MULT, G.C.RED, 1)
+                return true
+              end,
+            }))
+            return true
+          end,
+        }))
+        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+"..G.GAME.hands[ind].level..card.ability.level*amt })
+        delay(2.6)
+        update_hand_text(
+          { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+          { mult = 0, chips = 0, handname = "", level = "" }
+        )
+    end,
+    bulk_use = function(self,card,area,copier,amt)
+        self.use(self,card,area,copier,amt)
+    end,
+    can_use = function(self, card)
+        return true
+	end,
+    loc_vars = function(self, q, card)
+        local max=0
+        local ind="High Card"
+        for i, v in pairs(G.GAME.hands) do
+            if v.played > max then
+                max = v.played
+                ind = i
+            end
+        end
+        return {
+            vars = {
+                G.GAME.hands[ind].level * card.ability.level
+            }
+        }
+    end,
+})
+
 
 SMODS.Consumable({
     key = "pulsar",

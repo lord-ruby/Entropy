@@ -537,6 +537,15 @@ return {
 					"{C:gold}+#1#{} Ascension Power",
 				}
 			},
+			c_entr_quasar = {
+				name = "Quasar",
+				text = {
+					"Upgrade your most played",
+					"{C:legendary,E:1}poker hand{} based",
+					"on its current level",
+					"{C:gold}+#1#{} Ascension Power",
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {

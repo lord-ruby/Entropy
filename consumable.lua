@@ -8,6 +8,7 @@ Entropy.FlipsideInversions = {
     --["c_fool"] = "c_entr_fool",
     --planets
     ["c_cry_white_hole"] = "c_entr_pulsar",
+    ["c_black_hole"] = "c_entr_quasar",
     --code
     ["c_cry_crash"] = "c_entr_memory_leak",
     ["c_cry_payload"] = "c_entr_root_kit",
