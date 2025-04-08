@@ -63,7 +63,7 @@ SMODS.Back({
 					play_sound("talisman_echip", 1)
 					attention_text({
 						scale = 1.4,
-						text = "^"..tostring(number_format(0.01 + (0.995^G.GAME.entropy))).." Chips",
+						text = "^"..tostring(number_format(0.002 + (0.998^G.GAME.entropy))).." Chips",
 						hold = 2,
 						align = "cm",
 						offset = { x = 0, y = -2.7 },
@@ -99,10 +99,10 @@ end
 SMODS.Booster:take_ownership_by_kind('Spectral', {
 	create_card = function(self, card, i)
 		G.GAME.entropy = G.GAME.entropy or 0
-		if to_big(pseudorandom("doc")) < to_big(1 - 0.995^G.GAME.entropy) and G.GAME.selected_back.effect.center.original_key == "doc" then
+		if to_big(pseudorandom("doc")) < to_big(1 - 0.997^G.GAME.entropy) and G.GAME.selected_back.effect.center.original_key == "doc" then
 			ease_entropy(-G.GAME.entropy)
 			return create_card("RSpectral", G.pack_cards, nil, nil, true, true, "c_entr_beyond")
-		elseif to_big(pseudorandom("doc")) < to_big(1 - 0.99^G.GAME.entropy) and G.GAME.selected_back.effect.center.original_key == "doc" then
+		elseif to_big(pseudorandom("doc")) < to_big(1 - 0.996^G.GAME.entropy) and G.GAME.selected_back.effect.center.original_key == "doc" then
 			if to_big(G.GAME.entropy) < to_big(4) then ease_entropy(-G.GAME.entropy) else ease_entropy(-4) end
 			return create_card("RSpectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
 		end
