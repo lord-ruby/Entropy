@@ -60,7 +60,7 @@ function Card:set_ability(center, initial, delay_sprites)
         local type = (center.cost == 6 and "jumbo") or (center.cost == 8 and "mega") or "normal"
         matref(self, G.P_CENTERS["p_entr_twisted_pack_"..type], initial, delay_sprites)
     elseif self.config and self.config.center and self.config.center.set == "Booster"
-    and pseudorandom("doc") < 1-(0.975^G.GAME.entropy) and G.STATE == G.STATES.SHOP and (not self.area or not self.area.config.collection) and G.GAME.selected_back.effect.center.original_key == "doc" then
+    and to_big(pseudorandom("doc")) < to_big(1-(0.975^G.GAME.entropy)) and G.STATE == G.STATES.SHOP and (not self.area or not self.area.config.collection) and G.GAME.selected_back.effect.center.original_key == "doc" then
         local type = (center.cost == 6 and "jumbo_1") or (center.cost == 8 and "mega_1") or "normal_"..pseudorandom_element({1,2},pseudoseed("doc"))
         matref(self, G.P_CENTERS["p_spectral_"..type], initial, delay_sprites)
     else

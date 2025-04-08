@@ -2070,55 +2070,6 @@ Entropy.ExoticPlusPlus = {
     ["cry_exotic"] = true,
     ["entr_hyper_exotic"] = true
 }
-SMODS.Consumable({
-    key = "define",
-    set = "RSpectral",
-    unlocked = true,
-    discovered = true,
-    atlas = "miscc",
-    config = {
-
-    },
-    name = "entr-Define",
-    hidden = true,
-    pos = {x=4,y=4},
-    --soul_pos = { x = 2, y = 0, extra = { x = 1, y = 0 } },
-    use = function(self, card, area, copier)
-        if not G.GAME.DefineKeys then
-            G.GAME.DefineKeys = {}
-        end
-
-        G.GAME.USING_CODE = true
-		G.GAME.USING_DEFINE = true
-		G.ENTERED_CARD = ""
-		G.CHOOSE_CARD = UIBox({
-			definition = G.FUNCS.create_UIBox_define(card),
-			config = {
-				align = "cm",
-				offset = { x = 0, y = 10 },
-				major = G.ROOM_ATTACH,
-				bond = "Weak",
-				instance_type = "POPUP",
-			},
-		})
-		G.CHOOSE_CARD.alignment.offset.y = 0
-		G.ROOM.jiggle = G.ROOM.jiggle + 1
-		G.CHOOSE_CARD:align_to_major()
-    end,
-    can_use = function(self, card)
-        return GetSelectedCards() > 1 and GetSelectedCards() < 3 and GetSelectedCard() and GetSelectedCard().config.center.key ~= "j_entr_ruby"
-	end,
-    loc_vars = function(self, q, card)
-        return {
-            vars = {
-                "#",
-                colours = {
-                    HEX("ff00c4")
-                }
-            }
-        }
-    end,
-})
 
 function GetSelectedCard()
     for i, v in pairs(G) do

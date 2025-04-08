@@ -87,7 +87,7 @@ SMODS.Back({
 local use_cardref = G.FUNCS.use_card
 G.FUNCS.use_card = function(e, mute, nosave)
 	local card = e.config.ref_table
-	if card.config.center.set ~= "Booster" then
+	if card.config.center.set ~= "Booster" and G.GAME.selected_back.effect.center.original_key == "doc" then
 		if Entropy.FlipsideInversions[card.config.center.key] and not Entropy.FlipsidePureInversions[card.config.center.key] then
 			ease_entropy(4)
 		else
@@ -98,14 +98,55 @@ G.FUNCS.use_card = function(e, mute, nosave)
 end
 SMODS.Booster:take_ownership_by_kind('Spectral', {
 	create_card = function(self, card, i)
-		if pseudorandom("doc") < (1 - 0.995^G.GAME.entropy) and G.GAME.selected_back.effect.center.original_key == "doc" then
+		G.GAME.entropy = G.GAME.entropy or 0
+		if to_big(pseudorandom("doc")) < to_big(1 - 0.995^G.GAME.entropy) and G.GAME.selected_back.effect.center.original_key == "doc" then
 			ease_entropy(-G.GAME.entropy)
 			return create_card("RSpectral", G.pack_cards, nil, nil, true, true, "c_entr_beyond")
-		elseif pseudorandom("doc") < (1 - 0.99^G.GAME.entropy) and G.GAME.selected_back.effect.center.original_key == "doc" then
-			if G.GAME.entropy < 4 then ease_entropy(-G.GAME.entropy) else ease_entropy(-4) end
+		elseif to_big(pseudorandom("doc")) < to_big(1 - 0.99^G.GAME.entropy) and G.GAME.selected_back.effect.center.original_key == "doc" then
+			if to_big(G.GAME.entropy) < to_big(4) then ease_entropy(-G.GAME.entropy) else ease_entropy(-4) end
 			return create_card("RSpectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
 		end
 		return {set = "Spectral", area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "spe"}
+	end
+},true)
+SMODS.Consumable:take_ownership("cry_gateway",{
+	use = function(self, card, area, copier)
+		if G.GAME.selected_back.effect.center.original_key ~= "doc" then
+			local deletable_jokers = {}
+			for k, v in pairs(G.jokers.cards) do
+				if not v.ability.eternal then
+					deletable_jokers[#deletable_jokers + 1] = v
+				end
+			end
+			local _first_dissolve = nil
+			G.E_MANAGER:add_event(Event({
+				trigger = "before",
+				delay = 0.75,
+				func = function()
+					for k, v in pairs(deletable_jokers) do
+						if v.config.center.rarity == "cry_exotic" then
+							check_for_unlock({ type = "what_have_you_done" })
+						end
+						v:start_dissolve(nil, _first_dissolve)
+						_first_dissolve = true
+					end
+					return true
+				end,
+			}))
+		end
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.4,
+			func = function()
+				play_sound("timpani")
+				local card = create_card("Joker", G.jokers, nil, "cry_exotic", nil, nil, nil, "cry_gateway")
+				card:add_to_deck()
+				G.jokers:emplace(card)
+				card:juice_up(0.3, 0.5)
+				return true
+			end,
+		}))
+		delay(0.6)
 	end
 },true)
 local uibox_ref = create_UIBox_HUD
@@ -281,7 +322,7 @@ function ease_entropy(mod)
               text = ''
               col = G.C.RED
           end
-          G.GAME.entropy = G.GAME.entropy + mod
+          G.GAME.entropy = (G.GAME.entropy or 0) + mod
           G.HUD:recalculate()
           attention_text({
             text = text..tostring(math.abs(mod)),

@@ -528,7 +528,15 @@ return {
                     "{V:1,E:1}Legendary? {}Joker",
                     "{C:inactive}(Must have room)",
                 },
-            }
+            },
+			c_entr_pulsar = {
+				name = "Pulsar",
+				text = {
+					"Upgrade every",
+					"{C:legendary,E:1}poker hand{}",
+					"{C:gold}+#1#{} Ascension Power",
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {

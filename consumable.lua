@@ -1,64 +1,4 @@
 SMODS.Atlas { key = 'miscc', path = 'other_consumables.png', px = 71, py = 95 }
-SMODS.Consumable({
-    key = "beyond",
-    set = "RSpectral",
-    unlocked = true,
-    discovered = true,
-    atlas = "miscc",
-    config = {
-
-    },
-    name = "entr-Beyond",
-    soul_rate = 0, --probably only obtainable from flipsiding a gateway
-    hidden = true, 
-    --soul_pos = { x = 2, y = 0, extra = { x = 1, y = 0 } },
-    use = function(self, card, area, copier)
-        if not G.GAME.banned_keys then
-			G.GAME.banned_keys = {}
-		end
-        for i, v in pairs(G.jokers.cards) do
-            G.GAME.banned_keys[v.config.center.key] = true
-            G.E_MANAGER:add_event(Event({
-				trigger = "before",
-				delay = 0.75,
-				func = function()
-                    if v.config.center.rarity ~= "entr_hyper_exotic" or G.GAME.selected_back.effect.center.original_key ~= "doc" then
-                        if v.config.center.rarity == "cry_exotic" then
-                            check_for_unlock({ type = "what_have_you_done" })
-                        end
-                        v:start_dissolve(nil, _first_dissolve)
-                    end
-                    return true
-				end,
-			}))
-        end
-        G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0.4,
-			func = function()
-				play_sound("timpani")
-				local card = create_card("Joker", G.jokers, nil, "entr_hyper_exotic", nil, nil, nil, "entr_beyond")
-				card:add_to_deck()
-				G.jokers:emplace(card)
-				card:juice_up(0.3, 0.5)
-				return true
-			end,
-		}))
-		delay(0.6)
-    end,
-    can_use = function(self, card)
-        return true
-	end,
-    loc_vars = function(self, q, card)
-        return {
-            vars = {
-                colours = {
-                    {2,2,2,2}
-                }
-            }
-        }
-    end
-})
 
 Entropy.FlipsideInversions = {
     --spectrals
@@ -67,6 +7,7 @@ Entropy.FlipsideInversions = {
     --tarots
     --["c_fool"] = "c_entr_fool",
     --planets
+    ["c_cry_white_hole"] = "c_entr_pulsar",
     --code
     ["c_cry_crash"] = "c_entr_memory_leak",
     ["c_cry_payload"] = "c_entr_root_kit",
