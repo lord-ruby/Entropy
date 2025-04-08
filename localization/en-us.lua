@@ -139,10 +139,12 @@ return {
 			b_entr_doc = {
 				name = "Deck of Containment",
 				text =  {
-								"Adds an {X:dark_exition,C:white}Entropy{} meter",
-								"{C:red}Beyond{} has higher chances of showing up",
-								"the higher the meter is, Score less {C:blue}chips{} based on"
-								"how high the meter is"
+								"{C:red}Beyond{} has higher chances of showing",
+								"up and {X:blue,C:white}Chips{} are lowered",
+								"based on how high your {X:dark_edition,C:white}Entropy{} is",
+								"Gain {X:dark_edition,C:white}Entropy{} when playing",
+								"editioned/enhanced cards, secret hands",
+								"or using inverted consumables"
 							}
 			}
 		},
@@ -605,6 +607,13 @@ return {
 					"next round"
 				}
 			},
+			temporary = {
+				name = "Temporary",
+				text = {
+					"{C:red}Destroyed{} at the end",
+					"of the round"
+				}
+			},
 			entr_entropic_sticker = {
                 ['name'] = 'Entropic Sticker',
                 ['text'] = {
@@ -671,6 +680,7 @@ return {
 		labels = {
 			entr_pinned = "Invariant",
 			entr_hotfix = "Hotfixed",
+			temporary = "Temporary",
 			entr_pseudorandom = "Pseudorandom"
 		}
 	},

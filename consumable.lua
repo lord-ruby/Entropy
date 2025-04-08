@@ -27,8 +27,8 @@ SMODS.Consumable({
                             check_for_unlock({ type = "what_have_you_done" })
                         end
                         v:start_dissolve(nil, _first_dissolve)
-                        return true
                     end
+                    return true
 				end,
 			}))
         end
