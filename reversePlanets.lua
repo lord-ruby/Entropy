@@ -66,8 +66,8 @@ function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
 				* (
 					1
 					+ 0.1
-					+ to_big(0.05 * (G.GAME.sunnumber or 0))
-					+ to_big((0.1 + (0.05 * (G.GAME.sunnumber or 0))) * to_big(G.GAME.hands[hand].AscensionPower or 0))
+					+ to_big((G.GAME.sunnumber or 0))
+					+ to_big((0.1 + ((G.GAME.sunnumber or 0))) * to_big(G.GAME.hands[hand].AscensionPower or 0))
 				)
 		)
   elseif HasJoker("j_entr_helios") then
@@ -85,7 +85,7 @@ function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
 	else
 		return math.max(
 			num,
-			num * to_big((1.25 + (0.05 * (G.GAME.sunnumber or 0))) ^ to_big(G.GAME.hands[hand].AscensionPower or 0))
+			num * to_big((1.25 + ((G.GAME.sunnumber or 0))) ^ to_big(G.GAME.hands[hand].AscensionPower or 0))
 		)
   end
 end
@@ -156,7 +156,7 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
     discovered = true,
     atlas = "miscc",
     config = {
-        level = level or 1,
+        level = level or 2,
         handname = handname
     },
     cost = cost,
