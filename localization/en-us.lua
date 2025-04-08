@@ -144,7 +144,7 @@ return {
 								"based on how high your {X:dark_edition,C:white}Entropy{} is",
 								"Gain {X:dark_edition,C:white}Entropy{} when playing",
 								"editioned/enhanced cards, secret hands",
-								"or using inverted consumables"
+								"or using consumables"
 							}
 			}
 		},

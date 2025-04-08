@@ -50,5 +50,8 @@ SMODS.Consumable({
                 }
             }
         }
-    end
+    end,
+    entr_credits = {
+        art = "gudusername_53951"
+    }
 })

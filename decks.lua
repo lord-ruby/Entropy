@@ -55,7 +55,7 @@ SMODS.Back({
 				["Straight"]=true,
 				["Straight Flush"]=true,
 				["Full House"]=true
-			})[context.scoring_name] or G.GAME.hands[context.scoring_name].AscensionPower > 0 then
+			})[context.scoring_name] or (G.GAME.hands[context.scoring_name].AscensionPower or 0) > 0 then
 				ease_entropy(G.GAME.hands[context.scoring_name].level + (G.GAME.hands[context.scoring_name].AscensionPower or 0) or 1)
 			end
 			G.E_MANAGER:add_event(Event({
@@ -63,7 +63,7 @@ SMODS.Back({
 					play_sound("talisman_echip", 1)
 					attention_text({
 						scale = 1.4,
-						text = "^"..tostring(number_format(0.012 + (0.988^G.GAME.entropy))).." Chips",
+						text = "^"..tostring(number_format(0.01 + (0.995^G.GAME.entropy))).." Chips",
 						hold = 2,
 						align = "cm",
 						offset = { x = 0, y = -2.7 },
@@ -79,7 +79,7 @@ SMODS.Back({
 		end
 		if context.individual and context.cardarea == G.play then
 			if context.other_card and (context.other_card.edition or context.other_card.ability.set == "Enhanced") then
-				if context.other_card.edition and context.other_card.ability.set == "Enhanced" then ease_entropy(2) else ease_entropy(1) end
+				if context.other_card.edition and context.other_card.ability.set == "Enhanced" then ease_entropy(4) else ease_entropy(2) end
 			end
 		end
 	end
@@ -87,18 +87,22 @@ SMODS.Back({
 local use_cardref = G.FUNCS.use_card
 G.FUNCS.use_card = function(e, mute, nosave)
 	local card = e.config.ref_table
-	if Entropy.FlipsideInversions[card.config.center.key] and not Entropy.FlipsidePureInversions[card.config.center.key] then
-		ease_entropy(2)
+	if card.config.center.set ~= "Booster" then
+		if Entropy.FlipsideInversions[card.config.center.key] and not Entropy.FlipsidePureInversions[card.config.center.key] then
+			ease_entropy(4)
+		else
+			ease_entropy(2)
+		end
 	end
 	use_cardref(e, mute, nosave)
 end
 SMODS.Booster:take_ownership_by_kind('Spectral', {
 	create_card = function(self, card, i)
-		if pseudorandom("doc") < (1 - 0.99^G.GAME.entropy) and G.GAME.selected_back.effect.center.original_key == "doc" then
+		if pseudorandom("doc") < (1 - 0.995^G.GAME.entropy) and G.GAME.selected_back.effect.center.original_key == "doc" then
 			ease_entropy(-G.GAME.entropy)
 			return create_card("RSpectral", G.pack_cards, nil, nil, true, true, "c_entr_beyond")
-		elseif pseudorandom("doc") < (1 - 0.98^G.GAME.entropy) and G.GAME.selected_back.effect.center.original_key == "doc" then
-			ease_entropy(-4)
+		elseif pseudorandom("doc") < (1 - 0.99^G.GAME.entropy) and G.GAME.selected_back.effect.center.original_key == "doc" then
+			if G.GAME.entropy < 4 then ease_entropy(-G.GAME.entropy) else ease_entropy(-4) end
 			return create_card("RSpectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
 		end
 		return {set = "Spectral", area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "spe"}
