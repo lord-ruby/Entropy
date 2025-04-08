@@ -435,6 +435,9 @@ function end_round()
                             })
                         end
                     end
+                    if card.ability.temporary then
+                        card:start_dissolve()
+                    end
                     if card.ability.entr_pseudorandom then
                         card.ability.entr_pseudorandom = false
                         card.ability.cry_rigged = false
@@ -1807,12 +1810,50 @@ SMODS.Consumable({
         return #G.hand.highlighted > 0
 	end,
     loc_vars = function(self, q, card)
+        q[#q+1] = {key = "temporary", set="Other"}
     end,
     entr_credits = {
 		idea = {
 			"cassknows",
 		},
 	},
+})
+SMODS.Sticker({
+    atlas = "entr_stickers",
+    pos = { x = 3, y = 1 },
+    key = "temporary",
+    no_sticker_sheet = true,
+    prefix_config = { key = false },
+    badge_colour = HEX("FF0000"),
+    draw = function(self, card) --don't draw shine
+        local notilt = nil
+        if card.area and card.area.config.type == "deck" then
+            notilt = true
+        end
+        if not G.shared_stickers["entr_pseudorandom2"] then
+            G.shared_stickers["entr_pseudorandom2"] =
+                Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["entr_stickers"], { x = 2, y = 1 })
+        end -- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
+
+        G.shared_stickers[self.key].role.draw_major = card
+        G.shared_stickers["entr_pseudorandom2"].role.draw_major = card
+
+        G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+
+        card.hover_tilt = card.hover_tilt / 2 -- call it spaghetti, but it's what hologram does so...
+        G.shared_stickers["entr_pseudorandom2"]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+        G.shared_stickers["entr_pseudorandom2"]:draw_shader(
+            "hologram",
+            nil,
+            card.ARGS.send_to_shader,
+            notilt,
+            card.children.center
+        ) -- this doesn't really do much tbh, but the slight effect is nice
+        card.hover_tilt = card.hover_tilt * 2
+    end,
+    apply = function(self,card,val)
+        card.ability.temporary = true
+    end,
 })
 function CardArea:get_card(card, discarded_only)
     if not self.cards then return end
@@ -1830,17 +1871,6 @@ function CardArea:get_card(card, discarded_only)
         card = card or _cards[1]
     end
     return card
-end
-local draw_ref = draw_card
-function draw_card(from, to, percent, dir, sort, card, delay, mute, stay_flipped, vol, discarded_only)
-    if ((to == G.discard or to == G.deck) and (from == G.hand or from == G.play or from == G.discard))
-    and from:get_card(card) and from:get_card(card).ability and from:get_card(card).ability.temporary then
-        card = from:remove_card(card)
-        card:start_dissolve()
-        --return card
-    else
-        return draw_ref(from, to, percent, dir, sort, card, delay, mute, stay_flipped, vol, discarded_only)
-    end
 end
 function AreaExists(area)
     if area.config.type == "shop" then return G.STATE == G.STATES.SHOP end
