@@ -228,13 +228,12 @@ function CreateShopInversion(key, set, area)
 end
 function HasFlipside()
     Entropy.ReverseFlipsideInversions()
-    if G.consumeables then for i, v in pairs(G.consumeables.cards) do if v.config.center.name == "entr-Flipside" then return true end end end
-    if G.pack_cards then for i, v in pairs(G.pack_cards.cards) do if v.config.center.name == "entr-Flipside" then return true end end end
+    if G.consumeables and G.consumeables.cards then for i, v in pairs(G.consumeables.cards) do if v.config.center.name == "entr-Flipside" then return true end end end
+    if G.pack_cards and G.pack_cards.cards then for i, v in pairs(G.pack_cards.cards) do if v.config.center.name == "entr-Flipside" then return true end end end
     --ccd support
-    if G.deck then for i, v in pairs(G.deck.cards) do if v.ability.consumeable and v.ability.name == "entr-Flipside" then return true end end end
-    if G.hand then for i, v in pairs(G.hand.cards) do if v.ability.consumeable and v.ability.name == "entr-Flipside" then return true end end end
+    if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.consumeable and v.ability.name == "entr-Flipside" then return true end end end
+    if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.consumeable and v.ability.name == "entr-Flipside" then return true end end end
 end
-
 
 G.FUNCS.can_reserve_joker = function(e)
     local c1 = e.config.ref_table
