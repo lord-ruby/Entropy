@@ -52,7 +52,7 @@ SMODS.Consumable({
         }
     end,
     entr_credits = {
-        art = "gudusername_53951"
+        custom = {key="card_art", text="gudusername_53951"}
     }
 })
 

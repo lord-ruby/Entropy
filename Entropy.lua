@@ -544,7 +544,7 @@ function SMODS.create_mod_badges(obj, badges)
 			local scale_fac = calced_text_width > max_text_width and max_text_width / calced_text_width or 1
 			return scale_fac
 		end
-		if obj.entr_credits.art or obj.entr_credits.code or obj.entr_credits.idea then
+		if obj.entr_credits.art or obj.entr_credits.code or obj.entr_credits.idea or obj.entr_credits.custom then
 			local scale_fac = {}
 			local min_scale_fac = 1
 			local strings = { "Entropy" }
@@ -556,6 +556,9 @@ function SMODS.create_mod_badges(obj, badges)
 					end
 				end
 			end
+            if obj.entr_credits.custom then
+                strings[#strings + 1] = localize({ type="variable", key = obj.entr_credits.custom.key, vars = { obj.entr_credits.custom.text } })
+            end
 			for i = 1, #strings do
 				scale_fac[i] = calc_scale_fac(strings[i])
 				min_scale_fac = math.min(min_scale_fac, scale_fac[i])

@@ -692,7 +692,10 @@ return {
 			k_planet_binary_star = "Binary Star System",
 			k_planet_dyson_swarm = "Stellar Megastructure",
 
-			k_entropy = "Entropy"
+			k_entropy = "Entropy",
+		},
+		v_dictionary = {
+			card_art = "Card Art: #1#"
 		},
 		labels = {
 			entr_pinned = "Invariant",
