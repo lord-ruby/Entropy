@@ -507,7 +507,7 @@ return {
 				text = {
 					"Upgrade a random",
 					"{C:legendary,E:1}poker hand{}",
-					"{C:attention}+1{} {C:gold}Ascension Power{} for each",
+					"{C:attention}+#2#{} {C:gold}Ascension Power{} for each",
 					"{C:attention}Strange Star{} used",
 					"in this run",
 					"{C:inactive}(Currently{C:attention} #1#{C:inactive}){}",
@@ -518,7 +518,7 @@ return {
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
 					"Increase exponent of",
-					"{C:attention}Ascended{} hands by {X:gold,C:white}X#2#{}",
+					"{C:attention}Ascended{} hands by {X:gold,C:white}+X#2#{}",
 					"{C:inactive}(Currently {X:gold,C:white}X(#3#^#4#asc){C:inactive})",
 				}
 			},

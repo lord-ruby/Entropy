@@ -54,10 +54,10 @@ function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
 	end
 	if Cryptid.gameset() == "modest" then
 		-- x(1.1 + 0.05 per sol) base, each card gives + (0.1 + 0.05 per sol)
-		if not G.GAME.current_round.current_hand.cry_asc_num then
+		if not G.GAME.hands[hand].AscensionPower then
 			return num
 		end
-		if G.GAME.current_round.current_hand.cry_asc_num <= 0 then
+		if to_big(G.GAME.hands[hand].AscensionPower) <= to_big(0) then
 			return num
 		end
 		return math.max(
@@ -67,7 +67,7 @@ function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
 					1
 					+ 0.1
 					+ to_big((G.GAME.sunnumber or 0))
-					+ to_big((0.1 + ((G.GAME.sunnumber or 0))) * to_big(G.GAME.hands[hand].AscensionPower or 0))
+					+ to_big((0.1 + ((G.GAME.sunnumber or 0))) * to_big(G.GAME.hands[hand].AscensionPower or 0) * (G.GAME.nemesisnumber or 1))
 				)
 		)
   elseif HasJoker("j_entr_helios") then
@@ -80,12 +80,12 @@ function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
 			num
 				* to_big(
 					(1.75 + ((G.GAME.sunnumber or 0)))):tetrate(
-						to_big(G.GAME.hands[hand].AscensionPower * curr))
+						to_big((G.GAME.hands[hand].AscensionPower or 0) * curr * (G.GAME.nemesisnumber or 1)))
 		)
 	else
 		return math.max(
 			num,
-			num * to_big((1.25 + ((G.GAME.sunnumber or 0))) ^ to_big(G.GAME.hands[hand].AscensionPower or 0))
+			num * to_big((1.25 + ((G.GAME.sunnumber or 0))) ^ to_big((G.GAME.hands[hand].AscensionPower or 0)* (G.GAME.nemesisnumber or 1)))
 		)
   end
 end
@@ -133,7 +133,7 @@ function Entropy.ReversePlanetUse(handname, card, amt)
   delay(0.4)
   update_hand_text(
     { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-    { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = number_format(G.GAME.hands[handname].level, 1000000) }
+    { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = number_format(GAME.hands[handname].AscensionPower + G.GAME.hands[handname].level, 1000000) }
   )
   G.GAME.hands[handname].AscensionPower = (G.GAME.hands[handname].AscensionPower or 0) + card.ability.level*amt
   G.GAME.hands[handname].visible = true
@@ -269,7 +269,8 @@ Entropy.ReversePlanets = {
   loc_vars = function(self,q,card) 
     return {
       vars = {
-        G.GAME.strange_star or 0
+        G.GAME.strange_star or 0,
+        card.ability.level
       }
     }
   end,
@@ -555,7 +556,7 @@ function Entropy.StrangeSingle(self, card, area, copier,num)
   delay(0.4)
   update_hand_text(
     { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-    { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = number_format(G.GAME.hands[handname].level, 1000000) }
+    { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = number_format(.GAME.hands[handname].AscensionPower + G.GAME.hands[handname].level, 1000000) }
   )
   G.GAME.hands[handname].AscensionPower = (G.GAME.hands[handname].AscensionPower or 0) + G.GAME.strange_star*(num or 1)
   G.GAME.hands[handname].visible = true
@@ -583,7 +584,7 @@ function Entropy.StrangeSingle(self, card, area, copier,num)
       return true
     end,
   }))
-  update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = to_big(G.GAME.hands[handname].AscensionPower +G.GAME.strange_star*(num or 1)) })
+  update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = to_big(G.GAME.hands[handname].AscensionPower + G.GAME.hands[handname].level) })
   delay(2.6)
   update_hand_text(
     { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
