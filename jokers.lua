@@ -582,12 +582,12 @@ local card = create_card(v.type, area, nil, nil, nil, nil, nil, 'sho')      loca
         end
       end
         G.GAME.spectral_rate = G.GAME.spectral_rate or 0
-        local total_rate = G.GAME.joker_rate + G.GAME.playing_card_rate
+        local total_rate = (G.GAME.joker_rate + G.GAME.playing_card_rate) or 0
         for _,v in ipairs(SMODS.ConsumableType.ctype_buffer) do
             if not (v:lower() == 'tarot' or v:lower() == 'planet') then
-                total_rate = total_rate + G.GAME[v:lower()..'_rate']
+                total_rate = total_rate + (G.GAME[v:lower()..'_rate'] or 0)
             else
-                total_rate = total_rate + ( G.GAME[v:lower()..'_rate'] * (G.GAME.cry_percrate[v:lower()]/100) )
+                total_rate = total_rate + ((G.GAME[v:lower()..'_rate'] or 0) * (G.GAME.cry_percrate[v:lower()]/100) )
             end
         end
         local polled_rate = pseudorandom(pseudoseed('cdt'..G.GAME.round_resets.ante))*total_rate
