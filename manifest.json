@@ -10,7 +10,9 @@
     "priority": 666666666666666666666,
     "badge_colour": "FE0001",
     "dependencies": [
-        "Steamodded"
+        "Steamodded",
+        "Cryptid",
+        "Talisman"
     ],
     "conflicts": [
         "CelesteCardCollection"
