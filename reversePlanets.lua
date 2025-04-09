@@ -133,7 +133,7 @@ function Entropy.ReversePlanetUse(handname, card, amt)
   delay(0.4)
   update_hand_text(
     { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-    { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = number_format(G.GAME.hands[handname].AscensionPower + G.GAME.hands[handname].level, 1000000) }
+    { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = number_format(G.GAME.hands[handname].AscensionPower or 0 + G.GAME.hands[handname].level or 0, 1000000) }
   )
   G.GAME.hands[handname].AscensionPower = (G.GAME.hands[handname].AscensionPower or 0) + card.ability.level*amt
   G.GAME.hands[handname].visible = true
@@ -556,7 +556,7 @@ function Entropy.StrangeSingle(self, card, area, copier,num)
   delay(0.4)
   update_hand_text(
     { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-    { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = number_format(G.GAME.hands[handname].AscensionPower + G.GAME.hands[handname].level, 1000000) }
+    { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = number_format(G.GAME.hands[handname].AscensionPower or 0 + G.GAME.hands[handname].level or 0, 1000000) }
   )
   G.GAME.hands[handname].AscensionPower = (G.GAME.hands[handname].AscensionPower or 0) + G.GAME.strange_star*(num or 1)
   G.GAME.hands[handname].visible = true
