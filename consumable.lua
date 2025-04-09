@@ -177,7 +177,6 @@ function HasFlipside()
     if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.consumeable and v.ability.name == "entr-Flipside" then return true end end end
 end
 
-
 G.FUNCS.can_reserve_joker = function(e)
     local c1 = e.config.ref_table
     if

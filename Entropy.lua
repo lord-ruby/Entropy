@@ -655,8 +655,6 @@ function Controller:key_press_update(key, dt)
 		G.CHOOSE_CARD:align_to_major()
 	end
 end
-
-
 SMODS.Sound({
 	key = "music_zenith",
 	path = "music_zenith.ogg",
