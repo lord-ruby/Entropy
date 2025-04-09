@@ -110,7 +110,8 @@ return {
 					"and a card with +1 rank is drawn to the {C:attention}hand{}",
 					"{C:inactive}(Currently: {}{X:dark_edition,C:white}^#2#{} {C:inactive}Chips){}"
 				}
-			}
+			},
+
 		},
 		Blind = {
 			bl_entr_red = {
@@ -520,6 +521,61 @@ return {
 					"{C:attention}Ascended{} hands by {X:gold,C:white}X#2#{}",
 					"{C:inactive}(Currently {X:gold,C:white}X(#3#^#4#asc){C:inactive})",
 				}
+			},
+			c_entr_Sydan = {
+				name = "Paras",
+				text = {
+					"({V:1}lvl.#4#{}{C:gold}#8#{})({V:2}lvl.#5#{}{C:gold}#9#{})({V:3}lvl.#6#{}{C:gold}#10#{})",
+					"Level up",
+					"{C:attention}#1#{},",
+					"{C:attention}#2#{},",
+					"and {C:attention}#3#{}",
+					"{C:gold}+#7#{} Ascension Power"
+				},
+			},
+			c_entr_Timantti = {
+				name = "Jatka",
+				text = {
+					"({V:1}lvl.#4#{}{C:gold}#8#{})({V:2}lvl.#5#{}{C:gold}#9#{})({V:3}lvl.#6#{}{C:gold}#10#{})",
+					"Level up",
+					"{C:attention}#1#{},",
+					"{C:attention}#2#{},",
+					"and {C:attention}#3#{}",
+					"{C:gold}+#7#{} Ascension Power"
+				},
+			},
+			c_entr_Klubi = {
+				name = "Roua",
+				text = {
+					"({V:1}lvl.#4#{}{C:gold}#8#{})({V:2}lvl.#5#{}{C:gold}#9#{})({V:3}lvl.#6#{}{C:gold}#10#{})",
+					"Level up",
+					"{C:attention}#1#{},",
+					"{C:attention}#2#{},",
+					"and {C:attention}#3#{}",
+					"{C:gold}+#7#{} Ascension Power"
+				},
+			},
+			c_entr_Lapio = {
+				name = "Assa",
+				text = {
+					"({V:1}lvl.#4#{}{C:gold}#8#{})({V:2}lvl.#5#{}{C:gold}#9#{})({V:3}lvl.#6#{}{C:gold}#10#{})",
+					"Level up",
+					"{C:attention}#1#{},",
+					"{C:attention}#2#{},",
+					"and {C:attention}#3#{}",
+					"{C:gold}+#7#{} Ascension Power"
+				},
+			},
+			c_entr_Kaikki = {
+				name = "Kivi",
+				text = {
+					"({V:1}lvl.#4#{}{C:gold}#8#{})({V:2}lvl.#5#{}{C:gold}#9#{})({V:3}lvl.#6#{}{C:gold}#10#{})",
+					"Level up",
+					"{C:attention}#1#{},",
+					"{C:attention}#2#{},",
+					"and {C:attention}#3#{}",
+					"{C:gold}+#7#{} Ascension Power"
+				},
 			},
 		},
 		RSpectral = {
