@@ -238,12 +238,68 @@ Entropy.ReversePlanets = {
     }
   end,
   func = function(self,card,area,copier,number)
-    if number and number ~= 1 then
-      Entropy.StrangeBulk(self,card,area,copier,number)
-    else
-      Entropy.StrangeSingle(self,card,area,copier)
-    end
+    Entropy.StrangeSingle(self,card,area,copier,number)
   end
+  },
+  {name="", key="sunplanet",sprite_pos={x=10,y=2},prefix = "c_cry_", config = {extra = 0.1},
+    loc_vars = function(self,q,card) 
+      local levelone = (G.GAME.nemesislevel and G.GAME.nemesislevel or 0) + 1
+      local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+      if levelone == 1 then
+        planetcolourone = G.C.UI.TEXT_DARK
+      end
+      return {
+        vars = {
+          (G.GAME.nemesislevel or 0) + 1,
+          card.ability.extra or 0.1,
+          (G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1.25,
+          (G.GAME.nemesisnumber and G.GAME.nemesisnumber > 0 and (G.GAME.nemesisnumber+1) ) or "",
+          colours = { planetcolourone },
+        },
+      }
+    end,
+    func = function(self,card,area,copier,number)
+      number = number or 1
+      local used_consumable = copier or card
+      local nemesislevel = (G.GAME.nemesislevel and G.GAME.nemesislevel or 0) + number
+      G.GAME.nemesislevel = (G.GAME.nemesislevel or 0) + number
+      delay(0.4)
+      update_hand_text(
+        { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
+        { handname = localize("cry_asc_hands"), chips = "...", mult = "...", level = to_big(nemesislevel) }
+      )
+      delay(1.0)
+      G.E_MANAGER:add_event(Event({
+        trigger = "after",
+        delay = 0.2,
+        func = function()
+          play_sound("tarot1")
+          ease_colour(G.C.UI_CHIPS, copy_table(HEX("FF0000")), 0.1)
+          ease_colour(G.C.UI_MULT, copy_table(HEX("FF0000")), 0.1)
+          Cryptid.pulse_flame(0.01, nemesislevel)
+          used_consumable:juice_up(0.8, 0.5)
+          G.E_MANAGER:add_event(Event({
+            trigger = "after",
+            blockable = false,
+            blocking = false,
+            delay = 1.2,
+            func = function()
+              ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
+              ease_colour(G.C.UI_MULT, G.C.RED, 1)
+              return true
+            end,
+          }))
+          return true
+        end,
+      }))
+      update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = to_big(nemesislevel + 1) })
+      delay(2.6)
+      G.GAME.nemesisnumber = (G.GAME.nemesisnumber or 0) + card.ability.extra * number
+      update_hand_text(
+        { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+        { mult = 0, chips = 0, handname = "", level = "" }
+      )
+    end
   },
 }
 function Entropy.RegisterReversePlanets()

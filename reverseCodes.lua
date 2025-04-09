@@ -1987,7 +1987,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
     if G.GAME.hands[text] and G.GAME.hands[text].AscensionPower then
 		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num + G.GAME.hands[text].AscensionPower
 	end
-
+    G.GAME.current_round.current_hand.cry_asc_num = (G.GAME.current_round.current_hand.cry_asc_num or 0) * (1+(G.GAME.nemesisnumber or 0))
 	G.GAME.current_round.current_hand.cry_asc_num_text = (
 		G.GAME.current_round.current_hand.cry_asc_num and ((type(G.GAME.current_round.current_hand.cry_asc_num) == "table" and G.GAME.current_round.current_hand.cry_asc_num:gt(to_big(0)) or G.GAME.current_round.current_hand.cry_asc_num > 0))
 	)
