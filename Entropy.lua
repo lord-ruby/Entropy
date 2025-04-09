@@ -15,6 +15,7 @@ local i = {
     "hidden",
     "fixes",
     "stake",
+    "tags",
     "compat/loader"
     --"glop"
 }

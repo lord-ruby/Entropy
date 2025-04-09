@@ -8,7 +8,7 @@ function create_UIBox_current_hand_row(handname, simple)
           {n=G.UIT.R, config={align = "cm", padding = 0.05, r = 0.1, colour = darken(G.C.JOKER_GREY, 0.1), emboss = 0.05, hover = true, force_focus = true, on_demand_tooltip = {text = localize(handname, 'poker_hand_descriptions'), filler = {func = create_UIBox_hand_tip, args = handname}}}, nodes={
             {n=G.UIT.C, config={align = "cl", padding = 0, minw = 5}, nodes={
                 {n=G.UIT.C, config={align = "cm", padding = 0.05, colour = G.C.BLACK,r = 0.1}, nodes={
-                    {n=G.UIT.C, config={align = "cm", padding = 0.01, r = 0.1, colour = G.C.UI.TEXT_LIGHT, minw = 1.1}, nodes={
+                    {n=G.UIT.C, config={align = "cm", padding = 0.01, r = 0.1, colour = to_big(G.GAME.hands[handname].level) < to_big(2) and G.C.UI.TEXT_LIGHT or G.C.HAND_LEVELS[math.min(to_big(G.GAME.hands[handname].level):to_number(), 7)], minw = 1.1}, nodes={
                       {n=G.UIT.T, config={text = localize('k_level_prefix')..number_format(G.GAME.hands[handname].level, 1000000), scale = 0.45, colour = G.C.UI.TEXT_DARK}},
                     }},
                     {n=G.UIT.T, config={text = "+", scale = 0.45, colour = G.C.GOLD}},
@@ -229,6 +229,22 @@ Entropy.ReversePlanets = {
   {name="cry_WholeDeck", key="universe",sprite_pos={x=7,y=2},prefix = "c_cry_",set_badges = function(self, card, badges)
     badges[1] = create_badge(localize("k_planet_multiverse"), get_type_colour(self or card.config, card), nil, 1.2)
   end},
+  {name="", key="nstar",sprite_pos={x=9,y=2},prefix = "c_cry_",
+  loc_vars = function(self,q,card) 
+    return {
+      vars = {
+        G.GAME.strange_star or 0
+      }
+    }
+  end,
+  func = function(self,card,area,copier,number)
+    if number and number ~= 1 then
+      Entropy.StrangeBulk(self,card,area,copier,number)
+    else
+      Entropy.StrangeSingle(self,card,area,copier)
+    end
+  end
+  },
 }
 function Entropy.RegisterReversePlanets()
   Entropy.RPlanetLocs = {}
@@ -429,4 +445,51 @@ function Entropy.StarLuaBulk(self,card,area,copier,number)
       end,
     }))
   end
+end
+
+function Entropy.StrangeSingle(self, card, area, copier,num)
+  local used_consumable = copier or card
+  --Get amount of Neutron stars use this run or set to 0 if nil
+  G.GAME.strange_star = G.GAME.strange_star or 0
+
+  --Add +1 to amount of neutron stars used this run
+  G.GAME.strange_star = G.GAME.strange_star + 1
+  local handname = Cryptid.get_random_hand(nil, "sstar" .. G.GAME.round_resets.ante) --Random poker hand
+  delay(0.4)
+  update_hand_text(
+    { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
+    { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = number_format(G.GAME.hands[handname].level, 1000000) }
+  )
+  G.GAME.hands[handname].AscensionPower = (G.GAME.hands[handname].AscensionPower or 0) + G.GAME.strange_star*(num or 1)
+  G.GAME.hands[handname].visible = true
+  delay(1.0)
+  G.E_MANAGER:add_event(Event({
+    trigger = "after",
+    delay = 0.2,
+    func = function()
+      play_sound("tarot1")
+      ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
+      ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
+      Cryptid.pulse_flame(0.01, sunlevel)
+      used_consumable:juice_up(0.8, 0.5)
+      G.E_MANAGER:add_event(Event({
+        trigger = "after",
+        blockable = false,
+        blocking = false,
+        delay = 1.2,
+        func = function()
+          ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
+          ease_colour(G.C.UI_MULT, G.C.RED, 1)
+          return true
+        end,
+      }))
+      return true
+    end,
+  }))
+  update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = to_big(G.GAME.hands[handname].AscensionPower +G.GAME.strange_star*(num or 1)) })
+  delay(2.6)
+  update_hand_text(
+    { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+    { mult = 0, chips = 0, handname = "", level = "" }
+  )
 end

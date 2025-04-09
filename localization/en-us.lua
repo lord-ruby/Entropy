@@ -437,7 +437,7 @@ return {
 				}
 			},
 			c_entr_ceres = {
-				name = "RW Cephei",
+				name = "Procyon B",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
 					"{C:attention}#3#",
@@ -445,7 +445,7 @@ return {
 				}
 			},
 			c_entr_planet_x = {
-				name = "RW Cygni",
+				name = "Tauri",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
 					"{C:attention}#3#",
@@ -453,7 +453,7 @@ return {
 				}
 			},
 			c_entr_eris = {
-				name = "VX Sagittarii",
+				name = "Sirius B",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
 					"{C:attention}#3#",
@@ -499,6 +499,26 @@ return {
 					"upgrade every",
 					"{C:legendary,E:1}poker hand{}",
 					"{C:gold}+#3#{} Ascension Power",
+				}
+			},
+			c_entr_nstar = {
+				name = "Strange Star",
+				text = {
+					"Upgrade a random",
+					"{C:legendary,E:1}poker hand{}",
+					"{C:attention}+1{} {C:gold}Ascension Power{} for each",
+					"{C:attention}Strange Star{} used",
+					"in this run",
+					"{C:inactive}(Currently{C:attention} #1#{C:inactive}){}",
+				}
+			},
+			c_entr_sunplanet = {
+				name = "Nemesis",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
+					"Increase exponent of",
+					"{C:attention}Ascended{} hands by {X:gold,C:white}X#2#{}",
+					"{C:inactive}(Currently {X:gold,C:white}X(#3#^#4#asc){C:inactive})",
 				}
 			},
 		},
@@ -566,7 +586,11 @@ return {
 				},
 			},
 		},
-		Tag = {
+		Tag= {
+			tag_entr_dog = {
+				name = "Dog Tag",
+				text = { "Woof.", "{C:inactive}Level {C:dark_edition}#1#" },
+			},
 		},
 		Other = {
 			inversion_allowed = {
