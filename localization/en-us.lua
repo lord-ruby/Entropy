@@ -110,7 +110,8 @@ return {
 					"and a card with +1 rank is drawn to the {C:attention}hand{}",
 					"{C:inactive}(Currently: {}{X:dark_edition,C:white}^#2#{} {C:inactive}Chips){}"
 				}
-			}
+			},
+
 		},
 		Blind = {
 			bl_entr_red = {
@@ -135,6 +136,17 @@ return {
 								"{C:attention}Joker{}, {C:attention}booster pack{},",
 								"{C:attention}voucher{}, or {C:attention}consumable{}"
 							}
+			},
+			b_entr_doc = {
+				name = "Deck of Containment",
+				text =  {
+								"{C:red}Beyond{} has higher chances of showing",
+								"up and {X:blue,C:white}Chips{} are lowered",
+								"based on how high your {X:dark_edition,C:white}Entropy{} is",
+								"Gain {X:dark_edition,C:white}Entropy{} when playing",
+								"editioned/enhanced cards, secret hands",
+								"or using consumables"
+							}
 			}
 		},
 		RTarot = {
@@ -152,7 +164,7 @@ return {
 				name = "Marked Cards",
 				text = {
 					"{C:red}Inverted{} consumables have a",
-					"fixed {C:red}25%{} chance to replace",
+					"fixed {C:red}10%{} chance to replace",
 					"their regular counterparts"
 				},
 			},
@@ -167,7 +179,7 @@ return {
 				name = "Supersede",
 				text = {
 					"{C:red}Twisted{} booster packs have a",
-					"fixed {C:red}25%{} chance to replace",
+					"fixed {C:red}20%{} chance to replace",
 					"any other booster pack in the shop"
 				},
 			},
@@ -352,7 +364,220 @@ return {
 				}
 			}
 		},
-		RPlanet = {},
+		RPlanet = {
+			c_entr_pluto = {
+				name = "Regulus",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_mercury = {
+				name = "CZ Hydrae",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_venus = {
+				name = "Vega",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_earth = {
+				name = "Polaris",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_mars = {
+				name = "Rho Cassiopeiae",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_jupiter = {
+				name = "UU Pegasi",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_saturn = {
+				name = "RS Persei",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_uranus = {
+				name = "RT Ophiuchi",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_neptune = {
+				name = "V349 Carinae",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_ceres = {
+				name = "Procyon B",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_planet_x = {
+				name = "Tauri",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_eris = {
+				name = "Sirius B",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_universe = {
+				name = Cryptid_config.family_mode and "Multiverse" or "The Multiverse In Its Fucking Entirety",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_marsmoons = {
+				name = "Mizar & Alcor",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_void = {
+				name = "Dark Matter",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_asteroidbelt = {
+				name = "Dyson Swarm",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_planetlua = {
+				name = "Star.lua",
+				text = {
+					"{C:green}#1# in #2#{} chance to",
+					"upgrade every",
+					"{C:legendary,E:1}poker hand{}",
+					"{C:gold}+#3#{} Ascension Power",
+				}
+			},
+			c_entr_nstar = {
+				name = "Strange Star",
+				text = {
+					"Upgrade a random",
+					"{C:legendary,E:1}poker hand{}",
+					"{C:attention}+#2#{} {C:gold}Ascension Power{} for each",
+					"{C:attention}Strange Star{} used",
+					"in this run",
+					"{C:inactive}(Currently{C:attention} #1#{C:inactive}){}",
+				}
+			},
+			c_entr_sunplanet = {
+				name = "Nemesis",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
+					"Increase exponent of",
+					"{C:attention}Ascended{} hands by {X:gold,C:white}+X#2#{}",
+					"{C:inactive}(Currently {X:gold,C:white}X(#3#^#4#asc){C:inactive})",
+				}
+			},
+			c_entr_Sydan = {
+				name = "Paras",
+				text = {
+					"({V:1}lvl.#4#{}{C:gold}#8#{})({V:2}lvl.#5#{}{C:gold}#9#{})({V:3}lvl.#6#{}{C:gold}#10#{})",
+					"Level up",
+					"{C:attention}#1#{},",
+					"{C:attention}#2#{},",
+					"and {C:attention}#3#{}",
+					"{C:gold}+#7#{} Ascension Power"
+				},
+			},
+			c_entr_Timantti = {
+				name = "Jatka",
+				text = {
+					"({V:1}lvl.#4#{}{C:gold}#8#{})({V:2}lvl.#5#{}{C:gold}#9#{})({V:3}lvl.#6#{}{C:gold}#10#{})",
+					"Level up",
+					"{C:attention}#1#{},",
+					"{C:attention}#2#{},",
+					"and {C:attention}#3#{}",
+					"{C:gold}+#7#{} Ascension Power"
+				},
+			},
+			c_entr_Klubi = {
+				name = "Roua",
+				text = {
+					"({V:1}lvl.#4#{}{C:gold}#8#{})({V:2}lvl.#5#{}{C:gold}#9#{})({V:3}lvl.#6#{}{C:gold}#10#{})",
+					"Level up",
+					"{C:attention}#1#{},",
+					"{C:attention}#2#{},",
+					"and {C:attention}#3#{}",
+					"{C:gold}+#7#{} Ascension Power"
+				},
+			},
+			c_entr_Lapio = {
+				name = "Assa",
+				text = {
+					"({V:1}lvl.#4#{}{C:gold}#8#{})({V:2}lvl.#5#{}{C:gold}#9#{})({V:3}lvl.#6#{}{C:gold}#10#{})",
+					"Level up",
+					"{C:attention}#1#{},",
+					"{C:attention}#2#{},",
+					"and {C:attention}#3#{}",
+					"{C:gold}+#7#{} Ascension Power"
+				},
+			},
+			c_entr_Kaikki = {
+				name = "Kivi",
+				text = {
+					"({V:1}lvl.#4#{}{C:gold}#8#{})({V:2}lvl.#5#{}{C:gold}#9#{})({V:3}lvl.#6#{}{C:gold}#10#{})",
+					"Level up",
+					"{C:attention}#1#{},",
+					"{C:attention}#2#{},",
+					"and {C:attention}#3#{}",
+					"{C:gold}+#7#{} Ascension Power"
+				},
+			},
+		},
 		RSpectral = {
 			c_entr_define = {
 				name = "#1#define",
@@ -379,7 +604,24 @@ return {
                     "{V:1,E:1}Legendary? {}Joker",
                     "{C:inactive}(Must have room)",
                 },
-            }
+            },
+			c_entr_pulsar = {
+				name = "Pulsar",
+				text = {
+					"Upgrade every",
+					"{C:legendary,E:1}poker hand{}",
+					"{C:gold}+#1#{} Ascension Power",
+				}
+			},
+			c_entr_quasar = {
+				name = "Quasar",
+				text = {
+					"Upgrade your most played",
+					"{C:legendary,E:1}poker hand{} based",
+					"on its current level",
+					"{C:gold}+#1#{} Ascension Power",
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {
@@ -400,7 +642,11 @@ return {
 				},
 			},
 		},
-		Tag = {
+		Tag= {
+			tag_entr_dog = {
+				name = "Dog Tag",
+				text = { "Woof.", "{C:inactive}Level {C:dark_edition}#1#" },
+			},
 		},
 		Other = {
 			inversion_allowed = {
@@ -458,6 +704,13 @@ return {
 					"next round"
 				}
 			},
+			temporary = {
+				name = "Temporary",
+				text = {
+					"{C:red}Destroyed{} at the end",
+					"of the round"
+				}
+			},
 			entr_entropic_sticker = {
                 ['name'] = 'Entropic Sticker',
                 ['text'] = {
@@ -513,12 +766,21 @@ return {
 			k_entr_faster_ante_scaling = "Scale blind scores quicker if you have an Entropic joker",
 			k_entr_entropic_music = "Entropic Jokers (Joker in Greek by gemstonez)",
 
-			k_rplanet = "Star?",
+			k_rplanet = "Star",
 			b_rplanet_cards = "Star Cards?",	
+			k_planet_multiverse = Cryptid_config.family_mode and "Multiverse" or "The Actual Fucking Multiverse",
+			k_planet_binary_star = "Binary Star System",
+			k_planet_dyson_swarm = "Stellar Megastructure",
+
+			k_entropy = "Entropy",
+		},
+		v_dictionary = {
+			card_art = "Card Art: #1#"
 		},
 		labels = {
 			entr_pinned = "Invariant",
 			entr_hotfix = "Hotfixed",
+			temporary = "Temporary",
 			entr_pseudorandom = "Pseudorandom"
 		}
 	},

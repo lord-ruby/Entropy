@@ -42,7 +42,20 @@ function SMODS.injectItems()
     LoadCompatibilities()
     Deobfuscate()
     loadmodsref()
-    for i, v in pairs(Entropy.FlipsideInversions) do Entropy.FlipsideInversions[v] = i end
+    Entropy.FlipsidePureInversions = copy_table(Entropy.FlipsideInversions)
+    SMODS.ObjectType({
+        key = "Twisted",
+        default = "j_entr_memory_leak",
+        cards = {},
+        inject = function(self)
+            SMODS.ObjectType.inject(self)
+            for i, v in pairs(Entropy.FlipsidePureInversions) do
+                self:inject_card(G.P_CENTERS[v])
+            end
+        end,
+    })
+    SMODS.ObjectTypes.Twisted:inject()
+    Entropy.ReverseFlipsideInversions()
 end
 
 

@@ -139,7 +139,8 @@ Entropy.BoosterSets = {
     ["Tarot"] = "p_arcana_mega_1",
     ["Planet"] = "p_celestial_mega_1",
     ["Code"] = "p_cry_code_mega_1",
-    ["RCode"] = "p_entr_twisted_pack_mega"
+    ["RCode"] = "p_entr_twisted_pack_mega",
+    ["RPlanet"] = "p_entr_twisted_pack_mega",
 }
 
 SMODS.Joker({

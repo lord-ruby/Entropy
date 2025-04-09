@@ -461,6 +461,7 @@ local pokerhandinforef = G.FUNCS.get_poker_hand_info
 function G.FUNCS.get_poker_hand_info(_cards)
     if HasJoker("j_entr_helios") then G.GAME.used_vouchers.v_cry_hyperspacetether = true end
     local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
+    
     return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
 

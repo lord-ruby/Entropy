@@ -18,6 +18,7 @@ SMODS.Consumable({
     config = {
 
     },
+    no_collection = true,
     pos = {x=0,y=1},
     use = function(self, card, area, copier)
         error("\nx.x\nAw Snap!\nSomething went wrong whilst displaying this webpage.\n\nLearn More.")
@@ -433,6 +434,9 @@ function end_round()
                                 cry_glitched = true,
                             })
                         end
+                    end
+                    if card.ability.temporary then
+                        card:start_dissolve()
                     end
                     if card.ability.entr_pseudorandom then
                         card.ability.entr_pseudorandom = false
@@ -1806,12 +1810,50 @@ SMODS.Consumable({
         return #G.hand.highlighted > 0
 	end,
     loc_vars = function(self, q, card)
+        q[#q+1] = {key = "temporary", set="Other"}
     end,
     entr_credits = {
 		idea = {
 			"cassknows",
 		},
 	},
+})
+SMODS.Sticker({
+    atlas = "entr_stickers",
+    pos = { x = 3, y = 1 },
+    key = "temporary",
+    no_sticker_sheet = true,
+    prefix_config = { key = false },
+    badge_colour = HEX("FF0000"),
+    draw = function(self, card) --don't draw shine
+        local notilt = nil
+        if card.area and card.area.config.type == "deck" then
+            notilt = true
+        end
+        if not G.shared_stickers["entr_temporary2"] then
+            G.shared_stickers["entr_temporary2"] =
+                Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["entr_stickers"], { x = 2, y = 1 })
+        end -- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
+
+        G.shared_stickers[self.key].role.draw_major = card
+        G.shared_stickers["entr_temporary2"].role.draw_major = card
+
+        G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+
+        card.hover_tilt = card.hover_tilt / 2 -- call it spaghetti, but it's what hologram does so...
+        G.shared_stickers["entr_temporary2"]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+        G.shared_stickers["entr_temporary2"]:draw_shader(
+            "hologram",
+            nil,
+            card.ARGS.send_to_shader,
+            notilt,
+            card.children.center
+        ) -- this doesn't really do much tbh, but the slight effect is nice
+        card.hover_tilt = card.hover_tilt * 2
+    end,
+    apply = function(self,card,val)
+        card.ability.temporary = true
+    end,
 })
 function CardArea:get_card(card, discarded_only)
     if not self.cards then return end
@@ -1829,17 +1871,6 @@ function CardArea:get_card(card, discarded_only)
         card = card or _cards[1]
     end
     return card
-end
-local draw_ref = draw_card
-function draw_card(from, to, percent, dir, sort, card, delay, mute, stay_flipped, vol, discarded_only)
-    if ((to == G.discard or to == G.deck) and (from == G.hand or from == G.play or from == G.discard))
-    and from:get_card(card) and from:get_card(card).ability and from:get_card(card).ability.temporary then
-        card = from:remove_card(card)
-        card:start_dissolve()
-        --return card
-    else
-        return draw_ref(from, to, percent, dir, sort, card, delay, mute, stay_flipped, vol, discarded_only)
-    end
 end
 function AreaExists(area)
     if area.config.type == "shop" then return G.STATE == G.STATES.SHOP end
@@ -1956,7 +1987,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
     if G.GAME.hands[text] and G.GAME.hands[text].AscensionPower then
 		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num + G.GAME.hands[text].AscensionPower
 	end
-
+    G.GAME.current_round.current_hand.cry_asc_num = (G.GAME.current_round.current_hand.cry_asc_num or 0) * (1+(G.GAME.nemesisnumber or 0))
 	G.GAME.current_round.current_hand.cry_asc_num_text = (
 		G.GAME.current_round.current_hand.cry_asc_num and ((type(G.GAME.current_round.current_hand.cry_asc_num) == "table" and G.GAME.current_round.current_hand.cry_asc_num:gt(to_big(0)) or G.GAME.current_round.current_hand.cry_asc_num > 0))
 	)
@@ -2039,55 +2070,6 @@ Entropy.ExoticPlusPlus = {
     ["cry_exotic"] = true,
     ["entr_hyper_exotic"] = true
 }
-SMODS.Consumable({
-    key = "define",
-    set = "RSpectral",
-    unlocked = true,
-    discovered = true,
-    atlas = "miscc",
-    config = {
-
-    },
-    name = "entr-Define",
-    hidden = true,
-    pos = {x=4,y=4},
-    --soul_pos = { x = 2, y = 0, extra = { x = 1, y = 0 } },
-    use = function(self, card, area, copier)
-        if not G.GAME.DefineKeys then
-            G.GAME.DefineKeys = {}
-        end
-
-        G.GAME.USING_CODE = true
-		G.GAME.USING_DEFINE = true
-		G.ENTERED_CARD = ""
-		G.CHOOSE_CARD = UIBox({
-			definition = G.FUNCS.create_UIBox_define(card),
-			config = {
-				align = "cm",
-				offset = { x = 0, y = 10 },
-				major = G.ROOM_ATTACH,
-				bond = "Weak",
-				instance_type = "POPUP",
-			},
-		})
-		G.CHOOSE_CARD.alignment.offset.y = 0
-		G.ROOM.jiggle = G.ROOM.jiggle + 1
-		G.CHOOSE_CARD:align_to_major()
-    end,
-    can_use = function(self, card)
-        return GetSelectedCards() > 1 and GetSelectedCards() < 3 and GetSelectedCard() and GetSelectedCard().config.center.key ~= "j_entr_ruby"
-	end,
-    loc_vars = function(self, q, card)
-        return {
-            vars = {
-                "#",
-                colours = {
-                    HEX("ff00c4")
-                }
-            }
-        }
-    end,
-})
 
 function GetSelectedCard()
     for i, v in pairs(G) do

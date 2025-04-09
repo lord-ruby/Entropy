@@ -361,3 +361,9 @@ function GetArrowString(arrows, size)
     for i = 1, arrows do str = str.."^" end
     return str..size
 end
+local load_ref = Blind.load
+function Blind:load(blindTable)
+    if blindTable then
+        load_ref(self, blindTable)
+    end 
+end
