@@ -274,8 +274,6 @@ function Game:update(dt)
         end
 	end
 end
-Obfuscate()
-
 
 local card_hoverref = Card.draw
 

@@ -392,7 +392,7 @@ create_UIBox_your_collection_seals = function()
         center = 'c_base',
         h_mod = 1.03,
         modify_card = function(card, center)
-            card:set_seal(center.key, true)
+           card:set_seal(center.key, true)
         end,
     })
 end

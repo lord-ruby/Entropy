@@ -622,6 +622,15 @@ return {
 					"{C:gold}+#1#{} Ascension Power",
 				}
 			},
+
+			c_entr_weld = {
+				name = "Weld",
+				text = {
+					"Apply {C:legendary,E:1}Absolute{} and {C:dark_edition}Negative{}",
+					"to {C:attention}#1#{} selected joker",
+					"{C:red}#2#{} discard"
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {
@@ -719,6 +728,63 @@ return {
                     [3] = '{C:attention}Stake{} difficulty'
                 }
             },
+			entr_crimson_seal = {
+				name = "Crimson Seal",
+				text = {
+					"Retrigger this",
+					"card {C:attention}2{} times",
+					"triggers at the {C:attention}end{}",
+					"of scoring instead"
+				}
+			},
+			entr_sapphire_seal = {
+				name = "Sapphire Seal",
+				text = {
+					"Create the {C:purple}Star{} card",
+					"for played hand if this",
+					"card is {C:attention}part{}",
+					"of the poker hand",
+					"{C:inactive}(Must have room){}"
+        		}
+			},
+			entr_silver_seal = {
+				name = "Silver Seal",
+				text = {
+					"Gives {C:gold}$4{} if",
+					"card is {C:attention}played{}",
+					"and {C:attention}unscoring{}",
+        		}
+			},
+			entr_pink_seal = {
+				name = "Pink Seal",
+				text = {
+					"Creates an {C:red}Inversed{}",
+					"card when discarded",
+					"and is then {C:attention}destroyed{}",
+					"{C:inactive}(Must have room){}"
+				}
+			},
+			entr_verdant_seal = {
+				name = "Verdant Seal",
+				text = {
+					"Creates a {C:red}Code?{}",
+					"card when played {C:attention}if{}",
+					"this is the {C:attention}only{}",
+					"scored card"
+				}
+			},
+			entr_cerulean_seal = {
+				name = "Cerulean Seal",
+				text = {
+					"Create the {C:purple}Star{} card",
+					"for played hand if this",
+					"card is {C:attention}part{}",
+					"of the poker hand",
+					"then {C:attention}destroy{}",
+					"the played hand",
+					"{C:inactive}(Must have room){}"
+				}
+			}
 		}
 	},
 	misc = {
@@ -785,7 +851,7 @@ return {
 
 			entr_crimson_seal = "Crimson Seal",
 			entr_sapphire_seal = "Sapphire Seal",
-			entr_platinum_seal = "Platinum Seal",
+			entr_silver_seal = "Silver Seal",
 			entr_pink_seal = "Pink Seal",
 			entr_verdant_seal = "Verdant Seal",
 			entr_cerulean_seal = "Cerulean Seal",

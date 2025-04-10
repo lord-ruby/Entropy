@@ -17,15 +17,6 @@ SMODS.Seal({
     badge_colour = HEX("840026"),
     calculate = function(self, card, context)
     end,
-    loc_txt = {
-        name = "Crimson Seal",
-        text = {
-            "Retrigger this",
-            "card {C:attention}2{} times",
-            "triggers at the {C:attention}end{}",
-            "of scoring instead"
-        }
-    }
 })
 
 function SMODS.calculate_main_scoring(context, scoring_hand)
@@ -109,7 +100,8 @@ function SMODS.score_card(card, context)
 end
 
 function evaluate_play_final_scoring(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
-    SMODS.calculate_main_scoring({cardarea = G.play, full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands,crimson_seal=true}, v == G.play and scoring_hand or nil)
+    local _,_,_, scoring_hand2, _ = G.FUNCS.get_poker_hand_info(G.play.cards)
+    SMODS.calculate_main_scoring({cardarea = G.play, full_hand = G.play.cards, scoring_hand = scoring_hand2, scoring_name = text, poker_hands = poker_hands,crimson_seal=true}, v == G.play and scoring_hand or nil)
     for i, v in pairs(G.hand.cards) do
         if v.seal == "entr_crimson" then
             SMODS.score_card(v, {cardarea=G.hand,main_scoring=true})
@@ -186,16 +178,6 @@ SMODS.Seal({
             end
         end
     end,
-    loc_txt = {
-        name = "Sapphire Seal",
-        text = {
-            "Create the {C:purple}Star{} card",
-            "for played hand if this",
-            "card is {C:attention}part{}",
-            "of the poker hand",
-            "{C:inactive}(Must have room){}"
-        }
-    }
 })
 
 SMODS.Seal({
@@ -204,7 +186,7 @@ SMODS.Seal({
     pos = {x=2,y=0},
     badge_colour = HEX("84a5b7"),
     calculate = function(self, card, context)
-		if context.cardarea == "unscored" and context.individual then
+		if context.cardarea == "unscored" and context.main_scoring then
             ease_dollars(4)
         end
     end,
@@ -230,15 +212,6 @@ SMODS.Seal({
             end
         end
     end,
-    loc_txt = {
-        name = "Pink Seal",
-        text = {
-            "Creates an {C:red}Inversed{}",
-            "card when discarded",
-            "and is then {C:attention}destroyed{}",
-            "{C:inactive}(Must have room){}"
-        }
-    }
 })
 
 SMODS.Seal({
@@ -261,16 +234,85 @@ SMODS.Seal({
             end
         end
     end,
-    loc_txt = {
-        name = "Verdant Seal",
-        text = {
-            "Creates a {C:red}Code?{}",
-            "card when played {C:attention}if{}",
-            "this is the {C:attention}only{}",
-            "scored card"
-        }
-    }
 })
+
+SMODS.Consumable({
+    key = "weld",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        select = 1,
+        discard = 1
+    },
+	pos = {x=11,y=6},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card, area, copier)
+        for i = 1, card.ability.select do
+            local card = G.jokers.highlighted[i]
+            if card then
+                G.E_MANAGER:add_event(Event({
+                    trigger = "after",
+                    delay = 0.2,
+                    func = function()
+                        card:flip()
+                        return true
+                    end
+                }))
+            end
+        end
+        for i = 1, card.ability.select do
+            local card = G.jokers.highlighted[i]
+            if card then
+                G.E_MANAGER:add_event(Event({
+                    trigger = "after",
+                    delay = 0.2,
+                    func = function()
+                        card.cry_absolute = true
+                        card:set_edition({
+                            negative=true,
+                            key="e_negative",
+                            card_limit=1,
+                            type="negative"
+                        })
+                        return true
+                    end
+                }))
+            end
+        end
+        for i = 1, card.ability.select do
+            local card = G.jokers.highlighted[i]
+            if card then
+                G.E_MANAGER:add_event(Event({
+                    trigger = "after",
+                    delay = 0.2,
+                    func = function()
+                        card:flip()
+                        return true
+                    end
+                }))
+            end
+        end
+        G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.discard
+        ease_discard(-card.ability.discard)
+    end,
+    can_use = function(self, card)
+        return G.jokers and #G.jokers.highlighted <= card.ability.select and #G.jokers.highlighted > 0
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {key = "cry_absolute", set="Other"}
+        q[#q+1] = {key = "e_negative", set="Edition", config = {extra = 1}}
+        return {
+            vars = {
+                card.ability.select,
+                -card.ability.discard
+            }
+        }
+    end,
+})
+
+
 SMODS.Seal({
     key="entr_cerulean",
     atlas = "seals",
@@ -304,18 +346,6 @@ SMODS.Seal({
             for i, v in pairs(scoring_hand) do v:start_dissolve() end
         end
     end,
-    loc_txt = {
-        name = "Cerulean Seal",
-        text = {
-            "Create the {C:purple}Star{} card",
-            "for played hand if this",
-            "card is {C:attention}part{}",
-            "of the poker hand",
-            "then {C:attention}destroy{}",
-            "the played hand",
-            "{C:inactive}(Must have room){}"
-        }
-    }
 })
 
 SMODS.Consumable({
