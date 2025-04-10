@@ -137,3 +137,34 @@ function Entropy.MergeLocTables(t1, t2)
     for i, v in pairs(t2) do table.insert(t1, v) end
     return t1
 end
+
+function Entropy.Again(card, del)
+    local delay = del or 0.6
+    G.E_MANAGER:add_event(Event({ --Add bonus chips from this card
+    trigger = 'before',
+    delay = delay,
+    func = function()
+        if extrafunc then extrafunc() end
+            attention_text({
+                text = localize("k_again_ex"),
+                scale = 1, 
+                major = card,
+                background_colour = G.C.FILTER,
+                align = "tm",
+                hold = delay - 0.2,
+            })
+            play_sound("generic1", 0.8, 1)
+            card:juice_up(0.6, 0.1)
+            G.ROOM.jiggle = G.ROOM.jiggle + 0.7
+            return true
+        end
+    }))
+end
+
+function Entropy.TriggersInHand(card)
+    if Cryptid.safe_get(SMODS.Ranks,Cryptid.safe_get(card,'base','value') or 'm','key') == 'King' and HasJoker("j_baron") then return true
+    else
+        local res = eval_card(card, {cardarea=G.hand, main_scoring=true})
+        return res.playing_card and #res.playing_card > 0
+    end
+end
