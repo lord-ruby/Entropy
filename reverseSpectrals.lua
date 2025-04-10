@@ -16,7 +16,16 @@ SMODS.Seal({
     pos = {x=0,y=0},
     badge_colour = HEX("840026"),
     calculate = function(self, card, context)
-    end
+    end,
+    loc_txt = {
+        name = "Crimson Seal",
+        text = {
+            "Retrigger this",
+            "card {C:attention}2{} times",
+            "triggers at the {C:attention}end{}",
+            "of scoring instead"
+        }
+    }
 })
 
 function SMODS.calculate_main_scoring(context, scoring_hand)
@@ -176,14 +185,41 @@ SMODS.Seal({
                 G.consumeables:emplace(c)
             end
         end
-    end
+    end,
+    loc_txt = {
+        name = "Sapphire Seal",
+        text = {
+            "Create the {C:purple}Star{} card",
+            "for played hand if this",
+            "card is {C:attention}part{}",
+            "of the poker hand",
+            "{C:inactive}(Must have room){}"
+        }
+    }
+})
+
+SMODS.Seal({
+    key="entr_silver",
+    atlas = "seals",
+    pos = {x=2,y=0},
+    badge_colour = HEX("84a5b7"),
+    calculate = function(self, card, context)
+		if context.cardarea == "unscored" and context.individual then
+            ease_dollars(4)
+        end
+    end,
+    draw = function(self, card, layer)
+		G.shared_seals["entr_silver"].role.draw_major = card
+        G.shared_seals["entr_silver"]:draw_shader('dissolve', nil, nil, nil, card.children.center)
+		G.shared_seals["entr_silver"]:draw_shader('voucher', nil, card.ARGS.send_to_shader, nil, card.children.center)
+    end,
 })
 
 SMODS.Seal({
     key="entr_pink",
     atlas = "seals",
     pos = {x=3,y=0},
-    badge_colour = HEX("8653ff"),
+    badge_colour = HEX("cc48be"),
     calculate = function(self, card, context)
         if context.pre_discard and context.cardarea == G.hand and card.highlighted then
             card:start_dissolve()
@@ -193,9 +229,94 @@ SMODS.Seal({
                 G.consumeables:emplace(c)
             end
         end
-    end
+    end,
+    loc_txt = {
+        name = "Pink Seal",
+        text = {
+            "Creates an {C:red}Inversed{}",
+            "card when discarded",
+            "and is then {C:attention}destroyed{}",
+            "{C:inactive}(Must have room){}"
+        }
+    }
 })
 
+SMODS.Seal({
+    key="entr_verdant",
+    atlas = "seals",
+    pos = {x=4,y=0},
+    badge_colour = HEX("75bb62"),
+    calculate = function(self, card, context)
+        if context.main_scoring and context.cardarea == G.play then
+            local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
+            G.FUNCS.get_poker_hand_info(G.play.cards)
+            if #scoring_hand == 1 then
+                local key = pseudorandom_element(Entropy.FlipsideInversions, pseudoseed("verdant"))
+                while G.P_CENTERS[key].set ~= "RCode" do key = pseudorandom_element(Entropy.FlipsideInversions, pseudoseed("verdant")) end
+                if #G.consumeables.cards < G.consumeables.config.card_limit then
+                    local c = create_card("Consumables", G.consumeables, nil, nil, nil, nil, key) 
+                    c:add_to_deck()
+                    G.consumeables:emplace(c)
+                end
+            end
+        end
+    end,
+    loc_txt = {
+        name = "Verdant Seal",
+        text = {
+            "Creates a {C:red}Code?{}",
+            "card when played {C:attention}if{}",
+            "this is the {C:attention}only{}",
+            "scored card"
+        }
+    }
+})
+SMODS.Seal({
+    key="entr_cerulean",
+    atlas = "seals",
+    pos = {x=5,y=0},
+    badge_colour = HEX("4078e6"),
+    calculate = function(self, card, context)
+        if context.main_scoring and context.cardarea == G.play then
+            local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
+            G.FUNCS.get_poker_hand_info(G.play.cards)
+            local pkey = "pluto"
+            for i, v in pairs(Entropy.ReversePlanets) do
+                if v.name == text then pkey = v.key end
+            end
+            local key = "c_entr_"..pkey
+            for i = 1, 3 do
+                    local c = create_card("Consumables", G.consumeables, nil, nil, nil, nil, key) 
+                    c:add_to_deck()
+                    c:set_edition({
+                        negative=true,
+                        key="e_negative",
+                        card_limit=1,
+                        type="negative"
+                    })
+                    G.consumeables:emplace(c)
+                end
+
+        end
+        if context.destroy_card and context.cardarea == G.play then
+            local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
+            G.FUNCS.get_poker_hand_info(G.play.cards)
+            for i, v in pairs(scoring_hand) do v:start_dissolve() end
+        end
+    end,
+    loc_txt = {
+        name = "Cerulean Seal",
+        text = {
+            "Create the {C:purple}Star{} card",
+            "for played hand if this",
+            "card is {C:attention}part{}",
+            "of the poker hand",
+            "then {C:attention}destroy{}",
+            "the played hand",
+            "{C:inactive}(Must have room){}"
+        }
+    }
+})
 
 SMODS.Consumable({
     key = "fervour",

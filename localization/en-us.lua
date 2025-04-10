@@ -648,18 +648,6 @@ return {
 				text = { "Woof.", "{C:inactive}Level {C:dark_edition}#1#" },
 			},
 		},
-		Seal = {
-			seal_entr_crimson = {
-				name = "Crimson Seal",
-				label = "Crimson Seal",
-				text = {
-					"Retrigger this",
-					"card {C:attention}2{} times",
-					"triggers at the {C:attention}end{}",
-					"of scoring instead"
-				}
-			}
-		},
 		Other = {
 			inversion_allowed = {
 				name = "Flipside",
@@ -731,7 +719,6 @@ return {
                     [3] = '{C:attention}Stake{} difficulty'
                 }
             },
-
 		}
 	},
 	misc = {
@@ -798,8 +785,10 @@ return {
 
 			entr_crimson_seal = "Crimson Seal",
 			entr_sapphire_seal = "Sapphire Seal",
-
+			entr_platinum_seal = "Platinum Seal",
 			entr_pink_seal = "Pink Seal",
+			entr_verdant_seal = "Verdant Seal",
+			entr_cerulean_seal = "Cerulean Seal",
 		}
 	},
 }
