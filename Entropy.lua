@@ -1,21 +1,21 @@
  
 local i = {
-    "utils",
-    "jokers",
+    "lib/utils",
+    "items/jokers",
     --"reverseTarots",
-    "consumable",
-    "reversePlanets",
-    "reverseSpectrals",
-    "reverseCodes",
-    "reverseLegendaries",
+    "items/consumable",
+    "items/reversePlanets",
+    "items/reverseSpectrals",
+    "items/reverseCodes",
+    "items/reverseLegendaries",
 
-    "colours",
-    "decks",
-    "vouchers",
-    "hidden",
-    "fixes",
-    "stake",
-    "tags",
+    "lib/colours",
+    "items/decks",
+    "items/vouchers",
+    "items/hidden",
+    "lib/fixes",
+    "items/stake",
+    "items/tags",
     "compat/loader"
     --"glop"
 }

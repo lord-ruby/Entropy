@@ -204,6 +204,7 @@ SMODS.Seal({
     badge_colour = HEX("cc48be"),
     calculate = function(self, card, context)
         if context.pre_discard and context.cardarea == G.hand and card.highlighted then
+            card:remove_from_deck()
             card:start_dissolve()
             if #G.consumeables.cards < G.consumeables.config.card_limit then
                 local c = create_card("Twisted", G.consumeables, nil, nil, true, true, nil, "twisted") 
@@ -317,7 +318,7 @@ SMODS.Rank {
     pos = {x = 99},
     nominal = 1,
     face_nominal = 1,
-    shorthand = "nilrank",
+    shorthand = "nil",
     in_pool = function(self, args)
         return false
     end

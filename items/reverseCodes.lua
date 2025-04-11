@@ -435,7 +435,7 @@ function end_round()
                             })
                         end
                     end
-                    if card.ability.temporary then
+                    if card.ability.temporary or card.ability.temporary2 then
                         card:start_dissolve()
                     end
                     if card.ability.entr_pseudorandom then
