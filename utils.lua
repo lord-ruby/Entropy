@@ -168,3 +168,45 @@ function Entropy.TriggersInHand(card)
         return res.playing_card and #res.playing_card > 0
     end
 end
+
+function Entropy.FlipThen(cardlist, func, bffunc)     
+    for i, v in pairs(cardlist) do
+        local card = cardlist[i]
+        if card then
+            G.E_MANAGER:add_event(Event({
+                trigger = "after",
+                delay = 0.35,
+                func = function()
+                    card:flip()
+                    return true
+                end
+            }))
+        end
+    end
+    for i, v in pairs(cardlist) do
+        local card = cardlist[i]
+        if card then
+            G.E_MANAGER:add_event(Event({
+                trigger = "after",
+                delay = 0.6,
+                func = function()
+                    func(card, cardlist)
+                    return true
+                end
+            }))
+        end
+    end
+    for i, v in pairs(cardlist) do
+        local card = cardlist[i]
+        if card then
+            G.E_MANAGER:add_event(Event({
+                trigger = "after",
+                delay = 0.35,
+                func = function()
+                    card:flip()
+                    return true
+                end
+            }))
+        end
+    end
+end

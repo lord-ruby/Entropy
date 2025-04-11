@@ -631,6 +631,14 @@ return {
 					"{C:red}#2#{} discard"
 				}
 			},
+			c_entr_cleanse = {
+				name = "Cleanse",
+				text = {
+					"{C:attention}Strip{} the suit and rank",
+					"from {C:attention}all{} cards in hand",
+					"{C:gold}$#1#{} for each chip taken"
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {
@@ -793,6 +801,15 @@ return {
 		},
 		achievement_descriptions = {
 			ach_entr_unstable_concoction = "Use define to turn obelisk into sob"
+		},
+		suits_plural = {
+			entr_nilsuit = "Nil",
+		},
+		suits_singular = {
+			entr_nilsuit = "Nil",
+		},
+		ranks = {
+			entr_nilrank = "Nil"
 		},
 		dictionary = {
 			k_entr_hyper_exotic = "Entropic",
