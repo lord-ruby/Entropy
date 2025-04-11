@@ -14,7 +14,7 @@ SMODS.Seal({
     key="entr_crimson",
     atlas = "seals",
     pos = {x=0,y=0},
-    badge_colour = HEX("840026"),
+    badge_colour = HEX("8a0050"),
     calculate = function(self, card, context)
     end,
 })
