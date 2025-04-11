@@ -236,6 +236,7 @@ G.FUNCS.open_booster = function(e)
     if c1.edition and c1.edition.negative and c1.area == G.consumeables then
         G.consumeables.config.card_limit = G.consumeables.config.card_limit - 1
     end
+    e.config.ref_table.cost = 0
     e.config.ref_table:open()
     --c1:remove()
 end
