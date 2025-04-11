@@ -353,7 +353,7 @@ SMODS.Consumable({
     discovered = true,
     atlas = "miscc",
     config = {
-        dollarpc = 0.5
+        dollarpc = 1
     },
 	pos = {x=7,y=7},
     --soul_pos = { x = 5, y = 0},
@@ -361,7 +361,7 @@ SMODS.Consumable({
         local total = 0
         for i, card in pairs(G.hand.cards) do
             if card.ability and card.ability.effect == 'Stone Card' then
-                total = total + (49 + card.ability.perma_bonus) * card2.ability.dollarpc 
+                total = total + (10 + card.ability.perma_bonus) * card2.ability.dollarpc 
                 card:set_ability(G.P_CENTERS.c_base, true, nil)
             else
                 total = total + (card.base.nominal-1 + card.ability.perma_bonus) * card2.ability.dollarpc 
