@@ -808,13 +808,12 @@ return {
 			entr_cerulean_seal = {
 				name = "Cerulean Seal",
 				text = {
-					"Create the {C:purple}Star{} card",
+					"Create 3 {C:dark_edition}Negative{} {C:purple}Star{} cards",
 					"for played hand if this",
 					"card is {C:attention}part{}",
 					"of the poker hand",
 					"then {C:attention}destroy{}",
-					"the played hand",
-					"{C:inactive}(Must have room){}"
+					"the played hand"
 				}
 			}
 		}

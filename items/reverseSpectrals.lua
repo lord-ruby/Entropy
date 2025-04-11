@@ -637,6 +637,7 @@ SMODS.Consumable({
     config = {
 
     },
+    soul_rate = 0,
     name = "entr-Define",
     hidden = true,
     pos = {x=4,y=4},

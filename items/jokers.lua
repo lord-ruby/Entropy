@@ -224,6 +224,7 @@ Cryptid.big_num_blacklist["j_hanging_chad"] = true
 Cryptid.big_num_blacklist["j_cry_chad"] = true
 Cryptid.big_num_blacklist["j_cry_tenebris"] = true
 Cryptid.big_num_blacklist["j_entr_yorick"] = true
+Cryptid.big_num_blacklist["j_burglar"] = true
 Entropy.value_bignum_blacklist = {
     ["h_size"] = true,
     ["h_size_mod"] = true,
@@ -409,7 +410,7 @@ SMODS.Joker({
 })
 
 function Cryptid.ascend(num, curr2) -- edit this function at your leisure
-    curr2 = curr2 or (G.GAME.current_round.current_hand.cry_asc_num or 0) + (G.GAME.asc_power_hand or 0)
+    curr2 = curr2 or ((G.GAME.current_round.current_hand.cry_asc_num or 0) + (G.GAME.asc_power_hand or 0)) * (1+(G.GAME.nemesisnumber or 0))
 	if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true then
 		return num
 	end
@@ -418,7 +419,7 @@ function Cryptid.ascend(num, curr2) -- edit this function at your leisure
 		if not G.GAME.current_round.current_hand.cry_asc_num then
 			return num
 		end
-		if G.GAME.current_round.current_hand.cry_asc_num <= 0 then
+		if to_big(G.GAME.current_round.current_hand.cry_asc_num) <= to_big(0) then
 			return num
 		end
 		return math.max(
@@ -430,7 +431,7 @@ function Cryptid.ascend(num, curr2) -- edit this function at your leisure
 					+ to_big(0.05 * (G.GAME.sunnumber or 0))
 					+ to_big(
 						(0.1 + (0.05 * (G.GAME.sunnumber or 0)))
-							* to_big((G.GAME.current_round.current_hand.cry_asc_num or 0) + (G.GAME.asc_power_hand or 0))
+							* to_big(curr2)
 					)
 				)
 		)

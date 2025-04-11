@@ -49,15 +49,16 @@ end
 
 
 function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
+  local curr2 = ((G.GAME.hands[hand].AscensionPower or 0)) * (1+(G.GAME.nemesisnumber or 0))
 	if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true then
 		return num
 	end
 	if Cryptid.gameset() == "modest" then
 		-- x(1.1 + 0.05 per sol) base, each card gives + (0.1 + 0.05 per sol)
-		if not G.GAME.hands[hand].AscensionPower then
+		if not curr2 then
 			return num
 		end
-		if to_big(G.GAME.hands[hand].AscensionPower) <= to_big(0) then
+		if to_big(curr2) <= to_big(0) then
 			return num
 		end
 		return math.max(
@@ -66,12 +67,15 @@ function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
 				* (
 					1
 					+ 0.1
-					+ to_big((G.GAME.sunnumber or 0))
-					+ to_big((0.1 + ((G.GAME.sunnumber or 0))) * to_big(G.GAME.hands[hand].AscensionPower or 0) * (G.GAME.nemesisnumber or 1))
+					+ to_big(0.05 * (G.GAME.sunnumber or 0))
+					+ to_big(
+						(0.1 + (0.05 * (G.GAME.sunnumber or 0)))
+							* to_big(curr2)
+					)
 				)
 		)
-  elseif HasJoker("j_entr_helios") then
-		local curr = 1.5
+	elseif HasJoker("j_entr_helios") then
+        local curr = 1.5
         for i, v in pairs(G.jokers.cards) do
             if v.config.center.key == "j_entr_helios" and to_big(v.ability.extra):gt(curr) then curr = v.ability.extra+0.4 end
         end
@@ -80,14 +84,18 @@ function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
 			num
 				* to_big(
 					(1.75 + ((G.GAME.sunnumber or 0)))):tetrate(
-						to_big((G.GAME.hands[hand].AscensionPower or 0) * curr * (G.GAME.nemesisnumber or 1)))
+						to_big((curr2) * curr))
 		)
-	else
+  else
 		return math.max(
 			num,
-			num * to_big((1.25 + ((G.GAME.sunnumber or 0))) ^ to_big((G.GAME.hands[hand].AscensionPower or 0)* (G.GAME.nemesisnumber or 1)))
+			num
+				* to_big(
+					(1.25 + ((G.GAME.sunnumber or 0)))
+						^ to_big(curr2)
+				)
 		)
-  end
+	end
 end
 
 function Entropy.ReverseSuitUse(self, card, area, copier, num)
