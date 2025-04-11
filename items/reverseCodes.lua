@@ -2132,6 +2132,7 @@ end
 
 local emplace = CardArea.emplace
 function CardArea:emplace(card, location, stay_flipped)
+    if self == G.pack_cards then self.config.highlighted_limit = 99 end
     card = card or {}
     local s = self.base and self.base.name or ""
     local key = G.GAME.DefineKeys and (G.GAME.DefineKeys[s] or G.GAME.DefineKeys[card.config.center.key])
@@ -2177,7 +2178,6 @@ function CardArea:emplace(card, location, stay_flipped)
         end
     end
 end
-
 G.FUNCS.create_UIBox_define = function(card)
     if not G.GAME.DefineKeys then
         G.GAME.DefineKeys = {}
@@ -2272,6 +2272,10 @@ G.FUNCS.define_cancel = function()
     G.GAME.USING_CODE = false
     G.GAME.USING_DEFINE = false
     G.DEBUG_DEFINE = false
+    if G.GAME.define_in_pack then
+        G.GAME.pack_choices = G.GAME.pack_choices - 1
+        G.GAME.define_in_pack = nil
+    end
 end
 G.FUNCS.define_apply_previous = function()
     if G.PREVIOUS_ENTERED_CARD then
@@ -2536,6 +2540,12 @@ G.FUNCS.define_apply = function()
                     G.DEBUG_DEFINE = false
                 end
 
+    end
+    if not G.GAME.USING_DEFINE then
+        if G.GAME.define_in_pack then
+            G.GAME.pack_choices = G.GAME.pack_choices - 1
+            G.GAME.define_in_pack = nil
+        end
     end
 end
 G.FUNCS.HUD_blind_debuff = function(e)

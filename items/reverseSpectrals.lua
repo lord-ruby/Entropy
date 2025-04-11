@@ -643,6 +643,10 @@ SMODS.Consumable({
     pos = {x=4,y=4},
     --soul_pos = { x = 2, y = 0, extra = { x = 1, y = 0 } },
     use = function(self, card, area, copier)
+        if area == G.pack_cards and G.pack_cards then
+            G.GAME.pack_choices = G.GAME.pack_choices + 1
+            G.GAME.define_in_pack = true
+        end
         if not G.GAME.DefineKeys then
             G.GAME.DefineKeys = {}
         end
