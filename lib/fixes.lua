@@ -343,6 +343,67 @@ true)
 
 --local xhips = card.ability.x_chips
 
+SMODS.Joker:take_ownership('cry_circus',
+{
+    config = {
+		extra = { Xmult = 1 },
+		immutable = {
+			rare_mult_mod = 2,
+			epic_mult_mod = 3,
+			legend_mult_mod = 4,
+			exotic_mult_mod = 20,
+            entropic_mult_mod = 50,
+			rarity_map = {
+				[3] = "rare_mult_mod",
+				[4] = "legend_mult_mod",
+				["cry_epic"] = "epic_mult_mod",
+				["cry_exotic"] = "exotic_mult_mod",
+                ["entr_hyper_exotic"] = "entropic_mult_mod"
+			},
+		},
+	},
+    calculate = function(self, card, context)
+		local function calculate_xmult(mult_mod)
+			if not Talisman.config_file.disable_anims then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						context.other_joker:juice_up(0.5, 0.5)
+						return true
+					end,
+				}))
+			end
+
+			local xmult = lenient_bignum(math.max(1, to_big(card.ability.extra.Xmult)) * to_big(mult_mod))
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_xmult",
+					vars = { number_format(xmult) },
+				}),
+				Xmult_mod = xmult,
+			}
+		end
+
+		if context.other_joker and card ~= context.other_joker then
+			local mod_key = card.ability.immutable.rarity_map[context.other_joker.config.center.rarity]
+			if mod_key then
+				return calculate_xmult(card.ability.immutable[mod_key])
+			end
+		end
+	end,
+    loc_vars = function(self, info_queue, center)
+		return {
+			vars = {
+				number_format(math.max(1, center.ability.extra.Xmult) * center.ability.immutable.rare_mult_mod),
+				number_format(math.max(1, center.ability.extra.Xmult) * center.ability.immutable.epic_mult_mod),
+				number_format(math.max(1, center.ability.extra.Xmult) * center.ability.immutable.legend_mult_mod),
+				number_format(math.max(1, center.ability.extra.Xmult) * center.ability.immutable.exotic_mult_mod),
+                number_format(math.max(1, center.ability.extra.Xmult) * center.ability.immutable.entropic_mult_mod),
+			},
+		}
+	end,
+},
+true)
 
 local set_editionref = Card.set_edition
 
@@ -355,12 +416,6 @@ function Card:set_edition(edition, immediate, silent)
     end
 end
 
-function GetArrowString(arrows, size)
-    if arrows > 5 then return "{"..arrows.."}"..size end
-    local str = ""
-    for i = 1, arrows do str = str.."^" end
-    return str..size
-end
 local load_ref = Blind.load
 function Blind:load(blindTable)
     if blindTable then

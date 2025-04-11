@@ -408,7 +408,8 @@ SMODS.Joker({
     end
 })
 
-function Cryptid.ascend(num) -- edit this function at your leisure
+function Cryptid.ascend(num, curr2) -- edit this function at your leisure
+    curr2 = curr2 or (G.GAME.current_round.current_hand.cry_asc_num or 0) + (G.GAME.asc_power_hand or 0)
 	if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true then
 		return num
 	end
@@ -429,7 +430,7 @@ function Cryptid.ascend(num) -- edit this function at your leisure
 					+ to_big(0.05 * (G.GAME.sunnumber or 0))
 					+ to_big(
 						(0.1 + (0.05 * (G.GAME.sunnumber or 0)))
-							* to_big(G.GAME.current_round.current_hand.cry_asc_num or 0)
+							* to_big((G.GAME.current_round.current_hand.cry_asc_num or 0) + (G.GAME.asc_power_hand or 0))
 					)
 				)
 		)
@@ -443,7 +444,7 @@ function Cryptid.ascend(num) -- edit this function at your leisure
 			num
 				* to_big(
 					(1.75 + ((G.GAME.sunnumber or 0)))):tetrate(
-						to_big(G.GAME.current_round.current_hand.cry_asc_num * curr))
+						to_big((curr2) * curr))
 		)
     else
 		return math.max(
@@ -451,7 +452,7 @@ function Cryptid.ascend(num) -- edit this function at your leisure
 			num
 				* to_big(
 					(1.25 + ((G.GAME.sunnumber or 0)))
-						^ to_big(G.GAME.current_round.current_hand.cry_asc_num or 0)
+						^ to_big(curr2)
 				)
 		)
 	end

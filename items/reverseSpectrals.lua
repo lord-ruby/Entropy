@@ -151,7 +151,10 @@ function evaluate_play_final_scoring(text, disp_text, poker_hands, scoring_hand,
     }))
     G.E_MANAGER:add_event(Event({
       trigger = 'immediate',
-      	func = (function() G.GAME.current_round.current_hand.handname = '';return true end)
+      	func = (function()
+             G.GAME.current_round.current_hand.handname = '';
+             G.GAME.asc_power_hand = nil
+        return true end)
       }))
       delay(0.3)
       return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
@@ -699,10 +702,12 @@ SMODS.Consumable({
 				delay = 0.75,
 				func = function()
                     if v.config.center.rarity ~= "entr_hyper_exotic" or G.GAME.selected_back.effect.center.original_key ~= "doc" then
-                        if v.config.center.rarity == "cry_exotic" then
-                            check_for_unlock({ type = "what_have_you_done" })
+                        if not v.ability.cry_absolute then
+                            if v.config.center.rarity == "cry_exotic" then
+                                check_for_unlock({ type = "what_have_you_done" })
+                            end
+                            v:start_dissolve(nil, _first_dissolve)
                         end
-                        v:start_dissolve(nil, _first_dissolve)
                     end
                     return true
 				end,

@@ -4,6 +4,22 @@ return {
 
 		},
 		Joker = {
+
+			j_cry_circus = {
+				name = "Circus",
+				text = {
+					"{C:red}Rare{} Jokers each give {X:mult,C:white} X#1# {} Mult",
+					"{C:cry_epic}Epic{} Jokers each give {X:mult,C:white} X#2# {} Mult",
+					"{C:legendary}Legendary{} Jokers each give {X:mult,C:white} X#3# {} Mult",
+					"{C:cry_exotic}Exotic{} Jokers each give {X:mult,C:white} X#4# {} Mult",
+					"{C:red}Entropic {}jokers each give {X:mult,C:white} X#5# {} Mult"
+				},
+				unlock = {
+					"Obtain a {C:red}Rare{},",
+					"{C:cry_epic}Epic{} and {C:legendary}Legendary{}",
+					"Joker before {C:attention}Ante 9",
+				},
+			},
 			j_entr_stillicidium = {
 				name = "Stillicidium",
 				text = {
@@ -120,6 +136,14 @@ return {
 					"???"
 				}
 			}	
+		},
+		Edition = {
+			e_entr_solar = {
+				name = "Solar",
+				text = {
+					"{X:gold,C:white}X#1#{} Ascension Power",
+				},
+			},
 		},
 		Back = {
 			b_entr_twisted = {

@@ -16,6 +16,7 @@ local i = {
     "lib/fixes",
     "items/stake",
     "items/tags",
+    "items/editions",
     "compat/loader"
     --"glop"
 }
@@ -41,13 +42,25 @@ if SMODS and SMODS.calculate_individual_effect then
             card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent)
             return true
         end
+        if (key == 'asc') or (key == 'asc_mod') then
+            local e = card_eval_status_text
+            local orig = G.GAME.asc_power_hand or 0
+            G.GAME.asc_power_hand = (G.GAME.asc_power_hand or 1) * scored_card.edition.sol
+            G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (G.GAME.current_round.current_hand.cry_asc_num * G.GAME.asc_power_hand) .. ")"
+            card_eval_status_text = function() end
+            scie(effect, scored_card, "Xmult_mod", to_big(Cryptid.ascend(1, G.GAME.asc_power_hand - orig)):to_number(), from_edition)
+            card_eval_status_text = e
+
+            card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "X"..scored_card.edition.sol.." Asc", G.C.GOLD, "talisman_emult")
+            return true
+        end
     end
-    for _, v in ipairs({'eq_mult', 'Eqmult_mod'}) do
+    for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'asc', 'asc_mod'}) do
         table.insert(SMODS.calculation_keys, v)
     end
 end
 
-function card_eval_status_text_eq(card, eval_type, amt, percent, dir, extra)
+function card_eval_status_text_eq(card, eval_type, amt, percent, dir, extra, pref, col, sound)
     percent = percent or (0.9 + 0.2*math.random())
     if dir == 'down' then 
         percent = 1-percent
@@ -77,10 +90,10 @@ function card_eval_status_text_eq(card, eval_type, amt, percent, dir, extra)
     local colour = config.colour or (extra and extra.colour) or ( G.C.FILTER )
     local extrafunc = nil
 
-    sound = 'multhit1'--'other1'
+    sound = sound or 'multhit1'--'other1'
     amt = amt
-    text = "Mult = "..amt
-    colour = G.C.MULT
+    text = (pref) or ("Mult = "..amt)
+    colour = col or G.C.MULT
     config.type = 'fade'
     config.scale = 0.7
     delay = delay*1.25
