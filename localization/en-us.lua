@@ -788,6 +788,15 @@ return {
 					"then {C:attention}strip{} all modifications",
 				}
 			},
+			c_entr_charm = {
+				name = "Charm",
+				text = {
+					"Apply {C:attention}astral{} and",
+					"{C:attention}eternal{} to a selected",
+					"joker then {C:attention}banish{}",
+					"a random other joker",
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {

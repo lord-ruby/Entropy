@@ -487,6 +487,55 @@ SMODS.Consumable({
 
 
 Entropy.SealSpectral("rendezvous", {x=10,y=5}, "entr_crimson")
+
+SMODS.Consumable({
+    key = "charm",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        select = 1,
+    },
+	pos = {x=11,y=5},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        for i, v in pairs(G.jokers.highlighted) do
+            v:set_edition("e_cry_astral")
+            v.ability.eternal = true
+        end
+        local joker = nil
+        local tries = 100
+        while (joker == nil or joker.ability.eternal or joker.ability.cry_absolute) and tries > 0 do
+            joker = pseudorandom_element(G.jokers.cards, pseudoseed("charm"))
+            tries = tries - 1
+        end
+        if joker then
+            joker:start_dissolve()
+            G.GAME.banned_keys[joker.config.center.key] = true
+        end
+    end,
+    can_use = function(self, card)
+        local any_can_banish = false
+        if G.jokers then
+            for i, joker in pairs(G.jokers.cards) do
+                if not joker.ability.eternal and not joker.ability.cry_absolute and not joker.highlighted then
+                    any_can_banish = true
+                end
+            end
+        end
+        return G.jokers and #G.jokers.highlighted <= card.ability.select and #G.jokers.highlighted > 0 and any_can_banish
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.select,
+            }
+        }
+    end,
+})
+
+
 Entropy.SealSpectral("eclipse", {x=12,y=5}, "entr_sapphire")
 Entropy.SealSpectral("calamity", {x=6,y=6}, "entr_pink")
 Entropy.SealSpectral("calamity", {x=6,y=6}, "entr_pink")
