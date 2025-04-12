@@ -1,7 +1,13 @@
 return {
 	descriptions = {
 		Enhanced = {
-
+			m_entr_flesh = {
+				name = "Flesh Card",
+				text = {
+					"{C:green}#1# in #2#{} chance to",
+					"destroy this card when {C:attention}played{}"
+				}
+			}
 		},
 		Joker = {
 
@@ -753,6 +759,14 @@ return {
 					"{C:attention}Link{} up to {C:attention}#1#{}",
 					"cards together, all modifications",
 					"affect all of the linked cards"
+				}
+			},
+			c_entr_rend = {
+				name = "Rend",
+				text = {
+					"Convert up to {C:attention}#1#{}",
+					"selected cards to",
+					"{C:attention}Flesh{} cards"
 				}
 			},
 		},

@@ -18,6 +18,7 @@ local i = {
     "items/tags",
     "items/editions",
     "items/seals",
+    "items/enhancements",
     "compat/loader"
     --"glop"
 }
@@ -26,6 +27,7 @@ for _, v in pairs(i) do
     local f, err = SMODS.load_file(v..".lua")
     if f then f() else error("error in file "..v..": "..err) end
 end
+
 if SMODS and SMODS.calculate_individual_effect then
 
     local scie = SMODS.calculate_individual_effect

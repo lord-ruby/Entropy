@@ -52,6 +52,31 @@ SMODS.Consumable({
 })
 
 SMODS.Consumable({
+    key = "rend",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        num = 3
+    },
+	pos = {x=7,y=4},
+    --soul_pos = { x = 5, y = 0},
+    use = Entropy.ModifyHandCard({enhancement="m_entr_flesh"}),
+    can_use = function(self, card)
+        return G.hand and #G.hand.highlighted > 0 and #G.hand.highlighted <= card.ability.num
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1]=G.P_CENTERS.m_entr_flesh
+        return {
+            vars = {
+                card.ability.num
+            }
+        }
+    end,
+})
+
+SMODS.Consumable({
     key = "inscribe",
     set = "RSpectral",
     unlocked = true,
