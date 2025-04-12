@@ -731,6 +731,14 @@ return {
 					"to {C:attention}random{} editioned face cards",
 				}
 			},
+			c_entr_ward = {
+				name = "Ward",
+				text = {
+					"Destroy {C:attention}all{} jokers then",
+					"Give {X:gold,C:white}X#1#{} their buy",
+					"value in dollars"
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {

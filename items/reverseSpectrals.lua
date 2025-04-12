@@ -127,6 +127,47 @@ SMODS.Consumable({
     }
 })
 
+SMODS.Consumable({
+    key = "ward",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        sellmult = 2
+    },
+	pos = {x=11,y=4},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card, area, copier)
+        local total = 0
+        for i, v in pairs(G.jokers.cards) do
+            if not v.ability.eternal and not v.ability.cry_absolute then
+                local joker = G.jokers.cards[i]
+                total = total + joker.cost
+                G.E_MANAGER:add_event(Event({
+                    trigger = "after",
+                    delay = 0.1,
+                    func = function()
+                        joker:start_dissolve()
+                        return true
+                    end
+                }))
+            end
+        end
+        ease_dollars(total * card.ability.sellmult)
+    end,
+    can_use = function(self, card)
+        return G.jokers and #G.jokers.cards > 0
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.sellmult
+            }
+        }
+    end,
+})
+
 
 Entropy.SealSpectral("rendezvous", {x=10,y=5}, "entr_crimson")
 Entropy.SealSpectral("eclipse", {x=12,y=5}, "entr_sapphire")
