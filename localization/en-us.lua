@@ -779,6 +779,15 @@ return {
 					"into this card, {C:gold}$#2#{}",
 				}
 			},
+			c_entr_crypt = {
+				name = "Rejuvenate",
+				text = {
+					"Select {C:attention}#1#{} jokers",
+					"convert the {C:attention}left{} joker",
+					"into the {C:attention}right{} joker",
+					"then {C:attention}strip{} all modifications",
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {

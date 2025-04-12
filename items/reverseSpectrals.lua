@@ -446,6 +446,46 @@ SMODS.Consumable({
     }
 })
 
+SMODS.Consumable({
+    key = "crypt",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        select = 2,
+    },
+	pos = {x=9,y=5},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        local joker = nil
+        for i, v in pairs(G.jokers.cards) do 
+            if v.highlighted then 
+                joker = v 
+            end 
+        end
+        Entropy.FlipThen(G.jokers.highlighted, function(v, area)
+            if v == joker then
+
+            else
+                copy_card(joker, v)
+                v:set_edition()
+            end
+        end)
+    end,
+    can_use = function(self, card)
+        return G.jokers and #G.jokers.highlighted <= card.ability.select and #G.jokers.highlighted > 1
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.select,
+            }
+        }
+    end,
+})
+
+
 Entropy.SealSpectral("rendezvous", {x=10,y=5}, "entr_crimson")
 Entropy.SealSpectral("eclipse", {x=12,y=5}, "entr_sapphire")
 Entropy.SealSpectral("calamity", {x=6,y=6}, "entr_pink")
