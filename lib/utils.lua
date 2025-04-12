@@ -374,3 +374,14 @@ function Entropy.FindPreviousInPool(item, pool)
     end
     return nil
 end
+
+math.randomseed(os.time())
+Entropy.charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890~#$^~#$^~#$^~#$^~#$^"
+function srandom(length) 
+    local total = ""
+    for i = 0, length do
+        local val = math.random(1,#Entropy.charset)
+        total = total..(Entropy.charset:sub(val, val))
+    end
+    return total
+end

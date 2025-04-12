@@ -891,6 +891,15 @@ return {
 					"then {C:attention}destroy{}",
 					"the played hand"
 				}
+			},
+			link = {
+				name = "Linked",
+				text = {
+					"shares modifications",
+					"with other cards that",
+					"share the same link",
+					"{C:inactive}(#1#){}"
+				}
 			}
 		}
 	},
@@ -964,6 +973,7 @@ return {
 			entr_hotfix = "Hotfixed",
 			temporary = "Temporary",
 			entr_pseudorandom = "Pseudorandom",
+			link = "Linked",
 
 			entr_crimson_seal = "Crimson Seal",
 			entr_sapphire_seal = "Sapphire Seal",

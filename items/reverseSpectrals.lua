@@ -168,6 +168,154 @@ SMODS.Consumable({
     end,
 })
 
+SMODS.Consumable({
+    key = "pact",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        selected = 3
+    },
+	pos = {x=6,y=5},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card, area, copier)
+        local linktxt
+        for i, v in pairs(G.hand.highlighted) do
+            if v.ability.link then linktxt = v.ability.link end
+        end
+        linktxt = linktxt or srandom(8)
+        for i, v in pairs(G.hand.highlighted) do
+            for i, v2 in pairs(G.hand.cards) do
+                if v2 ~= v and v.ability.link and v.ability.link == v2.ability.link then
+                    v2.ability.link = linktxt
+                end
+            end
+            for i, v2 in pairs(G.deck.cards) do
+                if v2 ~= v and v.ability.link and v.ability.link == v2.ability.link then
+                    v2.ability.link = linktxt
+                end
+            end
+            for i, v2 in pairs(G.playing_cards) do
+                if v2 ~= v and v.ability.link and v.ability.link == v2.ability.link then
+                    v2.ability.link = linktxt
+                end
+            end
+            v.ability.link = linktxt
+            v:juice_up()
+        end
+    end,
+    can_use = function(self, card)
+        return G.hand and #G.hand.highlighted <= card.ability.selected and #G.hand.highlighted > 0
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.selected
+            }
+        }
+    end,
+})
+
+SMODS.Sticker({
+    atlas = "entr_stickers",
+    pos = { x = 1, y = 1 },
+    key = "link",
+    no_sticker_sheet = true,
+    prefix_config = { key = false },
+    badge_colour = HEX("FF00FF"),
+    loc_vars = function(self,q,card)
+        return {
+            vars = {
+                card.ability.link
+            }
+        }
+    end,
+    apply = function(self,card,val) 
+        if not G.GAME.link then
+            G.GAME.link = srandom(8)
+        end
+        card.ability.link = G.GAME.link
+    end,
+    calculate = function(self, card, context)
+
+    end
+})
+
+local set_abilityref = Card.set_ability
+function Card:set_ability(center, initial, delay_sprites)
+    local link = self.ability and self.ability.link or nil
+    set_abilityref(self, center, initial, delay_sprites)
+    self.ability.link = link
+    if self.ability.link and not initial then
+        if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.link == self.ability.link then set_abilityref(v,center, initial, delay_sprites);v.ability.link=link end end end
+        if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.link == self.ability.link then set_abilityref(v,center, initial, delay_sprites);v.ability.link=link end end end
+        if G.playing_cards then for i, v in pairs(G.playing_cards) do if v.ability.link == self.ability.link then set_abilityref(v, new);v.ability.link=link end end end
+    end
+end
+
+local set_editionref = Card.set_edition
+function Card:set_edition(center, initial, delay_sprites)
+    set_editionref(self, center, initial, delay_sprites)
+    if self.ability.link then
+    if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.link == self.ability.link then set_editionref(v,center, initial, delay_sprites) end end end
+    if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.link == self.ability.link then set_editionref(v, center, initial, delay_sprites) end end end
+    if G.playing_cards then for i, v in pairs(G.playing_cards) do if v.ability.link == self.ability.link then set_editionref(v, center, initial, delay_sprites) end end end    
+    end
+end
+
+local set_suitref = Card.change_suit
+function Card:change_suit(new)
+    local old = self.base.suit
+    set_suitref(self, new)
+    if self.ability.link and new ~= old then
+    if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.link == self.ability.link then set_suitref(v, new) end end end
+    if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.link == self.ability.link then set_suitref(v, new) end end end
+    if G.playing_cards then for i, v in pairs(G.playing_cards) do if v.ability.link == self.ability.link then set_suitref(v, new) end end end
+    end
+end
+
+local set_baseref = Card.set_base
+function Card:set_base(card, initial)
+    set_baseref(self, card, initial)
+    if self.ability.link then
+        if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.link == self.ability.link then set_baseref(v, card, initial) end end end
+        if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.link == self.ability.link then set_baseref(v, card, initial) end end end
+        if G.playing_cards then for i, v in pairs(G.playing_cards) do if v.ability.link == self.ability.link then set_baseref(v, card, initial) end end end
+    end
+end
+
+local set_sealref = Card.set_seal
+function Card:set_seal(card, initial)
+    set_sealref(self, card, initial)
+    if self.ability.link then
+        if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.link == self.ability.link then set_sealref(v, card, initial) end end end
+        if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.link == self.ability.link then set_sealref(v, card, initial) end end end
+        if G.playing_cards then for i, v in pairs(G.playing_cards) do if v.ability.link == self.ability.link then set_sealref(v, card, initial) end end end
+    end
+end
+
+
+local change_baseref = SMODS.change_base
+function SMODS.change_base(card, suit, rank)
+    local card = change_baseref(card, suit, rank)
+    if card.ability.link then
+        if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.link == card.ability.link then change_baseref(v, suit, rank) end end end
+        if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.link == card.ability.link then change_baseref(v, suit, rank) end end end
+        if G.playing_cards then for i, v in pairs(G.playing_cards) do if v.ability.link == card.ability.link then change_baseref(v, suit, rank) end end end
+    end
+    return card
+end
+
+local start_dissolveref = Card.start_dissolve
+function Card:start_dissolve(...)
+    start_dissolveref(self,...)
+    if self.ability.link then
+        if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.link == self.ability.link then start_dissolveref(v,...) end end end
+        if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.link == self.ability.link then start_dissolveref(v,...) end end end
+        if G.playing_cards then for i, v in pairs(G.playing_cards) do if v.ability.link == self.ability.link then start_dissolveref(v,...) end end end
+    end
+end
 
 Entropy.SealSpectral("rendezvous", {x=10,y=5}, "entr_crimson")
 Entropy.SealSpectral("eclipse", {x=12,y=5}, "entr_sapphire")
