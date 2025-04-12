@@ -797,6 +797,13 @@ return {
 					"a random other joker",
 				}
 			},
+			c_entr_entropy = {
+				name = "Entropy",
+				text = {
+					"Completely {C:attention}randomize{}",
+					"up to #1# selected cards",
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {

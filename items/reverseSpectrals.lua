@@ -326,13 +326,14 @@ end
 
 local change_baseref = SMODS.change_base
 function SMODS.change_base(card, suit, rank)
-    local card = change_baseref(card, suit, rank)
-    if card.ability.link then
+    local link = card.ability.link
+    local card2 = change_baseref(card, suit, rank)
+    if link then
         if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.link == card.ability.link then change_baseref(v, suit, rank) end end end
         if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.link == card.ability.link then change_baseref(v, suit, rank) end end end
         if G.playing_cards then for i, v in pairs(G.playing_cards) do if v.ability.link == card.ability.link then change_baseref(v, suit, rank) end end end
     end
-    return card
+    return card2
 end
 
 local start_dissolveref = Card.start_dissolve
@@ -540,8 +541,47 @@ SMODS.Consumable({
 
 Entropy.SealSpectral("eclipse", {x=12,y=5}, "entr_sapphire")
 Entropy.SealSpectral("calamity", {x=6,y=6}, "entr_pink")
-Entropy.SealSpectral("calamity", {x=6,y=6}, "entr_pink")
 
+SMODS.Consumable({
+    key = "entropy",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        select = 2,
+    },
+	pos = {x=7,y=6},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        Entropy.FlipThen(G.hand.highlighted, function(card,area)
+            local edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy")).key
+            local enhancement_type = pseudorandom_element({"Enhanced","Enhanced","Enhanced","Joker","Consumable","Voucher","Booster"}, pseudoseed("entropy"))
+            if enhancement_type == "Consumable" then
+                enhancement_type = pseudorandom_element({"Tarot","Planet","Spectral","Code","RPlanet","RSpectral","RCode"}, pseudoseed("entropy"))
+            end
+            local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("entropy")).key
+            while G.P_CENTERS[enhancement].no_doe do
+                enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("entropy")).key
+            end
+            local seal = pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("entropy")).key
+            card:set_edition(edition)
+            card:set_ability(G.P_CENTERS[enhancement])
+            card:set_seal(seal)
+            SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("entropy")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("entropy")))
+        end)
+    end,
+    can_use = function(self, card)
+        return G.hand and #G.hand.highlighted <= card.ability.select and #G.hand.highlighted > 0
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.select,
+            }
+        }
+    end,
+})
 
 SMODS.Consumable({
     key = "fervour",
