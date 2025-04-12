@@ -365,3 +365,12 @@ function Entropy.FilterArea(area, func)
     end
     return cards
 end
+
+function Entropy.FindPreviousInPool(item, pool)
+    for i, v in pairs(G.P_CENTER_POOLS[pool]) do
+        if G.P_CENTER_POOLS[pool][i].key == item then
+            return G.P_CENTER_POOLS[pool][i-1].key
+        end
+    end
+    return nil
+end

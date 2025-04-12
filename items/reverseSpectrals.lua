@@ -47,6 +47,45 @@ function Card:set_debuff(should_debuff)
 end
 
 Entropy.SealSpectral("insignia", {x=9,y=4}, "entr_silver")
+
+SMODS.Consumable({
+    key = "siphon",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        chipmult = 3
+    },
+	pos = {x=10,y=4},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        local lower = Entropy.FindPreviousInPool(G.jokers.highlighted[1].edition.key, "Edition")
+        Entropy.FlipThen(G.hand.cards, function(card, area)
+            card:set_edition(lower)
+        end)
+        G.jokers.highlighted[1]:start_dissolve()
+    end,
+    can_use = function(self, card)
+        return G.jokers and #G.jokers.highlighted == 1 and G.jokers.highlighted[1].edition
+	end,
+    loc_vars = function(self, q, card)
+        local str = "none"
+        if G.jokers and #G.jokers.highlighted > 0 and G.jokers.highlighted[1].edition and Entropy.FindPreviousInPool(G.jokers.highlighted[1].edition.key, "Edition") then
+            str = G.localization.descriptions.Edition[Entropy.FindPreviousInPool(G.jokers.highlighted[1].edition.key, "Edition")].name
+        end
+        return {
+            vars = {
+                str
+            }
+        }
+    end,
+    entr_credits = {
+        idea = "crabus"
+    }
+})
+
+
 Entropy.SealSpectral("rendezvous", {x=10,y=5}, "entr_crimson")
 Entropy.SealSpectral("eclipse", {x=12,y=5}, "entr_sapphire")
 Entropy.SealSpectral("calamity", {x=6,y=6}, "entr_pink")

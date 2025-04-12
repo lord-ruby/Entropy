@@ -715,6 +715,15 @@ return {
 					"in hand"
 				}
 			},
+			c_entr_siphon = {
+				name = "Siphon",
+				text = {
+					"Destroy 1 selected {C:attention}editioned{}",
+					"joker then apply the {C:attention}previous{} edition",
+					"to all cards in hand",
+					"{C:inactive}(Currently: #1#){}"
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {
