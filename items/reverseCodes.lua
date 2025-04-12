@@ -438,6 +438,7 @@ function end_round()
                     if card.ability.temporary or card.ability.temporary2 then
                         card:start_dissolve()
                     end
+                    card.perma_debuff = nil
                     if card.ability.entr_pseudorandom then
                         card.ability.entr_pseudorandom = false
                         card.ability.cry_rigged = false

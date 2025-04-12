@@ -663,6 +663,58 @@ return {
 					"{C:gold}$#1#{} for each chip taken"
 				}
 			},
+
+			c_entr_insignia = {
+				name = "Insignia",
+				text = {
+					"Adds a {V:1}Silver Seal{}",
+					"to #1# selected card",
+				}
+			},
+			c_entr_rendezvous = {
+				name = "Rendezvous",
+				text = {
+					"Adds a {V:1}Crimson Seal{}",
+					"to #1# selected card",
+				}
+			},
+			c_entr_eclipse = {
+				name = "Eclipse",
+				text = {
+					"Adds a {V:1}Sapphire Seal{}",
+					"to #1# selected card",
+				}
+			},
+			c_entr_calamity = {
+				name = "Calamity",
+				text = {
+					"Adds a {V:1}Pink Seal{}",
+					"to #1# selected card",
+				}
+			},
+			c_entr_downpour = {
+				name = "Downpour",
+				text = {
+					"Adds a {V:1}Cerulean Seal{}",
+					"to #1# selected card",
+				}
+			},
+			c_entr_script = {
+				name = "Script",
+				text = {
+					"Adds a {V:1}Verdant Seal{}",
+					"to #1# selected card",
+				}
+			},
+			c_entr_inscribe = {
+				name = "Inscribe",
+				text = {
+					"Multiply the {C:attention}base{} chips",
+					"of number cards in hand by {X:chips,C:white}X#1#{}",
+					"then {C:attention}debuff{} all number cards",
+					"in hand"
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {

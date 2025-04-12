@@ -17,6 +17,7 @@ local i = {
     "items/stake",
     "items/tags",
     "items/editions",
+    "items/seals",
     "compat/loader"
     --"glop"
 }
@@ -730,3 +731,4 @@ local entrConfigTab = function()
 end
 
 SMODS.current_mod.config_tab = entrConfigTab
+
