@@ -527,6 +527,8 @@ SMODS.Consumable({
         return G.jokers and #G.jokers.highlighted <= card.ability.select and #G.jokers.highlighted > 0 and any_can_banish
 	end,
     loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.e_cry_astral
+        q[#q+1] = {key="eternal",set="Other"}
         return {
             vars = {
                 card.ability.select,
