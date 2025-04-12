@@ -385,6 +385,67 @@ SMODS.Consumable({
     }
 })
 
+SMODS.Consumable({
+    key = "rejuvenate",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        dollars = -15,
+        num = 2
+    },
+	pos = {x=8,y=5},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        local cards = {}
+        for i = 1, card2.ability.num do
+            local ind = -1
+            local tries = 100
+            while (ind == -1 or cards[ind]) and tries > 0 do
+                ind = Entropy.Pseudorandom("changeling", 1, #G.hand.cards)
+                tries = tries - 1
+            end
+            cards[ind] = true
+        end
+        for i, v in pairs(cards) do
+            cards[i] = G.hand.cards[i] 
+        end
+        local first = nil
+        local ed = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("rejuvenate")).key
+        local enh = G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("rejuvenate")).key]
+        local seal = pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("rejuvenate")).key
+        for i, v in pairs(G.hand.cards) do if v.highlighted then first = v;cards[i]=v end end
+        Entropy.FlipThen(cards, function(card,area)
+            if card.highlighted then
+                card:set_edition(ed)
+                card:set_ability(enh)
+                card:set_seal(seal)
+            else
+                copy_card(first,card)
+                card:set_edition(ed)
+                card:set_ability(enh)
+                card:set_seal(seal)
+            end
+        end)
+        ease_dollars(card2.ability.dollars)
+    end,
+    can_use = function(self, card)
+        return G.hand and #G.hand.highlighted <= 1 and #G.hand.highlighted > 0
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.num,
+                card.ability.dollars
+            }
+        }
+    end,
+    entr_credits = {
+        idea = {"crabus"}
+    }
+})
+
 Entropy.SealSpectral("rendezvous", {x=10,y=5}, "entr_crimson")
 Entropy.SealSpectral("eclipse", {x=12,y=5}, "entr_sapphire")
 Entropy.SealSpectral("calamity", {x=6,y=6}, "entr_pink")

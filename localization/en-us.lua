@@ -769,6 +769,16 @@ return {
 					"{C:attention}Flesh{} cards"
 				}
 			},
+			c_entr_rejuvenate = {
+				name = "Rejuvenate",
+				text = {
+					"Add a random {C:attention}seal{},",
+					"{C:attention}enhancement{}, and {C:attention}edition{}",
+					"to 1 selected card then",
+					"convert {C:attention}#1#{} other cards",
+					"into this card, {C:gold}$#2#{}",
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {
