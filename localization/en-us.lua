@@ -780,7 +780,7 @@ return {
 				}
 			},
 			c_entr_crypt = {
-				name = "Rejuvenate",
+				name = "Crypt",
 				text = {
 					"Select {C:attention}#1#{} jokers",
 					"convert the {C:attention}left{} joker",
