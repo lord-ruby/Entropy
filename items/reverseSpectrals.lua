@@ -10,6 +10,48 @@ SMODS.ConsumableType({
 })
 
 SMODS.Consumable({
+    key = "changeling",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        num = 3
+    },
+	pos = {x=6,y=4},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        local cards = {}
+        for i = 1, card2.ability.num do
+            local ind = -1
+            local tries = 100
+            while (ind == -1 or cards[ind]) and tries > 0 do
+                ind = Entropy.Pseudorandom("changeling", 1, #G.hand.cards)
+                tries = tries - 1
+            end
+            cards[ind] = true
+        end
+        for i, v in pairs(cards) do
+            cards[i] = G.hand.cards[i] 
+        end
+        Entropy.FlipThen(cards, function(card,area)
+            card:set_edition(pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("changeling")).key)
+            SMODS.change_base(card, nil, pseudorandom_element({"King", "Queen", "Jack"}, pseudoseed("changeling")))
+        end)
+    end,
+    can_use = function(self, card)
+        return G.hand and #G.hand.cards > 0
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.num
+            }
+        }
+    end,
+})
+
+SMODS.Consumable({
     key = "inscribe",
     set = "RSpectral",
     unlocked = true,

@@ -724,6 +724,13 @@ return {
 					"{C:inactive}(Currently: #1#){}"
 				}
 			},
+			c_entr_changeling = {
+				name = "Changeling",
+				text = {
+					"Convert {C:attention}#1#{} cards in hand",
+					"to {C:attention}random{} editioned face cards",
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {

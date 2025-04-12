@@ -326,7 +326,7 @@ function Entropy.RandomModificationSpectral(key, sprite_pos, modifications, high
                 end
                 cards[ind] = true
             end
-            for i, v in pairs(cards) do cards[i] = G.hand[i] end
+            for i, v in pairs(cards) do cards[i] = G.hand.cards[i] end
             Entropy.ModifyHandCard(modifications, cards)
         end,
         can_use = function(self, card)
@@ -355,7 +355,7 @@ function Entropy.GetModificationQueue(mtype, key)
 end
 
 function Entropy.Pseudorandom(seed, min, max)
-    return math.floor(pseudorandom(seed)*(max-min)+min)
+    return math.floor(pseudorandom(seed)*(max-min)+0.5)+min
 end
 
 function Entropy.FilterArea(area, func)

@@ -10,7 +10,7 @@ SMODS.Seal({
 
 function SMODS.calculate_main_scoring(context, scoring_hand)
     for _, card in ipairs(context.cardarea.cards) do
-        if (card.seal == "entr_crimson" and not context.crimson_seal) or (card.seal ~= "entr_crimson" and context.crimson_seal) then return end
+        if (card.seal == "entr_crimson" and not G.GAME.crimson_seal) or (card.seal ~= "entr_crimson" and G.GAME.crimson_seal) then return end
             local in_scoring = scoring_hand and SMODS.in_scoring(card, context.scoring_hand)
             --add cards played to list
             if scoring_hand and not SMODS.has_no_rank(card) and in_scoring then
@@ -36,7 +36,8 @@ function SMODS.calculate_main_scoring(context, scoring_hand)
                 if card.seal == "entr_crimson" then
                     local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
                     G.FUNCS.get_poker_hand_info(G.play.cards)
-                        if SMODS.in_scoring(card, scoring_hand) then
+                    print(SMODS.in_scoring(card, scoring_hand))
+                    if SMODS.in_scoring(card, scoring_hand) then
                         local delay = 0.6
                         SMODS.score_card(card, context)
                         Entropy.Again(card)
@@ -89,8 +90,10 @@ function SMODS.score_card(card, context)
 end
 
 function evaluate_play_final_scoring(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
-    local _,_,_, scoring_hand2, _ = G.FUNCS.get_poker_hand_info(G.play.cards)
-    SMODS.calculate_main_scoring({cardarea = G.play, full_hand = G.play.cards, scoring_hand = scoring_hand2, scoring_name = text, poker_hands = poker_hands,crimson_seal=true}, v == G.play and scoring_hand or nil)
+    local txt,_,_, scoring_hand2, _ = G.FUNCS.get_poker_hand_info(G.play.cards)
+    G.GAME.crimson_seal = true
+    SMODS.calculate_main_scoring({cardarea = G.play, full_hand = G.play.cards, scoring_hand = scoring_hand2, scoring_name = text, poker_hands = poker_hands}, v == G.play and scoring_hand or nil)
+    G.GAME.crimson_seal = nil
     for i, v in pairs(G.hand.cards) do
         if v.seal == "entr_crimson" then
             SMODS.score_card(v, {cardarea=G.hand,main_scoring=true})
