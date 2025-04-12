@@ -96,7 +96,19 @@ function Entropy.GetHighlightedCard(areas, blacklist)
         end
     end
 end
-
+function Entropy.GetHighlightedCards(areas, blacklist)
+    local total = 0
+    for i, v in pairs(areas or G) do
+        if type(v) == "table" and v.cards and v.highlighted then
+            if #v.highlighted > 0 then
+                for i2, v2 in pairs(v.highlighted) do
+                    if not (blacklist or {})[v.highlighted[i2].config.center.key] then total=total+1 end
+                end
+            end
+        end
+    end
+    return total
+end
 function Entropy.ChangeEnhancements(areas, enh, required, uhl)
     for i, v in pairs(areas) do
         if not v.cards then 

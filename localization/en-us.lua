@@ -804,6 +804,14 @@ return {
 					"up to #1# selected cards",
 				}
 			},
+			c_entr_fusion = {
+				name = "Fusion",
+				text = {
+					"{C:attention}#1#{} random cards in hand",
+					"become random cards of 1",
+					"selected cards type"
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {

@@ -864,6 +864,58 @@ SMODS.Consumable({
     end,
 })
 
+SMODS.Consumable({
+    key = "fusion",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        num = 3,
+    },
+	pos = {x=10,y=7},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        local cards = {}
+        for i = 1, card2.ability.num do
+            local ind = -1
+            local tries = 100
+            while (ind == -1 or cards[ind]) and tries > 0 do
+                ind = Entropy.Pseudorandom("fusion", 1, #G.hand.cards)
+                tries = tries - 1
+            end
+            cards[ind] = true
+        end
+        for i, v in pairs(cards) do
+            cards[i] = G.hand.cards[i] 
+        end
+        Entropy.FlipThen(cards, function(card,area)
+            local sel = GetSelectedCard()
+            local enhancement_type = sel.config.center.set
+            if sel.area == G.hand then
+                SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("fusion")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("fusion")))
+                card:set_ability(G.P_CENTERS.c_base)
+            else
+                local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("fusion")).key
+                while G.P_CENTERS[enhancement].no_doe or (G.P_CENTERS[enhancement].soul_rate and pseudorandom("fusion") > 0.02) do
+                    enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("fusion")).key
+                end
+                card:set_ability(G.P_CENTERS[enhancement])
+            end
+        end)
+    end,
+    can_use = function(self, card)
+        return G.hand and #G.hand.cards > 0 and Entropy.GetHighlightedCards() == 2
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.num,
+            }
+        }
+    end,
+})
+
 Entropy.SealSpectral("downpour", {x=12,y=7}, "entr_cerulean")
 Entropy.SealSpectral("script", {x=6,y=8}, "entr_verdant")
 
