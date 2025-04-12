@@ -123,7 +123,7 @@ SMODS.Consumable({
         }
     end,
     entr_credits = {
-        idea = "crabus"
+        idea = {"crabus"}
     }
 })
 
@@ -166,6 +166,9 @@ SMODS.Consumable({
             }
         }
     end,
+    entr_credits = {
+        idea = {"CapitalChirp"}
+    }
 })
 
 SMODS.Consumable({
@@ -316,6 +319,46 @@ function Card:start_dissolve(...)
         if G.playing_cards then for i, v in pairs(G.playing_cards) do if v.ability.link == self.ability.link then start_dissolveref(v,...) end end end
     end
 end
+
+SMODS.Consumable({
+    key = "ichor",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        num = 2
+    },
+	pos = {x=7,y=5},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card, area, copier)
+        local joker = pseudorandom_element(Entropy.FilterArea(G.jokers.cards, function(card)
+            return card.edition and card.edition.key == "e_negative"
+        end), pseudoseed("ichor"))
+        joker:start_dissolve()
+        G.GAME.banned_keys[joker.config.center.key] = true
+        G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.num
+    end,
+    can_use = function(self, card)
+        if not G.jokers then return false end
+        local has_negative = false
+        for i, v in pairs(G.jokers.cards) do
+            if v.edition and v.edition.key == "e_negative" then has_negative = true end
+        end
+        return has_negative
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.e_negative
+        return {
+            vars = {
+                card.ability.num
+            }
+        }
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
+})
 
 Entropy.SealSpectral("rendezvous", {x=10,y=5}, "entr_crimson")
 Entropy.SealSpectral("eclipse", {x=12,y=5}, "entr_sapphire")

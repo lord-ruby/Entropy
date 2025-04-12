@@ -739,6 +739,22 @@ return {
 					"value in dollars"
 				}
 			},
+			c_entr_ichor = {
+				name = "Ichor",
+				text = {
+					"Banish a {C:attention}random{} held",
+					"{C:dark_edition}negative{} joker",
+					"{C:dark_edition}+#1#{} joker slots"
+				}
+			},
+			c_entr_pact = {
+				name = "Pact",
+				text = {
+					"{C:attention}Link{} up to {C:attention}#1#{}",
+					"cards together, all modifications",
+					"affect all of the linked cards"
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {
