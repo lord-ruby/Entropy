@@ -776,7 +776,7 @@ return {
 					"{C:attention}enhancement{}, and {C:attention}edition{}",
 					"to 1 selected card then",
 					"convert {C:attention}#1#{} other cards",
-					"into this card, {C:gold}$#2#{}",
+					"into this card, {C:gold}#2#{}",
 				}
 			},
 			c_entr_crypt = {
@@ -818,6 +818,14 @@ return {
 					"{C:attention}Unredeem{} a random voucher",
 					"and all lower tiers then redeem the next",
 					"tier of voucher"
+				}
+			},
+			c_entr_evocation = {
+				name = "Evocation",
+				text = {
+					"{C:attention}Upgrade{} #1# selected joker's",
+					"rarity then destroy all other jokers",
+					"{C:blue}#2#{} hands"
 				}
 			},
 		},

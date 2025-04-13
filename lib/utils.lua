@@ -407,3 +407,8 @@ end
 function Entropy.InTable(table,val)
     for i, v in pairs(table) do if v == val then return i end end
 end
+
+function Entropy.FormatDollarValue(dollars)
+    if to_big(dollars) < to_big(0) then return "-$"..(-dollars) end
+    return "$"..dollars
+end

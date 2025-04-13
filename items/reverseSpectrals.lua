@@ -438,7 +438,7 @@ SMODS.Consumable({
         return {
             vars = {
                 card.ability.num,
-                card.ability.dollars
+                Entropy.FormatDollarValue(card.ability.dollars)
             }
         }
     end,
@@ -987,6 +987,7 @@ SMODS.Consumable({
     atlas = "miscc",
     config = {
         num = 1,
+        hands = -1
     },
 	pos = {x=7,y=8},
     --soul_pos = { x = 5, y = 0},
@@ -1015,6 +1016,7 @@ SMODS.Consumable({
             card:add_to_deck()
             G.jokers:emplace(card)
         end
+        G.GAME.round_resets.hands = G.GAME.round_resets.hands - card.ability.hands
     end,
     can_use = function(self, card)
         return G.jokers and #G.jokers.highlighted > 0 and #G.jokers.highlighted <= card.ability.num
@@ -1023,6 +1025,7 @@ SMODS.Consumable({
         return {
             vars = {
                 card.ability.num,
+                card.ability.hands
             }
         }
     end,
