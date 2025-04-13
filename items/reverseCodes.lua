@@ -439,6 +439,9 @@ function end_round()
                         card.states.visible = false
                         card:start_dissolve()
                     end
+                    if card.ability.superego then
+                        card.ability.superego_copies = card.ability.superego_copies + 1
+                    end
                     card.perma_debuff = nil
                     if card.ability.entr_pseudorandom then
                         card.ability.entr_pseudorandom = false

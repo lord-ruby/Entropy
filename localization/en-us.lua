@@ -828,6 +828,29 @@ return {
 					"{C:blue}#2#{} hands"
 				}
 			},
+			c_entr_mimic = {
+				name = "Mimic",
+				text = {
+					"Create a {C:attention}banana perishable{} copy",
+					"of #1# selected cards",
+				}
+			},
+			c_entr_superego = {
+				name = "Superego",
+				text = {
+					"Apply a {C:attention}superego{}",
+					"sticker to 1 selected Joker then",
+					"debuff it"
+				}
+			},
+			c_entr_engulf = {
+				name = "Engulf",
+				text = {
+					"Apply {C:dark_edition}Solar{} effect",
+					"to {C:attention}1{} selected card",
+					"in hand"
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {
@@ -915,6 +938,14 @@ return {
 				text = {
 					"{C:red}Destroyed{} at the end",
 					"of the round"
+				}
+			},
+			superego = {
+				name = "Superego",
+				text = {
+					"Create {C:attention}#1#{} copies",
+					"of this card when sold",
+					"increase at the end of the round"
 				}
 			},
 			entr_entropic_sticker = {
@@ -1063,6 +1094,7 @@ return {
 			temporary = "Temporary",
 			entr_pseudorandom = "Pseudorandom",
 			link = "Linked",
+			superego = "Superego",
 
 			entr_crimson_seal = "Crimson Seal",
 			entr_sapphire_seal = "Sapphire Seal",

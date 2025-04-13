@@ -109,7 +109,7 @@ SMODS.Consumable({
 local set_debuffref = Card.set_debuff
 
 function Card:set_debuff(should_debuff)
-    if self.perma_debuff then should_debuff = true end
+    if self.perma_debuff or self.ability.superego then should_debuff = true end
     set_debuffref(self, should_debuff)
 end
 
@@ -1074,7 +1074,6 @@ SMODS.Consumable({
         return {
             vars = {
                 card.ability.num,
-                card.ability.hands
             }
         }
     end,
@@ -1088,8 +1087,98 @@ G.FUNCS.check_for_buy_space = function(card)
 	end
 	return gfcfbs(card)
 end
+
+SMODS.Consumable({
+    key = "superego",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        num = 1,
+    },
+	pos = {x=8,y=6},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        local card = Entropy.GetHighlightedCard({G.jokers}, {["c_entr_mimic"]=true})
+        card.ability.superego = true
+        card.ability.superego_copies = 0
+        card.debuff = true
+        card.sell_cost = 0
+    end,
+    can_use = function(self, card)
+        return Entropy.GetHighlightedCards({G.jokers}, {["c_entr_mimic"]=true}) == card.ability.num
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {key="superego", set="Other", vars = {0}}
+        return {
+            vars = {
+                card.ability.num,
+            }
+        }
+    end,
+})
+
+local sell_ref = G.FUNCS.sell_card
+G.FUNCS.sell_card = function(e)
+    if e.config.ref_table.ability.superego_copies then
+        for i = 1, e.config.ref_table.ability.superego_copies do
+            local card2 = copy_card(e.config.ref_table)
+            card2:add_to_deck()
+            card2.ability.superego = nil
+            card2.ability.superego_copies = nil
+            card2.debuff = false
+            card2.sell_cost = 0
+            e.config.ref_table.area:emplace(card2)
+        end
+    end
+    sell_ref(e)
+end
+SMODS.Sticker({
+    atlas = "entr_stickers",
+    pos = { x = 4, y = 1 },
+    key = "superego",
+    no_sticker_sheet = true,
+    prefix_config = { key = false },
+    badge_colour = HEX("FF00FF"),
+    apply = function(self,card,val)
+        card.ability.superego = true
+        card.ability.superego_copies = 0
+        card.debuff = true
+    end,
+    loc_vars = function(self, q, card) return {vars={card.ability and card.ability.superego_copies or 0}} end
+})
 Entropy.SealSpectral("downpour", {x=12,y=7}, "entr_cerulean")
 Entropy.SealSpectral("script", {x=6,y=8}, "entr_verdant")
+
+SMODS.Consumable({
+    key = "engulf",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        num = 1,
+    },
+	pos = {x=8,y=7},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        Entropy.FlipThen(G.hand.highlighted, function(card, area)
+            card:set_edition("e_entr_solar")
+        end)
+    end,
+    can_use = function(self, card)
+        return Entropy.GetHighlightedCards({G.hand}, {["c_entr_mimic"]=true}) == card.ability.num
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] =  G.P_CENTERS.e_entr_solar
+        return {
+            vars = {
+                card.ability.num,
+            }
+        }
+    end,
+})
 
 SMODS.Consumable({
     key = "pulsar",
