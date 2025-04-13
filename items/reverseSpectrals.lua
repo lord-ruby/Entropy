@@ -340,7 +340,7 @@ SMODS.Sticker({
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, initial, delay_sprites)
     local link = self.ability and self.ability.link or nil
-    if not self.ability or not self.ability.disavow then set_abilityref(self, center, initial, delay_sprites) end
+    if not self.ability or not self.ability.disavow or center.key == "m_entr_disavowed" then set_abilityref(self, center, initial, delay_sprites) end
     self.ability.link = link
     if self.ability.link and not initial then
         if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.link == self.ability.link then set_abilityref(v,center, initial, delay_sprites);v.ability.link=link end end end
