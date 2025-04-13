@@ -199,6 +199,7 @@ SMODS.Seal({
     badge_colour = HEX("cc48be"),
     calculate = function(self, card, context)
         if context.pre_discard and context.cardarea == G.hand and card.highlighted then
+            card.ability.temporary2 = true
             card:remove_from_deck()
             card:start_dissolve()
             if #G.consumeables.cards < G.consumeables.config.card_limit then

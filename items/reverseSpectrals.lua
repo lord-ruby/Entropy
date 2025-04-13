@@ -916,6 +916,69 @@ SMODS.Consumable({
     end,
 })
 
+SMODS.Consumable({
+    key = "substitute",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        num = 3,
+    },
+	pos = {x=6,y=7},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        local usable_vouchers = {}
+        local voucher = pseudorandom_element(G.vouchers.cards, pseudoseed("substitute"))
+        local tries = 100
+        while (voucher.ability.eternal or voucher.ability.cry_absolute or Entropy.GetHigherVoucherTier(voucher.config.center.key) == nil) and tries > 0 do
+            voucher = pseudorandom_element(G.vouchers.cards, pseudoseed("substitute"))
+            tries = tries - 1
+        end
+        voucher:unredeem()
+        voucher:start_dissolve()
+        for i, v in pairs(voucher.config.center.requires or {}) do
+            if Entropy.InTable(G.vouchers.cards, v) then
+                local voucher2 = G.vouchers.cards[Entropy.InTable(G.vouchers.cards, v)]
+                for i2, v2 in pairs(voucher2.config.center.requires or {}) do
+                    if Entropy.InTable(G.vouchers.cards, v2) then
+                        local voucher3 = G.vouchers.cards[Entropy.InTable(G.vouchers.cards, v2)]
+                        voucher3:unredeem()
+                        voucher3:start_dissolve()
+                    end
+                end
+                voucher2:unredeem()
+                voucher2:start_dissolve()
+            end
+        end
+        local card = create_card("Voucher", G.vouchers, nil, nil, nil, nil, nil, "entr_beyond")
+        card:set_ability(G.P_CENTERS[Entropy.GetHigherVoucherTier(voucher.config.center.key) or "v_blank"])
+        card:add_to_deck()
+        G.vouchers:emplace(card)
+        --Entropy.GetHigherVoucherTier(voucher.config.center.key) 
+    end,
+    can_use = function(self, card)
+        local usable_count = 0
+		for _, v in pairs(G.vouchers.cards) do
+			if not v.ability.eternal and Entropy.GetHigherVoucherTier(v.config.center.key) and not v.ability.cry_absolute then
+				usable_count = usable_count + 1
+			end
+		end
+		if usable_count > 0 then
+			return true
+		else
+			return false
+		end
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.num,
+            }
+        }
+    end,
+})
+
 Entropy.SealSpectral("downpour", {x=12,y=7}, "entr_cerulean")
 Entropy.SealSpectral("script", {x=6,y=8}, "entr_verdant")
 

@@ -436,6 +436,7 @@ function end_round()
                         end
                     end
                     if card.ability.temporary or card.ability.temporary2 then
+                        card.states.visible = false
                         card:start_dissolve()
                     end
                     card.perma_debuff = nil

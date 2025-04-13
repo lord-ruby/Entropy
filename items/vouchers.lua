@@ -29,7 +29,7 @@ SMODS.Voucher({
     key = "supersede",
     atlas = "vouchers",
     pos = {x=2, y=0},
-    requires = {"v_entr_marked", "v_entr_trump_card"},
+    requires = {"v_entr_trump_card"},
     redeem = function(self, card)
         G.GAME.Supersede = true
     end,

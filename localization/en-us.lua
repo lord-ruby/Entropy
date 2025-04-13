@@ -5,7 +5,7 @@ return {
 				name = "Flesh Card",
 				text = {
 					"{C:green}#1# in #2#{} chance to",
-					"destroy this card when {C:attention}played{}"
+					"destroy this card when {C:attention}discarded{}"
 				}
 			}
 		},
@@ -810,6 +810,14 @@ return {
 					"{C:attention}#1#{} random cards in hand",
 					"become random cards of 1",
 					"selected cards type"
+				}
+			},
+			c_entr_substitute = {
+				name = "Substitute",
+				text = {
+					"{C:attention}Unredeem{} a random voucher",
+					"and all lower tiers then redeem the next",
+					"tier of voucher"
 				}
 			},
 		},

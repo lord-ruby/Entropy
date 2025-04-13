@@ -19,9 +19,11 @@ SMODS.Enhancement({
 		}
 	end,
 	calculate = function(self, card, context)
-        if context.destroy_card and (context.cardarea == G.play or context.cardarea == "unscored")
+        if context.pre_discard and context.cardarea == G.hand and card.highlighted
         and pseudorandom("flesh") < (card.ability.cry_rigged and card.ability.extra.odds or G.GAME.probabilities.normal*(card.ability.extra.numerator/card.ability.extra.odds)) then 
-            return { remove = true } 
+			card.ability.temporary2 = true
+			card:remove_from_deck()
+            card:start_dissolve()
         end
 	end,
 })

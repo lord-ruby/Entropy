@@ -397,3 +397,13 @@ function srandom(length)
     end
     return total
 end
+
+function Entropy.GetHigherVoucherTier(voucher_key)
+    for i, v in pairs(G.P_CENTER_POOLS.Voucher) do
+        if Entropy.InTable(v.requires or {}, voucher_key) then return v.key end
+    end
+end
+
+function Entropy.InTable(table,val)
+    for i, v in pairs(table) do if v == val then return i end end
+end
