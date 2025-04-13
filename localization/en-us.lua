@@ -823,7 +823,7 @@ return {
 			c_entr_evocation = {
 				name = "Evocation",
 				text = {
-					"{C:attention}Upgrade{} #1# selected joker's",
+					"{C:attention}Upgrade{} #1# selected jokers",
 					"rarity then destroy all other jokers",
 					"{C:blue}#2#{} hands"
 				}
