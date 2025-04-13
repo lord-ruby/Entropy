@@ -1275,10 +1275,14 @@ SMODS.Consumable({
         local card = Entropy.GetHighlightedCard(nil, {c_entr_conduct = true})
         local area = card.area
         local edition = Entropy.FindPreviousInPool(card.edition.key, "Edition")
-        Entropy.FlipThen(area.cards, function(card3, area, indx)
-            if area[indx+1] == card or area[indx-1] == card then
-                card3:set_edition(edition)
+        local cards = {}
+        for i, v in pairs(area.cards) do
+            if area.cards[i+1] == card or area.cards[i-1] == card then
+                cards[#cards+1]=v
             end
+        end
+        Entropy.FlipThen(cards, function(card3, area, indx)
+            card3:set_edition(edition)
         end)
     end,
     can_use = function(self, card)
