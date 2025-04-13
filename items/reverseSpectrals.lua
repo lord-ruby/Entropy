@@ -979,6 +979,56 @@ SMODS.Consumable({
     end,
 })
 
+SMODS.Consumable({
+    key = "evocation",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        num = 1,
+    },
+	pos = {x=7,y=8},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        for i, v in pairs(G.jokers.cards) do
+            if not v.highlighted and not v.ability.cry_absolute and not v.ability.eternal then
+                v:remove_from_deck()
+                v:start_dissolve()
+            end
+        end
+        for i, card in pairs(G.jokers.highlighted) do
+            card:remove_from_deck()
+            card:start_dissolve()
+            local rare = nil
+            if card.config.center.rarity ~= "j_entr_hyper_exotic" then
+                rare = Entropy.RarityUppers[card.config.center.rarity or 1] or card.config.center.rarity
+            end
+            if rare == 1 then rare == "Common" end
+            if rare == 2 then rare == "Uncommon" end
+            if rare == 4 then
+                card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, 'evocation')
+            else 
+                card = create_card("Joker", G.jokers, nil, rare, nil, nil, nil, 'evocation')
+            end
+            card:juice_up(0.3, 0.3)
+            card:add_to_deck()
+            G.jokers:emplace(card)
+        end
+    end,
+    can_use = function(self, card)
+        return G.jokers and #G.jokers.highlighted > 0 and #G.jokers.highlighted <= card.ability.num
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.num,
+            }
+        }
+    end,
+})
+
+
 Entropy.SealSpectral("downpour", {x=12,y=7}, "entr_cerulean")
 Entropy.SealSpectral("script", {x=6,y=8}, "entr_verdant")
 
