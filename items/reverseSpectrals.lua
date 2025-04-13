@@ -1031,7 +1031,63 @@ SMODS.Consumable({
     end,
 })
 
-
+SMODS.Consumable({
+    key = "mimic",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        num = 1,
+    },
+	pos = {x=12,y=6},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        local orig = Entropy.GetHighlightedCard(nil, {["c_entr_mimic"]=true})
+        local newcard = copy_card(orig)
+        newcard:add_to_deck()
+        newcard.ability.perishable = true
+        newcard.ability.banana = true
+        newcard.area = orig.area
+        if newcard.ability.set == "Booster" and orig.area ~= G.hand then
+            newcard.area = G.consumeables
+            newcard:add_to_deck()
+            table.insert(newcard.area.cards, newcard)
+        elseif newcard.ability.set == "Voucher" and orig.area ~= G.hand then
+            newcard.area = G.consumeables
+            newcard:add_to_deck()
+            table.insert(newcard.area.cards, newcard)
+        else
+            orig.area:emplace(newcard)
+            if orig.area.config.type == "shop" then
+                local ref = G.FUNCS.check_for_buy_space(c1)
+                newcard.ability.infinitesimal = true
+                newcard.cost = 0
+                G.FUNCS.buy_from_shop({config={ref_table=newcard}})
+            end
+        end
+    end,
+    can_use = function(self, card)
+        return Entropy.GetHighlightedCards(nil, {["c_entr_mimic"]=true}) == card.ability.num
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.num,
+                card.ability.hands
+            }
+        }
+    end,
+})
+local gfcfbs = G.FUNCS.check_for_buy_space
+G.FUNCS.check_for_buy_space = function(card)
+	if
+		not card or card.ability.infinitesimal
+	then
+		return true
+	end
+	return gfcfbs(card)
+end
 Entropy.SealSpectral("downpour", {x=12,y=7}, "entr_cerulean")
 Entropy.SealSpectral("script", {x=6,y=8}, "entr_verdant")
 
