@@ -12,5 +12,6 @@ payload = '''
 for i, v in pairs(info_queue) do
     if v.key == "e_negative" and _c.set == "Booster" then info_queue[i].key = "e_negative_consumable" end
 end
+local seal = G.P_SEALS[v] or G.P_SEALS[SMODS.Seal.badge_to_key[v] or '']
 '''
 match_indent = true
