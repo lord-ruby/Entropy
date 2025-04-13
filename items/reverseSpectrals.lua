@@ -1146,7 +1146,7 @@ SMODS.Sticker({
         card.ability.superego_copies = 0
         card.debuff = true
     end,
-    loc_vars = function(self, q, card) return {vars={card.ability and card.ability.superego_copies or 0}} end
+    loc_vars = function(self, q, card) return {vars={card.ability and math.floor(card.ability.superego_copies) or 0}} end
 })
 Entropy.SealSpectral("downpour", {x=12,y=7}, "entr_cerulean")
 Entropy.SealSpectral("script", {x=6,y=8}, "entr_verdant")

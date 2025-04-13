@@ -440,7 +440,7 @@ function end_round()
                         card:start_dissolve()
                     end
                     if card.ability.superego then
-                        card.ability.superego_copies = card.ability.superego_copies + 1
+                        card.ability.superego_copies = card.ability.superego_copies + 0.5
                     end
                     card.perma_debuff = nil
                     if card.ability.entr_pseudorandom then

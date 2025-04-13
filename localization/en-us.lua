@@ -969,7 +969,7 @@ return {
 				text = {
 					"Create {C:attention}#1#{} copies",
 					"of this card when sold",
-					"increase at the end of the round"
+					"increase every 2 rounds"
 				}
 			},
 			entr_entropic_sticker = {
