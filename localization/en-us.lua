@@ -7,7 +7,7 @@ return {
 			j_entr_stillicidium = {
 				name = "Stillicidium",
 				text = {
-					"Transform {C:attention}jokers{} to the right",
+					"Transform {C:attention}Jokers{} to the right",
 					"and all {C:attention}consumables{} into the",
 					"card that precedes them in the",
 					"collection at the end of the shop",
@@ -32,7 +32,7 @@ return {
 			j_entr_acellero = {
 				name = "Epitachyno",
 				text = {
- 					"{X:dark_edition,C:white}^#1#{} to all other joker values",
+ 					"{X:dark_edition,C:white}^#1#{} to all other Joker values",
 					"at the end of the {C:attention}shop{}",
 					"then increase {C:attention}exponent{} by {X:dark_edition,C:white}#2#{}"
 				}
@@ -48,11 +48,11 @@ return {
 			j_entr_xekanos = {
 				name = "Xekanos",
 				text = {
- 					"{X:dark_edition,C:white}#1#X{} {C:attention}ante gain{}",
+ 					"{X:dark_edition,C:white}#1#X{} {C:attention}Ante gain{}",
 					"increases by {X:dark_edition,C:white}#2#{}",
-					"when the ante changes",
+					"when the Ante changes",
 					"{X:dark_edition,C:white}Halve{} this value when",
-					"a {C:attention}rare{} or higher rarity {C:attention}joker{}",
+					"a {C:attention}Rare{} or higher rarity {C:attention}Joker{}",
 					"is sold"
 				}
 			},
@@ -60,9 +60,9 @@ return {
 				name = "Ieros",
 				text = {
  					"{X:dark_edition,C:white}33%{} chance to upgrade",
-					"joker {C:attention}rarities{} in the shop recursively",
-					"Gain {X:dark_edition,C:white}^^Chips{} when buying a joker",
-					"Based on the jokers {C:attention}rarity{}",
+					"Joker {C:attention}rarities{} in the shop recursively",
+					"Gain {X:dark_edition,C:white}^^Chips{} when buying a Joker",
+					"Based on the Joker's {C:attention}rarity{}",
 					"{C:inactive}(Currently: {}{X:dark_edition,C:white}^^#1#{}{C:inactive}){}",
 				}
 			},
@@ -71,14 +71,14 @@ return {
 				text = {
 					"Destroy a {C:attention}random{} consumable and",
 					"create a corresponding {C:dark_edition}Negative{}",
-					"mega booster pack at the end of the {C:attention}shop{}"
+					"Mega Booster Pack at the end of the {C:attention}shop{}"
 				}
 			},
 			j_entr_yorick = {
 				name = "Kciroy",
 				text = {
 					"{C:dark_edition}X#1#{} Hand size, {C:dark_edition}+#2#{} card selection limit",
-					"This joker gains {X:dark_edition,C:white}^#3#{} Chips every",
+					"This Joker gains {X:dark_edition,C:white}^#3#{} Chips every",
 					"{C:attention}#4#{} {C:inactive}[#5#]{} cards discarded",
 					"{C:inactive}(Currently{} {X:dark_edition,C:white}^#6#{} {C:inactive}Chips){}"
 				}
@@ -86,27 +86,27 @@ return {
 			j_entr_chicot = {
 				name = "Tocihc",
 				text = {
-					"Create the {C:attention}current{} blind's skip",
-					"tag when blind is selected",
-					"reduce non-boss blind sizes by {C:attention}80%{}",
+					"Create the {C:attention}current{} Blind's skip",
+					"tag when Blind is selected",
+					"Reduce non-Boss Blind sizes by {C:attention}80%{}",
 					"{C:inactive}(Currently: #1#){}"
 				}
 			},
 			j_entr_triboulet = {
 				name = "Teluobirt",
 				text = {
-					"Scored {C:attention}jacks{} give {X:chips,C:white}XChips{}",
-					"equal to the {C:attention}number{} of played jacks in the hand",
-					"retrigger {C:attention}scored{} jacks based on their",
+					"Scored {C:attention}Jacks{} give {X:chips,C:white}XChips{}",
+					"equal to the {C:attention}number{} of played Jacks in the hand",
+					"Retrigger {C:attention}scored{} Jacks based on their",
 					"order in the played hand"
 				}
 			},
 			j_entr_canio = {
 				name = "Oinac",
 				text = {
-					"This joker gains {X:dark_edition,C:white}^#1#{} Chips",
+					"This Joker gains {X:dark_edition,C:white}^#1#{} Chips",
 					"when a {C:attention}face{} card is destroyed",
-					"{C:attention}played{} playing cards are destroyed",
+					"{C:attention}Played{} playing cards are destroyed",
 					"and a card with +1 rank is drawn to the {C:attention}hand{}",
 					"{C:inactive}(Currently: {}{X:dark_edition,C:white}^#2#{} {C:inactive}Chips){}"
 				}
@@ -133,8 +133,8 @@ return {
 				name = "Redefined Deck",
 				text =  {
 								"Every card is also a random",
-								"{C:attention}Joker{}, {C:attention}booster pack{},",
-								"{C:attention}voucher{}, or {C:attention}consumable{}"
+								"{C:attention}Joker{}, {C:attention}Booster Pack{},",
+								"{C:attention}Voucher{}, or {C:attention}consumable{}"
 							}
 			},
 			b_entr_doc = {
@@ -154,7 +154,7 @@ return {
 				name = "The Fool?",
 				text = {
 					"Reverse {C:attention}1{} selected",
-					"tarot or reverse tarot"
+					"Tarot or reverse Tarot"
 				}
 			}
 			
@@ -178,9 +178,9 @@ return {
 			v_entr_supersede = {
 				name = "Supersede",
 				text = {
-					"{C:red}Twisted{} booster packs have a",
+					"{C:red}Twisted{} Booster Packs have a",
 					"fixed {C:red}20%{} chance to replace",
-					"any other booster pack in the shop"
+					"any other Booster Pack in the shop"
 				},
 			},
 		},
@@ -194,21 +194,21 @@ return {
 			c_entr_root_kit = {
 				name = "(~)$ rootkit",
 				text = {
-					"For the next defeated blind",
-					"spare hands give {C:red}$#1#{}",
+					"For the next defeated Blind,",
+					"spare Hands give {C:red}$#1#{}",
 				}
 			},
 			c_entr_break = {
 				name = "(~)$ break;",
 				text = {
-					"Return to the {C:red}blind selection{} screen",
-					"The {C:red}current blind{} is still upcoming",
+					"Return to the {C:red}Blind selection{} screen",
+					"The {C:red}current Blind{} is still upcoming",
 				}
 			},
 			c_entr_interference = {
 				name = "(~)$ interference",
 				text = {
-					"{C:red}Randomizes{} {C:attention}played hands{}, {C:attention}blind size{}",
+					"{C:red}Randomizes{} {C:attention}played hands{}, {C:attention}Blind size{}",
 					"and {C:attention}payout{} for the remainder of",
 					"the {C:red}current round{}"
 				}
@@ -216,24 +216,24 @@ return {
 			c_entr_fork = {
 				name = "(~)$ fork",
 				text = {
-					"create a {C:red}glitched{} copy of",
+					"create a {C:red}Glitched{} copy of",
 					"a selected {C:attention}playing card{} with",
-					"a new {C:red}random enhancement{}"
+					"a new {C:red}random Enhancement{}"
 				}
 			},
 			c_entr_push = {
 				name = "(~)$ push -f",
 				text = {
-					"{C:red}Destroy{} all held {C:attention}Jokers{} {C:red}create{} a",
-					"new {C:attention}joker{} based on their {C:red}rarities{}",
+					"{C:red}Destroy{} all held {C:attention}Jokers{}, {C:red}create{} a",
+					"new {C:attention}Joker{} based on their {C:red}rarities{}",
 					
 				}
 			},
 			c_entr_increment = {
 				name = "(~)$ increment",
 				text = {
-					"{C:red}+1{} {C:attention}Shop Slots{}",
-					"for the remainder of {C:attention}this ante{}",
+					"{C:red}+1{} {C:attention}shop slots{}",
+					"for the remainder of {C:attention}this Ante{}",
 				}
 			},
 			c_entr_decrement = {
@@ -241,7 +241,7 @@ return {
 				text = {
 					"Transform {C:red}#1#{} selected {C:attention}Joker#2#{}",
 					"to the {C:red}Joker{} that appears",
-					"before #3# in the {C:red}collection{}"
+					"before #3# in the {C:red}Collection{}"
 				}
 			},
 			c_entr_cookies = {
@@ -254,13 +254,13 @@ return {
 				name = "(~)$ overflow",
 				text = {
 					"{C:red}Infinite{} {C:attention}card selection limit{}",
-					"until the end of the {C:red}current blind{}",
+					"until the end of the {C:red}current Blind{}",
 				}
 			},
 			c_entr_refactor = {
 				name = "(~)$ refactor",
 				text = {
-					"Apply the {C:attention}edition of a selected",
+					"Apply the {C:attention}Edition of a selected",
 					"{C:red}Joker{} to a random {C:red}Joker{}",
 				}
 			},
@@ -268,7 +268,7 @@ return {
 				name = "(~)$ ctrl+x",
 				text = {
 					"{C:red}#1#{} #2# {C:attention}card{},",
-					"{C:attention}booster{}, or {C:attention}voucher{}",
+					"{C:attention}Booster{}, or {C:attention}Voucher{}",
 					"{C:inactive}(Currently: #3#){}"
 				}
 			},
@@ -276,9 +276,9 @@ return {
 				name = "(~)$ segfault",
 				text = {
 					"Create a random {C:attention}playing card{}",
-					"with a {C:red}random{} {C:attention}consumable{}, {C:attention}joker{},",
-					"{C:attention}booster pack{}, or {C:attention}voucher{} applied",
-					"as an {C:red}enhancement{}",
+					"with a {C:red}random{} {C:attention}consumable{}, {C:attention}Joker{},",
+					"{C:attention}Booster Pack{}, or {C:attention}Voucher{} applied",
+					"as an {C:red}Enhancement{}",
 					"then put it in the {C:attention}deck{}"
 				}
 			},
@@ -301,21 +301,21 @@ return {
 			c_entr_new = {
 				name = "(~)$ new()",
 				text = {
-					"Adds an {C:attention}extra{} {C:red}Red Room{} blind",
-					"before the next {C:attention}upcoming{} blind",
+					"Adds an {C:attention}extra{} {C:red}Red Room{} Blind",
+					"before the {C:attention}upcoming{} Blind", -- removed "next" because "next upcoming" is redundant
 				}
 			},
 			c_entr_multithread = {
 				name = "(~)$ multithread",
 				text = {
-					"Create temporary {C:dark_edition}negative{} copies",
+					"Create temporary {C:dark_edition}Negative{} copies",
 					"of all {C:red}selected{} cards in {C:red}hand{}",
 				}
 			},
 			c_entr_invariant = {
 				name = "(~)$ invariant",
 				text = {
-					"Apply an {C:red}invariant{} sticker to",
+					"Apply an {C:red}Invariant{} sticker to",
 					"1 selected card in the {C:red}shop{}",
 				}
 			},
@@ -323,14 +323,14 @@ return {
 				name = "(~)$ inherit",
 				text = {
 					"Convert {C:red}all{} cards with the same",
-					"{C:red}enhancement{} as 1 selected card",
-					"into a {C:red}chosen enhancement",
+					"{C:red}Enhancement{} as 1 selected card",
+					"into a {C:red}chosen Enhancement",
 				}
 			},
 			c_entr_autostart = {
 				name = "(~)$ autostart",
 				text = {
-					"Gain {C:red}#1#{} random skip tags",
+					"Gain {C:red}#1#{} random skip Tags",
 					"obtained {C:red}previously{} in the run",
 				}
 			},
@@ -338,29 +338,29 @@ return {
 				name = "(~)$ quickload",
 				text = {
 					"{C:red}Retrigger{} the payout screen",
-					"with {C:red}no{} blind money",
+					"with {C:red}no{} Blind money",
 				}
 			},
 			c_entr_hotfix = {
 				name = "(~)$ hotfix",
 				text = {
-					"Apply a {C:red}hotfix{} sticker to",
+					"Apply a {C:red}Hotfix{} sticker to",
 					"1 selected card",
 				}
 			},
 			c_entr_pseudorandom = {
 				name = "(~)$ pseudorandom",
 				text = {
-					"Apply a {C:red}pseudorandom{} sticker to",
+					"Apply a {C:red}Pseudorandom{} sticker to",
 					"{C:red}all{} cards on screen",
 				}
 			},
 			c_entr_bootstrap = {
 				name = "(~)$ bootstrap",
 				text = {
-					"The final {C:blue}chips{} and {C:red}mult{} of",
+					"The final {C:blue}Chips{} and {C:red}Mult{} of",
 					"{C:red}this{} hand are applied to the",
-					"base {C:blue}chips{} and {C:red}mult{} of the next hand"
+					"base {C:blue}Chips{} and {C:red}Mult{} of the next hand"
 				}
 			}
 		},
@@ -594,7 +594,7 @@ return {
 				text = {
 					"Create a random",
 					"{V:1,E:1}Entropic {}Joker",
-					"banish all other held jokers"
+					"Banish all other held Jokers"
 				}
 			},
 			c_entr_fervour={
@@ -602,7 +602,7 @@ return {
                 text={
                     "Creates a",
                     "{V:1,E:1}Legendary? {}Joker",
-                    "{C:inactive}(Must have room)",
+                    "{C:inactive}(Must have room){}",
                 },
             },
 			c_entr_pulsar = {
@@ -652,7 +652,7 @@ return {
 			inversion_allowed = {
 				name = "Flipside",
 				text = {
-					"Can be {C:red}inverted{}"
+					"Can be {C:red}Inverted{}"
 				}
 			},
 			p_entr_twisted_pack_normal = { 
@@ -726,7 +726,7 @@ return {
 			ach_entr_unstable_concoction = "Unstable Concoction"
 		},
 		achievement_descriptions = {
-			ach_entr_unstable_concoction = "Use define to turn obelisk into sob"
+			ach_entr_unstable_concoction = "Use define to turn Obelisk into Sob"
 		},
 		dictionary = {
 			k_entr_hyper_exotic = "Entropic",
@@ -763,7 +763,7 @@ return {
 			k_saved_ruby_7 = "Thanks for playing!",
 			k_saved_ruby_8 = "",
 
-			k_entr_faster_ante_scaling = "Scale blind scores quicker if you have an Entropic joker",
+			k_entr_faster_ante_scaling = "Scale Blind scores quicker if you have an Entropic Joker",
 			k_entr_entropic_music = "Entropic Jokers (Joker in Greek by gemstonez)",
 
 			k_rplanet = "Star",
