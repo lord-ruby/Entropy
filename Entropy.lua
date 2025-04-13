@@ -19,6 +19,7 @@ local i = {
     "items/editions",
     "items/seals",
     "items/enhancements",
+    "items/blinds",
     "compat/loader"
     --"glop"
 }

@@ -58,9 +58,6 @@ function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
 		if not curr2 then
 			return num
 		end
-		if to_big(curr2) <= to_big(0) then
-			return num
-		end
 		return math.max(
 			num,
 			num
@@ -79,22 +76,16 @@ function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
         for i, v in pairs(G.jokers.cards) do
             if v.config.center.key == "j_entr_helios" and to_big(v.ability.extra):gt(curr) then curr = v.ability.extra+0.4 end
         end
-		return math.max(
-			num,
-			num
-				* to_big(
+      return num
+          * to_big(
 					(1.75 + ((G.GAME.sunnumber or 0)))):tetrate(
 						to_big((curr2) * curr))
-		)
   else
-		return math.max(
-			num,
-			num
+		return num
 				* to_big(
 					(1.25 + ((G.GAME.sunnumber or 0)))
 						^ to_big(curr2)
 				)
-		)
 	end
 end
 

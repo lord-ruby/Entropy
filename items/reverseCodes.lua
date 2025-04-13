@@ -1993,11 +1993,21 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num + G.GAME.hands[text].AscensionPower
 	end
     G.GAME.current_round.current_hand.cry_asc_num = (G.GAME.current_round.current_hand.cry_asc_num or 0) * (1+(G.GAME.nemesisnumber or 0))
-	G.GAME.current_round.current_hand.cry_asc_num_text = (
-		G.GAME.current_round.current_hand.cry_asc_num and ((type(G.GAME.current_round.current_hand.cry_asc_num) == "table" and G.GAME.current_round.current_hand.cry_asc_num:gt(to_big(0)) or G.GAME.current_round.current_hand.cry_asc_num > 0))
-	)
-			and " (+" .. G.GAME.current_round.current_hand.cry_asc_num .. ")"
-		or ""
+    if G.GAME.blind.config.blind.key == "bl_entr_scarlet_sun" then 
+        G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num * -1
+    end
+	if to_big(G.GAME.current_round.current_hand.cry_asc_num) ~= to_big(0) then
+        if to_big(G.GAME.current_round.current_hand.cry_asc_num) > to_big(0) then
+            G.GAME.current_round.current_hand.cry_asc_num_text = " (+"..G.GAME.current_round.current_hand.cry_asc_num..")"
+        else    
+            G.GAME.current_round.current_hand.cry_asc_num_text = " ("..G.GAME.current_round.current_hand.cry_asc_num..")"
+        end
+    else
+        G.GAME.current_round.current_hand.cry_asc_num_text = ""
+    end
+    if G.GAME.blind.config.blind.key == "bl_entr_scarlet_sun" then 
+        G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num * -1
+    end
     return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
 

@@ -1264,7 +1264,7 @@ SMODS.Consumable({
         end)
         G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.entr_shop_price_modifier = (G.GAME.entr_shop_price_modifier or 1) * card.ability.sellmult
+				G.GAME.entr_shop_price_modifier = (G.GAME.entr_shop_price_modifier or 1) * card2.ability.sellmult
 				for k, v in pairs(G.I.CARD) do
 					if v.set_cost then
 						v:set_cost()

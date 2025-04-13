@@ -147,6 +147,13 @@ return {
 				text = {
 					"???"
 				}
+			},
+			bl_entr_scarlet_sun = {
+				name = "Scarlet Sun",
+				text = {
+					"All cards add Ascension Power",
+					"-1X Ascension Power"
+				}
 			}	
 		},
 		Edition = {
@@ -885,8 +892,8 @@ return {
 				name = "Disavow",
 				text = {
 					"Boost cards held in {C:attention}hand{} based",
-					"on their edition then strip their",
-					"edition {C:attention}permanently{}",
+					"on their enhancement then strip their",
+					"enhancement {C:attention}permanently{}",
 				}
 			},
 		},

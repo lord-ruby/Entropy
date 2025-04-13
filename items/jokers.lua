@@ -411,6 +411,9 @@ SMODS.Joker({
 
 function Cryptid.ascend(num, curr2) -- edit this function at your leisure
     curr2 = curr2 or ((G.GAME.current_round.current_hand.cry_asc_num or 0) + (G.GAME.asc_power_hand or 0)) * (1+(G.GAME.nemesisnumber or 0))
+    if G.GAME.blind.config.blind.key == "bl_entr_scarlet_sun" then
+        curr2 = curr2 * -1
+    end
 	if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true then
 		return num
 	end
@@ -419,12 +422,7 @@ function Cryptid.ascend(num, curr2) -- edit this function at your leisure
 		if not G.GAME.current_round.current_hand.cry_asc_num then
 			return num
 		end
-		if to_big(G.GAME.current_round.current_hand.cry_asc_num) <= to_big(0) then
-			return num
-		end
-		return math.max(
-			num,
-			num
+		return num
 				* (
 					1
 					+ 0.1
@@ -434,34 +432,27 @@ function Cryptid.ascend(num, curr2) -- edit this function at your leisure
 							* to_big(curr2)
 					)
 				)
-		)
 	elseif HasJoker("j_entr_helios") then
         local curr = 1.5
         for i, v in pairs(G.jokers.cards) do
             if v.config.center.key == "j_entr_helios" and to_big(v.ability.extra):gt(curr) then curr = v.ability.extra+0.4 end
         end
-		return math.max(
-			num,
-			num
+		return num
 				* to_big(
 					(1.75 + ((G.GAME.sunnumber or 0)))):tetrate(
 						to_big((curr2) * curr))
-		)
     else
-		return math.max(
-			num,
-			num
+		return num
 				* to_big(
 					(1.25 + ((G.GAME.sunnumber or 0)))
 						^ to_big(curr2)
 				)
-		)
 	end
 end
 
 local pokerhandinforef = G.FUNCS.get_poker_hand_info
 function G.FUNCS.get_poker_hand_info(_cards)
-    if HasJoker("j_entr_helios") then G.GAME.used_vouchers.v_cry_hyperspacetether = true end
+    if HasJoker("j_entr_helios") or G.GAME.blind.config.blind.key == "bl_entr_scarlet_sun" then G.GAME.used_vouchers.v_cry_hyperspacetether = true end
     local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
     
     return text, loc_disp_text, poker_hands, scoring_hand, disp_text
