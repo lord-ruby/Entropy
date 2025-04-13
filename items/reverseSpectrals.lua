@@ -1221,6 +1221,49 @@ SMODS.Consumable({
 })
 
 SMODS.Consumable({
+    key = "entomb",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        num = 1
+    },
+	pos = {x=9,y=6},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        for i, v in pairs(G.consumeables.highlighted) do
+            if v.config.center.key ~= "c_entr_entomb" and v.config.center.set ~= "Voucher" then
+                print(v.config.center.set)
+                local c
+                if v.config.center.set == "Booster" then
+                    c = copy_card(v)
+                else
+                    c = create_card("Booster", G.consumeables, nil, nil, nil, nil, key) 
+                    c:set_ability(G.P_CENTERS[Entropy.BoosterSets[v.config.center.set] or "p_standard_normal_1"])
+                end
+                c:add_to_deck()
+                c.T.w = c.T.w *  2.0/2.6
+                c.T.h = c.T.h *  2.0/2.6
+                table.insert(G.consumeables.cards, c)
+                c.area = G.consumeables
+                G.consumeables:align_cards()
+            end
+        end
+    end,
+    can_use = function(self, card)
+        return G.consumeables and Entropy.GetHighlightedCards({G.consumeables}, {c_entr_entomb=true}) > 0 and Entropy.GetHighlightedCards({G.consumeables}, {c_entr_entomb=true}) <= card.ability.num
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.num,
+            }
+        }
+    end,
+})
+
+SMODS.Consumable({
     key = "pulsar",
     set = "RSpectral",
     unlocked = true,

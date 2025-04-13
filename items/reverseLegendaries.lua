@@ -31,7 +31,7 @@ SMODS.Joker({
                 if Entropy.BoosterSets[set] then
                     e:start_dissolve()
                     local c = create_card("Booster", G.consumeables, nil, nil, nil, nil, key) 
-                    c:set_ability(G.P_CENTERS[Entropy.BoosterSets[set]])
+                    c:set_ability(G.P_CENTERS[Entropy.BoosterSets[set] or "p_standard_normal_1"])
                     c:add_to_deck()
                     c.T.w = c.T.w *  2.0/2.6
                     c.T.h = c.T.h *  2.0/2.6
@@ -138,9 +138,11 @@ Entropy.BoosterSets = {
     ["Spectral"] = "p_spectral_mega_1",
     ["Tarot"] = "p_arcana_mega_1",
     ["Planet"] = "p_celestial_mega_1",
+    ["Spectral"] = "p_spectral_mega_1",
     ["Code"] = "p_cry_code_mega_1",
     ["RCode"] = "p_entr_twisted_pack_mega",
     ["RPlanet"] = "p_entr_twisted_pack_mega",
+    ["RSpectral"] = "p_entr_twisted_pack_mega",
 }
 
 SMODS.Joker({
