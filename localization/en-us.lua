@@ -851,6 +851,13 @@ return {
 					"in hand"
 				}
 			},
+			c_entr_offering = {
+				name = "Offering",
+				text = {
+					"All Jokers become {C:attention}rental{}",
+					"{X:gold,C:white}X#1#{} shop costs",
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {

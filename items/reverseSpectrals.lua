@@ -1181,6 +1181,46 @@ SMODS.Consumable({
 })
 
 SMODS.Consumable({
+    key = "offering",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        sellmult = 0.75,
+    },
+	pos = {x=9,y=7},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        Entropy.FlipThen(G.jokers.cards, function(card, area)
+            card.ability.rental = true
+        end)
+        G.E_MANAGER:add_event(Event({
+			func = function()
+				G.GAME.entr_shop_price_modifier = (G.GAME.entr_shop_price_modifier or 1) * card.ability.sellmult
+				for k, v in pairs(G.I.CARD) do
+					if v.set_cost then
+						v:set_cost()
+					end
+				end
+				return true
+			end,
+		}))
+    end,
+    can_use = function(self, card)
+        return G.jokers and #G.jokers.cards > 0
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] =  {key="rental",set="Other", vars = {3}}
+        return {
+            vars = {
+                card.ability.sellmult,
+            }
+        }
+    end,
+})
+
+SMODS.Consumable({
     key = "pulsar",
     set = "RSpectral",
     unlocked = true,
