@@ -197,6 +197,73 @@ SMODS.Consumable({
 })
 
 SMODS.Consumable({
+    key = "disavow",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    config = {
+        sellmult = 2
+    },
+	pos = {x=12,y=4},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card, area, copier)
+        Entropy.FlipThen(G.hand.cards, function(card, area, ind)
+            local func = Entropy.EnhancementFuncs[card.config.center.key] or function(card)
+                card:set_edition("e_cry_glitched")
+            end
+            if card.config.center.key ~= "c_base" then 
+                local ability = card.ability
+                card:set_ability(G.P_CENTERS.m_entr_disavowed)
+                card.ability = ability
+                card.ability.disavow = true
+                func(card)
+            end
+        end)
+    end,
+    can_use = function(self, card)
+        return G.hand and #G.hand.cards > 0
+	end,
+    loc_vars = function(self, q, card)
+    end,
+    entr_credits = {
+        idea = {"CapitalChirp"}
+    }
+})
+local locref = localize
+function localize(args, misc_cat)
+    if type(args)=="number" then args = {args} end
+    return locref(args,misc_cat)
+end
+Entropy.EnhancementFuncs = {
+    m_bonus = function(card) card.ability.bonus = 100 end,
+    m_mult = function(card) card.ability.x_mult = card.ability.x_mult * 1.5 end,
+    m_glass = function(card) card.temporary2=true;card:shatter() end,
+    m_steel = function(card) card.ability.x_mult = (card.ability.x_mult+1)^2 end,
+    m_stone = function(card) card.ability.bonus = (card.base.nominal^2) end,
+    m_gold = function(card) ease_dollars(20) end,
+    m_lucky = function(card)
+        if pseudorandom("disavow") < 0.5 then
+            card.ability.x_mult = card.ability.x_mult * 1.5
+        else    
+            ease_dollars(20)
+        end
+    end,
+    m_cry_echo = function(card) 
+        local card2 = copy_card(card) 
+        card2:set_ability(G.P_CENTERS.c_base)
+        card2:add_to_deck()
+        G.hand:emplace(card2)
+    end,
+    m_cry_light = function(card)
+        card.ability.x_mult = card.ability.x_mult * 4
+    end,
+    m_entr_flesh = function(card)
+        card.temporary2=true;card:start_dissolve()
+    end
+}
+
+SMODS.Consumable({
     key = "pact",
     set = "RSpectral",
     unlocked = true,
@@ -273,7 +340,7 @@ SMODS.Sticker({
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, initial, delay_sprites)
     local link = self.ability and self.ability.link or nil
-    set_abilityref(self, center, initial, delay_sprites)
+    if not self.ability or not self.ability.disavow then set_abilityref(self, center, initial, delay_sprites) end
     self.ability.link = link
     if self.ability.link and not initial then
         if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.link == self.ability.link then set_abilityref(v,center, initial, delay_sprites);v.ability.link=link end end end

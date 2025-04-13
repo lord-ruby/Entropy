@@ -27,3 +27,10 @@ SMODS.Enhancement({
         end
 	end,
 })
+
+SMODS.Enhancement({
+	object_type = "Enhancement",
+	key = "disavowed",
+	atlas = "enhancements",
+	pos = { x = 1, y = 0 },
+})

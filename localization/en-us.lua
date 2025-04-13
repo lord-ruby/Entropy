@@ -7,6 +7,12 @@ return {
 					"{C:green}#1# in #2#{} chance to",
 					"destroy this card when {C:attention}discarded{}"
 				}
+			},
+			m_entr_disavowed = {
+				name = "Disavowed",
+				text = {
+					"Cannot change enhancements"
+				}
 			}
 		},
 		Joker = {
@@ -875,6 +881,14 @@ return {
 					"{C:inactive}(Currently: #1#){}"
 				}
 			},
+			c_entr_disavow = {
+				name = "Disavow",
+				text = {
+					"Boost cards held in {C:attention}hand{} based",
+					"on their edition then strip their",
+					"edition {C:attention}permanently{}",
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {
@@ -1044,7 +1058,14 @@ return {
 					"share the same link",
 					"{C:inactive}(#1#){}"
 				}
-			}
+			},
+			xmult_bonus = {
+				name = "Bonus Mult",
+				text = {
+					"{X:red,C:white}X#1#{} extra",
+					"mult"
+				}
+			},
 		}
 	},
 	misc = {

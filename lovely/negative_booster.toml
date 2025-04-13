@@ -15,3 +15,16 @@ end
 local seal = G.P_SEALS[v] or G.P_SEALS[SMODS.Seal.badge_to_key[v] or '']
 '''
 match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if first_pass and not (_c.set == 'Edition') and badges then"
+position = "after"
+payload = '''
+if card.ability.disavow and to_big(card.ability.x_mult) > to_big(1) then
+    info_queue[#info_queue+1]= {key="xmult_bonus", set="Other", vars={card.ability.x_mult}}
+end
+'''
+match_indent = true
