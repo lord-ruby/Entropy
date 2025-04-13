@@ -10,6 +10,7 @@ SMODS.Enhancement({
 			odds = 4,
 		},
 	},
+	weight = 2,
 	loc_vars = function(self, info_queue, card)
 		return {
             vars = {
@@ -33,4 +34,8 @@ SMODS.Enhancement({
 	key = "disavowed",
 	atlas = "enhancements",
 	pos = { x = 1, y = 0 },
+	weight = 0,
+	set_ability = function(self,card) 
+		card.ability.disavow = true
+	end
 })
