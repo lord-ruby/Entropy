@@ -3,6 +3,7 @@ SMODS.Atlas { key = 'miscc', path = 'other_consumables.png', px = 71, py = 95 }
 Entropy.FlipsideInversions = {
     --spectrals
     ["c_cry_gateway"] = "c_entr_beyond",
+    ["c_entr_flipside"] = "c_entr_flipside",
     ["c_soul"] = "c_entr_fervour",
     --tarots
     --["c_fool"] = "c_entr_fool",
@@ -51,24 +52,52 @@ SMODS.Consumable({
     name = "entr-Flipside",
     pos = {x=3,y=0},
     use = function(self, card, area, copier)
-            local c, a, i = GetSelectedConsumable()
-                    if c and c.config.center and (Entropy.FlipsideInversions[c.config.center.key] or (c.ability and Entropy.FlipsideInversions[GetID(c.ability.name)])) then
-                        local card
-                        if a.config.type == "hand" then
-                            a.highlighted[i]:set_ability(G.P_CENTERS[Entropy.FlipsideInversions[GetID(c.ability.name)]], true, nil)
-                            return
-                        else
-                            if a.config.type == "shop" then card = CreateShopInversion(Entropy.FlipsideInversions[c.config.center.key], c.config.center.set, a)
-                            else card = create_card(c.config.center.set, a, nil, nil, nil, nil, Entropy.FlipsideInversions[c.config.center.key], 'sho') end
-                            card:add_to_deck()
-                            a:emplace(card)
-                            c:start_dissolve()
-                            return
-                        end
+        local c, a, i = GetSelectedConsumable()
+        if c and c.config.center and c.config.center.key == "c_entr_flipside" then
+            c:shatter()
+            card:shatter()
+            Entropy.FlipThen(Entropy.AllAreaCards(function(card) return card and card.config and Entropy.FlipsideInversions[card.config.center.key] end), function(card, area)
+                card:set_ability(G.P_CENTERS[Entropy.FlipsideInversions[card.config.center.key]])
+            end)
+        else
+            if
+                c and c.config.center and
+                    (Entropy.FlipsideInversions[c.config.center.key] or
+                        (c.ability and Entropy.FlipsideInversions[GetID(c.ability.name)]))
+             then
+                local card
+                if a.config.type == "hand" then
+                    a.highlighted[i]:set_ability(G.P_CENTERS[Entropy.FlipsideInversions[GetID(c.ability.name)]], true, nil)
+                    return
+                else
+                    if a.config.type == "shop" then
+                        card = CreateShopInversion(Entropy.FlipsideInversions[c.config.center.key], c.config.center.set, a)
+                    else
+                        card =
+                            create_card(
+                            c.config.center.set,
+                            a,
+                            nil,
+                            nil,
+                            nil,
+                            nil,
+                            Entropy.FlipsideInversions[c.config.center.key],
+                            "sho"
+                        )
                     end
-    end,
+                    card:add_to_deck()
+                    a:emplace(card)
+                    c:start_dissolve()
+                    return
+                end
+            end
+        end
+end,
     can_use = function(self, card)
-        return GetSelectedConsumable() ~= nil and (Entropy.FlipsideInversions[GetSelectedConsumable().config.center.key] or (GetSelectedConsumable().ability and Entropy.FlipsideInversions[GetID(GetSelectedConsumable().ability.name)]))
+        local card2 = Entropy.GetHighlightedCard()
+        if card ~= card2 then
+            return card2 and card2.config and Entropy.FlipsideInversions[card2.config.center.key] ~= nil
+        end
 	end,
     loc_vars = function(self, q, card)
         return {vars = {

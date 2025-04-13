@@ -315,6 +315,20 @@ function Entropy.ModificationSpectral(key, sprite_pos, modifications, highlighte
     })
 end
 
+function Entropy.AllAreaCards(selector)
+    local cards = {}
+    for i, v in pairs(G) do
+        if type(v) == "table" and v.cards then
+            for i2, card in pairs(v.cards)do
+                if not selector or selector(card) then
+                    cards[#cards+1]=card
+                end
+            end
+        end
+    end 
+    return cards
+end
+
 function Entropy.RandomModificationSpectral(key, sprite_pos, modifications, highlighted, loc_vars)
     SMODS.Consumable({
         key = key,
