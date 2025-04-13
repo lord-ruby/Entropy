@@ -858,6 +858,23 @@ return {
 					"{X:gold,C:white}X#1#{} shop costs",
 				}
 			},
+			c_entr_entomb = {
+				name = "Entomb",
+				text = {
+					"Create a {C:attention}mega{} booster pack",
+					"corresponding to the type of #1# selected",
+					"consumable"
+				}
+			},
+			c_entr_conduct = {
+				name = "Conduct",
+				text = {
+					"Apply the {C:attention}previous{} edition",
+					"to adjacent cards of 1 selected card",
+					"consumable",
+					"{C:inactive}(Currently: #1#){}"
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {

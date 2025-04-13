@@ -1264,6 +1264,42 @@ SMODS.Consumable({
 })
 
 SMODS.Consumable({
+    key = "conduct",
+    set = "RSpectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+	pos = {x=10,y=6},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        local card = Entropy.GetHighlightedCard(nil, {c_entr_conduct = true})
+        local area = card.area
+        local edition = Entropy.FindPreviousInPool(card.edition.key, "Edition")
+        Entropy.FlipThen(area.cards, function(card3, area, indx)
+            if area[indx+1] == card or area[indx-1] == card then
+                card3:set_edition(edition)
+            end
+        end)
+    end,
+    can_use = function(self, card)
+        return Entropy.GetHighlightedCards(nil, {c_entr_conduct = true}) == 1 and Entropy.GetHighlightedCard(nil, {c_entr_conduct = true}).edition
+        and Entropy.GetHighlightedCard(nil, {c_entr_conduct = true}).edition.key
+	end,
+    loc_vars = function(self,q,card)
+        local str = "none"
+        if Entropy.GetHighlightedCards(nil, {c_entr_conduct = true}) == 1 and Entropy.GetHighlightedCard(nil, {c_entr_conduct = true}).edition 
+            and Entropy.FindPreviousInPool(Entropy.GetHighlightedCard(nil, {c_entr_conduct = true}).edition.key, "Edition") then
+            str = G.localization.descriptions.Edition[Entropy.FindPreviousInPool(Entropy.GetHighlightedCard(nil, {c_entr_conduct = true}).edition.key, "Edition")].name
+        end
+        return {
+            vars = {
+                str
+            }
+        }
+    end
+})
+
+SMODS.Consumable({
     key = "pulsar",
     set = "RSpectral",
     unlocked = true,

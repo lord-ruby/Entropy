@@ -203,7 +203,7 @@ function Entropy.FlipThen(cardlist, func, before, after)
                 trigger = "after",
                 delay = 0.15,
                 func = function()
-                    func(card, cardlist)
+                    func(card, cardlist, i)
                     return true
                 end
             }))
