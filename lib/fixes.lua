@@ -451,3 +451,151 @@ create_UIBox_your_collection_seals = function()
         end,
     })
 end
+
+
+SMODS.calculate_individual_effect = function(effect, scored_card, key, amount, from_edition)
+    if (key == 'chips' or key == 'h_chips' or key == 'chip_mod') and amount then
+        if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
+        hand_chips = mod_chips(hand_chips + amount)
+        update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
+        if not effect.remove_default_message then
+            if from_edition then
+                card_eval_status_text(scored_card, 'jokers', nil, percent, nil, {message = localize{type = 'variable', key = amount > 0 and 'a_chips' or 'a_chips_minus', vars = {amount}}, chip_mod = amount, colour = G.C.EDITION, edition = true})
+            else
+                if key ~= 'chip_mod' then
+                    if effect.chip_message then
+                        card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil, percent, nil, effect.chip_message)
+                    else
+                        card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'chips', amount, percent)
+                    end
+                end
+            end
+        end
+        return true
+    end
+
+    if (key == 'mult' or key == 'h_mult' or key == 'mult_mod') and amount then
+        if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
+        mult = mod_mult(mult + amount)
+        update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
+        if not effect.remove_default_message then
+            if from_edition then
+                card_eval_status_text(scored_card, 'jokers', nil, percent, nil, {message = localize{type = 'variable', key = amount > 0 and 'a_mult' or 'a_mult_minus', vars = {amount}}, mult_mod = amount, colour = G.C.DARK_EDITION, edition = true})
+            else
+                if key ~= 'mult_mod' then
+                    if effect.mult_message then
+                        card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil, percent, nil, effect.mult_message)
+                    else
+                        card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'mult', amount, percent)
+                    end
+                end
+            end
+        end
+        return true
+    end
+
+    if (key == 'p_dollars' or key == 'dollars' or key == 'h_dollars') and amount then
+        if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
+        ease_dollars(amount)
+        if not effect.remove_default_message then
+            if effect.dollar_message then
+                card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil, percent, nil, effect.dollar_message)
+            else
+                card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'dollars', amount, percent)
+            end
+        end
+        return true
+    end
+
+    if (key == 'x_chips' or key == 'xchips' or key == 'Xchip_mod') and amount ~= 1 then
+        if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
+        hand_chips = mod_chips(hand_chips * amount)
+        update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
+        if not effect.remove_default_message then
+            if from_edition then
+                card_eval_status_text(scored_card, 'jokers', nil, percent, nil, {message = localize{type='variable',key= amount > 0 and 'a_xchips' or 'a_xchips_minus',vars={amount}}, Xchips_mod =  amount, colour =  G.C.EDITION, edition = true})
+            else
+                if key ~= 'Xchip_mod' then
+                    if effect.xchip_message then
+                        card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil, percent, nil, effect.xchip_message)
+                    else
+                        card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'x_chips', amount, percent)
+                    end
+                end
+            end
+        end
+        return true
+    end
+
+    if (key == 'x_mult' or key == 'xmult' or key == 'Xmult' or key == 'x_mult_mod' or key == 'Xmult_mod') and amount ~= 1 then
+        if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
+        mult = mod_mult(mult * amount)
+        update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
+        if not effect.remove_default_message then
+            if from_edition then
+                card_eval_status_text(scored_card, 'jokers', nil, percent, nil, {message = localize{type='variable',key= to_big(amount) > to_big(0) and 'a_xmult' or 'a_xmult_minus',vars={amount}}, Xmult_mod =  amount, colour =  G.C.EDITION, edition = true})
+            else
+                if key ~= 'Xmult_mod' then
+                    if effect.xmult_message then
+                        card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil, percent, nil, effect.xmult_message)
+                    else
+                        card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'x_mult', amount, percent)
+                    end
+                end
+            end
+        end
+        return true
+    end
+
+    if key == 'message' then
+        if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
+        card_eval_status_text(effect.message_card or effect.juice_card or scored_card or effect.card or effect.focus, 'extra', nil, percent, nil, effect)
+        return true
+    end
+
+    if key == 'func' then
+        effect.func()
+        return true
+    end
+
+    if key == 'swap' then
+        if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
+        local old_mult = mult
+        mult = mod_mult(hand_chips)
+        hand_chips = mod_chips(old_mult)
+        update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
+        return true
+    end
+
+    if key == 'level_up' then
+        if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
+        local hand_type = effect.level_up_hand or G.GAME.last_hand_played
+        level_up_hand(scored_card, hand_type, effect.instant, type(amount) == 'number' and amount or 1)
+        return true
+    end
+
+    if key == 'extra' then
+        return SMODS.calculate_effect(amount, scored_card)
+    end
+
+    if key == 'saved' then
+        SMODS.saved = amount
+        return true
+    end
+
+    if key == 'effect' then
+        return true
+    end
+    
+    if key == 'remove' or key == 'prevent_debuff' or key == 'add_to_hand' or key == 'remove_from_hand' or key == 'stay_flipped' or key == 'prevent_stay_flipped' then
+        return key
+    end
+
+    if key == 'debuff' then
+        return { [key] = amount, debuff_source = scored_card }
+    end
+
+    if key == 'debuff_text' then 
+        return { [key] = amount }
+    end
+end

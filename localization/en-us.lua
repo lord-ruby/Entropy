@@ -1147,6 +1147,7 @@ return {
 			entr_pseudorandom = "Pseudorandom",
 			link = "Linked",
 			superego = "Superego",
+			entr_solar = "Solar",
 
 			entr_crimson_seal = "Crimson Seal",
 			entr_sapphire_seal = "Sapphire Seal",
