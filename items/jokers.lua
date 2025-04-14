@@ -644,3 +644,90 @@ local card = create_card(v.type, area, nil, nil, nil, nil, nil, 'sho')      loca
         end
     end
 end
+
+
+SMODS.Joker({
+    key = "dekatria",
+    rarity = "entr_hyper_exotic",
+    cost = 150,
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 0, y = 5 },
+    config = {
+        mult=13,
+        immutable = {
+            arrows = -2
+        },
+        pairs_needed = 8,
+        pairs_current = 0
+    },
+    soul_pos = { x = 2, y = 5, extra = { x = 1, y = 5 } },
+    atlas = "exotic_jokers",
+    loc_vars = function(self, q, card)
+        if not card.edition or card.edition.key ~= "e_cry_m" then q[#q+1]=G.P_CENTERS.e_cry_m end
+        return {
+            vars = {
+                Entropy.FormatArrowMult(card.ability.immutable.arrows, card.ability.mult),
+                card.ability.pairs_needed,
+                card.ability.pairs_current
+            },
+        }
+    end,
+    add_to_deck = function()
+        for i, v in pairs(G.I.CARD) do
+            if v.set_edition then
+                if v.config.center.key ~= "j_entr_dekatria" then
+                    v:set_edition("e_cry_m")
+                end
+            end
+        end
+    end,
+    calculate = function(self, card, context)
+        if context.after and not context.repetition and not context.blueprint then
+            local pairs = 0
+            for i = 1, #G.play.cards - 1 do
+                for j = i + 1, #G.play.cards do
+                    local m, n = G.play.cards[i], G.play.cards[j]
+                    if m:get_id() == n:get_id() then
+                        pairs = pairs + 1
+                    end
+                end
+            end
+            card.ability.pairs_current = card.ability.pairs_current + pairs
+            while card.ability.pairs_current >= card.ability.pairs_needed do
+                card.ability.pairs_current = card.ability.pairs_current - card.ability.pairs_needed
+                card.ability.pairs_needed = card.ability.pairs_needed * 2
+                card.ability.immutable.arrows = card.ability.immutable.arrows + 1
+            end
+        end
+        if context.joker_main then
+            if to_big(card.ability.immutable.arrows) < to_big(-1) then
+                return {
+                    Eqmult_mod=card.ability.mult,
+                }
+            elseif to_big(card.ability.immutable.arrows) < to_big(-1) then
+                    return {
+                        mult_mod=card.ability.mult,
+                        message = Entropy.FormatArrowMult(card.ability.immutable.arrows, card.ability.mult) .. ' Mult',
+                        colour = G.C.RED,
+                    }
+            elseif to_big(card.ability.immutable.arrows) < to_big(1) then
+                return {
+                    Xmult_mod=card.ability.mult,
+                    message = Entropy.FormatArrowMult(card.ability.immutable.arrows, card.ability.mult) .. ' Mult',
+                    colour = G.C.RED,
+                }
+            end
+            return {
+				hypermult_mod = {
+                    card.ability.immutable.arrows,
+                    card.ability.mult
+                },
+				message =   Entropy.FormatArrowMult(card.ability.immutable.arrows, card.ability.mult) .. ' Mult',
+				colour = { 0.8, 0.45, 0.85, 1 },
+			}
+        end
+    end
+})

@@ -94,6 +94,16 @@ return {
 					"{C:inactive}(Currently: {}{X:dark_edition,C:white}^^#1#{}{C:inactive}){}",
 				}
 			},
+			j_entr_dekatria = {
+				name = "Dekatria",
+				text = {
+ 					"{X:dark_edition,C:white}#1#{} Mult",
+					"All cards are {C:dark_edition}Jolly{}",
+					"Increase operator once for every",
+					"{C:attention}#2#{} pairs in hand",
+					"{C:inactive}(Currently: #3#){}"
+				}
+			},
 			j_entr_perkeo = {
 				name = "Oekrep",
 				text = {

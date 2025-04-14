@@ -950,7 +950,7 @@ local editions = ({
     ["e_cry_blurred"] = 1.5,
     ["e_cry_noisy"] = 1.7,
     ["e_cry_astral"] = 2.2,
-    ["e_cry_jolly"] = 1.45
+    ["e_cry_m"] = 1.45
 })
 function CanCreateRuby()
     --if G.GAME.TESTCOND then return true end
@@ -1048,7 +1048,7 @@ Entropy.EditionFactors = {
     ["e_cry_blurred"] = 1.5,
     ["e_cry_noisy"] = 1.7,
     ["e_cry_astral"] = 2.2,
-    ["e_cry_jolly"] = 1.45
+    ["e_cry_m"] = 1.45
 }
 function GetEditionFactor(edition)
     return Entropy.EditionFactors[edition.key] or 1

@@ -426,3 +426,22 @@ function Entropy.FormatDollarValue(dollars)
     if to_big(dollars) < to_big(0) then return "-$"..(-dollars) end
     return "$"..dollars
 end
+
+function Entropy.FormatArrowMult(arrows, mult)
+    if to_big(arrows) < to_big(-1) then 
+        return "="..mult 
+    elseif to_big(arrows) < to_big(0) then 
+        return "+"..mult 
+    elseif to_big(arrows) < to_big(6) then 
+        if to_big(arrows) < to_big(1) then
+            return "X"..mult
+        end
+        local arr = ""
+        for i = 1, to_big(arrows):to_number() do
+            arr = arr.."^"
+        end
+        return arr..mult
+    else
+        return "{"..arrows.."}"..mult
+    end
+end

@@ -598,4 +598,179 @@ SMODS.calculate_individual_effect = function(effect, scored_card, key, amount, f
     if key == 'debuff_text' then 
         return { [key] = amount }
     end
+    
+end
+
+local scie = SMODS.calculate_individual_effect
+function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
+  -- For some reason, some keys' animations are completely removed
+  -- I think this is caused by a lovely patch conflict
+  --if key == 'chip_mod' then key = 'chips' end
+  --if key == 'mult_mod' then key = 'mult' end
+  --if key == 'Xmult_mod' then key = 'x_mult' end
+  local ret = scie(effect, scored_card, key, amount, from_edition)
+  if ret then
+    return ret
+  end
+  if not smods_xchips and (key == 'x_chips' or key == 'xchips' or key == 'Xchip_mod') and amount ~= 1 then 
+    if effect.card then juice_card(effect.card) end
+    hand_chips = mod_chips(hand_chips * amount)
+    update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
+    if not effect.remove_default_message then
+        if from_edition then
+            card_eval_status_text(scored_card, 'jokers', nil, percent, nil, {message = "X"..amount, colour =  G.C.EDITION, edition = true})
+        elseif key ~= 'Xchip_mod' then
+            if effect.xchip_message then
+                card_eval_status_text(scored_card or effect.card or effect.focus, 'extra', nil, percent, nil, effect.xchip_message)
+            else
+                card_eval_status_text(scored_card or effect.card or effect.focus, 'x_chips', amount, percent)
+            end
+        end
+    end
+    return true
+  end
+
+  if (key == 'e_chips' or key == 'echips' or key == 'Echip_mod') and amount ~= 1 then 
+    if effect.card then juice_card(effect.card) end
+    hand_chips = mod_chips(hand_chips ^ amount)
+    update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
+    if not effect.remove_default_message then
+        if from_edition then
+            card_eval_status_text(scored_card, 'jokers', nil, percent, nil, {message = "^"..amount, colour =  G.C.EDITION, edition = true})
+        elseif key ~= 'Echip_mod' then
+            if effect.echip_message then
+                card_eval_status_text(scored_card or effect.card or effect.focus, 'extra', nil, percent, nil, effect.echip_message)
+            else
+                card_eval_status_text(scored_card or effect.card or effect.focus, 'e_chips', amount, percent)
+            end
+        end
+    end
+    return true
+  end
+
+  if (key == 'ee_chips' or key == 'eechips' or key == 'EEchip_mod') and amount ~= 1 then 
+    if effect.card then juice_card(effect.card) end
+    hand_chips = mod_chips(hand_chips:arrow(2, amount))
+    update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
+    if not effect.remove_default_message then
+        if from_edition then
+            card_eval_status_text(scored_card, 'jokers', nil, percent, nil, {message = "^^"..amount, colour =  G.C.EDITION, edition = true})
+        elseif key ~= 'EEchip_mod' then
+            if effect.eechip_message then
+                card_eval_status_text(scored_card or effect.card or effect.focus, 'extra', nil, percent, nil, effect.eechip_message)
+            else
+                card_eval_status_text(scored_card or effect.card or effect.focus, 'ee_chips', amount, percent)
+            end
+        end
+    end
+    return true
+  end
+
+  if (key == 'eee_chips' or key == 'eeechips' or key == 'EEEchip_mod') and amount ~= 1 then 
+    if effect.card then juice_card(effect.card) end
+    hand_chips = mod_chips(hand_chips:arrow(3, amount))
+    update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
+    if not effect.remove_default_message then
+        if from_edition then
+            card_eval_status_text(scored_card, 'jokers', nil, percent, nil, {message = "^^^"..amount, colour =  G.C.EDITION, edition = true})
+        elseif key ~= 'EEEchip_mod' then
+            if effect.eeechip_message then
+                card_eval_status_text(scored_card or effect.card or effect.focus, 'extra', nil, percent, nil, effect.eeechip_message)
+            else
+                card_eval_status_text(scored_card or effect.card or effect.focus, 'eee_chips', amount, percent)
+            end
+        end
+    end
+    return true
+  end
+
+  if (key == 'hyper_chips' or key == 'hyperchips' or key == 'hyperchip_mod') and type(amount) == 'table' then 
+    if effect.card then juice_card(effect.card) end
+    hand_chips = mod_chips(hand_chips:arrow(amount[1], amount[2]))
+    update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
+    if not effect.remove_default_message then
+        if from_edition then
+            card_eval_status_text(scored_card, 'jokers', nil, percent, nil, {message = (amount[1] > 5 and ('{' .. amount[1] .. '}') or string.rep('^', amount[1])) .. amount[2], colour =  G.C.EDITION, edition = true})
+        elseif key ~= 'hyperchip_mod' then
+            if effect.hyperchip_message then
+                card_eval_status_text(scored_card or effect.card or effect.focus, 'extra', nil, percent, nil, effect.hyperchip_message)
+            else
+                card_eval_status_text(scored_card or effect.card or effect.focus, 'hyper_chips', amount, percent)
+            end
+        end
+    end
+    return true
+  end
+
+  if (key == 'e_mult' or key == 'emult' or key == 'Emult_mod') and amount ~= 1 then 
+    if effect.card then juice_card(effect.card) end
+    mult = mod_mult(mult ^ amount)
+    update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
+    if not effect.remove_default_message then
+        if from_edition then
+            card_eval_status_text(scored_card, 'jokers', nil, percent, nil, {message = "^"..amount.." Mult", colour =  G.C.EDITION, edition = true})
+        elseif key ~= 'Emult_mod' then
+            if effect.emult_message then
+                card_eval_status_text(scored_card or effect.card or effect.focus, 'extra', nil, percent, nil, effect.emult_message)
+            else
+                card_eval_status_text(scored_card or effect.card or effect.focus, 'e_mult', amount, percent)
+            end
+        end
+    end
+    return true
+  end
+
+  if (key == 'ee_mult' or key == 'eemult' or key == 'EEmult_mod') and amount ~= 1 then 
+    if effect.card then juice_card(effect.card) end
+    mult = mod_mult(mult:arrow(2, amount))
+    update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
+    if not effect.remove_default_message then
+        if from_edition then
+            card_eval_status_text(scored_card, 'jokers', nil, percent, nil, {message = "^^"..amount.." Mult", colour =  G.C.EDITION, edition = true})
+        elseif key ~= 'EEmult_mod' then
+            if effect.eemult_message then
+                card_eval_status_text(scored_card or effect.card or effect.focus, 'extra', nil, percent, nil, effect.eemult_message)
+            else
+                card_eval_status_text(scored_card or effect.card or effect.focus, 'ee_mult', amount, percent)
+            end
+        end
+    end
+    return true
+  end
+
+  if (key == 'eee_mult' or key == 'eeemult' or key == 'EEEmult_mod') and amount ~= 1 then 
+    if effect.card then juice_card(effect.card) end
+    mult = mod_mult(mult:arrow(3, amount))
+    update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
+    if not effect.remove_default_message then
+        if from_edition then
+            card_eval_status_text(scored_card, 'jokers', nil, percent, nil, {message = "^^^"..amount.." Mult", colour =  G.C.EDITION, edition = true})
+        elseif key ~= 'EEEmult_mod' then
+            if effect.eeemult_message then
+                card_eval_status_text(scored_card or effect.card or effect.focus, 'extra', nil, percent, nil, effect.eeemult_message)
+            else
+                card_eval_status_text(scored_card or effect.card or effect.focus, 'eee_mult', amount, percent)
+            end
+        end
+    end
+    return true
+  end
+
+  if (key == 'hyper_mult' or key == 'hypermult' or key == 'hypermult_mod') and type(amount) == 'table' then 
+    if effect.card then juice_card(effect.card) end
+    mult = mod_mult(mult:arrow(amount[1], amount[2]))
+    update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
+    if not effect.remove_default_message then
+        if from_edition then
+            card_eval_status_text(scored_card, 'jokers', nil, percent, nil, {message = ((amount[1] > 5 and ('{' .. amount[1] .. '}') or string.rep('^', amount[1])) .. amount[2]).." Mult", colour =  G.C.EDITION, edition = true})
+        elseif key ~= 'hypermult_mod' then
+            if effect.hypermult_message then
+                card_eval_status_text(scored_card or effect.card or effect.focus, 'extra', nil, percent, nil, effect.hypermult_message)
+            else
+                card_eval_status_text(scored_card or effect.card or effect.focus, 'hyper_mult', amount, percent)
+            end
+        end
+    end
+    return true
+  end
 end

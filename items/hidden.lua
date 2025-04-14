@@ -131,6 +131,9 @@ end
 local matref = Card.set_ability
 function Card:set_ability(center, initial, delay_sprites)
     matref(self, center, initial, delay_sprites)
+    if HasJoker("j_entr_dekatria") and (not self.edition or self.edition.key ~= "e_cry_m") and self.config.center.key ~= "j_entr_dekatria" then
+        self:set_edition("e_cry_m", true, true)
+    end
     if self.config.center.key == "j_entr_ruby" then
         if self.area and self.area.config.type ~= "joker" then
             self:start_dissolve()
@@ -145,6 +148,7 @@ function Card:set_ability(center, initial, delay_sprites)
             })
         end
     end
+    
 end
 
 
