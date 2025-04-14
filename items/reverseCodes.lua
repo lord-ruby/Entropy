@@ -1281,9 +1281,7 @@ G.FUNCS.reroll_shop = function(e)
             G.CONTROLLER.interrupt.focus = false
             G.CONTROLLER.locks.shop_reroll = false
             G.CONTROLLER:recall_cardarea_focus('shop_jokers')
-            for i = 1, #G.jokers.cards do
-              G.jokers.cards[i]:calculate_joker({reroll_shop = true})
-            end
+            SMODS.calculate_context({reroll_shop = true, cost = reroll_cost})
             return true
           end
         }))

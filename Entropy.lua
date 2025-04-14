@@ -23,7 +23,7 @@ local i = {
     "compat/loader"
     --"glop"
 }
-Entropy = {}
+Entropy = {}    
 for _, v in pairs(i) do
     local f, err = SMODS.load_file(v..".lua")
     if f then f() else error("error in file "..v..": "..err) end
@@ -50,6 +50,7 @@ if SMODS and SMODS.calculate_individual_effect then
             local e = card_eval_status_text
             local orig = G.GAME.asc_power_hand or 0
             G.GAME.asc_power_hand = (G.GAME.asc_power_hand or 1) * scored_card.edition.sol
+            if G.GAME.current_round.current_hand.cry_asc_num == 0 then G.GAME.current_round.current_hand.cry_asc_num = 1 end
             G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (G.GAME.current_round.current_hand.cry_asc_num * G.GAME.asc_power_hand) .. ")"
             card_eval_status_text = function() end
             scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
