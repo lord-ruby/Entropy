@@ -698,7 +698,7 @@ return {
 				}
 			},
 			c_entr_eclipse = {
-				name = "Eclipse",
+				name = "Veil",
 				text = {
 					"Adds a {V:1}Sapphire Seal{}",
 					"to #1# selected card",
