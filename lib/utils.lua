@@ -445,3 +445,14 @@ function Entropy.FormatArrowMult(arrows, mult)
         return "{"..arrows.."}"..mult
     end
 end
+
+function Entropy.DeckOrSleeve(key)
+    if key == "doc" and G.GAME.modifiers.doc_antimatter then return true end
+    if key == "twisted" and G.GAME.modifiers.twisted_antimatter then return true end
+    if CardSleeves then
+        if G.GAME.selected_sleeve == ("sleeve_entr_"..key) then return true end
+    end
+    return G.GAME.selected_back and G.GAME.selected_back.effect.center.original_key == key
+end
+
+

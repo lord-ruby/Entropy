@@ -1,10 +1,8 @@
 SMODS.Atlas { key = 'decks', path = 'decks.png', px = 71, py = 95 }
 SMODS.Back({
-	object_type = "Back",
 	name = "Twisted Deck",
 	key = "twisted",
 	pos = { x = 0, y = 0 },
-	order = 1,
 	atlas = "decks",
 })
 
@@ -12,7 +10,7 @@ local matref = Card.set_ability
 function Card:set_ability(center, initial, delay_sprites)
 	Entropy.ReverseFlipsideInversions()
     if self.config and self.config.center and Entropy.FlipsideInversions and Entropy.FlipsideInversions[self.config.center.key] and 
-    G.GAME.selected_back and G.GAME.selected_back.effect.center.original_key == "twisted" then
+    Entropy.DeckOrSleeve("twisted") then
         matref(self, G.P_CENTERS[Entropy.FlipsideInversions[self.config.center.key]], initial, delay_sprites)
     else
         matref(self, center, initial, delay_sprites)
@@ -87,7 +85,7 @@ SMODS.Back({
 local use_cardref = G.FUNCS.use_card
 G.FUNCS.use_card = function(e, mute, nosave)
 	local card = e.config.ref_table
-	if card.config.center.set ~= "Booster" and G.GAME.selected_back.effect.center.original_key == "doc" then
+	if card.config.center.set ~= "Booster" and Entropy.DeckOrSleeve("doc") then
 		if Entropy.FlipsideInversions[card.config.center.key] and not Entropy.FlipsidePureInversions[card.config.center.key] then
 			ease_entropy(4)
 		else
@@ -99,10 +97,10 @@ end
 SMODS.Booster:take_ownership_by_kind('Spectral', {
 	create_card = function(self, card, i)
 		G.GAME.entropy = G.GAME.entropy or 0
-		if to_big(pseudorandom("doc")) < to_big(1 - 0.997^G.GAME.entropy) and G.GAME.selected_back.effect.center.original_key == "doc" then
+		if to_big(pseudorandom("doc")) < to_big(1 - 0.997^G.GAME.entropy) and Entropy.DeckOrSleeve("doc") then
 			ease_entropy(-G.GAME.entropy)
 			return create_card("RSpectral", G.pack_cards, nil, nil, true, true, "c_entr_beyond")
-		elseif to_big(pseudorandom("doc")) < to_big(1 - 0.996^G.GAME.entropy) and G.GAME.selected_back.effect.center.original_key == "doc" then
+		elseif to_big(pseudorandom("doc")) < to_big(1 - 0.996^G.GAME.entropy) and Entropy.DeckOrSleeve("doc") then
 			if to_big(G.GAME.entropy) < to_big(4) then ease_entropy(-G.GAME.entropy) else ease_entropy(-4) end
 			return create_card("RSpectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
 		end
@@ -111,7 +109,7 @@ SMODS.Booster:take_ownership_by_kind('Spectral', {
 },true)
 SMODS.Consumable:take_ownership("cry_gateway",{
 	use = function(self, card, area, copier)
-		if G.GAME.selected_back.effect.center.original_key ~= "doc" then
+		if not Entropy.DeckOrSleeve("doc") then
 			local deletable_jokers = {}
 			for k, v in pairs(G.jokers.cards) do
 				if not v.ability.eternal then
@@ -151,7 +149,7 @@ SMODS.Consumable:take_ownership("cry_gateway",{
 },true)
 local uibox_ref = create_UIBox_HUD
 function create_UIBox_HUD()
-	if G.GAME.selected_back.effect.center.original_key ~= "doc" then return uibox_ref() end
+	if not Entropy.DeckOrSleeve("doc") then return uibox_ref() end
     local scale = 0.4
     local stake_sprite = get_stake_sprite(G.GAME.stake or 1, 0.5)
 
@@ -345,3 +343,40 @@ end
 SMODS.Atlas { key = 'crypt_deck', path = 'crypt_decks.png', px = 71, py = 95 }
 Cryptid.edeck_sprites.seal.entr_cerulean = {atlas="entr_crypt_deck", pos = {x=0,y=0}}
 Cryptid.edeck_sprites.seal.entr_sapphire = {atlas="entr_crypt_deck", pos = {x=1,y=0}}
+
+local apply_ref = Cryptid.antimatter_apply
+function Cryptid.antimatter_apply(skip)
+  apply_ref(skip)
+  if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_entr_ccd2", "wins", 8) or 0 ~= 0) or skip then
+    G.GAME.modifiers.ccd2 = true
+  end
+  if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_entr_doc", "wins", 8) or 0 ~= 0) or skip then
+    G.GAME.modifiers.doc_antimatter = true
+  end
+  if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_entr_twisted", "wins", 8) or 0 ~= 0) or skip then
+    G.GAME.modifiers.twisted_antimatter = true
+  end
+end
+
+--sleeves
+if CardSleeves then
+  SMODS.Atlas { key = 'sleeves', path = 'sleeves.png', px = 73, py = 95 }
+  CardSleeves.Sleeve {
+    key = "twisted",
+    atlas = "sleeves",  -- you will need to create an atlas yourself
+    pos = { x = 0, y = 0 },
+  }
+  CardSleeves.Sleeve {
+    key = "ccd2",
+    atlas = "sleeves",  -- you will need to create an atlas yourself
+    pos = { x = 1, y = 0 },
+    apply = function()
+      G.GAME.modifiers.ccd2 = true
+    end
+  }
+  CardSleeves.Sleeve {
+    key = "doc",
+    atlas = "sleeves",  -- you will need to create an atlas yourself
+    pos = { x = 2, y = 0 },
+  }
+end

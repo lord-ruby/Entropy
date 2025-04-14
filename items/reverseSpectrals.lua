@@ -1519,7 +1519,7 @@ SMODS.Consumable({
 				trigger = "before",
 				delay = 0.75,
 				func = function()
-                    if v.config.center.rarity ~= "entr_hyper_exotic" or G.GAME.selected_back.effect.center.original_key ~= "doc" then
+                    if v.config.center.rarity ~= "entr_hyper_exotic" or not Entropy.DeckOrSleeve("doc") then
                         if not v.ability.cry_absolute then
                             if v.config.center.rarity == "cry_exotic" then
                                 check_for_unlock({ type = "what_have_you_done" })

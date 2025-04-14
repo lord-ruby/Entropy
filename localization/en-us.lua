@@ -202,6 +202,33 @@ return {
 							}
 			}
 		},
+		Sleeve = {
+			sleeve_entr_twisted = {
+				name = "Twisted Sleeve",
+				text = {
+					"All {C:red}invertable{} consumables",
+					"are automatically {C:red}inverted{}",
+				},
+			},
+			sleeve_entr_ccd2 = {
+				name = "Redefined Sleeve",
+				text = {
+					"Every card is also a random",
+					"{C:attention}Joker{}, {C:attention}booster pack{},",
+					"{C:attention}voucher{}, or {C:attention}consumable{}"
+				},
+			},
+			sleeve_entr_doc = {
+				name = "Anomalous Sleeve",
+				text = {
+					"{C:red}Beyond{} has higher chances of showing up and",
+					"{X:blue,C:white}Chips{} are lowered based on how high",
+					"your {X:dark_edition,C:white}Entropy{} is, Gain {X:dark_edition,C:white}Entropy{}",
+					"when playing editioned/enhanced cards, secret hands",
+					"or using consumables"
+				},
+			},
+		},
 		RTarot = {
 			c_entr_fool = {
 				name = "The Fool?",
