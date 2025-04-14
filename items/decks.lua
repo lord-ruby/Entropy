@@ -99,6 +99,7 @@ SMODS.Booster:take_ownership_by_kind('Spectral', {
 		G.GAME.entropy = G.GAME.entropy or 0
 		if to_big(pseudorandom("doc")) < to_big(1 - 0.997^G.GAME.entropy) and Entropy.DeckOrSleeve("doc") then
 			ease_entropy(-G.GAME.entropy)
+      G.GAME.entropy = 0
 			return create_card("RSpectral", G.pack_cards, nil, nil, true, true, "c_entr_beyond")
 		elseif to_big(pseudorandom("doc")) < to_big(1 - 0.996^G.GAME.entropy) and Entropy.DeckOrSleeve("doc") then
 			if to_big(G.GAME.entropy) < to_big(4) then ease_entropy(-G.GAME.entropy) else ease_entropy(-4) end
