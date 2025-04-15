@@ -426,7 +426,7 @@ function end_round()
             for ind, card in pairs(v.cards) do
                 if card.ability then
                     if card.ability.entr_hotfix then
-                        card.ability.entr_hotfix_rounds = card.ability.entr_hotfix_rounds - 1
+                        card.ability.entr_hotfix_rounds = (card.ability.entr_hotfix_rounds or 5) - 1
                         if card.ability.entr_hotfix_rounds <= 0 then
                             card.ability.entr_hotfix = false
                             
@@ -440,7 +440,7 @@ function end_round()
                         card:start_dissolve()
                     end
                     if card.ability.superego then
-                        card.ability.superego_copies = card.ability.superego_copies + 0.5
+                        card.ability.superego_copies = (card.ability.superego_copies or 0) + 0.5
                     end
                     card.perma_debuff = nil
                     if card.ability.entr_pseudorandom then
@@ -1116,7 +1116,7 @@ SMODS.Consumable({
                         --local c = create_card("Joker", G.jokers, nil, nil, nil, nil, key) 
                         --c:add_to_deck()    
                         v2:start_dissolve()
-                        v2.highlighted = false
+                        G.jokers:remove_from_highlighted(v2, true)
                         local edition = v.edition
                         local sticker = v.sticker
                         v2 = create_card("Joker", G.jokers, nil, nil, nil, nil, key) 

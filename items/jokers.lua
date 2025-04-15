@@ -33,7 +33,7 @@ SMODS.Joker({
                                 --local c = create_card("Joker", G.jokers, nil, nil, nil, nil, key) 
                                 --c:add_to_deck()    
                                 v2:start_dissolve()
-                                v2.highlighted = false
+                                G.jokers:remove_from_highlighted(v2, true)
                                 local edition = v.edition
                                 local sticker = v.sticker
                                 v2 = create_card("Joker", G.jokers, nil, nil, nil, nil, key) 
