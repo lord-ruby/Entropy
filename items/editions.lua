@@ -16,7 +16,7 @@ SMODS.Edition({
 	sound = {
 		sound = "entr_e_solar",
 		per = 1,
-		vol = 0.2,
+		vol = 0.4,
 	},
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
