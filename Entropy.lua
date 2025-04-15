@@ -49,7 +49,7 @@ if SMODS and SMODS.calculate_individual_effect then
         if (key == 'asc') or (key == 'asc_mod') then
             local e = card_eval_status_text
             local orig = G.GAME.asc_power_hand or 0
-            G.GAME.asc_power_hand = (G.GAME.asc_power_hand or 1) * scored_card.edition.sol
+            G.GAME.asc_power_hand = (G.GAME.asc_power_hand or 1) * amount
             if G.GAME.current_round.current_hand.cry_asc_num == 0 then G.GAME.current_round.current_hand.cry_asc_num = 1 end
             G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (G.GAME.current_round.current_hand.cry_asc_num * G.GAME.asc_power_hand) .. ")"
             card_eval_status_text = function() end

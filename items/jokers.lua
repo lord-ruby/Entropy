@@ -789,7 +789,7 @@ SMODS.Joker({
     key = "solarflare",
     name="entr-solarflare",
     config = {
-        asc=2
+        asc=1.6
     },
     rarity = 2,
     cost = 2,
