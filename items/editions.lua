@@ -2,7 +2,10 @@ SMODS.Shader({
     key="solar",
     path="solar.fs"
 })
-
+SMODS.Sound({
+	key = "e_solar",
+	path = "e_solar.ogg",
+})
 
 SMODS.Edition({
     key="solar",
@@ -10,6 +13,11 @@ SMODS.Edition({
     config = {
         sol = 1.2
     },
+	sound = {
+		sound = "entr_e_solar",
+		per = 1,
+		vol = 0.2,
+	},
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)

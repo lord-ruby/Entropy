@@ -56,7 +56,7 @@ if SMODS and SMODS.calculate_individual_effect then
             scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
             card_eval_status_text = e
 
-            card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "X"..amount.." Asc", G.C.GOLD, "talisman_emult")
+            card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "X"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.4)
             return true
         end
     end
@@ -65,7 +65,7 @@ if SMODS and SMODS.calculate_individual_effect then
     end
 end
 
-function card_eval_status_text_eq(card, eval_type, amt, percent, dir, extra, pref, col, sound)
+function card_eval_status_text_eq(card, eval_type, amt, percent, dir, extra, pref, col, sound, vol)
     percent = percent or (0.9 + 0.2*math.random())
     if dir == 'down' then 
         percent = 1-percent
@@ -74,8 +74,7 @@ function card_eval_status_text_eq(card, eval_type, amt, percent, dir, extra, pre
     if extra and extra.focus then card = extra.focus end
 
     local text = ''
-    local sound = nil
-    local volume = 1
+    local volume = vol or 1
     local card_aligned = 'bm'
     local y_off = 0.15*G.CARD_H
     if card.area == G.jokers or card.area == G.consumeables then
@@ -94,7 +93,6 @@ function card_eval_status_text_eq(card, eval_type, amt, percent, dir, extra, pre
     local delay = 0.65
     local colour = config.colour or (extra and extra.colour) or ( G.C.FILTER )
     local extrafunc = nil
-
     sound = sound or 'multhit1'--'other1'
     amt = amt
     text = (pref) or ("Mult = "..amt)

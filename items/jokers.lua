@@ -793,6 +793,11 @@ SMODS.Joker({
     },
     rarity = 2,
     cost = 2,
+    sound = {
+		sound = "entr_e_solar",
+		per = 1,
+		vol = 0.5,
+	},
     unlocked = true,
     discovered = true,
     blueprint_compat = true,
