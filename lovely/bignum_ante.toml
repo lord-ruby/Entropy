@@ -28,3 +28,12 @@ pattern = "self.chips = get_blind_amount(G.GAME.round_resets.ante)*self.mult*G.G
 position = "at"
 payload = "self.chips = (get_blind_amount(G.GAME.round_resets.ante) or 1)*(self.mult or 1)*(G.GAME.starting_params.ante_scaling or 1)"
 match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/game_object.lua"]'
+pattern = "return (x_above and (1e-6*eval(x) + eval(x_above)) or eval(x)) > (y_above and (1e-6*eval(y) + eval(y_above)) or eval(y))"
+position = "at"
+payload = "return to_big(x_above and (1e-6*eval(x) + eval(x_above)) or eval(x)) > to_big(y_above and (1e-6*eval(y) + eval(y_above)) or eval(y))"
+match_indent = true

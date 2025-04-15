@@ -1209,6 +1209,18 @@ return {
 			entr_pink_seal = "Pink Seal",
 			entr_verdant_seal = "Verdant Seal",
 			entr_cerulean_seal = "Cerulean Seal",
+		},
+		poker_hands = {
+			["entr_All"] = Cryptid_config.family_mode and "All" or "Literally Fucking Everything",
+		},
+		poker_hand_descriptions = {
+			entr_All = {
+				"A hand that contains every single",
+				"card found in a 52-card deck.",
+				"plus an entire full set of Optics",
+				"and Nils, plus one Nil rank of each suit",
+				Cryptid_config.family_mode and "Are you insane?" or "What the fuck is wrong with you?",
+			}
 		}
 	},
 }

@@ -1,4 +1,4 @@
- 
+Entropy = {} 
 local i = {
     "lib/utils",
     "items/jokers",
@@ -23,7 +23,6 @@ local i = {
     "compat/loader"
     --"glop"
 }
-Entropy = {}    
 for _, v in pairs(i) do
     local f, err = SMODS.load_file(v..".lua")
     if f then f() else error("error in file "..v..": "..err) end

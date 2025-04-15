@@ -871,6 +871,7 @@ SMODS.Rank {
 SMODS.Suit {
     key = 'nilsuit',
     card_key = 'nilsuit',
+    shorthand="nil",
     pos = { y = 99 },
     ui_pos = {x=99,y=99},
     in_pool = function(self, args)

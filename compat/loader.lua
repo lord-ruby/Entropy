@@ -1,13 +1,13 @@
 local Compatibilities = {
-    --{
-    --    checkMod = "ModGlobal",
-    --    file = "filename no .lua" file must return a function
-    --}
+    {
+        checkMod = "CorruptionMod", --change when corruption releases
+        file = "corruption"
+    }
 }
 
 function LoadCompatibilities()
     for i, v in pairs(Compatibilities) do
-        if _G[v.checkMod] then SMODS.load_file("compat/"..v.file..".lua", obf_key)()() end
+        if _G[v.checkMod] or v.checkMod == true then SMODS.load_file("compat/"..v.file..".lua", "entr")()() end
     end
 end
 
