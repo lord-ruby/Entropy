@@ -513,7 +513,7 @@ SMODS.calculate_individual_effect = function(effect, scored_card, key, amount, f
         update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
         if not effect.remove_default_message then
             if from_edition then
-                card_eval_status_text(scored_card, 'jokers', nil, percent, nil, {message = localize{type='variable',key= amount > 0 and 'a_xchips' or 'a_xchips_minus',vars={amount}}, Xchips_mod =  amount, colour =  G.C.EDITION, edition = true})
+                card_eval_status_text(scored_card, 'jokers', nil, percent, nil, {message = localize{type='variable',key= to_big(amount) > to_big(0) and 'a_xchips' or 'a_xchips_minus',vars={amount}}, Xchips_mod =  amount, colour =  G.C.EDITION, edition = true})
             else
                 if key ~= 'Xchip_mod' then
                     if effect.xchip_message then

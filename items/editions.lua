@@ -8,7 +8,7 @@ SMODS.Edition({
     key="solar",
     shader="solar",
     config = {
-        sol = 1.4
+        sol = 1.2
     },
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
