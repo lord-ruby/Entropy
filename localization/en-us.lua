@@ -158,6 +158,13 @@ return {
 					"{C:inactive}(Currently: {}{X:dark_edition,C:white}^#2#{} {C:inactive}Chips){}"
 				}
 			},
+			j_entr_solarflare = {
+				name = "Solar Flare",
+				text = {
+					"Other {C:dark_edition}Solar{} cards",
+					"each give {X:gold,C:white}X#1#{} Ascension Power",
+				},
+			},
 
 		},
 		Blind = {
@@ -1184,7 +1191,8 @@ return {
 			k_entropy = "Entropy",
 		},
 		v_dictionary = {
-			card_art = "Card Art: #1#"
+			card_art = "Card Art: #1#",
+			shader = "Shader: #1#"
 		},
 		labels = {
 			entr_pinned = "Invariant",

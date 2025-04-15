@@ -738,7 +738,7 @@ SMODS.Joker({
         degrees = 90
     },
     rarity = 1,
-    cost = 7,
+    cost = 3,
     unlocked = true,
     discovered = true,
     blueprint_compat = true,
@@ -784,4 +784,88 @@ function update_hand_text(config, vals)
         vals.chips = str
     end
     ref(config, vals)
+end
+
+SMODS.Joker({
+    key = "solarflare",
+    name="entr-solarflare",
+    config = {
+        asc=2
+    },
+    rarity = 2,
+    cost = 2,
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 2, y = 0 },
+    atlas = "jokers",
+    loc_vars = function(self, info_queue, center)
+        if not center.edition or (center.edition and not center.edition.sol) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_solar
+		end
+        return {
+            vars = {
+                number_format(center.ability.asc)
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+		if
+			context.other_joker
+			and context.other_joker.edition
+			and context.other_joker.edition.sol
+			and card ~= context.other_joker
+		then
+			if not Talisman.config_file.disable_anims then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						context.other_joker:juice_up(0.5, 0.5)
+						return true
+					end,
+				}))
+			end
+			return {
+				asc = lenient_bignum(card.ability.asc),
+			}
+		end
+		if context.individual and context.cardarea == G.play then
+			if context.other_card.edition and context.other_card.edition.sol then
+				return {
+					asc = lenient_bignum(card.ability.asc),
+					colour = G.C.MULT,
+					card = card,
+				}
+			end
+		end
+		if
+			context.individual
+			and context.cardarea == G.hand
+			and context.other_card.edition
+			and context.other_card.edition.sol
+			and not context.end_of_round
+		then
+			if context.other_card.debuff then
+				return {
+					message = localize("k_debuffed"),
+					colour = G.C.RED,
+					card = card,
+				}
+			else
+				return {
+					asc = lenient_bignum(card.ability.asc),
+					card = card,
+				}
+			end
+		end
+	end
+})
+
+local create_ref = create_card
+function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+    local card = create_ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+    if card and card.ability and card.ability.name == "entr-solarflare" then
+		card:set_edition("e_entr_solar", true, nil, true)
+	end
+    return card
 end

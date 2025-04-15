@@ -1,10 +1,17 @@
+SMODS.Shader({
+    key="solar",
+    path="solar.fs"
+})
+
+
 SMODS.Edition({
     key="solar",
-    shader=false,
+    shader="solar",
     config = {
         sol = 1.4
     },
     badge_color = HEX("fca849"),
+	disable_base_shader=true,
     loc_vars = function(self,q,card)
         return {vars={card.edition.sol or 1}}
     end,
@@ -29,4 +36,7 @@ SMODS.Edition({
 			card.config.trigger = nil
 		end
 	end,
+	entr_credits = {
+		custom={key="shader",text="cassknows"}
+	}
 })
