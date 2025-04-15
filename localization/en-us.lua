@@ -1219,7 +1219,7 @@ return {
 				"card found in a 52-card deck.",
 				"plus an entire full set of Optics",
 				"and Nils, plus one Nil rank of each suit",
-				Cryptid_config.family_mode and "Are you insane?" or "What the fuck is wrong with you?",
+				Cryptid_config.family_mode and "God is Dead" or "Fuck You, God is Dead",
 			}
 		}
 	},

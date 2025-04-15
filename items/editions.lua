@@ -40,3 +40,10 @@ SMODS.Edition({
 		custom={key="shader",text="cassknows"}
 	}
 })
+
+AurinkoAddons.entr_solar = function(card, hand, instant, amount)
+	if to_big(G.GAME.hands[hand].AscensionPower or 0) > to_big(0) then
+		local num = G.GAME.hands[hand].AscensionPower * (card.edition.sol-1)
+		Entropy.ReversePlanetUse(hand, card, num)
+	end
+end
