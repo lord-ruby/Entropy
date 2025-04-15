@@ -57,6 +57,15 @@ return {
  					"Mult {X:entr_eqmult,C:white} = #1#{}"
 				}
 			},
+			j_entr_tesseract = {
+				name = "Tesseract",
+				text = {
+ 					"Rotates mult by {X:dark_edition,C:white}#1#{}",
+					"degrees counterclockwise",
+					"and chips by {X:dark_edition,C:white}#1#{}",
+					"degrees clockwise"
+				}
+			},
 			j_entr_acellero = {
 				name = "Epitachyno",
 				text = {

@@ -731,3 +731,57 @@ SMODS.Joker({
         end
     end
 })
+
+SMODS.Joker({
+    key = "tesseract",
+    config = {
+        degrees = 90
+    },
+    rarity = 1,
+    cost = 7,
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 1, y = 0 },
+    atlas = "jokers",
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                number_format(card.ability.degrees)
+            },
+        }
+    end,
+})
+
+local ref = update_hand_text
+
+function update_hand_text(config, vals)
+    if type(vals.mult) == "number" or type(vals.mult) == "table" and HasJoker("j_entr_tesseract") and math.abs(to_big(vals.mult)) > to_big(0.001) then
+        local total_angle = 0
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center.key == "j_entr_tesseract" then
+                total_angle = total_angle + v.ability.degrees
+            end
+        end
+        total_angle = (total_angle/360)*2*3.141592
+        local base = {r=math.cos(total_angle),c=math.sin(total_angle)}
+        base = {r=to_big(base.r)*to_big(vals.mult),c=to_big(base.c)*to_big(vals.mult)}
+        local str = Entropy.FormatTesseract(base)
+        vals.mult = str
+    end
+    if type(vals.chips) == "number" or type(vals.chips) == "table" and HasJoker("j_entr_tesseract") and math.abs(to_big(vals.chips)) > to_big(0.001) then
+        local total_angle = 0
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center.key == "j_entr_tesseract" then
+                total_angle = total_angle + v.ability.degrees
+            end
+        end
+        total_angle = -(total_angle/360)*2*3.141592
+        local base = {r=math.cos(total_angle),c=math.sin(total_angle)}
+        base = {r=to_big(base.r)*to_big(vals.chips),c=to_big(base.c)*to_big(vals.chips)}
+        local str = Entropy.FormatTesseract(base)
+        vals.chips = str
+    end
+    ref(config, vals)
+end

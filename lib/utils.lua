@@ -455,4 +455,17 @@ function Entropy.DeckOrSleeve(key)
     return G.GAME.selected_back and G.GAME.selected_back.effect.center.original_key == key
 end
 
-
+function Entropy.FormatTesseract(base)
+    if math.abs(to_big(base.c)) < to_big(0.001) then base.c = 0 end
+    if math.abs(to_big(base.r)) < to_big(0.001) then base.r = 0 end
+    if to_big(base.c) == to_big(0) then return number_format(base.r) end
+    if to_big(base.c) ~= to_big(0) and to_big(base.r) == to_big(0) then
+        return number_format(base.c).."i"
+    end
+    if to_big(base.c) < to_big(0) then
+        return number_format(base.r) .. "-" ..number_format(-base.c).."i"
+    end
+    if to_big(base.c) > to_big(0) then
+        return number_format(base.r) .. "+" ..number_format(base.c).."i"
+    end
+end
