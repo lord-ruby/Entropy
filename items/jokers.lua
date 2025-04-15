@@ -707,7 +707,7 @@ SMODS.Joker({
                 return {
                     Eqmult_mod=card.ability.mult,
                 }
-            elseif to_big(card.ability.immutable.arrows) < to_big(-1) then
+            elseif to_big(card.ability.immutable.arrows) < to_big(0) then
                     return {
                         mult_mod=card.ability.mult,
                         message = Entropy.FormatArrowMult(card.ability.immutable.arrows, card.ability.mult) .. ' Mult',
