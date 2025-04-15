@@ -256,6 +256,7 @@ SMODS.Seal({
                         card_limit=1,
                         type="negative"
                     })
+                    card:add_to_deck()
                     G.consumeables:emplace(c)
                 end
 

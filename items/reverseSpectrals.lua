@@ -820,6 +820,7 @@ SMODS.Consumable({
                             card_limit=1,
                             type="negative"
                         })
+                        card:add_to_deck()
                         return true
                     end
                 }))
@@ -1350,6 +1351,7 @@ SMODS.Consumable({
         end
         Entropy.FlipThen(cards, function(card3, area, indx)
             card3:set_edition(edition)
+            card3:add_to_deck()
         end)
     end,
     can_use = function(self, card)

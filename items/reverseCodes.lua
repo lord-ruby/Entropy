@@ -1624,7 +1624,8 @@ SMODS.Consumable({
             trigger="after",
             delay = 1,
             func = function() 
-                card.edition = edition
+                card:set_edition(edition)
+                card:add_to_deck()
                 return true
             end,
         }))
