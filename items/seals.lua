@@ -249,7 +249,6 @@ SMODS.Seal({
             local key = "c_entr_"..pkey
             for i = 1, 3 do
                     local c = create_card("Consumables", G.consumeables, nil, nil, nil, nil, key) 
-                    c:add_to_deck()
                     c:set_edition({
                         negative=true,
                         key="e_negative",

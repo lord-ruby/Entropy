@@ -37,9 +37,9 @@ SMODS.Joker({
                                 local edition = v.edition
                                 local sticker = v.sticker
                                 v2 = create_card("Joker", G.jokers, nil, nil, nil, nil, key) 
-                                v2:add_to_deck()
                                 v2:set_card_area(G.jokers)
-                                v2.edition = edition
+                                v2:set_edition(edition)
+                                v2:add_to_deck()
                                 v2.sticker = sticker
                                 G.jokers.cards[i] = v2
                             end
@@ -63,7 +63,6 @@ SMODS.Joker({
                                 --local c = create_card("Joker", G.jokers, nil, nil, nil, nil, key) 
                                 --c:add_to_deck()    
                                 v2:start_dissolve()
-                                local edition = v.edition
                                 v2 = create_card(v.config.center.set, G.jokers, nil, nil, nil, nil, key) 
                                 v2:add_to_deck()
                                 v2:set_card_area(G.consumeables)

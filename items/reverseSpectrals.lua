@@ -814,6 +814,7 @@ SMODS.Consumable({
                     delay = 0.2,
                     func = function()
                         card.cry_absolute = true
+                        card:remove_from_deck()
                         card:set_edition({
                             negative=true,
                             key="e_negative",
