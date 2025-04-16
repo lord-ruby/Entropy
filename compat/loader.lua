@@ -1,6 +1,6 @@
 local Compatibilities = {
     {
-        checkMod = true, --change when corruption releases
+        checkMod = "CorruptionMod", --change when corruption releases
         file = "corruption"
     }
 }

@@ -8,10 +8,19 @@ SMODS.Back({
 
 local matref = Card.set_ability
 function Card:set_ability(center, initial, delay_sprites)
+  local Jumbos = {
+    p_buffoon_mega_1="p_standard_mega_1",
+    p_buffoon_mega_1="p_standard_mega_1",
+    p_buffoon_mega_1="p_standard_mega_1",
+    p_buffoon_mega_1="p_standard_mega_1"
+  }
 	Entropy.ReverseFlipsideInversions()
     if self.config and self.config.center and Entropy.FlipsideInversions and Entropy.FlipsideInversions[self.config.center.key] and 
     Entropy.DeckOrSleeve("twisted") then
         matref(self, G.P_CENTERS[Entropy.FlipsideInversions[self.config.center.key]], initial, delay_sprites)
+    elseif self.config and self.config.center and Jumbos[self.config.center.key] and 
+      Entropy.DeckOrSleeve("crafting") then
+        matref(self, G.P_CENTERS[Jumbos[self.config.center.key]], initial, delay_sprites)
     else
         matref(self, center, initial, delay_sprites)
     end
@@ -339,6 +348,49 @@ function ease_entropy(mod)
     }))
 end
 
+--OH BOY
+
+SMODS.Back({
+	object_type = "Back",
+	name = "Deck of Destiny",
+	key = "crafting",
+	pos = { x = 3, y = 0 },
+	order = 1,
+	atlas = "decks",
+	apply = function(self)
+		G.GAME.modifiers.crafting = true
+    if not G.GAME.JokerRecipes then G.GAME.JokerRecipes = {} end
+    --G.hand.config.highlighted_limit = 
+    G.GAME.joker_rate = 0
+    if not G.GAME.banned_keys then G.GAME.banned_keys = {} end
+    G.GAME.banned_keys["p_bufoon_normal_1"] = true
+    G.GAME.banned_keys["p_bufoon_normal_2"] = true
+    G.GAME.banned_keys["p_bufoon_jubmo_1"] = true
+    G.GAME.banned_keys["p_bufoon_mega_1"] = true
+    G.E_MANAGER:add_event(Event({
+      trigger = 'after',
+      func = function()
+        local c = create_card("Spectral", G.consumeables, nil, nil, nil, nil, "c_entr_destiny") 
+        c:set_edition("e_negative")
+        c.ability.cry_absolute = true
+        c:add_to_deck()
+        G.consumeables:emplace(c)
+        return true
+      end}))
+	end,
+  config = { vouchers = { "v_magic_trick", "v_illusion" } },
+})
+
+local create_ref = create_card
+function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+    local card = create_ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+    if card and card.config and card.config.center and card.config.center.key == "c_base" and Entropy.DeckOrSleeve("crafting") then
+      if pseudorandom("crafting") < 0.5 then
+        card:set_ability(pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("crafting")))
+      end
+	  end
+    return card
+end
 
 --cryptid enh/edition/seal decks here
 SMODS.Atlas { key = 'crypt_deck', path = 'crypt_decks.png', px = 71, py = 95 }

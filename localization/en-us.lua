@@ -958,6 +958,14 @@ return {
 					"Into an {C:red}Inverted{} variant",
 				}
 			},
+			c_entr_destiny = {
+				name = "Destiny",
+				text = {
+					"Sacrifice 5 playing cards to craft",
+					"one joker based on their enhancements",
+					"{C:inactive}(Currently: #1#){}"
+				}
+			},
 		},
 		Stake = {
 			stake_entr_entropic = {

@@ -647,3 +647,38 @@ function PackHasGateway()
     end
     return false
 end
+
+SMODS.Consumable({
+    key = "destiny",
+    set = "Spectral",
+    unlocked = true,
+    discovered = true,
+    atlas = "miscc",
+    immutable = true,
+    pos = {x=5,y=7},
+    use = function(self, card, area, copier)
+        for i, v in pairs(G.hand.highlighted) do
+            if v.config.center.key ~= "c_base" then
+                v:start_dissolve()
+                v.ability.temporary2 = true
+            else
+                Entropy.DiscardSpecific({v})
+            end
+        end
+        add_joker(Entropy.GetRecipe(G.hand.highlighted))
+        local card2 = copy_card(card)
+        card2.ability.cry_absolute = true
+        card2:set_edition("e_negative")
+        card2:add_to_deck()
+        G.consumeables:emplace(card2)
+    end,
+    can_use = function(self, card)
+        return G.hand and #G.hand.highlighted == 5
+	end,
+    loc_vars = function(self, q, card)
+        return {vars={
+            G.hand and #G.hand.highlighted == 5 and localize({type = "name_text", set = "Joker", key = Entropy.GetRecipe(G.hand.highlighted)}) or "none"
+        }}
+    end,
+    weight = -1
+})

@@ -1,6 +1,11 @@
 
 SMODS.Atlas { key = 'exotic_jokers', path = 'exotic_jokers.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'jokers', path = 'jokers.png', px = 71, py = 95 }
+
+Cryptid.pointerblist["entr_hyper_exotic"] = true
+Cryptid.pointerblist["j_entr_ruby"] = true
+Cryptid.pointerblist["c_entr_define"] = true
+
 SMODS.Joker({
     key = "stillicidium",
     rarity = "cry_exotic",
