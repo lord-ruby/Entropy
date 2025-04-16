@@ -216,6 +216,14 @@ return {
 								"editioned/enhanced cards, secret hands",
 								"or using consumables"
 							}
+			},
+			b_entr_crafting = {
+				name = "Deck of Destiny",
+				text =  {
+					"Jokers may no longer appear naturally",
+					"Start with an {C:dark_edition}Absolute, Negative{} destiny",
+					"Cards have a higher chance to be enhanced"
+				}
 			}
 		},
 		Sleeve = {
