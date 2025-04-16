@@ -658,7 +658,7 @@ SMODS.Consumable({
     pos = {x=5,y=7},
     use = function(self, card, area, copier)
         for i, v in pairs(G.hand.highlighted) do
-            if v.config.center.key ~= "c_base" then
+            if v.config.center.key ~= "c_base" or pseudorandom("crafting") < 0.4 then
                 v:start_dissolve()
                 v.ability.temporary2 = true
             else
