@@ -1,7 +1,7 @@
 return function()
     SMODS.PokerHand({
         key = "entr_All",
-        visible = false,
+        visible = true,
         chips = to_big(848484848484):arrow(84,848484848484),
         mult = to_big(848484848484):arrow(84,848484848484),
         l_chips = to_big(848484848484):arrow(84,848484848484),

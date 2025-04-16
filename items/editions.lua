@@ -11,7 +11,7 @@ SMODS.Edition({
     key="solar",
     shader="solar",
     config = {
-        sol = 1.2
+        sol = 1.4
     },
 	sound = {
 		sound = "entr_e_solar",
