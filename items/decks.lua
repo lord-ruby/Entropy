@@ -9,9 +9,9 @@ SMODS.Back({
 local matref = Card.set_ability
 function Card:set_ability(center, initial, delay_sprites)
   local Jumbos = {
-    p_buffoon_mega_1="p_standard_mega_1",
-    p_buffoon_mega_1="p_standard_mega_1",
-    p_buffoon_mega_1="p_standard_mega_1",
+    p_buffoon_normal_1="p_standard_mega_1",
+    p_buffoon_normal_2="p_standard_mega_1",
+    p_buffoon_jumbo_1="p_standard_mega_1",
     p_buffoon_mega_1="p_standard_mega_1"
   }
 	Entropy.ReverseFlipsideInversions()
