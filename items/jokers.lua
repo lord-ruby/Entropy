@@ -224,6 +224,7 @@ Cryptid.big_num_blacklist["j_cry_chad"] = true
 Cryptid.big_num_blacklist["j_cry_tenebris"] = true
 Cryptid.big_num_blacklist["j_entr_yorick"] = true
 Cryptid.big_num_blacklist["j_burglar"] = true
+Cryptid.big_num_blacklist["j_entr_tesseract"] = true
 Entropy.value_bignum_blacklist = {
     ["h_size"] = true,
     ["h_size_mod"] = true,
@@ -765,8 +766,7 @@ function update_hand_text(config, vals)
         end
         total_angle = (total_angle/360)*2*3.141592
         local base = {r=math.cos(total_angle),c=math.sin(total_angle)}
-        base = {r=to_big(base.r)*to_big(vals.mult),c=to_big(base.c)*to_big(vals.mult)}
-        local str = Entropy.FormatTesseract(base)
+        local str = Entropy.WhatTheFuck(base, vals.mult)
         vals.mult = str
     end
     if type(vals.chips) == "number" or type(vals.chips) == "table" and HasJoker("j_entr_tesseract") and math.abs(to_big(vals.chips)) > to_big(0.001) then
@@ -778,8 +778,7 @@ function update_hand_text(config, vals)
         end
         total_angle = -(total_angle/360)*2*3.141592
         local base = {r=math.cos(total_angle),c=math.sin(total_angle)}
-        base = {r=to_big(base.r)*to_big(vals.chips),c=to_big(base.c)*to_big(vals.chips)}
-        local str = Entropy.FormatTesseract(base)
+        local str = Entropy.WhatTheFuck(base, vals.chips)
         vals.chips = str
     end
     ref(config, vals)
@@ -793,11 +792,6 @@ SMODS.Joker({
     },
     rarity = 2,
     cost = 2,
-    sound = {
-		sound = "entr_e_solar",
-		per = 1,
-		vol = 0.5,
-	},
     unlocked = true,
     discovered = true,
     blueprint_compat = true,
