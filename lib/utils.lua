@@ -512,7 +512,8 @@ function Entropy.ConcatStrings(tbl)
 end
 
 Entropy.FixedRecipes = {
-    c_basec_basec_basec_basec_base = "j_joker"
+    c_basec_basec_basec_basec_base = "j_joker",
+    m_steelm_steelm_steelm_steelm_steel = "j_cry_clockwork"
 }
 
 function Entropy.GetRecipe(cards)

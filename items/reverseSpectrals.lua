@@ -1086,7 +1086,7 @@ SMODS.Consumable({
             card:add_to_deck()
             G.jokers:emplace(card)
         end
-        G.GAME.round_resets.hands = G.GAME.round_resets.hands - card.ability.hands
+        G.GAME.round_resets.hands = G.GAME.round_resets.hands - card2.ability.hands
     end,
     can_use = function(self, card)
         return G.jokers and #G.jokers.highlighted > 0 and #G.jokers.highlighted <= card.ability.num

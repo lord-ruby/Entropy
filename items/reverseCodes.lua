@@ -2301,7 +2301,7 @@ end
 Cryptid.aliases["define"] = "#define"
 G.FUNCS.define_apply = function()
     local current_card
-    local card = GetSelectedCard()
+    local card = Entropy.GetHighlightedCard()
     local entered_card = G.ENTERED_CARD
 
     G.PREVIOUS_ENTERED_CARD = G.ENTERED_CARD
@@ -2322,9 +2322,9 @@ G.FUNCS.define_apply = function()
     end
     if not Entropy.DefineBlacklist[current_card] and G.P_CENTERS[current_card] and not Entropy.ExoticPlusPlus[G.P_CENTERS[current_card].rarity] then
 
-        if card.config.center.key == "j_obelisk" and entered_card == "j_cry_sob" then
-            check_for_unlock({ type = "unstable_concoction" })
-        end
+        --if card.config.center.key == "j_obelisk" and entered_card == "j_cry_sob" then
+        --    check_for_unlock({ type = "unstable_concoction" })
+        --end
         if card.config.center.set == "Default" then
             G.GAME.DefineKeys[card.base.name] = current_card
         else

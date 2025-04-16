@@ -541,7 +541,7 @@ SMODS.Joker({
     calculate = function(self, card, context)
         if context.buying_card and not context.retrigger_joker then
 			if context.card.ability.set == "Joker" then
-                card.ability.e_chips = card.ability.e_chips + Entropy.ReverseRarityChecks[context.card.config.center.rarity]/20.0
+                card.ability.e_chips = card.ability.e_chips + (Entropy.ReverseRarityChecks[context.card.config.center.rarity] or 0)/20.0
                 return {
                     message = "Upgraded",
                 }
@@ -781,7 +781,7 @@ function update_hand_text(config, vals)
                 total_angle = total_angle + v.ability.degrees
             end
         end
-        total_angle = -(total_angle/360)*2*3.141592
+        total_angle = -(total_angle/360)*2*3.14159265
         local base = {r=math.cos(total_angle),c=math.sin(total_angle)}
         local str = Entropy.WhatTheFuck(base, vals.chips)
         vals.chips = str
@@ -872,3 +872,47 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 	end
     return card
 end
+
+SMODS.Joker({
+    key = "burnt_m",
+    config = {
+        per_jolly=1
+    },
+    rarity = "cry_epic",
+    cost = 10,
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 3, y = 0 },
+    atlas = "jokers",
+    loc_vars = function(self, info_queue, center)
+        if not center.edition or (center.edition and not center.edition.sol) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_solar
+		end
+        info_queue[#info_queue+1] = G.P_CENTERS.j_jolly
+        return {
+            vars = {
+                center.config.per_jolly
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main then
+            local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
+            G.FUNCS.get_poker_hand_info(G.play.cards)
+            if next(poker_hands["Pair"]) then
+                scoring_hand[1]:set_edition("e_entr_solar")
+                local jollycount = 0
+                for i = 1, #G.jokers.cards do
+                    if G.jokers.cards[i]:is_jolly() then
+                        jollycount = jollycount + 1
+                    end
+                end
+                for i = 2, 2+jollycount do
+                    if scoring_hand[i] then scoring_hand[i]:set_edition("e_entr_solar") end
+                end
+            end
+        end
+	end
+})

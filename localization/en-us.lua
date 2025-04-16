@@ -165,6 +165,15 @@ return {
 					"each give {X:gold,C:white}X#1#{} Ascension Power",
 				},
 			},
+			j_entr_burnt_m= {
+				name = "Burnt M",
+				text = {
+					"If played hand {C:attention}contains{} a pair",
+					"apply {C:dark_edition}solar{} to the first card",
+					"apply {C:dark_edition}solar{} to 1 more card for",
+					"each {C:attention}Jolly{} Joker"
+				},
+			},
 
 		},
 		Blind = {
