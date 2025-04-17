@@ -850,3 +850,25 @@ G.FUNCS.hand_mult_UI_set = function(e)
 
 	return calc
 end
+
+
+cry_error_operators = { "+", "-", "X", "/", "^", "=", ">", "<", "m", "^^", "^^^", "{0.5}", "pi", "v", "f(x)=x^", "cos " }
+cry_error_numbers[#cry_error_numbers+1]="e6#66"
+cry_error_numbers[#cry_error_numbers+1]="-0"
+cry_error_numbers[#cry_error_numbers+1]="i"
+cry_error_numbers[#cry_error_numbers+1]="2-2i"
+cry_error_numbers[#cry_error_numbers+1]="2012"
+cry_error_numbers[#cry_error_numbers+1]="6up"
+cry_error_numbers[#cry_error_numbers+1]="One Sixbillionth"
+cry_error_numbers[#cry_error_numbers+1]="0.9999..."
+cry_error_numbers[#cry_error_numbers+1]="1/0"
+cry_error_numbers[#cry_error_numbers+1]="Infinity"
+cry_error_numbers[#cry_error_numbers+1]="naneinf"
+cry_error_numbers[#cry_error_numbers+1]="413"
+cry_error_msgs[#cry_error_msgs+1]={ string = "Entropy", colour = G.C.RARITY["entr_hyper_exotic"] }
+cry_error_msgs[#cry_error_msgs+1]={ string = "Puppies", colour = G.C.RED }
+cry_error_msgs[#cry_error_msgs+1]={ string = "Ascension Power", colour = G.C.GOLD }
+cry_error_msgs[#cry_error_msgs+1]={ string = "Heart Containers", colour = G.C.RED }
+cry_error_msgs[#cry_error_msgs+1]={ string = "Build Grist", colour = G.C.BLUE }
+cry_error_msgs[#cry_error_msgs+1]={ string = "Moral Chemicals", colour = G.C.BLUE }
+cry_error_msgs[#cry_error_msgs+1]={ string = "Inversions", colour =  G.C.RARITY["entr_reverse_legendary"] }
