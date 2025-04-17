@@ -482,6 +482,8 @@ function Entropy.WhatTheFuck(base, val)
         base.c = math.abs(base.c)
         base.minusc = true
     end
+    if to_big(math.abs(base.c)) < to_big(0.0001) then base.c = 0 end
+    if to_big(math.abs(base.r)) < to_big(0.0001) then base.r = 0 end
     base.c = to_big(base.c) * to_big(val)
     base.r = to_big(base.r) * to_big(val)
     return Entropy.FormatTesseract(base)
