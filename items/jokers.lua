@@ -202,7 +202,7 @@ SMODS.Joker({
                 local exp = card.ability.extra
 			    --local card = G.jokers.cards[i]
                 if not Card.no(G.jokers.cards[i], "immutable", true) and G.jokers.cards[i].config.center.key ~= "j_entr_acellero" then
-                    Entropy.misprintize(G.jokers.cards[i], { exponent=exp }, nil, true)
+                    Cryptid.misprintize(G.jokers.cards[i], { min=exp,max=exp }, nil, true, "^", 1)
                     check = true
                 end
 			    if check then
@@ -230,156 +230,6 @@ Cryptid.big_num_blacklist["j_cry_tenebris"] = true
 Cryptid.big_num_blacklist["j_entr_yorick"] = true
 Cryptid.big_num_blacklist["j_burglar"] = true
 Cryptid.big_num_blacklist["j_entr_tesseract"] = true
-Entropy.value_bignum_blacklist = {
-    ["h_size"] = true,
-    ["h_size_mod"] = true,
-    ["csl"] = true,
-    ["hs"] = true
-}
-function Entropy.misprintize(card, override, force_reset, stack)
-    if Card.no(card, "immutable", true) then
-		force_reset = true
-	end
-	--infinifusion compat
-    card:remove_from_deck()
-	if card.infinifusion then
-		if card.config.center == card.infinifusion_center or card.config.center.key == "j_infus_fused" then
-			calculate_infinifusion(card, nil, function(i)
-				Entropy.misprintize(card, override, force_reset, stack)
-			end)
-		end
-	end
-	if
-		not Card.no(card, "immutable", true)
-	then
-		if card.ability.name == "Ace Aequilibrium" then
-			return
-		end
-		if G.GAME.modifiers.cry_jkr_misprint_mod and card.ability.set == "Joker" then
-			if not override then
-				override = {}
-			end
-			override.min = override.min or G.GAME.modifiers.cry_misprint_min or 1
-			override.max = override.max or G.GAME.modifiers.cry_misprint_max or 1
-			override.min = override.min * G.GAME.modifiers.cry_jkr_misprint_mod
-			override.max = override.max * G.GAME.modifiers.cry_jkr_misprint_mod
-		end
-		if override then
-			Entropy.misprintize_tbl(
-				card.config.center_key,
-				card,
-				"ability",
-				nil,
-				override,
-				stack,
-				Cryptid.is_card_big(card)
-			)
-			if card.base then
-				Entropy.misprintize_tbl(
-					card.config.card_key,
-					card,
-					"base",
-					nil,
-					override,
-					stack,
-					Cryptid.is_card_big(card)
-				)
-			end
-		end
-		if G.GAME.modifiers.cry_misprint_min then
-			--card.cost = cry_format(card.cost / Cryptid.log_random(pseudoseed('cry_misprint'..G.GAME.round_resets.ante),override and override.min or G.GAME.modifiers.cry_misprint_min,override and override.max or G.GAME.modifiers.cry_misprint_max),"%.2f")
-			card.misprint_cost_fac = 1
-				/ Cryptid.log_random(
-					pseudoseed("cry_misprint" .. G.GAME.round_resets.ante),
-					override and override.min or G.GAME.modifiers.cry_misprint_min,
-					override and override.max or G.GAME.modifiers.cry_misprint_max
-				)
-			card:set_cost()
-		end
-	else
-		Entropy.misprintize_tbl(card.config.center_key, card, "ability", true, nil, nil, Cryptid.is_card_big(card))
-	end
-	if card.ability.consumeable then
-		for k, v in pairs(card.ability.consumeable) do
-			card.ability.consumeable[k] = Cryptid.deep_copy(card.ability[k])
-		end
-	end
-    card:add_to_deck()
-end
-
-function Entropy.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stack, big)
-	if name and ref_tbl and ref_value then
-		tbl = Cryptid.deep_copy(ref_tbl[ref_value])
-		for k, v in pairs(tbl) do
-			if (type(tbl[k]) ~= "table") or is_number(tbl[k]) then
-				if
-					is_number(tbl[k])
-					and not (k == "perish_tally")
-					and not (k == "id")
-					and not (k == "colour")
-					and not (k == "suit_nominal")
-					and not (k == "base_nominal")
-					and not (k == "face_nominal")
-					and not (k == "qty")
-					and not (k == "x_mult" and v == 1 and not tbl.override_x_mult_check)
-					and not (k == "selected_d6_face")
-                    and not (k == "d_size")
-                    and not (k == "num_candies")
-				then --Temp fix, even if I did clamp the number to values that wouldn't crash the game, the fact that it did get randomized means that there's a higher chance for 1 or 6 than other values
-					if not Cryptid.base_values[name] then
-						Cryptid.base_values[name] = {}
-					end
-					if not Cryptid.base_values[name][k] then
-						Cryptid.base_values[name][k] = tbl[k]
-					end
-                        if Cryptid.big_num_blacklist[ref_tbl.config.center.key] or Entropy.value_bignum_blacklist[k] then
-                            tbl[k] = (tbl[k] or Cryptid.base_values[name][k]) ^ override.exponent
-                            if type(tbl[k]) == "table" then tbl[k] = tbl[k]:to_number() end
-                            if tbl[k] > 10^300 then tbl[k] = 10^300 end
-                        else
-                            tbl[k] = to_big(tbl[k] or Cryptid.base_values[name][k]) ^ override.exponent
-                            if tbl[k]:lte(1) then tbl[k] = tbl[k]:to_number() end
-                        end
-				end
-			else
-				for _k, _v in pairs(tbl[k]) do
-					if
-						is_number(tbl[k][_k])
-						and not (_k == "id")
-						and not (_k == "colour")
-						and not (_k == "suit_nominal")
-						and not (_k == "base_nominal")
-						and not (_k == "face_nominal")
-						and not (_k == "qty")
-						and not (_k == "x_mult" and v == 1 and not tbl[k].override_x_mult_check)
-						and not (_k == "selected_d6_face")
-                        and not (_k == "d_size")
-                        and not (_k == "num_candies")
-					then --Refer to above
-						if not Cryptid.base_values[name] then
-							Cryptid.base_values[name] = {}
-						end
-						if not Cryptid.base_values[name][k] then
-							Cryptid.base_values[name][k] = {}
-						end
-						if not Cryptid.base_values[name][k][_k] then
-							Cryptid.base_values[name][k][_k] = tbl[k][_k]
-						end
-                            if Cryptid.big_num_blacklist[ref_tbl.config.center.key] or Entropy.value_bignum_blacklist[_k] then
-                                tbl[k][_k] = (tbl[k][_k] or Cryptid.base_values[name][k][_k]) ^ override.exponent
-                                if type(tbl[k][_k]) == "table" then tbl[k][_k] = tbl[k][_k]:to_number() end
-                                if tbl[k][_k] > 10^300 then tbl[k][_k] = 10^300 end
-                            else
-                                tbl[k][_k] = to_big(tbl[k][_k] or Cryptid.base_values[name][k][_k]) ^ override.exponent
-                                if tbl[k][_k]:lte(1) then tbl[k][_k] = tbl[k][_k]:to_number() end
-                            end
-					end
-				end
-			end
-		end
-		ref_tbl[ref_value] = tbl
-	end
-end
 
 SMODS.Joker({
     key = "helios",
@@ -886,6 +736,7 @@ SMODS.Joker({
     eternal_compat = true,
     pos = { x = 3, y = 0 },
     atlas = "jokers",
+    pools = { ["M"] = true },
     loc_vars = function(self, info_queue, center)
         if not center.edition or (center.edition and not center.edition.sol) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_solar
@@ -952,23 +803,6 @@ SMODS.Joker({
         end
     end,
 	cry_scale_mod = function(self, card, joker, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
-        if joker.config.center.key == "j_entr_anaptyxi" then return true_base end
-        for i, v in pairs(G.jokers.cards) do
-            if (v ~= joker and v.config.center.key ~= "j_entr_anaptyxi") then
-                if not Card.no(v, "immutable", true) then
-                    Cryptid.with_deck_effects(v, function(card2)
-                        Cryptid.misprintize(card2, { min = card.ability.scale_mult*orig_scale_scale, max = card.ability.scale_mult*orig_scale_scale }, nil, true, "+")
-                    end)
-                    card_eval_status_text(
-                        v,
-                        "extra",
-                        nil,
-                        nil,
-                        nil,
-                        { message = localize("k_upgrade_ex") })
-                end
-            end
-        end
         local new_scale = lenient_bignum(
             to_big(true_base)
                 * (
@@ -983,6 +817,23 @@ SMODS.Joker({
         )
         if not Cryptid.is_card_big(joker) and to_big(new_scale) >= to_big(1e300) then
             new_scale = 1e300
+        end
+        if joker.config.center.key == "j_entr_anaptyxi" then return true_base end
+        for i, v in pairs(G.jokers.cards) do
+            if (v ~= joker and v.config.center.key ~= "j_entr_anaptyxi") then
+                    if not Card.no(v, "immutable", true) then
+                    Cryptid.with_deck_effects(v, function(card2)
+                        Cryptid.misprintize(card2, { min = card.ability.scale_mult*new_scale, max = card.ability.scale_mult*new_scale}, nil, true, "+")
+                    end)
+                    card_eval_status_text(
+                        v,
+                        "extra",
+                        nil,
+                        nil,
+                        nil,
+                        { message = "+ "..number_format(card.ability.scale_mult*new_scale) })
+                    end
+            end
         end
 		return new_scale
 	end,

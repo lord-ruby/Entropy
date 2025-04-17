@@ -178,9 +178,9 @@ return {
 				name = "Anaptyxi",
 				text = {
 					"Scaling jokers scale as a quadratic",
-					"when a scaling joker scales add {X:dark_edition,C:white}X#1#{}",
-					"its scaler value to all other joker values",
-					"increase this number by {X:dark_edition,C:white}X#2#{} every round",
+					"Scaling jokers scale all other jokers by",
+					"{X:dark_edition,C:white}X#1#{} the same amount then increase ",
+					"this by {X:dark_edition,C:white}X#2#{} at the end of round",
 					"{C:inactive}(Anaptyxi exlcuded){}",
 				},
 			},
