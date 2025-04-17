@@ -469,17 +469,13 @@ local oldfunc = Game.main_menu
 			G.CARD_W*1.1*1.2,
 			G.CARD_H*1.1*1.2,
 			G.P_CARDS.empty,
-			G.P_CENTERS.c_entr_beyond,
+			G.P_CENTERS.c_entr_entropy,
 			{ bypass_discovery_center = true }
 		)
-        if #G.title_top.cards > 2 then
             for i, v in pairs(G.title_top.cards) do
                 if v.config.center.key == "c_cryptid" then v:start_dissolve() end
+                if v.base and v.base.value and v.base.value == "Ace" then v:set_edition("e_entr_solar") end
             end
-        else
-            G.title_top.T.w = G.title_top.T.w * 1.7675
-            G.title_top.T.x = G.title_top.T.x - 0.8
-        end
 		-- recenter the title
 		G.title_top:emplace(newcard)
 		newcard.no_ui = true
