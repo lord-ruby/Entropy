@@ -202,7 +202,9 @@ SMODS.Joker({
                 local exp = card.ability.extra
 			    --local card = G.jokers.cards[i]
                 if not Card.no(G.jokers.cards[i], "immutable", true) and G.jokers.cards[i].config.center.key ~= "j_entr_acellero" then
-                    Cryptid.misprintize(G.jokers.cards[i], { min=exp,max=exp }, nil, true, "^", 1)
+                    Cryptid.with_deck_effects(v, function(card2)
+                        Cryptid.misprintize(card2, { min=exp,max=exp }, nil, true, "^", 1)
+                    end)
                     check = true
                 end
 			    if check then
