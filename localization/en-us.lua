@@ -174,6 +174,16 @@ return {
 					"each {C:attention}Jolly{} Joker"
 				},
 			},
+			j_entr_anaptyxi= {
+				name = "Anaptyxi",
+				text = {
+					"Scaling jokers scale as a quadratic",
+					"when a scaling joker scales add {X:dark_edition,C:white}X#1#{}",
+					"its scaler value to all other joker values",
+					"increase this number by {X:dark_edition,C:white}X#2#{} every round",
+					"{C:inactive}(Anaptyxi exlcuded){}",
+				},
+			},
 
 		},
 		Blind = {

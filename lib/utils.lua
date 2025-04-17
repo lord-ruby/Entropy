@@ -489,7 +489,7 @@ end
 
 C = SMODS.load_file("lib/combine.lua")()
 
-function Entropy.GetRecipeResult(val,jokerrares)
+function Entropy.GetRecipeResult(val,jokerrares,seed)
     local rare = 1
     local cost=0
     for i, v in pairs({
@@ -503,7 +503,7 @@ function Entropy.GetRecipeResult(val,jokerrares)
             rare = i;cost=v
         end
     end
-    return pseudorandom_element(jokerrares[rare], pseudoseed("crafting"))
+    return pseudorandom_element(jokerrares[rare], pseudoseed(seed))
 end
 function Entropy.ConcatStrings(tbl)
     local result = ""
@@ -551,7 +551,7 @@ function Entropy.GetRecipe(cards)
     end
     table.sort(enh, function(a,b)return (enhancements[a])>(enhancements[b]) end)
     if not G.GAME.JokerRecipes[Entropy.ConcatStrings(enh)] then
-        G.GAME.JokerRecipes[Entropy.ConcatStrings(enh)]=Entropy.GetRecipeResult(sum, rares)
+        G.GAME.JokerRecipes[Entropy.ConcatStrings(enh)]=Entropy.GetRecipeResult(sum, rares,Entropy.ConcatStrings(enh))
     end
     return Entropy.FixedRecipes[Entropy.ConcatStrings(enh)] or G.GAME.JokerRecipes[Entropy.ConcatStrings(enh)]
 end

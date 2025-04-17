@@ -803,4 +803,50 @@ G.FUNCS.hand_mult_UI_set = function(e)
       if not G.TAROT_INTERRUPT_PULSE then G.FUNCS.text_super_juice(e, math.max(0,math.floor(math.log10(type(G.GAME.current_round.current_hand.mult) == 'number' and G.GAME.current_round.current_hand.mult or 1)))) end
     end
   end
-  
+
+
+  function Cryptid.calculate_misprint(initial, min, max, grow_type, pow_level)
+	local big_initial = (type(initial) ~= "table" and to_big(initial)) or initial
+	local big_min = (type(min) ~= "table" and to_big(min)) or min
+	local big_max = (type(max) ~= "table" and to_big(max)) or max
+
+	local grow = Cryptid.log_random(pseudoseed("cry_misprint" .. G.GAME.round_resets.ante), big_min, big_max)
+
+	local calc = big_initial
+	if not grow_type then
+		calc = calc * grow
+	elseif grow_type == "+" then
+		if to_big(math.abs(initial)) > to_big(0.00001) then calc = calc + grow end
+	elseif grow_type == "-" then
+		calc = calc - grow
+	elseif grow_type == "/" then
+		calc = calc / grow
+	elseif grow_type == "^" then
+		pow_level = pow_level or 1
+		if pow_level == 1 then
+			calc = calc ^ grow
+		else
+			local function hyper(level, base, height)
+				local big_base = (type(base) ~= "table" and to_big(base)) or base
+				local big_height = (type(height) ~= "table" and to_big(height)) or height
+
+				if height == 1 then
+					return big_base
+				elseif level == 1 then
+					return big_base ^ big_height
+				else
+					local inner = hyper(level, base, height - 1)
+					return hyper(level - 1, base, inner)
+				end
+			end
+
+			calc = hyper(pow_level, calc, grow)
+		end
+	end
+
+	if calc > to_big(-1e100) and calc < to_big(1e100) then
+		calc = to_number(calc)
+	end
+
+	return calc
+end

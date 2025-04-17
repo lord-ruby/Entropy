@@ -902,17 +902,89 @@ SMODS.Joker({
             local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
             G.FUNCS.get_poker_hand_info(G.play.cards)
             if next(poker_hands["Pair"]) then
-                scoring_hand[1]:set_edition("e_entr_solar")
+                G.play.cards[1]:set_edition("e_entr_solar")
                 local jollycount = 0
                 for i = 1, #G.jokers.cards do
                     if G.jokers.cards[i]:is_jolly() then
                         jollycount = jollycount + 1
                     end
                 end
-                for i = 2, 2+jollycount do
-                    if scoring_hand[i] then scoring_hand[i]:set_edition("e_entr_solar") end
+                if jollycount > 0 then
+                    for i = 2, 2+jollycount do
+                        if G.play.cards[i] then G.play.cards[i]:set_edition("e_entr_solar") end
+                    end
                 end
             end
         end
 	end
 })
+
+SMODS.Joker({
+    key = "anaptyxi",
+    rarity = "entr_hyper_exotic",
+    cost = 150,
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 0, y = 6 },
+    config = {
+        scale_mult=2,
+        scale_mult_mod=1
+    },
+    soul_pos = { x = 2, y = 6, extra = { x = 1, y = 6 } },
+    atlas = "exotic_jokers",
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                number_format(card.ability.scale_mult),
+                number_format(card.ability.scale_mult_mod)
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+            card.ability.scale_mult = card.ability.scale_mult + card.ability.scale_mult_mod
+            return {
+				message = localize("k_upgrade_ex"),
+				colour = G.C.DARK_EDITION,
+			}
+        end
+    end,
+	cry_scale_mod = function(self, card, joker, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
+        if joker.config.center.key == "j_entr_anaptyxi" then return true_base end
+        for i, v in pairs(G.jokers.cards) do
+            if (v ~= joker and v.config.center.key ~= "j_entr_anaptyxi") then
+                if not Card.no(v, "immutable", true) then
+                    Cryptid.with_deck_effects(v, function(card2)
+                        Cryptid.misprintize(card2, { min = card.ability.scale_mult*orig_scale_scale, max = card.ability.scale_mult*orig_scale_scale }, nil, true, "+")
+                    end)
+                    card_eval_status_text(
+                        v,
+                        "extra",
+                        nil,
+                        nil,
+                        nil,
+                        { message = localize("k_upgrade_ex") })
+                end
+            end
+        end
+        local new_scale = lenient_bignum(
+            to_big(true_base)
+                * (
+                    (
+                        1
+                        + (
+                            (to_big(orig_scale_scale) / to_big(true_base))
+                            ^ (to_big(1) / to_big(2))
+                        )
+                    ) ^ to_big(2)
+                )
+        )
+        if not Cryptid.is_card_big(joker) and to_big(new_scale) >= to_big(1e300) then
+            new_scale = 1e300
+        end
+		return new_scale
+	end,
+})  
+
