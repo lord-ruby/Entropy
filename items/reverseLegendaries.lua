@@ -18,8 +18,9 @@ SMODS.Joker({
         info_queue[#info_queue + 1] = {key = 'e_negative_consumable', set = 'Edition', config = {extra = 1}}
     end,
     immutable = true,
+    demicoloncompat = true,
     calculate = function (self, card, context)
-        if context.ending_shop then
+        if context.ending_shop or context.forcetrigger then
             if #G.consumeables.cards > 0 then
                 local e = pseudorandom_element(G.consumeables.cards, pseudoseed("rperkeo"))
                 local set = e.config.center.set
@@ -90,6 +91,7 @@ SMODS.Joker({
     pos = { x = 3, y = 0 },
     soul_pos = { x = 3, y = 1 },
     atlas = "reverse_legendary",
+    demicoloncompat=true,
     loc_vars = function(self, info_queue, card)
         local ret = localize("k_none")
 		if Cryptid.safe_get(G.GAME, "blind", "in_blind") then
@@ -109,12 +111,17 @@ SMODS.Joker({
     end,
     immutable = true,
     calculate = function (self, card, context)
-        if context.setting_blind and not card.getting_sliced then
+        if (context.setting_blind and not card.getting_sliced) or context.forcetrigger then
             local tag
             local type = G.GAME.blind:get_type()
 
             if type == "Boss" then
                 tag = Tag(get_next_tag_key())
+                if context.forcetrigger then
+                    G.GAME.blind.chips = G.GAME.blind.chips * 0.2
+                    G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+                    G.HUD_blind:recalculate()
+                end
             else
                 tag = Tag(G.GAME.round_resets.blind_tags[type])
                 if not context.blueprint then
@@ -164,6 +171,7 @@ SMODS.Joker({
     pos = { x = 2, y = 0 },
     soul_pos = { x = 2, y = 1 },
     atlas = "reverse_legendary",
+    demicoloncompat=true,
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
@@ -181,6 +189,7 @@ SMODS.Joker({
 			"cassknows",
 		},
 	},
+    demicoloncompat = true,
     add_to_deck = function(self, card)
         G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + card.ability.csl
         card.ability.hs_set = nil
@@ -201,14 +210,17 @@ SMODS.Joker({
         end
     end,
     calculate = function (self, card, context)
-        if context.pre_discard and not context.retrigger_joker and not context.blueprint then
+        if (context.pre_discard and not context.retrigger_joker and not context.blueprint) or context.forcetrigger then
             card.ability.currd = card.ability.currd + #G.hand.highlighted
             while card.ability.currd >= card.ability.neededd do
                 card.ability.currd = card.ability.currd - card.ability.neededd
                 card.ability.echips = card.ability.echips + card.ability.echips_mod
             end
+            if context.forcetrigger then
+                card.ability.echips = card.ability.echips + card.ability.echips_mod
+            end
         end
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             return {
 				Echip_mod = card.ability.echips,
 				message = localize({
@@ -267,7 +279,7 @@ SMODS.Joker({
 		},
 	},
     calculate = function (self, card, context)
-        if context.individual and context.cardarea == G.play then
+        if (context.individual and context.cardarea == G.play) then
             local num_jacks = 0
             for i, v in pairs(G.play.cards) do
                 if v.base.id == 11 then
@@ -329,6 +341,7 @@ SMODS.Joker({
             },
         }
     end,
+    demicoloncompat = true,
     calculate = function (self, card2, context)
         if context.destroy_card and context.cardarea == G.play and context.destroying_card then
                 local card = Card(context.destroying_card.T.x, context.destroying_card.T.y, G.CARD_W*(card_scale or 1), G.CARD_H*(card_scale or 1), G.P_CARDS.empty, G.P_CENTERS.c_base, {playing_card = playing_card})
@@ -350,7 +363,7 @@ SMODS.Joker({
                     }
                 end
         end
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             return {
 				Echip_mod = card2.ability.extra.emult,
 				message = localize({

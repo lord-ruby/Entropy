@@ -2,10 +2,6 @@
 SMODS.Atlas { key = 'exotic_jokers', path = 'exotic_jokers.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'jokers', path = 'jokers.png', px = 71, py = 95 }
 
-Cryptid.pointerblist["entr_hyper_exotic"] = true
-Cryptid.pointerblist["j_entr_ruby"] = true
-Cryptid.pointerblist["c_entr_define"] = true
-
 SMODS.Joker({
     key = "stillicidium",
     rarity = "cry_exotic",
@@ -16,16 +12,17 @@ SMODS.Joker({
     discovered = true,
     blueprint_compat = true,
     eternal_compat = true,
+    demicoloncompat = true,
     --pos = { x = 0, y = 0 },
     --atlas = "jokers",
     loc_vars = function(self, info_queue, card)
 
     end,
     calculate = function (self, card, context)
-        if context.ending_shop then
+        if context.ending_shop or context.forcetrigger then
                 local afterS = false
                 for i, v in pairs(G.jokers.cards) do
-                    if v.config.center_key ~= "j_entr_stillicidium" and i > GetAreaIndex(G.jokers.cards, card) 
+                    if (v.config.center_key ~= "j_entr_stillicidium" or context.forcetrigger) and i > GetAreaIndex(G.jokers.cards, card) 
                     and not v.ability.cry_absolute then --you cannot run, you cannot hide
                         G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() 
                             --local c = create_card("Joker", G.jokers, nil, nil, nil, nil, key) 
@@ -88,7 +85,7 @@ SMODS.Joker({
                     SMODS.change_base(card, card.base.suit, LowerCardRank(card))
                 return true end }))
         end
-        if context.setting_blind and not context.blueprint and not card.getting_sliced then
+        if (context.setting_blind and not context.blueprint and not card.getting_sliced) or context.forcetrigger then
 			card.gone = false
 			G.GAME.blind.chips = G.GAME.blind.chips * 0.6
 			G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
@@ -153,6 +150,7 @@ SMODS.Joker({
     eternal_compat = true,
     pos = { x = 0, y = 0 },
     atlas = "jokers",
+    demicoloncompat = true,
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
@@ -161,7 +159,7 @@ SMODS.Joker({
         }
     end,
     calculate = function (self, card, context)
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             G.GAME.current_round.current_hand.mult = card.ability.qmult
             update_hand_text({delay = 0}, {chips = G.GAME.current_round.current_hand.chips and hand_chips, mult = card.ability.qmult})
             return {
@@ -187,6 +185,7 @@ SMODS.Joker({
     pos = { x = 0, y = 1 },
     soul_pos = { x = 2, y = 1, extra = { x = 1, y = 1 } },
     atlas = "exotic_jokers",
+    demicoloncompat = true,
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
@@ -196,12 +195,12 @@ SMODS.Joker({
         }
     end,
     calculate = function (self, card, context)
-        if context.ending_shop and not context.blueprint and not context.retrigger_joker then
+        if (context.ending_shop and not context.blueprint and not context.retrigger_joker) or context.forcetrigger then
             for i, v in pairs(G.jokers.cards) do
                 local check = false
                 local exp = card.ability.extra
 			    --local card = G.jokers.cards[i]
-                if not Card.no(G.jokers.cards[i], "immutable", true) and G.jokers.cards[i].config.center.key ~= "j_entr_acellero" then
+                if not Card.no(G.jokers.cards[i], "immutable", true) and (G.jokers.cards[i].config.center.key ~= "j_entr_acellero" or context.forcetrigger) then
                     Cryptid.with_deck_effects(v, function(card2)
                         Cryptid.misprintize(card2, { min=exp,max=exp }, nil, true, "^", 1)
                     end)
@@ -350,6 +349,7 @@ SMODS.Joker({
         ante_mod_mod = 0.1
     },
     immutable = true,
+    demicoloncompat = true,
     soul_pos = { x = 2, y = 3, extra = { x = 1, y = 3 } },
     atlas = "exotic_jokers",
     loc_vars = function(self, info_queue, card)
@@ -361,8 +361,10 @@ SMODS.Joker({
         }
     end,
     calculate = function(self, card, context)
-        if context.selling_card and not context.retrigger_joker then
-			if context.card.ability.set == "Joker" and Entropy.RarityAbove("3",context.card.config.center.rarity,true) then
+        if (context.selling_card and not context.retrigger_joker) or context.forcetrigger then
+            if not context.card then
+                card.ability.ante_mod_mod = card.ability.ante_mod_mod * 0.5
+            elseif context.card.ability.set == "Joker" and Entropy.RarityAbove("3",context.card.config.center.rarity,true) then
                 card.ability.ante_mod_mod = card.ability.ante_mod_mod * 0.5
             end
         end
@@ -381,6 +383,7 @@ SMODS.Joker({
     config = {
         e_chips = 1
     },
+    demicoloncompat = true,
     soul_pos = { x = 2, y = 4, extra = { x = 1, y = 4 } },
     atlas = "exotic_jokers",
     loc_vars = function(self, info_queue, card)
@@ -399,7 +402,10 @@ SMODS.Joker({
                 }
             end
         end
-        if context.joker_main then
+        if context.forcetrigger then
+            card.ability.e_chips = card.ability.e_chips + (Entropy.ReverseRarityChecks[1] or 0)/20.0
+        end
+        if context.joker_main or context.forcetrigger then
             return {
 				EEchip_mod = card.ability.e_chips,
 				message =  '^^' .. number_format(card.ability.e_chips) .. ' Chips',
@@ -520,6 +526,7 @@ SMODS.Joker({
         pairs_needed = 8,
         pairs_current = 0
     },
+    demicoloncompat = true,
     soul_pos = { x = 2, y = 5, extra = { x = 1, y = 5 } },
     atlas = "exotic_jokers",
     loc_vars = function(self, q, card)
@@ -542,7 +549,7 @@ SMODS.Joker({
         end
     end,
     calculate = function(self, card, context)
-        if context.after and not context.repetition and not context.blueprint then
+        if (context.after and not context.repetition and not context.blueprint) or context.forcetrigger then
             local pairs = 0
             for i = 1, #G.play.cards - 1 do
                 for j = i + 1, #G.play.cards do
@@ -559,7 +566,7 @@ SMODS.Joker({
                 card.ability.immutable.arrows = card.ability.immutable.arrows + 1
             end
         end
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             if to_big(card.ability.immutable.arrows) < to_big(-1) then
                 return {
                     Eqmult_mod=card.ability.mult,
@@ -655,6 +662,7 @@ SMODS.Joker({
     eternal_compat = true,
     pos = { x = 2, y = 0 },
     atlas = "jokers",
+    demicoloncompat = true,
     loc_vars = function(self, info_queue, center)
         if not center.edition or (center.edition and not center.edition.sol) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_solar
@@ -667,10 +675,10 @@ SMODS.Joker({
     end,
     calculate = function(self, card, context)
 		if
-			context.other_joker
+			(context.other_joker
 			and context.other_joker.edition
 			and context.other_joker.edition.sol
-			and card ~= context.other_joker
+			and card ~= context.other_joker)
 		then
 			if not Talisman.config_file.disable_anims then
 				G.E_MANAGER:add_event(Event({
@@ -694,11 +702,11 @@ SMODS.Joker({
 			end
 		end
 		if
-			context.individual
+			(context.individual
 			and context.cardarea == G.hand
 			and context.other_card.edition
 			and context.other_card.edition.sol
-			and not context.end_of_round
+			and not context.end_of_round)
 		then
 			if context.other_card.debuff then
 				return {
@@ -713,6 +721,12 @@ SMODS.Joker({
 				}
 			end
 		end
+        if context.forcetrigger then
+            return {
+                asc = lenient_bignum(card.ability.asc),
+                card = card,
+            }
+        end
 	end
 })
 
@@ -739,6 +753,7 @@ SMODS.Joker({
     pos = { x = 3, y = 0 },
     atlas = "jokers",
     pools = { ["M"] = true },
+    demicoloncompat = true,
     loc_vars = function(self, info_queue, center)
         if not center.edition or (center.edition and not center.edition.sol) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_solar
@@ -769,6 +784,20 @@ SMODS.Joker({
                 end
             end
         end
+        if context.forcetrigger then
+            G.play.cards[1]:set_edition("e_entr_solar")
+            local jollycount = 0
+            for i = 1, #G.jokers.cards do
+                if G.jokers.cards[i]:is_jolly() then
+                    jollycount = jollycount + 1
+                end
+            end
+            if jollycount > 0 then
+                for i = 2, 2+jollycount do
+                    if G.play.cards[i] then G.play.cards[i]:set_edition("e_entr_solar") end
+                end
+            end
+        end
 	end
 })
 
@@ -785,6 +814,7 @@ SMODS.Joker({
         scale_mult=2,
         scale_mult_mod=1
     },
+    demicoloncompat = true,
     soul_pos = { x = 2, y = 6, extra = { x = 1, y = 6 } },
     atlas = "exotic_jokers",
     loc_vars = function(self, q, card)
@@ -796,7 +826,7 @@ SMODS.Joker({
         }
     end,
     calculate = function(self, card, context)
-        if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+        if (context.end_of_round and not context.individual and not context.repetition and not context.blueprint) or context.forcetrigger then
             card.ability.scale_mult = card.ability.scale_mult + card.ability.scale_mult_mod
             return {
 				message = localize("k_upgrade_ex"),
@@ -841,3 +871,42 @@ SMODS.Joker({
 	end,
 })  
 
+
+SMODS.Joker({
+    key = "chaos",
+    rarity = "cry_epic",
+    cost = 15,
+    unlocked = true,
+    discovered = true,
+    eternal_compat = true,
+    pos = { x = 0, y = 1 },
+    atlas = "jokers",
+    loc_vars = function(self, info_queue, center)
+    end,
+})
+
+Entropy.ChaosBlacklist = {
+    --Enhanced = true,
+    Back = true,
+    --Default = true,
+    --Edition = true,
+    Sleeve = true
+    ["Content Set"] = true,
+
+}
+Entropy.ChaosConversions = {
+    RCode = "Twisted",
+    RPlanet = "Twisted",
+    RSpectral = "Twisted"
+}
+local ref = create_card
+function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+    if next(find_joker("j_entr_chaos")) and not forced_key then
+        local center = pseudorandom_element(G.P_CENTERS, pseudoseed("chaos"))
+        while not center.set or Entropy.ChaosBlacklist[center.set] do
+            center = pseudorandom_element(G.P_CENTERS, pseudoseed("chaos"))
+        end
+        _type = Entropy.ChaosConversions[center.set] or center.set or _type
+    end
+    return ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+end

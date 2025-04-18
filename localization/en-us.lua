@@ -184,7 +184,14 @@ return {
 					"{C:inactive}(Anaptyxi exlcuded){}",
 				},
 			},
-
+			j_entr_chaos= {
+				name = "Chaos",
+				text = {
+					"When a card is {C:attention}created{}",
+					"instead create a card of",
+					"a {C:attention}random type{}"
+				},
+			},
 		},
 		Blind = {
 			bl_entr_red = {
