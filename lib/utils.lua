@@ -259,7 +259,6 @@ function Entropy.SealSpectral(key, sprite_pos, seal)
         key = key,
         set = "RSpectral",
         unlocked = true,
-        ,
         atlas = "miscc",
         config = {
             highlighted = 1
@@ -289,7 +288,6 @@ function Entropy.ModificationSpectral(key, sprite_pos, modifications, highlighte
         key = key,
         set = "RSpectral",
         unlocked = true,
-        ,
         atlas = "miscc",
         config = {
             highlighted = highlighted or 1
@@ -334,7 +332,6 @@ function Entropy.RandomModificationSpectral(key, sprite_pos, modifications, high
         key = key,
         set = "RSpectral",
         unlocked = true,
-        ,
         atlas = "miscc",
         config = {
             highlighted = highlighted or 1
