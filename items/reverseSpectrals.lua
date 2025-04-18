@@ -449,7 +449,8 @@ SMODS.Consumable({
         }
     end,
     entr_credits = {
-        idea = {"cassknows"}
+        idea = {"cassknows"},
+        art = {"LFMoth"}
     }
 })
 
@@ -1187,6 +1188,9 @@ SMODS.Consumable({
             }
         }
     end,
+    entr_credits = {
+        art = {"LFMoth"}
+    }
 })
 
 local sell_ref = G.FUNCS.sell_card

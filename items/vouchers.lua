@@ -172,3 +172,9 @@ function create_inverted_card(area, seed)
     end
     return create_card("Twisted", area or G.pack_cards, nil, nil, true, true, nil, "twisted")
 end
+
+function probability(card, seed, odds, numerator)
+    numerator = (numerator or 1) * G.GAME.probabilities.normal * (card.ability.cry_prob or 1)
+    if card.ability.cry_rigged then numerator = odds end
+    return pseudorandom(seed)*numerator < 1.0/odds
+end

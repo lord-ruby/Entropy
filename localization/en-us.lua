@@ -936,9 +936,9 @@ return {
 				}
 			},
 			c_entr_superego = {
-				name = "Superego",
+				name = "Project",
 				text = {
-					"Apply a {C:attention}superego{}",
+					"Apply a {C:attention}projected{}",
 					"sticker to 1 selected Joker then",
 					"debuff it"
 				}
@@ -1089,7 +1089,7 @@ return {
 				}
 			},
 			superego = {
-				name = "Superego",
+				name = "Projected",
 				text = {
 					"Create {C:attention}#1#{} copies",
 					"of this card when sold",
@@ -1250,7 +1250,7 @@ return {
 			temporary = "Temporary",
 			entr_pseudorandom = "Pseudorandom",
 			link = "Linked",
-			superego = "Superego",
+			superego = "Projected",
 			entr_solar = "Solar",
 
 			entr_crimson_seal = "Crimson Seal",

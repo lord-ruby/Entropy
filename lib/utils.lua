@@ -560,3 +560,13 @@ Entropy.DiscardSpecific = function(cards)
         draw_card(G.hand, G.discard, i*100/#cards, 'down', false, v)
     end
 end
+
+function Entropy.OddsTriggers(card, seed, odds, numerator)
+    numerator = (numerator or 1) * G.GAME.probabilities.normal * (card.ability.cry_prob or 1)
+    if card.ability.cry_rigged then numerator = odds end
+    return pseudorandom(seed)*numerator < 1.0/odds
+end
+function Entropy.GetOddsLocs(card, odds, numerator)
+    if card.ability.cry_rigged then return odds end
+    return (numerator or 1) * G.GAME.probabilities.normal * (card.ability.cry_prob or 1)
+end
