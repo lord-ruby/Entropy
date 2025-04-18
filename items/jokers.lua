@@ -890,7 +890,7 @@ Entropy.ChaosBlacklist = {
     Back = true,
     --Default = true,
     --Edition = true,
-    Sleeve = true
+    Sleeve = true,
     ["Content Set"] = true,
 
 }
