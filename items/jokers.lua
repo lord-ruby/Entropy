@@ -9,7 +9,7 @@ SMODS.Joker({
     atlas = "exotic_jokers",
     soul_pos = { x = 2, y = 0, extra = { x = 1, y = 0 } },
     unlocked = true,
-    discovered = true,
+
     blueprint_compat = true,
     eternal_compat = true,
     demicoloncompat = true,
@@ -145,7 +145,7 @@ SMODS.Joker({
     rarity = 1,
     cost = 7,
     unlocked = true,
-    discovered = true,
+
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 0 },
@@ -179,7 +179,7 @@ SMODS.Joker({
     rarity = "entr_hyper_exotic",
     cost = 150,
     unlocked = true,
-    discovered = true,
+
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 1 },
@@ -237,7 +237,7 @@ SMODS.Joker({
     rarity = "entr_hyper_exotic",
     cost = 150,
     unlocked = true,
-    discovered = true,
+
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 2 },
@@ -340,7 +340,7 @@ SMODS.Joker({
     rarity = "entr_hyper_exotic",
     cost = 150,
     unlocked = true,
-    discovered = true,
+
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 3 },
@@ -376,7 +376,7 @@ SMODS.Joker({
     rarity = "entr_hyper_exotic",
     cost = 150,
     unlocked = true,
-    discovered = true,
+
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 4 },
@@ -514,7 +514,7 @@ SMODS.Joker({
     rarity = "entr_hyper_exotic",
     cost = 150,
     unlocked = true,
-    discovered = true,
+
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 5 },
@@ -604,7 +604,7 @@ SMODS.Joker({
     rarity = 1,
     cost = 3,
     unlocked = true,
-    discovered = true,
+
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 1, y = 0 },
@@ -657,7 +657,7 @@ SMODS.Joker({
     rarity = 2,
     cost = 2,
     unlocked = true,
-    discovered = true,
+
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 2, y = 0 },
@@ -747,7 +747,7 @@ SMODS.Joker({
     rarity = "cry_epic",
     cost = 10,
     unlocked = true,
-    discovered = true,
+
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 3, y = 0 },
@@ -806,7 +806,7 @@ SMODS.Joker({
     rarity = "entr_hyper_exotic",
     cost = 150,
     unlocked = true,
-    discovered = true,
+
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 6 },
@@ -877,7 +877,7 @@ SMODS.Joker({
     rarity = "cry_epic",
     cost = 15,
     unlocked = true,
-    discovered = true,
+
     eternal_compat = true,
     pos = { x = 0, y = 1 },
     atlas = "jokers",

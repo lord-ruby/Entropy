@@ -8,7 +8,7 @@ SMODS.Joker({
     rarity = "entr_reverse_legendary",
     cost = 20,
     unlocked = true,
-    discovered = true,
+
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 4, y = 0 },
@@ -85,7 +85,7 @@ SMODS.Joker({
     rarity = "entr_reverse_legendary",
     cost = 20,
     unlocked = true,
-    discovered = true,
+
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 3, y = 0 },
@@ -165,7 +165,7 @@ SMODS.Joker({
     rarity = "entr_reverse_legendary",
     cost = 20,
     unlocked = true,
-    discovered = true,
+
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 2, y = 0 },
@@ -260,7 +260,7 @@ SMODS.Joker({
     rarity = "entr_reverse_legendary",
     cost = 20,
     unlocked = true,
-    discovered = true,
+
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 1, y = 0 },
@@ -321,7 +321,7 @@ SMODS.Joker({
     rarity = "entr_reverse_legendary",
     cost = 20,
     unlocked = true,
-    discovered = true,
+
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 0 },

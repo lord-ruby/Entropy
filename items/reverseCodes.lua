@@ -13,7 +13,7 @@ SMODS.Consumable({
     key = "memory_leak",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
 
@@ -35,7 +35,7 @@ SMODS.Consumable({
     key = "root_kit",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         extra = {
@@ -65,7 +65,7 @@ SMODS.Consumable({
     key = "bootstrap",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         extra = {
@@ -116,7 +116,7 @@ SMODS.Consumable({
     key = "quickload",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     pos = {x=3,y=1},
     use = function(self, card, area, copier)
@@ -160,7 +160,7 @@ SMODS.Consumable({
     key = "break",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         extra = {
@@ -208,7 +208,7 @@ SMODS.Consumable({
     key = "new",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         extra = {
@@ -251,7 +251,7 @@ SMODS.Consumable({
     key = "interference",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         extra = {
@@ -354,7 +354,7 @@ SMODS.Consumable({
     key = "constant",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     pos = {x=2,y=2},
     use = function(self, card, area, copier)
@@ -386,7 +386,7 @@ SMODS.Consumable({
     key = "pseudorandom",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     pos = {x=3,y=2},
     use = function(self, card, area, copier)
@@ -526,7 +526,7 @@ SMODS.Consumable({
     key = "inherit",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     pos = {x=4,y=2},
     use = function(self, card, area, copier)
@@ -775,7 +775,7 @@ SMODS.Consumable({
     key = "fork",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         extra = 1
@@ -843,7 +843,7 @@ SMODS.Consumable({
     key = "push",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         extra = 1
@@ -1057,7 +1057,7 @@ SMODS.Consumable({
     key = "increment",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         extra = 1
@@ -1095,7 +1095,7 @@ SMODS.Consumable({
     key = "decrement",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         extra = 1
@@ -1149,7 +1149,7 @@ SMODS.Consumable({
     key = "invariant",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         extra = 1
@@ -1295,7 +1295,7 @@ SMODS.Consumable({
     key = "cookies",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
     },
@@ -1321,7 +1321,7 @@ SMODS.Consumable({
     key = "segfault",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         extra = 1
@@ -1365,7 +1365,7 @@ SMODS.Consumable({
     key = "sudo",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         extra = {
@@ -1571,7 +1571,7 @@ SMODS.Consumable({
     key = "overflow",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         extra = {
@@ -1599,7 +1599,7 @@ SMODS.Consumable({
     key = "refactor",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
     },
@@ -1655,7 +1655,7 @@ SMODS.Consumable({
     key = "hotfix",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     pos = {x=1,y=5},
     use = function(self, card, area, copier)
@@ -1727,7 +1727,7 @@ SMODS.Consumable({
     key = "ctrl_x",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     pos = {x=2,y=5},
     use = function(self, card, area, copier)
@@ -1792,7 +1792,7 @@ SMODS.Consumable({
     key = "multithread",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
     },
@@ -2033,7 +2033,7 @@ SMODS.Consumable({
     key = "autostart",
     set = "RCode",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     pos = {x=4,y=5},
     config = {

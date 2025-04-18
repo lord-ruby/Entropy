@@ -1016,6 +1016,14 @@ return {
 				name = "Dog Tag",
 				text = { "Woof.", "{C:inactive}Level {C:dark_edition}#1#" },
 			},
+			tag_entr_solar = {
+				name = "Solar Tag",
+				text = { 
+					"Next base edition shop",
+					"Joker is free and",
+					"becomes {C:dark_edition}solar{}"	
+				},
+			},
 		},
 		Other = {
 			inversion_allowed = {

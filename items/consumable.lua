@@ -71,7 +71,7 @@ SMODS.Consumable({
     key = "flipside",
     set = "Spectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         extra = {
@@ -652,7 +652,7 @@ SMODS.Consumable({
     key = "destiny",
     set = "Spectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     immutable = true,
     pos = {x=5,y=7},

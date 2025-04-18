@@ -186,7 +186,7 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
     key = key,
     set = "RPlanet",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = config or {
         level = level or 2,

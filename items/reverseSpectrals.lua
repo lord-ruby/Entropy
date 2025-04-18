@@ -13,7 +13,7 @@ SMODS.Consumable({
     key = "changeling",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         num = 3
@@ -55,7 +55,7 @@ SMODS.Consumable({
     key = "rend",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         num = 3
@@ -80,7 +80,7 @@ SMODS.Consumable({
     key = "inscribe",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         chipmult = 3
@@ -119,7 +119,7 @@ SMODS.Consumable({
     key = "siphon",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         chipmult = 3
@@ -156,7 +156,7 @@ SMODS.Consumable({
     key = "ward",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         sellmult = 2
@@ -200,7 +200,7 @@ SMODS.Consumable({
     key = "disavow",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         sellmult = 2
@@ -267,7 +267,7 @@ SMODS.Consumable({
     key = "pact",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         selected = 3
@@ -417,7 +417,7 @@ SMODS.Consumable({
     key = "ichor",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         num = 2
@@ -457,7 +457,7 @@ SMODS.Consumable({
     key = "rejuvenate",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         dollars = -15,
@@ -518,7 +518,7 @@ SMODS.Consumable({
     key = "crypt",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         select = 2,
@@ -560,7 +560,7 @@ SMODS.Consumable({
     key = "charm",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         select = 1,
@@ -613,7 +613,7 @@ SMODS.Consumable({
     key = "entropy",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         select = 2,
@@ -654,7 +654,7 @@ SMODS.Consumable({
     key = "fervour",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
 
@@ -700,7 +700,7 @@ SMODS.Consumable({
     key = "quasar",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         level = 3
@@ -784,7 +784,7 @@ SMODS.Consumable({
     key = "weld",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         select = 1,
@@ -897,7 +897,7 @@ SMODS.Consumable({
     key = "cleanse",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         dollarpc = 1
@@ -938,7 +938,7 @@ SMODS.Consumable({
     key = "fusion",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         num = 3,
@@ -990,7 +990,7 @@ SMODS.Consumable({
     key = "substitute",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         num = 3,
@@ -1053,7 +1053,7 @@ SMODS.Consumable({
     key = "evocation",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         num = 1,
@@ -1105,7 +1105,7 @@ SMODS.Consumable({
     key = "mimic",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         num = 1,
@@ -1162,7 +1162,7 @@ SMODS.Consumable({
     key = "superego",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         num = 1,
@@ -1225,7 +1225,7 @@ SMODS.Consumable({
     key = "engulf",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         num = 1,
@@ -1254,7 +1254,7 @@ SMODS.Consumable({
     key = "offering",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         sellmult = 0.75,
@@ -1294,7 +1294,7 @@ SMODS.Consumable({
     key = "entomb",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         num = 1
@@ -1337,7 +1337,7 @@ SMODS.Consumable({
     key = "conduct",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
 	pos = {x=10,y=6},
     --soul_pos = { x = 5, y = 0},
@@ -1378,7 +1378,7 @@ SMODS.Consumable({
     key = "pulsar",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
         level = 4
@@ -1449,7 +1449,7 @@ SMODS.Consumable({
     key = "define",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
 
@@ -1504,7 +1504,7 @@ SMODS.Consumable({
     key = "beyond",
     set = "RSpectral",
     unlocked = true,
-    discovered = true,
+
     atlas = "miscc",
     config = {
 

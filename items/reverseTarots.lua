@@ -14,7 +14,7 @@ SMODS.Consumable({
     key = "fool",
     set = "RTarot",
     unlocked = true,
-    discovered = true,
+
     atlas = "rtarot",
     config = {
 
