@@ -919,24 +919,6 @@ function Entropy.randomchar(arr)
         },
     }
 end
-Entropy.RarityPoints = {
-    [1] = 1, --common
-    [2] = 4, --uncommon
-    [3] = 12, --rare
-    ["cry_epic"] = 60,
-    [4] = 300, --legendary
-    ["cry_exotic"] = 1000,
-    ["entr_hyper_exotic"] = 5000,
-}
-Entropy.RarityDiminishers = {
-    [1] = 1,
-    [2] = 1.5,
-    [3] = 2.5,
-    [4] = 5,
-    ["cry_epic"] = 4,
-    ["cry_exotic"] = 10,
-    ["entr_hyper_exotic"] = 15
-}
 local editions = ({
     ["e_foil"] = 1.25,
     ["e_holo"] = 1.45,
@@ -1034,22 +1016,7 @@ function GetJokerPoints(card)
         total = total * factor
     end
     return total
-end
-Entropy.EditionFactors = {
-    ["e_foil"] = 1.25,
-    ["e_holo"] = 1.45,
-    ["e_polychrome"] = 2,
-    ["e_negative"] = 2.1,
-    ["e_cry_glitched"] = 1.4,
-    ["e_cry_mosaic"] = 2.2,
-    ["e_cry_oversaturated"] = 1.5,
-    ["e_cry_fragile"] = 1.8,
-    ["e_cry_gold"] = 1.7,
-    ["e_cry_blurred"] = 1.5,
-    ["e_cry_noisy"] = 1.7,
-    ["e_cry_astral"] = 2.2,
-    ["e_cry_m"] = 1.45
-}
+end 
 function GetEditionFactor(edition)
     return Entropy.EditionFactors[edition.key] or 1
 end
@@ -2067,7 +2034,7 @@ function add_tag(_tag)
     if not G.GAME.autostart_tags[_tag.key] then G.GAME.autostart_tags[_tag.key] = _tag.key end
 end
 
-Entropy.DefineBlacklist = {
+local DefineBlacklist = {
     ["c_soul"] = true,
     ["c_entr_fervour"] = true,
     ["c_cry_gateway"] = true,
@@ -2080,12 +2047,7 @@ Entropy.DefineBlacklist = {
 
     ["p_cry_empowered"] = true
 }
-Entropy.ExoticPlusPlus = {
-    ["entr_reverse_legendary"] = true, --this is not above exotic but it needs to be blacklisted anyway
-    ["cry_exotic"] = true,
-    ["entr_hyper_exotic"] = true
-}
-
+for i, v in pairs(DefineBlacklist) do Entropy.DefineBlacklist[i] = v end
 function GetSelectedCard()
     for i, v in pairs(G) do
         if type(v) == "table" and v.cards and v.highlighted then

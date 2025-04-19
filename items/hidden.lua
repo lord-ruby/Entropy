@@ -179,7 +179,6 @@ function lerp(f1,f2,p)
     return f1 * (1-p) + f2*p
 end
 
-Entropy.RubySaves = {}
 local SaveNum = 7
 for i = 1, SaveNum do
     Entropy.RubySaves[i] = "k_saved_ruby_"..i

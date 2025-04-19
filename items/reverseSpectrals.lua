@@ -235,7 +235,7 @@ function localize(args, misc_cat)
     if type(args)=="number" then args = {args} end
     return locref(args,misc_cat)
 end
-Entropy.EnhancementFuncs = {
+local EnhancementFuncs = {
     m_bonus = function(card) card.ability.bonus = 100 end,
     m_mult = function(card) card.ability.x_mult = card.ability.x_mult * 1.5 end,
     m_glass = function(card) card.temporary2=true;card:shatter() end,
@@ -262,7 +262,7 @@ Entropy.EnhancementFuncs = {
         card.temporary2=true;card:start_dissolve()
     end
 }
-
+for i, v in pairs(EnhancementFuncs) do Entropy.EnhancementFuncs[i] = v end
 SMODS.Consumable({
     key = "pact",
     set = "RSpectral",

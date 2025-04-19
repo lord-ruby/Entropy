@@ -885,20 +885,12 @@ SMODS.Joker({
     end,
 })
 
-Entropy.ChaosBlacklist = {
-    --Enhanced = true,
-    Back = true,
-    --Default = true,
-    --Edition = true,
-    Sleeve = true,
-    ["Content Set"] = true,
-
-}
-Entropy.ChaosConversions = {
-    RCode = "Twisted",
-    RPlanet = "Twisted",
-    RSpectral = "Twisted"
-}
+Entropy.ChaosBlacklist.Back = true
+Entropy.ChaosBlacklist.Sleeve = true
+Entropy.ChaosBlacklist["Content Set"] = true
+Entropy.ChaosConversions.RCode = "Twisted"
+Entropy.ChaosConversions.RPlanet = "Twisted"
+Entropy.ChaosConversions.RSpectral = "Twisted"
 local ref = create_card
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
     if next(find_joker("j_entr_chaos")) and not forced_key then

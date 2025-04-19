@@ -1,22 +1,3 @@
-Entropy.RarityChecks = {
-    [0]="cry_candy",
-    1,
-    2,
-    3,
-    "cry_epic",
-    4,
-    "cry_exotic",
-    "entr_hyper_exotic"
-}
-Entropy.RarityUppers = {
-    ["cry_candy"]=1,
-    [1]=2,
-    [2]=3,
-    [3]="cry_epic",
-    ["cry_epic"]=4,
-    [4]="cry_exotic",
-    ["cry_exotic"]="entr_hyper_exotic"
-}
 Entropy.ReverseRarityChecks = {
 
 }
@@ -510,10 +491,7 @@ function Entropy.ConcatStrings(tbl)
     return result
 end
 
-Entropy.FixedRecipes = {
-    c_basec_basec_basec_basec_base = "j_joker",
-    m_steelm_steelm_steelm_steelm_steel = "j_cry_clockwork"
-}
+
 
 function Entropy.GetRecipe(cards)
     local enhancements = {

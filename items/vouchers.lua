@@ -159,11 +159,7 @@ SMODS.Booster({
 		ease_background_colour({ new_colour = HEX("3c020b"), special_colour = HEX("3c020b"), contrast = 2 })
 	end
 })
-Entropy.RareInversions = {
-    ["c_entr_define"] = "c_entr_define",
-    ["c_entr_beyond"] = "c_entr_beyond",
-    ["c_entr_fervour"] = "c_entr_fervour"
-}
+
 function create_inverted_card(area, seed)
     local num = pseudorandom("twisted_rare")
     if num - 0.01 <= 0 then
@@ -171,10 +167,4 @@ function create_inverted_card(area, seed)
         return create_card(G.P_CENTERS[c].set, area or G.pack_cards, nil, nil, true, true, c)
     end
     return create_card("Twisted", area or G.pack_cards, nil, nil, true, true, nil, "twisted")
-end
-
-function probability(card, seed, odds, numerator)
-    numerator = (numerator or 1) * G.GAME.probabilities.normal * (card.ability.cry_prob or 1)
-    if card.ability.cry_rigged then numerator = odds end
-    return pseudorandom(seed)*numerator < 1.0/odds
 end

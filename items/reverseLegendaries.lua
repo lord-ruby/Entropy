@@ -141,7 +141,7 @@ SMODS.Joker({
     end
 })
 
-Entropy.BoosterSets = {
+local BoosterSets = {
     ["Spectral"] = "p_spectral_mega_1",
     ["Tarot"] = "p_arcana_mega_1",
     ["Planet"] = "p_celestial_mega_1",
@@ -151,7 +151,7 @@ Entropy.BoosterSets = {
     ["RPlanet"] = "p_entr_twisted_pack_mega",
     ["RSpectral"] = "p_entr_twisted_pack_mega",
 }
-
+for i, v in pairs(BoosterSets) do Entropy.BoosterSets[i] = v end
 SMODS.Joker({
     key = "yorick",
     config = {

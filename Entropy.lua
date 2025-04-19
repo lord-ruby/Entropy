@@ -1,4 +1,3 @@
-Entropy = {} 
 local i = {
     "lib/utils",
     "items/jokers",
