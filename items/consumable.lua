@@ -667,11 +667,13 @@ SMODS.Consumable({
             end
         end
         add_joker(Entropy.GetRecipe(G.hand.highlighted))
-        local card2 = copy_card(card)
-        card2.ability.cry_absolute = true
-        card2:set_edition("e_negative")
-        card2:add_to_deck()
-        G.consumeables:emplace(card2)
+        if Entropy.DeckOrSleeve("crafting") then
+            local card2 = copy_card(card)
+            card2.ability.cry_absolute = true
+            card2:set_edition("e_negative")
+            card2:add_to_deck()
+            G.consumeables:emplace(card2)
+        end
     end,
     can_use = function(self, card)
         return G.hand and #G.hand.highlighted == 5
@@ -681,5 +683,5 @@ SMODS.Consumable({
             G.hand and #G.hand.highlighted == 5 and localize({type = "name_text", set = "Joker", key = Entropy.GetRecipe(G.hand.highlighted)}) or "none"
         }}
     end,
-    weight = -1
+    weight = 0
 })
