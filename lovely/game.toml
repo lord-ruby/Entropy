@@ -151,3 +151,11 @@ Entropy.FixedRecipes = {
 }
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card_character.lua"
+pattern = 'self.children.card:set_ability(G.P_CENTERS.j_jolly)'
+position = "after"
+payload = "self.children.card:set_ability(G.P_CENTERS.j_entr_surreal_joker)"
+match_indent = true
