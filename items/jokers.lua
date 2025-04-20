@@ -543,7 +543,7 @@ SMODS.Joker({
         for i, v in pairs(G.I.CARD) do
             if v.set_edition then
                 if v.config.center.key ~= "j_entr_dekatria" then
-                    v:set_edition("e_cry_m")
+                    v:set_edition("e_cry_m", true, true)
                 end
             end
         end
