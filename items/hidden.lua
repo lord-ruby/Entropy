@@ -1,66 +1,72 @@
 SMODS.Atlas { key = 'ruby', path = 'ruby.png', px = 71, py = 95 }
-SMODS.Joker({
-    key = "ruby",
-    rarity = "entr_zenith",
-    cost = 10^300,
-    atlas = "ruby",
-    soul_pos = { x = 1, y = 0},
-    unlocked = false,
-    discovered = false,
-    blueprint_compat = true,
-    eternal_compat = true,
-    hidden = true,
-    no_collection = true,
-    pos = { x = 0, y = 0 },
-    no_doe = true,
-    config = {
-        extra = to_big(-1):tetrate(-0.5)
-    },
-    --atlas = "jokers",
-    loc_vars = function(self, info_queue, card)
-        return {
-            vars = {
-                pseudorandom_element({"Mult{Infinity}Infinity","+Infinity Mult", "xInfinity Mult", "Mult = Infinity", "Mult^^Infinity", "Mult^Infinity"},pseudoseed("ruby")),
-                colours = {
-                    {4,4,4,4}
+
+function Entropy.RegisterZenithSkin(key, atlas, pos, soul_pos, loc_vars,rare_color)
+    Entropy.Zeniths[#Entropy.Zeniths+1]="j_entr_"..(key or "ruby")
+    SMODS.Joker{
+        key = key or "ruby",
+        rarity = "entr_zenith",
+        cost = 10^300,
+        atlas = atlas or "ruby",
+        soul_pos = soul_pos or { x = 1, y = 0},
+        unlocked = false,
+        discovered = false,
+        blueprint_compat = true,
+        eternal_compat = true,
+        hidden = true,
+        no_collection = true,
+        pos = pos or { x = 0, y = 0 },
+        no_doe = true,
+        config = {
+            extra = to_big(-1):tetrate(-0.5)
+        },
+        --atlas = "jokers",
+        loc_vars = loc_vars or function(self, info_queue, card)
+            return {
+                vars = {
+                    pseudorandom_element({"Mult{Infinity}Infinity","+Infinity Mult", "xInfinity Mult", "Mult = Infinity", "Mult^^Infinity", "Mult^Infinity"},pseudoseed("ruby")),
+                    colours = {
+                        {4,4,4,4}
+                    }
                 }
             }
-        }
-    end,
-    add_to_deck = function()
-        G.jokers.config.card_limit = 1
-        G.GAME.Ruby = "j_entr_ruby"
-        --G.GAME.round_resets.ante = 0
-    end,
-    calculate = function (self, card, context)
-        if context.joker_main then
-            G.GAME.current_round.hands_left = 0
-            G.GAME.RubyAnteNum = (G.GAME.RubyAnteNum or 0.886) + 0.114
-            ease_dollars(to_big(G.GAME.dollars):arrow(math.floor(G.GAME.RubyAnteNum/1.5)+1, to_big(G.GAME.RubyAnteNum+1)) - G.GAME.dollars)
-            G.GAME.RubyAnteTextNum = get_blind_amount()
-            return {
-                Xmult_mod = self.config.extra
-            }
-        end
-        if context.game_over then
-			G.E_MANAGER:add_event(Event({
-				func = function()
-                    G.GAME.current_round.hands_left = G.GAME.round_resets.hands
-					G.hand_text_area.blind_chips:juice_up()
-					G.hand_text_area.game_chips:juice_up()
-					play_sound("tarot1")
-					return true
-				end,
-			}))
-            G.GAME.Ruby = true
-			return {
-				message = localize("k_saved_ruby"),
-				saved = true,
-				colour = G.C.RED,
-			}
-		end
-    end
-})
+        end,
+        add_to_deck = function()
+            G.jokers.config.card_limit = 1
+            G.GAME.Ruby = "j_entr_"..(key or "ruby")
+            --G.GAME.round_resets.ante = 0
+        end,
+        calculate = function (self, card, context)
+            if context.joker_main then
+                G.GAME.current_round.hands_left = 0
+                G.GAME.RubyAnteNum = (G.GAME.RubyAnteNum or 0.886) + 0.114
+                ease_dollars(to_big(G.GAME.dollars):arrow(math.floor(G.GAME.RubyAnteNum/1.5)+1, to_big(G.GAME.RubyAnteNum+1)) - G.GAME.dollars)
+                G.GAME.RubyAnteTextNum = get_blind_amount()
+                return {
+                    Xmult_mod = self.config.extra
+                }
+            end
+            if context.game_over then
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        G.GAME.current_round.hands_left = G.GAME.round_resets.hands
+                        G.hand_text_area.blind_chips:juice_up()
+                        G.hand_text_area.game_chips:juice_up()
+                        play_sound("tarot1")
+                        return true
+                    end,
+                }))
+                G.GAME.Ruby = true
+                return {
+                    message = localize("k_saved_ruby"),
+                    saved = true,
+                    colour = G.C.RED,
+                }
+            end
+        end,
+        rare_color = rare_color
+    }
+end
+Entropy.RegisterZenithSkin()
 local update_ref = Game.update
 local check_dt = 0
 function Game:update(dt)

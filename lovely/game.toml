@@ -150,6 +150,8 @@ Entropy.FixedRecipes = {
     c_basec_basec_basec_basec_base = "j_joker",
     m_steelm_steelm_steelm_steelm_steel = "j_cry_clockwork"
 }
+
+Entropy.Zeniths = {}
 '''
 match_indent = true
 

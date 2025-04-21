@@ -871,7 +871,8 @@ SMODS.Consumable({
             end}))
         else    
             for i, v in pairs(G.jokers.cards) do v:start_dissolve() end
-            add_joker("j_entr_ruby"):add_to_deck()
+            local key = pseudorandom_element(Entropy.Zeniths, pseudoseed("zenith"))
+            add_joker(key):add_to_deck()
             G.jokers.config.card_limit = 1
         end
     end,
@@ -935,7 +936,7 @@ local editions = ({
     ["e_cry_m"] = 1.45
 })
 function CanCreateRuby()
-    --if G.GAME.TESTCOND then return true end
+    if G.GAME.TESTCOND then return true end
     local has_all_exotics = true
     for i, v in pairs(G.P_CENTERS) do
         if v.rarity == "cry_exotic" or v.rarity == "entr_hyper_exotic" then

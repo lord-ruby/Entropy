@@ -921,12 +921,12 @@ SMODS.Joker({
 
     blueprint_compat = true,
     eternal_compat = true,
-    pos = { x = 0, y = 6 },
+    pos = { x = 3, y = 0 },
     config = {
         --decadence = 0
     },
     demicoloncompat = true,
-    soul_pos = { x = 2, y = 6, extra = { x = 1, y = 6 } },
+    soul_pos = { x = 5, y = 0, extra = { x = 4, y = 0 } },
     atlas = "exotic_jokers",
     loc_vars = function(self, q, card)
     end,
