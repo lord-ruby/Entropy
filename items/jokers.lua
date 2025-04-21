@@ -767,10 +767,13 @@ SMODS.Joker({
     end,
     calculate = function(self, card, context)
         if context.joker_main then
+
             local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
             G.FUNCS.get_poker_hand_info(G.play.cards)
             if next(poker_hands["Pair"]) then
-                G.play.cards[1]:set_edition("e_entr_solar")
+                G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() 
+                    G.play.cards[1]:set_edition("e_entr_solar")
+                end}))
                 local jollycount = 0
                 for i = 1, #G.jokers.cards do
                     if G.jokers.cards[i]:is_jolly() then
@@ -779,13 +782,18 @@ SMODS.Joker({
                 end
                 if jollycount > 0 then
                     for i = 2, 2+jollycount do
-                        if G.play.cards[i] then G.play.cards[i]:set_edition("e_entr_solar") end
+                        local card2 = G.play.cards[i]
+                        G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() 
+                            if card2 then card:set_edition("e_entr_solar") end
+                        end}))
                     end
                 end
             end
         end
         if context.forcetrigger then
-            G.play.cards[1]:set_edition("e_entr_solar")
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() 
+                G.play.cards[1]:set_edition("e_entr_solar")
+            end}))
             local jollycount = 0
             for i = 1, #G.jokers.cards do
                 if G.jokers.cards[i]:is_jolly() then
@@ -794,7 +802,10 @@ SMODS.Joker({
             end
             if jollycount > 0 then
                 for i = 2, 2+jollycount do
-                    if G.play.cards[i] then G.play.cards[i]:set_edition("e_entr_solar") end
+                    local card2 = G.play.cards[i]
+                    G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() 
+                        if card2 then card:set_edition("e_entr_solar") end
+                    end}))
                 end
             end
         end

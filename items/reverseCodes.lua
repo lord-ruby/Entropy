@@ -2283,7 +2283,9 @@ G.FUNCS.define_apply = function()
             current_card = i
         end
     end
-    if not Entropy.DefineBlacklist[current_card] and G.P_CENTERS[current_card] and not Entropy.ExoticPlusPlus[G.P_CENTERS[current_card].rarity] then
+    --Cryptid.pointerblisttype.rarity[]
+    --
+    if not Entropy.DefineBlacklist[current_card] and not Cryptid.pointergetblist(current_card) and G.P_CENTERS[current_card] and not Cryptid.pointergetblist(G.P_CENTERS[current_card].rariry) then
 
         --if card.config.center.key == "j_obelisk" and entered_card == "j_cry_sob" then
         --    check_for_unlock({ type = "unstable_concoction" })
