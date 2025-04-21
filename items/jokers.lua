@@ -968,6 +968,7 @@ function Entropy.RegisterBlinds()
                 blind = i,
                 pos = v.pos,
             },
+            no_doe = true,
             hidden = true, 
             --soul_pos = { x = 5, y = 0},
             use = function(self, card, area, copier,amt)
@@ -1020,6 +1021,7 @@ function Entropy.RegisterBlinds()
                 atlas = v.atlas,
             },
             weight = 0,
+            no_doe = true,
             --soul_pos = { x = 5, y = 0},
             use = function(self, card, area, copier,amt)
                 local bl = "Small"
