@@ -69,6 +69,7 @@ Entropy.RubySaves = {}
 
 Entropy.ChaosBlacklist = {}
 Entropy.ChaosConversions = {}
+Entropy.ParakmiBlacklist = {}
 --for oekrep
 Entropy.BoosterSets = {}
 --for push -f

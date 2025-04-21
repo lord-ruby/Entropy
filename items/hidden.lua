@@ -29,7 +29,7 @@ SMODS.Joker({
     end,
     add_to_deck = function()
         G.jokers.config.card_limit = 1
-        G.GAME.Ruby = true
+        G.GAME.Ruby = "j_entr_ruby"
         --G.GAME.round_resets.ante = 0
     end,
     calculate = function (self, card, context)
@@ -85,7 +85,7 @@ function Game:update(dt)
     if G.GAME.Ruby and G.jokers and check_dt > 0.5 then
         local has_ruby = 0
         for i, v in pairs(G.jokers.cards) do
-            if v.config.center.key == "j_entr_ruby" and has_ruby <= 0 then
+            if v.config.center.key == G.GAME.Ruby and has_ruby <= 0 then
                 has_ruby = has_ruby + 1
                 v.debuff = false
                 if not v.edition or v.edition.key ~= "e_negative" then
@@ -98,28 +98,28 @@ function Game:update(dt)
                 end
             elseif not v.debuff then v:start_dissolve();v.debuff = true end
         end
-        if has_ruby <= 0 then add_joker("j_entr_ruby") end
+        if has_ruby <= 0 then add_joker(G.GAME.Ruby) end
         G.jokers.config.card_limit = 1
         if G.shop_booster and G.shop_booster.cards then
             for i, v in pairs(G.shop_booster.cards) do
-                if v.config.center.key == "j_entr_ruby" and not v.die then
+                if v.config.center.key == G.GAME.Ruby and not v.die then
                     v:start_dissolve();v.die = true
                 end
             end
             for i, v in pairs(G.shop_jokers.cards) do
-                if v.config.center.key == "j_entr_ruby" and not v.die then
+                if v.config.center.key == G.GAME.Ruby and not v.die then
                     v:start_dissolve();v.die = true
                 end
             end
             for i, v in pairs(G.shop_vouchers.cards) do
-                if v.config.center.key == "j_entr_ruby" and not v.die then
+                if v.config.center.key == G.GAME.Ruby and not v.die then
                     v:start_dissolve();v.die = true
                 end
             end
         end
         if G.pack_cards then
             for i, v in pairs(G.pack_cards.cards) do
-                if v.config.center.key == "j_entr_ruby" and not v.die then
+                if v.config.center.key == G.GAME.Ruby and not v.die then
                     v:start_dissolve();v.die = true
                 end
             end
@@ -134,7 +134,7 @@ function Card:set_ability(center, initial, delay_sprites)
     if HasJoker("j_entr_dekatria") and (not self.edition or self.edition.key ~= "e_cry_m") and self.config.center.key ~= "j_entr_dekatria" then
         self:set_edition("e_cry_m", true, true)
     end
-    if self.config.center.key == "j_entr_ruby" then
+    if self.config.center.key == G.GAME.Ruby then
         if self.area and self.area.config.type ~= "joker" then
             self:start_dissolve()
         end

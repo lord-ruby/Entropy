@@ -1,4 +1,4 @@
-return {
+local decs = {
 	descriptions = {
 		Enhanced = {
 			m_entr_flesh = {
@@ -192,6 +192,13 @@ return {
 					"a {C:attention}random type{}"
 				},
 			},
+			j_entr_parakmi = {
+				name = "Parakmi",
+				text = {
+					"{C:attention}Anything{} can appear",
+					"in the place of any card"
+				}
+			}
 		},
 		Blind = {
 			bl_entr_red = {
@@ -1239,6 +1246,8 @@ return {
 			k_planet_dyson_swarm = "Stellar Megastructure",
 
 			k_entropy = "Entropy",
+
+			k_cblind = "Blind",
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",
@@ -1274,3 +1283,22 @@ return {
 		}
 	},
 }
+local CBlind = {}
+for i, v in pairs(decs.descriptions.Blind) do 
+	local text = {"Use to change the upcoming blind"}
+	for i2, v2 in pairs(v.text) do text[#text+1]=v2 end
+	CBlind["c_entr_"..i] = {
+		name=v.name,
+		text=text
+	}
+end
+for i, v in pairs(G.localization.descriptions.Blind) do 
+	local text = {"Use to change the upcoming blind"}
+	for i2, v2 in pairs(v.text) do text[#text+1]=v2 end
+	CBlind["c_entr_"..i] = {
+		name=v.name,
+		text=text
+	}
+end
+decs.descriptions.CBlind = CBlind
+return decs

@@ -15,6 +15,7 @@ local loadmodsref = SMODS.injectItems
 function SMODS.injectItems(...)
     LoadCompatibilities()
     Entropy.FlipsidePureInversions = copy_table(Entropy.FlipsideInversions)
+    Entropy.RegisterBlinds()
     loadmodsref(...)
     SMODS.ObjectType({
         key = "Twisted",
@@ -29,4 +30,7 @@ function SMODS.injectItems(...)
     })
     SMODS.ObjectTypes.Twisted:inject()
     Entropy.ReverseFlipsideInversions()
+    for i, v in pairs(SMODS.ConsumableType.ctype_buffer) do
+        if SMODS.ConsumableType.obj_table[v].hidden then table.remove(SMODS.ConsumableType.ctype_buffer, i) end
+    end
 end

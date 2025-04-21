@@ -425,12 +425,12 @@ if CardSleeves then
   SMODS.Atlas { key = 'sleeves', path = 'sleeves.png', px = 73, py = 95 }
   CardSleeves.Sleeve {
     key = "twisted",
-    atlas = "sleeves",  -- you will need to create an atlas yourself
+    atlas = "sleeves",
     pos = { x = 0, y = 0 },
   }
   CardSleeves.Sleeve {
     key = "ccd2",
-    atlas = "sleeves",  -- you will need to create an atlas yourself
+    atlas = "sleeves",
     pos = { x = 1, y = 0 },
     apply = function()
       G.GAME.modifiers.ccd2 = true
@@ -438,7 +438,7 @@ if CardSleeves then
   }
   CardSleeves.Sleeve {
     key = "doc",
-    atlas = "sleeves",  -- you will need to create an atlas yourself
+    atlas = "sleeves",
     pos = { x = 2, y = 0 },
   }
 end

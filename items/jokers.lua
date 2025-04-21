@@ -887,18 +887,283 @@ SMODS.Joker({
 
 Entropy.ChaosBlacklist.Back = true
 Entropy.ChaosBlacklist.Sleeve = true
+Entropy.ChaosBlacklist.CBlind = true
 Entropy.ChaosBlacklist["Content Set"] = true
+Entropy.ParakmiBlacklist["Content Set"] = true
 Entropy.ChaosConversions.RCode = "Twisted"
 Entropy.ChaosConversions.RPlanet = "Twisted"
 Entropy.ChaosConversions.RSpectral = "Twisted"
 local ref = create_card
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
-    if next(find_joker("j_entr_chaos")) and not forced_key then
+    if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi"))) and not forced_key then
         local center = pseudorandom_element(G.P_CENTERS, pseudoseed("chaos"))
-        while not center.set or Entropy.ChaosBlacklist[center.set] do
+        if next(find_joker("j_entr_chaos")) and not next(find_joker("j_entr_parakmi")) then
+            while not center.set or Entropy.ChaosBlacklist[center.set] do
+                center = pseudorandom_element(G.P_CENTERS, pseudoseed("chaos"))
+            end
+        end 
+        while not center.set or Entropy.ParakmiBlacklist[center.set] do
             center = pseudorandom_element(G.P_CENTERS, pseudoseed("chaos"))
         end
         _type = Entropy.ChaosConversions[center.set] or center.set or _type
     end
+    if _type == "CBlind" then
+        forced_key = forced_key or pseudorandom_element(G.P_CENTER_POOLS.CBlind, pseudoseed("sho")).key
+    end
     return ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+end
+
+SMODS.Joker({
+    key = "parakmi",
+    rarity = "entr_hyper_exotic",
+    cost = 150,
+    unlocked = true,
+
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 0, y = 6 },
+    config = {
+        --decadence = 0
+    },
+    demicoloncompat = true,
+    soul_pos = { x = 2, y = 6, extra = { x = 1, y = 6 } },
+    atlas = "exotic_jokers",
+    loc_vars = function(self, q, card)
+    end,
+    calculate = function(self, card, context)
+    end,
+})
+
+SMODS.ConsumableType({
+	object_type = "ConsumableType",
+	key = "CBlind",
+	primary_colour = HEX("ab3a3e"),
+	secondary_colour = HEX("ab3a3e"),
+	--collection_rows = { 4, 5 },
+	shop_rate = 0.0,
+	default = "c_entr_bl_small",
+    hidden=true
+})
+
+
+function Entropy.RegisterBlinds()
+    for i, v in pairs(G.P_BLINDS) do
+        SMODS.Consumable({
+            key = "entr_"..i,
+            set = "CBlind",
+            unlocked = true,
+            pos = {x=9999,y=9999},
+            config = {
+                blind = i,
+                pos = v.pos,
+            },
+            hidden = true, 
+            --soul_pos = { x = 5, y = 0},
+            use = function(self, card, area, copier,amt)
+                local bl = "Small"
+                for i, v in pairs(G.GAME.round_resets.blind_states) do
+                    if v == "Select" or v == "Current" then bl = i end
+                end
+                G.GAME.round_resets.blind_choices[bl] = self.config.blind
+                if G.blind_select then        
+                    G.blind_select:remove()
+                    G.blind_prompt_box:remove()
+                    G.STATE_COMPLETE = false
+                else
+                    G.GAME.blind:disable()
+                    G.GAME.blind:set_blind(G.P_BLINDS[self.config.blind])
+                end
+            end,
+            can_use = function(self, card)
+                if not G.GAME.round_resets then return false end
+                for i, v in pairs(G.GAME.round_resets.blind_states or {}) do
+                    if v == "Select" or v == "Current" then return true end
+                end
+                return false
+            end,
+            loc_vars = v.loc_vars,
+            set_sprites = function(self, card, front)
+                card.children.floating_sprite = AnimatedSprite(
+                    card.T.x+0.7,
+                    card.T.y+0.7,
+                    1.4 * (card.no_ui and 1.1*1.2 or 1),
+                    1.4 * (card.no_ui and 1.1*1.2 or 1),
+                    G.ANIMATION_ATLAS["blind_chips"],
+                    self.config.pos
+                )
+                card.children.floating_sprite.role.draw_major = card
+                card.children.floating_sprite.states.hover.can = false
+                card.children.floating_sprite.states.click.can = false
+            end,
+        })
+    end
+    for i, v in pairs(SMODS.Blind.obj_table) do
+        SMODS.Consumable({
+            key = "entr_"..i,
+            set = "CBlind",
+            unlocked = true,
+            pos = {x=9999,y=9999},
+            config = {
+                blind = i,
+                pos = v.pos,
+                atlas = v.atlas,
+            },
+            weight = 0,
+            --soul_pos = { x = 5, y = 0},
+            use = function(self, card, area, copier,amt)
+                local bl = "Small"
+                for i, v in pairs(G.GAME.round_resets.blind_states) do
+                    if v == "Select" or v == "Current" then bl = i end
+                end
+                G.GAME.round_resets.blind_choices[bl] = self.config.blind
+                if G.blind_select then        
+                    G.blind_select:remove()
+                    G.blind_prompt_box:remove()
+                    G.STATE_COMPLETE = false
+                else
+                    G.GAME.blind:disable()
+                    G.GAME.blind:set_blind(G.P_BLINDS[self.config.blind])
+                end
+            end,
+            can_use = function(self, card)
+                if not G.GAME.round_resets then return false end
+                for i, v in pairs(G.GAME.round_resets.blind_states or {}) do
+                    if v == "Select" or v == "Current" then return true end
+                end
+                return false
+            end,
+            loc_vars = v.loc_vars,
+            entr_credits = v.entr_credits,
+            cry_credits = v.cry_credits,
+            set_sprites = function(self, card, front)
+                card.children.floating_sprite = AnimatedSprite(
+                    card.T.x+0.7,
+                    card.T.y+0.7,
+                    1.4 * (card.no_ui and 1.1*1.2 or 1),
+                    1.4 * (card.no_ui and 1.1*1.2 or 1),
+                    G.ANIMATION_ATLAS[self.config.atlas],
+                    self.config.pos
+                )
+                card.children.floating_sprite.role.draw_major = card
+                card.children.floating_sprite.states.hover.can = false
+                card.children.floating_sprite.states.click.can = false
+            end,
+            set_badges = function(self, card, badges)
+                badges[#badges+1] = create_badge(v.original_mod.name, v.original_mod.badge_colour, G.C.WHITE, 1 )
+            end
+        })
+    end
+end
+
+local set_spritesref = Card.set_sprites
+function Card:set_sprites(_center, _front)
+    set_spritesref(self,_center,_front)
+    if _center and _center.set_sprites then
+        _center:set_sprites(self, _front)
+    end
+end
+
+
+local card_hoverref = Card.draw
+
+function Card:draw(layer)
+    card_hoverref(self, layer)
+    if self.config.center.set_sprites then
+        local scale_mod = 0.6
+        local rotate_mod = 0
+
+        self.children.floating_sprite.role.draw_major = self
+        self.children.floating_sprite:draw_shader(
+            (G.P_CENTERS[self.edition and self.edition.key or ""] or {shader="dissolve"}).shader or "dissolve",
+            0,
+            nil,
+            nil,
+            self.children.center,
+            scale_mod,
+            rotate_mod,
+            0.7,
+            1.3,
+            nil,
+            0.6
+        )
+        self.children.floating_sprite:draw_shader(
+            (G.P_CENTERS[self.edition and self.edition.key or ""] or {shader="dissolve"}).shader or "dissolve",
+            nil,
+            nil,
+            nil,
+            self.children.center,
+            scale_mod,
+            rotate_mod,
+            0.7,
+            1.3
+        )
+    end
+end
+
+local ref = create_shop_card_ui
+function create_shop_card_ui(card, type, area)
+    if card.config.center.set == "Back" or card.config.center.set == "Sleeve" then
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.43,
+            blocking = false,
+            blockable = false,
+            func = (function()
+              if card.opening then return true end
+              local t1 = {
+                  n=G.UIT.ROOT, config = {minw = 0.6, align = 'tm', colour = darken(G.C.BLACK, 0.2), shadow = true, r = 0.05, padding = 0.05, minh = 1}, nodes={
+                      {n=G.UIT.R, config={align = "cm", colour = lighten(G.C.BLACK, 0.1), r = 0.1, minw = 1, minh = 0.55, emboss = 0.05, padding = 0.03}, nodes={
+                        {n=G.UIT.O, config={object = DynaText({string = {{prefix = localize('$'), ref_table = card, ref_value = 'cost'}}, colours = {G.C.MONEY},shadow = true, silent = true, bump = true, pop_in = 0, scale = 0.5})}},
+                      }}
+                  }}
+              local t2 = {
+                n=G.UIT.ROOT, config = {ref_table = card, minw = 1.1, maxw = 1.3, padding = 0.1, align = 'bm', colour = G.C.GOLD, shadow = true, r = 0.08, minh = 0.94, func = 'can_buy_deckorsleeve', one_press = true, button = 'buy_deckorsleeve', hover = true}, nodes={
+                    {n=G.UIT.T, config={text = localize('b_buy'),colour = G.C.WHITE, scale = 0.5}}
+                }}
+
+              card.children.price = UIBox{
+                definition = t1,
+                config = {
+                  align="tm",
+                  offset = {x=0,y=1.5},
+                  major = card,
+                  bond = 'Weak',
+                  parent = card
+                }
+              }
+    
+              card.children.buy_button = UIBox{
+                definition = t2,
+                config = {
+                  align="bm",
+                  offset = {x=0,y=-0.3},
+                  major = card,
+                  bond = 'Weak',
+                  parent = card
+                }
+              }
+              card.children.price.alignment.offset.y = card.ability.set == 'Booster' and 0.5 or 0.38
+    
+                return true
+            end)
+          }))
+    else
+        ref(card, type, area)
+    end
+end
+
+local ref = SMODS.calculate_context
+function SMODS.calculate_context(context, return_table)
+    local tbl = ref(context,return_table)
+    for i, v in pairs(G.GAME.calculates or {}) do
+        if G.P_CENTERS[v].calculate then
+            local ret = G.P_CENTERS[v]:calculate(nil, context)
+            for k,v in pairs(ret or {}) do 
+                tbl[k] = v 
+            end
+        end
+    end
+    if not return_table then
+        return tbl
+    end
 end

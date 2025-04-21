@@ -9,6 +9,11 @@ SMODS.Seal({
 })
 
 function SMODS.calculate_main_scoring(context, scoring_hand)
+    for i, v in pairs(G.GAME.calculates) do
+        if G.P_CENTERS[v].calculate then
+            G.P_CENTERS[v]:calculate(self, nil, context)
+        end
+    end
     for _, card in ipairs(context.cardarea.cards) do
         if (card.seal == "entr_crimson" and not G.GAME.crimson_seal) or (card.seal ~= "entr_crimson" and G.GAME.crimson_seal) then return end
             local in_scoring = scoring_hand and SMODS.in_scoring(card, context.scoring_hand)

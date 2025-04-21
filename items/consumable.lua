@@ -347,6 +347,39 @@ G.FUNCS.reserve_booster = function(e)
     --c1:remove()
 end
 
+G.FUNCS.can_buy_deckorsleeve = function(e)
+    local c1 = e.config.ref_table
+    if
+        #G.jokers.cards
+        < G.jokers.config.card_limit + (Cryptid.safe_get(c1, "edition", "negative") and 1 or 0)
+    then
+        e.config.colour = G.C.GREEN
+        e.config.button = "buy_deckorsleeve"
+    else
+        e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+        e.config.button = nil
+    end
+end
+G.FUNCS.buy_deckorsleeve = function(e)
+    local c1 = e.config.ref_table
+    --G.GAME.DefineBoosterState = G.STATE
+    --c1:open()
+    c1.area:remove_card(c1)
+    if c1.config.center.apply then
+        c1.config.center:apply()
+    end
+    G.GAME.calculates = G.GAME.calculates or {}
+    G.GAME.calculates[#G.GAME.calculates+1] = c1.config.center.key
+    c1:start_dissolve()
+    if c1.children.price then c1.children.price:remove() end
+    c1.children.price = nil
+    if c1.children.buy_button then c1.children.buy_button:remove() end
+    c1.children.buy_button = nil
+    remove_nils(c1.children)
+
+    SMODS.calculate_context({ pull_card = true, card = c1 })
+    --c1:remove()
+end
 
 G.FUNCS.can_reserve_card_to_deck = function(e)
     local c1 = e.config.ref_table
@@ -554,6 +587,7 @@ function G.UIDEF.use_and_sell_buttons(card)
               }},
           }}
     end
+
     if (card.area == G.hand and G.hand) then --Add a use button
 		if card.ability.set == "Joker" then
 			return  {
