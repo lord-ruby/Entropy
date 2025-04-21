@@ -527,6 +527,7 @@ function Entropy.GetRecipe(cards)
         sum = sum + (enhancements[v] or 4.5) 
     end
     table.sort(enh, function(a,b)return (enhancements[a])>(enhancements[b]) end)
+    G.GAME.JokerRecipes = G.GAME.JokerRecipes or {}
     if not G.GAME.JokerRecipes[Entropy.ConcatStrings(enh)] then
         G.GAME.JokerRecipes[Entropy.ConcatStrings(enh)]=Entropy.GetRecipeResult(sum, rares,Entropy.ConcatStrings(enh))
     end

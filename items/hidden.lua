@@ -55,7 +55,7 @@ function Entropy.RegisterZenithSkin(key, atlas, pos, soul_pos, loc_vars,rare_col
                         return true
                     end,
                 }))
-                G.GAME.Ruby = true
+                G.GAME.Ruby = card.config.center.key
                 return {
                     message = localize("k_saved_ruby"),
                     saved = true,
