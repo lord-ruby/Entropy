@@ -9,7 +9,7 @@ SMODS.Seal({
 })
 
 function SMODS.calculate_main_scoring(context, scoring_hand)
-    for i, v in pairs(G.GAME.calculates) do
+    for i, v in pairs(G.GAME.calculates or {}) do
         if G.P_CENTERS[v].calculate then
             G.P_CENTERS[v]:calculate(self, nil, context)
         end
