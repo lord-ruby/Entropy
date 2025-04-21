@@ -7,6 +7,7 @@ local i = {
     "items/reverseSpectrals",
     "items/reverseCodes",
     "items/reverseLegendaries",
+    "items/define",
 
     "lib/colours",
     "items/decks",

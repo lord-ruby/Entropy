@@ -552,7 +552,7 @@ function G.UIDEF.use_and_sell_buttons(card)
 			}
 		end
 	end
-    if (card.area == G.consumeables and G.consumeables and card.ability.set == "Booster") then
+    if (card.area == G.consumeables and G.consumeables and card.config.center.set == "Booster") then
         sell = {n=G.UIT.C, config={align = "cr"}, nodes={
             {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card'}, nodes={
               {n=G.UIT.B, config = {w=0.1,h=0.6}},
@@ -589,7 +589,7 @@ function G.UIDEF.use_and_sell_buttons(card)
     end
 
     if (card.area == G.hand and G.hand) then --Add a use button
-		if card.ability.set == "Joker" then
+		if card.config.center.set == "Joker" then
 			return  {
                 n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
                   {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'reserve_joker', func = 'can_reserve_joker'}, nodes={
@@ -597,7 +597,7 @@ function G.UIDEF.use_and_sell_buttons(card)
                   }},
               }}
 		end
-        if card.ability.set == "Booster" then
+        if card.config.center.set == "Booster" then
 			return  {
                 n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
                   {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_booster', func = 'can_open_booster'}, nodes={
@@ -605,7 +605,7 @@ function G.UIDEF.use_and_sell_buttons(card)
                   }},
               }}
 		end
-        if card.ability.set == "Voucher" then
+        if card.config.center.set == "Voucher" then
 			return  {
                 n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
                   {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_voucher', func = 'can_open_voucher'}, nodes={
@@ -614,7 +614,7 @@ function G.UIDEF.use_and_sell_buttons(card)
               }}
 		end
 	end
-    if (card.area == G.consumeables and G.consumeables) and card.ability.set == "Voucher" then
+    if (card.area == G.consumeables and G.consumeables) and card.config.center.set == "Voucher" then
         sell = {n=G.UIT.C, config={align = "cr"}, nodes={
             {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card'}, nodes={
               {n=G.UIT.B, config = {w=0.1,h=0.6}},
@@ -650,7 +650,7 @@ function G.UIDEF.use_and_sell_buttons(card)
           }}
     end
     --let boosters not be recursive
-    if (card.area == G.pack_cards and G.pack_cards) and card.ability.set == "Booster" then
+    if (card.area == G.pack_cards and G.pack_cards) and card.config.center.set == "Booster" then
         return  {
             n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
               {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'reserve_booster', func = 'can_reserve_booster'}, nodes={
