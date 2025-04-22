@@ -15,7 +15,7 @@ local loadmodsref = SMODS.injectItems
 function SMODS.injectItems(...)
     LoadCompatibilities()
     Entropy.FlipsidePureInversions = copy_table(Entropy.FlipsideInversions)
-    Entropy.RegisterBlinds()
+    --Entropy.RegisterBlinds()
     loadmodsref(...)
     SMODS.ObjectType({
         key = "Twisted",
@@ -24,7 +24,7 @@ function SMODS.injectItems(...)
         inject = function(self)
             SMODS.ObjectType.inject(self)
             for i, v in pairs(Entropy.FlipsidePureInversions) do
-                if G.P_CENTERS[v] then self:inject_card(G.P_CENTERS[v]) end
+                --if G.P_CENTERS[v] then self:inject_card(G.P_CENTERS[v]) end
             end
         end,
     })

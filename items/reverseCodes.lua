@@ -271,85 +271,6 @@ SMODS.Consumable({
         }
     end,
 })
-function create_UIBox_blind_select()
-    if G.GAME.USING_BREAK then
-        G.E_MANAGER:add_event(Event({
-			trigger = "after",
-            blocking = false,
-            delay = 3,
-			func = function()
-                G.STATE = 7
-                --G.blind_select:remove()
-                --G.blind_prompt_box:remove()
-                G.FUNCS.draw_from_hand_to_deck()
-				return true
-			end,
-		}))
-        G.GAME.USING_BREAK = nil
-    end
-  G.blind_prompt_box = UIBox{
-    definition =
-      {n=G.UIT.ROOT, config = {align = 'cm', colour = G.C.CLEAR, padding = 0.2}, nodes={
-        {n=G.UIT.R, config={align = "cm"}, nodes={
-          {n=G.UIT.O, config={object = DynaText({string = localize('ph_choose_blind_1'), colours = {G.C.WHITE}, shadow = true, bump = true, scale = 0.6, pop_in = 0.5, maxw = 5}), id = 'prompt_dynatext1'}}
-        }},
-        {n=G.UIT.R, config={align = "cm"}, nodes={
-          {n=G.UIT.O, config={object = DynaText({string = localize('ph_choose_blind_2'), colours = {G.C.WHITE}, shadow = true, bump = true, scale = 0.7, pop_in = 0.5, maxw = 5, silent = true}), id = 'prompt_dynatext2'}}
-        }},
-        (G.GAME.used_vouchers["v_retcon"] or G.GAME.used_vouchers["v_directors_cut"]) and
-        UIBox_button({label = {localize('b_reroll_boss'), localize('$')..Cryptid.cheapest_boss_reroll()}, button = "reroll_boss", func = 'reroll_boss_button'}) or nil
-      }},
-    config = {align="cm", offset = {x=0,y=-15},major = G.HUD:get_UIE_by_ID('row_blind'), bond = 'Weak'}
-  }
-  G.E_MANAGER:add_event(Event({
-    trigger = 'immediate',
-    func = (function()
-        G.blind_prompt_box.alignment.offset.y = 0
-        return true
-    end)
-  }))
-
-  local width = G.hand.T.w
-  G.GAME.blind_on_deck = 
-    not (G.GAME.round_resets.blind_states.Small == 'Defeated' or G.GAME.round_resets.blind_states.Small == 'Skipped' or G.GAME.round_resets.blind_states.Small == 'Hide') and 'Small' or
-    not (G.GAME.round_resets.blind_states.Big == 'Defeated' or G.GAME.round_resets.blind_states.Big == 'Skipped'or G.GAME.round_resets.blind_states.Big == 'Hide') and 'Big' or 
-    'Boss'
-  
-  G.blind_select_opts = {}
-  if G.GAME.round_resets.red_room then
-    G.GAME.blind_on_deck = "Red"
-    if not G.GAME.round_resets.blind_choices["Red"] then
-        G.GAME.round_resets.blind_choices["Red"] = "bl_entr_red"
-    end
-    if not G.GAME.round_resets.blind_states['Red'] then
-        G.GAME.round_resets.blind_states['Red'] = "Select"
-    end
-    G.GAME.RedBlindStates = {}
-    for i, v in pairs(G.GAME.round_resets.blind_states) do G.GAME.RedBlindStates[i] = v end
-    G.GAME.round_resets.loc_blind_states.Red = "Select"
-    G.blind_select_opts.red = G.GAME.round_resets.blind_states['Red'] ~= 'Hide' and UIBox{definition = {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={UIBox_dyn_container({create_UIBox_blind_choice('Red')},false,get_blind_main_colour('Red'))}}, config = {align="bmi", offset = {x=0,y=0}}} or nil
-    local t = {n=G.UIT.ROOT, config = {align = 'tm',minw = width, r = 0.15, colour = G.C.CLEAR}, nodes={
-        {n=G.UIT.R, config={align = "cm", padding = 0.5}, nodes={
-        G.GAME.round_resets.blind_states['Red'] ~= 'Hide' and {n=G.UIT.O, config={align = "cm", object = G.blind_select_opts.red}} or nil,
-        }}
-    }}
-    G.GAME.round_resets.red_room = nil
-    return t 
-  else
-    G.blind_select_opts.small = G.GAME.round_resets.blind_states['Small'] ~= 'Hide' and UIBox{definition = {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={UIBox_dyn_container({create_UIBox_blind_choice('Small')},false,get_blind_main_colour('Small'))}}, config = {align="bmi", offset = {x=0,y=0}}} or nil
-    G.blind_select_opts.big = G.GAME.round_resets.blind_states['Big'] ~= 'Hide' and UIBox{definition = {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={UIBox_dyn_container({create_UIBox_blind_choice('Big')},false,get_blind_main_colour('Big'))}}, config = {align="bmi", offset = {x=0,y=0}}} or nil
-    G.blind_select_opts.boss = G.GAME.round_resets.blind_states['Boss'] ~= 'Hide' and UIBox{definition = {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={UIBox_dyn_container({create_UIBox_blind_choice('Boss')},false,get_blind_main_colour('Boss'), mix_colours(G.C.BLACK, get_blind_main_colour('Boss'), 0.8))}}, config = {align="bmi", offset = {x=0,y=0}}} or nil
-    
-    local t = {n=G.UIT.ROOT, config = {align = 'tm',minw = width, r = 0.15, colour = G.C.CLEAR}, nodes={
-        {n=G.UIT.R, config={align = "cm", padding = 0.5}, nodes={
-        G.GAME.round_resets.blind_states['Small'] ~= 'Hide' and {n=G.UIT.O, config={align = "cm", object = G.blind_select_opts.small}} or nil,
-        G.GAME.round_resets.blind_states['Big'] ~= 'Hide' and {n=G.UIT.O, config={align = "cm", object = G.blind_select_opts.big}} or nil,
-        G.GAME.round_resets.blind_states['Boss'] ~= 'Hide' and {n=G.UIT.O, config={align = "cm", object = G.blind_select_opts.boss}} or nil,
-        }}
-    }}
-    return t 
-  end
-end
 SMODS.Consumable({
     key = "constant",
     set = "RCode",
@@ -418,40 +339,7 @@ SMODS.Consumable({
 		},
 	},
 })
-local e_round = end_round
-function end_round()
-    e_round()
-    for i, v in pairs(G) do
-        if type(v) == "table" and v.cards then
-            for ind, card in pairs(v.cards) do
-                if card.ability then
-                    if card.ability.entr_hotfix then
-                        card.ability.entr_hotfix_rounds = (card.ability.entr_hotfix_rounds or 5) - 1
-                        if card.ability.entr_hotfix_rounds <= 0 then
-                            card.ability.entr_hotfix = false
-                            
-                            card:set_edition({
-                                cry_glitched = true,
-                            })
-                        end
-                    end
-                    if card.ability.temporary or card.ability.temporary2 then
-                        card.states.visible = false
-                        card:start_dissolve()
-                    end
-                    if card.ability.superego then
-                        card.ability.superego_copies = (card.ability.superego_copies or 0) + 0.5
-                    end
-                    card.perma_debuff = nil
-                    if card.ability.entr_pseudorandom then
-                        card.ability.entr_pseudorandom = false
-                        card.ability.cry_rigged = false
-                    end
-                end
-            end
-        end
-    end
-end
+
 SMODS.Sticker({
     atlas = "entr_stickers",
     pos = { x = 5, y = 0 },
@@ -958,68 +846,39 @@ function CanCreateRuby()
     end
     return has_all_exotics and has_all_editions and to_big(G.GAME.dollars):gt(to_big(10^300):tetrate(2))
 end
-function HasJoker(key)
-    if not G.jokers then return nil end
-    local total = 0
-    for i, v in pairs(G.jokers.cards) do
-        if v.config.center.key == key then total = total + 1 end
-    end
-    return total > 0 and total or nil
-end
-function HasConsumable(key)
-    for i, v in pairs(G.consumeables.cards) do
-        if v.config.center.key == key then return true end
-    end
-    return false
-end
-function GetJokerSumRarity(loc)
-    if not G.jokers or #G.jokers.cards <= 0 then return "none" end
-    local rarity = 1
-    local sum = SumJokerPoints()
-    local last_sum = 0
-    for i, v in pairs(Entropy.RarityPoints) do
-        if type(sum) == "table" then
-            if v > 12 and sum:gte(v-1) or sum:gte(v) then  
-                if v > last_sum  then
-                    rarity = i 
-                    last_sum = v
+local e_round = end_round
+function end_round()
+    e_round()
+    for i, v in pairs(G) do
+        if type(v) == "table" and v.cards then
+            for ind, card in pairs(v.cards) do
+                if card.ability then
+                    if card.ability.entr_hotfix then
+                        card.ability.entr_hotfix_rounds = (card.ability.entr_hotfix_rounds or 5) - 1
+                        if card.ability.entr_hotfix_rounds <= 0 then
+                            card.ability.entr_hotfix = false
+                            
+                            card:set_edition({
+                                cry_glitched = true,
+                            })
+                        end
+                    end
+                    if card.ability.temporary or card.ability.temporary2 then
+                        card.states.visible = false
+                        card:start_dissolve()
+                    end
+                    if card.ability.superego then
+                        card.ability.superego_copies = (card.ability.superego_copies or 0) + 0.5
+                    end
+                    card.perma_debuff = nil
+                    if card.ability.entr_pseudorandom then
+                        card.ability.entr_pseudorandom = false
+                        card.ability.cry_rigged = false
+                    end
                 end
             end
-        elseif sum >= (v > 12 and v-1 or v-0.01) then                 
-            if v > last_sum  then
-                rarity = i 
-                last_sum = v
-            end 
         end
     end
-    if not loc then
-        return rarity
-    else
-        return localize(({
-            [1] = "k_common",
-            [2] = "k_uncommon",
-            [3] = "k_rare",
-            [4] = "k_legendary"
-        })[rarity] or "k_"..rarity)
-    end
-end
-function SumJokerPoints()
-    local total = 0
-    for i, v in pairs(G.jokers.cards) do
-        total = total + GetJokerPoints(v)
-    end
-    return total
-end
-function GetJokerPoints(card)
-    local total = Entropy.RarityPoints[card.config.center.rarity] or 1
-    if card.edition then
-        local factor = to_big(GetEditionFactor(card.edition)) ^ (1.7/(Entropy.RarityDiminishers[card.config.center.rarity] or 1))
-        total = total * factor
-    end
-    return total
-end 
-function GetEditionFactor(edition)
-    return Entropy.EditionFactors[edition.key] or 1
 end
 SMODS.Consumable({
     key = "increment",
@@ -1961,7 +1820,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num + G.GAME.hands[text].AscensionPower
 	end
     G.GAME.current_round.current_hand.cry_asc_num = (G.GAME.current_round.current_hand.cry_asc_num or 0) * (1+(G.GAME.nemesisnumber or 0))
-    if G.GAME.blind.config.blind.key == "bl_entr_scarlet_sun" then 
+    if Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled then 
         G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num * -1
     end
 	if to_big(G.GAME.current_round.current_hand.cry_asc_num) ~= to_big(0) then
@@ -1973,7 +1832,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
     else
         G.GAME.current_round.current_hand.cry_asc_num_text = ""
     end
-    if G.GAME.blind.config.blind.key == "bl_entr_scarlet_sun" then 
+    if Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled then 
         G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num * -1
     end
     return text, loc_disp_text, poker_hands, scoring_hand, disp_text
@@ -2232,12 +2091,6 @@ local ed_ref = Card.set_edition
 function Card:set_edition(edition, immediate, silent)
     if self.edition and edition and self.edition.negative and not edition.negative and self.config.center.type == "Booster" and self.area == G.consumeables then
         G.consumeables.config.card_limit = G.consumeables.config.card_limit - 1
-    end
-    if self.edition and edition and self.edition.negative and not edition.negative and self.config.center.type == "Joker" and self.area == G.jokers then
-        G.jokers.config.card_limit = G.jokers.config.card_limit - 1
-    end
-    if self.edition and edition and not self.edition.negative and edition.negative and self.config.center.type == "Joker" and self.area == G.jokers then
-        G.jokers.config.card_limit = G.jokers.config.card_limit + 1
     end
     ed_ref(self,edition, immediate, silent)
 end

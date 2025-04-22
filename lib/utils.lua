@@ -625,3 +625,160 @@ function Entropy.EditionTag(edition, key, ascendant, pos)
         end
     }
 end
+function create_UIBox_blind_select()
+    if G.GAME.USING_BREAK then
+        G.E_MANAGER:add_event(Event({
+			trigger = "after",
+            blocking = false,
+            delay = 3,
+			func = function()
+                G.STATE = 7
+                --G.blind_select:remove()
+                --G.blind_prompt_box:remove()
+                G.FUNCS.draw_from_hand_to_deck()
+				return true
+			end,
+		}))
+        G.GAME.USING_BREAK = nil
+    end
+  G.blind_prompt_box = UIBox{
+    definition =
+      {n=G.UIT.ROOT, config = {align = 'cm', colour = G.C.CLEAR, padding = 0.2}, nodes={
+        {n=G.UIT.R, config={align = "cm"}, nodes={
+          {n=G.UIT.O, config={object = DynaText({string = localize('ph_choose_blind_1'), colours = {G.C.WHITE}, shadow = true, bump = true, scale = 0.6, pop_in = 0.5, maxw = 5}), id = 'prompt_dynatext1'}}
+        }},
+        {n=G.UIT.R, config={align = "cm"}, nodes={
+          {n=G.UIT.O, config={object = DynaText({string = localize('ph_choose_blind_2'), colours = {G.C.WHITE}, shadow = true, bump = true, scale = 0.7, pop_in = 0.5, maxw = 5, silent = true}), id = 'prompt_dynatext2'}}
+        }},
+        (G.GAME.used_vouchers["v_retcon"] or G.GAME.used_vouchers["v_directors_cut"]) and
+        UIBox_button({label = {localize('b_reroll_boss'), localize('$')..Cryptid.cheapest_boss_reroll()}, button = "reroll_boss", func = 'reroll_boss_button'}) or nil
+      }},
+    config = {align="cm", offset = {x=0,y=-15},major = G.HUD:get_UIE_by_ID('row_blind'), bond = 'Weak'}
+  }
+  G.E_MANAGER:add_event(Event({
+    trigger = 'immediate',
+    func = (function()
+        G.blind_prompt_box.alignment.offset.y = 0
+        return true
+    end)
+  }))
+
+  local width = G.hand.T.w
+  G.GAME.blind_on_deck = 
+    not (G.GAME.round_resets.blind_states.Small == 'Defeated' or G.GAME.round_resets.blind_states.Small == 'Skipped' or G.GAME.round_resets.blind_states.Small == 'Hide') and 'Small' or
+    not (G.GAME.round_resets.blind_states.Big == 'Defeated' or G.GAME.round_resets.blind_states.Big == 'Skipped'or G.GAME.round_resets.blind_states.Big == 'Hide') and 'Big' or 
+    'Boss'
+  
+  G.blind_select_opts = {}
+  if G.GAME.round_resets.red_room then
+    G.GAME.blind_on_deck = "Red"
+    if not G.GAME.round_resets.blind_choices["Red"] then
+        G.GAME.round_resets.blind_choices["Red"] = "bl_entr_red"
+    end
+    if not G.GAME.round_resets.blind_states['Red'] then
+        G.GAME.round_resets.blind_states['Red'] = "Select"
+    end
+    G.GAME.RedBlindStates = {}
+    for i, v in pairs(G.GAME.round_resets.blind_states) do G.GAME.RedBlindStates[i] = v end
+    G.GAME.round_resets.loc_blind_states.Red = "Select"
+    G.blind_select_opts.red = G.GAME.round_resets.blind_states['Red'] ~= 'Hide' and UIBox{definition = {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={UIBox_dyn_container({create_UIBox_blind_choice('Red')},false,get_blind_main_colour('Red'))}}, config = {align="bmi", offset = {x=0,y=0}}} or nil
+    local t = {n=G.UIT.ROOT, config = {align = 'tm',minw = width, r = 0.15, colour = G.C.CLEAR}, nodes={
+        {n=G.UIT.R, config={align = "cm", padding = 0.5}, nodes={
+        G.GAME.round_resets.blind_states['Red'] ~= 'Hide' and {n=G.UIT.O, config={align = "cm", object = G.blind_select_opts.red}} or nil,
+        }}
+    }}
+    G.GAME.round_resets.red_room = nil
+    return t 
+  elseif G.GAME.round_resets.ante_disp == "32" then
+    G.GAME.round_resets.blind_states.Boss = "Select"
+    G.GAME.round_resets.blind_states.Small = "Defeated"
+    G.GAME.round_resets.blind_states.Big = "Defeated"
+    G.GAME.round_resets.blind_choices.Boss = "bl_entr_endless_entropy"
+    G.GAME.blind_on_deck = "Boss"
+    G.blind_select_opts.boss = G.GAME.round_resets.blind_states['Boss'] ~= 'Hide' and UIBox{definition = {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={UIBox_dyn_container({create_UIBox_blind_choice('Boss')},false,get_blind_main_colour('Boss'), mix_colours(G.C.BLACK, get_blind_main_colour('Boss'), 0.8))}}, config = {align="bmi", offset = {x=0,y=0}}} or nil
+    
+    local t = {n=G.UIT.ROOT, config = {align = 'tm',minw = width, r = 0.15, colour = G.C.CLEAR}, nodes={
+        {n=G.UIT.R, config={align = "cm", padding = 0.5}, nodes={
+        G.GAME.round_resets.blind_states['Boss'] ~= 'Hide' and {n=G.UIT.O, config={align = "cm", object = G.blind_select_opts.boss}} or nil,
+        }}
+    }}
+    return t 
+  else
+    G.blind_select_opts.small = G.GAME.round_resets.blind_states['Small'] ~= 'Hide' and UIBox{definition = {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={UIBox_dyn_container({create_UIBox_blind_choice('Small')},false,get_blind_main_colour('Small'))}}, config = {align="bmi", offset = {x=0,y=0}}} or nil
+    G.blind_select_opts.big = G.GAME.round_resets.blind_states['Big'] ~= 'Hide' and UIBox{definition = {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={UIBox_dyn_container({create_UIBox_blind_choice('Big')},false,get_blind_main_colour('Big'))}}, config = {align="bmi", offset = {x=0,y=0}}} or nil
+    G.blind_select_opts.boss = G.GAME.round_resets.blind_states['Boss'] ~= 'Hide' and UIBox{definition = {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={UIBox_dyn_container({create_UIBox_blind_choice('Boss')},false,get_blind_main_colour('Boss'), mix_colours(G.C.BLACK, get_blind_main_colour('Boss'), 0.8))}}, config = {align="bmi", offset = {x=0,y=0}}} or nil
+    
+    local t = {n=G.UIT.ROOT, config = {align = 'tm',minw = width, r = 0.15, colour = G.C.CLEAR}, nodes={
+        {n=G.UIT.R, config={align = "cm", padding = 0.5}, nodes={
+        G.GAME.round_resets.blind_states['Small'] ~= 'Hide' and {n=G.UIT.O, config={align = "cm", object = G.blind_select_opts.small}} or nil,
+        G.GAME.round_resets.blind_states['Big'] ~= 'Hide' and {n=G.UIT.O, config={align = "cm", object = G.blind_select_opts.big}} or nil,
+        G.GAME.round_resets.blind_states['Boss'] ~= 'Hide' and {n=G.UIT.O, config={align = "cm", object = G.blind_select_opts.boss}} or nil,
+        }}
+    }}
+    return t 
+  end
+end
+
+function HasJoker(key)
+    if not G.jokers then return nil end
+    local total = 0
+    for i, v in pairs(G.jokers.cards) do
+        if v.config.center.key == key then total = total + 1 end
+    end
+    return total > 0 and total or nil
+end
+function HasConsumable(key)
+    for i, v in pairs(G.consumeables.cards) do
+        if v.config.center.key == key then return true end
+    end
+    return false
+end
+function GetJokerSumRarity(loc)
+    if not G.jokers or #G.jokers.cards <= 0 then return "none" end
+    local rarity = 1
+    local sum = SumJokerPoints()
+    local last_sum = 0
+    for i, v in pairs(Entropy.RarityPoints) do
+        if type(sum) == "table" then
+            if v > 12 and sum:gte(v-1) or sum:gte(v) then  
+                if v > last_sum  then
+                    rarity = i 
+                    last_sum = v
+                end
+            end
+        elseif sum >= (v > 12 and v-1 or v-0.01) then                 
+            if v > last_sum  then
+                rarity = i 
+                last_sum = v
+            end 
+        end
+    end
+    if not loc then
+        return rarity
+    else
+        return localize(({
+            [1] = "k_common",
+            [2] = "k_uncommon",
+            [3] = "k_rare",
+            [4] = "k_legendary"
+        })[rarity] or "k_"..rarity)
+    end
+end
+function SumJokerPoints()
+    local total = 0
+    for i, v in pairs(G.jokers.cards) do
+        total = total + GetJokerPoints(v)
+    end
+    return total
+end
+function GetJokerPoints(card)
+    local total = Entropy.RarityPoints[card.config.center.rarity] or 1
+    if card.edition then
+        local factor = to_big(GetEditionFactor(card.edition)) ^ (1.7/(Entropy.RarityDiminishers[card.config.center.rarity] or 1))
+        total = total * factor
+    end
+    return total
+end 
+function GetEditionFactor(edition)
+    return Entropy.EditionFactors[edition.key] or 1
+end

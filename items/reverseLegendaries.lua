@@ -62,18 +62,12 @@ function CardArea:emplace(card, location, stay_flipped)
             G.FUNCS.draw_from_deck_to_hand(1)
         end
     end
-    if card.edition and edition and card.edition.negative and card.config.center.type == "Joker" and self == G.jokers then
-        self.config.card_limit = self.config.card_limit + 1
-    end
 end
 local remove_ref = CardArea.remove_card
 function CardArea:remove_card(card, discarded_only)
     local c = remove_ref(self, card, discarded_only) 
     if self == G.hand and G.hand and G.GAME.h_side_mult and G.GAME.h_side_mult ~= 1 then
         G.hand.config.card_limit = G.hand.config.card_limit - (1 - 1/(G.GAME.h_side_mult))
-    end
-    if card and card.edition and edition and card.edition.negative and card.config.center.type == "Joker" and self == G.jokers then
-        self.config.card_limit = self.config.card_limit - 1
     end
     return c
 end

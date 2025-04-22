@@ -514,7 +514,7 @@ SMODS.Booster({
             },
         }
     end,
-    atlas = 'booster', pos = { x = 3, y = 0 },
+    atlas = 'booster', pos = { x = 4, y = 0 },
     cost = 6,
     draw_hand = true,
     weight = 0,
@@ -800,60 +800,31 @@ SMODS.Tag {
 SMODS.Booster({
     key = "blind",
     set = "Booster",
-    config = { extra = 4, choose = 1 },
+    config = { extra = 5, choose = 1 },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
                 card.ability.choose,
                 card.ability.extra,
-                colours = {
-                    HEX("FF0000")
-                }
             },
         }
     end,
-    atlas = 'booster', pos = { x = 4, y = 0 },
-    cost = 6,
+    atlas = 'booster', pos = { x = 2, y = 0 },
+    group_key = "k_blind_pack",
+    cost = 8,
     draw_hand = true,
-    weight = 0,
-    draw_hand = true,
-	update_pack = SMODS.Booster.update_pack,
-	loc_vars = SMODS.Booster.loc_vars,
-	ease_background_colour = function(self)
-		ease_background_colour_blind(G.STATES.SPECTRAL_PACK)
-	end,
-	create_UIBox = function(self)
-		return create_UIBox_spectral_pack()
-	end,
-	particles = function(self)
-		G.booster_pack_sparkles = Particles(1, 1, 0, 0, {
-			timer = 0.015,
-			scale = 0.1,
-			initialize = true,
-			lifespan = 3,
-			speed = 0.2,
-			padding = -1,
-			attach = G.ROOM_ATTACH,
-			colours = { G.C.WHITE, lighten(G.C.GOLD, 0.2) },
-			fill = true,
-		})
-		G.booster_pack_sparkles.fade_alpha = 1
-		G.booster_pack_sparkles:fade(1, 0)
-	end,
-	create_card = function(self, card, i)
-		return create_card("CBlind", G.pack_cards, nil, nil, true, true)
-	end,
-	cry_digital_hallucinations = {
-		colour = G.C.SECONDARY_SET.Spectral,
-		loc_key = "k_plus_spectral",
-		create = function()
-			local ccard = create_card("CBlind", G.pack_cards, nil, nil, true, true)
-			ccard:set_edition({ negative = true }, true)
-			ccard:add_to_deck()
-			G.consumeables:emplace(ccard)
-		end,
-	},
+    weight = -999,
+    hidden = true,
+    kind = "CBlind",
+    create_card = function (self, card, i) 
+        return create_card("CBlind", G.pack_cards)
+    end,
+    ease_background_colour = function(self)
+		ease_colour(G.C.DYN_UI.MAIN, HEX("709284"))
+		ease_background_colour({ new_colour = HEX("709284"), special_colour = HEX("3e5149"), contrast = 2 })
+	end
 })
+
 
 SMODS.Tag {
 	key = "ascendant_reference_tag",

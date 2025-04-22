@@ -1,25 +1,25 @@
 local i = {
     "lib/utils",
-    "items/jokers",
+    "items/jokers",--not this
     --"reverseTarots",
-    "items/consumable",
+    "items/consumable",--not this
     "items/reversePlanets",
     "items/reverseSpectrals",
-    "items/reverseCodes",
-    "items/reverseLegendaries",
-    "items/define",
+    "items/reverseCodes", --not this
+    "items/reverseLegendaries", --weird
+    "items/define", --not you
 
-    "lib/colours",
-    "items/decks",
-    "items/vouchers",
-    "items/hidden",
-    "lib/fixes",
-    "items/stake",
-    "items/tags",
-    "items/editions",
-    "items/seals",
-    "items/enhancements",
-    "items/blinds",
+    "lib/colours", --not you
+    "items/decks", --not you
+    "items/vouchers", --not you
+    "items/hidden", --not you
+    "lib/fixes",--not you
+    "items/stake", --not you
+    "items/tags", --not you
+    "items/editions",  --not you
+    "items/seals", --not you
+    "items/enhancements", --not you
+    "items/blinds", --not you
     "compat/loader"
     --"glop"
 }
