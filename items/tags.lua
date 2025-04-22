@@ -701,7 +701,7 @@ SMODS.Tag {
 			tag:yep("+", G.C.ATTENTION, function()
 				local tags = { "ethereal", "cry_console", "entr_ascendant_twisted_tag", "cry_bundle" }
 				for i, v in ipairs(tags) do
-					local _tag = Tag("tag_" .. v)
+					local _tag = Tag("tag_" .. v, true)
 					_tag.ability.shiny = Cryptid.is_shiny()
 					add_tag(_tag)
 					if i == 1 then

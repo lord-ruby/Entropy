@@ -1273,13 +1273,13 @@ SMODS.Joker({
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.tags
+                math.min(card.ability.tags,30)
             }
         }
     end,
     calculate = function(self, card, context)
         if (context.setting_blind and not context.getting_sliced) or context.forcetrigger then
-            for i = 1, card.ability.tags or 1 do
+            for i = 1,  math.min(card.ability.tags or 1,30) or 1 do
                 tag = Tag(get_next_tag_key())
                 add_tag(tag)
             end
