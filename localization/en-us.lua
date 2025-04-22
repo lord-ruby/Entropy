@@ -1534,7 +1534,7 @@ local decs = {
 local CBlind = {}
 for i, v in pairs(decs.descriptions.Blind) do 
 	local text = {"Use to change the upcoming blind"}
-	for i2, v2 in pairs(v.text) do text[#text+1]=v2 end
+	for i2, v2 in pairs(v.text or {}) do text[#text+1]=v2 end
 	CBlind["c_entr_"..i] = {
 		name=v.name,
 		text=text
@@ -1542,7 +1542,7 @@ for i, v in pairs(decs.descriptions.Blind) do
 end
 for i, v in pairs(G.localization.descriptions.Blind) do 
 	local text = {"Use to change the upcoming blind"}
-	for i2, v2 in pairs(v.text) do text[#text+1]=v2 end
+	for i2, v2 in pairs(v.text or {}) do text[#text+1]=v2 end
 	CBlind["c_entr_"..i] = {
 		name=v.name,
 		text=text
