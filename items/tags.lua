@@ -15,6 +15,9 @@ SMODS.Tag({
 	loc_vars = function(self, info_queue, tag)
 		return { vars = { tag.ability.level or 1 } }
 	end,
+	set_ability = function(self, tag)
+		tag.hover_sound = function() return 'entr_woof'..math.random(3) end
+	end
 })
 
 SMODS.Sound({
@@ -77,6 +80,15 @@ SMODS.Atlas {
     py = 34
   }
 
+
+  SMODS.Atlas {
+    key = 'shiny_ascendant_tags',
+    path = 'shiny_ascendant_tags.png',
+    px = 34,
+    py = 34
+  }
+
+
   Entropy.RareTag(3, "rare", true, "Rare", {x=0,y=0}, 0, nil)
   Entropy.RareTag("cry_epic", "epic", true, "cry_epic", {x=1,y=0}, 0, nil)
   Entropy.RareTag(4, "legendary", true, "Legendary", {x=2,y=0}, 0, true)
@@ -84,6 +96,7 @@ SMODS.Atlas {
   Entropy.RareTag("entr_hyper_exotic", "entropic", true, "entr_hyper_exotic", {x=4,y=0}, 0, nil)
 
   SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_copying_tag",
 	atlas = "ascendant_tags",
 	pos = {x=5,y=0},
@@ -130,6 +143,7 @@ SMODS.Atlas {
 }
 
 SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_voucher_tag",
 	atlas = "ascendant_tags",
 	pos = {x=6,y=0},
@@ -199,6 +213,7 @@ SMODS.Tag {
 }
 
 SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_saint_tag",
 	atlas = "ascendant_tags",
 	pos = {x=0,y=1},
@@ -230,6 +245,7 @@ Entropy.EditionTag("e_polychrome", "poly", true, {x=4,y=1})
 Entropy.EditionTag("e_cry_glass", "glass", true, {x=5,y=1})
 
 SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_better_voucher_tag",
 	atlas = "ascendant_tags",
 	pos = {x=6,y=1},
@@ -357,6 +373,7 @@ Entropy.EditionTag("e_cry_mosaic", "mosaic", true, {x=4,y=2})
 Entropy.EditionTag("e_cry_astral", "astral", true, {x=5,y=2})
 
 SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_infdiscard_tag",
 	atlas = "ascendant_tags",
 	pos = {x=6,y=2},
@@ -377,10 +394,11 @@ SMODS.Tag {
 	end,
 }
 
-Entropy.EditionTag("e_cry_oversaturated", "oversat", true, {x=0,y=3})
+Entropy.EditionTag("e_cry_oversat", "oversat", true, {x=0,y=3})
 Entropy.EditionTag("e_entr_solar", "solar", true, {x=1,y=3})
 
 SMODS.Tag({
+	shiny_atlas="entr_shiny_ascendant_tags",
 	atlas = "ascendant_tags",
 	pos = { x = 2, y = 3 },
 	config = { level = 1 },
@@ -404,6 +422,7 @@ SMODS.Tag({
 })
 
 SMODS.Tag({
+	shiny_atlas="entr_shiny_ascendant_tags",
 	atlas = "ascendant_tags",
 	pos = { x = 3, y = 3 },
 	config = { level = 1 },
@@ -422,11 +441,13 @@ SMODS.Tag({
 		tag.get_edition = function(tag)
 			return G.P_CENTER_POOLS.Edition[(tag.ability.level2%#G.P_CENTER_POOLS.Edition)+1]
 		end
+		tag.hover_sound = function() return 'entr_woof'..math.random(3) end
 	end,
 	in_pool = function() return false end
 })
 
 SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_canvas_tag",
 	atlas = "ascendant_tags",
 	pos = {x=4,y=3},
@@ -456,6 +477,7 @@ SMODS.Tag {
 }
 
 SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_unbounded_tag",
 	atlas = "ascendant_tags",
 	pos = {x=5,y=3},
@@ -502,6 +524,7 @@ SMODS.Tag {
 }
 
 SMODS.Booster({
+	shiny_atlas="entr_shiny_ascendant_tags",
     key = "unbounded",
     set = "Booster",
     config = { extra = 2, choose = 1 },
@@ -579,6 +602,7 @@ SMODS.Booster({
 })
 
 SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_ejoker_tag",
 	atlas = "ascendant_tags",
 	pos = {x=6,y=3},
@@ -625,6 +649,7 @@ SMODS.Tag {
 
 
 SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_universal_tag",
 	atlas = "ascendant_tags",
 	pos = {x=0,y=4},
@@ -656,6 +681,7 @@ SMODS.Tag {
 }
 
 SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_ebundle_tag",
 	atlas = "ascendant_tags",
 	pos = {x=1,y=4},
@@ -693,6 +719,7 @@ SMODS.Tag {
 }
 
 SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_twisted_tag",
 	atlas = "ascendant_tags",
 	pos = {x=2,y=4},
@@ -737,6 +764,7 @@ SMODS.Tag {
 }
 
 SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_stock_tag",
 	atlas = "ascendant_tags",
 	pos = {x=3,y=4},
@@ -757,6 +785,7 @@ SMODS.Tag {
 }
 
 SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_blind_tag",
 	atlas = "ascendant_tags",
 	pos = {x=4,y=4},
@@ -800,6 +829,7 @@ SMODS.Tag {
 }
 
 SMODS.Booster({
+	shiny_atlas="entr_shiny_ascendant_tags",
     key = "blind",
     set = "Booster",
     config = { extra = 5, choose = 1 },
@@ -811,7 +841,7 @@ SMODS.Booster({
             },
         }
     end,
-    atlas = 'booster', pos = { x = 2, y = 0 },
+    atlas = 'booster', pos = { x = 3, y = 0 },
     group_key = "k_blind_pack",
     cost = 8,
     draw_hand = true,
@@ -819,7 +849,7 @@ SMODS.Booster({
     hidden = true,
     kind = "CBlind",
     create_card = function (self, card, i) 
-        return create_card("CBlind", G.pack_cards)
+        return create_card("BlindTokens", G.pack_cards, nil, nil, true, true, nil, "blind")
     end,
     ease_background_colour = function(self)
 		ease_colour(G.C.DYN_UI.MAIN, HEX("709284"))
@@ -829,6 +859,7 @@ SMODS.Booster({
 
 
 SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_reference_tag",
 	atlas = "ascendant_tags",
 	pos = {x=5,y=4},
@@ -873,6 +904,7 @@ SMODS.Tag {
 }
 
 SMODS.Booster({
+	shiny_atlas="entr_shiny_ascendant_tags",
     key = "reference_pack",
     set = "Booster",
     config = { extra = 5, choose = 2 },
@@ -887,7 +919,7 @@ SMODS.Booster({
             },
         }
     end,
-    atlas = 'booster', pos = { x = 2, y = 0 },
+    atlas = 'booster', pos = { x = 5, y = 0 },
     group_key = "k_reference_pack",
     cost = 8,
     draw_hand = true,
@@ -895,15 +927,16 @@ SMODS.Booster({
     hidden = true,
     kind = "Joker",
     create_card = function (self, card, i) 
-        return create_card("Refrence", G.pack_cards)
+        return create_card("Reference", area or G.pack_cards, nil, nil, true, true, nil, "reference")
     end,
     ease_background_colour = function(self)
-		ease_colour(G.C.DYN_UI.MAIN, G.C.RARITY.ENTR_HYPER_EXOTIC)
-		ease_background_colour({ new_colour = G.C.RARITY.ENTR_HYPER_EXOTIC, special_colour = G.C.RARITY.CRY_EXOTIC, contrast = 2 })
+		ease_colour(G.C.DYN_UI.MAIN, G.C.BLUE)
+		ease_background_colour({ new_colour = G.C.RED, special_colour = G.C.BLUE, contrast = 2 })
 	end
 })
 
 SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_cavendish_tag",
 	atlas = "ascendant_tags",
 	pos = {x=0,y=5},
@@ -931,6 +964,7 @@ SMODS.Tag {
 }
 
 SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_credit_tag",
 	atlas = "ascendant_tags",
 	pos = {x=1,y=5},
@@ -965,6 +999,7 @@ SMODS.Tag {
 
 
 SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_topup_tag",
 	atlas = "ascendant_tags",
 	pos = {x=2,y=5},
@@ -991,6 +1026,7 @@ SMODS.Tag {
 }
 
 SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_better_topup_tag",
 	atlas = "ascendant_tags",
 	pos = {x=3,y=5},
@@ -1017,6 +1053,7 @@ SMODS.Tag {
 }
 
 SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_booster_tag",
 	atlas = "ascendant_tags",
 	pos = {x=4,y=5},
@@ -1039,6 +1076,7 @@ SMODS.Tag {
 }
 
 SMODS.Tag {
+	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_effarcire_tag",
 	atlas = "ascendant_tags",
 	pos = {x=5,y=5},

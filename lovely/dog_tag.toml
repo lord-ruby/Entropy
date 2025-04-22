@@ -10,8 +10,8 @@ target = "tag.lua"
 pattern = '''play_sound('tarot2', math.random()*0.1 + 0.55, 0.09)'''
 position = "before"
 payload = '''
-if self.key == 'tag_entr_dog' and not self.hide_ability then
-	play_sound('entr_woof'..math.random(3), 1.26, 0.12);
+if self.hover_sound and not self.hide_ability then
+	play_sound(self.hover_sound(), 1.26, 0.12);
 end'''
 match_indent = true
 
@@ -22,7 +22,7 @@ pattern = '''tag_sprite.stop_hover = function(_self) _self.hovering = false; Nod
 position = "after"
 payload = '''
 tag_sprite.click = function(_self)
-        if (self.key == 'tag_entr_dog' or self.level_func) and self.HUD_tag then
+        if (self.key == 'tag_entr_dog' or self.level_func or self.key=='tag_cry_cat') and self.HUD_tag then
 		for i = 1, #G.GAME.tags do
 			local other_cat = G.GAME.tags[i]
 			if other_cat.key == self.key then

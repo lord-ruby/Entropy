@@ -873,6 +873,7 @@ cry_error_msgs[#cry_error_msgs+1]={ string = "Build Grist", colour = G.C.BLUE }
 cry_error_msgs[#cry_error_msgs+1]={ string = "Moral Chemicals", colour = G.C.BLUE }
 cry_error_msgs[#cry_error_msgs+1]={ string = "Inversions", colour =  G.C.RARITY["entr_reverse_legendary"] }
 
+--im not happy about having to do it like this
 local ref = Cryptid.misprintize
 function Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_level)
     if G.jokers then

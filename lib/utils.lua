@@ -561,6 +561,7 @@ end
 
 function Entropy.RareTag(rarity, key, ascendant, colour, pos, fac, legendary)
     SMODS.Tag {
+        shiny_atlas="entr_shiny_ascendant_tags",
         key = (ascendant and "ascendant_" or "")..key.."_tag",
         atlas = (ascendant and "ascendant_tags" or "tags"),
         pos = pos,
@@ -598,6 +599,7 @@ end
 
 function Entropy.EditionTag(edition, key, ascendant, pos)
     SMODS.Tag {
+        shiny_atlas="entr_shiny_ascendant_tags",
         key = (ascendant and "ascendant_" or "")..key.."_tag",
         atlas = (ascendant and "ascendant_tags" or "tags"),
         pos = pos,

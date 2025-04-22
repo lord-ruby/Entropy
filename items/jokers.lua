@@ -919,7 +919,11 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
         _type = Entropy.ChaosConversions[center.set] or center.set or _type
     end
     if _type == "CBlind" then
-        forced_key = forced_key or pseudorandom_element(G.P_CENTER_POOLS.CBlind, pseudoseed("sho")).key
+        _type = "BlindTokens"
+    end
+    if _type == "BlindTokens" then
+        local element = "c_"..pseudorandom_element(Entropy.BlindC, pseudoseed(key_append or "parakmi"))
+        forced_key = forced_key or element
     end
     return ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 end
@@ -956,9 +960,11 @@ SMODS.ConsumableType({
     hidden=true
 })
 
+Entropy.BlindC = {}
 
 function Entropy.RegisterBlinds()
     for i, v in pairs(G.P_BLINDS) do
+        Entropy.BlindC[#Entropy.BlindC+1]="entr_"..i
         SMODS.Consumable({
             key = "entr_"..i,
             set = "CBlind",
@@ -968,6 +974,7 @@ function Entropy.RegisterBlinds()
                 blind = i,
                 pos = v.pos,
             },
+            weight = -999,
             no_doe = true,
             hidden = true, 
             --soul_pos = { x = 5, y = 0},
@@ -1010,6 +1017,7 @@ function Entropy.RegisterBlinds()
         })
     end
     for i, v in pairs(SMODS.Blind.obj_table) do
+        Entropy.BlindC[#Entropy.BlindC+1]="entr_"..i
         SMODS.Consumable({
             key = "entr_"..i,
             set = "CBlind",
@@ -1022,8 +1030,6 @@ function Entropy.RegisterBlinds()
             },
             weight = -999,
             hidden=true,
-            soul_rate=-999,
-            soul_set="CBlind",
             no_doe = true,
             --soul_pos = { x = 5, y = 0},
             use = function(self, card, area, copier,amt)
@@ -1182,4 +1188,107 @@ function SMODS.calculate_context(context, return_table)
     if not return_table then
         return tbl
     end
+end
+local AscendantTags = {
+    tag_uncommon="tag_entr_ascendant_rare_tag",
+    tag_rare="tag_entr_ascendant_epic_tag",
+    tag_negative="tag_entr_ascendant_negative_tag",
+    tag_foil="tag_entr_ascendant_foil_tag",
+    tag_holo="tag_entr_ascendant_holo_tag",
+    tag_polychrome="tag_entr_ascendant_poly_tag",
+    tag_investment="tag_entr_ascendant_stock_tag",
+    tag_voucher="tag_entr_ascendant_voucher_tag",
+    tag_boss="tag_entr_ascendant_blind_tag",
+    tag_standard="tag_entr_ascendant_twisted_tag",
+    tag_charm="tag_entr_ascendant_twisted_tag",
+    tag_meteor="tag_entr_ascendant_twisted_tag",
+    tag_buffoon="tag_entr_ascendant_ejoker_tag",
+    tag_handy="tag_entr_ascendant_stock_tag",
+    tag_garbage="tag_entr_ascendant_stock_tag",
+    tag_ethereal="tag_entr_ascendant_twisted_tag",
+    tag_coupon="tag_entr_ascendant_credit_tag",
+    tag_double="tag_entr_ascendant_copying_tag",
+    tag_juggle="tag_entr_ascendant_effarcire_tag",
+    tag_d_six="tag_entr_ascendant_credit_tag",
+    tag_top_up="tag_entr_ascendant_topup_tag",
+    tag_skip="tag_entr_ascendant_stock_tag",
+    tag_economy="tag_entr_ascendant_stock_tag",
+    tag_orbital="tag_entr_ascendant_universal_tag",
+    tag_cry_epic="tag_entr_ascendant_epic_tag",
+    tag_cry_glitched="tag_entr_ascendant_glitched_tag",
+    tag_cry_mosaic="tag_entr_ascendant_mosaic_tag",
+    tag_cry_oversat="tag_entr_ascendant_oversat_tag",
+    tag_cry_glass="tag_entr_ascendant_glass_tag",
+    tag_cry_gold="tag_entr_ascendant_gold_tag",
+    tag_cry_blur="tag_entr_ascendant_blurry_tag",
+    tag_cry_astral="tag_entr_ascendant_astral_tag",
+    tag_cry_m="tag_entr_ascendant_m_tag",
+    tag_cry_double_m="tag_entr_ascendant_m_tag",
+    tag_cry_cat="tag_entr_ascendant_cat_tag",
+    tag_cry_gambler="tag_entr_ascendant_unbounded_tag",
+    tag_cry_empowered="tag_entr_ascendant_unbounded_tag",
+    tag_cry_better_voucher="tag_entr_ascendant_better_voucher_tag",
+    tag_cry_memory="tag_entr_ascendant_copying_tag",
+    tag_cry_better_top_up="tag_entr_ascendant_better_topup_tag",
+    tag_cry_bundle="tag_entr_ascendant_ebundle_tag",
+    tag_cry_gourmand="tag_entr_ascendant_saint_tag",
+    tag_cry_triple="tag_entr_ascendant_copying_tag",
+    tag_cry_quadruple="tag_entr_ascendant_copying_tag",
+    tag_cry_quintuple="tag_entr_ascendant_copying_tag",
+    tag_cry_scope="tag_entr_ascendant_infdiscard_tag",
+    tag_cry_schematic="tag_entr_ascendant_canvas_tag",
+    tag_cry_loss="tag_entr_ascendant_reference_tag",
+    tag_cry_banana="tag_entr_ascendant_cavendish_tag",
+    tag_cry_booster="tag_entr_ascendant_booster_tag",
+    tag_cry_console="tag_entr_ascendant_twisted_tag",
+    tag_entr_dog="tag_entr_ascendant_dog_tag",
+    tag_entr_solar="tag_entr_ascendant_solar_tag",
+}
+for i, v in pairs(AscendantTags) do Entropy.AscendedTags[i]=v end
+SMODS.Joker({
+    key = "exousia",
+    rarity = "entr_hyper_exotic",
+    cost = 150,
+    unlocked = true,
+
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 3, y = 1 },
+    config = {
+        tags=2
+    },
+    demicoloncompat = true,
+    soul_pos = { x = 5, y = 1, extra = { x = 4, y = 1 } },
+    atlas = "exotic_jokers",
+    add_to_deck = function()
+        for i, v in pairs(G.GAME.tags) do
+            if Entropy.AscendedTags[v.key] then
+                local tag = Tag(Entropy.AscendedTags[v.key])
+                if v.ability.shiny then tag.ability.shiny = v.ability.shiny end
+                add_tag(tag)
+                v:remove()
+            end
+        end
+    end,
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                card.ability.tags
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if (context.setting_blind and not context.getting_sliced) or context.forcetrigger then
+            for i = 1, card.ability.tags or 1 do
+                tag = Tag(get_next_tag_key())
+                add_tag(tag)
+            end
+        end
+    end
+})
+
+local ref = Tag.init
+function Tag:init(_tag, for_collection, _blind_type)
+    if HasJoker("j_entr_exousia") and Entropy.AscendedTags[_tag] and not for_collection then _tag = Entropy.AscendedTags[_tag] end
+    return ref(self,_tag, for_collection, _blind_type)
 end
