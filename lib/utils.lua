@@ -558,3 +558,70 @@ function Entropy.BlindIs(orig, newkey)
     if orig.counts_as and orig.counts_as[newkey] then return true end
     return false
 end
+
+function Entropy.RareTag(rarity, key, ascendant, colour, pos, fac, legendary)
+    SMODS.Tag {
+        key = (ascendant and "ascendant_" or "")..key.."_tag",
+        atlas = (ascendant and "ascendant_tags" or "tags"),
+        pos = pos,
+        config = { type = "store_joker_create" },
+        in_pool = ascendant and function() return false end or nil,
+        apply = function(self, tag, context)
+            if context.type == "store_joker_create" then
+                local rares_in_posession = { 0 }
+                for k, v in ipairs(G.jokers.cards) do
+                    if v.config.center.rarity == rarity and not rares_in_posession[v.config.center.key] then
+                        rares_in_posession[1] = rares_in_posession[1] + 1
+                        rares_in_posession[v.config.center.key] = true
+                    end
+                end
+                local card
+                if #G.P_JOKER_RARITY_POOLS[rarity] > rares_in_posession[1] then
+                    card = create_card('Joker', context.area, legendary, rarity, nil, nil, nil, 'uta')
+                    create_shop_card_ui(card, "Joker", context.area)
+                    card.states.visible = false
+                    tag:yep("+", G.C.RARITY[colour], function()
+                        card:start_materialize()
+                        card.misprint_cost_fac = 0 or fac
+                        card:set_cost()
+                        return true
+                    end)
+                else
+                    tag:nope()
+                end
+                tag.triggered = true
+                return card
+            end
+        end,
+    }
+end
+
+function Entropy.EditionTag(edition, key, ascendant, pos)
+    SMODS.Tag {
+        key = (ascendant and "ascendant_" or "")..key.."_tag",
+        atlas = (ascendant and "ascendant_tags" or "tags"),
+        pos = pos,
+        config = { type = "store_joker_modify" },
+        in_pool = ascendant and function() return false end or nil,
+        apply = function(self, tag, context)
+            if context.type == "store_joker_modify" then
+                tag:yep("+", G.C.RARITY[colour], function()
+                    for i, v in pairs(G.shop_jokers.cards) do
+                        v:set_edition(edition)
+                    end
+                    for i, v in pairs(G.shop_booster.cards) do
+                        v:set_edition(edition)
+                    end
+                    for i, v in pairs(G.shop_vouchers.cards) do
+                        v:set_edition(edition)
+                    end
+                    return true
+                end)
+                tag.triggered = true
+            end
+        end,
+        loc_vars = function(s,q,c)
+            q[#q+1] = edition and G.P_CENTERS[edition] or nil
+        end
+    }
+end

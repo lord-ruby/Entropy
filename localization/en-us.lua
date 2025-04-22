@@ -213,7 +213,38 @@ local decs = {
 					"All cards add Ascension Power",
 					"-1X Ascension Power"
 				}
-			}	
+			},
+			bl_entr_burgundy_baracuda = {
+				name = "Burgundy Baracuda",
+				text = {
+					"1 in 2 played cards are destroyed",
+				}
+			},
+			bl_entr_diamond_dawn = {
+				name = "Diamond Dawn",
+				text = {
+					"remove the rank and suit",
+					"of all discarded cards"
+				}
+			},
+			bl_entr_olive_orchard = {
+				name = "Olive Orchard",
+				text = {
+					"discarded and played cards become disavowed",
+				}
+			},
+			bl_entr_citrine_comet = {
+				name = "Citrine Comet",
+				text = {
+					"selected cards destroy adjacent cards",
+				}
+			},
+			bl_entr_endless_entropy = {
+				name = "Endless Entropy",
+				text = {
+					"???",
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {
@@ -1031,6 +1062,183 @@ local decs = {
 					"becomes {C:dark_edition}solar{}"	
 				},
 			},
+			tag_entr_ascendant_rare_tag = {
+				name = "{C:gold}Rare Tag{}",
+				text = { "Shop has a free", "{C:rare}Rare Joker{}" },
+			},
+			tag_entr_ascendant_epic_tag = {
+				name = "{C:gold}Epic Tag{}",
+				text = { "Shop has a free", "{C:cry_epic}Epic Joker{}" },
+			},
+			tag_entr_ascendant_legendary_tag = {
+				name = "{C:gold}Legendary Tag{}",
+				text = { "Shop has a free", "{C:legendary}Legendary Joker{}" },
+			},
+			tag_entr_ascendant_exotic_tag = {
+				name = "{C:gold}Exotic Tag{}",
+				text = { "Shop has a free", "{C:cry_exotic}Exotic Joker{}" },
+			},
+			tag_entr_ascendant_entropic_tag = {
+				name = "{C:gold}Entropic Tag{}",
+				text = { "Shop has a free", "{C:red}Entropic Joker{}" },
+			},
+			tag_entr_ascendant_copying_tag = {
+				name = "{C:gold}Duplicate Tag{}",
+				text = { "Gives {C:attention}#1#{} copies of the", "next selected tag", "{C:inactive}(Copying tags excluded){}" },
+			},
+			tag_entr_ascendant_voucher_tag = {
+				name = "{C:gold}Golden Voucher Tag{}",
+				text = { "Adds one Tier {C:attention}3{} Voucher", "to the next shop" },
+			},
+			tag_entr_ascendant_better_voucher_tag = {
+				name = "{C:gold}Pristine Voucher Tag{}",
+				text = { "Adds 2 Tier {C:attention}3{} Vouchers", "to the next shop" },
+			},
+			tag_entr_ascendant_saint_tag = {
+				name = "{C:gold}Saint Tag{}",
+				text = { "Shop has a free", "{C:attention}Editioned Candy Joker{}" },
+			},
+			tag_entr_ascendant_negative_tag = {
+				name = "{C:gold}Negative Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Negative{}" },
+			},
+			tag_entr_ascendant_foil_tag = {
+				name = "{C:gold}Foil Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Foil{}" },
+			},
+			tag_entr_ascendant_holo_tag = {
+				name = "{C:gold}Holographic Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Holographic{}" },
+			},
+			tag_entr_ascendant_poly_tag = {
+				name = "{C:gold}Polychrome Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Polychrome{}" },
+			},
+			tag_entr_ascendant_glass_tag = {
+				name = "{C:gold}Fragile Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Fragile{}" },
+			},
+			tag_entr_ascendant_glitched_tag = {
+				name = "{C:gold}Glitched Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Glitched{}" },
+			},
+			tag_entr_ascendant_gold_tag = {
+				name = "{C:gold}Golden Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Golden{}" },
+			},
+			tag_entr_ascendant_blurry_tag = {
+				name = "{C:gold}Blurred Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Blurred{}" },
+			},
+			tag_entr_ascendant_m_tag = {
+				name = "{C:gold}M Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Joly{}", "{C:inactive}M{}" },
+			},
+			tag_entr_ascendant_mosaic_tag = {
+				name = "{C:gold}Mosaic Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Mosaic{}" },
+			},
+			tag_entr_ascendant_astral_tag = {
+				name = "{C:gold}Astral Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Astral{}" },
+			},
+			tag_entr_ascendant_oversat_tag = {
+				name = "{C:gold}Oversaturated Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Oversaturated{}" },
+			},
+			tag_entr_ascendant_solar_tag = {
+				name = "{C:gold}Solar Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Solar{}" },
+			},
+			tag_entr_ascendant_infdiscard_tag = {
+				name = "{C:gold}Discard Tag{}",
+				text = { "{C:attention}+3{} discards", "next round" },
+			},
+			tag_entr_ascendant_cat_tag = {
+				name = "{C:gold}Cat Tag{}",
+				text = { "{C:gold}Meow.{}", "{C:inactive}Level {C:dark_edition}#1#" },
+			},
+			tag_entr_ascendant_dog_tag = {
+				name = "{C:gold}Dog Tag{}",
+				text = { "{C:red}woof.{}", "{C:inactive}Level {C:dark_edition}#1#" },
+			},
+			tag_entr_ascendant_canvas_tag = {
+				name = "{C:gold}Canvas Tag{}",
+				text = { "Shop has a", "{C:attention}Canvas{}" },
+			},
+			tag_entr_ascendant_unbounded_tag = {
+				name = "{C:gold}Unbounded Tag{}",
+				text = {"Gives a free {C:spectral}Spectral Pack",
+				"with {C:green,E:1}Pointer{} and {C:cry_exotic,E:1}Beyond{}", },
+			},
+			tag_entr_ascendant_ejoker_tag = {
+				name = "{C:gold}Buffoon Tag{}",
+				text = { "Gives a free editioned", "{C:attention}Mega Buffoon Pack{}" },
+			},
+			tag_entr_ascendant_universal_tag = {
+				name = "{C:gold}Universal Tag{}",
+				text = { "Level up {C:attention}#1#{}", "{C:gold}+6{} Ascension Power" },
+			},
+			tag_entr_ascendant_ebundle_tag = {
+				name = "{C:gold}Bundle Tag{}",
+				text = {"Create a {C:attention}Console Tag{}, {C:attention}Ethereal Tag{},",
+				"{C:attention}Twisted Tag{}, and {C:attention}Bundle Tag{}", },
+			},
+			tag_entr_ascendant_twisted_tag = {
+				name = "{C:gold}Twisted Tag{}",
+				text = {"Gives a free","{C:red}Twisted Pack{}", },
+			},
+			tag_entr_ascendant_stock_tag = {
+				name = "{C:gold}Stock Tag{}",
+				text = {"2.5Xs your money", },
+			},
+			tag_entr_ascendant_blind_tag = {
+				name = "{C:gold}Blind Tag{}",
+				text = {"Gives a free","{C:attention}Blind Pack{}", },
+			},
+			tag_entr_ascendant_reference_tag = {
+				name = "{C:gold}Reference Tag{}",
+				text = {"Gives a free","{C:green}Reference Pack{}", },
+			},
+			tag_entr_ascendant_cavendish_tag = {
+				name = "{C:gold}Cavendish Tag{}",
+				text = {"Gives a free","{C:attention}Cavendish{}", },
+			},
+			tag_entr_ascendant_credit_tag = {
+				name = "{C:gold}Credit Tag{}",
+				text = {"Initial cards and", "booster packs in the next", "shop are free", "rerolls start at {C:gold}-$5{}" },
+			},
+
+			tag_entr_ascendant_topup_tag = {
+				name = "{C:gold}Top-Up Tag{}",
+				text = {
+					"Creates up to {C:attention}3{}",
+					"{C:green}Uncommon{} Jokers",
+					"{C:inactive}(Must have room){}",
+				},
+			},
+			tag_entr_ascendant_better_topup_tag = {
+				name = "{C:gold}Better Top-Up Tag{}",
+				text = {
+					"Creates up to {C:attention}3{}",
+					"{C:red}Rare{} Jokers",
+					"{C:inactive}(Must have room){}",
+				},
+			},
+			tag_entr_ascendant_booster_tag = {
+				name = "{C:gold}Booster Tag{}",
+				text = {
+					"Next {C:cry_code}Booster Pack{} has",
+					"{C:attention}triple{} cards and",
+					"{C:attention}triple{} choices",
+				},
+			},
+			tag_entr_ascendant_effarcire_tag = {
+				name = "{C:gold}Infinite Tag{}",
+				text = {
+					"Draw {C:green}full deck{} to hand", "next round"
+				},
+			},
 		},
 		Other = {
 			inversion_allowed = {
@@ -1248,6 +1456,7 @@ local decs = {
 			k_entropy = "Entropy",
 
 			k_cblind = "Blind",
+			k_entr_base = "Base"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

@@ -160,6 +160,8 @@ SMODS.Booster({
 	end
 })
 
+
+
 function create_inverted_card(area, seed)
     local num = pseudorandom("twisted_rare")
     if num - 0.01 <= 0 then

@@ -127,6 +127,7 @@ function Entropy.ReverseSuitLocVars(self, q, card)
   }
 end
 function Entropy.ReversePlanetUse(handname, card, amt)
+  if not card then card = {ability={1}} end
   amt = amt or 1
   local used_consumable = copier or card
   card.ability.level = card.ability.level or 2
@@ -146,7 +147,7 @@ function Entropy.ReversePlanetUse(handname, card, amt)
       ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
       ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
       Cryptid.pulse_flame(0.01, sunlevel)
-      used_consumable:juice_up(0.8, 0.5)
+      if used_consumable.juice_up then used_consumable:juice_up(0.8, 0.5) end
       G.E_MANAGER:add_event(Event({
         trigger = "after",
         blockable = false,

@@ -134,7 +134,7 @@ SMODS.Consumable({
         G.jokers.highlighted[1]:start_dissolve()
     end,
     can_use = function(self, card)
-        return G.jokers and #G.jokers.highlighted == 1 and G.jokers.highlighted[1].edition
+        return G.jokers and #G.jokers.highlighted == 1 and G.jokers.highlighted[1].edition and not G.jokers[1].ability.cry_absolute
 	end,
     loc_vars = function(self, q, card)
         local str = "none"

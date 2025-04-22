@@ -22,10 +22,10 @@ pattern = '''tag_sprite.stop_hover = function(_self) _self.hovering = false; Nod
 position = "after"
 payload = '''
 tag_sprite.click = function(_self)
-        if self.key == 'tag_entr_dog' and self.HUD_tag then
+        if (self.key == 'tag_entr_dog' or self.level_func) and self.HUD_tag then
 		for i = 1, #G.GAME.tags do
 			local other_cat = G.GAME.tags[i]
-			if other_cat.key == 'tag_entr_dog' then
+			if other_cat.key == self.key then
 				if not self.ability.level then self.ability.level = 1 end
 				if not other_cat.ability.level then other_cat.ability.level = 1 end	-- setting ability just doesn't seem to be working... so you get this
 				if (self.ability.level == other_cat.ability.level) and (other_cat ~= self) and not cry_too_fast_kitty then
@@ -39,7 +39,7 @@ tag_sprite.click = function(_self)
 						for i = 2, #G.P_CENTER_POOLS.Edition do
 							j = j + 1
 							if j >= other_cat.ability.level + 1 then
-								edition = G.P_CENTER_POOLS.Edition[i]
+								edition = other_cat.get_edition and other_cat:get_edition() or G.P_CENTER_POOLS.Edition[i]
 								break
 							end
 						end
@@ -89,7 +89,11 @@ tag_sprite.click = function(_self)
 						func = func
 					}))
 
-					other_cat.ability.level = other_cat.ability.level + 1
+					if other_cat.level_func then
+						other_cat.ability.level = other_cat.level_func(other_cat.ability.level, 1,other_cat)
+					else
+						other_cat.ability.level = other_cat.ability.level + 1
+					end
 					
 					if self.ability.shiny then
 						if not Cryptid.shinytagdata[self.key] then
