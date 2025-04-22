@@ -872,3 +872,16 @@ cry_error_msgs[#cry_error_msgs+1]={ string = "Heart Containers", colour = G.C.RE
 cry_error_msgs[#cry_error_msgs+1]={ string = "Build Grist", colour = G.C.BLUE }
 cry_error_msgs[#cry_error_msgs+1]={ string = "Moral Chemicals", colour = G.C.BLUE }
 cry_error_msgs[#cry_error_msgs+1]={ string = "Inversions", colour =  G.C.RARITY["entr_reverse_legendary"] }
+
+local ref = Cryptid.misprintize
+function Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_level)
+    if G.jokers then
+        local limit = G.jokers.config.card_limit
+        ref(card,override,force_reset,stack,grow_type,pow_level)
+        if card.edition and card.edition.negative and card.area == G.jokers then
+            G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+        end
+    else
+        ref(card,override,force_reset,stack,grow_type,pow_level)
+    end
+end
