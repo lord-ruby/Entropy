@@ -551,3 +551,10 @@ function Entropy.GetOddsLocs(card, odds, numerator)
     if card.ability.cry_rigged then return odds end
     return (numerator or 1) * G.GAME.probabilities.normal * (card.ability.cry_prob or 1)
 end
+
+function Entropy.BlindIs(orig, newkey)
+    if orig.config.blind.key  == newkey then return true end
+    if G.P_BLINDS[orig.config.blind.key].counts_as and G.P_BLINDS[orig.config.blind.key].counts_as[newkey] then return true end
+    if orig.counts_as and orig.counts_as[newkey] then return true end
+    return false
+end

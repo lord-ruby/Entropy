@@ -267,7 +267,7 @@ SMODS.Joker({
 
 function Cryptid.ascend(num, curr2) -- edit this function at your leisure
     curr2 = curr2 or ((G.GAME.current_round.current_hand.cry_asc_num or 0) + (G.GAME.asc_power_hand or 0)) * (1+(G.GAME.nemesisnumber or 0))
-    if G.GAME.blind.config.blind.key == "bl_entr_scarlet_sun" then
+    if Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled then
         curr2 = curr2 * -1
     end
 	if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true then
@@ -308,7 +308,7 @@ end
 
 local pokerhandinforef = G.FUNCS.get_poker_hand_info
 function G.FUNCS.get_poker_hand_info(_cards)
-    if HasJoker("j_entr_helios") or G.GAME.blind.config.blind.key == "bl_entr_scarlet_sun" then G.GAME.used_vouchers.v_cry_hyperspacetether = true end
+    if HasJoker("j_entr_helios") or (Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled) then G.GAME.used_vouchers.v_cry_hyperspacetether = true end
     local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
     
     return text, loc_disp_text, poker_hands, scoring_hand, disp_text
@@ -1022,7 +1022,7 @@ function Entropy.RegisterBlinds()
             },
             weight = 0,
             hidden=true,
-            soul_rate=0
+            soul_rate=0,
             no_doe = true,
             --soul_pos = { x = 5, y = 0},
             use = function(self, card, area, copier,amt)
