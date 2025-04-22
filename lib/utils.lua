@@ -478,6 +478,7 @@ function Entropy.GetRecipeResult(val,jokerrares,seed)
         [3]=12,
         cry_epic=20,
         [4]=30,
+        cry_exotic=45
     }) do
         if v > cost and val >= v then
             rare = i;cost=v
@@ -507,7 +508,8 @@ function Entropy.GetRecipe(cards)
         m_cry_echo=6.2,
         m_cry_light=7.2,
         m_entr_flesh=5.2,
-        m_entr_disavowed=0
+        m_entr_disavowed=0,
+        m_cry_abstract=9.1
     }
     local rares = {}
     for i, v in pairs(G.P_CENTER_POOLS.Joker) do

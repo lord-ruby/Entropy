@@ -1021,6 +1021,8 @@ function Entropy.RegisterBlinds()
                 atlas = v.atlas,
             },
             weight = 0,
+            hidden=true,
+            soul_rate=0
             no_doe = true,
             --soul_pos = { x = 5, y = 0},
             use = function(self, card, area, copier,amt)
