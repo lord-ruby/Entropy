@@ -399,7 +399,8 @@ SMODS.Tag({
 		tag.get_edition = function(tag)
 			return G.P_CENTER_POOLS.Edition[(tag.ability.level2%#G.P_CENTER_POOLS.Edition)+1]
 		end
-	end
+	end,
+	in_pool = function() return false end
 })
 
 SMODS.Tag({
@@ -421,7 +422,8 @@ SMODS.Tag({
 		tag.get_edition = function(tag)
 			return G.P_CENTER_POOLS.Edition[(tag.ability.level2%#G.P_CENTER_POOLS.Edition)+1]
 		end
-	end
+	end,
+	in_pool = function() return false end
 })
 
 SMODS.Tag {
