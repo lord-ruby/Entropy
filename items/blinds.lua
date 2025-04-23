@@ -138,7 +138,8 @@ SMODS.Blind({
 })
 Entropy.EEBlacklist = {
 	bl_cry_obsidian_orb=true,
-	bl_entr_endless_entropy=true
+	bl_entr_endless_entropy=true,
+	bl_cry_lavender_loop=true
 }
 SMODS.Blind({
 	key = "endless_entropy",
@@ -586,30 +587,6 @@ SMODS.Blind({
 			end
 		end
 	end,
-	cry_ante_base_mod = function(self, dt)
-		local mod = 0
-		for k, _ in pairs(G.P_BLINDS) do
-			s = G.P_BLINDS[k]
-			if not Entropy.EEBlacklist[k] and s.boss and s.boss.showdown and not s.no_ee then
-			if s.cry_ante_base_mod then
-				mod = mod + s:cry_ante_base_mod(dt)
-			end
-		end
-		end
-		return mod
-	end,
-	cry_round_base_mod = function(self, dt)
-		local mod = 1
-		for k, _ in pairs(G.P_BLINDS) do
-			s = G.P_BLINDS[k]
-			if not Entropy.EEBlacklist[k] and s.boss and s.boss.showdown and not s.no_ee then
-			if s.cry_round_base_mod then
-				mod = mod * s:cry_round_base_mod(dt)
-			end
-		end
-		end
-		return mod
-	end,
 	cry_cap_score = function(self, score)
 		for k, _ in pairs(G.P_BLINDS) do
 			s = G.P_BLINDS[k]
@@ -652,26 +629,5 @@ SMODS.Blind({
 			end
 		end
 		end
-	end,
-	get_loc_debuff_text = function(self)
-		if not G.GAME.blind.debuff_boss then
-			return localize("cry_debuff_obsidian_orb")
-		end
-		local loc_vars = nil
-		if G.GAME.blind.debuff_boss.name == "The Ox" then
-			loc_vars = { localize(G.GAME.current_round.most_played_poker_hand, "poker_hands") }
-		end
-		local loc_target =
-			localize({ type = "raw_descriptions", key = G.GAME.blind.debuff_boss.key, set = "Blind", vars = loc_vars })
-		local loc_debuff_text = ""
-		for k, v in ipairs(loc_target) do
-			loc_debuff_text = loc_debuff_text .. v .. (k <= #loc_target and " " or "")
-		end
-		local disp_text = (G.GAME.blind.debuff_boss.name == "The Wheel" and G.GAME.probabilities.normal or "")
-			.. loc_debuff_text
-		if (G.GAME.blind.debuff_boss.name == "The Mouth") and G.GAME.blind.only_hand then
-			disp_text = disp_text .. " [" .. localize(G.GAME.blind.only_hand, "poker_hands") .. "]"
-		end
-		return disp_text
 	end,
 })
