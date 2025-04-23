@@ -1316,9 +1316,9 @@ SMODS.Joker({
     eternal_compat = true,
     pos = { x = 3, y = 2 },
     config = {
-        buycost = 25,
-        sellcost = 25,
-        base = 5,
+        buycost = 20,
+        sellcost = 20,
+        base = 15,
         extra = {
 			slots = 4,
 		},
@@ -1337,23 +1337,25 @@ SMODS.Joker({
             vars = {
                 card.ability.buycost,
                 card.ability.sellcost,
-                Entropy.FormatArrowMult(amount[1],amount[2] / (amount[1]+2))
+                Entropy.FormatArrowMult(amount[1],amount[2] / ((amount[1]+3)*(amount[1]+3)))
             }
         }
     end,
     calculate = function(self, card, context)
-        if context.end_of_round then
+        if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
             local ratio = 2-(#G.jokers.cards/G.jokers.config.card_limit)
             local amount = {math.max(-1+math.floor(math.log(G.jokers.config.card_limit/10)), -1), card.ability.base*ratio}
-            amount[2] = amount[2] / (amount[1]+2)
+            amount[2] = amount[2] / ((amount[1]+3)*(amount[1]+3))
             local actual = 0
-            if amount[1] == -1 then 
+            if amount[1] <= -0.9 then 
                 actual = (G.GAME.dollars + amount[2]) - G.GAME.dollars
-            elseif amount[1] == 0 then 
+            elseif amount[1] <= 0.1 then 
                 actual = (G.GAME.dollars * amount[2]) - G.GAME.dollars
             else
                 actual = (to_big(G.GAME.dollars):arrow(amount[1],to_big(amount[2]))) - G.GAME.dollars
             end
+            print(actual)
+            print(amount)
             ease_dollars(actual)
         end
     end,
