@@ -1302,11 +1302,11 @@ SMODS.Joker({
 
     blueprint_compat = true,
     eternal_compat = true,
-    pos = { x = 3, y = 1 },
+    pos = { x = 3, y = 2 },
     config = {
-        buycost = 10,
-        sellcost = 10,
-        dollaramount = 30,
+        buycost = 15,
+        sellcost = 15,
+        dollaramount = 40,
         extra = {
 			slots = 4,
 		},
@@ -1315,25 +1315,23 @@ SMODS.Joker({
 		},
     },
     demicoloncompat = true,
-    soul_pos = { x = 5, y = 1, extra = { x = 4, y = 1 } },
+    soul_pos = { x = 5, y = 2, extra = { x = 4, y = 2 } },
     atlas = "exotic_jokers",
     loc_vars = function(self, info_queue, card)
-
+        return {
+            vars = {
+                card.ability.buycost,
+                card.ability.sellcost
+            }
+        }
     end,
     calculate = function(self, card, context)
 
     end,
     calc_dollar_bonus = function(self, card)
-		return to_big(card.ability.dollaramount) * to_big(1-1/G.jokers.config.card_limit)
+		return to_big(card.ability.dollaramount / G.jokers.config.card_limit) * to_big(G.jokers.config.card_limit^0.5)
 	end,
-    add_to_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(
-			G.jokers.config.card_limit + math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots))
-		)
-	end,
-	remove_from_deck = function(self, card, from_debuff)
-		G.jokers.config.card_limit = lenient_bignum(
-			G.jokers.config.card_limit - math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots))
-		)
-	end,
+    remove_from_deck = function()
+        if G.jokers.config.card_limit <= 1 then G.jokers.config.card_limit = 1 end
+    end
 })

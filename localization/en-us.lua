@@ -206,6 +206,15 @@ local decs = {
 					"Gain {C:attention}#1#{} skip tags when",
 					"any blind is selected"
 				}
+			},
+			j_entr_akyros = {
+				name = "Akyros",
+				text = {
+					"Joker Slots can be {C:attention}bought{}",
+					"for {C:gold}$#1#{} and {C:attention}sold{} for {C:gold}$#2#{}",
+					"Gain money based on how few",
+					"joker slots you have"
+				}
 			}
 		},
 		Blind = {
