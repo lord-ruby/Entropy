@@ -295,9 +295,11 @@ local card_hoverref = Card.draw
 
 function Card:draw(layer)
     card_hoverref(self, layer)
-    if self.config.h_popup and self.config and self.config.center and self.config.center.rarity == "entr_hyper_exotic" then self.config.h_popup.nodes[1].nodes[1].nodes[1].nodes[5].nodes[1].nodes[1].config.colour = G.C.RARITY["entr_hyper_exotic"] end
-    if self.config.h_popup and self.config and self.config.center and self.config.center.rarity and self.config.center.rarity == "entr_zenith" then self.config.h_popup.nodes[1].nodes[1].nodes[1].nodes[5].nodes[1].nodes[1].config.colour = self.config.center.rare_color and self.config.center:rare_color(self) or G.C.RARITY["entr_zenith"] end
-    if self.config.h_popup and self.config and self.config.center and self.config.center.rarity == "entr_reverse_legendary" then self.config.h_popup.nodes[1].nodes[1].nodes[1].nodes[5].nodes[1].nodes[1].config.colour = G.C.RARITY["entr_reverse_legendary"] end
+    pcall(function()
+        if self.config and self.config.h_popup and self.config.center and self.config.center.rarity == "entr_hyper_exotic" then self.config.h_popup.nodes[1].nodes[1].nodes[1].nodes[5].nodes[1].nodes[1].config.colour = G.C.RARITY["entr_hyper_exotic"] end
+        if self.config and self.config.h_popup and self.config.center and self.config.center.rarity and self.config.center.rarity == "entr_zenith" then self.config.h_popup.nodes[1].nodes[1].nodes[1].nodes[5].nodes[1].nodes[1].config.colour = self.config.center.rare_color and self.config.center:rare_color(self) or G.C.RARITY["entr_zenith"] end
+        if self.config and self.config.h_popup and self.config.center and self.config.center.rarity == "entr_reverse_legendary" then self.config.h_popup.nodes[1].nodes[1].nodes[1].nodes[5].nodes[1].nodes[1].config.colour = G.C.RARITY["entr_reverse_legendary"] end
+    end)
     if self.config and self.config.center and self.config.center.set == "RSpectral" then
         self.children.center:draw_shader('booster', nil, self.ARGS.send_to_shader)
     end

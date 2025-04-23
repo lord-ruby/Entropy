@@ -1304,8 +1304,15 @@ SMODS.Joker({
     eternal_compat = true,
     pos = { x = 3, y = 1 },
     config = {
-        buycost = 20,
-        sellcost = 20
+        buycost = 10,
+        sellcost = 10,
+        dollaramount = 30,
+        extra = {
+			slots = 4,
+		},
+        immutable = {
+			max_slots = 100,
+		},
     },
     demicoloncompat = true,
     soul_pos = { x = 5, y = 1, extra = { x = 4, y = 1 } },
@@ -1315,5 +1322,18 @@ SMODS.Joker({
     end,
     calculate = function(self, card, context)
 
-    end
+    end,
+    calc_dollar_bonus = function(self, card)
+		return to_big(card.ability.dollaramount) * to_big(1-1/G.jokers.config.card_limit)
+	end,
+    add_to_deck = function(self, card, from_debuff)
+		G.jokers.config.card_limit = lenient_bignum(
+			G.jokers.config.card_limit + math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots))
+		)
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		G.jokers.config.card_limit = lenient_bignum(
+			G.jokers.config.card_limit - math.min(card.ability.immutable.max_slots, to_big(card.ability.extra.slots))
+		)
+	end,
 })
