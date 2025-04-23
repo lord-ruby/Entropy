@@ -1488,7 +1488,8 @@ local decs = {
 
 			k_entropy = "Entropy",
 
-			k_cblind = "Blind",
+			k_cblind = "Blind Token",
+			b_cblind_cards = "Blind Tokens",
 			k_entr_base = "Base",
 
 			k_blind_pack = "Blind Pack",

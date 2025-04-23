@@ -486,7 +486,7 @@ SMODS.Tag {
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.p_spectral_normal_1
 		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_cry_pointer" }
-		info_queue[#info_queue + 1] = { set = "RSpectral", key = "c_entr_beyond" }
+		info_queue[#info_queue + 1] = G.P_CENTERS.c_entr_beyond
 		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
@@ -775,8 +775,8 @@ SMODS.Tag {
 	end,
 	apply = function(self, tag, context)
 		if context.type == "immediate" then
+			ease_dollars(G.GAME.dollars * 1.5)
 			tag:yep("+", G.C.GOLD, function()
-				ease_dollars(G.GAME.dollars * 1.5)
 				return true
 			end)
 			tag.triggered = true

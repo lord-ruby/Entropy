@@ -773,6 +773,7 @@ SMODS.Joker({
             if next(poker_hands["Pair"]) then
                 G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() 
                     G.play.cards[1]:set_edition("e_entr_solar")
+                    return true
                 end}))
                 local jollycount = 0
                 for i = 1, #G.jokers.cards do
@@ -785,6 +786,7 @@ SMODS.Joker({
                         local card2 = G.play.cards[i]
                         G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() 
                             if card2 then card:set_edition("e_entr_solar") end
+                            return true
                         end}))
                     end
                 end
@@ -793,6 +795,7 @@ SMODS.Joker({
         if context.forcetrigger then
             G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() 
                 G.play.cards[1]:set_edition("e_entr_solar")
+                return true
             end}))
             local jollycount = 0
             for i = 1, #G.jokers.cards do
@@ -805,6 +808,7 @@ SMODS.Joker({
                     local card2 = G.play.cards[i]
                     G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() 
                         if card2 then card:set_edition("e_entr_solar") end
+                        return true
                     end}))
                 end
             end
