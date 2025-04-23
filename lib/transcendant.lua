@@ -4,10 +4,10 @@ function Entropy.CheckTranscendence(cards)
     local rank_totals = {}
     for i, v in pairs(cards) do
         if v.config.center.set ~= "Default" and v.config.center.set ~= "Enhanced" then
-            if not suit_totals[v.config.center.set] then
-                suit_totals[v.config.center.set] = 0
+            if not suit_totals[v.ability.consumeable and "Consumable" or v.config.center.set] then
+                suit_totals[v.ability.consumeable and "Consumable" or v.config.center.set] = 0
             end
-            suit_totals[v.config.center.set] = suit_totals[v.config.center.set] + 1
+            suit_totals[v.ability.consumeable and "Consumable" or v.config.center.set] = suit_totals[v.ability.consumeable and "Consumable" or v.config.center.set] + 1
             if not rank_totals[v.config.center.key] then
                 rank_totals[v.config.center.key] = 0
             end
