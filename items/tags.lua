@@ -1093,7 +1093,7 @@ SMODS.Tag {
 				return true
 			end)
 			G.hand:change_size(#G.deck.cards)
-			G.GAME.round_resets.temp_handsize = #G.deck.cards
+			G.GAME.round_resets.temp_handsize = (G.GAME.round_resets.temp_handsize or 0) + #G.deck.cards
 		end
 	end,
 }
