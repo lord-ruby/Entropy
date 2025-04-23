@@ -1808,7 +1808,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
     if Entropy.CheckTranscendence(_cards) ~= "None" or (G.GAME.hands[text] and G.GAME.hands[text].TranscensionPower) then
         ease_colour(G.C.UI_CHIPS, copy_table(HEX("84e1ff")), 0.3)
 		ease_colour(G.C.UI_MULT, copy_table(HEX("84e1ff")), 0.3)
-        if not G.C.UI_GOLD then G.C.UI_GOLD = G.C.GOLD end
+        if not G.C.UI_GOLD2 then G.C.UI_GOLD2 = G.C.GOLD end
         ease_colour(G.C.GOLD, copy_table(HEX("84e1ff")), 0.3)
     elseif hand_table[text] and next(scoring_hand) and #scoring_hand > hand_table[text] and G.GAME.Overflow then
 		ease_colour(G.C.UI_CHIPS, copy_table(HEX("FF0000")), 0.3)
@@ -1858,6 +1858,12 @@ function G.FUNCS.evaluate_round()
 		ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
 		ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
         ease_colour(G.C.GOLD, G.C.UI_GOLD, 0.3)
+        G.C.UI_GOLD = nil
+	end
+    if G.C.UI_GOLD2 then
+		ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
+		ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
+        ease_colour(G.C.GOLD, G.C.UI_GOLD2, 0.3)
         G.C.UI_GOLD = nil
 	end
     G.GAME.current_round.current_hand.entr_trans_num_text = ""

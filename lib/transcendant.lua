@@ -12,7 +12,7 @@ function Entropy.CheckTranscendence(cards)
                 rank_totals[v.config.center.key] = 0
             end
             rank_totals[v.config.center.key] = rank_totals[v.config.center.key] + 1
-        end
+        end  
     end
     local flush = false
     local of_a_kind = 0

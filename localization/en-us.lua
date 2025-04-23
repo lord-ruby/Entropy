@@ -212,8 +212,9 @@ local decs = {
 				text = {
 					"Joker Slots can be {C:attention}bought{}",
 					"for {C:gold}$#1#{} and {C:attention}sold{} for {C:gold}$#2#{}",
-					"Gain money based on how few",
-					"joker slots you have"
+					"Gain money based on how many",
+					"empty joker slots you have",
+					"{C:inactive}(Currently{} {X:gold,C:white}#3#{}{C:inactive}){}"
 				}
 			}
 		},

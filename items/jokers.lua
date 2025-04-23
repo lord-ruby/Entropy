@@ -1316,9 +1316,9 @@ SMODS.Joker({
     eternal_compat = true,
     pos = { x = 3, y = 2 },
     config = {
-        buycost = 15,
-        sellcost = 15,
-        dollaramount = 30,
+        buycost = 25,
+        sellcost = 25,
+        base = 5,
         extra = {
 			slots = 4,
 		},
@@ -1330,19 +1330,33 @@ SMODS.Joker({
     soul_pos = { x = 5, y = 2, extra = { x = 4, y = 2 } },
     atlas = "exotic_jokers",
     loc_vars = function(self, info_queue, card)
+        local ratio = 2-(#G.jokers.cards/G.jokers.config.card_limit)
+        local amount = {math.max(-1+math.floor(math.log(G.jokers.config.card_limit/10)), -1), card.ability.base*ratio}
+        local actual = G.GAME.dollars
         return {
             vars = {
                 card.ability.buycost,
-                card.ability.sellcost
+                card.ability.sellcost,
+                Entropy.FormatArrowMult(amount[1],amount[2] / (amount[1]+2))
             }
         }
     end,
     calculate = function(self, card, context)
-
+        if context.end_of_round then
+            local ratio = 2-(#G.jokers.cards/G.jokers.config.card_limit)
+            local amount = {math.max(-1+math.floor(math.log(G.jokers.config.card_limit/10)), -1), card.ability.base*ratio}
+            amount[2] = amount[2] / (amount[1]+2)
+            local actual = 0
+            if amount[1] == -1 then 
+                actual = (G.GAME.dollars + amount[2]) - G.GAME.dollars
+            elseif amount[1] == 0 then 
+                actual = (G.GAME.dollars * amount[2]) - G.GAME.dollars
+            else
+                actual = (to_big(G.GAME.dollars):arrow(amount[1],to_big(amount[2]))) - G.GAME.dollars
+            end
+            ease_dollars(actual)
+        end
     end,
-    calc_dollar_bonus = function(self, card)
-		return to_big(card.ability.dollaramount) * to_big(#G.jokers.cards/G.jokers.config.card_limit)
-	end,
     remove_from_deck = function()
         if G.jokers.config.card_limit <= 1 then G.jokers.config.card_limit = 1 end
     end

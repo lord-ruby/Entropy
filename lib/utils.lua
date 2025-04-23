@@ -406,6 +406,7 @@ function Entropy.FormatDollarValue(dollars)
 end
 
 function Entropy.FormatArrowMult(arrows, mult)
+    mult = number_format(mult)
     if to_big(arrows) < to_big(-1) then 
         return "="..mult 
     elseif to_big(arrows) < to_big(0) then 
