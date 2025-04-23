@@ -31,7 +31,7 @@ function Entropy.CheckTranscendence(cards)
     if of_a_kind >= 3 then 
         return flush and "Transcendent Flush "..of_a_kind or "Transcendent "..of_a_kind.." of a Kind"
     end
-    return "None", of_a_kind > 1 and math.min(of_a_kind, flush and 5 or 3) or 0
+    return "None", of_a_kind > 1 and math.max(of_a_kind, flush and 5 or 0) or 0
 end
 
 G.FUNCS.entr_trans_UI_set = function(e)
