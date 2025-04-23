@@ -1243,6 +1243,10 @@ local AscendantTags = {
     tag_cry_console="tag_entr_ascendant_twisted_tag",
     tag_entr_dog="tag_entr_ascendant_dog_tag",
     tag_entr_solar="tag_entr_ascendant_solar_tag",
+    tag_entr_ascendant_rare_tag="tag_entr_ascendant_epic_tag",
+    tag_entr_ascendant_epic_tag="tag_entr_ascendant_legendary_tag",
+    tag_entr_ascendant_legendary_tag="tag_entr_ascendant_exotic_tag",
+    tag_entr_ascendant_exotic_tag="tag_entr_ascendant_entropic_tag"
 }
 for i, v in pairs(AscendantTags) do Entropy.AscendedTags[i]=v end
 SMODS.Joker({
@@ -1289,7 +1293,13 @@ SMODS.Joker({
 
 local ref = Tag.init
 function Tag:init(_tag, for_collection, _blind_type)
-    if HasJoker("j_entr_exousia") and Entropy.AscendedTags[_tag] and not for_collection then _tag = Entropy.AscendedTags[_tag] end
+    if HasJoker("j_entr_exousia") and Entropy.AscendedTags[_tag] and not for_collection then 
+        _tag = Entropy.AscendedTags[_tag]
+        local procs = 1
+        while pseudorandom("exousia") < 0.1 and procs < HasJoker("j_entr_exousia") and Entropy.AscendedTags[_tag] and not for_collection then
+            _tag = Entropy.AscendedTags[_tag]
+        end
+    end
     return ref(self,_tag, for_collection, _blind_type)
 end
 
@@ -1306,7 +1316,7 @@ SMODS.Joker({
     config = {
         buycost = 15,
         sellcost = 15,
-        dollaramount = 40,
+        dollaramount = 30,
         extra = {
 			slots = 4,
 		},
@@ -1329,7 +1339,7 @@ SMODS.Joker({
 
     end,
     calc_dollar_bonus = function(self, card)
-		return to_big(card.ability.dollaramount / G.jokers.config.card_limit) * to_big(G.jokers.config.card_limit^0.5)
+		return to_big(card.ability.dollaramount) * to_big(#G.jokers.cards/G.jokers.config.card_limit)
 	end,
     remove_from_deck = function()
         if G.jokers.config.card_limit <= 1 then G.jokers.config.card_limit = 1 end
