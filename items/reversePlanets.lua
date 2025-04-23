@@ -4,6 +4,7 @@ function create_UIBox_current_hand_row(handname, simple)
         return hand_row_ref(handname, simple)
     else
         if not (G.GAME.hands[handname]) then return {} end
+        local color = G.GAME.hands[handname].TranscensionPower and HEX("84e1ff") or G.C.GOLD
         return (G.GAME.hands[handname].visible) and
         (not simple and
           {n=G.UIT.R, config={align = "cm", padding = 0.05, r = 0.1, colour = darken(G.C.JOKER_GREY, 0.1), emboss = 0.05, hover = true, force_focus = true, on_demand_tooltip = {text = localize(handname, 'poker_hand_descriptions'), filler = {func = create_UIBox_hand_tip, args = handname}}}, nodes={
@@ -12,9 +13,9 @@ function create_UIBox_current_hand_row(handname, simple)
                     {n=G.UIT.C, config={align = "cm", padding = 0.01, r = 0.1, colour = to_big(G.GAME.hands[handname].level) < to_big(2) and G.C.UI.TEXT_LIGHT or G.C.HAND_LEVELS[math.min(to_big(G.GAME.hands[handname].level):to_number(), 7)], minw = 1.1}, nodes={
                       {n=G.UIT.T, config={text = localize('k_level_prefix')..number_format(G.GAME.hands[handname].level, 1000000), scale = 0.45, colour = G.C.UI.TEXT_DARK}},
                     }},
-                    {n=G.UIT.T, config={text = "+", scale = 0.45, colour = G.C.GOLD}},
-                    {n=G.UIT.C, config={align = "cm", padding = 0.01, r = 0.1, colour = G.C.GOLD, minw = 0.7}, nodes={
-                      {n=G.UIT.T, config={text = ""..number_format(G.GAME.hands[handname].AscensionPower, 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}}
+                    {n=G.UIT.T, config={text = "+", scale = 0.45, colour = color}},
+                    {n=G.UIT.C, config={align = "cm", padding = 0.01, r = 0.1, colour = color, minw = 0.7}, nodes={
+                      {n=G.UIT.T, config={text = ""..number_format(to_big(G.GAME.hands[handname].AscensionPower) ^ to_big(G.GAME.hands[handname].TranscensionPower or 1), 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}}
                     }}
                   }},
               {n=G.UIT.C, config={align = "cm", minw = 3.8, maxw = 3.8}, nodes={
@@ -22,12 +23,12 @@ function create_UIBox_current_hand_row(handname, simple)
               }}
             }},
             {n=G.UIT.C, config={align = "cm", padding = 0.05, colour = G.C.BLACK,r = 0.1}, nodes={
-              {n=G.UIT.C, config={align = "cr", padding = 0.01, r = 0.1, colour = G.C.GOLD, minw = 1.1}, nodes={
+              {n=G.UIT.C, config={align = "cr", padding = 0.01, r = 0.1, colour = color, minw = 1.1}, nodes={
                 {n=G.UIT.T, config={text = number_format(Entropy.ascend_hand(G.GAME.hands[handname].chips,handname), 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}},
                 {n=G.UIT.B, config={w = 0.08, h = 0.01}}
               }},
-              {n=G.UIT.T, config={text = "X", scale = 0.45, colour = G.C.GOLD}},
-              {n=G.UIT.C, config={align = "cl", padding = 0.01, r = 0.1, colour = G.C.GOLD, minw = 1.1}, nodes={
+              {n=G.UIT.T, config={text = "X", scale = 0.45, colour = color}},
+              {n=G.UIT.C, config={align = "cl", padding = 0.01, r = 0.1, colour = color, minw = 1.1}, nodes={
                 {n=G.UIT.B, config={w = 0.08,h = 0.01}},
                 {n=G.UIT.T, config={text = number_format(Entropy.ascend_hand(G.GAME.hands[handname].mult,handname), 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}}
               }}
@@ -50,7 +51,7 @@ end
 
 
 function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
-  local curr2 = ((G.GAME.hands[hand].AscensionPower or 0)) * (1+(G.GAME.nemesisnumber or 0))
+  local curr2 = to_big(((G.GAME.hands[hand].AscensionPower or 0)) * (1+(G.GAME.nemesisnumber or 0))) ^ to_big(G.GAME.hands[hand].TranscensionPower)
 	if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true then
 		return num
 	end

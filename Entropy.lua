@@ -8,7 +8,7 @@ local i = {
     "items/reverseCodes", --not this
     "items/reverseLegendaries", --weird
     "items/define", --not you
-
+    "lib/transcendant",
     "lib/colours", --not you
     "items/decks", --not you
     "items/vouchers", --not you

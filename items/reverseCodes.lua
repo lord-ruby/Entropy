@@ -1805,7 +1805,12 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		["cry_UltPair"] = 8,
 		["cry_WholeDeck"] = 52,
 	}
-	if hand_table[text] and next(scoring_hand) and #scoring_hand > hand_table[text] and G.GAME.Overflow then
+    if Entropy.CheckTranscendence(_cards) ~= "None" then
+        ease_colour(G.C.UI_CHIPS, copy_table(HEX("84e1ff")), 0.3)
+		ease_colour(G.C.UI_MULT, copy_table(HEX("84e1ff")), 0.3)
+        if not G.C.UI_GOLD then G.C.UI_GOLD = G.C.GOLD end
+        ease_colour(G.C.GOLD, copy_table(HEX("84e1ff")), 0.3)
+    elseif hand_table[text] and next(scoring_hand) and #scoring_hand > hand_table[text] and G.GAME.Overflow then
 		ease_colour(G.C.UI_CHIPS, copy_table(HEX("FF0000")), 0.3)
 		ease_colour(G.C.UI_MULT, copy_table(HEX("FF0000")), 0.3)
         if not G.C.UI_GOLD then G.C.UI_GOLD = G.C.GOLD end
@@ -1823,6 +1828,10 @@ function G.FUNCS.get_poker_hand_info(_cards)
     if Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled then 
         G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num * -1
     end
+    if Entropy.CheckTranscendence(_cards) ~= "None" then
+        G.GAME.current_round.current_hand.entr_trans_num_text = "Transcendant "
+        G.GAME.TRANSCENDENT = true
+    end
 	if to_big(G.GAME.current_round.current_hand.cry_asc_num) ~= to_big(0) then
         if to_big(G.GAME.current_round.current_hand.cry_asc_num) > to_big(0) then
             G.GAME.current_round.current_hand.cry_asc_num_text = " (+"..G.GAME.current_round.current_hand.cry_asc_num..")"
@@ -1831,6 +1840,9 @@ function G.FUNCS.get_poker_hand_info(_cards)
         end
     else
         G.GAME.current_round.current_hand.cry_asc_num_text = ""
+    end
+    if Entropy.CheckTranscendence(_cards) == "None" then
+        G.GAME.current_round.current_hand.entr_trans_num_text = ""
     end
     if Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled then 
         G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num * -1
@@ -1848,13 +1860,24 @@ function G.FUNCS.evaluate_round()
         ease_colour(G.C.GOLD, G.C.UI_GOLD, 0.3)
         G.C.UI_GOLD = nil
 	end
-    if G.GAME.increment then
-
-    end
-
-
 end
-
+local ref = G.FUNCS.play_cards_from_highlighted
+G.FUNCS.play_cards_from_highlighted = function(e)
+    local cards = G.hand.highlighted
+    local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
+    G.FUNCS.get_poker_hand_info(cards)
+    if G.GAME.hands[text] and G.GAME.TRANSCENDENT then
+        G.GAME.hands[text].TranscensionPower = (G.GAME.hands[text].TranscensionPower or 1) + 0.1
+        if G.GAME.hands[text].AscensionPower and G.GAME.hands[text].AscensionPower <= 1 then
+            G.GAME.hands[text].AscensionPower =G.GAME.hands[text].AscensionPower + 0.1
+        end
+        if not G.GAME.hands[text].AscensionPower then
+            G.GAME.hands[text].AscensionPower = 0.1
+        end
+        G.GAME.current_round.transcendant = nil
+    end
+    ref(e)
+end
 
 SMODS.Consumable({
     key = "autostart",
