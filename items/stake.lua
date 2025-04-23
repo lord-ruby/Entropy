@@ -11,6 +11,7 @@ SMODS.Stake({
     modifiers = function()
         G.GAME.modifiers.entropic = true
     end,
+    shiny=true,
     order = 9999,
     colour = HEX("ff0000")
 })

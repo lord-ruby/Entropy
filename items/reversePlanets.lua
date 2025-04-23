@@ -213,7 +213,7 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
             localize(card.ability.handname,'poker_hands'),
             card.ability.level,
             colours = {
-              to_big(G.GAME.hands[card.ability.handname].level < to_big(2)) and G.C.BLACK or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands[card.ability.handname].level)):to_number()]
+              to_big(G.GAME.hands[card.ability.handname].level) < to_big(2) and G.C.BLACK or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands[card.ability.handname].level)):to_number()]
             }
           }
         }
