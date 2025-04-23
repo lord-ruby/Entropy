@@ -167,24 +167,152 @@ SMODS.Blind({
 		end
 	end,
 	set_blind = function(self)
-		for i, v in pairs(G.P_BLINDS) do
-			if not Entropy.EEBlacklist[i] and v.boss and v.boss.showdown and v.set_blind and not v.no_ee then
-				v:set_blind()
+		for k, _ in pairs(G.P_BLINDS) do
+			s = G.P_BLINDS[k]
+			if not Entropy.EEBlacklist[k] and s.boss and s.boss.showdown and not s.no_ee then
+				if s.set_blind then
+					s:set_blind(reset, silent)
+				end
+				if s.name == "The Eye" and not reset then
+					G.GAME.blind.hands = {
+						["Flush Five"] = false,
+						["Flush House"] = false,
+						["Five of a Kind"] = false,
+						["Straight Flush"] = false,
+						["Four of a Kind"] = false,
+						["Full House"] = false,
+						["Flush"] = false,
+						["Straight"] = false,
+						["Three of a Kind"] = false,
+						["Two Pair"] = false,
+						["Pair"] = false,
+						["High Card"] = false,
+					}
+				end
+				if s.name == "The Mouth" and not reset then
+					G.GAME.blind.only_hand = false
+				end
+				if s.name == "The Fish" and not reset then
+					G.GAME.blind.prepped = nil
+				end
+				if s.name == "The Water" and not reset then
+					G.GAME.blind.discards_sub = G.GAME.current_round.discards_left
+					ease_discard(-G.GAME.blind.discards_sub)
+				end
+				if s.name == "The Needle" and not reset then
+					G.GAME.blind.hands_sub = G.GAME.round_resets.hands - 1
+					ease_hands_played(-G.GAME.blind.hands_sub)
+				end
+				if s.name == "The Manacle" and not reset then
+					G.hand:change_size(-1)
+				end
+				if s.name == "Amber Acorn" and not reset and #G.jokers.cards > 0 then
+					G.jokers:unhighlight_all()
+					for k, v in ipairs(G.jokers.cards) do
+						v:flip()
+					end
+					if #G.jokers.cards > 1 then
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.2,
+							func = function()
+								G.E_MANAGER:add_event(Event({
+									func = function()
+										G.jokers:shuffle("aajk")
+										play_sound("cardSlide1", 0.85)
+										return true
+									end,
+								}))
+								delay(0.15)
+								G.E_MANAGER:add_event(Event({
+									func = function()
+										G.jokers:shuffle("aajk")
+										play_sound("cardSlide1", 1.15)
+										return true
+									end,
+								}))
+								delay(0.15)
+								G.E_MANAGER:add_event(Event({
+									func = function()
+										G.jokers:shuffle("aajk")
+										play_sound("cardSlide1", 1)
+										return true
+									end,
+								}))
+								delay(0.5)
+								return true
+							end,
+						}))
+					end
+				end
+
+				--add new debuffs
+				for _, v in ipairs(G.playing_cards) do
+					self:debuff_card(v)
+				end
+				for _, v in ipairs(G.jokers.cards) do
+					if not reset then
+						self:debuff_card(v, true)
+					end
+				end
 			end
 		end
 		G.GAME.blind.chips = to_big(G.GAME.blind.chips):arrow(self.exponent[1],self.exponent[2])
 	end,
 	defeat = function(self)
-		for i, v in pairs(G.P_BLINDS) do
-			if not Entropy.EEBlacklist[i] and v.boss and v.boss.showdown and v.defeat and not v.no_ee then
-				v:defeat()
+		for k, _ in pairs(G.P_BLINDS) do
+			s = G.P_BLINDS[k]
+			if not Entropy.EEBlacklist[k] and s.boss and s.boss.showdown and not s.no_ee then
+				if G.P_BLINDS[k].defeat then
+					G.P_BLINDS[k]:defeat(silent)
+				end
+				if G.P_BLINDS[k].name == "The Manacle" and not self.disabled then
+					G.hand:change_size(1)
+				end
 			end
 		end
     end,
     disable = function(self)
-		for i, v in pairs(G.P_BLINDS) do
-			if not Entropy.EEBlacklist[i] and v.boss and v.boss.showdown and v.disable and not v.no_ee then
-				v:disable()
+		for k, _ in pairs(G.P_BLINDS) do
+			s = G.P_BLINDS[k]
+			if not Entropy.EEBlacklist[k] and s.boss and s.boss.showdown and not s.no_ee then
+				if s.disable then
+					s:disable(silent)
+				end
+				if s.name == "The Water" then
+					ease_discard(G.GAME.blind.discards_sub)
+				end
+				if s.name == "The Wheel" or s.name == "The House" or s.name == "The Mark" or s.name == "The Fish" then
+					for i = 1, #G.hand.cards do
+						if G.hand.cards[i].facing == "back" then
+							G.hand.cards[i]:flip()
+						end
+					end
+					for k, v in pairs(G.playing_cards) do
+						v.ability.wheel_flipped = nil
+					end
+				end
+				if s.name == "The Needle" then
+					ease_hands_played(G.GAME.blind.hands_sub)
+				end
+				if s.name == "The Wall" then
+					G.GAME.blind.chips = G.GAME.blind.chips / 2
+					G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+				end
+				if s.name == "Cerulean Bell" then
+					for k, v in ipairs(G.playing_cards) do
+						v.ability.forced_selection = nil
+					end
+				end
+				if s.name == "The Manacle" then
+					G.hand:change_size(1)
+
+					G.FUNCS.draw_from_deck_to_hand(1)
+				end
+				if s.name == "Violet Vessel" then
+					G.GAME.blind.chips = G.GAME.blind.chips / 3
+					G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+				end
 			end
 		end
     end

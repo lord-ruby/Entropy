@@ -15,3 +15,20 @@ SMODS.Stake({
     order = 9999,
     colour = HEX("ff0000")
 })
+
+SMODS.Stake({
+    name = "entr-Zenith Stake",
+    key = "zenith",
+    pos = { x = 1, y = 0 },
+    atlas = "stakes",
+    applied_stakes = { "entr_entropic" },
+    prefix_config = { applied_stakes = { mod = false } },
+    sticker_atlas = "stickers",
+    sticker_pos = {x=0,y=1},
+    modifiers = function()
+        G.GAME.modifiers.zenith = true
+    end,
+    shiny=true,
+    order = 10000,
+    colour = HEX("ff00ff")
+})

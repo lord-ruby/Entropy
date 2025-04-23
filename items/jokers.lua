@@ -1296,7 +1296,7 @@ function Tag:init(_tag, for_collection, _blind_type)
     if HasJoker("j_entr_exousia") and Entropy.AscendedTags[_tag] and not for_collection then 
         _tag = Entropy.AscendedTags[_tag]
         local procs = 1
-        while pseudorandom("exousia") < 0.1 and procs < HasJoker("j_entr_exousia") and Entropy.AscendedTags[_tag] and not for_collection then
+        while pseudorandom("exousia") < 0.1 and procs < HasJoker("j_entr_exousia") and Entropy.AscendedTags[_tag] and not for_collection do
             _tag = Entropy.AscendedTags[_tag]
         end
     end

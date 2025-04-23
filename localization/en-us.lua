@@ -1065,6 +1065,13 @@ local decs = {
 					"{C:red}always{} applies"
 				},
 			},
+			stake_entr_zenith = {
+				name = "Zenith Stake",
+				colour = "Ascendant",
+				text = {
+					"{E:1,C:red}All blinds are endless entropy{}",
+				},
+			},
 		},
 		Tag= {
 			tag_entr_dog = {
