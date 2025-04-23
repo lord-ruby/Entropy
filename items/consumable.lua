@@ -403,6 +403,42 @@ G.FUNCS.reserve_card_to_deck = function(e)
         end,
     }))
 end
+
+
+G.FUNCS.can_buy_slot = function(e)
+    if
+        to_big(G.GAME.dollars) > to_big(e.config.ref_table.ability.buycost)
+    then
+        e.config.colour = G.C.GREEN
+        e.config.button = "buy_slot"
+    else
+        e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+        e.config.button = nil
+    end
+end
+G.FUNCS.buy_slot = function(e)
+    local c1 = e.config.ref_table
+    ease_dollars(-e.config.ref_table.ability.buycost)
+    G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+end
+
+G.FUNCS.can_sell_slot = function(e)
+    if
+        G.jokers.config.card_limit > #G.jokers.cards
+    then
+        e.config.colour = G.C.GREEN
+        e.config.button = "sell_slot"
+    else
+        e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+        e.config.button = nil
+    end
+end
+G.FUNCS.sell_slot = function(e)
+    local c1 = e.config.ref_table
+    ease_dollars(e.config.ref_table.ability.sellcost)
+    G.jokers.config.card_limit = G.jokers.config.card_limit - 1
+end
+
 --som
 local G_UIDEF_use_and_sell_buttons_ref = G.UIDEF.use_and_sell_buttons
 function G.UIDEF.use_and_sell_buttons(card)
@@ -658,6 +694,67 @@ function G.UIDEF.use_and_sell_buttons(card)
               }},
           }}
     end
+
+    if (card.area == G.jokers and G.jokers and card.config.center.key == "j_entr_akyros") then
+        sell = {n=G.UIT.C, config={align = "cr"}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card'}, nodes={
+              {n=G.UIT.B, config = {w=0.1,h=0.6}},
+              {n=G.UIT.C, config={align = "tm"}, nodes={
+                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
+                  {n=G.UIT.T, config={text = localize('b_sell'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
+                }},
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                  {n=G.UIT.T, config={text = localize('$'),colour = G.C.WHITE, scale = 0.4, shadow = true}},
+                  {n=G.UIT.T, config={ref_table = card, ref_value = 'sell_cost_label',colour = G.C.WHITE, scale = 0.55, shadow = true}}
+                }}
+              }}
+            }},
+          }}
+        buyslot = {n=G.UIT.C, config={align = "cr"}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, button = 'buy_slot', func = 'can_buy_slot'}, nodes={
+              {n=G.UIT.B, config = {w=0.1,h=0.6}},
+              {n=G.UIT.C, config={align = "tm"}, nodes={
+                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
+                  {n=G.UIT.T, config={text = localize('b_buy_slot'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
+                }},
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                  {n=G.UIT.T, config={text = localize('$'),colour = G.C.WHITE, scale = 0.4, shadow = true}},
+                  {n=G.UIT.T, config={ref_table = card.ability, ref_value = 'buycost',colour = G.C.WHITE, scale = 0.55, shadow = true}}
+                }}
+              }}
+            }},
+          }}
+          sellslot = {n=G.UIT.C, config={align = "cr"}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, button = 'sell_slot', func = 'can_sell_slot'}, nodes={
+              {n=G.UIT.B, config = {w=0.1,h=0.6}},
+              {n=G.UIT.C, config={align = "tm"}, nodes={
+                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
+                  {n=G.UIT.T, config={text = localize('b_sell_slot'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
+                }},
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                  {n=G.UIT.T, config={text = localize('$'),colour = G.C.WHITE, scale = 0.4, shadow = true}},
+                  {n=G.UIT.T, config={ref_table = card.ability, ref_value = 'sellcost',colour = G.C.WHITE, scale = 0.55, shadow = true}}
+                }}
+              }}
+            }},
+          }}
+        return {
+            n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
+              {n=G.UIT.C, config={padding = 0, align = 'cl'}, nodes={
+                {n=G.UIT.R, config={align = 'cl'}, nodes={
+                  sell
+                }},
+                {n=G.UIT.R, config={align = 'cl'}, nodes={
+                  buyslot
+                }},
+                {n=G.UIT.R, config={align = 'cl'}, nodes={
+                    sellslot
+                  }},
+              }},
+          }}
+    end
+
+
     --remove sell button if beyond exists in pack
     if
         (PackHasBeyond() or (PackHasGateway() and HasFlipside())) and card and card.config and card.config.center and card.config.center.set == "Joker"

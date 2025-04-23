@@ -298,11 +298,7 @@ function Cryptid.ascend(num, curr2) -- edit this function at your leisure
 					(1.75 + ((G.GAME.sunnumber or 0)))):tetrate(
 						to_big((curr2) * curr))
     else
-		return num
-				* to_big(
-					(1.25 + ((G.GAME.sunnumber or 0)))
-						^ to_big(curr2)
-				)
+		return num * (to_big((1.25 + ((G.GAME.sunnumber or 0)))) ^ to_big(curr2))
 	end
 end
 
@@ -1296,3 +1292,28 @@ function Tag:init(_tag, for_collection, _blind_type)
     if HasJoker("j_entr_exousia") and Entropy.AscendedTags[_tag] and not for_collection then _tag = Entropy.AscendedTags[_tag] end
     return ref(self,_tag, for_collection, _blind_type)
 end
+
+
+SMODS.Joker({
+    key = "akyros",
+    rarity = "entr_hyper_exotic",
+    cost = 150,
+    unlocked = true,
+
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 3, y = 1 },
+    config = {
+        buycost = 20,
+        sellcost = 20
+    },
+    demicoloncompat = true,
+    soul_pos = { x = 5, y = 1, extra = { x = 4, y = 1 } },
+    atlas = "exotic_jokers",
+    loc_vars = function(self, info_queue, card)
+
+    end,
+    calculate = function(self, card, context)
+
+    end
+})

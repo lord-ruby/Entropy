@@ -1497,6 +1497,8 @@ local decs = {
 
 			k_reference_pack = "Reference Pack",
 			b_reference_cards = "Reference Jokers",
+			b_buy_slot = "+Joker Slot",
+			b_sell_slot = "-Joker Slot"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

@@ -87,12 +87,14 @@ SMODS.Blind({
 	},
 	calculate = function(self, blind, context)
 		if context.pre_discard and not G.GAME.blind.disabled then
-			Entropy.FlipThen(G.hand.highlighted, function(card, area)
-				card:set_ability(G.P_CENTERS.m_entr_disavowed)
+			Entropy.FlipThen(G.hand.cards, function(card, area)
+				if not card.highlighted then
+					card:set_ability(G.P_CENTERS.m_entr_disavowed)
+				end
 			end)
 		end
 		if context.final_scoring_step and not G.GAME.blind.disabled then
-			Entropy.FlipThen(G.play.cards, function(card, area)
+			Entropy.FlipThen(G.hand.cards, function(card, area)
 				card:set_ability(G.P_CENTERS.m_entr_disavowed)
 			end)
 		end
