@@ -1805,7 +1805,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		["cry_UltPair"] = 8,
 		["cry_WholeDeck"] = 52,
 	}
-    if Entropy.CheckTranscendence(_cards) ~= "None" then
+    if Entropy.CheckTranscendence(_cards) ~= "None" or hand_table[text] and hand_table[text].TranscensionPower then
         ease_colour(G.C.UI_CHIPS, copy_table(HEX("84e1ff")), 0.3)
 		ease_colour(G.C.UI_MULT, copy_table(HEX("84e1ff")), 0.3)
         if not G.C.UI_GOLD then G.C.UI_GOLD = G.C.GOLD end
