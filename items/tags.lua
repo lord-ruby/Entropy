@@ -543,6 +543,7 @@ SMODS.Booster({
     cost = 6,
     draw_hand = true,
     weight = 0,
+	in_pool = function() return false end,
     draw_hand = true,
 	update_pack = SMODS.Booster.update_pack,
 	loc_vars = SMODS.Booster.loc_vars,
@@ -845,7 +846,8 @@ SMODS.Booster({
     group_key = "k_blind_pack",
     cost = 8,
     draw_hand = true,
-    weight = -999,
+    weight = 0,
+	in_pool = function() return false end,
     hidden = true,
     kind = "CBlind",
     create_card = function (self, card, i) 
@@ -923,7 +925,8 @@ SMODS.Booster({
     group_key = "k_reference_pack",
     cost = 8,
     draw_hand = true,
-    weight = -9999,
+    weight = 0,
+	in_pool = function() return false end,
     hidden = true,
     kind = "Joker",
     create_card = function (self, card, i) 
