@@ -492,8 +492,10 @@ SMODS.Blind({
 				if not any_forced then
 					G.hand:unhighlight_all()
 					local forced_card = pseudorandom_element(G.hand.cards, pseudoseed("ObsidianOrb"))
-					forced_card.ability.forced_selection = true
-					G.hand:add_to_highlighted(forced_card)
+					if forced_card then
+						forced_card.ability.forced_selection = true
+						G.hand:add_to_highlighted(forced_card)
+					end
 				end
 			end
 			if s.name == "Crimson Heart" and G.GAME.blind.prepped and G.jokers.cards[1] then

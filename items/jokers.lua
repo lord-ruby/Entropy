@@ -1177,14 +1177,16 @@ end
 local ref = SMODS.calculate_context
 function SMODS.calculate_context(context, return_table)
     local tbl = ref(context,return_table)
-    for i, v in pairs(G.GAME.calculates or {}) do
-        if G.P_CENTERS[v].calculate then
-            local ret = G.P_CENTERS[v]:calculate(nil, context)
-            for k,v in pairs(ret or {}) do 
-                tbl[k] = v 
+    pcall(function()
+        for i, v in pairs(G.GAME.calculates or {}) do
+            if G.P_CENTERS[v].calculate then
+                local ret = G.P_CENTERS[v].calculate(G.P_CENTERS[v], nil, context or {})
+                for k,v in pairs(ret or {}) do 
+                    tbl[k] = v 
+                end
             end
         end
-    end
+    end)
     if not return_table then
         return tbl
     end
