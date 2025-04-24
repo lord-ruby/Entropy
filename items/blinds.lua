@@ -155,7 +155,6 @@ SMODS.Blind({
 	boss = {
 		min = 32,
 		max = 32,
-		showdown = true,
 	},
 	counts_as = {
 		["bl_entr_scarlet_sun"]=true
