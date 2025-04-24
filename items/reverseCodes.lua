@@ -748,7 +748,9 @@ SMODS.Consumable({
     use = function(self, card, area, copier)
         if not CanCreateRuby() then
             for i, v in pairs(G.jokers.cards) do
-                G.jokers.cards[i]:start_dissolve()
+                if not v.ability or (not v.ability.eternal and not v.ability.cry_absolute) then
+                    G.jokers.cards[i]:start_dissolve()
+                end
             end
             local rarity = GetJokerSumRarity()
             G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() 
@@ -773,7 +775,13 @@ SMODS.Consumable({
         end
     end,
     can_use = function(self, card)
-        return #G.jokers.cards > 0
+        if G.jokers and #G.jokers.cards > 0 then
+            for i, v in pairs(G.jokers.cards) do
+                if not v.ability or (not v.ability.eternal and not v.ability.cry_absolute) then
+                    return true
+                end
+            end
+        end
 	end,
     loc_vars = function(self, q, card)
         local mstart = {
