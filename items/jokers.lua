@@ -899,8 +899,10 @@ SMODS.Joker({
 Entropy.ChaosBlacklist.Back = true
 Entropy.ChaosBlacklist.Sleeve = true
 Entropy.ChaosBlacklist.CBlind = true
+Entropy.ChaosBlacklist.Edition = true
 Entropy.ChaosBlacklist["Content Set"] = true
 Entropy.ParakmiBlacklist["Content Set"] = true
+Entropy.ParakmiBlacklist.Edition = true
 Entropy.ChaosConversions.RCode = "Twisted"
 Entropy.ChaosConversions.RPlanet = "Twisted"
 Entropy.ChaosConversions.RSpectral = "Twisted"
@@ -1028,8 +1030,7 @@ function Entropy.RegisterBlinds()
                 pos = v.pos,
                 atlas = v.atlas,
             },
-            weight = -999,
-            hidden=true,
+            weight = 0,
             no_doe = true,
             --soul_pos = { x = 5, y = 0},
             use = function(self, card, area, copier,amt)

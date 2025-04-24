@@ -1571,6 +1571,11 @@ SMODS.Consumable({
             local area = G[G.GAME.ControlXCard.area]
 
             card:add_to_deck()
+            if not area then 
+                if card.set == "Joker" then area = G.jokers
+                elseif card.set == "Default" or card.set == "Enhanced" then area = G.hand
+                else area = G.consumeables end
+            end
             area:emplace(card)
             if area == G.hand then
                 table.insert(G.playing_cards, card)
@@ -1609,7 +1614,7 @@ SMODS.Consumable({
         end
     end,
     can_use = function(self, card)
-        return (GetSelectedCard() and GetSelectedCards() == 2) or (G.GAME.ControlXCard and AreaExists(G[G.GAME.ControlXCard.area]))
+        return (GetSelectedCard() and GetSelectedCards() == 2) or (G.GAME.ControlXCard)
 	end,
     loc_vars = function(self, q, card)
         return {
