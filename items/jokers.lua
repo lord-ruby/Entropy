@@ -1106,7 +1106,7 @@ function Card:draw(layer)
             self.children.center,
             scale_mod,
             rotate_mod,
-            0.7,
+            0.85,
             1.3,
             nil,
             0.6
@@ -1119,7 +1119,7 @@ function Card:draw(layer)
             self.children.center,
             scale_mod,
             rotate_mod,
-            0.7,
+            0.85,
             1.3
         )
     end

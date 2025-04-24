@@ -690,6 +690,13 @@ SMODS.Sound({
 		return G.GAME.round_resets.blind_states.Red == "Current" and 10^5
 	end,
 })
+SMODS.Sound({
+	key = "music_fall",
+	path = "music_fall.ogg",
+	select_music_track = function()
+		return ((G.GAME.round_resets.ante_disp == "32" and G.STATE == 1) or G.GAME.EEBuildup) and 10^302
+	end,
+})
 Entropy.config = SMODS.current_mod.config
 local entrConfigTab = function()
 	entr_nodes = {

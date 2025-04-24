@@ -700,25 +700,15 @@ function create_UIBox_blind_select()
     }}
     G.GAME.round_resets.red_room = nil
     return t 
-  elseif G.GAME.round_resets.ante_disp == "32" then
-    G.GAME.round_resets.blind_states.Boss = "Select"
-    G.GAME.round_resets.blind_states.Small = "Defeated"
-    G.GAME.round_resets.blind_states.Big = "Defeated"
-    G.GAME.round_resets.blind_choices.Boss = "bl_entr_endless_entropy"
-    G.GAME.blind_on_deck = "Boss"
-    G.blind_select_opts.boss = G.GAME.round_resets.blind_states['Boss'] ~= 'Hide' and UIBox{definition = {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={UIBox_dyn_container({create_UIBox_blind_choice('Boss')},false,get_blind_main_colour('Boss'), mix_colours(G.C.BLACK, get_blind_main_colour('Boss'), 0.8))}}, config = {align="bmi", offset = {x=0,y=0}}} or nil
-    
-    local t = {n=G.UIT.ROOT, config = {align = 'tm',minw = width, r = 0.15, colour = G.C.CLEAR}, nodes={
-        {n=G.UIT.R, config={align = "cm", padding = 0.5}, nodes={
-        G.GAME.round_resets.blind_states['Boss'] ~= 'Hide' and {n=G.UIT.O, config={align = "cm", object = G.blind_select_opts.boss}} or nil,
-        }}
-    }}
-    return t 
   else
     if G.GAME.modifiers.zenith then
         for i, v in pairs(G.GAME.round_resets.blind_choices) do
             G.GAME.round_resets.blind_choices[i] = "bl_entr_endless_entropy"
         end
+    end
+    if G.GAME.round_resets.ante_disp == "32" then    
+        G.GAME.round_resets.blind_choices["Boss"] = "bl_entr_endless_entropy"
+        G.GAME.EEBuildup = true
     end
     G.blind_select_opts.small = G.GAME.round_resets.blind_states['Small'] ~= 'Hide' and UIBox{definition = {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={UIBox_dyn_container({create_UIBox_blind_choice('Small')},false,get_blind_main_colour('Small'))}}, config = {align="bmi", offset = {x=0,y=0}}} or nil
     G.blind_select_opts.big = G.GAME.round_resets.blind_states['Big'] ~= 'Hide' and UIBox{definition = {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={UIBox_dyn_container({create_UIBox_blind_choice('Big')},false,get_blind_main_colour('Big'))}}, config = {align="bmi", offset = {x=0,y=0}}} or nil
