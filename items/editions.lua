@@ -21,23 +21,23 @@ SMODS.Edition({
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
-        return {vars={card.edition.sol or 1}}
+        return {vars={card and card.edition and card.edition.sol or 1.4}}
     end,
     calculate = function(self, card, context)
 		if
 			(
-				context.edition -- for when on jonklers
-				and context.cardarea == G.jokers -- checks if should trigger
-				and card.config.trigger -- fixes double trigger
+				context.edition
+				and context.cardarea == G.jokers
+				and card.config.trigger
 			) or (
-				context.main_scoring -- for when on playing cards
+				context.main_scoring
 				and context.cardarea == G.play
 			)
 		then
-			return { asc = card.edition.sol or 1 } -- updated value
+			return { asc = card and card.edition and card.edition.sol or 1.4 }
 		end
 		if context.joker_main then
-			card.config.trigger = true -- context.edition triggers twice, this makes it only trigger once (only for jonklers)
+			card.config.trigger = true
 		end
 
 		if context.after then
