@@ -13,7 +13,7 @@ SMODS.Tag({
 	name = "entr-Dog Tag",
 	order = 12,
 	loc_vars = function(self, info_queue, tag)
-		return { vars = { tag.ability.level or 1 } }
+		return { vars = { tag and tag.ability and tag.ability.level or 1 } }
 	end,
 	set_ability = function(self, tag)
 		tag.hover_sound = function() return 'entr_woof'..math.random(3) end

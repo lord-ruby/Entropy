@@ -1,27 +1,26 @@
 local i = {
     "lib/utils",
-    "items/jokers",--not this
+    "items/jokers",
     --"reverseTarots",
-    "items/consumable",--not this
+    "items/consumable",
     "items/reversePlanets",
     "items/reverseSpectrals",
-    "items/reverseCodes", --not this
-    "items/reverseLegendaries", --weird
-    "items/define", --not you
+    "items/reverseCodes", 
+    "items/reverseLegendaries", 
+    "items/define", 
     "lib/transcendant",
-    "lib/colours", --not you
-    "items/decks", --not you
-    "items/vouchers", --not you
-    "items/hidden", --not you
-    "lib/fixes",--not you
-    "items/stake", --not you
-    "items/tags", --not you
-    "items/editions",  --not you
-    "items/seals", --not you
-    "items/enhancements", --not you
-    "items/blinds", --not you
+    "lib/colours", 
+    "items/decks", 
+    "items/vouchers", 
+    "items/hidden", 
+    "lib/fixes",
+    "items/stake", 
+    "items/tags", 
+    "items/editions",  
+    "items/seals", 
+    "items/enhancements", 
+    "items/blinds", 
     "compat/loader"
-    --"glop"
 }
 for _, v in pairs(i) do
     local f, err = SMODS.load_file(v..".lua")

@@ -1004,7 +1004,10 @@ function Entropy.RegisterBlinds()
                 end
                 return false
             end,
-            loc_vars = v.loc_vars,
+            loc_vars = function(self,q,c)
+                q[#q+1]={set="Blind",key=self.config.blind}
+                return v.loc_vars and v.loc_vars(self,q,c) 
+            end,
             set_sprites = function(self, card, front)
                 card.children.floating_sprite = AnimatedSprite(
                     card.T.x+0.7,
@@ -1057,7 +1060,10 @@ function Entropy.RegisterBlinds()
                 end
                 return false
             end,
-            loc_vars = v.loc_vars,
+            loc_vars = function(self,q,c)
+                q[#q+1]={set="Blind",key=self.config.blind}
+                return v.loc_vars and v.loc_vars(self,q,c) 
+            end,
             entr_credits = v.entr_credits,
             cry_credits = v.cry_credits,
             set_sprites = function(self, card, front)
@@ -1075,7 +1081,7 @@ function Entropy.RegisterBlinds()
             end,
             set_badges = function(self, card, badges)
                 badges[#badges+1] = create_badge(v.original_mod.name, v.original_mod.badge_colour, G.C.WHITE, 1 )
-            end
+            end,
         })
     end
 end
