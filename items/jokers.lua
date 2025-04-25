@@ -585,7 +585,7 @@ SMODS.Joker({
 })
 local is_jollyref = Card.is_jolly
 function Card:is_jolly()
-	if HasJoker("j_entr_dekatria") then return true
+	if HasJoker("j_entr_dekatria") then return true end
     return is_jollyref(self)
 end
 SMODS.Joker({
