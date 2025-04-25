@@ -15,17 +15,21 @@ function Card:set_ability(center, initial, delay_sprites)
     p_buffoon_mega_1="p_standard_mega_1"
   }
 	Entropy.ReverseFlipsideInversions()
-    if self.config and self.config.center and Entropy.FlipsideInversions and Entropy.FlipsideInversions[self.config.center.key] and 
-    Entropy.DeckOrSleeve("twisted") then
-        if not self.ability then self.ability = {} end
-        matref(self, G.P_CENTERS[Entropy.FlipsideInversions[self.config.center.key]], initial, delay_sprites)
-    elseif self.config and self.config.center and Jumbos[self.config.center.key] and 
-      Entropy.DeckOrSleeve("crafting") then
-        if not self.ability then self.ability = {} end
-        matref(self, G.P_CENTERS[Jumbos[self.config.center.key]], initial, delay_sprites)
+    if G.SETTINGS.paused then
+      matref(self, center, initial, delay_sprites)
     else
-        if not self.ability then self.ability = {} end
-        matref(self, center, initial, delay_sprites)
+      if self.config and self.config.center and Entropy.FlipsideInversions and Entropy.FlipsideInversions[self.config.center.key] and 
+      Entropy.DeckOrSleeve("twisted") then
+          if not self.ability then self.ability = {} end
+          matref(self, G.P_CENTERS[Entropy.FlipsideInversions[self.config.center.key]], initial, delay_sprites)
+      elseif self.config and self.config.center and Jumbos[self.config.center.key] and 
+        Entropy.DeckOrSleeve("crafting") then
+          if not self.ability then self.ability = {} end
+          matref(self, G.P_CENTERS[Jumbos[self.config.center.key]], initial, delay_sprites)
+      else
+          if not self.ability then self.ability = {} end
+          matref(self, center, initial, delay_sprites)
+      end
     end
 end
 
