@@ -26,6 +26,17 @@ for _, v in pairs(i) do
     local f, err = SMODS.load_file(v..".lua")
     if f then f() else error("error in file "..v..": "..err) end
 end
+
+SMODS.current_mod.optional_features = {
+	retrigger_joker = true,
+	post_trigger = true,
+	quantum_enhancements = true,
+	cardareas = {
+		deck = true,
+		discard = true,
+	},
+}
+
 Cryptid.mod_whitelist["Entropy"] = true
 if SMODS and SMODS.calculate_individual_effect then
 

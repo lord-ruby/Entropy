@@ -690,7 +690,7 @@ function create_UIBox_blind_select()
     G.blind_select_opts.red = G.GAME.round_resets.blind_states['Red'] ~= 'Hide' and UIBox{definition = {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={UIBox_dyn_container({create_UIBox_blind_choice('Red')},false,get_blind_main_colour('Red'))}}, config = {align="bmi", offset = {x=0,y=0}}} or nil
     if G.GAME.modifiers.zenith then
         for i, v in pairs(G.GAME.round_resets.blind_choices) do
-            G.GAME.round_resets.blind_choices[i] = "bl_entr_endless_entropy"
+            G.GAME.round_resets.blind_choices[i] = "bl_entr_endless_entropy_phase_one"
         end
     end
     local t = {n=G.UIT.ROOT, config = {align = 'tm',minw = width, r = 0.15, colour = G.C.CLEAR}, nodes={
@@ -703,11 +703,11 @@ function create_UIBox_blind_select()
   else
     if G.GAME.modifiers.zenith then
         for i, v in pairs(G.GAME.round_resets.blind_choices) do
-            G.GAME.round_resets.blind_choices[i] = "bl_entr_endless_entropy"
+            G.GAME.round_resets.blind_choices[i] = "bl_entr_endless_entropy_phase_one"
         end
     end
     if G.GAME.round_resets.ante_disp == "32" then    
-        G.GAME.round_resets.blind_choices["Boss"] = "bl_entr_endless_entropy"
+        G.GAME.round_resets.blind_choices["Boss"] = "bl_entr_endless_entropy_phase_one"
         G.GAME.EEBuildup = true
     end
     G.blind_select_opts.small = G.GAME.round_resets.blind_states['Small'] ~= 'Hide' and UIBox{definition = {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={UIBox_dyn_container({create_UIBox_blind_choice('Small')},false,get_blind_main_colour('Small'))}}, config = {align="bmi", offset = {x=0,y=0}}} or nil

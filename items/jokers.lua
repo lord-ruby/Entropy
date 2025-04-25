@@ -535,15 +535,6 @@ SMODS.Joker({
             },
         }
     end,
-    add_to_deck = function()
-        for i, v in pairs(G.I.CARD) do
-            if v.set_edition then
-                if v.config.center.key ~= "j_entr_dekatria" then
-                    v:set_edition("e_cry_m", true, true)
-                end
-            end
-        end
-    end,
     calculate = function(self, card, context)
         if (context.after and not context.repetition and not context.blueprint) or context.forcetrigger then
             local pairs = 0
@@ -556,6 +547,7 @@ SMODS.Joker({
                 end
             end
             card.ability.pairs_current = card.ability.pairs_current + pairs
+            if card.ability.pairs_needed < 1e-300 then card.ability.pairs_needed = 1e-300 end
             while card.ability.pairs_current >= card.ability.pairs_needed do
                 card.ability.pairs_current = card.ability.pairs_current - card.ability.pairs_needed
                 card.ability.pairs_needed = card.ability.pairs_needed * 2
@@ -591,7 +583,11 @@ SMODS.Joker({
         end
     end
 })
-
+local is_jollyref = Card.is_jolly
+function Card:is_jolly()
+	if HasJoker("j_entr_dekatria") return true
+    return is_jollyref(self)
+end
 SMODS.Joker({
     key = "tesseract",
     config = {
