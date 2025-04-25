@@ -268,7 +268,7 @@ local decs = {
 				text = {
 					"All you know shall crumble,",
 					"Dust to dust.",
-					"(Cards lose values over time)"
+					"(Joker values decay over time)"
 				}
 			},
 			bl_entr_endless_entropy_phase_three = {
