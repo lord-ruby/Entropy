@@ -258,9 +258,33 @@ local decs = {
 				}
 			},
 			bl_entr_endless_entropy_phase_one = {
-				name = "Endless Entropy",
+				name = "Burning Brimstone",
 				text = {
 					"???",
+				}
+			},
+			bl_entr_endless_entropy_phase_two = {
+				name = "Deceitful Decay",
+				text = {
+					"All you know shall crumble,",
+					"Dust to dust.",
+					"(Cards lose values over time)"
+				}
+			},
+			bl_entr_endless_entropy_phase_three = {
+				name = "Nameless Nadir",
+				text = {
+					"Void subsumes you,",
+					"there is no escape.",
+					"(effect here)"
+				}
+			},
+			bl_entr_endless_entropy_phase_four = {
+				name = "Endless Entropy",
+				text = {
+					"You are but a speck of dust",
+					"in the face of the universe.",
+					"(Applies all showdown effects)"
 				}
 			},
 		},
@@ -1522,7 +1546,9 @@ local decs = {
 			k_reference_pack = "Reference Pack",
 			b_reference_cards = "Reference Jokers",
 			b_buy_slot = "+Joker Slot",
-			b_sell_slot = "-Joker Slot"
+			b_sell_slot = "-Joker Slot",
+			
+			b_cant_reroll="Dont even try"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

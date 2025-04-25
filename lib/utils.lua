@@ -647,6 +647,11 @@ function create_UIBox_blind_select()
 		}))
         G.GAME.USING_BREAK = nil
     end
+    local reroll = (G.GAME.used_vouchers["v_retcon"] or G.GAME.used_vouchers["v_directors_cut"]) and
+    UIBox_button({label = {localize('b_reroll_boss'), localize('$')..Cryptid.cheapest_boss_reroll()}, button = "reroll_boss", func = 'reroll_boss_button'}) or nil
+    if reroll and (G.GAME.round_resets.ante_disp == "32" or G.GAME.EEBuildup) then
+        reroll = UIBox_button({label = {localize('b_cant_reroll'), localize('$').."Infinity"}, button = "reroll_boss", func = 'reroll_boss_button'})
+    end
   G.blind_prompt_box = UIBox{
     definition =
       {n=G.UIT.ROOT, config = {align = 'cm', colour = G.C.CLEAR, padding = 0.2}, nodes={
@@ -656,8 +661,7 @@ function create_UIBox_blind_select()
         {n=G.UIT.R, config={align = "cm"}, nodes={
           {n=G.UIT.O, config={object = DynaText({string = localize('ph_choose_blind_2'), colours = {G.C.WHITE}, shadow = true, bump = true, scale = 0.7, pop_in = 0.5, maxw = 5, silent = true}), id = 'prompt_dynatext2'}}
         }},
-        (G.GAME.used_vouchers["v_retcon"] or G.GAME.used_vouchers["v_directors_cut"]) and
-        UIBox_button({label = {localize('b_reroll_boss'), localize('$')..Cryptid.cheapest_boss_reroll()}, button = "reroll_boss", func = 'reroll_boss_button'}) or nil
+        reroll
       }},
     config = {align="cm", offset = {x=0,y=-15},major = G.HUD:get_UIE_by_ID('row_blind'), bond = 'Weak'}
   }
@@ -706,7 +710,7 @@ function create_UIBox_blind_select()
             G.GAME.round_resets.blind_choices[i] = "bl_entr_endless_entropy_phase_one"
         end
     end
-    if G.GAME.round_resets.ante_disp == "32" then    
+    if G.GAME.round_resets.ante_disp == "32" or G.GAME.EEBuildup then    
         G.GAME.round_resets.blind_choices["Boss"] = "bl_entr_endless_entropy_phase_one"
         G.GAME.EEBuildup = true
     end

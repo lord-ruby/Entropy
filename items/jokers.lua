@@ -999,6 +999,7 @@ function Entropy.RegisterBlinds()
                 for i, v in pairs(G.GAME.round_resets.blind_states or {}) do
                     if v == "Select" or v == "Current" then return true end
                 end
+                if G.GAME.round_resets.ante_disp == "32" or G.GAME.EEBuildup then return false end
                 return false
             end,
             loc_vars = function(self,q,c)
@@ -1055,6 +1056,7 @@ function Entropy.RegisterBlinds()
                 for i, v in pairs(G.GAME.round_resets.blind_states or {}) do
                     if v == "Select" or v == "Current" then return true end
                 end
+                if G.GAME.round_resets.ante_disp == "32" or G.GAME.EEBuildup then return false end
                 return false
             end,
             loc_vars = function(self,q,c)
