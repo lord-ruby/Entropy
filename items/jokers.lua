@@ -750,7 +750,7 @@ SMODS.Joker({
         if not center.edition or (center.edition and not center.edition.sol) then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_solar
 		end
-        info_queue[#info_queue+1] = G.P_CENTERS.j_jolly
+        info_queue[#info_queue+1] = G.P_CENTERS.e_cry_m
         return {
             vars = {
                 center.config.per_jolly
