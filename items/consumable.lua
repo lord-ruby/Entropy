@@ -65,6 +65,7 @@ local FlipsideInversions = {
     ["c_cry_patch"] = "c_entr_hotfix",
     ["c_cry_seed"] = "c_entr_pseudorandom",
     ["c_cry_reboot"] = "c_entr_bootstrap",
+    c_cry_global = "c_entr_local",
     ["c_cry_pointer"] = "c_entr_define"
 }
 for i, v in pairs(FlipsideInversions) do Entropy.FlipsideInversions[i] = v end

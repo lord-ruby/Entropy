@@ -548,6 +548,13 @@ local decs = {
 					"{C:red}this{} hand are applied to the",
 					"base {C:blue}chips{} and {C:red}mult{} of the next hand"
 				}
+			},
+			c_entr_local = {
+				name = "(~)$ local",
+				text = {
+					"Apply {C:red}Temporary{} to",
+					"#1# selected playing cards"
+				}
 			}
 		},
 		RPlanet = {

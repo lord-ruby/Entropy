@@ -813,13 +813,15 @@ SMODS.Joker({
     rarity = "entr_hyper_exotic",
     cost = 150,
     unlocked = true,
-
+    name = "cry-Scalae",
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 6 },
     config = {
-        scale_mult=2,
-        scale_mult_mod=1
+        extra = {
+            scale=2,
+            scale_mod=1
+        }
     },
     demicoloncompat = true,
     soul_pos = { x = 2, y = 6, extra = { x = 1, y = 6 } },
@@ -827,14 +829,14 @@ SMODS.Joker({
     loc_vars = function(self, q, card)
         return {
             vars = {
-                number_format(card.ability.scale_mult),
-                number_format(card.ability.scale_mult_mod)
+                number_format(card.ability.extra.scale),
+                number_format(card.ability.extra.scale_mod)
             },
         }
     end,
     calculate = function(self, card, context)
         if (context.end_of_round and not context.individual and not context.repetition and not context.blueprint) or context.forcetrigger then
-            card.ability.scale_mult = card.ability.scale_mult + card.ability.scale_mult_mod
+            card.ability.extra.scale = card.ability.extra.scale + card.ability.extra.scale_mod
             return {
 				message = localize("k_upgrade_ex"),
 				colour = G.C.DARK_EDITION,
@@ -862,7 +864,7 @@ SMODS.Joker({
             if (v ~= joker and v.config.center.key ~= "j_entr_anaptyxi") then
                     if not Card.no(v, "immutable", true) then
                     Cryptid.with_deck_effects(v, function(card2)
-                        Cryptid.misprintize(card2, { min = card.ability.scale_mult*new_scale, max = card.ability.scale_mult*new_scale}, nil, true, "+")
+                        Cryptid.misprintize(card2, { min = card.ability.extra.scale*new_scale, max = card.ability.extra.scale*new_scale}, nil, true, "+")
                     end)
                     card_eval_status_text(
                         v,
@@ -870,7 +872,7 @@ SMODS.Joker({
                         nil,
                         nil,
                         nil,
-                        { message = "+ "..number_format(card.ability.scale_mult*new_scale) })
+                        { message = "+ "..number_format(card.ability.extra.scale*new_scale) })
                     end
             end
         end

@@ -1938,6 +1938,32 @@ function add_tag(_tag)
     if not G.GAME.autostart_tags[_tag.key] then G.GAME.autostart_tags[_tag.key] = _tag.key end
 end
 
+SMODS.Consumable({
+    key = "local",
+    set = "RCode",
+    unlocked = true,
+
+    atlas = "miscc",
+    pos = {x=0,y=6},
+    config = {
+        select = 3
+    },
+    use = function(self, card, area, copier)
+        Entropy.FlipThen(G.hand.highlighted, function(card) card.ability.temporary = true end)
+    end,
+    can_use = function(self, card)
+        return G.hand and Entropy.GetHighlightedCards({G.hand}, {["c_entr_local"]=true}) > 0 and Entropy.GetHighlightedCards({G.hand}, {["c_entr_local"]=true}) <= card.ability.select
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1]={set="Other",key="temporary"}
+        return {
+            vars = {
+                card.ability.select
+            }
+        }
+    end,
+})
+
 local DefineBlacklist = {
     ["c_soul"] = true,
     ["c_entr_fervour"] = true,
