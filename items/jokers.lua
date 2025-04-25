@@ -1339,14 +1339,23 @@ SMODS.Joker({
     soul_pos = { x = 5, y = 2, extra = { x = 4, y = 2 } },
     atlas = "exotic_jokers",
     loc_vars = function(self, info_queue, card)
-        local ratio = 2-(#G.jokers.cards/G.jokers.config.card_limit)
-        local amount = {math.max(-1+math.floor(math.log(G.jokers.config.card_limit/10)), -1), card.ability.base*ratio}
-        local actual = G.GAME.dollars
+        if G.jokers then
+            local ratio = 2-(#G.jokers.cards/G.jokers.config.card_limit)
+            local amount = {math.max(-1+math.floor(math.log(G.jokers.config.card_limit/10)), -1), card.ability.base*ratio}
+            local actual = G.GAME.dollars
+            return {
+                vars = {
+                    card.ability.buycost,
+                    card.ability.sellcost,
+                    Entropy.FormatArrowMult(amount[1],amount[2] / ((amount[1]+3)*(amount[1]+3)))
+                }
+            }
+        end
         return {
             vars = {
                 card.ability.buycost,
                 card.ability.sellcost,
-                Entropy.FormatArrowMult(amount[1],amount[2] / ((amount[1]+3)*(amount[1]+3)))
+                "$15"
             }
         }
     end,
