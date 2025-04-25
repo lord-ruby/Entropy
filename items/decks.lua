@@ -21,7 +21,17 @@ function Card:set_ability(center, initial, delay_sprites)
       if self.config and self.config.center and Entropy.FlipsideInversions and Entropy.FlipsideInversions[self.config.center.key] and 
       Entropy.DeckOrSleeve("twisted") then
           if not self.ability then self.ability = {} end
-          matref(self, G.P_CENTERS[Entropy.FlipsideInversions[self.config.center.key]], initial, delay_sprites)
+          if self.area and self.area == G.pack_cards then
+            matref(self, center, initial, delay_sprites)
+            G.E_MANAGER:add_event(Event({
+              trigger="after",
+              func = function()
+                matref(self, G.P_CENTERS[Entropy.FlipsideInversions[self.config.center.key]], initial, delay_sprites)
+              end
+            }))
+          else
+            matref(self, G.P_CENTERS[Entropy.FlipsideInversions[self.config.center.key]], initial, delay_sprites)
+          end
       elseif self.config and self.config.center and Jumbos[self.config.center.key] and 
         Entropy.DeckOrSleeve("crafting") then
           if not self.ability then self.ability = {} end
