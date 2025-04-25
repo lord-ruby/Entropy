@@ -171,7 +171,7 @@ local decs = {
 					"If played hand {C:attention}contains{} a pair",
 					"apply {C:dark_edition}solar{} to the first card",
 					"apply {C:dark_edition}solar{} to 1 more card for",
-					"each {C:attention}Jolly{} Joker"
+					"each {C:dark_edition}Jolly{} Joker"
 				},
 			},
 			j_entr_anaptyxi= {
