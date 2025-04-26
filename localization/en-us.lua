@@ -216,6 +216,14 @@ local decs = {
 					"empty joker slots you have",
 					"{C:inactive}(Currently{} {X:gold,C:white}#3#{}{C:inactive}){}"
 				}
+			},
+			j_entr_dni = {
+				name = "DNI",
+				text = {
+					"Chooses one suit per hand",
+					"Destroy all {C:attention}played{} cards with that suit",
+					"{C:inactive}(Currently:{} {X:attention,C:white}#1#{}{C:inactive}){}"
+				}
 			}
 		},
 		Blind = {
