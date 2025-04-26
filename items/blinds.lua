@@ -149,46 +149,18 @@ SMODS.Blind({
 	pos = { x = 0, y = 6 },
 	atlas = "blinds",
 	boss_colour = HEX("6d1414"),
-    mult=3,
+    mult=2,
 	no_ee = true,
     dollars = 8,
 	boss = {
 		min = 32,
 		max = 32,
-	},
-	in_pool = function() return false end,
-	next_phase = "bl_entr_endless_entropy_phase_two",
-	calculate = function(self, blind, context)
-		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) then
-			G.GAME.chips = 0
-			G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
-			G.GAME.blind:juice_up()
-			ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
-		end
-	end,
-})
-
-SMODS.Blind({
-	key = "endless_entropy_phase_two",
-	pos = { x = 0, y = 8 },
-	atlas = "blinds",
-	boss_colour = HEX("6d1414"),
-    mult=1,
-	no_ee = true,
-    dollars = 8,
-	boss = {
-		min = 32,
-		max = 32,
-	},
-	exponent = {
-		1, 1.25
 	},
 	in_pool = function() return false end,
 	next_phase = "bl_entr_endless_entropy_phase_three",
 	calculate = function(self, blind, context)
 		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) then
 			G.GAME.chips = 0
-			G.GAME.EE3 = true
 			G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
 			G.GAME.blind:juice_up()
 			ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
@@ -209,7 +181,7 @@ SMODS.Blind({
 		max = 32,
 	},
 	in_pool = function() return false end,
-	next_phase = "bl_entr_endless_entropy_phase_four",
+	next_phase = "bl_entr_endless_entropy_phase_two",
 	calculate = function(self, blind, context)
 		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) then
 			G.STATE = G.STATES.GAME_OVER; G.STATE_COMPLETE = false
@@ -236,6 +208,34 @@ SMODS.Blind({
 	setting_blind = function()
 		G.GAME.EE3 = true
 	end
+})	
+
+SMODS.Blind({
+	key = "endless_entropy_phase_two",
+	pos = { x = 0, y = 8 },
+	atlas = "blinds",
+	boss_colour = HEX("6d1414"),
+    mult=1,
+	no_ee = true,
+    dollars = 8,
+	boss = {
+		min = 32,
+		max = 32,
+	},
+	exponent = {
+		1, 1.25
+	},
+	in_pool = function() return false end,
+	next_phase = "bl_entr_endless_entropy_phase_four",
+	calculate = function(self, blind, context)
+		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) then
+			G.GAME.chips = 0
+			G.GAME.EE3 = true
+			G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
+			G.GAME.blind:juice_up()
+			ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
+		end
+	end,
 })
 
 SMODS.Blind({
@@ -261,7 +261,7 @@ SMODS.Blind({
 				s:calculate(lind, context)
 			end
 		end
-	end
+	end,
 	set_blind = function(self, reset, silent)
 		for k, _ in pairs(Entropy.GetEEBlinds()) do
 			s = G.P_BLINDS[k]
