@@ -261,7 +261,7 @@ SMODS.Blind({
 				s:calculate(lind, context)
 			end
 		end
-	end
+	end,
 	set_blind = function(self, reset, silent)
 		for k, _ in pairs(Entropy.GetEEBlinds()) do
 			s = G.P_BLINDS[k]
