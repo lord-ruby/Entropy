@@ -273,21 +273,6 @@ else
 '''
 match_indent = true
 
-
-[[patches]]
-[patches.pattern]
-target = "functions/UI_definitions.lua"
-pattern = '''
-                {n=G.UIT.C, config={align = "cm"}, nodes={
-                  {n=G.UIT.T, config={text = "X", lang = G.LANGUAGES['en-us'], scale = scale*2, colour = G.C.UI_MULT, shadow = true}},
-                }},'''
-position = "at"
-payload = '''
-                {n=G.UIT.C, config={align = "cm"}, nodes={
-                  {n=G.UIT.T, config={id = "chipmult_op", text = "X", lang = G.LANGUAGES["en-us"], scale = scale*2, colour = G.C.UI_MULT, shadow = true}},
-                }},'''
-match_indent = false
-
 [[patches]]
 [patches.pattern]
 target = "tag.lua"
