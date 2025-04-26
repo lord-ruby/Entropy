@@ -164,6 +164,10 @@ SMODS.Blind({
 			G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
 			G.GAME.blind:juice_up()
 			ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
+			ease_discard(
+				math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
+			)
+			G.FUNCS.draw_from_discard_to_deck()
 		end
 	end,
 })
@@ -186,21 +190,18 @@ SMODS.Blind({
 		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) then
 			G.STATE = G.STATES.GAME_OVER; G.STATE_COMPLETE = false
 		end
-		if G.GAME.current_round.hands_left == 0 and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then
+		if G.GAME.current_round.hands_left == 0 and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) and not G.GAME.EE3 then
 			G.GAME.chips = 0
 			ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
-			G.E_MANAGER:add_event(Event({
-				trigger="after",
-				delay=0.2,
-                func = (function()
-					G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
-					G.GAME.blind.chips = to_big(G.GAME.blind.chips) ^ 2
-					G.GAME.blind:juice_up()
-					G.GAME.EE3 = false
-					G.HUD_blind:get_UIE_by_ID("score_at_least").config.text = localize("ph_blind_score_at_least")
-					return true
-				end
-			)}))
+			ease_discard(
+				math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
+			)
+			G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
+			G.GAME.blind.chips = to_big(G.GAME.blind.chips) ^ 2
+			G.GAME.blind:juice_up()
+			G.GAME.EE3 = true
+			G.HUD_blind:get_UIE_by_ID("score_at_least").config.text = localize("ph_blind_score_at_least")
+			G.FUNCS.draw_from_discard_to_deck()
 		end
 	end,
 	defeat = function(self)
@@ -209,7 +210,6 @@ SMODS.Blind({
 		end
 	end,
 	setting_blind = function()
-		G.GAME.EE3 = true
 	end
 })	
 
@@ -233,10 +233,13 @@ SMODS.Blind({
 	calculate = function(self, blind, context)
 		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) then
 			G.GAME.chips = 0
-			G.GAME.EE3 = true
 			G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
 			G.GAME.blind:juice_up()
 			ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
+			ease_discard(
+				math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
+			)
+			G.FUNCS.draw_from_discard_to_deck()
 		end
 	end,
 })
