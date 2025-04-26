@@ -713,6 +713,20 @@ SMODS.Sound({
 		return ((G.GAME.round_resets.ante_disp == "32" and G.STATE == 1) or G.GAME.EEBuildup) and 10^302
 	end,
 })
+
+SMODS.Sound({
+	key = "music_entropy_is_endless",
+	path = "music_entropy_is_endless.ogg",
+	select_music_track = function()
+        local blinds = {
+            bl_entr_endless_entropy_phase_one=true,
+            bl_entr_endless_entropy_phase_two=true,
+            bl_entr_endless_entropy_phase_three=true,
+            bl_entr_endless_entropy_phase_four=true
+        }
+		return (G.GAME.blind and blinds[G.GAME.blind.config.blind.key]) and 10^306
+	end,
+})
 Entropy.config = SMODS.current_mod.config
 local entrConfigTab = function()
 	entr_nodes = {

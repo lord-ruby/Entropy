@@ -248,6 +248,9 @@ SMODS.Blind({
 			G.FUNCS.draw_from_discard_to_deck()
 		end
 	end,
+	set_blind = function()
+		G.GAME.blind.chips = G.GAME.blind.chips ^ 1.25
+	end
 })
 
 SMODS.Blind({
@@ -275,6 +278,7 @@ SMODS.Blind({
 		end
 	end,
 	set_blind = function(self, reset, silent)
+		G.GAME.blind.chips = G.GAME.blind.chips ^ 2.5
 		for k, _ in pairs(Entropy.GetEEBlinds()) do
 			s = G.P_BLINDS[k]
 			if s.set_blind then
@@ -647,27 +651,6 @@ SMODS.Blind({
 				s:cry_after_play()
 			end
 		end
-	end,
-	get_loc_debuff_text = function(self)
-		if not G.GAME.blind.debuff_boss then
-			return localize("cry_debuff_obsidian_orb")
-		end
-		local loc_vars = nil
-		if G.GAME.blind.debuff_boss.name == "The Ox" then
-			loc_vars = { localize(G.GAME.current_round.most_played_poker_hand, "poker_hands") }
-		end
-		local loc_target =
-			localize({ type = "raw_descriptions", key = G.GAME.blind.debuff_boss.key, set = "Blind", vars = loc_vars })
-		local loc_debuff_text = ""
-		for k, v in ipairs(loc_target) do
-			loc_debuff_text = loc_debuff_text .. v .. (k <= #loc_target and " " or "")
-		end
-		local disp_text = (G.GAME.blind.debuff_boss.name == "The Wheel" and G.GAME.probabilities.normal or "")
-			.. loc_debuff_text
-		if (G.GAME.blind.debuff_boss.name == "The Mouth") and G.GAME.blind.only_hand then
-			disp_text = disp_text .. " [" .. localize(G.GAME.blind.only_hand, "poker_hands") .. "]"
-		end
-		return disp_text
 	end,
 })
 

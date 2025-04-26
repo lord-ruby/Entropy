@@ -710,9 +710,11 @@ function create_UIBox_blind_select()
             G.GAME.round_resets.blind_choices[i] = "bl_entr_endless_entropy_phase_one"
         end
     end
-    if G.GAME.round_resets.ante_disp == "32" or G.GAME.EEBuildup then    
-        G.GAME.round_resets.blind_choices["Boss"] = "bl_entr_endless_entropy_phase_one"
-        G.GAME.EEBuildup = true
+    if Entropy.AllowNaturalEE() then
+        if G.GAME.round_resets.ante_disp == "32" or G.GAME.EEBuildup then    
+            G.GAME.round_resets.blind_choices["Boss"] = "bl_entr_endless_entropy_phase_one"
+            G.GAME.EEBuildup = true
+        end
     end
     G.blind_select_opts.small = G.GAME.round_resets.blind_states['Small'] ~= 'Hide' and UIBox{definition = {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={UIBox_dyn_container({create_UIBox_blind_choice('Small')},false,get_blind_main_colour('Small'))}}, config = {align="bmi", offset = {x=0,y=0}}} or nil
     G.blind_select_opts.big = G.GAME.round_resets.blind_states['Big'] ~= 'Hide' and UIBox{definition = {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={UIBox_dyn_container({create_UIBox_blind_choice('Big')},false,get_blind_main_colour('Big'))}}, config = {align="bmi", offset = {x=0,y=0}}} or nil
@@ -727,6 +729,11 @@ function create_UIBox_blind_select()
     }}
     return t 
   end
+end
+
+function Entropy.AllowNaturalEE()
+    if MP and MP.LOBBY then return false end
+    return true
 end
 
 function HasJoker(key)
