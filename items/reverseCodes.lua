@@ -122,6 +122,9 @@ SMODS.Consumable({
     use = function(self, card, area, copier)
         G.STATE = 8
         G.STATE_COMPLETE = false
+        if G.SHOP_SIGN then     
+            G.SHOP_SIGN:remove()
+        end
     end,
     can_use = function(self, card)
         return G.STATE == 5

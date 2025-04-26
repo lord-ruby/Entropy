@@ -188,6 +188,8 @@ SMODS.Blind({
 		end
 		if G.GAME.current_round.hands_left == 0 and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then
 			G.E_MANAGER:add_event(Event({
+				trigger="after",
+				delay=0.2,
                 func = (function()
 					G.GAME.chips = 0
 					G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
@@ -196,6 +198,7 @@ SMODS.Blind({
 					ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
 					G.GAME.EE3 = false
 					G.HUD_blind:get_UIE_by_ID("score_at_least").config.text = localize("ph_blind_score_at_least")
+					return true
 				end
 			)}))
 		end
