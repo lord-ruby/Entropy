@@ -310,8 +310,8 @@ local decs = {
 				name = "Nameless Nadir",
 				text = {
 					"Void subsumes you,",
-					"there is no escape.",
-					"(Debuff leftmost joker slot)"
+					"(Debuff leftmost joker slot,",
+					"Cant score more than #1#)"
 				}
 			},
 			bl_entr_endless_entropy_phase_four = {
@@ -1583,7 +1583,8 @@ local decs = {
 			
 			b_cant_reroll="Dont even try",
 
-			ph_blind_score_less_than="Score less than"
+			ph_blind_score_less_than="Score less than",
+			entr_nadir_placeholder = "3X Base",
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

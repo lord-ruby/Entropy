@@ -209,6 +209,12 @@ SMODS.Blind({
 			G.STATE = G.STATES.GAME_OVER; G.STATE_COMPLETE = false
 		end
 	end,
+	loc_vars = function(self, info_queue, card)
+		return { vars = { get_blind_amount(G.GAME.round_resets.ante) * 3 * G.GAME.starting_params.ante_scaling } } -- no bignum?
+	end,
+	collection_loc_vars = function(self)
+		return { vars = { localize("entr_nadir_placeholder") } }
+	end,
 	setting_blind = function()
 	end
 })	
