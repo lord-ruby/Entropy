@@ -232,6 +232,15 @@ local decs = {
 					"redirected {X:dark_edition,C:white}#1#X{} to",
 					"{C:attention}High Card{}"
 				}
+			},
+			j_entr_recursive_joker = {
+				name = "Recursive Joker",
+				text = {
+					"When this Joker is {C:attention}sold{}",
+					"create a copy of this joker",
+					"{C:red}Works once per round{}",
+					"{C:inactive}(Currently: #1#){}"
+				}
 			}
 		},
 		Blind = {

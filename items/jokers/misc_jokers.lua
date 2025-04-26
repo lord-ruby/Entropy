@@ -210,3 +210,37 @@ function level_up_hand(card, hand, instant, amount)
     end
     ref(card,hand,instant,amount)
 end
+
+SMODS.Joker({
+    key = "recursive_joker",
+    config = {
+        used_this_round = false
+    },
+    rarity = 2,
+    cost = 4,
+    unlocked = true,
+
+    blueprint_compat = false,
+    eternal_compat = true,
+    pos = { x = 3, y = 1 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                card.ability.used_this_round and "Inactive" or "Active"
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.end_of_round then
+            card.ability.used_this_round = false
+        end
+        if context.selling_card and context.card == card and not card.ability.used_this_round then
+            card.ability.used_this_round = true
+            local card = copy_card(card)
+            card:add_to_deck()
+            G.jokers:emplace(card)
+        end
+    end
+})
