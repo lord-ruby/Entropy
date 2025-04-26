@@ -370,3 +370,36 @@ SMODS.Joker({
         end
     end
 })
+
+SMODS.Joker({
+    key = "membership",
+    config = {
+        x_asc_mod = 0.5,
+        num = 16
+    },
+    rarity = "entr_reverse_legendary",
+    cost = 20,
+    unlocked = true,
+
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 0, y = 3 },
+    soul_pos = { x = 0, y = 2 },
+    atlas = "reverse_legendary",
+    demicoloncompat=true,
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                number_format(card.ability.x_asc_mod),
+                number_format(1+card.ability.num*card.ability.x_asc_mod)
+            }
+        }
+    end,
+    calculate = function (self, card, context)
+       if context.joker_main then
+            return {
+                asc = 1+card.ability.num*card.ability.x_asc_mod
+            }
+       end
+    end
+})

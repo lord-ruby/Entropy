@@ -152,10 +152,20 @@ local decs = {
 				name = "Oinac",
 				text = {
 					"This joker gains {X:dark_edition,C:white}^#1#{} Chips",
-					"when a {C:attention}face{} card is destroyed",
+					"when a {C:attention}face{} card is destroyed by this joker",
 					"{C:attention}played{} playing cards are destroyed",
 					"and a card with +1 rank is drawn to the {C:attention}hand{}",
 					"{C:inactive}(Currently: {}{X:dark_edition,C:white}^#2#{} {C:inactive}Chips){}"
+				}
+			},
+			j_entr_membership = {
+				name = "Drac Pihsrebmem",
+				text = {
+					"{X:gold,C:white}X#1#{} Ascension Power for",
+					"each {C:attention}sun_with_face{} emoji in",
+					"Entropy's ascended hands channel",
+					"{C:inactive}(Currently:{} {X:gold,C:white}X#2#{}{C:inactive}){}",
+					"{C:blue,s:0.7}https://discord.gg/beqqy4Bb7m{}",
 				}
 			},
 			j_entr_solarflare = {
@@ -1532,8 +1542,6 @@ local decs = {
 			b_rspectral_cards = "Spectral Cards?",
 
 			a_eqmult = { "Mult = #1#" },
-
-			b_select_custom = "Take",
 
 			k_inverted = "Inverted",
 			k_inverted_pack = "Twisted Pack",

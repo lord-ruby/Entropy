@@ -543,7 +543,7 @@ function G.UIDEF.use_and_sell_buttons(card)
 							{
 								n = G.UIT.T,
 								config = {
-									text = localize("b_select_custom"),
+									text = localize("b_select"),
 									colour = G.C.UI.TEXT_LIGHT,
 									scale = 0.55,
 									shadow = true,
