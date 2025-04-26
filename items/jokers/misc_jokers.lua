@@ -12,6 +12,7 @@ SMODS.Joker({
     pos = { x = 0, y = 0 },
     atlas = "jokers",
     demicoloncompat = true,
+    pools = { ["Meme"] = true },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
@@ -38,7 +39,7 @@ SMODS.Joker({
     rarity = 1,
     cost = 3,
     unlocked = true,
-
+    pools = { ["Meme"] = true },
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 1, y = 0 },
@@ -174,9 +175,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 end
 
 SMODS.Joker({
-    key = "dni",
+    key = "strawberry_pie",
     config = {
-        suit = "Spades"
+        level_amount = 2
     },
     rarity = 3,
     cost = 10,
@@ -184,24 +185,28 @@ SMODS.Joker({
 
     blueprint_compat = false,
     eternal_compat = true,
-    pos = { x = 1, y = 1 },
+    pos = { x = 2, y = 1 },
     atlas = "jokers",
     demicoloncompat = true,
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.suit
+                number_format(card.ability.level_amount)
             },
         }
     end,
-    calculate = function (self, card, context)
-        if context.destroy_card and (context.cardarea == G.play or context.cardarea == "unscored") then
-            if context.destroy_card:is_suit(card.ability.suit) then
-                return {remove = true}
+})
+local ref = level_up_hand
+function level_up_hand(card, hand, instant, amount)
+    if HasJoker("j_entr_strawberry_pie") and hand ~= "High Card" then
+        local mult = 1
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center.key == "j_entr_strawberry_pie" and not v.debuff then
+                hand = "High Card"
+                mult = v.ability.level_amount
             end
         end
-        if context.after then
-            card.ability.suit = pseudorandom_element(G.deck.cards, pseudoseed("dni")).base.suit
-        end
+        amount = (amount or 1) * mult
     end
-})
+    ref(card,hand,instant,amount)
+end

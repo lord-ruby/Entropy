@@ -87,3 +87,36 @@ SMODS.Joker({
     loc_vars = function(self, info_queue, center)
     end,
 })
+
+SMODS.Joker({
+    key = "dni",
+    config = {
+        suit = "Spades"
+    },
+    rarity = "cry_epic",
+    cost = 10,
+    unlocked = true,
+
+    blueprint_compat = false,
+    eternal_compat = true,
+    pos = { x = 1, y = 1 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                card.ability.suit
+            },
+        }
+    end,
+    calculate = function (self, card, context)
+        if context.destroy_card and (context.cardarea == G.play) then
+            if context.destroy_card:is_suit(card.ability.suit) then
+                return {remove = true}
+            end
+        end
+        if context.after then
+            card.ability.suit = pseudorandom_element(G.deck.cards, pseudoseed("dni")).base.suit
+        end
+    end
+})

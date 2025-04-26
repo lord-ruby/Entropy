@@ -221,8 +221,16 @@ local decs = {
 				name = "DNI",
 				text = {
 					"Chooses one suit per hand",
-					"Destroy all {C:attention}played{} cards with that suit",
+					"Destroy all {C:attention}scored{} cards with that suit",
 					"{C:inactive}(Currently:{} {X:attention,C:white}#1#{}{C:inactive}){}"
+				}
+			},
+			j_entr_strawberry_pie = {
+				name = "Strawberry Pie",
+				text = {
+					"Other hand level-ups are",
+					"redirected {X:dark_edition,C:white}#1#X{} to",
+					"{C:attention}High Card{}"
 				}
 			}
 		},

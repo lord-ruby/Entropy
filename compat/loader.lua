@@ -129,7 +129,8 @@ function SMODS.injectItems(...)
         "j_entr_xekanos",
         "j_entr_burnt_m",
         "j_entr_anaptyxi",
-        "j_entr_chaos"
+        "j_entr_chaos",
+        "j_entr_strawberry_pie"
     }
     SMODS.ObjectType({
         key = "Reference",
