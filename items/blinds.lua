@@ -254,6 +254,14 @@ SMODS.Blind({
 		1, 2.5
 	},
 	in_pool = function() return false end,
+	calculate = function(self, blind, context)
+		for k, _ in pairs(Entropy.GetEEBlinds()) do
+			s = G.P_BLINDS[k]
+			if s.calculate then
+				s:calculate(lind, context)
+			end
+		end
+	end
 	set_blind = function(self, reset, silent)
 		for k, _ in pairs(Entropy.GetEEBlinds()) do
 			s = G.P_BLINDS[k]
