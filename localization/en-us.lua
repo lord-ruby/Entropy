@@ -276,7 +276,7 @@ local decs = {
 				text = {
 					"Void subsumes you,",
 					"there is no escape.",
-					"(effect here)"
+					"(Debuff leftmost joker slot)"
 				}
 			},
 			bl_entr_endless_entropy_phase_four = {
@@ -1548,7 +1548,9 @@ local decs = {
 			b_buy_slot = "+Joker Slot",
 			b_sell_slot = "-Joker Slot",
 			
-			b_cant_reroll="Dont even try"
+			b_cant_reroll="Dont even try",
+
+			ph_blind_score_less_than="Score less than"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

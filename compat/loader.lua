@@ -161,3 +161,36 @@ function SMODS.injectItems(...)
     SMODS.ObjectTypes.BlindTokens:inject()
     Entropy.ReverseFlipsideInversions()
 end
+
+
+if SMODS.Mods.DereJkr and SMODS.Mods.DereJkr.can_load then
+    local set_spritesref = Card.set_sprites
+    function Card:set_sprites(_center, _front)
+        set_spritesref(self, _center, _front)
+        if _center and ({
+            j_entr_perkeo = true,
+            j_entr_canio = true,
+            j_entr_triboulet = true,
+            j_entr_yorick = true,
+            j_entr_chicot = true
+        })[_center.key] then
+            self.children.floating_sprite = Sprite(
+                self.T.x,
+                self.T.y,
+                self.T.w * (self.no_ui and 1.1*1.2 or 1),
+                self.T.h * (self.no_ui and 1.1*1.2 or 1),
+                G.ASSET_ATLAS["Jokers-Legendere"],
+                ({
+                    j_entr_perkeo = {x=4,y=1},
+                    j_entr_canio =  {x=0,y=1},
+                    j_entr_triboulet = {x=1,y=1},
+                    j_entr_yorick = {x=2,y=1},
+                    j_entr_chicot = {x=3,y=1}
+                })[_center.key]
+            )
+            self.children.floating_sprite.role.draw_major = self
+            self.children.floating_sprite.states.hover.can = false
+            self.children.floating_sprite.states.click.can = false
+        end
+    end
+end

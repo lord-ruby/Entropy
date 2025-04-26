@@ -65,13 +65,14 @@ payload = '''
 Entropy = {}
 Entropy.FlipsideInversions = {}
 
-Entropy.RubySaves = {}
-Entropy.References = {}
+Entropy.RubySaves = {} --secret stuff
+Entropy.References = {} --this is for the reference pack pool
 Entropy.ChaosBlacklist = {}
 Entropy.ChaosConversions = {}
-Entropy.ParakmiBlacklist = {}
+Entropy.ParakmiBlacklist = {} --blacklisted sets from showing up with these jokers
 --for oekrep
 Entropy.BoosterSets = {}
+
 --for push -f
 Entropy.RarityPoints = {
     [1] = 1, --common
@@ -108,6 +109,7 @@ Entropy.EditionFactors = {
 }
 --for define
 Entropy.DefineBlacklist = {}
+--rarity blacklist
 Entropy.ExoticPlusPlus = {
     ["entr_reverse_legendary"] = true, --this is not above exotic but it needs to be blacklisted anyway
     ["cry_exotic"] = true,
@@ -115,6 +117,8 @@ Entropy.ExoticPlusPlus = {
 }
 
 --for disavow
+--keys are enhancement keys and functions apply to the cards
+--only parameter is the card
 Entropy.EnhancementFuncs = {}
 
 --for twisted packs
@@ -124,7 +128,10 @@ Entropy.RareInversions = {
     ["c_entr_fervour"] = "c_entr_fervour"
 }
 
---rarity related stuff
+--more rarity related stuff
+--these are in order
+--idk if candy is worst but below 0 is fine
+--only used for xekanos
 Entropy.RarityChecks = {
     [0]="cry_candy",
     1,
@@ -136,6 +143,9 @@ Entropy.RarityChecks = {
     "entr_hyper_exotic"
 }
 Entropy.AscendedTags = {}
+--this is probably redundant but im lazy
+--key is the first rarity, value is the rarity above it
+--used for upgrading jokers
 Entropy.RarityUppers = {
     ["cry_candy"]=1,
     [1]=2,
@@ -152,6 +162,7 @@ Entropy.FixedRecipes = {
     m_steelm_steelm_steelm_steelm_steel = "j_cry_clockwork"
 }
 
+--more secret related stuff
 Entropy.Zeniths = {}
 '''
 match_indent = true
@@ -310,4 +321,12 @@ else
   self.ability.bonus = 0
 end
 '''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "{n=G.UIT.T, config={text = localize('ph_blind_score_at_least'), scale = 0.3, colour = G.C.WHITE, shadow = true}}"
+position = "at"
+payload = "{n=G.UIT.T, config={text = localize('ph_blind_score_at_least'), scale = 0.3, colour = G.C.WHITE, shadow = true, id='score_at_least'}}"
 match_indent = true

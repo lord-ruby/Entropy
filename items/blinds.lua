@@ -162,7 +162,6 @@ SMODS.Blind({
 		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) then
 			G.GAME.chips = 0
 			G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
-			G.GAME.blind.chips = to_big(G.GAME.blind.chips) ^ 2
 			G.GAME.blind:juice_up()
 			ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
 		end
@@ -174,20 +173,23 @@ SMODS.Blind({
 	pos = { x = 0, y = 8 },
 	atlas = "blinds",
 	boss_colour = HEX("6d1414"),
-    mult=3e10,
+    mult=1,
 	no_ee = true,
     dollars = 8,
 	boss = {
 		min = 32,
 		max = 32,
 	},
+	exponent = {
+		1, 1.25
+	},
 	in_pool = function() return false end,
 	next_phase = "bl_entr_endless_entropy_phase_three",
 	calculate = function(self, blind, context)
 		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) then
 			G.GAME.chips = 0
+			G.GAME.EE3 = true
 			G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
-			G.GAME.blind.chips = to_big(G.GAME.blind.chips) ^ 2
 			G.GAME.blind:juice_up()
 			ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
 		end
@@ -199,7 +201,7 @@ SMODS.Blind({
 	pos = { x = 0, y = 7 },
 	atlas = "blinds",
 	boss_colour = HEX("6d1414"),
-    mult=3e50,
+    mult=3,
 	no_ee = true,
     dollars = 8,
 	boss = {
@@ -210,13 +212,30 @@ SMODS.Blind({
 	next_phase = "bl_entr_endless_entropy_phase_four",
 	calculate = function(self, blind, context)
 		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) then
-			G.GAME.chips = 0
-			G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
-			G.GAME.blind.chips = to_big(G.GAME.blind.chips) ^ 2
-			G.GAME.blind:juice_up()
-			ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
+			G.STATE = G.STATES.GAME_OVER; G.STATE_COMPLETE = false
+		end
+		if G.GAME.current_round.hands_left == 0 and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then
+			G.E_MANAGER:add_event(Event({
+                func = (function()
+					G.GAME.chips = 0
+					G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
+					G.GAME.blind.chips = to_big(G.GAME.blind.chips) ^ 2
+					G.GAME.blind:juice_up()
+					ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
+					G.GAME.EE3 = false
+					G.HUD_blind:get_UIE_by_ID("score_at_least").config.text = localize("ph_blind_score_at_least")
+				end
+			)}))
 		end
 	end,
+	defeat = function(self)
+		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) and not G.GAME.round_resets.lost then
+			G.STATE = G.STATES.GAME_OVER; G.STATE_COMPLETE = false
+		end
+	end,
+	setting_blind = function()
+		G.GAME.EE3 = true
+	end
 })
 
 SMODS.Blind({
@@ -224,12 +243,15 @@ SMODS.Blind({
 	pos = { x = 0, y = 9 },
 	atlas = "blinds",
 	boss_colour = HEX("6d1414"),
-    mult=3e100,
+    mult=1,
 	no_ee = true,
     dollars = 8,
 	boss = {
 		min = 32,
 		max = 32,
+	},
+	exponent = {
+		1, 2.5
 	},
 	in_pool = function() return false end,
 	set_blind = function(self, reset, silent)
@@ -641,18 +663,108 @@ local upd = Game.update
 local ee2dt = 0
 function Game:update(dt)
 	upd(self, dt)
-	if G.GAME.blind and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_two" then
+	if G.jokers and G.GAME.blind and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_two" then
 		local dtmod = math.min(G.SETTINGS.GAMESPEED, 4)/2+0.5
 		ee2dt = ee2dt + dt*dtmod
 		if ee2dt > 1 then
 			for i, v in pairs(G.jokers.cards) do
                 if not Card.no(G.jokers.cards[i], "immutable", true) then
-                    Cryptid.with_deck_effects(G.jokers.cards[i], function(card2)
-                        Cryptid.misprintize(card2, { min=0.975,max=0.975 }, nil, true)
-                    end)
+                    Cryptid.misprintize(G.jokers.cards[i], { min=0.975,max=0.975 }, nil, true)
                 end
 			end
 			ee2dt = ee2dt - 1
 		end
 	end
+	if G.jokers and G.GAME.blind and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" then
+		G.HUD_blind:get_UIE_by_ID("score_at_least").config.text = localize("ph_blind_score_less_than")
+		for i, v in pairs(G.jokers.cards) do
+			v.debuff = false
+		end
+		if G.jokers.cards[1] then
+			G.jokers.cards[1].debuff = true
+		end
+	end
 end
+
+function create_UIBox_blind_popup(blind, discovered, vars)
+	local blind_text = {}
+	
+	local _dollars = blind.dollars
+	local target = {type = 'raw_descriptions', key = blind.key, set = 'Blind', vars = vars or blind.vars}
+	if blind.collection_loc_vars and type(blind.collection_loc_vars) == 'function' then
+		local res = blind:collection_loc_vars() or {}
+		target.vars = res.vars or target.vars
+		target.key = res.key or target.key
+	end
+	local loc_target = localize(target)
+	local loc_name = localize{type = 'name_text', key = blind.key, set = 'Blind'}
+  
+	if discovered then 
+	  local ability_text = {}
+	  if loc_target then 
+		for k, v in ipairs(loc_target) do
+		  ability_text[#ability_text + 1] = {n=G.UIT.R, config={align = "cm"}, nodes={{n=G.UIT.T, config={text = v, scale = 0.35, shadow = true, colour = G.C.WHITE}}}}
+		end
+	  end
+	  local stake_sprite = get_stake_sprite(G.GAME.stake or 1, 0.4)
+	  if blind.exponent then
+		  local exponents = ""
+		  local exponents2 = ""
+		  for i = 1, blind.exponent[1] do
+			exponents = exponents .. "^"
+		  end
+		  if blind.exponent[1] > 5 then
+			exponents = ""
+			exponents2 = "{" .. blind.exponent[1] .. "}"
+		  end
+		  blind_text[#blind_text + 1] =
+			{n=G.UIT.R, config={align = "cm", emboss = 0.05, r = 0.1, minw = 2.5, padding = 0.07, colour = G.C.WHITE}, nodes={
+			  {n=G.UIT.R, config={align = "cm", maxw = 2.4}, nodes={
+				{n=G.UIT.T, config={text = localize('ph_blind_score_at_least'), scale = 0.35, colour = G.C.UI.TEXT_DARK}},
+			  }},
+			  {n=G.UIT.R, config={align = "cm"}, nodes={
+				{n=G.UIT.O, config={object = stake_sprite}},
+				{n=G.UIT.T, config={text = exponents .. blind.exponent[2].. exponents2 .." "..localize('k_entr_base'), scale = 0.4, colour = G.C.RED}},
+			  }},
+			  {n=G.UIT.R, config={align = "cm"}, nodes={
+				{n=G.UIT.T, config={text = localize('ph_blind_reward'), scale = 0.35, colour = G.C.UI.TEXT_DARK}},
+				{n=G.UIT.O, config={object = DynaText({string = {_dollars and string.rep(localize('$'),_dollars) or '-'}, colours = {G.C.MONEY}, rotate = true, bump = true, silent = true, scale = 0.45})}},
+			  }},
+			  ability_text[1] and {n=G.UIT.R, config={align = "cm", padding = 0.08, colour = mix_colours(blind.boss_colour, G.C.GREY, 0.4), r = 0.1, emboss = 0.05, minw = 2.5, minh = 0.9}, nodes=ability_text} or nil
+			}}
+	  else
+	  blind_text[#blind_text + 1] =
+		{n=G.UIT.R, config={align = "cm", emboss = 0.05, r = 0.1, minw = 2.5, padding = 0.07, colour = G.C.WHITE}, nodes={
+		  {n=G.UIT.R, config={align = "cm", maxw = 2.4}, nodes={
+			{n=G.UIT.T, config={text = localize(blind.key == "bl_entr_endless_entropy_phase_three" and 'ph_blind_score_less_than' or 'ph_blind_score_at_least'), scale = 0.35, colour = G.C.UI.TEXT_DARK}},
+		  }},
+		  {n=G.UIT.R, config={align = "cm"}, nodes={
+			{n=G.UIT.O, config={object = stake_sprite}},
+			{n=G.UIT.T, config={text = blind.mult..localize('k_x_base'), scale = 0.4, colour = G.C.RED}},
+		  }},
+		  {n=G.UIT.R, config={align = "cm"}, nodes={
+			{n=G.UIT.T, config={text = localize('ph_blind_reward'), scale = 0.35, colour = G.C.UI.TEXT_DARK}},
+			{n=G.UIT.O, config={object = DynaText({string = {_dollars and string.rep(localize('$'),_dollars) or '-'}, colours = {G.C.MONEY}, rotate = true, bump = true, silent = true, scale = 0.45})}},
+		  }},
+		  ability_text[1] and {n=G.UIT.R, config={align = "cm", padding = 0.08, colour = mix_colours(blind.boss_colour, G.C.GREY, 0.4), r = 0.1, emboss = 0.05, minw = 2.5, minh = 0.9}, nodes=ability_text} or nil
+		}}
+		  end
+	else
+	  blind_text[#blind_text + 1] =
+		{n=G.UIT.R, config={align = "cm", emboss = 0.05, r = 0.1, minw = 2.5, padding = 0.1, colour = G.C.WHITE}, nodes={
+		  {n=G.UIT.R, config={align = "cm"}, nodes={
+			{n=G.UIT.T, config={text = localize('ph_defeat_this_blind_1'), scale = 0.4, colour = G.C.UI.TEXT_DARK}},
+		  }},
+		  {n=G.UIT.R, config={align = "cm"}, nodes={
+			{n=G.UIT.T, config={text = localize('ph_defeat_this_blind_2'), scale = 0.4, colour = G.C.UI.TEXT_DARK}},
+		  }},
+		}}
+	end
+   return {n=G.UIT.ROOT, config={align = "cm", padding = 0.05, colour = lighten(G.C.JOKER_GREY, 0.5), r = 0.1, emboss = 0.05}, nodes={
+	{n=G.UIT.R, config={align = "cm", emboss = 0.05, r = 0.1, minw = 2.5, padding = 0.1, colour = not discovered and G.C.JOKER_GREY or blind.boss_colour or G.C.GREY}, nodes={
+	  {n=G.UIT.O, config={object = DynaText({string = discovered and loc_name or localize('k_not_discovered'), colours = {G.C.UI.TEXT_LIGHT}, shadow = true, rotate = not discovered, spacing = discovered and 2 or 0, bump = true, scale = 0.4})}},
+	}},
+	{n=G.UIT.R, config={align = "cm"}, nodes=blind_text},
+   }}
+  end 
+  
