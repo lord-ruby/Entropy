@@ -374,7 +374,7 @@ SMODS.Joker({
 SMODS.Joker({
     key = "membership",
     config = {
-        x_asc_mod = 0.5,
+        x_asc_mod = 1,
         num = 16
     },
     rarity = "entr_reverse_legendary",
