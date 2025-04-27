@@ -2,6 +2,10 @@ local Compatibilities = {
     {
         checkMod = "CorruptionMod", --change when corruption releases
         file = "corruption"
+    },
+    {
+        checkMod="MP",
+        file = "multiplayer"
     }
 }
 
