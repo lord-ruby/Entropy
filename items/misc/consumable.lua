@@ -382,6 +382,49 @@ G.FUNCS.buy_deckorsleeve = function(e)
         if i == "hand_size" then G.hand.config.card_limit = G.hand.config.card_limit + v end
         if i == "dollars" then ease_dollars(v) end
     end
+    if c1.config.center.config and c1.config.center.config.cry_beta then
+        local count = G.consumeables.config.card_limit
+        local cards = {}
+        for i, v in pairs(G.jokers.cards) do
+            v:remove_from_deck()
+            G.jokers:remove_card(v)
+            cards[#cards+1]=v
+        end
+        for i, v in pairs(G.consumeables.cards) do
+            v:remove_from_deck()
+            G.consumeables:remove_card(v)
+            cards[#cards+1]=v
+        end
+        G.consumeables:remove()
+        count = count + G.jokers.config.card_limit
+        G.jokers:remove()
+        G.consumeables = nil
+        local CAI = {
+            discard_W = G.CARD_W,
+            discard_H = G.CARD_H,
+            deck_W = G.CARD_W*1.1,
+            deck_H = 0.95*G.CARD_H,
+            hand_W = 6*G.CARD_W,
+            hand_H = 0.95*G.CARD_H,
+            play_W = 5.3*G.CARD_W,
+            play_H = 0.95*G.CARD_H,
+            joker_W = 4.9*G.CARD_W,
+            joker_H = 0.95*G.CARD_H,
+            consumeable_W = 2.3*G.CARD_W,
+            consumeable_H = 0.95*G.CARD_H
+        }
+        G.jokers = CardArea(
+            CAI.consumeable_W, 0,
+            CAI.joker_W+CAI.consumeable_W,
+            CAI.joker_H,
+            {card_limit = count, type = 'joker', highlight_limit = 1e100}
+        )
+        G.consumeables = G.jokers
+        for i, v in pairs(cards) do
+            v:add_to_deck()
+            G.jokers:emplace(v)
+        end
+    end
     G.GAME.calculates = G.GAME.calculates or {}
     G.GAME.calculates[#G.GAME.calculates+1] = c1.config.center.key
     c1:start_dissolve()
