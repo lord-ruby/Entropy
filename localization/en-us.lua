@@ -330,6 +330,13 @@ local decs = {
 					"{X:gold,C:white}X#1#{} Ascension Power",
 				},
 			},
+			e_entr_fractured = {
+				name = "Fractured",
+				text = {
+					"{C:dark_edition}Force-trigger{} #1# random cards",
+					"when scored"
+				},
+			},
 		},
 		Back = {
 			b_entr_twisted = {
@@ -1602,6 +1609,7 @@ local decs = {
 			link = "Linked",
 			superego = "Projected",
 			entr_solar = "Solar",
+			entr_fractured = "Fractured",
 
 			entr_crimson_seal = "Crimson Seal",
 			entr_sapphire_seal = "Sapphire Seal",
