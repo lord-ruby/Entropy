@@ -425,8 +425,8 @@ G.FUNCS.buy_deckorsleeve = function(e)
             G.jokers:emplace(v)
         end
     end
-    G.GAME.calculates = G.GAME.calculates or {}
-    G.GAME.calculates[#G.GAME.calculates+1] = c1.config.center.key
+    G.GAME.entr_bought_decks = G.GAME.entr_bought_decks or {}
+    G.GAME.entr_bought_decks[#G.GAME.entr_bought_decks+1] = c1.config.center.key
     c1:start_dissolve()
     if c1.children.price then c1.children.price:remove() end
     c1.children.price = nil

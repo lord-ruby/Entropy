@@ -321,7 +321,7 @@ match_indent = true
 target = "functions/UI_definitions.lua"
 pattern = "          G.GAME.stake > 1 and {"
 position = "before"
-payload = '''G.GAME.calculates and #G.GAME.calculates > 0 and {
+payload = '''G.GAME.entr_bought_decks and #G.GAME.entr_bought_decks > 0 and {
             label = localize('b_decks'),
             tab_definition_function = G.UIDEF.bought_decks,
             },'''

@@ -431,7 +431,7 @@ function Entropy.DeckOrSleeve(key)
     if CardSleeves then
         if G.GAME.selected_sleeve == ("sleeve_entr_"..key) then return true end
     end
-    for i, v in pairs(G.GAME.calculates or {}) do
+    for i, v in pairs(G.GAME.entr_bought_decks or {}) do
         if v == "b_entr_"..key then return true end
     end
     return G.GAME.selected_back and G.GAME.selected_back.effect.center.original_key == key

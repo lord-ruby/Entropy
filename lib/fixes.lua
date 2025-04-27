@@ -904,7 +904,7 @@ end
     local voucher_areas = {}
     local voucher_tables = {}
     local voucher_table_rows = {}
-    for k, v in ipairs(G.GAME.calculates or {}) do
+    for k, v in ipairs(G.GAME.entr_bought_decks or {}) do
       local key = 1 + math.floor((k-0.1)/2)
       keys_used[#keys_used+1] = G.P_CENTERS[v]
     end

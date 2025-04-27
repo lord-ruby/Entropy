@@ -786,7 +786,7 @@ local ref = SMODS.calculate_context
 function SMODS.calculate_context(context, return_table)
     local tbl = ref(context,return_table)
     pcall(function()
-        for i, v in pairs(G.GAME.calculates or {}) do
+        for i, v in pairs(G.GAME.entr_bought_decks or {}) do
             if G.P_CENTERS[v].calculate then
                 local ret = G.P_CENTERS[v].calculate(G.P_CENTERS[v], nil, context or {})
                 for k,v in pairs(ret or {}) do 
