@@ -81,11 +81,6 @@ function Game:update(dt)
                 { nopulse = true, immediate=true },
                 { mult = "Infinity", chips = "1"}
             )
-        elseif (#G.play.cards <= 0 and #G.hand.highlighted <= 0) or G.pack_cards then
-            --update_hand_text_random(
-            --    { nopulse = true, immediate=true },
-            --    { mult = 0, chips = 0}
-            --)
         end
     end
     if G.GAME.Ruby and G.jokers and check_dt > 0.5 then
@@ -185,7 +180,7 @@ function ease_ante(mod)
               text = '-'
               col = G.C.RED
           end
-          if HasJoker("j_entr_xekanos") then
+          if HasJoker("j_entr_xekanos",true) then
             local mod2 = 0
             for i, v in pairs(G.jokers.cards) do
                 if v.ability and v.ability.ante_mod then

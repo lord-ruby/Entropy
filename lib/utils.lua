@@ -736,11 +736,11 @@ function Entropy.AllowNaturalEE()
     return true
 end
 
-function HasJoker(key)
+function HasJoker(key,debuff)
     if not G.jokers then return nil end
     local total = 0
     for i, v in pairs(G.jokers.cards) do
-        if v.config.center.key == key then total = total + 1 end
+        if (not v.debuff or not debuff) and v.config.center.key == key then total = total + 1 end
     end
     return total > 0 and total or nil
 end

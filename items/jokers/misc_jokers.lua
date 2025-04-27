@@ -56,7 +56,7 @@ SMODS.Joker({
 local ref = update_hand_text
 
 function update_hand_text(config, vals)
-    if type(vals.mult) == "number" or type(vals.mult) == "table" and HasJoker("j_entr_tesseract") and math.abs(to_big(vals.mult)) > to_big(0.001) then
+    if type(vals.mult) == "number" or type(vals.mult) == "table" and HasJoker("j_entr_tesseract",true) and math.abs(to_big(vals.mult)) > to_big(0.001) then
         local total_angle = 0
         for i, v in pairs(G.jokers.cards) do
             if v.config.center.key == "j_entr_tesseract" then
@@ -68,7 +68,7 @@ function update_hand_text(config, vals)
         local str = Entropy.WhatTheFuck(base, vals.mult)
         vals.mult = str
     end
-    if type(vals.chips) == "number" or type(vals.chips) == "table" and HasJoker("j_entr_tesseract") and math.abs(to_big(vals.chips)) > to_big(0.001) then
+    if type(vals.chips) == "number" or type(vals.chips) == "table" and HasJoker("j_entr_tesseract",true) and math.abs(to_big(vals.chips)) > to_big(0.001) then
         local total_angle = 0
         for i, v in pairs(G.jokers.cards) do
             if v.config.center.key == "j_entr_tesseract" then
@@ -198,7 +198,7 @@ SMODS.Joker({
 })
 local ref = level_up_hand
 function level_up_hand(card, hand, instant, amount)
-    if HasJoker("j_entr_strawberry_pie") and hand ~= "High Card" then
+    if HasJoker("j_entr_strawberry_pie",true) and hand ~= "High Card" then
         local mult = 1
         for i, v in pairs(G.jokers.cards) do
             if v.config.center.key == "j_entr_strawberry_pie" and not v.debuff then

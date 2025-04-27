@@ -120,10 +120,10 @@ function Cryptid.ascend(num, curr2) -- edit this function at your leisure
 							* to_big(curr2)
 					)
 				)
-	elseif HasJoker("j_entr_helios") then
-        local curr = 1.5
+	elseif HasJoker("j_entr_helios", true) then
+        local curr = 1
         for i, v in pairs(G.jokers.cards) do
-            if v.config.center.key == "j_entr_helios" and to_big(v.ability.extra):gt(curr) then curr = v.ability.extra+0.4 end
+            if not v.debuff and v.config.center.key == "j_entr_helios" and to_big(v.ability.extra):gt(curr) then curr = v.ability.extra+0.4 end
         end
 		return num
 				* to_big(
@@ -136,7 +136,7 @@ end
 
 local pokerhandinforef = G.FUNCS.get_poker_hand_info
 function G.FUNCS.get_poker_hand_info(_cards)
-    if HasJoker("j_entr_helios") or (Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled) then G.GAME.used_vouchers.v_cry_hyperspacetether = true end
+    if HasJoker("j_entr_helios", true) or (Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled) then G.GAME.used_vouchers.v_cry_hyperspacetether = true end
     local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
     if G.GAME.Ruby and (text == "None" or G.pack_cards) then
         update_hand_text_random(
@@ -422,7 +422,7 @@ SMODS.Joker({
 })
 local is_jollyref = Card.is_jolly
 function Card:is_jolly()
-	if HasJoker("j_entr_dekatria") then return true end
+	if HasJoker("j_entr_dekatria",true) then return true end
     return is_jollyref(self)
 end
 
@@ -908,10 +908,10 @@ SMODS.Joker({
 
 local ref = Tag.init
 function Tag:init(_tag, for_collection, _blind_type)
-    if HasJoker("j_entr_exousia") and Entropy.AscendedTags[_tag] and not for_collection then 
+    if HasJoker("j_entr_exousia",true) and Entropy.AscendedTags[_tag] and not for_collection then 
         _tag = Entropy.AscendedTags[_tag]
         local procs = 1
-        while pseudorandom("exousia") < 0.1 and procs < HasJoker("j_entr_exousia") and Entropy.AscendedTags[_tag] and not for_collection do
+        while pseudorandom("exousia") < 0.1 and procs < HasJoker("j_entr_exousia",true) and Entropy.AscendedTags[_tag] and not for_collection do
             _tag = Entropy.AscendedTags[_tag]
         end
     end
