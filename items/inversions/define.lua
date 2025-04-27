@@ -166,9 +166,10 @@ G.FUNCS.define_apply = function()
     local entered_card = G.ENTERED_CARD
 
     G.PREVIOUS_ENTERED_CARD = G.ENTERED_CARD
-    local aliases = Cryptid.aliases
-    if aliases[string.lower(entered_card)] then
-        entered_card = aliases[string.lower(entered_card)]
+    for i, v in pairs(Cryptid.pointeralias) do
+        for i2, a, in pairs(v or {}) do
+            if entered_card == a then entered_card == i end
+        end
     end
     for i, v in pairs(G.P_CENTERS) do
         if v.name and string.lower(entered_card) == string.lower(v.name) then
