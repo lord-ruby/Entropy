@@ -569,8 +569,14 @@ SMODS.calculate_individual_effect = function(effect, scored_card, key, amount, f
 
     if key == 'level_up' then
         if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
-        local hand_type = effect.level_up_hand or G.GAME.last_hand_played
-        level_up_hand(scored_card, hand_type, effect.instant, type(amount) == 'number' and amount or 1)
+        local hand_type = effect and effect.level_up_hand or G.GAME.last_hand_played
+        --ew ew ew ew ew ew ew
+        level_up_hand(nil, hand_type, false, type(amount) == 'number' and amount or 1)
+        G.GAME.hands[hand_type].level = (G.GAME.hands[hand_type].level or 1) - (type(amount) == 'number' and amount or 1)
+        G.E_MANAGER:add_event(Event({trigger = 'before', func = function()
+            level_up_hand(nil, hand_type, true, type(amount) == 'number' and amount or 1)
+            return true
+        end}))
         return true
     end
 
