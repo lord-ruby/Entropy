@@ -76,16 +76,16 @@ function Game:update(dt)
         G.GAME.RubyAnteTextNum = G.GAME.round_resets.ante
     end
     if G.GAME.Ruby and G.hand then
-        if G.GAME.current_round.current_hand.mult ~= "Infinity" and #G.hand.highlighted > 0 and not G.pack_cards then
+        if G.GAME.current_round.current_hand.mult ~= "Infinity" and #G.hand.highlighted > 0 or #G.play.cards > 0 and not G.pack_cards then
             update_hand_text_random(
                 { nopulse = true, immediate=true },
                 { mult = "Infinity", chips = "1"}
             )
-        elseif #G.hand.highlighted <= 0 or G.pack_cards then
-            update_hand_text_random(
-                { nopulse = true, immediate=true },
-                { mult = 0, chips = 0}
-            )
+        elseif (#G.play.cards <= 0 and #G.hand.highlighted <= 0) or G.pack_cards then
+            --update_hand_text_random(
+            --    { nopulse = true, immediate=true },
+            --    { mult = 0, chips = 0}
+            --)
         end
     end
     if G.GAME.Ruby and G.jokers and check_dt > 0.5 then
