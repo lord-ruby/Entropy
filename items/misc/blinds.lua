@@ -142,7 +142,9 @@ Entropy.EEBlacklist = {
 	bl_entr_endless_entropy_phase_two=true,
 	bl_entr_endless_entropy_phase_three=true,
 	bl_entr_endless_entropy_phase_four=true,
-	bl_cry_lavender_loop=true
+	bl_cry_lavender_loop=true,
+	bl_cry_vermillion_virus=true,
+	bl_cry_turquoise_tornado=true
 }
 SMODS.Blind({
 	key = "endless_entropy_phase_one",
@@ -161,6 +163,7 @@ SMODS.Blind({
 	calculate = function(self, blind, context)
 		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) then
 			G.GAME.chips = 0
+			G.GAME.round_resets.lost = true
 			G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
 			G.GAME.blind:juice_up()
 			ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
@@ -187,8 +190,9 @@ SMODS.Blind({
 	in_pool = function() return false end,
 	next_phase = "bl_entr_endless_entropy_phase_two",
 	calculate = function(self, blind, context)
-		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) then
+		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) and not G.GAME.round_resets.lost then
 			G.STATE = G.STATES.GAME_OVER; G.STATE_COMPLETE = false
+			G.GAME.round_resets.lost = true
 		end
 		if G.GAME.current_round.hands_left == 0 and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) and not G.GAME.EE3 then
 			G.GAME.chips = 0
@@ -216,6 +220,7 @@ SMODS.Blind({
 		return { vars = { localize("entr_nadir_placeholder") } }
 	end,
 	setting_blind = function()
+		G.GAME.round_resets.lost = false
 	end
 })	
 
