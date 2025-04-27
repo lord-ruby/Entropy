@@ -837,7 +837,7 @@ local decs = {
 					"Replace all future instances of",
 					"a {V:1}selected card{} with",
 					"a card of {V:1}your choice{}",
-					"then {C:inactive}destroy{} the selected card"
+					"then {C:inactive}destroy{} the selected card",
 					"{C:inactive}(Rare consumables and{}",
 					"{C:inactive}>=Exotic jokers excluded){}"
 				}
