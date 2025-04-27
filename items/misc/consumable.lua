@@ -369,6 +369,19 @@ G.FUNCS.buy_deckorsleeve = function(e)
     if c1.config.center.apply then
         c1.config.center:apply()
     end
+    for i, v in pairs(c1.config.center.config or {}) do
+        if i == "hands" then 
+            G.GAME.round_resets.hands = G.GAME.round_resets.hands + v 
+            ease_hands_played(v)
+        end
+        if i == "discards" then 
+            G.GAME.round_resets.discards = G.GAME.round_resets.discards + v 
+            ease_discard(v)
+        end
+        if i == "joker_slot" then G.jokers.config.card_limit = G.jokers.config.card_limit + v end
+        if i == "hand_size" then G.hand.config.card_limit = G.hand.config.card_limit + v end
+        if i == "dollars" then ease_dollars(v) end
+    end
     G.GAME.calculates = G.GAME.calculates or {}
     G.GAME.calculates[#G.GAME.calculates+1] = c1.config.center.key
     c1:start_dissolve()
