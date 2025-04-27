@@ -520,7 +520,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
                 center = pseudorandom_element(G.P_CENTERS, pseudoseed("chaos"))
             end
         end 
-        while not center.set or Entropy.ParakmiBlacklist[center.set] or Entropy.ParakmiBlacklist[center.key] do
+        while not center.set or Entropy.ParakmiBlacklist[center.set] or Entropy.ParakmiBlacklist[center.key] or (MP and center.set == "CBlind") do
             center = pseudorandom_element(G.P_CENTERS, pseudoseed("chaos"))
         end
         _type = Entropy.ChaosConversions[center.set] or center.set or _type
@@ -627,66 +627,68 @@ function Entropy.RegisterBlinds()
         })
     end
     for i, v in pairs(SMODS.Blind.obj_table) do
-        Entropy.BlindC[#Entropy.BlindC+1]="entr_"..i
-        SMODS.Consumable({
-            key = "entr_"..i,
-            set = "CBlind",
-            unlocked = true,
-            pos = {x=9999,y=9999},
-            config = {
-                blind = i,
-                pos = v.pos,
-                atlas = v.atlas,
-            },
-            weight = 0,
-            no_doe = true,
-            --soul_pos = { x = 5, y = 0},
-            use = function(self, card, area, copier,amt)
-                local bl = "Small"
-                for i, v in pairs(G.GAME.round_resets.blind_states) do
-                    if v == "Select" or v == "Current" then bl = i end
-                end
-                G.GAME.round_resets.blind_choices[bl] = self.config.blind
-                if G.blind_select then        
-                    G.blind_select:remove()
-                    G.blind_prompt_box:remove()
-                    G.STATE_COMPLETE = false
-                else
-                    G.GAME.blind:disable()
-                    G.GAME.blind:set_blind(G.P_BLINDS[self.config.blind])
-                end
-            end,
-            can_use = function(self, card)
-                if not G.GAME.round_resets then return false end
-                for i, v in pairs(G.GAME.round_resets.blind_states or {}) do
-                    if v == "Select" or v == "Current" then return true end
-                end
-                if G.GAME.round_resets.ante_disp == "32" or G.GAME.EEBuildup then return false end
-                return false
-            end,
-            loc_vars = function(self,q,c)
-                q[#q+1]={set="Blind",key=self.config.blind}
-                return v.loc_vars and v.loc_vars(self,q,c) 
-            end,
-            entr_credits = v.entr_credits,
-            cry_credits = v.cry_credits,
-            set_sprites = function(self, card, front)
-                card.children.floating_sprite = AnimatedSprite(
-                    card.T.x+0.7,
-                    card.T.y+0.7,
-                    1.4 * (card.no_ui and 1.1*1.2 or 1),
-                    1.4 * (card.no_ui and 1.1*1.2 or 1),
-                    G.ANIMATION_ATLAS[self.config.atlas],
-                    self.config.pos
-                )
-                card.children.floating_sprite.role.draw_major = card
-                card.children.floating_sprite.states.hover.can = false
-                card.children.floating_sprite.states.click.can = false
-            end,
-            set_badges = function(self, card, badges)
-                badges[#badges+1] = create_badge(v.original_mod.name, v.original_mod.badge_colour, G.C.WHITE, 1 )
-            end,
-        })
+        if not Entropy.BlindTokenBlacklist[i] then
+            Entropy.BlindC[#Entropy.BlindC+1]="entr_"..i
+            SMODS.Consumable({
+                key = "entr_"..i,
+                set = "CBlind",
+                unlocked = true,
+                pos = {x=9999,y=9999},
+                config = {
+                    blind = i,
+                    pos = v.pos,
+                    atlas = v.atlas,
+                },
+                weight = 0,
+                no_doe = true,
+                --soul_pos = { x = 5, y = 0},
+                use = function(self, card, area, copier,amt)
+                    local bl = "Small"
+                    for i, v in pairs(G.GAME.round_resets.blind_states) do
+                        if v == "Select" or v == "Current" then bl = i end
+                    end
+                    G.GAME.round_resets.blind_choices[bl] = self.config.blind
+                    if G.blind_select then        
+                        G.blind_select:remove()
+                        G.blind_prompt_box:remove()
+                        G.STATE_COMPLETE = false
+                    else
+                        G.GAME.blind:disable()
+                        G.GAME.blind:set_blind(G.P_BLINDS[self.config.blind])
+                    end
+                end,
+                can_use = function(self, card)
+                    if not G.GAME.round_resets then return false end
+                    for i, v in pairs(G.GAME.round_resets.blind_states or {}) do
+                        if v == "Select" or v == "Current" then return true end
+                    end
+                    if G.GAME.round_resets.ante_disp == "32" or G.GAME.EEBuildup then return false end
+                    return false
+                end,
+                loc_vars = function(self,q,c)
+                    q[#q+1]={set="Blind",key=self.config.blind}
+                    return v.loc_vars and v.loc_vars(self,q,c) 
+                end,
+                entr_credits = v.entr_credits,
+                cry_credits = v.cry_credits,
+                set_sprites = function(self, card, front)
+                    card.children.floating_sprite = AnimatedSprite(
+                        card.T.x+0.7,
+                        card.T.y+0.7,
+                        1.4 * (card.no_ui and 1.1*1.2 or 1),
+                        1.4 * (card.no_ui and 1.1*1.2 or 1),
+                        G.ANIMATION_ATLAS[self.config.atlas],
+                        self.config.pos
+                    )
+                    card.children.floating_sprite.role.draw_major = card
+                    card.children.floating_sprite.states.hover.can = false
+                    card.children.floating_sprite.states.click.can = false
+                end,
+                set_badges = function(self, card, badges)
+                    badges[#badges+1] = create_badge(v.original_mod.name, v.original_mod.badge_colour, G.C.WHITE, 1 )
+                end,
+            })
+        end
     end
 end
 

@@ -161,7 +161,12 @@ Entropy.FixedRecipes = {
     c_basec_basec_basec_basec_base = "j_joker",
     m_steelm_steelm_steelm_steelm_steel = "j_cry_clockwork"
 }
-
+Entropy.BlindTokenBlacklist = {
+  bl_entr_endless_entropy_phase_one=true,
+  bl_entr_endless_entropy_phase_two=true,
+  bl_entr_endless_entropy_phase_three=true,
+  bl_entr_endless_entropy_phase_four=true
+}
 --more secret related stuff
 Entropy.Zeniths = {}
 '''
