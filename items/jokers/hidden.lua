@@ -94,14 +94,6 @@ function Game:update(dt)
             if v.config.center.key == G.GAME.Ruby and has_ruby <= 0 then
                 has_ruby = has_ruby + 1
                 v.debuff = false
-                if not v.edition or v.edition.key ~= "e_negative" then
-                    v:set_edition({
-                        negative=true,
-                        key="e_negative",
-                        card_limit=1,
-                        type="negative"
-                    })
-                end
             elseif not v.debuff then v:start_dissolve();v.debuff = true end
         end
         if has_ruby <= 0 then add_joker(G.GAME.Ruby) end
@@ -141,14 +133,8 @@ function Card:set_ability(center, initial, delay_sprites)
         if self.area and self.area.config.type ~= "joker" then
             self:start_dissolve()
         end
-        if not self.ability.cry_absolute or self.edition.key ~= "e_negative" then
+        if not self.ability.cry_absolute then
             self.ability.cry_absolute = true
-            self:set_edition({
-                negative=true,
-                key="e_negative",
-                card_limit=1,
-                type="negative"
-            })
         end
     end
     

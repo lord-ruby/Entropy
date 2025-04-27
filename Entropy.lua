@@ -238,7 +238,6 @@ end
 local upd = Game.update
 local anim_timer2 = 0
 entr_define_dt = 0
-entr_ruby_dt = 0
 function Game:update(dt)
     upd(self, dt)
     anim_timer2 = anim_timer2 + dt/2.0
@@ -282,28 +281,6 @@ function Game:update(dt)
 		entr_define_dt = 0
 		local pointerobj = G.P_CENTERS.c_entr_define
 		pointerobj.pos.x = (pointerobj.pos.x == 4) and 5 or 4
-	end
-
-    entr_ruby_dt = entr_ruby_dt + dt
-    if G.P_CENTERS and G.P_CENTERS.j_entr_ruby and entr_ruby_dt > 0.1 then
-		entr_ruby_dt = 0
-		local pointerobj = G.P_CENTERS.j_entr_ruby
-		pointerobj.soul_pos.x = (pointerobj.soul_pos.x%12)+1
-        if G.jokers then
-            for i, v in pairs(G.jokers.cards) do
-                if v.config.center.key == "j_entr_ruby" then
-                    v.children.floating_sprite:remove()
-                    v.children.floating_sprite = Sprite(
-                        v.T.x,
-                        v.T.y,
-                        v.T.w * (v.no_ui and 1.1*1.2 or 1),
-                        v.T.h * (v.no_ui and 1.1*1.2 or 1),
-                        G.ASSET_ATLAS[v.config.center.atlas],
-                        v.config.center.soul_pos
-                    )
-                end
-            end
-        end
 	end
 end
 
