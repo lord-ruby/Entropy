@@ -167,7 +167,7 @@ G.FUNCS.define_apply = function()
 
     G.PREVIOUS_ENTERED_CARD = G.ENTERED_CARD
     for i, v in pairs(Cryptid.pointeralias) do
-        for i2, a, in pairs(v or {}) do
+        for i2, a in pairs(v or {}) do
             if entered_card == a then entered_card == i end
         end
     end
