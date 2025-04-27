@@ -1374,7 +1374,7 @@ G.FUNCS.sudo_apply = function()
             end
         end
     end
-    if current_hand = "cry_WholeDeck" then current_hand = nil end
+    if current_hand == "cry_WholeDeck" then current_hand = nil end
     if current_hand then
         G.PREVIOUS_ENTERED_HAND = G.ENTERED_HAND
         local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
