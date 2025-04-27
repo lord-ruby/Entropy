@@ -11,7 +11,7 @@ local decs = {
 			m_entr_disavowed = {
 				name = "Disavowed",
 				text = {
-					"Cannot change enhancements"
+					"Cannot change Enhancements"
 				}
 			}
 		},
@@ -35,12 +35,12 @@ local decs = {
 			j_entr_stillicidium = {
 				name = "Stillicidium",
 				text = {
-					"Transform {C:attention}jokers{} to the right",
+					"Transform {C:attention}Jokers{} to the right",
 					"and all {C:attention}consumables{} into the",
 					"card that precedes them in the",
-					"collection at the end of the shop",
+					"Collection at the end of the shop",
 					"Reduce the rank of {C:attention}scored cards{} by 1",
-					"reduce blind sizes by {C:attention}30%{}"
+					"Reduce Blind sizes by {C:attention}30%{}"
 				}
 			},
 			j_entr_ruby = {
@@ -60,16 +60,16 @@ local decs = {
 			j_entr_tesseract = {
 				name = "Tesseract",
 				text = {
- 					"Rotates mult by {X:dark_edition,C:white}#1#{}",
+ 					"Rotates Mult by {X:dark_edition,C:white}#1#{}",
 					"degrees counterclockwise",
-					"and chips by {X:dark_edition,C:white}#1#{}",
+					"and Chips by {X:dark_edition,C:white}#1#{}",
 					"degrees clockwise"
 				}
 			},
 			j_entr_acellero = {
 				name = "Epitachyno",
 				text = {
- 					"{X:dark_edition,C:white}^#1#{} to all other joker values",
+ 					"{X:dark_edition,C:white}^#1#{} to all other Joker values",
 					"at the end of the {C:attention}shop{}",
 					"then increase {C:attention}exponent{} by {X:dark_edition,C:white}#2#{}"
 				}
@@ -85,11 +85,11 @@ local decs = {
 			j_entr_xekanos = {
 				name = "Xekanos",
 				text = {
- 					"{X:dark_edition,C:white}#1#X{} {C:attention}ante gain{}",
+ 					"{X:dark_edition,C:white}#1#X{} {C:attention}Ante gain{}",
 					"increases by {X:dark_edition,C:white}#2#{}",
-					"when the ante changes",
+					"when the Ante changes",
 					"{X:dark_edition,C:white}Halve{} this value when",
-					"a {C:attention}rare{} or higher rarity {C:attention}joker{}",
+					"a {C:attention}Rare{} or higher rarity {C:attention}Joker{}",
 					"is sold"
 				}
 			},
@@ -97,9 +97,9 @@ local decs = {
 				name = "Ieros",
 				text = {
  					"{X:dark_edition,C:white}33%{} chance to upgrade",
-					"joker {C:attention}rarities{} in the shop recursively",
-					"Gain {X:dark_edition,C:white}^^Chips{} when buying a joker",
-					"Based on the jokers {C:attention}rarity{}",
+					"Joker {C:attention}rarities{} in the shop recursively",
+					"Gain {X:dark_edition,C:white}^^Chips{} when buying a Joker",
+					"Based on the Joker's {C:attention}rarity{}",
 					"{C:inactive}(Currently: {}{X:dark_edition,C:white}^^#1#{}{C:inactive}){}",
 				}
 			},
@@ -109,7 +109,7 @@ local decs = {
  					"{X:dark_edition,C:white}#1#{} Mult",
 					"All cards are {C:dark_edition}Jolly{}",
 					"Increase operator once for every",
-					"{C:attention}#2#{} pairs in hand",
+					"{C:attention}#2#{} Pairs in hand",
 					"{C:inactive}(Currently: #3#){}"
 				}
 			},
@@ -118,7 +118,7 @@ local decs = {
 				text = {
 					"Destroy a {C:attention}random{} consumable and",
 					"create a corresponding {C:dark_edition}Negative{}",
-					"mega booster pack at the end of the {C:attention}shop{}"
+					"Mega Booster Pack at the end of the {C:attention}shop{}"
 				}
 			},
 			j_entr_yorick = {
@@ -133,27 +133,27 @@ local decs = {
 			j_entr_chicot = {
 				name = "Tocihc",
 				text = {
-					"Create the {C:attention}current{} blind's skip",
-					"tag when blind is selected",
-					"reduce non-boss blind sizes by {C:attention}80%{}",
+					"Create the {C:attention}current{} Blind's skip",
+					"Tag when Blind is selected",
+					"Reduce non-Boss Blind sizes by {C:attention}80%{}",
 					"{C:inactive}(Currently: #1#){}"
 				}
 			},
 			j_entr_triboulet = {
 				name = "Teluobirt",
 				text = {
-					"Scored {C:attention}jacks{} give {X:chips,C:white}XChips{}",
-					"equal to the {C:attention}number{} of played jacks in the hand",
-					"retrigger {C:attention}scored{} jacks based on their",
+					"Scored {C:attention}Jacks{} give {X:chips,C:white}XChips{}",
+					"equal to the {C:attention}number{} of played Jacks in the hand",
+					"Retrigger {C:attention}scored{} Jacks based on their",
 					"order in the played hand"
 				}
 			},
 			j_entr_canio = {
 				name = "Oinac",
 				text = {
-					"This joker gains {X:dark_edition,C:white}^#1#{} Chips",
-					"when a {C:attention}face{} card is destroyed by this joker",
-					"{C:attention}played{} playing cards are destroyed",
+					"This Joker gains {X:dark_edition,C:white}^#1#{} Chips",
+					"when a {C:attention}face{} card is destroyed by this Joker",
+					"{C:attention}Played{} playing cards are destroyed",
 					"and a card with +1 rank is drawn to the {C:attention}hand{}",
 					"{C:inactive}(Currently: {}{X:dark_edition,C:white}^#2#{} {C:inactive}Chips){}"
 				}
@@ -178,18 +178,18 @@ local decs = {
 			j_entr_burnt_m= {
 				name = "Burnt M",
 				text = {
-					"If played hand {C:attention}contains{} a pair",
-					"apply {C:dark_edition}solar{} to the first card",
-					"apply {C:dark_edition}solar{} to 1 more card for",
+					"If played hand {C:attention}contains{} a Pair",
+					"apply {C:dark_edition}Solar{} to the first card",
+					"Apply {C:dark_edition}Solar{} to 1 more card for",
 					"each {C:dark_edition}Jolly{} Joker"
 				},
 			},
 			j_entr_anaptyxi= {
 				name = "Anaptyxi",
 				text = {
-					"Scaling jokers scale as a quadratic",
-					"Scaling jokers scale all other jokers by",
-					"{X:dark_edition,C:white}X#1#{} the same amount then increase ",
+					"Scaling Jokers scale as a quadratic",
+					"Scaling Jokers scale all other Jokers by",
+					"{X:dark_edition,C:white}X#1#{} the same amount, then increase",
 					"this by {X:dark_edition,C:white}X#2#{} at the end of round",
 					"{C:inactive}(Anaptyxi exlcuded){}",
 				},
@@ -212,18 +212,18 @@ local decs = {
 			j_entr_exousia = {
 				name = "Exousia",
 				text = {
-					"{C:attention}Ascends{} all tags",
-					"Gain {C:attention}#1#{} skip tags when",
-					"any blind is selected"
+					"{C:attention}Ascends{} all Tags",
+					"Gain {C:attention}#1#{} skip Tags when",
+					"any Blind is selected"
 				}
 			},
 			j_entr_akyros = {
 				name = "Akyros",
 				text = {
-					"Joker Slots can be {C:attention}bought{}",
+					"Joker slots can be {C:attention}bought{}",
 					"for {C:gold}$#1#{} and {C:attention}sold{} for {C:gold}$#2#{}",
 					"Gain money based on how many",
-					"empty joker slots you have",
+					"empty Joker slots you have",
 					"{C:inactive}(Currently{} {X:gold,C:white}#3#{}{C:inactive}){}"
 				}
 			},
@@ -246,8 +246,8 @@ local decs = {
 			j_entr_recursive_joker = {
 				name = "Recursive Joker",
 				text = {
-					"When this Joker is {C:attention}sold{}",
-					"create a copy of this joker",
+					"When this Joker is {C:attention}sold{},",
+					"create a copy of this Joker",
 					"{C:red}Works once per round{}",
 					"{C:inactive}(Currently: #1#){}"
 				}
@@ -276,20 +276,20 @@ local decs = {
 			bl_entr_diamond_dawn = {
 				name = "Diamond Dawn",
 				text = {
-					"remove the rank and suit",
+					"Remove the rank and suit",
 					"of all discarded cards"
 				}
 			},
 			bl_entr_olive_orchard = {
 				name = "Olive Orchard",
 				text = {
-					"discarded and played cards become disavowed",
+					"Discarded and played cards become Disavowed",
 				}
 			},
 			bl_entr_citrine_comet = {
 				name = "Citrine Comet",
 				text = {
-					"selected cards destroy adjacent cards",
+					"Selected cards destroy adjacent cards",
 				}
 			},
 			bl_entr_endless_entropy_phase_one = {
@@ -310,7 +310,7 @@ local decs = {
 				name = "Nameless Nadir",
 				text = {
 					"Void subsumes you,",
-					"(Debuff leftmost joker slot,",
+					"(Debuff leftmost Joker slot,",
 					"Cant score more than #1#)"
 				}
 			},
@@ -342,16 +342,16 @@ local decs = {
 			b_entr_twisted = {
 				name = "Twisted Deck",
 				text =  {
-								"All {C:red}invertable{} consumables",
-								"are automatically {C:red}inverted{}",
+								"All {C:red}Invertable{} consumables",
+								"are automatically {C:red}Inverted{}",
 							}
 			},
 			b_entr_ccd2 = {
 				name = "Redefined Deck",
 				text =  {
 								"Every card is also a random",
-								"{C:attention}Joker{}, {C:attention}booster pack{},",
-								"{C:attention}voucher{}, or {C:attention}consumable{}"
+								"{C:attention}Joker{}, {C:attention}Booster Pack{},",
+								"{C:attention}Voucher{}, or {C:attention}consumable{}"
 							}
 			},
 			b_entr_doc = {
@@ -361,7 +361,7 @@ local decs = {
 								"up and {X:blue,C:white}Chips{} are lowered",
 								"based on how high your {X:dark_edition,C:white}Entropy{} is",
 								"Gain {X:dark_edition,C:white}Entropy{} when playing",
-								"editioned/enhanced cards, secret hands",
+								"Editioned/Enhanced cards, secret hands",
 								"or using consumables"
 							}
 			},
@@ -369,8 +369,8 @@ local decs = {
 				name = "Deck of Destiny",
 				text =  {
 					"Jokers may no longer appear naturally",
-					"Start with an {C:dark_edition}Absolute, Negative{} destiny",
-					"Cards have a higher chance to be enhanced"
+					"Start with an {C:dark_edition}Absolute, Negative{} Destiny",
+					"Cards have a higher chance to be Enhanced"
 				}
 			}
 		},
@@ -378,16 +378,16 @@ local decs = {
 			sleeve_entr_twisted = {
 				name = "Twisted Sleeve",
 				text = {
-					"All {C:red}invertable{} consumables",
-					"are automatically {C:red}inverted{}",
+					"All {C:red}Invertable{} consumables",
+					"are automatically {C:red}Inverted{}",
 				},
 			},
 			sleeve_entr_ccd2 = {
 				name = "Redefined Sleeve",
 				text = {
 					"Every card is also a random",
-					"{C:attention}Joker{}, {C:attention}booster pack{},",
-					"{C:attention}voucher{}, or {C:attention}consumable{}"
+					"{C:attention}Joker{}, {C:attention}Booster Pack{},",
+					"{C:attention}Voucher{}, or {C:attention}consumable{}"
 				},
 			},
 			sleeve_entr_doc = {
@@ -396,7 +396,7 @@ local decs = {
 					"{C:red}Beyond{} has higher chances of showing up and",
 					"{X:blue,C:white}Chips{} are lowered based on how high",
 					"your {X:dark_edition,C:white}Entropy{} is, Gain {X:dark_edition,C:white}Entropy{}",
-					"when playing editioned/enhanced cards, secret hands",
+					"when playing Editioned/Enhanced cards, secret hands",
 					"or using consumables"
 				},
 			},
@@ -406,7 +406,7 @@ local decs = {
 				name = "The Fool?",
 				text = {
 					"Reverse {C:attention}1{} selected",
-					"tarot or reverse tarot"
+					"Tarot or Reverse Tarot"
 				}
 			}
 			
@@ -424,15 +424,15 @@ local decs = {
 				name = "Trump Card",
 				text = {
 					"{C:red}Flipside{} can appear in",
-					"{C:attention}Planet{}, {C:attention}Tarot{}, and {C:attention}Code{} packs",
+					"{C:attention}Celestial{}, {C:attention}Arcana{}, and {C:attention}Program{} Packs",
 				},
 			},
 			v_entr_supersede = {
 				name = "Supersede",
 				text = {
-					"{C:red}Twisted{} booster packs have a",
+					"{C:red}Twisted{} Booster Packs have a",
 					"fixed {C:red}20%{} chance to replace",
-					"any other booster pack in the shop"
+					"any other Booster Pack in the shop"
 				},
 			},
 		},
@@ -446,21 +446,21 @@ local decs = {
 			c_entr_root_kit = {
 				name = "(~)$ rootkit",
 				text = {
-					"For the next defeated blind",
+					"For the next defeated Blind",
 					"spare hands give {C:red}$#1#{}",
 				}
 			},
 			c_entr_break = {
 				name = "(~)$ break;",
 				text = {
-					"Return to the {C:red}blind selection{} screen",
-					"The {C:red}current blind{} is still upcoming",
+					"Return to the {C:red}Blind selection{} screen",
+					"The {C:red}current Blind{} is still upcoming",
 				}
 			},
 			c_entr_interference = {
 				name = "(~)$ interference",
 				text = {
-					"{C:red}Randomizes{} {C:attention}played hands{}, {C:attention}blind size{}",
+					"{C:red}Randomizes{} {C:attention}played hands{}, {C:attention}Blind size{}",
 					"and {C:attention}payout{} for the remainder of",
 					"the {C:red}current round{}"
 				}
@@ -468,24 +468,24 @@ local decs = {
 			c_entr_fork = {
 				name = "(~)$ fork",
 				text = {
-					"create a {C:red}glitched{} copy of",
+					"create a {C:red}Glitched{} copy of",
 					"a selected {C:attention}playing card{} with",
-					"a new {C:red}random enhancement{}"
+					"a new {C:red}random Enhancement{}"
 				}
 			},
 			c_entr_push = {
 				name = "(~)$ push -f",
 				text = {
-					"{C:red}Destroy{} all held {C:attention}Jokers{} {C:red}create{} a",
-					"new {C:attention}joker{} based on their {C:red}rarities{}",
+					"{C:red}Destroy{} all held {C:attention}Jokers{}, {C:red}create{} a",
+					"new {C:attention}Joker{} based on their {C:red}rarities{}",
 					
 				}
 			},
 			c_entr_increment = {
 				name = "(~)$ increment",
 				text = {
-					"{C:red}+1{} {C:attention}Shop Slots{}",
-					"for the remainder of {C:attention}this ante{}",
+					"{C:red}+1{} {C:attention}shop slots{}",
+					"for the remainder of {C:attention}this Ante{}",
 				}
 			},
 			c_entr_decrement = {
@@ -506,13 +506,13 @@ local decs = {
 				name = "(~)$ overflow",
 				text = {
 					"{C:red}Infinite{} {C:attention}card selection limit{}",
-					"until the end of the {C:red}current blind{}",
+					"until the end of the {C:red}current Blind{}",
 				}
 			},
 			c_entr_refactor = {
 				name = "(~)$ refactor",
 				text = {
-					"Apply the {C:attention}edition of a selected",
+					"Apply the {C:attention}Edition of a selected",
 					"{C:red}Joker{} to a random {C:red}Joker{}",
 				}
 			},
@@ -520,7 +520,7 @@ local decs = {
 				name = "(~)$ ctrl+x",
 				text = {
 					"{C:red}#1#{} #2# {C:attention}card{},",
-					"{C:attention}booster{}, or {C:attention}voucher{}",
+					"{C:attention}Booster{}, or {C:attention}Voucher{}",
 					"{C:inactive}(Currently: #3#){}"
 				}
 			},
@@ -528,9 +528,9 @@ local decs = {
 				name = "(~)$ segfault",
 				text = {
 					"Create a random {C:attention}playing card{}",
-					"with a {C:red}random{} {C:attention}consumable{}, {C:attention}joker{},",
-					"{C:attention}booster pack{}, or {C:attention}voucher{} applied",
-					"as an {C:red}enhancement{}",
+					"with a {C:red}random{} {C:attention}consumable{}, {C:attention}Joker{},",
+					"{C:attention}Booster Pack{}, or {C:attention}Voucher{} applied",
+					"as an {C:red}Enhancement{}",
 					"then put it in the {C:attention}deck{}"
 				}
 			},
@@ -553,21 +553,21 @@ local decs = {
 			c_entr_new = {
 				name = "(~)$ new()",
 				text = {
-					"Adds an {C:attention}extra{} {C:red}Red Room{} blind",
-					"before the next {C:attention}upcoming{} blind",
+					"Adds an {C:attention}extra{} {C:red}Red Room{} Blind",
+					"before the next {C:attention}upcoming{} Blind",
 				}
 			},
 			c_entr_multithread = {
 				name = "(~)$ multithread",
 				text = {
-					"Create temporary {C:dark_edition}negative{} copies",
+					"Create temporary {C:dark_edition}Negative{} copies",
 					"of all {C:red}selected{} cards in {C:red}hand{}",
 				}
 			},
 			c_entr_invariant = {
 				name = "(~)$ invariant",
 				text = {
-					"Apply an {C:red}invariant{} sticker to",
+					"Apply an {C:red}Invariant{} sticker to",
 					"1 selected card in the {C:red}shop{}",
 				}
 			},
@@ -575,14 +575,14 @@ local decs = {
 				name = "(~)$ inherit",
 				text = {
 					"Convert {C:red}all{} cards with the same",
-					"{C:red}enhancement{} as 1 selected card",
-					"into a {C:red}chosen enhancement",
+					"{C:red}Enhancement{} as 1 selected card",
+					"into a {C:red}chosen Enhancement",
 				}
 			},
 			c_entr_autostart = {
 				name = "(~)$ autostart",
 				text = {
-					"Gain {C:red}#1#{} random skip tags",
+					"Gain {C:red}#1#{} random skip Tags",
 					"obtained {C:red}previously{} in the run",
 				}
 			},
@@ -590,29 +590,29 @@ local decs = {
 				name = "(~)$ quickload",
 				text = {
 					"{C:red}Retrigger{} the payout screen",
-					"with {C:red}no{} blind money",
+					"with {C:red}no{} Blind money",
 				}
 			},
 			c_entr_hotfix = {
 				name = "(~)$ hotfix",
 				text = {
-					"Apply a {C:red}hotfix{} sticker to",
+					"Apply a {C:red}Hotfix{} sticker to",
 					"1 selected card",
 				}
 			},
 			c_entr_pseudorandom = {
 				name = "(~)$ pseudorandom",
 				text = {
-					"Apply a {C:red}pseudorandom{} sticker to",
+					"Apply a {C:red}Pseudorandom{} sticker to",
 					"{C:red}all{} cards on screen",
 				}
 			},
 			c_entr_bootstrap = {
 				name = "(~)$ bootstrap",
 				text = {
-					"The final {C:blue}chips{} and {C:red}mult{} of",
+					"The final {C:blue}Chips{} and {C:red}Mult{} of",
 					"{C:red}this{} hand are applied to the",
-					"base {C:blue}chips{} and {C:red}mult{} of the next hand"
+					"base {C:blue}Chips{} and {C:red}Mult{} of the next hand"
 				}
 			},
 			c_entr_local = {
@@ -846,7 +846,7 @@ local decs = {
 					"a card of {V:1}your choice{}",
 					"then {C:inactive}destroy{} the selected card",
 					"{C:inactive}(Rare consumables and{}",
-					"{C:inactive}>=Exotic jokers excluded){}"
+					"{C:inactive}>=Exotic Jokers excluded){}"
 				}
 			},
 			c_entr_beyond = {
@@ -854,7 +854,7 @@ local decs = {
 				text = {
 					"Create a random",
 					"{V:1,E:1}Entropic {}Joker",
-					"banish all other held jokers"
+					"Banish all other held Jokers"
 				}
 			},
 			c_entr_fervour={
@@ -887,7 +887,7 @@ local decs = {
 				name = "Weld",
 				text = {
 					"Apply {C:legendary,E:1}Absolute{} and {C:dark_edition}Negative{}",
-					"to {C:attention}#1#{} selected joker",
+					"to {C:attention}#1#{} selected Joker",
 					"{C:red}#2#{} discard"
 				}
 			},
@@ -896,7 +896,7 @@ local decs = {
 				text = {
 					"{C:attention}Strip{} the suit and rank",
 					"from {C:attention}all{} cards in hand",
-					"{C:gold}$#1#{} for each chip taken"
+					"{C:gold}$#1#{} for each Chip taken"
 				}
 			},
 
@@ -945,7 +945,7 @@ local decs = {
 			c_entr_inscribe = {
 				name = "Inscribe",
 				text = {
-					"Multiply the {C:attention}base{} chips",
+					"Multiply the {C:attention}base{} Chips",
 					"of number cards in hand by {X:chips,C:white}X#1#{}",
 					"then {C:attention}debuff{} all number cards",
 					"in hand"
@@ -954,8 +954,8 @@ local decs = {
 			c_entr_siphon = {
 				name = "Siphon",
 				text = {
-					"Destroy 1 selected {C:attention}editioned{}",
-					"joker then apply the {C:attention}previous{} edition",
+					"Destroy 1 selected {C:attention}Editioned{}",
+					"Joker then apply the {C:attention}previous{} Edition",
 					"to all cards in hand",
 					"{C:inactive}(Currently: #1#){}"
 				}
@@ -964,13 +964,13 @@ local decs = {
 				name = "Changeling",
 				text = {
 					"Convert {C:attention}#1#{} cards in hand",
-					"to {C:attention}random{} editioned face cards",
+					"to {C:attention}random{} Editioned face cards",
 				}
 			},
 			c_entr_ward = {
 				name = "Ward",
 				text = {
-					"Destroy {C:attention}all{} jokers then",
+					"Destroy {C:attention}all{} Jokers then",
 					"Give {X:gold,C:white}X#1#{} their buy",
 					"value in dollars"
 				}
@@ -979,8 +979,8 @@ local decs = {
 				name = "Ichor",
 				text = {
 					"Banish a {C:attention}random{} held",
-					"{C:dark_edition}negative{} joker",
-					"{C:dark_edition}+#1#{} joker slots"
+					"{C:dark_edition}Negative{} Joker",
+					"{C:dark_edition}+#1#{} Joker slots"
 				}
 			},
 			c_entr_pact = {
@@ -1002,9 +1002,9 @@ local decs = {
 			c_entr_rejuvenate = {
 				name = "Rejuvenate",
 				text = {
-					"Add a random {C:attention}seal{},",
-					"{C:attention}enhancement{}, and {C:attention}edition{}",
-					"to 1 selected card then",
+					"Add a random {C:attention}Seal{},",
+					"{C:attention}Enhancement{}, and {C:attention}Edition{}",
+					"to 1 selected card, then",
 					"convert {C:attention}#1#{} other cards",
 					"into this card, {C:gold}#2#{}",
 				}
@@ -1012,19 +1012,19 @@ local decs = {
 			c_entr_crypt = {
 				name = "Crypt",
 				text = {
-					"Select {C:attention}#1#{} jokers",
-					"convert the {C:attention}left{} joker",
-					"into the {C:attention}right{} joker",
+					"Select {C:attention}#1#{} Jokers",
+					"convert the {C:attention}left{} Joker",
+					"into the {C:attention}right{} Joker",
 					"then {C:attention}strip{} all modifications",
 				}
 			},
 			c_entr_charm = {
 				name = "Charm",
 				text = {
-					"Apply {C:attention}astral{} and",
-					"{C:attention}eternal{} to a selected",
-					"joker then {C:attention}banish{}",
-					"a random other joker",
+					"Apply {C:attention}Astral{} and",
+					"{C:attention}Eternal{} to a selected",
+					"Joker then {C:attention}Banish{}",
+					"a random other Joker",
 				}
 			},
 			c_entr_entropy = {
@@ -1045,31 +1045,31 @@ local decs = {
 			c_entr_substitute = {
 				name = "Substitute",
 				text = {
-					"{C:attention}Unredeem{} a random voucher",
-					"and all lower tiers then redeem the next",
-					"tier of voucher"
+					"{C:attention}Unredeem{} a random Voucher",
+					"and all lower tiers, then redeem the next",
+					"tier of Voucher"
 				}
 			},
 			c_entr_evocation = {
 				name = "Evocation",
 				text = {
-					"{C:attention}Upgrade{} #1# selected jokers",
-					"rarity then destroy all other jokers",
+					"{C:attention}Upgrade{} #1# selected Jokers",
+					"rarity then destroy all other Jokers",
 					"{C:blue}#2#{} hands"
 				}
 			},
 			c_entr_mimic = {
 				name = "Mimic",
 				text = {
-					"Create a {C:attention}banana perishable{} copy",
+					"Create a {C:attention}Banana Perishable{} copy",
 					"of #1# selected cards",
 				}
 			},
 			c_entr_superego = {
 				name = "Project",
 				text = {
-					"Apply a {C:attention}projected{}",
-					"sticker to 1 selected Joker then",
+					"Apply a {C:attention}Projected{}",
+					"sticker to 1 selected Joker, then",
 					"debuff it"
 				}
 			},
@@ -1084,14 +1084,14 @@ local decs = {
 			c_entr_offering = {
 				name = "Offering",
 				text = {
-					"All Jokers become {C:attention}rental{}",
+					"All Jokers become {C:attention}Rental{}",
 					"{X:gold,C:white}X#1#{} shop costs",
 				}
 			},
 			c_entr_entomb = {
 				name = "Entomb",
 				text = {
-					"Create a {C:attention}mega{} booster pack",
+					"Create a {C:attention}Mega Booster Pack{}",
 					"corresponding to the type of #1# selected",
 					"consumable"
 				}
@@ -1099,7 +1099,7 @@ local decs = {
 			c_entr_conduct = {
 				name = "Conduct",
 				text = {
-					"Apply the {C:attention}previous{} edition",
+					"Apply the {C:attention}previous{} Edition",
 					"to adjacent cards of 1 selected card",
 					"consumable",
 					"{C:inactive}(Currently: #1#){}"
@@ -1109,8 +1109,8 @@ local decs = {
 				name = "Disavow",
 				text = {
 					"Boost cards held in {C:attention}hand{} based",
-					"on their enhancement then strip their",
-					"enhancement {C:attention}permanently{}",
+					"on their Enhancement, then strip their",
+					"Enhancement {C:attention}permanently{}",
 				}
 			},
 		},
@@ -1126,7 +1126,7 @@ local decs = {
 				name = "Destiny",
 				text = {
 					"Sacrifice 5 playing cards to craft",
-					"one joker based on their enhancements",
+					"one Joker based on their Enhancements",
 					"{C:inactive}(Currently: #1#){}"
 				}
 			},
@@ -1136,7 +1136,7 @@ local decs = {
 				name = "Entropic Stake",
 				colour = "Ascendant",
 				text = {
-					"{C:red}Entropic{} joker blind scaling",
+					"{C:red}Entropic{} Joker blind scaling",
 					"{C:red}always{} applies"
 				},
 			},
@@ -1144,7 +1144,7 @@ local decs = {
 				name = "Zenith Stake",
 				colour = "Ascendant",
 				text = {
-					"{E:1,C:red}All blinds are endless entropy{}",
+					"{E:1,C:red}All Blinds are Endless Entropy{}",
 				},
 			},
 		},
@@ -1156,9 +1156,9 @@ local decs = {
 			tag_entr_solar = {
 				name = "Solar Tag",
 				text = { 
-					"Next base edition shop",
+					"Next base Edition shop",
 					"Joker is free and",
-					"becomes {C:dark_edition}solar{}"	
+					"becomes {C:dark_edition}Solar{}"	
 				},
 			},
 			tag_entr_ascendant_rare_tag = {
@@ -1183,7 +1183,7 @@ local decs = {
 			},
 			tag_entr_ascendant_copying_tag = {
 				name = "{C:gold}Duplicate Tag{}",
-				text = { "Gives {C:attention}#1#{} copies of the", "next selected tag", "{C:inactive}(Copying tags excluded){}" },
+				text = { "Gives {C:attention}#1#{} copies of the", "next selected Tag", "{C:inactive}(Copying tags excluded){}" },
 			},
 			tag_entr_ascendant_voucher_tag = {
 				name = "{C:gold}Golden Voucher Tag{}",
@@ -1231,7 +1231,7 @@ local decs = {
 			},
 			tag_entr_ascendant_m_tag = {
 				name = "{C:gold}M Tag{}",
-				text = { "{C:attention}All{} shop items are {C:dark_edition}Joly{}", "{C:inactive}M{}" },
+				text = { "{C:attention}All{} shop items are {C:dark_edition}JolLy{}", "{C:inactive}M{}" },
 			},
 			tag_entr_ascendant_mosaic_tag = {
 				name = "{C:gold}Mosaic Tag{}",
@@ -1259,7 +1259,7 @@ local decs = {
 			},
 			tag_entr_ascendant_dog_tag = {
 				name = "{C:gold}Dog Tag{}",
-				text = { "{C:red}woof.{}", "{C:inactive}Level {C:dark_edition}#1#" },
+				text = { "{C:red}Woof.{}", "{C:inactive}Level {C:dark_edition}#1#" },
 			},
 			tag_entr_ascendant_canvas_tag = {
 				name = "{C:gold}Canvas Tag{}",
@@ -1272,7 +1272,7 @@ local decs = {
 			},
 			tag_entr_ascendant_ejoker_tag = {
 				name = "{C:gold}Buffoon Tag{}",
-				text = { "Gives a free editioned", "{C:attention}Mega Buffoon Pack{}" },
+				text = { "Gives a free Editioned", "{C:attention}Mega Buffoon Pack{}" },
 			},
 			tag_entr_ascendant_universal_tag = {
 				name = "{C:gold}Universal Tag{}",
@@ -1289,7 +1289,7 @@ local decs = {
 			},
 			tag_entr_ascendant_stock_tag = {
 				name = "{C:gold}Stock Tag{}",
-				text = {"2.5Xs your money", },
+				text = {"Multiplies your money by 2.5X", },
 			},
 			tag_entr_ascendant_blind_tag = {
 				name = "{C:gold}Blind Tag{}",
@@ -1305,7 +1305,7 @@ local decs = {
 			},
 			tag_entr_ascendant_credit_tag = {
 				name = "{C:gold}Credit Tag{}",
-				text = {"Initial cards and", "booster packs in the next", "shop are free", "rerolls start at {C:gold}-$5{}" },
+				text = {"Initial cards and", "Booster Packs in the next", "shop are free", "Rerolls start at {C:gold}-$5{}" },
 			},
 
 			tag_entr_ascendant_topup_tag = {
@@ -1343,7 +1343,7 @@ local decs = {
 			inversion_allowed = {
 				name = "Flipside",
 				text = {
-					"Can be {C:red}inverted{}"
+					"Can be {C:red}Inverted{}"
 				}
 			},
 			p_entr_twisted_pack_normal = { 
@@ -1402,7 +1402,7 @@ local decs = {
 				name = "Invariant",
 				text = {
 					"{C:attention}Cannot{} be rerolled",
-					"{C:attention}returns{} in the next",
+					"{C:attention}Returns{} in the next",
 					"round's shop"
 				}
 			},
@@ -1432,7 +1432,7 @@ local decs = {
 				text = {
 					"Create {C:attention}#1#{} copies",
 					"of this card when sold",
-					"increase every 2 rounds"
+					"Increase every 2 rounds"
 				}
 			},
 			entr_entropic_sticker = {
@@ -1473,7 +1473,7 @@ local decs = {
 			entr_pink_seal = {
 				name = "Pink Seal",
 				text = {
-					"Creates an {C:red}Inversed{}",
+					"Creates an {C:red}Inverted{}",
 					"card when discarded",
 					"and is then {C:attention}destroyed{}",
 					"{C:inactive}(Must have room){}"
@@ -1494,7 +1494,7 @@ local decs = {
 					"Create 3 {C:dark_edition}Negative{} {C:purple}Star{} cards",
 					"for played hand if this",
 					"card is {C:attention}part{}",
-					"of the poker hand",
+					"of the poker hand,",
 					"then {C:attention}destroy{}",
 					"the played hand"
 				}
@@ -1502,7 +1502,7 @@ local decs = {
 			link = {
 				name = "Linked",
 				text = {
-					"shares modifications",
+					"Shares modifications",
 					"with other cards that",
 					"share the same link",
 					"{C:inactive}(#1#){}"
@@ -1512,7 +1512,7 @@ local decs = {
 				name = "Bonus Mult",
 				text = {
 					"{X:red,C:white}X#1#{} extra",
-					"mult"
+					"Mult"
 				}
 			},
 		}
@@ -1522,7 +1522,7 @@ local decs = {
 			ach_entr_unstable_concoction = "Unstable Concoction"
 		},
 		achievement_descriptions = {
-			ach_entr_unstable_concoction = "Use define to turn obelisk into sob"
+			ach_entr_unstable_concoction = "Use define to turn Obelisk into Sob"
 		},
 		suits_plural = {
 			entr_nilsuit = "Nil",
@@ -1538,11 +1538,11 @@ local decs = {
 			k_entr_reverse_legendary = "Legendary?",
 			k_entr_zenith = "Zenith",
 			k_rtarot = "Tarot?",
-			k_rtarot_pack = "Tarot Pack?",
+			k_rtarot_pack = "Arcana Pack?",
 			b_rtarot_cards = "Tarot Cards?",
 
 			k_rcode = "Code?",
-			k_rcode_pack = "Code Pack?",
+			k_rcode_pack = "Program Pack?",
 			b_rcode_cards = "Code Cards?",
 
 			k_rspectral = "Spectral?",
@@ -1553,7 +1553,7 @@ local decs = {
 
 			k_inverted = "Inverted",
 			k_inverted_pack = "Twisted Pack",
-			b_inverted_cards = "Twisted Cards",
+			b_inverted_cards = "Inverted Cards",
 
 			entr_code_sudo = "OVERRIDE",
 			entr_code_sudo_previous = "OVERRIDE AS PREVIOUS",
@@ -1566,7 +1566,7 @@ local decs = {
 			k_saved_ruby_7 = "Thanks for playing!",
 			k_saved_ruby_8 = "",
 
-			k_entr_faster_ante_scaling = "Scale blind scores quicker if you have an Entropic joker",
+			k_entr_faster_ante_scaling = "Scale Blind scores quicker if you have an Entropic Joker",
 			k_entr_entropic_music = "Entropic Jokers (Joker in Greek by gemstonez)",
 
 			k_rplanet = "Star",
@@ -1640,7 +1640,7 @@ for i, v in pairs(decs.descriptions.Blind) do
 		name=v.name,
 		text={
 			--text,
-			{"Use to change the upcoming blind"},
+			{"Use to change the upcoming Blind"},
 		}
 	}
 end
@@ -1651,7 +1651,7 @@ for i, v in pairs(G.localization.descriptions.Blind) do
 		name=v.name,
 		text={
 			--text,
-			{"Use to change the upcoming blind"},
+			{"Use to change the upcoming Blind"},
 		}
 	}
 end
