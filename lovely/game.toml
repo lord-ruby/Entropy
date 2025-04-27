@@ -315,3 +315,14 @@ pattern = "{n=G.UIT.T, config={text = localize('ph_blind_score_at_least'), scale
 position = "at"
 payload = "{n=G.UIT.T, config={text = localize('ph_blind_score_at_least'), scale = 0.3, colour = G.C.WHITE, shadow = true, id='score_at_least'}}"
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "          G.GAME.stake > 1 and {"
+position = "before"
+payload = '''G.GAME.calculates and #G.GAME.calculates > 0 and {
+            label = localize('b_decks'),
+            tab_definition_function = G.UIDEF.bought_decks,
+            },'''
+match_indent = true

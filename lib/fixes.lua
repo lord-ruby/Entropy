@@ -892,3 +892,80 @@ function Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_
         ref(card,override,force_reset,stack,grow_type,pow_level)
     end
 end
+
+
+
+
+  function G.UIDEF.bought_decks()
+
+    local silent = false
+    local keys_used = {}
+    local area_count = 0
+    local voucher_areas = {}
+    local voucher_tables = {}
+    local voucher_table_rows = {}
+    for k, v in ipairs(G.GAME.calculates or {}) do
+      local key = 1 + math.floor((k-0.1)/2)
+      keys_used[#keys_used+1] = G.P_CENTERS[v]
+    end
+    for k, v in ipairs(keys_used) do 
+      area_count = area_count + 1
+    end
+    for k, v in ipairs(keys_used) do 
+      if next(v) then
+        if #voucher_areas == 5 or #voucher_areas == 10 then 
+          table.insert(voucher_table_rows, 
+          {n=G.UIT.R, config={align = "cm", padding = 0, no_fill = true}, nodes=voucher_tables}
+          )
+          voucher_tables = {}
+        end
+        voucher_areas[#voucher_areas + 1] = CardArea(
+            G.ROOM.T.x + 0.2*G.ROOM.T.w/2,G.ROOM.T.h,
+            (#v == 1 and 1 or 1.33)*G.CARD_W,
+            (area_count >=10 and 0.75 or 1.07)*G.CARD_H, 
+            {card_limit = 1, type = 'voucher', highlight_limit = 0})
+            local center = v
+            local card = Card(voucher_areas[#voucher_areas].T.x + voucher_areas[#voucher_areas].T.w/2, voucher_areas[#voucher_areas].T.y, G.CARD_W, G.CARD_H, nil, center, {bypass_discovery_center=true,bypass_discovery_ui=true,bypass_lock=true})
+            card.ability.order = v.order
+            card:start_materialize(nil, silent)
+            silent = true
+            voucher_areas[#voucher_areas]:emplace(card)
+        table.insert(voucher_tables, 
+        {n=G.UIT.C, config={align = "cm", padding = 0, no_fill = true}, nodes={
+          {n=G.UIT.O, config={object = voucher_areas[#voucher_areas]}}
+        }}
+        )
+      end
+    end
+    table.insert(voucher_table_rows,
+            {n=G.UIT.R, config={align = "cm", padding = 0, no_fill = true}, nodes=voucher_tables}
+          )
+  
+    
+    local t = silent and {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={
+      {n=G.UIT.R, config={align = "cm"}, nodes={
+        {n=G.UIT.O, config={object = DynaText({string = {localize('ph_decks_bought')}, colours = {G.C.UI.TEXT_LIGHT}, bump = true, scale = 0.6})}}
+      }},
+      {n=G.UIT.R, config={align = "cm", minh = 0.5}, nodes={
+      }},
+      {n=G.UIT.R, config={align = "cm", colour = G.C.BLACK, r = 1, padding = 0.15, emboss = 0.05}, nodes={
+        {n=G.UIT.R, config={align = "cm"}, nodes=voucher_table_rows},
+      }}
+    }} or 
+    {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={
+      {n=G.UIT.O, config={object = DynaText({string = {localize('ph_no_decks')}, colours = {G.C.UI.TEXT_LIGHT}, bump = true, scale = 0.6})}}
+    }}
+    return t
+  end
+  
+  
+  function CardSleeves.Sleeve.get_current_deck_key()
+    if Galdur and Galdur.config.use and Galdur.run_setup.choices.deck then
+        return Galdur.run_setup.choices.deck.effect.center.key
+    elseif G.GAME.viewed_back and G.GAME.viewed_back.effect then
+        return G.GAME.viewed_back.effect.center.key
+    elseif G.GAME.selected_back and G.GAME.selected_back.effect then
+        return G.GAME.selected_back.effect.center.key
+    end
+    return "b_red"
+end

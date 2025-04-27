@@ -1585,6 +1585,9 @@ local decs = {
 
 			ph_blind_score_less_than="Score less than",
 			entr_nadir_placeholder = "3X Base",
+
+			ph_no_decks = "No decks bought this run",
+			ph_decks_bought = "Decks bought this run"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

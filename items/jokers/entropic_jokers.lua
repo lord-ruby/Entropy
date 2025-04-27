@@ -511,11 +511,11 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
     if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi"))) and not forced_key then
         local center = pseudorandom_element(G.P_CENTERS, pseudoseed("chaos"))
         if next(find_joker("j_entr_chaos")) and not next(find_joker("j_entr_parakmi")) then
-            while not center.set or Entropy.ChaosBlacklist[center.set] do
+            while not center.set or Entropy.ChaosBlacklist[center.set] or Entropy.ChaosBlacklist[center.key] do
                 center = pseudorandom_element(G.P_CENTERS, pseudoseed("chaos"))
             end
         end 
-        while not center.set or Entropy.ParakmiBlacklist[center.set] do
+        while not center.set or Entropy.ParakmiBlacklist[center.set] or Entropy.ParakmiBlacklist[center.key] do
             center = pseudorandom_element(G.P_CENTERS, pseudoseed("chaos"))
         end
         _type = Entropy.ChaosConversions[center.set] or center.set or _type
