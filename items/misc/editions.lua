@@ -107,7 +107,7 @@ SMODS.Edition({
 						nil,
 						{ message = localize("cry_demicolon"), colour = G.C.GREEN }
 					)
-				elseif v.base.id then
+				elseif v.base.id and (not v.edition or v.edition.key ~= "e_entr_fractured") then
 					local results = eval_card(v, {cardarea=G.play,main_scoring=true})
 					if results then
 						for i, v in pairs(results) do
@@ -120,7 +120,7 @@ SMODS.Edition({
 							end
 						end
 					end
-					local results = eval_card(v, {cardarea=G.hand,after=true})
+					local results = eval_card(v, {cardarea=G.hand,main_scoring=true})
 					if results then
 						for i, v in pairs(results) do
 							for i2, result in pairs(v) do
