@@ -876,7 +876,7 @@ SMODS.Tag {
 			local lock = tag.ID
 			G.CONTROLLER.locks[lock] = true
 			tag:yep("+", G.C.SECONDARY_SET.Spectral, function()
-				local key = "p_entr_reference"
+				local key = "p_entr_reference_pack"
 				local card = Card(
 					G.play.T.x + G.play.T.w / 2 - G.CARD_W * 1.27 / 2,
 					G.play.T.y + G.play.T.h / 2 - G.CARD_H * 1.27 / 2,
