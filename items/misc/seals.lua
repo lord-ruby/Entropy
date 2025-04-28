@@ -172,6 +172,11 @@ SMODS.Seal({
                 G.consumeables:emplace(c)
             end
         end
+        if context.forcetrigger then
+            local c = create_card("Consumables", G.consumeables, nil, nil, nil, nil, key) 
+            c:add_to_deck()
+            G.consumeables:emplace(c)
+        end
     end,
 })
 
@@ -182,6 +187,9 @@ SMODS.Seal({
     badge_colour = HEX("84a5b7"),
     calculate = function(self, card, context)
 		if context.cardarea == "unscored" and context.main_scoring then
+            ease_dollars(4)
+        end
+        if context.forcetrigger then
             ease_dollars(4)
         end
     end,
@@ -208,6 +216,11 @@ SMODS.Seal({
                 G.consumeables:emplace(c)
             end
         end
+        if context.forcetrigger then
+            local c = create_card("Twisted", G.consumeables, nil, nil, true, true, nil, "twisted") 
+            c:add_to_deck()
+            G.consumeables:emplace(c)
+        end
     end,
 })
 
@@ -229,6 +242,13 @@ SMODS.Seal({
                     G.consumeables:emplace(c)
                 end
             end
+        end
+        if context.forcetrigger then
+            local key = pseudorandom_element(Entropy.FlipsideInversions, pseudoseed("verdant"))
+            while G.P_CENTERS[key].set ~= "RCode" do key = pseudorandom_element(Entropy.FlipsideInversions, pseudoseed("verdant")) end
+            local c = create_card("Consumables", G.consumeables, nil, nil, nil, nil, key) 
+            c:add_to_deck()
+            G.consumeables:emplace(c)
         end
     end,
 })
@@ -264,6 +284,26 @@ SMODS.Seal({
             local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
             G.FUNCS.get_poker_hand_info(G.play.cards)
             for i, v in pairs(scoring_hand) do v.ability.temporary2 = true end
+        end
+        if context.forcetrigger then
+            local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
+            G.FUNCS.get_poker_hand_info(G.play.cards)
+            local pkey = "pluto"
+            for i, v in pairs(Entropy.ReversePlanets) do
+                if v.name == text then pkey = v.key end
+            end
+            local key = "c_entr_"..pkey
+            for i = 1, 3 do
+                local c = create_card("Consumables", G.consumeables, nil, nil, nil, nil, key) 
+                c:set_edition({
+                    negative=true,
+                    key="e_negative",
+                    card_limit=1,
+                    type="negative"
+                })
+                card:add_to_deck()
+                G.consumeables:emplace(c)
+            end
         end
     end,
 })
