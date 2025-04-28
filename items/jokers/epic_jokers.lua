@@ -118,7 +118,10 @@ SMODS.Joker({
         if context.after then
             card.ability.suit = pseudorandom_element(G.deck.cards, pseudoseed("dni")).base.suit
         end
-    end
+    end,
+    entr_credits = {
+        art = {"cassknows"}
+    }
 })
 
 SMODS.Joker({
