@@ -949,12 +949,13 @@ SMODS.Joker({
             local ratio = 2-(#G.jokers.cards/G.jokers.config.card_limit)
             local amount = {math.max(-1+math.floor(math.log(G.jokers.config.card_limit/10)), -1), card.ability.base*ratio}
             local actual = G.GAME.dollars
-            local fac = (1/(amount[1]+1)) ^ 3.75
+            local fac = (1/(amount[1]+1.05)) ^ 3.75
+            if to_big(fac) > to_big(2) then fac = 2 end
             return {
                 vars = {
                     card.ability.buycost,
                     card.ability.sellcost,
-                    Entropy.FormatArrowMult(amount[1],amount[2]*fac)
+                    Entropy.FormatArrowMult(amount[1],amount[2]*fac+1)
                 }
             }
         end
@@ -970,8 +971,9 @@ SMODS.Joker({
         if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
             local ratio = 2-(#G.jokers.cards/G.jokers.config.card_limit)
             local amount = {math.max(-1+math.floor(math.log(G.jokers.config.card_limit/10)), -1), card.ability.base*ratio}
-            local fac = (1/(amount[1]+1)) ^ 3.75
-            amount[2] = amount[2]*fac
+            local fac = (1/(amount[1]+1.05)) ^ 3.75
+            if to_big(fac) > to_big(2) then fac = 2 end
+            amount[2] = amount[2]*fac+1
             local actual = 0
             if amount[1] <= -0.9 then 
                 actual = (G.GAME.dollars + amount[2]) - G.GAME.dollars
