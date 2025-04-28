@@ -685,7 +685,7 @@ function Entropy.RegisterBlinds()
                     card.children.floating_sprite.states.click.can = false
                 end,
                 set_badges = function(self, card, badges)
-                    badges[#badges+1] = create_badge(v.original_mod.name, v.original_mod.badge_colour, G.C.WHITE, 1 )
+                    if v.original_mod then badges[#badges+1] = create_badge(v.original_mod.name, v.original_mod.badge_colour, G.C.WHITE, 1 ) end
                 end,
             })
         end

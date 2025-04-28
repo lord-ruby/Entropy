@@ -97,67 +97,7 @@ SMODS.Edition({
 			context.main_scoring
 			and context.cardarea == G.play
 		) then
-			local res = { }
-			local cards = Entropy.GetRandomCards({G.jokers, G.hand, G.consumeables, G.play}, card and card.edition and card.edition.retrig or 3, "fractured", function(card) return not card.edition or card.edition.key ~= "e_entr_fractured" end)
-			for i, v in pairs(cards) do
-				if Cryptid.demicolonGetTriggerable(v) and (not v.edition or v.edition.key ~= "e_entr_fractured") then
-					local results = Cryptid.forcetrigger(v, context)
-					if results then
-						for i, v in pairs(results) do
-							for i2, result in pairs(v) do
-								if type(result) == "number" or (type(result) == "table" and result.tetrate) then
-									res[i2] = Entropy.StackEvalReturns(res[i2], result, i2)
-								else
-									res[i2] = result
-								end
-							end
-						end
-					end
-					card_eval_status_text(
-						v,
-						"extra",
-						nil,
-						nil,
-						nil,
-						{ message = localize("cry_demicolon"), colour = G.C.GREEN }
-					)
-				elseif v.base.id and (not v.edition or v.edition.key ~= "e_entr_fractured") then
-					local results = eval_card(v, {cardarea=G.play,main_scoring=true, forcetrigger=true})
-					if results then
-						for i, v in pairs(results) do
-							for i2, result in pairs(v) do
-								if type(result) == "number" or (type(result) == "table" and result.tetrate) then
-									res[i2] = Entropy.StackEvalReturns(res[i2], result, i2)
-								else
-									res[i2] = result
-								end
-							end
-						end
-					end
-					local results = eval_card(v, {cardarea=G.hand,main_scoring=true, forcetrigger=true})
-					if results then
-						for i, v in pairs(results) do
-							for i2, result in pairs(v) do
-								if type(result) == "number" or (type(result) == "table" and result.tetrate) then
-									res[i2] = Entropy.StackEvalReturns(res[i2], result, i2)
-								else
-									res[i2] = result
-								end
-							end
-						end
-					end
-					card_eval_status_text(
-						v,
-						"extra",
-						nil,
-						nil,
-						nil,
-						{ message = localize("cry_demicolon"), colour = G.C.GREEN }
-					)
-				end
-			end
-			if res.p_dollars then ease_dollars(res.p_dollars) end
-			return res
+			Entropy.RandomForcetrigger(card, card and card.edition and card.edition.retrig or 3)
 		end
 	end,
 	entr_credits = {

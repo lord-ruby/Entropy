@@ -251,7 +251,15 @@ local decs = {
 					"{C:red}Works once per round{}",
 					"{C:inactive}(Currently: #1#){}"
 				}
-			}
+			},
+			j_entr_trapezium_cluster = {
+				name = "Trapezium Cluster",
+				text = {
+					"Other {C:dark_edition}Fractured{} cards",
+					"each force-trigger {C:dark_edition}#1#{}",
+					"random cards"
+				},
+			},
 		},
 		Blind = {
 			bl_entr_red = {

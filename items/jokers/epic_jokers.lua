@@ -120,3 +120,78 @@ SMODS.Joker({
         end
     end
 })
+
+SMODS.Joker({
+    key = "trapezium_cluster",
+    name="entr-trapezium_cluster",
+    config = {
+        forcetrigger=5
+    },
+    rarity = "cry_epic",
+    cost = 10,
+    unlocked = true,
+
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 4, y = 0 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    loc_vars = function(self, info_queue, center)
+        if not center.edition or (center.edition and not center.edition.retrig) then
+			info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_fractured
+		end
+        return {
+            vars = {
+                number_format(center.ability.forcetrigger)
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+        --if forcetrigger > 30 then forcetrigger = 30 end
+		if
+			(context.other_joker
+			and context.other_joker.edition
+			and context.other_joker.edition.retrig
+			and card ~= context.other_joker)
+		then
+			if not Talisman.config_file.disable_anims then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						context.other_joker:juice_up(0.5, 0.5)
+						return true
+					end,
+				}))
+			end
+            return Entropy.RandomForcetrigger(card, card and card.ability.forcetrigger or 5)
+		end
+		if context.individual and context.cardarea == G.play then
+			if context.other_card.edition and context.other_card.edition.retrig then
+				return {
+					asc = lenient_bignum(card.ability.asc),
+					colour = G.C.MULT,
+					card = card,
+				}
+			end
+		end
+		if
+			(context.individual
+			and context.cardarea == G.hand
+			and context.other_card.edition
+			and context.other_card.edition.retrig
+			and not context.end_of_round)
+		then
+			if context.other_card.debuff then
+				return {
+					message = localize("k_debuffed"),
+					colour = G.C.RED,
+					card = card,
+				}
+			else
+                return Entropy.RandomForcetrigger(card, card and card.ability.forcetrigger or 5)
+			end
+		end
+        if context.forcetrigger then
+            return Entropy.RandomForcetrigger(card, card and card.ability.forcetrigger or 5)
+        end
+	end
+})
