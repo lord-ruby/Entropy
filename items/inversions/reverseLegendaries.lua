@@ -375,7 +375,7 @@ SMODS.Joker({
     key = "membership",
     config = {
         x_asc_mod = 1,
-        num = 16
+        num = 34
     },
     rarity = "entr_reverse_legendary",
     cost = 20,
@@ -396,7 +396,7 @@ SMODS.Joker({
         }
     end,
     calculate = function (self, card, context)
-       if context.joker_main then
+       if context.joker_main or context.forcetrigger then
             return {
                 asc = 1+card.ability.num*card.ability.x_asc_mod
             }
