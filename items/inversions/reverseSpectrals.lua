@@ -892,11 +892,12 @@ function Card:is_suit(suit, bypass_debuff, flush_calc)
        return is_suitref(self, suit, bypass_debuff, flush_calc)
     end
 end
+local ref = Card.get_id
 function Card:get_id()
     if (self.ability.effect == 'Stone Card' and not self.vampired) or self.base.value == "entr_nilrank" then
         return -math.random(100, 1000000)
     end
-    return self.base.id
+    return ref(self)
 end
 SMODS.Consumable({
     key = "cleanse",
