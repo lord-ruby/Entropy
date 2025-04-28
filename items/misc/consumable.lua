@@ -896,5 +896,7 @@ SMODS.Consumable({
             card.ability.limit
         }}
     end,
-    weight = 0
+    entr_credits = {
+        art = {"cassknows"}
+    }
 })
