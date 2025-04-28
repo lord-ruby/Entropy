@@ -1239,7 +1239,7 @@ SMODS.Consumable({
         end)
     end,
     can_use = function(self, card)
-        return Entropy.GetHighlightedCards({G.hand}, {["c_entr_mimic"]=true}) == card.ability.num
+        return Entropy.GetHighlightedCards({G.hand}, {["c_entr_engulf"]=true}) == card.ability.num
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] =  G.P_CENTERS.e_entr_solar
