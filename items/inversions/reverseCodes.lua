@@ -2013,7 +2013,9 @@ function GetSelectedCards()
 end
 local matref = Card.set_ability
 function Card:set_ability(center, initial, delay_sprites)
-    if initial and self.config and self.config.center and G.GAME.DefineKeys and G.GAME.DefineKeys[self.config.center.key] and not G.GAME.DefineKeys[self.config.center.key].playing_card and center.set ~= "Default" and center.set ~= "Enhanced"
+    if G.SETTINGS.paused then             matref(self, center or {}, initial, delay_sprites)
+
+    elseif initial and self.config and self.config.center and G.GAME.DefineKeys and G.GAME.DefineKeys[self.config.center.key] and not G.GAME.DefineKeys[self.config.center.key].playing_card and center.set ~= "Default" and center.set ~= "Enhanced"
         then
             matref(self, G.P_CENTERS[G.GAME.DefineKeys[self.config.center.key]], initial, delay_sprites)
             if G.GAME.DefineKeys[self.config.center.key] and G.P_CENTERS[G.GAME.DefineKeys[self.config.center.key]] and G.P_CENTERS[G.GAME.DefineKeys[self.config.center.key]].set == "Booster" then
@@ -2032,7 +2034,7 @@ local baseref = Card.set_base
 function Card:set_base(card, initial)
     baseref(self, card, initial)
     local s = self.base and self.base.name or ""
-    if not self.area or not self.area.config.collection then
+    if (not self.area or not self.area.config.collection) and not G.SETTINGS.paused then
         if G.GAME.DefineKeys and G.GAME.DefineKeys[s] and not G.GAME.DefineKeys[s].playing_card then
             if self.config and self.config.center and G.GAME.DefineKeys and G.GAME.DefineKeys[s] and (initial or not G.VIEWING_DECK) and G.P_CENTERS[G.GAME.DefineKeys[s]] then
                 matref(self, G.P_CENTERS[G.GAME.DefineKeys[s]] or {}, initial, false)
@@ -2047,7 +2049,7 @@ function CardArea:emplace(card, location, stay_flipped)
     card = card or {}
     local s = self.base and self.base.name or ""
     local key = G.GAME.DefineKeys and (G.GAME.DefineKeys[s] or G.GAME.DefineKeys[card.config.center.key])
-    if self.config.collection then
+    if self.config.collection or G.SETTINGS.paused then
         emplace(self, card,location,stay_flipped)
     else
         if G.GAME.DefineKeys and key and key.playing_card and self.config.type ~= "play" then

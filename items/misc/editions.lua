@@ -97,7 +97,7 @@ SMODS.Edition({
 			context.main_scoring
 			and context.cardarea == G.play
 		) then
-			Entropy.RandomForcetrigger(card, card and card.edition and card.edition.retrig or 3)
+			return Entropy.RandomForcetrigger(card, card and card.edition and card.edition.retrig or 3)
 		end
 	end,
 	entr_credits = {

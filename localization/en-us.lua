@@ -1620,7 +1620,12 @@ local decs = {
 			entr_nadir_placeholder = "3X Base",
 
 			ph_no_decks = "No decks bought this run",
-			ph_decks_bought = "Decks bought this run"
+			ph_decks_bought = "Decks bought this run",
+
+			ph_cards_defined = "Redefinitions this run",
+			ph_definitions = "No redefinitions this run", 
+			ph_leftright = "The left card always converts to the right card",
+			b_definitions = "Definitions"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

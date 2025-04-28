@@ -412,12 +412,10 @@ G.FUNCS.define_apply = function()
                         }
                     end
                     if card then card:start_dissolve() end
-                    if G.GAME.DefineKeys[card.config.center.key] then
-                        G.CHOOSE_CARD:remove()
-                        G.GAME.USING_CODE = false
-                        G.GAME.USING_DEFINE = false
-                        G.DEBUG_DEFINE = false
-                    end
+                    G.CHOOSE_CARD:remove()
+                     G.GAME.USING_CODE = false
+                    G.GAME.USING_DEFINE = false
+                    G.DEBUG_DEFINE = false
                 end
 
     end
