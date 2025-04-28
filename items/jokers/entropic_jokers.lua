@@ -933,7 +933,7 @@ SMODS.Joker({
     config = {
         buycost = 20,
         sellcost = 20,
-        base = 15,
+        base = 2,
         extra = {
 			slots = 4,
 		},
@@ -950,7 +950,7 @@ SMODS.Joker({
             local amount = {math.max(-1+math.floor(math.log(G.jokers.config.card_limit/10)), -1), card.ability.base*ratio}
             local actual = G.GAME.dollars
             local fac = (1/(amount[1]+1.05)) ^ 3.75
-            if to_big(fac) > to_big(2) then fac = 2 end
+            if to_big(fac) > to_big(3) then fac = 3 end
             return {
                 vars = {
                     card.ability.buycost,
@@ -963,7 +963,7 @@ SMODS.Joker({
             vars = {
                 card.ability.buycost,
                 card.ability.sellcost,
-                "$15"
+                "+15"
             }
         }
     end,
@@ -982,6 +982,7 @@ SMODS.Joker({
             else
                 actual = (to_big(G.GAME.dollars):arrow(amount[1],to_big(amount[2]))) - G.GAME.dollars
             end
+            ease_dollars(actual)
         end
     end,
     remove_from_deck = function()
