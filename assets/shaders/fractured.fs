@@ -157,8 +157,8 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
         cos(length(field_part3) / 27.193) * sin(field_part3.x / 21.92) ))/2.;
 
 	float t2 = t/250.0; // animation speed
-	const int TileC = 120; // tile count
-	float fracOff = 15; //offset of fractures
+	const int TileC = 20; // tile count
+	float fracOff = 10; //offset of fractures
 
 
 	float light = 0;

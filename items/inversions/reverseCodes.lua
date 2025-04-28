@@ -883,7 +883,7 @@ function end_round()
                         end
                     end
                     if card.ability.temporary or card.ability.temporary2 then
-                        card.states.visible = false
+                        if card.area ~= G.hand and card.area ~= G.play and card.area ~= G.jokers and card.area ~= G.consumeables then card.states.visible = false end
                         card:start_dissolve()
                     end
                     if card.ability.superego then

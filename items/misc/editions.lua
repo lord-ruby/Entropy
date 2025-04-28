@@ -75,15 +75,29 @@ SMODS.Edition({
     loc_vars = function(self,q,card)
         return {vars={card and card.edition and card.edition.retrig or 3}}
     end,
+	draw = function(self, card, layer)
+		card.children.center:draw_shader(G.P_CENTERS.e_entr_fractured.shader, nil, card.ARGS.send_to_shader)
+		if card.children.front and card.ability.effect ~= 'Stone Card' and not card.config.center.replace_base_card then
+			card.children.front:draw_shader("dissolve")
+		end
+	end,
     calculate = function(self, card, context)
+		if context.joker_main then
+			card.config.trigger = true
+		end
+
+		if context.after then
+			card.config.trigger = nil
+		end
 		if (
 			context.edition
 			and context.cardarea == G.jokers
+			and card.config.trigger
 		) or (
 			context.main_scoring
 			and context.cardarea == G.play
 		) then
-			local res = { message = localize("cry_demicolon") }
+			local res = { }
 			local cards = Entropy.GetRandomCards({G.jokers, G.hand, G.consumeables, G.play}, card and card.edition and card.edition.retrig or 3, "fractured", function(card) return not card.edition or card.edition.key ~= "e_entr_fractured" end)
 			for i, v in pairs(cards) do
 				if Cryptid.demicolonGetTriggerable(v) and (not v.edition or v.edition.key ~= "e_entr_fractured") then
@@ -108,7 +122,7 @@ SMODS.Edition({
 						{ message = localize("cry_demicolon"), colour = G.C.GREEN }
 					)
 				elseif v.base.id and (not v.edition or v.edition.key ~= "e_entr_fractured") then
-					local results = eval_card(v, {cardarea=G.play,main_scoring=true})
+					local results = eval_card(v, {cardarea=G.play,main_scoring=true, forcetrigger=true})
 					if results then
 						for i, v in pairs(results) do
 							for i2, result in pairs(v) do
@@ -120,7 +134,7 @@ SMODS.Edition({
 							end
 						end
 					end
-					local results = eval_card(v, {cardarea=G.hand,main_scoring=true})
+					local results = eval_card(v, {cardarea=G.hand,main_scoring=true, forcetrigger=true})
 					if results then
 						for i, v in pairs(results) do
 							for i2, result in pairs(v) do
@@ -142,6 +156,7 @@ SMODS.Edition({
 					)
 				end
 			end
+			if res.p_dollars then ease_dollars(res.p_dollars) end
 			return res
 		end
 	end,
