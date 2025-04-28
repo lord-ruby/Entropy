@@ -958,14 +958,15 @@ end
     return t
   end
   
-  
-  function CardSleeves.Sleeve.get_current_deck_key()
-    if Galdur and Galdur.config.use and Galdur.run_setup.choices.deck then
-        return Galdur.run_setup.choices.deck.effect.center.key
-    elseif G.GAME.viewed_back and G.GAME.viewed_back.effect then
-        return G.GAME.viewed_back.effect.center.key
-    elseif G.GAME.selected_back and G.GAME.selected_back.effect then
-        return G.GAME.selected_back.effect.center.key
+if CardSleeves then
+    function CardSleeves.Sleeve.get_current_deck_key()
+        if Galdur and Galdur.config.use and Galdur.run_setup.choices.deck then
+            return Galdur.run_setup.choices.deck.effect.center.key
+        elseif G.GAME.viewed_back and G.GAME.viewed_back.effect then
+            return G.GAME.viewed_back.effect.center.key
+        elseif G.GAME.selected_back and G.GAME.selected_back.effect then
+            return G.GAME.selected_back.effect.center.key
+        end
+        return "b_red"
     end
-    return "b_red"
 end
