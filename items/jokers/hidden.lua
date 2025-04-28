@@ -66,7 +66,46 @@ function Entropy.RegisterZenithSkin(key, atlas, pos, soul_pos, loc_vars,rare_col
         rare_color = rare_color
     }
 end
-Entropy.RegisterZenithSkin()
+if not SMODS.Mods.jen or not SMODS.Mods.jen.can_load then
+    Entropy.RegisterZenithSkin()
+else
+    SMODS.Joker{
+        key = "ruby_jens",
+        rarity = "entr_hyper_exotic",
+        cost = 20,
+        atlas = atlas or "ruby",
+        soul_pos = soul_pos or { x = 1, y = 0},
+        blueprint_compat = true,
+        eternal_compat = true,
+        pos = pos or { x = 0, y = 0 },
+        config = {
+            pentation = 6.66
+        },
+        loc_vars = loc_vars or function(self, info_queue, card)
+            return {
+                vars = {
+                    card.ability.pentation
+                }
+            }
+        end,
+        add_to_deck = function()
+        end,
+        calculate = function (self, card, context)
+            if context.cardarea == G.play and not context.repetition then
+                if context.other_card and context.other_card.config.center.key == "m_cry_light" then
+                    return {
+                        hypermult_mod = {
+                            3,
+                            card.ability.pentation
+                        },
+                        message =   '^^^'..number_format(card.ability.pentation)..'Mult',
+                        colour = { 0.8, 0.45, 0.85, 1 },
+                    }
+                end
+            end
+        end,
+    }
+end
 local update_ref = Game.update
 local check_dt = 0
 function Game:update(dt)

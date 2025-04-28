@@ -260,6 +260,16 @@ local decs = {
 					"random cards"
 				},
 			},
+			j_entr_ruby_jens = {
+				name = "Ruby",
+				text = {
+					"Scored {C:attention}Light{} cards give",
+					"{X:black,C:red,s:3}^^^#1#{C:purple} Chips & Mult{}",
+					'{C:caption,s:0.7,E:1}Don\'t you know, Hope is the strongest aspect{}',
+					'{C:dark_edition,s:0.7,E:2}Floating sprite by : lord.ruby{}',
+					'{C:cry_exotic,s:0.7,E:2}Origin : UTOPIA{}'
+				}
+			}
 		},
 		Blind = {
 			bl_entr_red = {

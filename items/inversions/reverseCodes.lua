@@ -843,7 +843,7 @@ local editions = ({
     ["e_cry_m"] = 1.45
 })
 function CanCreateRuby()
-    if G.GAME.TESTCOND then return true end
+    if SMODS.Mods.jen and SMODS.Mods.jen.can_load then return false end
     local has_all_exotics = true
     for i, v in pairs(G.P_CENTERS) do
         if v.rarity == "cry_exotic" or v.rarity == "entr_hyper_exotic" then
