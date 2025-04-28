@@ -238,43 +238,48 @@ end
 local upd = Game.update
 local anim_timer2 = 0
 entr_define_dt = 0
+local cdt = 0
 function Game:update(dt)
     upd(self, dt)
-    anim_timer2 = anim_timer2 + dt/2.0
-	local anim_timer = math.floor(anim_timer2)
-	local p = anim_timer2 - anim_timer
-    G.C.ENTR_HYPER_EXOTIC = {0,0,0,0}
-    G.C.ENTR_REVERSE_LEGENDARY = {0,0,0,0}
-    G.C.ENTR_ZENITH = {0,0,0,0}
-    local num = 5
-    local num2 = 12
-    if G.C.Entropy.HYPER_EXOTIC and G.C.Entropy.HYPER_EXOTIC[anim_timer%num+1] then
-        local col1 = G.C.Entropy.HYPER_EXOTIC[anim_timer%num+1]
-        local col2 = G.C.Entropy.HYPER_EXOTIC[(anim_timer+1)%num+1]
-        for i = 1, 4 do     
-            G.C.ENTR_HYPER_EXOTIC[i] = col1[i]*(1-p) + col2[i]* p
-        end
-        G.C.RARITY["entr_hyper_exotic"] = G.C.ENTR_HYPER_EXOTIC
-    end
-    if G.C.Entropy.REVERSE_LEGENDARY and G.C.Entropy.REVERSE_LEGENDARY[anim_timer%num+1] then
-        local col12 = G.C.Entropy.REVERSE_LEGENDARY[anim_timer%num+1]
-        local col22 = G.C.Entropy.REVERSE_LEGENDARY[(anim_timer+1)%num+1]
-        if col22 then
+    cdt = cdt + dt
+    if cdt > 0.01 then
+        anim_timer2 = anim_timer2 + dt/2.0
+        local anim_timer = math.floor(anim_timer2)
+        local p = anim_timer2 - anim_timer
+        G.C.ENTR_HYPER_EXOTIC = {0,0,0,0}
+        G.C.ENTR_REVERSE_LEGENDARY = {0,0,0,0}
+        G.C.ENTR_ZENITH = {0,0,0,0}
+        local num = 5
+        local num2 = 12
+        if G.C.Entropy.HYPER_EXOTIC and G.C.Entropy.HYPER_EXOTIC[anim_timer%num+1] then
+            local col1 = G.C.Entropy.HYPER_EXOTIC[anim_timer%num+1]
+            local col2 = G.C.Entropy.HYPER_EXOTIC[(anim_timer+1)%num+1]
             for i = 1, 4 do     
-                G.C.ENTR_REVERSE_LEGENDARY[i] = col12[i]*(1-p) + col22[i]* p
+                G.C.ENTR_HYPER_EXOTIC[i] = col1[i]*(1-p) + col2[i]* p
             end
+            G.C.RARITY["entr_hyper_exotic"] = G.C.ENTR_HYPER_EXOTIC
         end
-        G.C.RARITY["entr_reverse_legendary"] = G.C.ENTR_REVERSE_LEGENDARY
-    end
-    if G.C.Entropy.ZENITH and G.C.Entropy.ZENITH[anim_timer%num2+1] then
-        local col122 = G.C.Entropy.ZENITH[anim_timer%num2+1]
-        local col222 = G.C.Entropy.ZENITH[(anim_timer+1)%num2+1]
-        if col222 then
-            for i = 1, 4 do     
-                G.C.ENTR_ZENITH[i] = col122[i]*(1-p) + col222[i]* p
+        if G.C.Entropy.REVERSE_LEGENDARY and G.C.Entropy.REVERSE_LEGENDARY[anim_timer%num+1] then
+            local col12 = G.C.Entropy.REVERSE_LEGENDARY[anim_timer%num+1]
+            local col22 = G.C.Entropy.REVERSE_LEGENDARY[(anim_timer+1)%num+1]
+            if col22 then
+                for i = 1, 4 do     
+                    G.C.ENTR_REVERSE_LEGENDARY[i] = col12[i]*(1-p) + col22[i]* p
+                end
             end
+            G.C.RARITY["entr_reverse_legendary"] = G.C.ENTR_REVERSE_LEGENDARY
         end
-        G.C.RARITY["entr_zenith"] = G.C.ENTR_ZENITH
+        if G.C.Entropy.ZENITH and G.C.Entropy.ZENITH[anim_timer%num2+1] then
+            local col122 = G.C.Entropy.ZENITH[anim_timer%num2+1]
+            local col222 = G.C.Entropy.ZENITH[(anim_timer+1)%num2+1]
+            if col222 then
+                for i = 1, 4 do     
+                    G.C.ENTR_ZENITH[i] = col122[i]*(1-p) + col222[i]* p
+                end
+            end
+            G.C.RARITY["entr_zenith"] = G.C.ENTR_ZENITH
+        end
+        cdt = 0
     end
     entr_define_dt = entr_define_dt + dt
     if G.P_CENTERS and G.P_CENTERS.c_entr_define and entr_define_dt > 0.5 then
@@ -726,6 +731,14 @@ local entrConfigTab = function()
 		active_colour = HEX("40c76d"),
 		ref_table = Entropy.config,
 		ref_value = "entropic_music",
+		callback = function()
+        end,
+	})
+    entr_nodes[#entr_nodes + 1] = create_toggle({
+		label = localize("k_entr_blind_tokens"),
+		active_colour = HEX("40c76d"),
+		ref_table = Entropy.config,
+		ref_value = "blind_tokens",
 		callback = function()
         end,
 	})

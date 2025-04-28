@@ -669,28 +669,33 @@ end
 
 local upd = Game.update
 local ee2dt = 0
+local cdt = 0
 function Game:update(dt)
 	upd(self, dt)
-	if G.jokers and G.GAME.blind and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_two" then
-		local dtmod = math.min(G.SETTINGS.GAMESPEED, 4)/2+0.5
-		ee2dt = ee2dt + dt*dtmod
-		if ee2dt > 1 then
-			for i, v in pairs(G.jokers.cards) do
-                if not Card.no(G.jokers.cards[i], "immutable", true) then
-                    Cryptid.misprintize(G.jokers.cards[i], { min=0.975,max=0.975 }, nil, true)
-                end
+	cdt = cdt + dt
+	if cdt > 0.01 then
+		if G.jokers and G.GAME.blind and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_two" then
+			local dtmod = math.min(G.SETTINGS.GAMESPEED, 4)/2+0.5
+			ee2dt = ee2dt + dt*dtmod
+			if ee2dt > 1 then
+				for i, v in pairs(G.jokers.cards) do
+					if not Card.no(G.jokers.cards[i], "immutable", true) then
+						Cryptid.misprintize(G.jokers.cards[i], { min=0.975,max=0.975 }, nil, true)
+					end
+				end
+				ee2dt = ee2dt - 1
 			end
-			ee2dt = ee2dt - 1
 		end
-	end
-	if G.jokers and G.GAME.blind and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" then
-		G.HUD_blind:get_UIE_by_ID("score_at_least").config.text = localize("ph_blind_score_less_than")
-		for i, v in pairs(G.jokers.cards) do
-			v.debuff = false
+		if G.jokers and G.GAME.blind and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" then
+			G.HUD_blind:get_UIE_by_ID("score_at_least").config.text = localize("ph_blind_score_less_than")
+			for i, v in pairs(G.jokers.cards) do
+				v.debuff = false
+			end
+			if G.jokers.cards[1] then
+				G.jokers.cards[1].debuff = true
+			end
 		end
-		if G.jokers.cards[1] then
-			G.jokers.cards[1].debuff = true
-		end
+		cdt = 0
 	end
 end
 

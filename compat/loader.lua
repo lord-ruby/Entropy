@@ -19,7 +19,9 @@ local loadmodsref = SMODS.injectItems
 function SMODS.injectItems(...)
     LoadCompatibilities()
     Entropy.FlipsidePureInversions = copy_table(Entropy.FlipsideInversions)
-    Entropy.RegisterBlinds()
+    if Entropy.config.blind_tokens then
+        Entropy.RegisterBlinds()
+    end
     loadmodsref(...)
     SMODS.ObjectType({
         key = "Twisted",
