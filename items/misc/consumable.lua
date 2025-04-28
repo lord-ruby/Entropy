@@ -501,8 +501,44 @@ local G_UIDEF_use_and_sell_buttons_ref = G.UIDEF.use_and_sell_buttons
 function G.UIDEF.use_and_sell_buttons(card)
 	local abc = G_UIDEF_use_and_sell_buttons_ref(card)
 	-- Allow code cards to be reserved
-	if (card.area == G.pack_cards and G.pack_cards) and (card.ability.consumeable) then --Add a use button
-        if (card.ability.set == "RCode" or card.ability.set == "CBlind") or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front then
+	if (card.area == G.pack_cards and G.pack_cards) then --Add a use button
+        if (card.ability.set == "Back" or card.ability.set == "Sleeve") then
+			return {
+				n = G.UIT.ROOT,
+				config = { padding = -0.1, colour = G.C.CLEAR },
+				nodes = {
+					{
+						n = G.UIT.R,
+						config = {
+							ref_table = card,
+							r = 0.08,
+							padding = 0.1,
+							align = "bm",
+							minw = 0.5 * card.T.w - 0.15,
+							minh = 0.7 * card.T.h,
+							maxw = 0.7 * card.T.w - 0.15,
+							hover = true,
+							shadow = true,
+							colour = G.C.UI.BACKGROUND_INACTIVE,
+							one_press = true,
+							button = "buy_deckorsleeve",
+							func = "can_buy_deckorsleeve"
+						},
+						nodes = {
+							{
+								n = G.UIT.T,
+								config = {
+									text = localize("b_select"),
+									colour = G.C.UI.TEXT_LIGHT,
+									scale = 0.55,
+									shadow = true,
+								},
+							},
+						},
+					},
+                }
+            }
+        elseif ((card.ability.set == "RCode" or card.ability.set == "CBlind") or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front) and (card.ability.consumeable) then
 			return {
 				n = G.UIT.ROOT,
 				config = { padding = -0.1, colour = G.C.CLEAR },
