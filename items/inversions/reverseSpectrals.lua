@@ -1515,3 +1515,50 @@ SMODS.Consumable({
         }
     end
 })
+
+SMODS.Consumable({
+    key = "regenerate",
+    set = "RSpectral",
+    unlocked = true,
+
+    atlas = "miscc",
+    config = {
+        limit = 2
+    },
+	pos = {x=8,y=8},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card, area, copier)
+        local _, cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeable}, {c_entr_regenerate=true})
+        Entropy.FlipThen(cards, function(card)
+            if card.config.center.set == "Enhanced" then
+                if card.config.center.key == "m_entr_disavowed" then
+                    card.ability.disavow = false
+                end
+                card:set_ability(G.P_CENTERS.c_base)
+            else
+                card:set_ability(G.P_CENTERS[card.config.center.key])
+            end
+            card.seal = nil
+            card:set_edition()
+            for i, v in pairs(SMODS.Sticker.obj_table) do
+                if i ~= "absolute" then card.ability[i] = nil end
+            end
+            if card.base.suit == "entr_nilsuit" or card.base.value == "entr_nilrank" then
+                SMODS.change_base(card, card.base.suit == "entr_nilsuit" and pseudorandom({"Spades","Clubs","Hearts","Diamonds"}, pseudoseed("regenerate")),
+                    card.base.value == "entr_nilrank" and pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("regenerate"))
+                )
+            end
+        end)
+    end,
+    can_use = function(self, card)
+        local num = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeable}, {c_entr_regenerate=true})
+        return num > 0 and num <= card.ability.limit
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.limit
+            }
+        }
+    end,
+})

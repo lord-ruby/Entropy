@@ -873,3 +873,28 @@ SMODS.Consumable({
     end,
     weight = 0
 })
+
+SMODS.Consumable({
+    key = "shatter",
+    set = "Spectral",
+    unlocked = true,
+    config = {limit = 2},
+    atlas = "miscc",
+    pos = {x=5,y=8},
+    use = function(self, card, area, copier)
+        Entropy.FlipThen(G.hand.highlighted, function(card)
+            card:set_edition("e_entr_fractured")
+        end)
+    end,
+    can_use = function(self, card)
+        local num = Entropy.GetHighlightedCards({G.hand}, {c_entr_shatter=true})
+        return num > 0 and num <= card.ability.limit
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.e_entr_fractured
+        return {vars={
+            card.ability.limit
+        }}
+    end,
+    weight = 0
+})

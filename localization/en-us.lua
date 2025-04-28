@@ -1113,6 +1113,15 @@ local decs = {
 					"Enhancement {C:attention}permanently{}",
 				}
 			},
+			c_entr_regenerate = {
+				name = "Regenerate",
+				text = {
+					"Completely reset up to",
+					"{C:attention}#1#{} selected cards",
+					"or Jokers",
+					"{C:inactive}(Doesn't remove absolute){}"
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {
@@ -1128,6 +1137,13 @@ local decs = {
 					"Sacrifice 5 playing cards to craft",
 					"one Joker based on their Enhancements",
 					"{C:inactive}(Currently: #1#){}"
+				}
+			},
+			c_entr_shatter = {
+				name = "Shatter",
+				text = {
+					"Apply {C:dark_edition}Fractured{} to",
+					"{C:attention}#1#{} selected cards in hand",
 				}
 			},
 		},

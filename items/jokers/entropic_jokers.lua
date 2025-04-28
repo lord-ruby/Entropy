@@ -384,7 +384,7 @@ SMODS.Joker({
                 end
             end
             card.ability.pairs_current = card.ability.pairs_current + pairs
-            if card.ability.pairs_needed < 1e-300 then card.ability.pairs_needed = 1e-300 end
+            if to_big(card.ability.pairs_needed) < to_big(1e-300) then card.ability.pairs_needed = 1e-300 end
             while card.ability.pairs_current >= card.ability.pairs_needed do
                 card.ability.pairs_current = card.ability.pairs_current - card.ability.pairs_needed
                 card.ability.pairs_needed = card.ability.pairs_needed * 2
