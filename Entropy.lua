@@ -761,7 +761,7 @@ SMODS.current_mod.config_tab = entrConfigTab
 
 Cryptid.pointerblistifytype("rarity", "entr_hyper_exotic")
 Cryptid.pointerblistifytype("rarity", "entr_zenith")
-Cryptid.pointerblistify("c_entr_pointer")
+Cryptid.pointerblistify("c_entr_define")
 for i, v in pairs(G.P_BLINDS) do
     Cryptid.pointerblistify(i)
 end
