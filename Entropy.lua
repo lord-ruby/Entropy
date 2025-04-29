@@ -23,6 +23,7 @@ local i = {
     "items/misc/seals", 
     "items/misc/enhancements", 
     "items/misc/blinds", 
+    "items/misc/content_sets",
     "compat/loader"
 }
 local items = {}
@@ -35,6 +36,7 @@ for _, v in pairs(i) do
             if results.items then
                 for i, result in pairs(results.items) do
                     if not items[result.object_type] then items[result.object_type] = {} end
+                    result.cry_order = result.order
                     items[result.object_type][#items[result.object_type]+1]=result
                 end
             end
@@ -58,6 +60,8 @@ SMODS.current_mod.optional_features = {
 }
 
 Cryptid.mod_whitelist["Entropy"] = true
+Cryptid.mod_gameset_whitelist["entr"] = true
+Cryptid.mod_gameset_whitelist["Entropy"] = true
 if SMODS and SMODS.calculate_individual_effect then
 
     local scie = SMODS.calculate_individual_effect
@@ -729,7 +733,34 @@ SMODS.Sound({
 Entropy.config = SMODS.current_mod.config
 local entrConfigTab = function()
 	entr_nodes = {
+		{
+			n = G.UIT.R,
+			config = { align = "cm" },
+			nodes = {
+				{
+					n = G.UIT.O,
+					config = {
+						object = DynaText({
+							string = localize("cry_set_enable_features"),
+							colours = { G.C.WHITE },
+							shadow = true,
+							scale = 0.4,
+						}),
+					},
+				},
+			},
+		},
 	}
+    entr_nodes[#entr_nodes + 1] = UIBox_button({
+		colour = G.C.CRY_GREENGRADIENT,
+		button = "your_collection_content_sets",
+		label = { localize("b_content_sets") },
+		count = modsCollectionTally(G.P_CENTER_POOLS["Content Set"]),
+		minw = 5,
+		minh = 1.7,
+		scale = 0.6,
+		id = "your_collection_jokers",
+	})
 	left_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
 	right_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
 	config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }

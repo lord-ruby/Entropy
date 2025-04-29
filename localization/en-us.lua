@@ -15,6 +15,15 @@ local decs = {
 				}
 			}
 		},
+		["Content Set"] = {
+			set_entr_inversions = {
+				name = "Inversions",
+				text = {
+					"{C:attention}Consumable{} inversions",
+					"added by entropy"
+				}
+			}
+		},
 		Joker = {
 
 			j_cry_circus = {

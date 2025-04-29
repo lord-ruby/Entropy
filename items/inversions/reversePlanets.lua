@@ -193,7 +193,11 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
     key = key,
     set = "RPlanet",
     unlocked = true,
-
+    dependencies = {
+      items = {
+        "set_entr_inversions"
+      }
+    },
     atlas = "miscc",
     config = config or {
         level = level or 2,
