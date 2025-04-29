@@ -10,6 +10,11 @@ SMODS.ConsumableType({
 })
 
 local memory_leak = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Consumable",
     order = 1,
     key = "memory_leak",
@@ -34,6 +39,11 @@ local memory_leak = {
 }
 
 local root_kit = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Consumable",
     order = 2,
     key = "root_kit",
@@ -66,6 +76,11 @@ local root_kit = {
 }
 
 local bootstrap = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Consumable",
     order = 3,
     key = "bootstrap",
@@ -119,6 +134,11 @@ function evaluate_play_main(text, disp_text, poker_hands, scoring_hand, non_loc_
     poker_hands[text].chips = c
 end
 local quickload = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Consumable",
     order = 4,
     key = "quickload",
@@ -168,6 +188,11 @@ function Moveable:align_to_major()
 end
 local break_timer = 0
 local break_card = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Consumable",
     order = 5,
     key = "break",
@@ -218,6 +243,11 @@ local break_card = {
 }
 
 local new = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Consumable",
     order = 6,
     key = "new",
@@ -263,6 +293,11 @@ SMODS.Blind({
 })
 
 local interference = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Consumable",
     order = 7,
     key = "interference",
@@ -289,6 +324,11 @@ local interference = {
     end,
 }
 local constant = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Consumable",
     order = 8,
     key = "constant",
@@ -323,6 +363,12 @@ local constant = {
     end,
 }
 local pseudorandom = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "entr_pseudorandom"
+        }
+    },
     object_type = "Consumable",
     order = 9,
     key = "pseudorandom",
@@ -362,6 +408,11 @@ local pseudorandom = {
 }
 
 local pseudorandom_sticker = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Sticker",
     order = 1,
     atlas = "entr_stickers",
@@ -434,6 +485,11 @@ SMODS.Sticker:take_ownership("cry_rigged",{
     end
 },true)
 local inherit = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Consumable",
     order = 10,
     key = "inherit",
@@ -693,6 +749,11 @@ function update_hand_text_random(config, vals)
 end
     
 local fork = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Consumable",
     order = 11,
     key = "fork",
@@ -763,6 +824,11 @@ local fork = {
     end,
 }
 local push = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Consumable",
     order = 12,
     key = "push",
@@ -926,6 +992,11 @@ function end_round()
     end
 end
 local increment = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Consumable",
     order = 13,
     key = "increment",
@@ -966,6 +1037,11 @@ local increment = {
 	},
 }
 local decrement = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Consumable",
     order = 14,
     key = "decrement",
@@ -1022,6 +1098,12 @@ local decrement = {
     end
 }
 local invariant = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "entr_pinned"
+        }
+    },
     object_type = "Consumable",
     order = 15,
     key = "invariant",
@@ -1172,6 +1254,12 @@ G.FUNCS.reroll_shop = function(e)
   end
 
 local cookies = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "set_cry_spooky"
+        }
+    },
     object_type = "Consumable",
     order = 17,
     key = "cookies",
@@ -1200,6 +1288,11 @@ local cookies = {
     end
 }
 local segfault = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
     object_type = "Consumable",
     order = 18,
     key = "segfault",
@@ -1246,6 +1339,11 @@ local segfault = {
     end,
 }
 local sudo = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Consumable",
     order = 19,
     key = "sudo",
@@ -1455,6 +1553,12 @@ G.FUNCS.hand_text_UI_set = function(e)
     e.config.object:update_text()
 end
 local overflow = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "set_cry_poker_hand_stuff"
+        }
+    },
     object_type = "Consumable",
     order = 20,
     key = "overflow",
@@ -1485,6 +1589,11 @@ local overflow = {
 }
 
 local refactor = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Consumable",
     order = 21,
     key = "refactor",
@@ -1543,6 +1652,12 @@ local refactor = {
 }
 --hotfix
 local hotfix = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "entr_hotfix"
+        }
+    },
     object_type = "Consumable",
     order = 22,
     key = "hotfix",
@@ -1567,6 +1682,11 @@ local hotfix = {
 	},
 }
 local hotfix_sticker = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Sticker",
     order=3,
     atlas = "entr_stickers",
@@ -1619,6 +1739,11 @@ function Card:set_debuff(should_debuff)
     end
 end
 local ctrl_x = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Consumable",
     order = 23,
     key = "ctrl_x",
@@ -1691,6 +1816,12 @@ local ctrl_x = {
 	},
 }
 local multithread = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "temporary"
+        }
+    },
     object_type = "Consumable",
     order = 24,
     key = "multithread",
@@ -1728,6 +1859,11 @@ local multithread = {
 	},
 }
 local temporary = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Sticker",
     order = 4,
     atlas = "entr_stickers",
@@ -1959,6 +2095,11 @@ G.FUNCS.play_cards_from_highlighted = function(e)
 end
 
 local autostart = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     object_type = "Consumable",
     order = 25,
     key = "autostart",
@@ -1999,6 +2140,12 @@ function add_tag(_tag)
 end
 
 local local_card = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "temporary"
+        }
+    },
     object_type = "Consumable",
     order = 26,
     key = "local",

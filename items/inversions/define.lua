@@ -1,4 +1,9 @@
 local define = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
     object_type = "Consumable",
     key = "define",
     set = "RSpectral",

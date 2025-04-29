@@ -7,6 +7,11 @@ local perkeo = {
     config = {
         qmult = 4
     },
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     rarity = "entr_reverse_legendary",
     cost = 20,
     unlocked = true,
@@ -79,6 +84,11 @@ local chicot = {
     key = "chicot",
     config = {
         qmult = 4
+    },
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
     },
     rarity = "entr_reverse_legendary",
     cost = 20,
@@ -161,6 +171,11 @@ local yorick = {
         currd = 0,
         echips = 1,
         echips_mod = 0.5
+    },
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
     },
     rarity = "entr_reverse_legendary",
     cost = 20,
@@ -262,7 +277,11 @@ local trib = {
     rarity = "entr_reverse_legendary",
     cost = 20,
     unlocked = true,
-
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 1, y = 0 },
@@ -336,6 +355,11 @@ local canio = {
             emult_mod = 0.05
         }
     },
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
     atlas = "reverse_legendary",
     loc_vars = function(self, info_queue, card)
         return {
@@ -388,6 +412,11 @@ local membership = {
     config = {
         x_asc_mod = 1,
         num = 53
+    },
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
     },
     rarity = "entr_reverse_legendary",
     cost = 20,
