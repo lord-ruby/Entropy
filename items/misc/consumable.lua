@@ -858,7 +858,7 @@ function G.UIDEF.use_and_sell_buttons(card)
           }}
     end
     --let boosters not be recursive
-    if (card.area == G.pack_cards and G.pack_cards) and card.config.center.set == "Booster" then
+    if (card.area == G.pack_cards and G.pack_cards) and card.config.center.set == "Booster" and not Entropy.ConsumablePackBlacklist[card.config.center.key] then
         return  {
             n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
               {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'reserve_booster', func = 'can_reserve_booster'}, nodes={

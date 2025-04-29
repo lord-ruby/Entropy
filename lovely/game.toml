@@ -152,6 +152,13 @@ Entropy.BlindTokenBlacklist = {
   bl_entr_endless_entropy_phase_three=true,
   bl_entr_endless_entropy_phase_four=true
 }
+Entropy.ConsumablePackBlacklist = {
+  p_mupack_multipack1=true,
+  p_mupack_multipack2=true,
+  p_mupack_multipack3=true,
+  p_mupack_multipack4=true,
+  p_mupack_multipack5=true,
+}
 --secret related stuff
 --specifically used for registering zenith skins with Entropy.RegisterZenithSkin
 Entropy.Zeniths = {}
