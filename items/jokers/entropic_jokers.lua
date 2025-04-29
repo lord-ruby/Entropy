@@ -1110,7 +1110,7 @@ local katarraktis = {
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.basetriggers
+                math.min(card.ability.basetriggers,32)
             }
         }
     end,
@@ -1128,7 +1128,7 @@ local katarraktis = {
                 local triggers = 2 ^ (diff - 1)
                 return {
 					message = localize("k_again_ex"),
-					repetitions = math.floor(math.min(card.ability.basetriggers * triggers, 65536)),
+					repetitions = math.floor(math.min(math.min(card.ability.basetriggers,32) * triggers, 65536)),
 					card = card,
 				}
             end
