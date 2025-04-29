@@ -51,7 +51,7 @@ SMODS.Blind({
 	},
 	config = {
 		extra = {
-			hand_size = -2
+			hand_size = -1
 		}
 	},
 	calculate = function(self, blind, context)
@@ -121,11 +121,11 @@ SMODS.Blind({
 			end
 			for i, v in pairs(G.hand.cards) do
 				if v.destroy_adjacent and not v.destroyed_adjacent then
-					if G.hand.cards[i-1] then
+					if G.hand.cards[i-1] and pseudorandom("citrine") < 0.5 then
 						G.hand.cards[i-1]:start_dissolve()
 						G.hand.cards[i-1].ability.temporary2 = true
 					end
-					if G.hand.cards[i+1] then
+					if G.hand.cards[i+1] and pseudorandom("citrine") < 0.5 then
 						G.hand.cards[i+1]:start_dissolve()
 						G.hand.cards[i+1].ability.temporary2 = true
 					end

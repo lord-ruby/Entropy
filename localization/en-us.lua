@@ -308,6 +308,7 @@ local decs = {
 				name = "Citrine Comet",
 				text = {
 					"Selected cards destroy adjacent cards",
+					"with a 1 in 2 chance"
 				}
 			},
 			bl_entr_endless_entropy_phase_one = {
