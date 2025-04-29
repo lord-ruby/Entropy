@@ -1,6 +1,14 @@
 SMODS.Atlas { key = 'vouchers', path = 'vouchers.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'booster', path = 'boosters.png', px = 71, py = 95 }
-SMODS.Voucher({
+local marked = {
+    dependencies = {
+        items = {
+          "set_entr_vouchers",
+          "set_entr_inversions",
+        }
+    },
+	object_type = "Voucher",
+    order = 0,
     key = "marked",
     atlas = "vouchers",
     pos = {x=0, y=0},
@@ -10,9 +18,17 @@ SMODS.Voucher({
     unredeem = function(self, card) 
         G.GAME.Marked = nil
     end
-})
+}
 
-SMODS.Voucher({
+local trump_card = {
+    dependencies = {
+        items = {
+          "set_entr_vouchers",
+          "set_entr_inversions",
+        }
+    },
+	object_type = "Voucher",
+    order = 1,
     key = "trump_card",
     atlas = "vouchers",
     pos = {x=1, y=0},
@@ -23,9 +39,17 @@ SMODS.Voucher({
     unredeem = function(self, card) 
         G.GAME.TrumpCard = nil
     end
-})
+}
 
-SMODS.Voucher({
+local supersede = {
+    dependencies = {
+        items = {
+          "set_entr_vouchers",
+          "set_entr_inversions",
+        }
+    },
+	object_type = "Voucher",
+    order = 2,
     key = "supersede",
     atlas = "vouchers",
     pos = {x=2, y=0},
@@ -39,7 +63,7 @@ SMODS.Voucher({
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue+1] = G.P_CENTERS.c_entr_flipside
     end
-})
+}
 
 local TrumpCardAllow = {
     ["Planet"] = true,
@@ -73,7 +97,15 @@ function Card:set_ability(center, initial, delay_sprites)
     end
 end
 
-SMODS.Booster({
+local pack = {
+    dependencies = {
+        items = {
+          "set_entr_vouchers",
+          "set_entr_inversions",
+        }
+    },
+	object_type = "Booster",
+    order = 40,
     key = "twisted_pack_normal",
     set = "Booster",
     config = { extra = 3, choose = 1 },
@@ -102,8 +134,16 @@ SMODS.Booster({
 		ease_colour(G.C.DYN_UI.MAIN, HEX("851628"))
 		ease_background_colour({ new_colour = HEX("3c020b"), special_colour = HEX("3c020b"), contrast = 2 })
 	end
-})
-SMODS.Booster({
+}
+local jumbo = {
+    dependencies = {
+        items = {
+          "set_entr_vouchers",
+          "set_entr_inversions",
+        }
+    },
+	object_type = "Booster",
+    order = 41,
     key = "twisted_pack_jumbo",
     set = "Booster",
     config = { extra = 5, choose = 1 },
@@ -132,8 +172,16 @@ SMODS.Booster({
 		ease_colour(G.C.DYN_UI.MAIN, HEX("851628"))
 		ease_background_colour({ new_colour = HEX("3c020b"), special_colour = HEX("3c020b"), contrast = 2 })
 	end
-})
-SMODS.Booster({
+}
+local mega = {
+    dependencies = {
+        items = {
+          "set_entr_vouchers",
+          "set_entr_inversions",
+        }
+    },
+	object_type = "Booster",
+    order = 42,
     key = "twisted_pack_mega",
     set = "Booster",
     config = { extra = 5, choose = 2 },
@@ -162,7 +210,7 @@ SMODS.Booster({
 		ease_colour(G.C.DYN_UI.MAIN, HEX("851628"))
 		ease_background_colour({ new_colour = HEX("3c020b"), special_colour = HEX("3c020b"), contrast = 2 })
 	end
-})
+}
 
 
 
@@ -180,8 +228,8 @@ return {
         marked,
         trump_card,
         superseded,
-        booster,
-        jumbo_booster,
-        mega_booster
+        pack,
+        jumbo,
+        mega
     }
 }
