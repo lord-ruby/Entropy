@@ -8,7 +8,11 @@ local surreal = {
     rarity = 1,
     cost = 7,
     unlocked = true,
-
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 0 },
@@ -98,7 +102,11 @@ local solarflare = {
     rarity = 2,
     cost = 2,
     unlocked = true,
-
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 2, y = 0 },
@@ -193,7 +201,11 @@ local strawberry_pie = {
     rarity = 3,
     cost = 10,
     unlocked = true,
-
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
     blueprint_compat = false,
     eternal_compat = true,
     pos = { x = 2, y = 1 },
@@ -233,7 +245,11 @@ local recursive_joker = {
     rarity = 2,
     cost = 4,
     unlocked = true,
-
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
     blueprint_compat = false,
     eternal_compat = true,
     pos = { x = 3, y = 1 },

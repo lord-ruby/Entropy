@@ -56,3 +56,10 @@ SMODS.ContentSet({
 	pos = { x = 5, y = 8 },
 	cry_order = 5,
 })
+
+SMODS.ContentSet({
+	key = "misc_jokers",
+	atlas = "jokers",
+	pos = { x = 0, y = 0 },
+	cry_order = 6,
+})

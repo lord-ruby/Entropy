@@ -236,8 +236,16 @@ function Entropy.ModifyHandCard(modifications, cards)
     end
 end
 
-function Entropy.SealSpectral(key, sprite_pos, seal)
-    SMODS.Consumable({
+function Entropy.SealSpectral(key, sprite_pos, seal,order)
+    return {
+        dependencies = {
+            items = {
+              "set_entr_inversions",
+              seal
+            }
+        },
+        object_type = "Consumable",
+        order = order,
         key = key,
         set = "RSpectral",
         unlocked = true,
@@ -262,7 +270,7 @@ function Entropy.SealSpectral(key, sprite_pos, seal)
                 }
             }
         end,
-    })
+    }
 end
 
 function Entropy.ModificationSpectral(key, sprite_pos, modifications, highlighted, loc_vars)

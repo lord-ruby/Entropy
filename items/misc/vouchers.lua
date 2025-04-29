@@ -227,7 +227,7 @@ return {
     items = {
         marked,
         trump_card,
-        superseded,
+        supersede,
         pack,
         jumbo,
         mega

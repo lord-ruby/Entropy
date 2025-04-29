@@ -9,7 +9,14 @@ SMODS.ConsumableType({
 	default = "c_entr_memory_leak"
 })
 
-SMODS.Consumable({
+local changeling = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 0,
     key = "changeling",
     set = "RSpectral",
     unlocked = true,
@@ -49,9 +56,17 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 
-SMODS.Consumable({
+local rend = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "m_entr_flesh"
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 1,
     key = "rend",
     set = "RSpectral",
     unlocked = true,
@@ -74,9 +89,16 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 
-SMODS.Consumable({
+local inscribe = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 2,
     key = "inscribe",
     set = "RSpectral",
     unlocked = true,
@@ -104,7 +126,7 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 
 local set_debuffref = Card.set_debuff
 
@@ -113,9 +135,16 @@ function Card:set_debuff(should_debuff)
     set_debuffref(self, should_debuff)
 end
 
-Entropy.SealSpectral("insignia", {x=9,y=4}, "entr_silver")
+local insignia = Entropy.SealSpectral("insignia", {x=9,y=4}, "entr_silver",3.5)
 
-SMODS.Consumable({
+local siphon = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 4,
     key = "siphon",
     set = "RSpectral",
     unlocked = true,
@@ -154,9 +183,16 @@ SMODS.Consumable({
     entr_credits = {
         idea = {"crabus"}
     }
-})
+}
 
-SMODS.Consumable({
+local ward = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 5,
     key = "ward",
     set = "RSpectral",
     unlocked = true,
@@ -198,9 +234,17 @@ SMODS.Consumable({
     entr_credits = {
         idea = {"CapitalChirp"}
     }
-})
+}
 
-SMODS.Consumable({
+local disavow = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "m_entr_disavow"
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 6,
     key = "disavow",
     set = "RSpectral",
     unlocked = true,
@@ -233,7 +277,7 @@ SMODS.Consumable({
     entr_credits = {
         idea = {"CapitalChirp"}
     }
-})
+}
 local locref = localize
 function localize(args, misc_cat)
     if type(args)=="number" then args = {args} end
@@ -267,7 +311,15 @@ local EnhancementFuncs = {
     end
 }
 for i, v in pairs(EnhancementFuncs) do Entropy.EnhancementFuncs[i] = v end
-SMODS.Consumable({
+local pact = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "link"
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 7,
     key = "pact",
     set = "RSpectral",
     unlocked = true,
@@ -314,12 +366,19 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 
-SMODS.Sticker({
+local link = {
     atlas = "entr_stickers",
     pos = { x = 1, y = 1 },
     key = "link",
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Sticker",
+    order = -100 + 0,
     no_sticker_sheet = true,
     prefix_config = { key = false },
     badge_colour = HEX("FF00FF"),
@@ -339,7 +398,7 @@ SMODS.Sticker({
     calculate = function(self, card, context)
 
     end
-})
+}
 
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, initial, delay_sprites)
@@ -417,7 +476,14 @@ function Card:start_dissolve(...)
     end
 end
 
-SMODS.Consumable({
+local ichor = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 8,
     key = "ichor",
     set = "RSpectral",
     unlocked = true,
@@ -456,9 +522,16 @@ SMODS.Consumable({
         idea = {"cassknows"},
         art = {"LFMoth"}
     }
-})
+}
 
-SMODS.Consumable({
+local rejuvenate = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 9,
     key = "rejuvenate",
     set = "RSpectral",
     unlocked = true,
@@ -517,9 +590,16 @@ SMODS.Consumable({
     entr_credits = {
         idea = {"crabus"}
     }
-})
+}
 
-SMODS.Consumable({
+local crypt = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 10,
     key = "crypt",
     set = "RSpectral",
     unlocked = true,
@@ -556,12 +636,20 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 
 
-Entropy.SealSpectral("rendezvous", {x=10,y=5}, "entr_crimson")
+local rendezvous = Entropy.SealSpectral("rendezvous", {x=10,y=5}, "entr_crimson",10.5)
 
-SMODS.Consumable({
+local charm = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "e_cry_astral"
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 11,
     key = "charm",
     set = "RSpectral",
     unlocked = true,
@@ -608,13 +696,20 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 
 
-Entropy.SealSpectral("eclipse", {x=12,y=5}, "entr_sapphire")
-Entropy.SealSpectral("calamity", {x=6,y=6}, "entr_pink")
+local eclipse = Entropy.SealSpectral("eclipse", {x=12,y=5}, "entr_sapphire",12)
+local calamity = Entropy.SealSpectral("calamity", {x=6,y=6}, "entr_pink",13)
 
-SMODS.Consumable({
+local entropy = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 14,
     key = "entropy",
     set = "RSpectral",
     unlocked = true,
@@ -653,9 +748,16 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 
-SMODS.Consumable({
+local fervour = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 15,
     key = "fervour",
     set = "RSpectral",
     unlocked = true,
@@ -699,9 +801,16 @@ SMODS.Consumable({
     entr_credits = {
         custom = {key="card_art", text="gudusername_53951"}
     }
-})
+}
 
-SMODS.Consumable({
+local quasar = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 16,
     key = "quasar",
     set = "RSpectral",
     unlocked = true,
@@ -783,9 +892,16 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 
-SMODS.Consumable({
+local weld = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 17,
     key = "weld",
     set = "RSpectral",
     unlocked = true,
@@ -852,7 +968,7 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 SMODS.Rank {
     key = 'nilrank',
     card_key = 'nilrank',
@@ -890,7 +1006,14 @@ function Card:get_id()
     end
     return ref(self)
 end
-SMODS.Consumable({
+local cleanse = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 18,
     key = "cleanse",
     set = "RSpectral",
     unlocked = true,
@@ -929,9 +1052,16 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 
-SMODS.Consumable({
+local fusion = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 19,
     key = "fusion",
     set = "RSpectral",
     unlocked = true,
@@ -981,9 +1111,16 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 
-SMODS.Consumable({
+local substitute = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 20,
     key = "substitute",
     set = "RSpectral",
     unlocked = true,
@@ -1044,9 +1181,16 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 
-SMODS.Consumable({
+local evocation = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 21,
     key = "evocation",
     set = "RSpectral",
     unlocked = true,
@@ -1096,9 +1240,17 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 
-SMODS.Consumable({
+local mimic = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "cry_banana"
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 22,
     key = "mimic",
     set = "RSpectral",
     unlocked = true,
@@ -1144,7 +1296,7 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 local gfcfbs = G.FUNCS.check_for_buy_space
 G.FUNCS.check_for_buy_space = function(card)
 	if
@@ -1155,7 +1307,15 @@ G.FUNCS.check_for_buy_space = function(card)
 	return gfcfbs(card)
 end
 
-SMODS.Consumable({
+local superego = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "entr_superego"
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 23,
     key = "superego",
     set = "RSpectral",
     unlocked = true,
@@ -1187,7 +1347,7 @@ SMODS.Consumable({
     entr_credits = {
         art = {"LFMoth"}
     }
-})
+}
 
 local sell_ref = G.FUNCS.sell_card
 G.FUNCS.sell_card = function(e)
@@ -1204,7 +1364,14 @@ G.FUNCS.sell_card = function(e)
     end
     sell_ref(e)
 end
-SMODS.Sticker({
+local superego_sticker = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Sticker",
+    order = -100 + 2,
     atlas = "entr_stickers",
     pos = { x = 4, y = 1 },
     key = "superego",
@@ -1217,11 +1384,19 @@ SMODS.Sticker({
         card.debuff = true
     end,
     loc_vars = function(self, q, card) return {vars={card.ability and math.floor(card.ability.superego_copies or 0) or 0}} end
-})
-Entropy.SealSpectral("downpour", {x=12,y=7}, "entr_cerulean")
-Entropy.SealSpectral("script", {x=6,y=8}, "entr_verdant")
+}
+local cerulean = Entropy.SealSpectral("downpour", {x=12,y=7}, "entr_cerulean",24)
+local script = Entropy.SealSpectral("script", {x=6,y=8}, "entr_verdant",25)
 
-SMODS.Consumable({
+local engulf = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "e_entr_solar"
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 26,
     key = "engulf",
     set = "RSpectral",
     unlocked = true,
@@ -1248,9 +1423,16 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 
-SMODS.Consumable({
+local offering = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 27,
     key = "offering",
     set = "RSpectral",
     unlocked = true,
@@ -1288,9 +1470,16 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 
-SMODS.Consumable({
+local entomb = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 28,
     key = "entomb",
     set = "RSpectral",
     unlocked = true,
@@ -1331,9 +1520,16 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 
-SMODS.Consumable({
+local conduct = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 29,
     key = "conduct",
     set = "RSpectral",
     unlocked = true,
@@ -1372,9 +1568,16 @@ SMODS.Consumable({
             }
         }
     end
-})
+}
 
-SMODS.Consumable({
+local pulsar = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 30,
     key = "pulsar",
     set = "RSpectral",
     unlocked = true,
@@ -1443,9 +1646,17 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 
-SMODS.Consumable({
+local beyond = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "set_entr_entropics"
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 31,
     key = "beyond",
     set = "RSpectral",
     unlocked = true,
@@ -1506,9 +1717,16 @@ SMODS.Consumable({
             }
         }
     end
-})
+}
 
-SMODS.Consumable({
+local regenerate = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = -100 + 32,
     key = "regenerate",
     set = "RSpectral",
     unlocked = true,
@@ -1553,4 +1771,38 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
+
+return {
+    items = {
+        changeling,
+        rend,
+        inscribe,
+        siphon,
+        ward,
+        disavow,
+        pact,
+        link,
+        ichor,
+        rejuvenate,
+        crypt,
+        entropy,
+        fervour,
+        quasar,
+        weld,
+        cleanse,
+        fusion,
+        substitute,
+        evocation,
+        mimic,
+        superego,
+        superego_sticker,
+        engulf,
+        offering,
+        entomb,
+        conduct,
+        pulsar,
+        beyond,
+        regenerate
+    }
+}

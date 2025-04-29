@@ -8,7 +8,11 @@ local burnt_m = {
     rarity = "cry_epic",
     cost = 10,
     unlocked = true,
-
+    dependencies = {
+        items = {
+            "set_cry_epic"
+        }
+    },
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 3, y = 0 },
@@ -102,7 +106,11 @@ local dni = {
     rarity = "cry_epic",
     cost = 10,
     unlocked = true,
-
+    dependencies = {
+        items = {
+            "set_cry_epic"
+        }
+    },
     blueprint_compat = false,
     eternal_compat = true,
     pos = { x = 1, y = 1 },
@@ -144,7 +152,11 @@ local trapezium = {
     rarity = "cry_epic",
     cost = 10,
     unlocked = true,
-
+    dependencies = {
+        items = {
+            "set_cry_epic"
+        }
+    },
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 4, y = 0 },
@@ -214,6 +226,6 @@ return {
         burnt_m,
         chaos,
         dni,
-        trapezium_cluster
+        trapezium
     }
 }

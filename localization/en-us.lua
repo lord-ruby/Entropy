@@ -20,9 +20,67 @@ local decs = {
 				name = "Inversions",
 				text = {
 					"{C:attention}Consumable{} inversions",
-					"added by entropy"
+					"added by Entropy"
 				}
-			}
+			},
+			set_entr_tags = {
+				name = "Tags",
+				text = {
+					"{C:attention}Tags{} added",
+					"by Entropy"
+				}
+			},
+			set_entr_blinds = {
+				name = "Blinds",
+				text = {
+					"{C:attention}Boss Blinds{} added",
+					"by Entropy"
+				}
+			},
+			set_entr_decks = {
+				name = "Decks",
+				text = {
+					"{C:attention}Decks{} added",
+					"by Entropy"
+				}
+			},
+			set_entr_misc = {
+				name = "Misc",
+				text = {
+					"Things that don't",
+					"fit in any other",
+					"{C:cry_ascendant}Thematic Set",
+				},
+			},
+			set_entr_entropic = {
+				name = "Entropic Jokers",
+				text = {
+					"Powerful Jokers with",
+					"{C:red}Entropic{} rarity",
+				},
+			},
+			set_entr_vouchers = {
+				name = "Vouchers",
+				text = {
+					"{C:attention}Vouchers{} added",
+					"by Entropy"
+				}
+			},
+			set_entr_spectrals = {
+				name = "Spectral Cards",
+				text = {
+					"{C:attention}Spectral{} cards",
+					"added by Entropy"
+				}
+			},
+			set_entr_misc_jokers = {
+				name = "Misc. Jokers",
+				text = {
+					"{C:attention}Jokers{} that don't",
+					"fit in any other",
+					"{C:cry_ascendant}Thematic Set",
+				},
+			},
 		},
 		Joker = {
 

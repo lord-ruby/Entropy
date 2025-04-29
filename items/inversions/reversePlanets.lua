@@ -189,7 +189,7 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
   order = order + 1
   planets[#planets+1]={
     object_type="Consumable",
-    order = order,
+    order = order - 200,
     key = key,
     set = "RPlanet",
     unlocked = true,
