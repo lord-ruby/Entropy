@@ -23,7 +23,6 @@ local i = {
     "items/misc/seals", 
     "items/misc/enhancements", 
     "items/misc/blinds", 
-    "items/misc/content_sets",
     "compat/loader"
 }
 local items = {}
@@ -60,6 +59,7 @@ SMODS.current_mod.optional_features = {
 }
 
 Cryptid.mod_whitelist["Entropy"] = true
+if not Cryptid.mod_gameset_whitelist then Cryptid.mod_gameset_whitelist = {} end
 Cryptid.mod_gameset_whitelist["entr"] = true
 Cryptid.mod_gameset_whitelist["Entropy"] = true
 if SMODS and SMODS.calculate_individual_effect then

@@ -13,7 +13,11 @@ local epitachyno = {
     rarity = "entr_hyper_exotic",
     cost = 150,
     unlocked = true,
-
+    dependencies = {
+        items = {
+            "set_entr_entropic"
+        }
+    },
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 1 },
@@ -79,6 +83,11 @@ local helios = {
     pos = { x = 0, y = 2 },
     config = {
         extra = 1.1
+    },
+    dependencies = {
+        items = {
+            "set_entr_entropic"
+        }
     },
     soul_pos = { x = 2, y = 2, extra = { x = 1, y = 2 } },
     atlas = "exotic_jokers",
@@ -187,6 +196,11 @@ local xekanos = {
         ante_mod = 1.5,
         ante_mod_mod = 0.1
     },
+    dependencies = {
+        items = {
+            "set_entr_entropic"
+        }
+    },
     immutable = true,
     demicoloncompat = true,
     soul_pos = { x = 2, y = 3, extra = { x = 1, y = 3 } },
@@ -223,6 +237,11 @@ local ieros = {
     pos = { x = 0, y = 4 },
     config = {
         e_chips = 1
+    },
+    dependencies = {
+        items = {
+            "set_entr_entropic"
+        }
     },
     demicoloncompat = true,
     soul_pos = { x = 2, y = 4, extra = { x = 1, y = 4 } },
@@ -369,6 +388,11 @@ local dekatria = {
         pairs_needed = 8,
         pairs_current = 0
     },
+    dependencies = {
+        items = {
+            "set_entr_entropic"
+        }
+    },
     demicoloncompat = true,
     soul_pos = { x = 2, y = 5, extra = { x = 1, y = 5 } },
     atlas = "exotic_jokers",
@@ -452,6 +476,11 @@ local anaptyxi = {
         extra = {
             scale=2,
             scale_mod=1
+        }
+    },
+    dependencies = {
+        items = {
+            "set_entr_entropic"
         }
     },
     demicoloncompat = true,
@@ -561,6 +590,11 @@ local parakmi = {
     config = {
         --decadence = 0
     },
+    dependencies = {
+        items = {
+            "set_entr_entropic"
+        }
+    },
     demicoloncompat = true,
     soul_pos = { x = 5, y = 0, extra = { x = 4, y = 0 } },
     atlas = "exotic_jokers",
@@ -578,7 +612,7 @@ G.FUNCS.check_for_buy_space = function(card)
 	end
 	return gfcfbs(card)
 end
-SMODS.ConsumableType({
+local blind_type = {
 	object_type = "ConsumableType",
 	key = "CBlind",
 	primary_colour = HEX("ab3a3e"),
@@ -586,15 +620,19 @@ SMODS.ConsumableType({
 	--collection_rows = { 4, 5 },
 	shop_rate = 0.0,
 	default = "c_entr_bl_small",
-    hidden=true
-})
+    hidden=true,
+    object_type = "ConsumableType",
+    order=99,
+}
 
 Entropy.BlindC = {}
-
+local blinds = {}
 function Entropy.RegisterBlinds()
+    local order = 9
     for i, v in pairs(G.P_BLINDS) do
+        order = order + 1
         Entropy.BlindC[#Entropy.BlindC+1]="entr_"..i
-        SMODS.Consumable({
+        blinds[#blinds+1] = {
             key = "entr_"..i,
             set = "CBlind",
             unlocked = true,
@@ -603,8 +641,16 @@ function Entropy.RegisterBlinds()
                 blind = i,
                 pos = v.pos,
             },
+            object_type = "Consumable",
+            order=order,
+            dependencies = {
+                items = {
+                    "set_entr_entropic"
+                }
+            },
             weight = 0,
             no_doe = true,
+            atlas="exotic_jokers",
             --soul_pos = { x = 5, y = 0},
             in_pool = function()
                 return false
@@ -649,14 +695,23 @@ function Entropy.RegisterBlinds()
                 card.children.floating_sprite.states.hover.can = false
                 card.children.floating_sprite.states.click.can = false
             end,
-        })
+        }
     end
     for i, v in pairs(SMODS.Blind.obj_table) do
         if not Entropy.BlindTokenBlacklist[i] then
+            order = order + 1
             Entropy.BlindC[#Entropy.BlindC+1]="entr_"..i
-            SMODS.Consumable({
+            blinds[#blinds+1] = {
+                object_type = "Consumable",
+                order=order,
+                dependencies = {
+                    items = {
+                        "set_entr_entropic"
+                    }
+                },
                 key = "entr_"..i,
                 set = "CBlind",
+                atlas="exotic_jokers",
                 unlocked = true,
                 pos = {x=9999,y=9999},
                 config = {
@@ -715,13 +770,15 @@ function Entropy.RegisterBlinds()
                 set_badges = function(self, card, badges)
                     if v.original_mod then badges[#badges+1] = create_badge(v.original_mod.name, v.original_mod.badge_colour, G.C.WHITE, 1 ) end
                 end,
-            })
+            }
         end
     end
+    return {items = blinds}
 end
 
 local set_spritesref = Card.set_sprites
 function Card:set_sprites(_center, _front)
+
     set_spritesref(self,_center,_front)
     if _center and _center.set_sprites then
         _center:set_sprites(self, _front)
@@ -908,6 +965,11 @@ local exousia = {
     config = {
         tags=2
     },
+    dependencies = {
+        items = {
+            "set_entr_entropic"
+        }
+    },
     demicoloncompat = true,
     soul_pos = { x = 5, y = 1, extra = { x = 4, y = 1 } },
     atlas = "exotic_jokers",
@@ -973,6 +1035,11 @@ local akyros = {
 			max_slots = 100,
 		},
     },
+    dependencies = {
+        items = {
+            "set_entr_entropic"
+        }
+    },
     demicoloncompat = true,
     soul_pos = { x = 5, y = 2, extra = { x = 4, y = 2 } },
     atlas = "exotic_jokers",
@@ -1021,16 +1088,18 @@ local akyros = {
         if G.jokers.config.card_limit <= 1 then G.jokers.config.card_limit = 1 end
     end
 }
+local items = {
+    epitachyno,
+    helios,
+    xekanos,
+    ieros,
+    dekatria,
+    anaptyxi,
+    parakmi,
+    exousia,
+    akyros,
+    blind_type
+}
 return {
-    items = {
-        epitachyno,
-        helios,
-        xekanos,
-        ieros,
-        dekatria,
-        anaptyxi,
-        parakmi,
-        exousia,
-        akyros
-    }
+    items = items
 }

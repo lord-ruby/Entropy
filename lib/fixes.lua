@@ -1066,3 +1066,9 @@ function G.UIDEF.define_keys()
     }}
     return t
   end
+
+local ref = Sprite.init
+function Sprite:init(X, Y, W, H, new_sprite_atlas, sprite_pos)
+    if new_sprite_atlas == nil then new_sprite_atlas = G.ASSET_ATLAS.Joker end
+    ref(self, X, Y, W, H, new_sprite_atlas, sprite_pos)
+end
