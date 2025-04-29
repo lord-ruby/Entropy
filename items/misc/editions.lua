@@ -7,7 +7,9 @@ SMODS.Sound({
 	path = "e_solar.ogg",
 })
 
-SMODS.Edition({
+local solar = {
+	object_type = "Edition",
+	order = 1,
     key="solar",
     shader="solar",
     config = {
@@ -18,6 +20,11 @@ SMODS.Edition({
 		per = 1,
 		vol = 0.4,
 	},
+	dependencies = {
+        items = {
+          "set_entr_misc"
+        }
+    },
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
@@ -47,7 +54,7 @@ SMODS.Edition({
 	entr_credits = {
 		custom={key="shader",text="cassknows"}
 	}
-})
+}
 
 AurinkoAddons.entr_solar = function(card, hand, instant, amount)
 	if to_big(G.GAME.hands[hand].AscensionPower or 0) > to_big(0) then
@@ -59,7 +66,9 @@ SMODS.Shader({
     key="fractured",
     path="fractured.fs"
 })
-SMODS.Edition({
+local fractured ={
+	object_type = "Edition",
+	order = 2,
     key="fractured",
     shader="fractured",
     config = {
@@ -70,6 +79,11 @@ SMODS.Edition({
 		per = 1,
 		vol = 0.4,
 	},
+	dependencies = {
+        items = {
+          "set_entr_misc"
+        }
+    },
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
@@ -103,4 +117,10 @@ SMODS.Edition({
 	entr_credits = {
 		custom={key="shader",text="cassknows"}
 	}
-})
+}
+return {
+	items = {
+		solar,
+		fractured
+	}
+}

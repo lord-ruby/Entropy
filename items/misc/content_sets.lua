@@ -56,11 +56,3 @@ SMODS.ContentSet({
 	pos = { x = 5, y = 8 },
 	cry_order = 5,
 })
-
-SMODS.ContentSet({
-	key = "blind_token",
-    atlas = "blinds",
-	pos = { x = 2, y = 1 },
-    cry_blind = true,
-	cry_order = 6,
-})

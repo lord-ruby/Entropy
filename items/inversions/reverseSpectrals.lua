@@ -845,7 +845,6 @@ SMODS.Consumable({
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "cry_absolute", set="Other"}
-        q[#q+1] = {key = "e_negative", set="Edition", config = {extra = 1}}
         return {
             vars = {
                 card.ability.select,

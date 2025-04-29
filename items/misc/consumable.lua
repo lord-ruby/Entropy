@@ -81,6 +81,12 @@ local flipside = {
             selected = 1
         }
     },
+    dependencies = {
+        items = {
+          "set_entr_spectrals",
+          "set_entr_inversions"
+        }
+    },
     immutable = true,
     name = "entr-Flipside",
     pos = {x=3,y=0},
@@ -962,6 +968,11 @@ local destiny = {
     atlas = "miscc",
     immutable = true,
     pos = {x=5,y=7},
+    dependencies = {
+        items = {
+          "set_entr_spectrals"
+        }
+    },
     use = function(self, card, area, copier)
         for i, v in pairs(G.hand.highlighted) do
             if v.config.center.key ~= "c_base" or pseudorandom("crafting") < 0.4 then
@@ -1000,6 +1011,11 @@ local shatter = {
     config = {limit = 2},
     atlas = "miscc",
     pos = {x=5,y=8},
+    dependencies = {
+        items = {
+          "set_entr_spectrals"
+        }
+    },
     use = function(self, card, area, copier)
         Entropy.FlipThen(G.hand.highlighted, function(card)
             card:set_edition("e_entr_fractured")

@@ -174,3 +174,14 @@ function create_inverted_card(area, seed)
     end
     return create_card("Twisted", area or G.pack_cards, nil, nil, true, true, nil, "twisted")
 end
+
+return {
+    items = {
+        marked,
+        trump_card,
+        superseded,
+        booster,
+        jumbo_booster,
+        mega_booster
+    }
+}

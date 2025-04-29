@@ -1,5 +1,11 @@
 SMODS.Atlas { key = 'enhancements', path = 'enhancements.png', px = 71, py = 95 }
-SMODS.Enhancement({
+local flesh = {
+	dependencies = {
+        items = {
+          "set_entr_misc"
+        }
+    },
+	order = 1,
 	object_type = "Enhancement",
 	key = "flesh",
 	atlas = "enhancements",
@@ -30,9 +36,15 @@ SMODS.Enhancement({
 			card.ability.temporary2 = true
 		end
 	end,
-})
+}
 
-SMODS.Enhancement({
+local disavowed = {
+	dependencies = {
+        items = {
+          "set_entr_misc"
+        }
+    },
+	order = 2,
 	object_type = "Enhancement",
 	key = "disavowed",
 	atlas = "enhancements",
@@ -41,4 +53,11 @@ SMODS.Enhancement({
 	set_ability = function(self,card) 
 		card.ability.disavow = true
 	end
-})
+}
+
+return {
+	items = {
+		flesh,
+		disavowed
+	}
+}

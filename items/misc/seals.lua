@@ -1,12 +1,19 @@
 SMODS.Atlas { key = 'seals', path = 'seals.png', px = 71, py = 95 }
-SMODS.Seal({
+local crimson = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+	object_type = "Seal",
+    order = 1,
     key="entr_crimson",
     atlas = "seals",
     pos = {x=0,y=0},
     badge_colour = HEX("8a0050"),
     calculate = function(self, card, context)
     end,
-})
+}
 
 function SMODS.calculate_main_scoring(context, scoring_hand)
     for _, card in ipairs(context.cardarea.cards) do
@@ -152,7 +159,14 @@ function evaluate_play_final_scoring(text, disp_text, poker_hands, scoring_hand,
       return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
 end
 
-SMODS.Seal({
+local sapphire = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+	object_type = "Seal",
+    order = 2,
     key="entr_sapphire",
     atlas = "seals",
     pos = {x=1,y=0},
@@ -178,9 +192,16 @@ SMODS.Seal({
             G.consumeables:emplace(c)
         end
     end,
-})
+}
 
-SMODS.Seal({
+local silver = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+	object_type = "Seal",
+    order = 3,
     key="entr_silver",
     atlas = "seals",
     pos = {x=2,y=0},
@@ -198,9 +219,16 @@ SMODS.Seal({
         G.shared_seals["entr_silver"]:draw_shader('dissolve', nil, nil, nil, card.children.center)
 		G.shared_seals["entr_silver"]:draw_shader('voucher', nil, card.ARGS.send_to_shader, nil, card.children.center)
     end,
-})
+}
 
-SMODS.Seal({
+local pink = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+	object_type = "Seal",
+    order = 4,
     key="entr_pink",
     atlas = "seals",
     pos = {x=3,y=0},
@@ -222,9 +250,16 @@ SMODS.Seal({
             G.consumeables:emplace(c)
         end
     end,
-})
+}
 
-SMODS.Seal({
+local verdant = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+	object_type = "Seal",
+    order = 5,
     key="entr_verdant",
     atlas = "seals",
     pos = {x=4,y=0},
@@ -251,9 +286,16 @@ SMODS.Seal({
             G.consumeables:emplace(c)
         end
     end,
-})
+}
 
-SMODS.Seal({
+local cerulean = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+	object_type = "Seal",
+    order = 6,
     key="entr_cerulean",
     atlas = "seals",
     pos = {x=5,y=0},
@@ -306,4 +348,15 @@ SMODS.Seal({
             end
         end
     end,
-})
+}
+
+return {
+    items = {
+        crimson,
+        sapphire,
+        silver,
+        pink,
+        verdant,
+        cerulean
+    }
+}

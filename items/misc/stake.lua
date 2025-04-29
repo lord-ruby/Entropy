@@ -1,5 +1,12 @@
 SMODS.Atlas({key = 'stakes', path = 'stakes.png', px = 29, py = 29})
-SMODS.Stake({
+local entropic = {
+    dependencies = {
+        items = {
+          "set_entr_misc"
+        }
+    },
+	object_type = "Stake",
+    order = 1,
     name = "entr-Entropic Stake",
     key = "entropic",
     pos = { x = 0, y = 0 },
@@ -14,9 +21,16 @@ SMODS.Stake({
     shiny=true,
     order = 9999,
     colour = HEX("ff0000")
-})
+}
 
-SMODS.Stake({
+local zenith = {
+    dependencies = {
+        items = {
+          "set_entr_misc"
+        }
+    },
+	object_type = "Stake",
+    order = 2,
     name = "entr-Zenith Stake",
     key = "zenith",
     pos = { x = 1, y = 0 },
@@ -31,4 +45,11 @@ SMODS.Stake({
     shiny=true,
     order = 10000,
     colour = HEX("ff00ff")
-})
+}
+
+return {
+    items = {
+        entropic,
+        zenith
+    }
+}

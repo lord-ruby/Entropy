@@ -23,7 +23,7 @@ local i = {
     "items/misc/seals", 
     "items/misc/enhancements", 
     "items/misc/blinds", 
-    "items/misc/content_Sets",
+    "items/misc/content_sets",
     "compat/loader"
 }
 local items = {}

@@ -321,12 +321,12 @@ target = "functions/UI_definitions.lua"
 pattern = "          G.GAME.stake > 1 and {"
 position = "before"
 payload = '''
-            G.GAME.DefineKeys and {
-            label = localize('b_definitions'),
-            tab_definition_function = G.UIDEF.define_keys,
-            },
-            G.GAME.entr_bought_decks and #G.GAME.entr_bought_decks > 0 and {
-            label = localize('b_decks'),
-            tab_definition_function = G.UIDEF.bought_decks,
-            },'''
+        {
+          label = G.GAME.DefineKeys and  and localize('b_definitions'),
+          tab_definition_function = G.GAME.define_keys and G.UIDEF.define_keys,
+        },
+        {
+          label = G.GAME.entr_bought_decks and #G.GAME.entr_bought_decks > 0 and localize('b_decks'),
+          tab_definition_function = G.GAME.entr_bought_decks and #G.GAME.entr_bought_decks > 0 and G.UIDEF.bought_decks,
+        },'''
 match_indent = true
