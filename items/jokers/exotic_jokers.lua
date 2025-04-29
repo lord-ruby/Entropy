@@ -1,4 +1,6 @@
-SMODS.Joker({
+local stillicidium = {
+    order = 300,
+    object_type = "Joker",
     key = "stillicidium",
     rarity = "cry_exotic",
     cost = 50,
@@ -88,7 +90,7 @@ SMODS.Joker({
 			G.HUD_blind:recalculate()
 		end
     end
-})
+}
 
 function ReductionIndex(card, pool)
     index = 0
@@ -132,3 +134,9 @@ function GetAreaIndex(cards, card)
     end
     return -1
 end
+
+return {
+    items = {
+        stillicidium
+    }
+}

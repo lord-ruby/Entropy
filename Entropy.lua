@@ -42,7 +42,7 @@ for _, v in pairs(i) do
     else error("error in file "..v..": "..err) end
 end
 for i, category in pairs(items) do
-    table.sort(category, function(a, b) return a.order > b.order end)
+    table.sort(category, function(a, b) return a.order < b.order end)
     for i2, item in pairs(category) do
         SMODS[item.object_type](item)
     end

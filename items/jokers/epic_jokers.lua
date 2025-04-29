@@ -1,4 +1,6 @@
-SMODS.Joker({
+local burnt_m = {
+    order = 100,
+    object_type = "Joker",
     key = "burnt_m",
     config = {
         per_jolly=1
@@ -73,9 +75,11 @@ SMODS.Joker({
             end
         end
 	end
-})
+}
 
-SMODS.Joker({
+local chaos= {
+    order = 101,
+    object_type = "Joker",
     key = "chaos",
     rarity = "cry_epic",
     cost = 15,
@@ -86,9 +90,11 @@ SMODS.Joker({
     atlas = "jokers",
     loc_vars = function(self, info_queue, center)
     end,
-})
+}
 
-SMODS.Joker({
+local dni = {
+    order = 102,
+    object_type = "Joker",
     key = "dni",
     config = {
         suit = "Spades"
@@ -125,9 +131,11 @@ SMODS.Joker({
     entr_credits = {
         art = {"cassknows"}
     }
-})
+}
 
-SMODS.Joker({
+local trapezium = {
+    order = 103,
+    object_type = "Joker",
     key = "trapezium_cluster",
     name="entr-trapezium_cluster",
     config = {
@@ -200,4 +208,12 @@ SMODS.Joker({
             return Entropy.RandomForcetrigger(card, card and card.ability.forcetrigger or 5)
         end
 	end
-})
+}
+return {
+    items = {
+        burnt_m,
+        chaos,
+        dni,
+        trapezium_cluster
+    }
+}

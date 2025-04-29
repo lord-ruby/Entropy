@@ -2,7 +2,9 @@
 SMODS.Atlas { key = 'exotic_jokers', path = 'exotic_jokers.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'jokers', path = 'jokers.png', px = 71, py = 95 }
 
-SMODS.Joker({
+local epitachyno = {
+    order = 400,
+    object_type = "Joker",
     key = "acellero",
     config = {
         extra = 1.1,
@@ -52,7 +54,7 @@ SMODS.Joker({
             card.ability.extra = card.ability.extra + card.ability.exp_mod
         end
     end
-})
+}
 --Cryptid.big_num_whitelist["j_entr_acellero"] = true
 Cryptid.big_num_blacklist["j_hiker"] = true
 Cryptid.big_num_blacklist["j_credit_card"] = true
@@ -64,7 +66,9 @@ Cryptid.big_num_blacklist["j_entr_yorick"] = true
 Cryptid.big_num_blacklist["j_burglar"] = true
 Cryptid.big_num_blacklist["j_entr_tesseract"] = true
 
-SMODS.Joker({
+local helios = {
+    order = 401,
+    object_type = "Joker",
     key = "helios",
     rarity = "entr_hyper_exotic",
     cost = 150,
@@ -95,7 +99,7 @@ SMODS.Joker({
         G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 99
         G.GAME.used_vouchers.v_cry_hyperspacetether = G.GAME.HyperspaceActuallyUsed
     end
-})
+}
 
 function Cryptid.ascend(num, curr2) -- edit this function at your leisure
     curr2 = curr2 or ((G.GAME.current_round.current_hand.cry_asc_num or 0) + (G.GAME.asc_power_hand or 0)) * (1+(G.GAME.nemesisnumber or 0))
@@ -168,7 +172,9 @@ SMODS.Consumable:take_ownership('cry_sunplanet', -- object key (class prefix not
     true -- silent | suppresses mod badge
 )
 
-SMODS.Joker({
+local xekanos = {
+    order = 402,
+    object_type = "Joker",
     key = "xekanos",
     rarity = "entr_hyper_exotic",
     cost = 150,
@@ -202,9 +208,11 @@ SMODS.Joker({
             end
         end
     end
-})
+}
 
-SMODS.Joker({
+local ieros = {
+    order = 403,
+    object_type = "Joker",
     key = "ieros",
     rarity = "entr_hyper_exotic",
     cost = 150,
@@ -246,7 +254,7 @@ SMODS.Joker({
 			}
         end
     end
-})
+}
 
 function create_card_for_shop(area)
     if area == G.shop_jokers and G.SETTINGS.tutorial_progress and G.SETTINGS.tutorial_progress.forced_shop and G.SETTINGS.tutorial_progress.forced_shop[#G.SETTINGS.tutorial_progress.forced_shop] then
@@ -342,7 +350,9 @@ local card = create_card(v.type, area, nil, nil, nil, nil, nil, 'sho')      loca
 end
 
 
-SMODS.Joker({
+local dekatria = {
+    order = 404,
+    object_type = "Joker",
     key = "dekatria",
     rarity = "entr_hyper_exotic",
     cost = 150,
@@ -419,7 +429,7 @@ SMODS.Joker({
 			}
         end
     end
-})
+}
 local is_jollyref = Card.is_jolly
 function Card:is_jolly()
 	if HasJoker("j_entr_dekatria",true) then return true end
@@ -427,7 +437,9 @@ function Card:is_jolly()
 end
 
 
-SMODS.Joker({
+local anaptyxi = {
+    order = 405,
+    object_type = "Joker",
     key = "anaptyxi",
     rarity = "entr_hyper_exotic",
     cost = 150,
@@ -497,7 +509,7 @@ SMODS.Joker({
         end
 		return new_scale
 	end,
-})  
+}  
 
 Entropy.ChaosBlacklist.Back = true
 Entropy.ChaosBlacklist.Sleeve = true
@@ -535,7 +547,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
     return ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 end
 
-SMODS.Joker({
+local parakmi = {
+    order = 406,
+    object_type = "Joker",
     key = "parakmi",
     rarity = "entr_hyper_exotic",
     cost = 150,
@@ -554,7 +568,7 @@ SMODS.Joker({
     end,
     calculate = function(self, card, context)
     end,
-})
+}
 local gfcfbs = G.FUNCS.check_for_buy_space
 G.FUNCS.check_for_buy_space = function(card)
 	if
@@ -880,7 +894,9 @@ local AscendantTags = {
     tag_entr_ascendant_exotic_tag="tag_entr_ascendant_entropic_tag"
 }
 for i, v in pairs(AscendantTags) do Entropy.AscendedTags[i]=v end
-SMODS.Joker({
+local exousia = {
+    order = 407,
+    object_type = "Joker",
     key = "exousia",
     rarity = "entr_hyper_exotic",
     cost = 150,
@@ -920,7 +936,7 @@ SMODS.Joker({
             end
         end
     end
-})
+}
 
 local ref = Tag.init
 function Tag:init(_tag, for_collection, _blind_type)
@@ -935,7 +951,9 @@ function Tag:init(_tag, for_collection, _blind_type)
 end
 
 
-SMODS.Joker({
+local akyros = {
+    order = 408,
+    object_type = "Joker",
     key = "akyros",
     rarity = "entr_hyper_exotic",
     cost = 150,
@@ -1002,4 +1020,17 @@ SMODS.Joker({
     remove_from_deck = function()
         if G.jokers.config.card_limit <= 1 then G.jokers.config.card_limit = 1 end
     end
-})
+}
+return {
+    items = {
+        epitachyno,
+        helios,
+        xekanos,
+        ieros,
+        dekatria,
+        anaptyxi,
+        parakmi,
+        exousia,
+        akyros
+    }
+}

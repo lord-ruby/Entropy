@@ -1,4 +1,6 @@
-SMODS.Joker({
+local surreal = {
+    order = 1,
+    object_type = "Joker",
     key = "surreal_joker",
     config = {
         qmult = 4
@@ -29,9 +31,11 @@ SMODS.Joker({
             }
         end
     end
-})
+}
 
-SMODS.Joker({
+local tesseract = {
+    order = 2,
+    object_type = "Joker",
     key = "tesseract",
     config = {
         degrees = 90
@@ -51,7 +55,7 @@ SMODS.Joker({
             },
         }
     end,
-})
+}
 
 local ref = update_hand_text
 
@@ -83,7 +87,9 @@ function update_hand_text(config, vals)
     ref(config, vals)
 end
 
-SMODS.Joker({
+local solarflare = {
+    order = 3,
+    object_type = "Joker",
     key = "solarflare",
     name="entr-solarflare",
     config = {
@@ -163,7 +169,7 @@ SMODS.Joker({
             }
         end
 	end
-})
+}
 
 local create_ref = create_card
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
@@ -177,7 +183,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
     return card
 end
 
-SMODS.Joker({
+local strawberry_pie = {
+    order = 4,
+    object_type = "Joker",
     key = "strawberry_pie",
     config = {
         level_amount = 1.25
@@ -199,7 +207,7 @@ SMODS.Joker({
             },
         }
     end,
-})
+}
 local ref = level_up_hand
 function level_up_hand(card, hand, instant, amount)
     if HasJoker("j_entr_strawberry_pie",true) and hand ~= "High Card" then
@@ -215,7 +223,9 @@ function level_up_hand(card, hand, instant, amount)
     ref(card,hand,instant,amount)
 end
 
-SMODS.Joker({
+local recursive_joker = {
+    order = 5,
+    object_type = "Joker",
     key = "recursive_joker",
     config = {
         used_this_round = false
@@ -247,4 +257,13 @@ SMODS.Joker({
             G.jokers:emplace(card)
         end
     end
-})
+}
+return {
+    items = {
+        surreal,
+        tesseract,
+        solarflare,
+        strawberry_pie,
+        recursive_joker
+    }
+}

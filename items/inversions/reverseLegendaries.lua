@@ -1,6 +1,8 @@
 SMODS.Atlas { key = 'reverse_legendary', path = 'reverse_legendaries.png', px = 71, py = 95 }
 
-SMODS.Joker({
+local perkeo = {
+    order = 200,
+    object_type = "Joker",
     key = "perkeo",
     config = {
         qmult = 4
@@ -51,7 +53,7 @@ SMODS.Joker({
             end
         end
     end
-})
+}
 
 local add_ref = CardArea.emplace
 function CardArea:emplace(card, location, stay_flipped)
@@ -71,7 +73,9 @@ function CardArea:remove_card(card, discarded_only)
     end
     return c
 end
-SMODS.Joker({
+local chicot = {
+    order = 201,
+    object_type = "Joker",
     key = "chicot",
     config = {
         qmult = 4
@@ -133,7 +137,7 @@ SMODS.Joker({
             add_tag(tag)
         end
     end
-})
+}
 
 local BoosterSets = {
     ["Spectral"] = "p_spectral_mega_1",
@@ -146,7 +150,9 @@ local BoosterSets = {
     ["RSpectral"] = "p_entr_twisted_pack_mega",
 }
 for i, v in pairs(BoosterSets) do Entropy.BoosterSets[i] = v end
-SMODS.Joker({
+local yorick = {
+    order = 202,
+    object_type = "Joker",
     key = "yorick",
     config = {
         csl = 23,
@@ -226,7 +232,7 @@ SMODS.Joker({
 			}
         end
     end
-})
+}
 
 local rdeck_ref = Card.remove_from_deck
 
@@ -249,7 +255,9 @@ function CardArea:draw()
 end
 
 
-SMODS.Joker({
+local trib = {
+    order = 203,
+    object_type = "Joker",
     key = "triboulet",
     rarity = "entr_reverse_legendary",
     cost = 20,
@@ -308,9 +316,11 @@ SMODS.Joker({
             end
         end
     end
-})
+}
 
-SMODS.Joker({
+local canio = {
+    order = 204,
+    object_type = "Joker",
     key = "canio",
     rarity = "entr_reverse_legendary",
     cost = 20,
@@ -369,9 +379,11 @@ SMODS.Joker({
 			}
         end
     end
-})
+}
 
-SMODS.Joker({
+local membership = {
+    order = 205,
+    object_type = "Joker",
     key = "membership",
     config = {
         x_asc_mod = 1,
@@ -402,4 +414,14 @@ SMODS.Joker({
             }
        end
     end
-})
+}
+return {
+    items = {
+        perkeo,
+        canio,
+        chicot,
+        yorick,
+        trib,
+        membership
+    }
+}
