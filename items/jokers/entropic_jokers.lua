@@ -592,6 +592,9 @@ function Entropy.RegisterBlinds()
             weight = 0,
             no_doe = true,
             --soul_pos = { x = 5, y = 0},
+            in_pool = function()
+                return false
+            end,
             use = function(self, card, area, copier,amt)
                 local bl = "Small"
                 for i, v in pairs(G.GAME.round_resets.blind_states) do
@@ -610,7 +613,7 @@ function Entropy.RegisterBlinds()
             can_use = function(self, card)
                 if not G.GAME.round_resets then return false end
                 for i, v in pairs(G.GAME.round_resets.blind_states or {}) do
-                    if v == "Select" or v == "Current" then return true end
+                    if v == "Select" or (not SMODS.Mods.NotJustYet or (not SMODS.Mods.NotJustYet.can_load and v == "Current")) then return true end
                 end
                 if G.GAME.round_resets.ante_disp == "32" or G.GAME.EEBuildup then return false end
                 return false
@@ -650,6 +653,9 @@ function Entropy.RegisterBlinds()
                 weight = 0,
                 no_doe = true,
                 --soul_pos = { x = 5, y = 0},
+                in_pool = function()
+                    return false
+                end,
                 use = function(self, card, area, copier,amt)
                     local bl = "Small"
                     for i, v in pairs(G.GAME.round_resets.blind_states) do
@@ -668,7 +674,7 @@ function Entropy.RegisterBlinds()
                 can_use = function(self, card)
                     if not G.GAME.round_resets then return false end
                     for i, v in pairs(G.GAME.round_resets.blind_states or {}) do
-                        if v == "Select" or v == "Current" then return true end
+                        if v == "Select" or (not SMODS.Mods.NotJustYet or (not SMODS.Mods.NotJustYet.can_load and v == "Current")) then return true end
                     end
                     if G.GAME.round_resets.ante_disp == "32" or G.GAME.EEBuildup then return false end
                     return false
