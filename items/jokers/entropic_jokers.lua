@@ -555,7 +555,15 @@ SMODS.Joker({
     calculate = function(self, card, context)
     end,
 })
-
+local gfcfbs = G.FUNCS.check_for_buy_space
+G.FUNCS.check_for_buy_space = function(card)
+	if
+		(card.config.center.set == "Back" or card.config.center.set == "Sleeve")
+	then
+		return true
+	end
+	return gfcfbs(card)
+end
 SMODS.ConsumableType({
 	object_type = "ConsumableType",
 	key = "CBlind",
@@ -754,7 +762,7 @@ function create_shop_card_ui(card, type, area)
                       }}
                   }}
               local t2 = {
-                n=G.UIT.ROOT, config = {ref_table = card, minw = 1.1, maxw = 1.3, padding = 0.1, align = 'bm', colour = G.C.GOLD, shadow = true, r = 0.08, minh = 0.94, func = 'can_buy_deckorsleeve', one_press = true, button = 'buy_deckorsleeve', hover = true}, nodes={
+                n=G.UIT.ROOT, config = {ref_table = card, minw = 1.1, maxw = 1.3, padding = 0.1, align = 'bm', colour = G.C.GOLD, shadow = true, r = 0.08, minh = 0.94, func = 'can_buy_deckorsleeve_from_shop', one_press = true, button = 'buy_deckorsleeve', hover = true}, nodes={
                     {n=G.UIT.T, config={text = localize('b_buy'),colour = G.C.WHITE, scale = 0.5}}
                 }}
 
