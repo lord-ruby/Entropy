@@ -46,7 +46,8 @@ end
 for i, category in pairs(items) do
     table.sort(category, function(a, b) return a.order < b.order end)
     for i2, item in pairs(category) do
-        SMODS[item.object_type](item)
+        if not SMODS[item.object_type] then print(item.object_type);Entropy.fucker = item.object_type
+    else SMODS[item.object_type](item) end
     end
 end
 SMODS.current_mod.optional_features = {

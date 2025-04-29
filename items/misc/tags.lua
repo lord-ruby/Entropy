@@ -5,20 +5,26 @@ SMODS.Atlas {
     py = 34
   }
 
-SMODS.Tag({
+local dog = {
+	object_type = "Tag",
+	order = -10,
+	dependencies = {
+	  items = {
+		"set_entr_tags"
+	  }
+	},
 	atlas = "tags",
 	pos = { x = 0, y = 0 },
 	config = { level = 1 },
 	key = "dog",
 	name = "entr-Dog Tag",
-	order = 12,
 	loc_vars = function(self, info_queue, tag)
 		return { vars = { tag and tag.ability and tag.ability.level or 1 } }
 	end,
 	set_ability = function(self, tag)
 		tag.hover_sound = function() return 'entr_woof'..math.random(3) end
 	end
-})
+}
 
 SMODS.Sound({
 	key = "woof1",
@@ -33,13 +39,19 @@ SMODS.Sound({
 	path = "woof3.ogg",
 })
 
-SMODS.Tag({
+local solar = {
+	object_type = "Tag",
+	order = -9,
+	dependencies = {
+	  items = {
+		"set_entr_tags"
+	  }
+	},
 	atlas = "tags",
 	pos = { x = 1, y = 0 },
 	config = { level = 1 },
 	key = "solar",
 	name = "entr-Solar Tag",
-	order = 13,
 	min_ante = 9,
 	config = { type = "store_joker_modify", edition = "entr_solar" },
 	loc_vars = function(self, info_queue, tag)
@@ -69,7 +81,7 @@ SMODS.Tag({
 			end
 		end
 	end,
-})
+}
 
 --ascendant tags
 
@@ -89,13 +101,21 @@ SMODS.Atlas {
   }
 
 
-  Entropy.RareTag(3, "rare", true, "Rare", {x=0,y=0}, 0, nil)
-  Entropy.RareTag("cry_epic", "epic", true, "cry_epic", {x=1,y=0}, 0, nil)
-  Entropy.RareTag(4, "legendary", true, "Legendary", {x=2,y=0}, 0, true)
-  Entropy.RareTag("cry_exotic", "exotic", true, "cry_exotic", {x=3,y=0}, 0, nil)
-  Entropy.RareTag("entr_hyper_exotic", "entropic", true, "entr_hyper_exotic", {x=4,y=0}, 0, nil)
+  local rare = Entropy.RareTag(3, "rare", true, "Rare", {x=0,y=0}, 0, nil,3)
+  local epic = Entropy.RareTag("cry_epic", "epic", true, "cry_epic", {x=1,y=0}, 0, nil,4)
+  local legendary = Entropy.RareTag(4, "legendary", true, "Legendary", {x=2,y=0}, 0, true,5)
+  local exotic = Entropy.RareTag("cry_exotic", "exotic", true, "cry_exotic", {x=3,y=0}, 0, nil,6)
+  local entropic Entropy.RareTag("entr_hyper_exotic", "entropic", true, "entr_hyper_exotic", {x=4,y=0}, 0, nil,7)
 
-  SMODS.Tag {
+  local copying = {
+	object_type = "Tag",
+    order = 8,
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_copying_tag",
 	atlas = "ascendant_tags",
@@ -142,7 +162,15 @@ SMODS.Atlas {
 	end
 }
 
-SMODS.Tag {
+local voucher = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 9,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_voucher_tag",
 	atlas = "ascendant_tags",
@@ -212,7 +240,15 @@ SMODS.Tag {
 	end,
 }
 
-SMODS.Tag {
+local saint =  {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 10,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_saint_tag",
 	atlas = "ascendant_tags",
@@ -238,13 +274,21 @@ SMODS.Tag {
 		end
 	end,
 }
-Entropy.EditionTag("e_negative", "negative", true, {x=1,y=1})
-Entropy.EditionTag("e_foil", "foil", true, {x=2,y=1})
-Entropy.EditionTag("e_holo", "holo", true, {x=3,y=1})
-Entropy.EditionTag("e_polychrome", "poly", true, {x=4,y=1})
-Entropy.EditionTag("e_cry_glass", "glass", true, {x=5,y=1})
+local negative = Entropy.EditionTag("e_negative", "negative", true, {x=1,y=1}, 10.1)
+local foil =Entropy.EditionTag("e_foil", "foil", true, {x=2,y=1},10.2)
+local holo = Entropy.EditionTag("e_holo", "holo", true, {x=3,y=1},10.3)
+local poly = Entropy.EditionTag("e_polychrome", "poly", true, {x=4,y=1},10.4)
+local glass = Entropy.EditionTag("e_cry_glass", "glass", true, {x=5,y=1},10.5)
 
-SMODS.Tag {
+local better_voucher = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 11,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_better_voucher_tag",
 	atlas = "ascendant_tags",
@@ -365,14 +409,22 @@ SMODS.Tag {
 }
 
 
-Entropy.EditionTag("e_cry_glitched", "glitched", true, {x=0,y=2})
-Entropy.EditionTag("e_cry_gold", "gold", true, {x=1,y=2})
-Entropy.EditionTag("e_cry_blur", "blurry", true, {x=2,y=2})
-Entropy.EditionTag("e_cry_m", "m", true, {x=3,y=2})
-Entropy.EditionTag("e_cry_mosaic", "mosaic", true, {x=4,y=2})
-Entropy.EditionTag("e_cry_astral", "astral", true, {x=5,y=2})
+local glitched = Entropy.EditionTag("e_cry_glitched", "glitched", true, {x=0,y=2},12)
+local gold = Entropy.EditionTag("e_cry_gold", "gold", true, {x=1,y=2},13)
+local blur = Entropy.EditionTag("e_cry_blur", "blurry", true, {x=2,y=2},14)
+local m = Entropy.EditionTag("e_cry_m", "m", true, {x=3,y=2},15)
+local mosaic = Entropy.EditionTag("e_cry_mosaic", "mosaic", true, {x=4,y=2},16)
+local astral = Entropy.EditionTag("e_cry_astral", "astral", true, {x=5,y=2},17)
 
-SMODS.Tag {
+local infdiscard = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 18,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_infdiscard_tag",
 	atlas = "ascendant_tags",
@@ -394,10 +446,18 @@ SMODS.Tag {
 	end,
 }
 
-Entropy.EditionTag("e_cry_oversat", "oversat", true, {x=0,y=3})
-Entropy.EditionTag("e_entr_solar", "solar", true, {x=1,y=3})
+local oversat = Entropy.EditionTag("e_cry_oversat", "oversat", true, {x=0,y=3},18)
+local solar_asc = Entropy.EditionTag("e_entr_solar", "solar", true, {x=1,y=3},20)
 
-SMODS.Tag({
+local cat_asc = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 21,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	atlas = "ascendant_tags",
 	pos = { x = 2, y = 3 },
@@ -419,9 +479,17 @@ SMODS.Tag({
 		end
 	end,
 	in_pool = function() return false end
-})
+}
 
-SMODS.Tag({
+local dog_asc = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 22,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	atlas = "ascendant_tags",
 	pos = { x = 3, y = 3 },
@@ -444,9 +512,17 @@ SMODS.Tag({
 		tag.hover_sound = function() return 'entr_woof'..math.random(3) end
 	end,
 	in_pool = function() return false end
-})
+}
 
-SMODS.Tag {
+local canvas = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 23,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_canvas_tag",
 	atlas = "ascendant_tags",
@@ -476,7 +552,15 @@ SMODS.Tag {
 	end,
 }
 
-SMODS.Tag {
+local unbounded = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 24,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_unbounded_tag",
 	atlas = "ascendant_tags",
@@ -523,7 +607,15 @@ SMODS.Tag {
 	end,
 }
 
-SMODS.Booster({
+local unbounded_pack = {
+	object_type = "Booster",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 4,
 	shiny_atlas="entr_shiny_ascendant_tags",
     key = "unbounded",
     set = "Booster",
@@ -600,9 +692,17 @@ SMODS.Booster({
 			G.consumeables:emplace(ccard)
 		end,
 	},
-})
+}
 
-SMODS.Tag {
+local ejoker = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 25,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_ejoker_tag",
 	atlas = "ascendant_tags",
@@ -649,7 +749,15 @@ SMODS.Tag {
 }
 
 
-SMODS.Tag {
+local universal = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 26,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_universal_tag",
 	atlas = "ascendant_tags",
@@ -681,7 +789,15 @@ SMODS.Tag {
 	end
 }
 
-SMODS.Tag {
+local ebundle = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 27,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_ebundle_tag",
 	atlas = "ascendant_tags",
@@ -719,7 +835,15 @@ SMODS.Tag {
 	end,
 }
 
-SMODS.Tag {
+local twisted = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 28,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_twisted_tag",
 	atlas = "ascendant_tags",
@@ -764,7 +888,15 @@ SMODS.Tag {
 	end,
 }
 
-SMODS.Tag {
+local stock = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 29,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_stock_tag",
 	atlas = "ascendant_tags",
@@ -785,7 +917,15 @@ SMODS.Tag {
 	end,
 }
 
-SMODS.Tag {
+local blind = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 29,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_blind_tag",
 	atlas = "ascendant_tags",
@@ -829,7 +969,15 @@ SMODS.Tag {
 	end,
 }
 
-SMODS.Booster({
+local blind_pack = {
+	object_type = "Booster",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 5,
 	shiny_atlas="entr_shiny_ascendant_tags",
     key = "blind",
     set = "Booster",
@@ -857,10 +1005,18 @@ SMODS.Booster({
 		ease_colour(G.C.DYN_UI.MAIN, HEX("709284"))
 		ease_background_colour({ new_colour = HEX("709284"), special_colour = HEX("3e5149"), contrast = 2 })
 	end
-})
+}
 
 
-SMODS.Tag {
+local reference = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 30,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_reference_tag",
 	atlas = "ascendant_tags",
@@ -905,7 +1061,15 @@ SMODS.Tag {
 	end,
 }
 
-SMODS.Booster({
+local reference_pack = {
+	object_type = "Booster",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 6,
 	shiny_atlas="entr_shiny_ascendant_tags",
     key = "reference_pack",
     set = "Booster",
@@ -936,9 +1100,17 @@ SMODS.Booster({
 		ease_colour(G.C.DYN_UI.MAIN, G.C.BLUE)
 		ease_background_colour({ new_colour = G.C.RED, special_colour = G.C.BLUE, contrast = 2 })
 	end
-})
+}
 
-SMODS.Tag {
+local cavendish = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 31,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_cavendish_tag",
 	atlas = "ascendant_tags",
@@ -966,7 +1138,15 @@ SMODS.Tag {
 	end,
 }
 
-SMODS.Tag {
+local credit = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 32,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_credit_tag",
 	atlas = "ascendant_tags",
@@ -1001,7 +1181,15 @@ SMODS.Tag {
 }
 
 
-SMODS.Tag {
+local topup = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 33,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_topup_tag",
 	atlas = "ascendant_tags",
@@ -1028,7 +1216,15 @@ SMODS.Tag {
 	end,
 }
 
-SMODS.Tag {
+local better_topup = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 34,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_better_topup_tag",
 	atlas = "ascendant_tags",
@@ -1055,7 +1251,15 @@ SMODS.Tag {
 	end,
 }
 
-SMODS.Tag {
+local booster = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 35,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_booster_tag",
 	atlas = "ascendant_tags",
@@ -1078,7 +1282,15 @@ SMODS.Tag {
 	end,
 }
 
-SMODS.Tag {
+local effarcire = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 36,
 	shiny_atlas="entr_shiny_ascendant_tags",
 	key = "ascendant_effarcire_tag",
 	atlas = "ascendant_tags",
@@ -1096,4 +1308,41 @@ SMODS.Tag {
 			G.GAME.round_resets.temp_handsize = (G.GAME.round_resets.temp_handsize or 0) + #G.deck.cards
 		end
 	end,
+}
+
+return {
+	items = {
+		dog,
+		solar,
+		negative,
+		poly,
+		foil,
+		holo,
+		glass,
+		solar_asc,
+		voucher,
+		saint,
+		better_voucher,
+		infdiscard,
+		cat_asc,
+		dog_asc,
+		canvas,
+		unbounded,
+		unbounded_pack,
+		ejoker,
+		universal,
+		ebundle,
+		twisted,
+		stock,
+		blind,
+		blind_pack,
+		reference,
+		reference_pack,
+		cavendish,
+		credit,
+		topup,
+		better_topup,
+		booster,
+		effarcire
+	}
 }

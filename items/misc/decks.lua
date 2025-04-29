@@ -1,10 +1,18 @@
 SMODS.Atlas { key = 'decks', path = 'decks.png', px = 71, py = 95 }
-SMODS.Back({
+local twisted = {
+  object_type = "Back",
+  order = 0,
+  dependencies = {
+    items = {
+      "set_entr_inversions",
+      "set_entr_decks"
+    }
+  },
 	name = "Twisted Deck",
 	key = "twisted",
 	pos = { x = 0, y = 0 },
 	atlas = "decks",
-})
+}
 
 local matref = Card.set_ability
 function Card:set_ability(center, initial, delay_sprites)
@@ -43,8 +51,14 @@ function Card:set_ability(center, initial, delay_sprites)
     end
 end
 
-SMODS.Back({
-	object_type = "Back",
+local redefined = {
+  object_type = "Back",
+  order = 1,
+  dependencies = {
+    items = {
+      "set_entr_decks"
+    }
+  },
 	name = "CCD 2.0",
 	key = "ccd2",
 	pos = { x = 1, y = 0 },
@@ -53,11 +67,18 @@ SMODS.Back({
 	apply = function(self)
 		G.GAME.modifiers.ccd2 = true
 	end,
-})
+}
 
 --chance of beyond showing up is 1 - 0.99^entropy
 --chips exp is 0.02 + 0.98^entropy
-SMODS.Back({
+local containment = {
+  object_type = "Back",
+  order = 2,
+  dependencies = {
+    items = {
+      "set_entr_decks"
+    }
+  },
 	object_type = "Back",
 	name = "Deck of Containment",
 	key = "doc",
@@ -107,7 +128,7 @@ SMODS.Back({
 			end
 		end
 	end
-})
+}
 local use_cardref = G.FUNCS.use_card
 G.FUNCS.use_card = function(e, mute, nosave)
 	local card = e.config.ref_table
@@ -281,7 +302,13 @@ end
 
 --OH BOY
 
-SMODS.Back({
+local destiny = {
+  order = 3,
+  dependencies = {
+    items = {
+      "set_entr_decks"
+    }
+  },
 	object_type = "Back",
 	name = "Deck of Destiny",
 	key = "crafting",
@@ -310,7 +337,7 @@ SMODS.Back({
       end}))
 	end,
   config = { vouchers = { "v_magic_trick", "v_illusion" } },
-})
+}
 
 local create_ref = create_card
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
@@ -323,7 +350,14 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
     return card
 end
 
-SMODS.Back({
+local butterfly = {
+  object_type = "Back",
+  order = 4,
+  dependencies = {
+    items = {
+      "set_entr_decks"
+    }
+  },
 	object_type = "Back",
 	name = "Butterfly Deck",
 	key = "butterfly",
@@ -344,7 +378,7 @@ SMODS.Back({
         end}))
     end
   end
-})
+}
 local ref = pseudorandom
 function pseudorandom(key,min,max)
   if Entropy.DeckOrSleeve("butterfly") then key = "butterfly" end
@@ -445,3 +479,12 @@ if CardSleeves then
     end
   }
 end
+
+return {
+  items = {
+    twisted,
+    redefined,
+    containment,
+    butterfly
+  }
+}

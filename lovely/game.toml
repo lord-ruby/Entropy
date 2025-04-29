@@ -322,7 +322,7 @@ pattern = "          G.GAME.stake > 1 and {"
 position = "before"
 payload = '''
         {
-          label = G.GAME.DefineKeys and  and localize('b_definitions'),
+          label = G.GAME.DefineKeys and localize('b_definitions'),
           tab_definition_function = G.GAME.define_keys and G.UIDEF.define_keys,
         },
         {

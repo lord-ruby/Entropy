@@ -564,8 +564,16 @@ function Entropy.BlindIs(orig, newkey)
     return false
 end
 
-function Entropy.RareTag(rarity, key, ascendant, colour, pos, fac, legendary)
-    SMODS.Tag {
+function Entropy.RareTag(rarity, key, ascendant, colour, pos, fac, legendary,order)
+    return {
+        object_type = "Tag",
+        order = order,
+        dependencies = {
+          items = {
+            "set_entr_tags",
+            "j_entr_exousia"
+          }
+        },
         shiny_atlas="entr_shiny_ascendant_tags",
         key = (ascendant and "ascendant_" or "")..key.."_tag",
         atlas = (ascendant and "ascendant_tags" or "tags"),
@@ -602,8 +610,16 @@ function Entropy.RareTag(rarity, key, ascendant, colour, pos, fac, legendary)
     }
 end
 
-function Entropy.EditionTag(edition, key, ascendant, pos)
-    SMODS.Tag {
+function Entropy.EditionTag(edition, key, ascendant, pos,order)
+    return {
+        object_type = "Tag",
+        dependencies = {
+            items = {
+                "set_entr_tags",
+                "j_entr_exousia"
+            }
+        },
+        order = order,
         shiny_atlas="entr_shiny_ascendant_tags",
         key = (ascendant and "ascendant_" or "")..key.."_tag",
         atlas = (ascendant and "ascendant_tags" or "tags"),
