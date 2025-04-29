@@ -394,7 +394,7 @@ local decs = {
 			b_entr_butterfly = {
 				name = "Butterfly Deck",
 				text =  {
-					"All {c:attention}Randomn{} outcomes",
+					"All {c:attention}Random{} outcomes",
 					"can affect eachother",
 					"Gain a {C:dark_edition}Negative{} {C:attention}Revert{}",
 					"when a Boss-Blind is selected"
