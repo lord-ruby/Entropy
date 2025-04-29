@@ -63,14 +63,14 @@ pattern = '''function love.load() '''
 position = "before"
 payload = '''
 Entropy = {}
-Entropy.FlipsideInversions = {}
+Entropy.FlipsideInversions = {} --key is the original consumables key and value is the inversions key
 
-Entropy.RubySaves = {} --secret stuff
 Entropy.References = {} --this is for the reference pack pool
+Entropy.ChaosConversions = {} --when a set shows up with chaos it will be replaced if the set is a key in this table
 Entropy.ChaosBlacklist = {}
-Entropy.ChaosConversions = {}
 Entropy.ParakmiBlacklist = {} --blacklisted sets from showing up with these jokers
 --for oekrep
+--keys are consumable sets and values are the mega booster packs key
 Entropy.BoosterSets = {}
 
 --for push -f
@@ -83,6 +83,7 @@ Entropy.RarityPoints = {
     ["cry_exotic"] = 1000,
     ["entr_hyper_exotic"] = 5000,
 }
+--higher rarities give less points so the diminisher is used in division
 Entropy.RarityDiminishers = {
     [1] = 1,
     [2] = 1.5,
@@ -108,6 +109,8 @@ Entropy.EditionFactors = {
     ["e_cry_m"] = 1.45
 }
 --for define
+--table key must be either the banned key set or rarity and value must be true
+--but define also applies the pointer blacklist so this is stuff that only define bans
 Entropy.DefineBlacklist = {}
 
 --for disavow
@@ -149,8 +152,10 @@ Entropy.BlindTokenBlacklist = {
   bl_entr_endless_entropy_phase_three=true,
   bl_entr_endless_entropy_phase_four=true
 }
---more secret related stuff
+--secret related stuff
+--specifically used for registering zenith skins with Entropy.RegisterZenithSkin
 Entropy.Zeniths = {}
+Entropy.RubySaves = {}
 '''
 match_indent = true
 
