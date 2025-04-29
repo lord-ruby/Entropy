@@ -1088,6 +1088,57 @@ local akyros = {
         if G.jokers.config.card_limit <= 1 then G.jokers.config.card_limit = 1 end
     end
 }
+local katarraktis = {
+    order = 409,
+    object_type = "Joker",
+    key = "katarraktis",
+    rarity = "entr_hyper_exotic",
+    cost = 150,
+    unlocked = true,
+    eternal_compat = true,
+    pos = { x = 3, y = 3 },
+    config = {
+        basetriggers=1
+    },
+    dependencies = {
+        items = {
+            "set_entr_entropic"
+        }
+    },
+    soul_pos = { x = 5, y = 3, extra = { x = 4, y = 3 } },
+    atlas = "exotic_jokers",
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                card.ability.basetriggers
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.retrigger_joker_check and not context.retrigger_joker then
+            local ind = 0
+            local this_ind = 0
+            for i, v in pairs(G.jokers.cards) do
+                if v == context.other_card then ind = i end
+                if v == card then this_ind = i end
+            end
+            local diff = ind - this_ind
+            if diff >= 1 then
+                if diff > 17 then diff = 17 end
+                local triggers = 2 ^ (diff - 1)
+                return {
+					message = localize("k_again_ex"),
+					repetitions = math.floor(math.min(card.ability.basetriggers * triggers, 65536)),
+					card = card,
+				}
+            end
+        end
+    end,
+    entr_credits = {
+        idea = {"cassknows"},
+        art = {"cassknows"}
+    }
+}
 local items = {
     epitachyno,
     helios,
@@ -1098,6 +1149,7 @@ local items = {
     parakmi,
     exousia,
     akyros,
+    katarraktis,
     blind_type
 }
 return {

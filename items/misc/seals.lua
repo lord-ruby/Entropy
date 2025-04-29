@@ -158,7 +158,17 @@ local crimson = {
 --       delay(0.3)
 --       return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
 -- end
-
+local ref = evaluate_play_final_scoring
+function evaluate_play_final_scoring(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
+    local text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta = ref(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
+    G.E_MANAGER:add_event(Event({
+      trigger = 'after',
+      	func = (function()
+            G.GAME.asc_power_hand = nil
+        return true end)
+    }))
+    return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
+end
 local sapphire = {
     dependencies = {
         items = {

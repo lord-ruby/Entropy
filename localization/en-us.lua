@@ -336,6 +336,16 @@ local decs = {
 					'{C:dark_edition,s:0.7,E:2}Floating sprite by : lord.ruby{}',
 					'{C:cry_exotic,s:0.7,E:2}Origin : UTOPIA{}'
 				}
+			},
+			j_entr_katarraktis = {
+				name = "Katarraktis",
+				text = {
+					"Retrigger the {C:attention}Joker{} to",
+					"the right {C:attention}#1#{} time then",
+					"retrigger each subsequent",
+					"{C:attention}Joker{} {X:dark_edition,C:white}Twice{} as",
+					"many times as the previous"
+				}
 			}
 		},
 		Blind = {
