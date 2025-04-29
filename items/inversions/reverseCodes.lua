@@ -2386,7 +2386,7 @@ end
 return {
     items = {
         memory_leak,
-        rootkit,
+        root_kit,
         bootstrap,
         quickload,
         break_card,

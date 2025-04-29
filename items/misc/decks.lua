@@ -34,11 +34,11 @@ function Card:set_ability(center, initial, delay_sprites)
             G.E_MANAGER:add_event(Event({
               trigger="after",
               func = function()
-                matref(self, G.P_CENTERS[Entropy.FlipsideInversions[self.config.center.key]], initial, delay_sprites)
+                matref(self, G.P_CENTERS[Entropy.FlipsideInversions[self.config.center.key]] or center, initial, delay_sprites)
               end
             }))
           else
-            matref(self, G.P_CENTERS[Entropy.FlipsideInversions[self.config.center.key]], initial, delay_sprites)
+            matref(self, G.P_CENTERS[Entropy.FlipsideInversions[self.config.center.key]] or center, initial, delay_sprites)
           end
       elseif self.config and self.config.center and Jumbos[self.config.center.key] and 
         Entropy.DeckOrSleeve("crafting") then
