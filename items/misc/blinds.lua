@@ -239,8 +239,11 @@ local phase2 = {
 	in_pool = function() return false end,
 	next_phase = "bl_entr_endless_entropy_phase_two",
 	calculate = function(self, blind, context)
-		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) and not G.GAME.round_resets.lost then
-			G.STATE = G.STATES.GAME_OVER; G.STATE_COMPLETE = false
+		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) then
+			G.STATE = G.STATES.GAME_OVER
+			if not G.GAME.round_resets.lost then
+				G.STATE_COMPLETE = false
+			end
 			G.GAME.round_resets.lost = true
 		end
 		if G.GAME.current_round.hands_left == 0 and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) and not G.GAME.EE3 then
