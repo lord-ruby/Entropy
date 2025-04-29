@@ -1071,7 +1071,7 @@ SMODS.Consumable({
             card:start_dissolve()
             local rare = nil
             if card.config.center.rarity ~= "j_entr_hyper_exotic" then
-                rare = Entropy.RarityUppers[card.config.center.rarity or 1] or card.config.center.rarity
+                rare = Entropy.GetNextRarity(card.config.center.rarity or 1) or card.config.center.rarity
             end
             if rare == 1 then rare = "Common" end
             if rare == 2 then rare = "Uncommon" end

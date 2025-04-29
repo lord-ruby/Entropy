@@ -109,12 +109,6 @@ Entropy.EditionFactors = {
 }
 --for define
 Entropy.DefineBlacklist = {}
---rarity blacklist
-Entropy.ExoticPlusPlus = {
-    ["entr_reverse_legendary"] = true, --this is not above exotic but it needs to be blacklisted anyway
-    ["cry_exotic"] = true,
-    ["entr_hyper_exotic"] = true
-}
 
 --for disavow
 --keys are enhancement keys and functions apply to the cards
@@ -131,7 +125,7 @@ Entropy.RareInversions = {
 --more rarity related stuff
 --these are in order
 --idk if candy is worst but below 0 is fine
---only used for xekanos
+--used for anything that checks if a rarity is above a certain level
 Entropy.RarityChecks = {
     [0]="cry_candy",
     1,
@@ -143,24 +137,12 @@ Entropy.RarityChecks = {
     "entr_hyper_exotic"
 }
 Entropy.AscendedTags = {}
---this is probably redundant but im lazy
---key is the first rarity, value is the rarity above it
---used for upgrading jokers
-Entropy.RarityUppers = {
-    ["cry_candy"]=1,
-    [1]=2,
-    [2]=3,
-    [3]="cry_epic",
-    ["cry_epic"]=4,
-    [4]="cry_exotic",
-    ["cry_exotic"]="entr_hyper_exotic"
-}
-
 --for destiny
 Entropy.FixedRecipes = {
     c_basec_basec_basec_basec_base = "j_joker",
     m_steelm_steelm_steelm_steelm_steel = "j_cry_clockwork"
 }
+--these cannot show up as blink tokens
 Entropy.BlindTokenBlacklist = {
   bl_entr_endless_entropy_phase_one=true,
   bl_entr_endless_entropy_phase_two=true,

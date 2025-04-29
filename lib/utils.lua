@@ -895,3 +895,10 @@ function Entropy.RandomForcetrigger(card, num)
 			if res.p_dollars then ease_dollars(res.p_dollars) end
 			return res
 end
+
+function Entropy.GetNextRarity(rarity)
+    for i, v in pairs(Entropy.RarityChecks) do
+        if v == rarity then return Entropy.RarityChecks[i+1] or v end
+    end
+    return rarity
+end
