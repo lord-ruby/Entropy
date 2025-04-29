@@ -37,7 +37,7 @@ function SMODS.injectItems(...)
             SMODS[item.object_type](item)
         end
     end
-    SMODS.load_file("items/content_sets.lua", "entr")()
+    SMODS.load_file("items/misc/content_sets.lua", "entr")()
     loadmodsref(...)
     SMODS.ObjectType({
         key = "Twisted",
