@@ -74,7 +74,7 @@ local flipside = {
     set = "Spectral",
     unlocked = true,
     order=35,
-    object_type = "Consumable"
+    object_type = "Consumable",
     atlas = "miscc",
     config = {
         extra = {
@@ -958,7 +958,7 @@ local destiny = {
     set = "Spectral",
     unlocked = true,
     order = 36,
-    object_type = "Consumable"
+    object_type = "Consumable",
     atlas = "miscc",
     immutable = true,
     pos = {x=5,y=7},
@@ -991,12 +991,12 @@ local destiny = {
     weight = 0
 }
 
-{
+local shatter = {
     key = "shatter",
     set = "Spectral",
     unlocked = true,
     order = 37,
-    object_type = "Consumable"
+    object_type = "Consumable",
     config = {limit = 2},
     atlas = "miscc",
     pos = {x=5,y=8},

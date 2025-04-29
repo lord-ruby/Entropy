@@ -1051,7 +1051,7 @@ local invariant = {
 SMODS.Atlas { key = 'entr_stickers', path = 'stickers.png', px = 71, py = 95 }
 local pinned = {
     object_type="Sticker",
-    order=2
+    order=2,
     atlas = "entr_stickers",
     pos = { x = 1, y = 0 },
     key = "entr_pinned",
@@ -2240,7 +2240,7 @@ return {
         interference,
         constant,
         pseudorandom,
-        pseudorandom_stickerm
+        pseudorandom_sticker,
         inherit,
         fork,
         push,
