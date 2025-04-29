@@ -327,7 +327,7 @@ SMODS.Back({
 	object_type = "Back",
 	name = "Butterfly Deck",
 	key = "butterfly",
-	pos = { x = 3, y = 0 },
+	pos = { x = 4, y = 0 },
 	order = 1,
 	atlas = "decks",
   config = { vouchers = { "v_cry_command_prompt", "v_cry_satellite_uplink" } },
