@@ -464,7 +464,7 @@ end
 
 G.FUNCS.can_buy_slot = function(e)
     if
-        to_big(G.GAME.dollars) > to_big(e.config.ref_table.ability.buycost)
+        to_big(G.GAME.dollars-G.GAME.bankrupt_at) > to_big(e.config.ref_table.ability.buycost)
     then
         e.config.colour = G.C.GREEN
         e.config.button = "buy_slot"

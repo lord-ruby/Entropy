@@ -232,7 +232,7 @@ local decs = {
 				text = {
 					"Chooses one suit per hand",
 					"Destroy all {C:attention}scored{} cards with that suit",
-					"{C:inactive}(Currently:{} {X:attention,C:white}#1#{}{C:inactive}){}"
+					"{C:inactive}(Currently:{} {V:1}#1#{}{C:inactive}){}"
 				}
 			},
 			j_entr_strawberry_pie = {

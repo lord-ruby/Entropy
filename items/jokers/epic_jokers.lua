@@ -105,7 +105,10 @@ SMODS.Joker({
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.suit
+                card.ability.suit or "Spades",
+                colours = {
+                    G.C.SUITS[card.ability.suit or "Spades"]
+                }
             },
         }
     end,
