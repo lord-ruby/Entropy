@@ -19,25 +19,26 @@ local loadmodsref = SMODS.injectItems
 function SMODS.injectItems(...)
     LoadCompatibilities()
     Entropy.FlipsidePureInversions = copy_table(Entropy.FlipsideInversions)
-    local results = Entropy.RegisterBlinds()
-    local items = {}
-    if results then
-        if results.init then results.init(results) end
-        if results.items then
-            for i, result in pairs(results.items) do
-                if not items[result.object_type] then items[result.object_type] = {} end
-                result.cry_order = result.order
-                items[result.object_type][#items[result.object_type]+1]=result
+    if Entropy.config.blind_tokens then
+        local results = Entropy.RegisterBlinds()
+        local items = {}
+        if results then
+            if results.init then results.init(results) end
+            if results.items then
+                for i, result in pairs(results.items) do
+                    if not items[result.object_type] then items[result.object_type] = {} end
+                    result.cry_order = result.order
+                    items[result.object_type][#items[result.object_type]+1]=result
+                end
+            end
+        end
+        for i, category in pairs(items) do
+            table.sort(category, function(a, b) return a.order < b.order end)
+            for i2, item in pairs(category) do
+                SMODS[item.object_type](item)
             end
         end
     end
-    for i, category in pairs(items) do
-        table.sort(category, function(a, b) return a.order < b.order end)
-        for i2, item in pairs(category) do
-            SMODS[item.object_type](item)
-        end
-    end
-    SMODS.load_file("items/misc/content_sets.lua", "entr")()
     loadmodsref(...)
     SMODS.ObjectType({
         key = "Twisted",
