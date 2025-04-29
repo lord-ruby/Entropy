@@ -9,7 +9,9 @@ SMODS.ConsumableType({
 	default = "c_entr_memory_leak"
 })
 
-SMODS.Consumable({
+local memory_leak = {
+    object_type = "Consumable",
+    order = 1,
     key = "memory_leak",
     set = "RCode",
     unlocked = true,
@@ -29,9 +31,11 @@ SMODS.Consumable({
     loc_vars = function(self, q, card)
 
     end
-})
+}
 
-SMODS.Consumable({
+local root_kit = {
+    object_type = "Consumable",
+    order = 2,
     key = "root_kit",
     set = "RCode",
     unlocked = true,
@@ -59,9 +63,11 @@ SMODS.Consumable({
             }
         }
     end
-})
+}
 
-SMODS.Consumable({
+local bootstrap = {
+    object_type = "Consumable",
+    order = 3,
     key = "bootstrap",
     set = "RCode",
     unlocked = true,
@@ -87,7 +93,7 @@ SMODS.Consumable({
 			"cassknows",
 		},
 	},
-})
+}
 local main_ref = evaluate_play_main
 function evaluate_play_main(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
     local m = G.GAME.hands[text].mult
@@ -112,7 +118,9 @@ function evaluate_play_main(text, disp_text, poker_hands, scoring_hand, non_loc_
     poker_hands[text].mult = m
     poker_hands[text].chips = c
 end
-SMODS.Consumable({
+local quickload = {
+    object_type = "Consumable",
+    order = 4,
     key = "quickload",
     set = "RCode",
     unlocked = true,
@@ -136,7 +144,7 @@ SMODS.Consumable({
 			"cassknows",
 		},
 	},
-})
+}
 local dft = Blind.defeat
 function Blind:defeat(s)
     if self.config.blind.key ~= nil then
@@ -159,7 +167,9 @@ function Moveable:align_to_major()
     atm(self)
 end
 local break_timer = 0
-SMODS.Consumable({
+local break_card = {
+    object_type = "Consumable",
+    order = 5,
     key = "break",
     set = "RCode",
     unlocked = true,
@@ -205,9 +215,11 @@ SMODS.Consumable({
 			"cassknows",
 		},
 	},
-})
+}
 
-SMODS.Consumable({
+local new = {
+    object_type = "Consumable",
+    order = 6,
     key = "new",
     set = "RCode",
     unlocked = true,
@@ -236,7 +248,7 @@ SMODS.Consumable({
         return {
         }
     end,
-})
+}
 SMODS.Atlas({key = 'blinds', path = 'blinds.png', px = 34, py = 34, frames = 21, atlas_table = 'ANIMATION_ATLAS'})
 SMODS.Blind({
 	name = "entr-red",
@@ -250,7 +262,9 @@ SMODS.Blind({
     in_pool = function(self) return false end
 })
 
-SMODS.Consumable({
+local interference = {
+    object_type = "Consumable",
+    order = 7,
     key = "interference",
     set = "RCode",
     unlocked = true,
@@ -273,8 +287,10 @@ SMODS.Consumable({
         return {
         }
     end,
-})
-SMODS.Consumable({
+}
+local constant = {
+    object_type = "Consumable",
+    order = 8,
     key = "constant",
     set = "RCode",
     unlocked = true,
@@ -305,8 +321,10 @@ SMODS.Consumable({
         return {
         }
     end,
-})
-SMODS.Consumable({
+}
+local pseudorandom = {
+    object_type = "Consumable",
+    order = 9,
     key = "pseudorandom",
     set = "RCode",
     unlocked = true,
@@ -341,9 +359,11 @@ SMODS.Consumable({
 			"cassknows",
 		},
 	},
-})
+}
 
-SMODS.Sticker({
+local pseudorandom_sticker = {
+    object_type = "Sticker",
+    order = 1,
     atlas = "entr_stickers",
     pos = { x = 5, y = 0 },
     key = "entr_pseudorandom",
@@ -382,7 +402,7 @@ SMODS.Sticker({
         card.ability.cry_rigged = true
         end
     end,
-})
+}
 SMODS.Sticker:take_ownership("cry_rigged",{
     draw = function(self, card)
         if not card.ability.entr_pseudorandom then
@@ -413,7 +433,9 @@ SMODS.Sticker:take_ownership("cry_rigged",{
         end
     end
 },true)
-SMODS.Consumable({
+local inherit = {
+    object_type = "Consumable",
+    order = 10,
     key = "inherit",
     set = "RCode",
     unlocked = true,
@@ -449,7 +471,7 @@ SMODS.Consumable({
 			"cassknows",
 		},
 	},
-})
+}
 
 function create_UIBox_inherit(card)
     G.E_MANAGER:add_event(Event({
@@ -670,7 +692,9 @@ function update_hand_text_random(config, vals)
     end}))
 end
     
-SMODS.Consumable({
+local fork = {
+    object_type = "Consumable",
+    order = 11,
     key = "fork",
     set = "RCode",
     unlocked = true,
@@ -737,8 +761,10 @@ SMODS.Consumable({
         return {
         }
     end,
-})
-SMODS.Consumable({
+}
+local push = {
+    object_type = "Consumable",
+    order = 12,
     key = "push",
     set = "RCode",
     unlocked = true,
@@ -809,7 +835,7 @@ SMODS.Consumable({
         }
     end,
     
-})
+}
 function Entropy.randomchar(arr)
     return {
         n = G.UIT.O,
@@ -899,7 +925,9 @@ function end_round()
         end
     end
 end
-SMODS.Consumable({
+local increment = {
+    object_type = "Consumable",
+    order = 13,
     key = "increment",
     set = "RCode",
     unlocked = true,
@@ -936,8 +964,10 @@ SMODS.Consumable({
 			"cassknows",
 		},
 	},
-})
-SMODS.Consumable({
+}
+local decrement = {
+    object_type = "Consumable",
+    order = 14,
     key = "decrement",
     set = "RCode",
     unlocked = true,
@@ -990,8 +1020,10 @@ SMODS.Consumable({
             }
         }
     end
-})
-SMODS.Consumable({
+}
+local invariant = {
+    object_type = "Consumable",
+    order = 15,
     key = "invariant",
     set = "RCode",
     unlocked = true,
@@ -1015,9 +1047,11 @@ SMODS.Consumable({
 			"cassknows",
 		},
 	},
-})
+}
 SMODS.Atlas { key = 'entr_stickers', path = 'stickers.png', px = 71, py = 95 }
-SMODS.Sticker({
+local pinned = {
+    object_type="Sticker",
+    order=2
     atlas = "entr_stickers",
     pos = { x = 1, y = 0 },
     key = "entr_pinned",
@@ -1065,7 +1099,7 @@ SMODS.Sticker({
     calculate = function(self, card, context)
 
     end
-})
+}
 local use_cardref= G.FUNCS.use_card
 G.FUNCS.use_card = function(e, mute, nosave)
     local val = use_cardref(e, mute, nosave)
@@ -1137,7 +1171,9 @@ G.FUNCS.reroll_shop = function(e)
     G.E_MANAGER:add_event(Event({ func = function() save_run(); return true end}))
   end
 
-SMODS.Consumable({
+local cookies = {
+    object_type = "Consumable",
+    order = 17,
     key = "cookies",
     set = "RCode",
     unlocked = true,
@@ -1162,8 +1198,10 @@ SMODS.Consumable({
 	end,
     loc_vars = function(self, q, card)
     end
-})
-SMODS.Consumable({
+}
+local segfault = {
+    object_type = "Consumable",
+    order = 18,
     key = "segfault",
     set = "RCode",
     unlocked = true,
@@ -1206,8 +1244,10 @@ SMODS.Consumable({
             vars = {card.ability.extra}
         }
     end,
-})
-SMODS.Consumable({
+}
+local sudo = {
+    object_type = "Consumable",
+    order = 19,
     key = "sudo",
     set = "RCode",
     unlocked = true,
@@ -1249,7 +1289,7 @@ SMODS.Consumable({
 			"cassknows",
 		},
 	},
-})
+}
 function create_UIBox_sudo(card)
     G.E_MANAGER:add_event(Event({
         blockable = false,
@@ -1414,7 +1454,9 @@ G.FUNCS.hand_text_UI_set = function(e)
     end
     e.config.object:update_text()
 end
-SMODS.Consumable({
+local overflow = {
+    object_type = "Consumable",
+    order = 20,
     key = "overflow",
     set = "RCode",
     unlocked = true,
@@ -1440,9 +1482,11 @@ SMODS.Consumable({
 			"cassknows",
 		},
 	},
-})
+}
 
-SMODS.Consumable({
+local refactor = {
+    object_type = "Consumable",
+    order = 21,
     key = "refactor",
     set = "RCode",
     unlocked = true,
@@ -1496,9 +1540,11 @@ SMODS.Consumable({
 			"cassknows",
 		},
 	},
-})
+}
 --hotfix
-SMODS.Consumable({
+local hotfix = {
+    object_type = "Consumable",
+    order = 22,
     key = "hotfix",
     set = "RCode",
     unlocked = true,
@@ -1519,8 +1565,10 @@ SMODS.Consumable({
 			"cassknows",
 		},
 	},
-})
-SMODS.Sticker({
+}
+local hotfix_sticker = {
+    object_type = "Sticker",
+    order=3,
     atlas = "entr_stickers",
     pos = { x = 3, y = 0 },
     key = "entr_hotfix",
@@ -1563,14 +1611,16 @@ SMODS.Sticker({
     calculate = function(self, card, context)
         if card.debuff then card.debuff = false end
     end
-})
+}
 local debuff_ref = Card.set_debuff
 function Card:set_debuff(should_debuff)
     if not self.ability.entr_hotfix then
         debuff_ref(self, should_debuff)
     end
 end
-SMODS.Consumable({
+local ctrl_x = {
+    object_type = "Consumable",
+    order = 23,
     key = "ctrl_x",
     set = "RCode",
     unlocked = true,
@@ -1639,8 +1689,10 @@ SMODS.Consumable({
     end,
     entr_credits = {
 	},
-})
-SMODS.Consumable({
+}
+local multithread = {
+    object_type = "Consumable",
+    order = 24,
     key = "multithread",
     set = "RCode",
     unlocked = true,
@@ -1674,8 +1726,10 @@ SMODS.Consumable({
 			"cassknows",
 		},
 	},
-})
-SMODS.Sticker({
+}
+local temporary = {
+    object_type = "Sticker",
+    order = 4,
     atlas = "entr_stickers",
     pos = { x = 3, y = 1 },
     key = "temporary",
@@ -1711,7 +1765,7 @@ SMODS.Sticker({
     apply = function(self,card,val)
         card.ability.temporary = true
     end,
-})
+}
 function CardArea:get_card(card, discarded_only)
     if not self.cards then return end
     local _cards = discarded_only and {} or self.cards
@@ -1904,7 +1958,9 @@ G.FUNCS.play_cards_from_highlighted = function(e)
     ref(e)
 end
 
-SMODS.Consumable({
+local autostart = {
+    object_type = "Consumable",
+    order = 25,
     key = "autostart",
     set = "RCode",
     unlocked = true,
@@ -1934,7 +1990,7 @@ SMODS.Consumable({
 			"cassknows",
 		},
 	},
-})
+}
 local add_tagref = add_tag
 function add_tag(_tag)
     add_tagref(_tag)
@@ -1942,7 +1998,9 @@ function add_tag(_tag)
     if not G.GAME.autostart_tags[_tag.key] then G.GAME.autostart_tags[_tag.key] = _tag.key end
 end
 
-SMODS.Consumable({
+local local_card = {
+    object_type = "Consumable",
+    order = 26,
     key = "local",
     set = "RCode",
     unlocked = true,
@@ -1966,7 +2024,7 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 
 local DefineBlacklist = {
     ["c_soul"] = true,
@@ -2170,3 +2228,37 @@ function Card:set_edition(edition, immediate, silent)
     end
     ed_ref(self,edition, immediate, silent)
 end
+
+return {
+    items = {
+        memory_leak,
+        rootkit,
+        bootstrap,
+        quickload,
+        break_card,
+        new,
+        interference,
+        constant,
+        pseudorandom,
+        pseudorandom_stickerm
+        inherit,
+        fork,
+        push,
+        increment,
+        decrement,
+        invariant,
+        pinned,
+        cookies,
+        segfault,
+        sudo,
+        overflow,
+        refactor,
+        hotfix,
+        hotfix_sticker,
+        ctrl_x,
+        multithread,
+        temporary,
+        autostart,
+        local_card
+    }
+}

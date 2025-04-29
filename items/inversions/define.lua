@@ -1,12 +1,11 @@
-SMODS.Consumable({
+local define = {
+    object_type = "Consumable",
     key = "define",
     set = "RSpectral",
     unlocked = true,
 
     atlas = "miscc",
-    config = {
-
-    },
+    order=34,
     soul_rate = 0,
     name = "entr-Define",
     hidden = true,
@@ -51,7 +50,7 @@ SMODS.Consumable({
             }
         }
     end,
-})
+}
 
 
 G.FUNCS.create_UIBox_define = function(card)
@@ -426,3 +425,10 @@ G.FUNCS.define_apply = function()
         end
     end
 end
+
+return {
+    init = function(self) end,
+    items = {
+        define
+    }
+}

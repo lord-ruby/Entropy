@@ -902,3 +902,7 @@ function Entropy.GetNextRarity(rarity)
     end
     return rarity
 end
+
+function Entropy.CheckDependencies(deps)
+    return true
+end

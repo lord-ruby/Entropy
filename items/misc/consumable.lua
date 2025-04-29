@@ -69,11 +69,12 @@ local FlipsideInversions = {
     ["c_cry_pointer"] = "c_entr_define"
 }
 for i, v in pairs(FlipsideInversions) do Entropy.FlipsideInversions[i] = v end
-SMODS.Consumable({
+local flipside = {
     key = "flipside",
     set = "Spectral",
     unlocked = true,
-
+    order=35,
+    object_type = "Consumable"
     atlas = "miscc",
     config = {
         extra = {
@@ -138,7 +139,7 @@ end,
             card.ability.extra.selected > 1 and " selected cards " or " selected card ",
         }}
     end
-})
+}
 local banned_sets ={
     ["Joker"]=true,
     ["Voucher"]=true,
@@ -952,11 +953,12 @@ function PackHasGateway()
     return false
 end
 
-SMODS.Consumable({
+local destiny = {
     key = "destiny",
     set = "Spectral",
     unlocked = true,
-
+    order = 36,
+    object_type = "Consumable"
     atlas = "miscc",
     immutable = true,
     pos = {x=5,y=7},
@@ -987,12 +989,14 @@ SMODS.Consumable({
         }}
     end,
     weight = 0
-})
+}
 
-SMODS.Consumable({
+{
     key = "shatter",
     set = "Spectral",
     unlocked = true,
+    order = 37,
+    object_type = "Consumable"
     config = {limit = 2},
     atlas = "miscc",
     pos = {x=5,y=8},
@@ -1014,4 +1018,11 @@ SMODS.Consumable({
     entr_credits = {
         art = {"cassknows"}
     }
-})
+}
+return {
+    items = {
+        flipside,
+        destiny,
+        shatter
+    }
+}
