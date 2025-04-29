@@ -240,7 +240,6 @@ local disavow = {
     dependencies = {
         items = {
           "set_entr_inversions",
-          "m_entr_disavow"
         }
     },
     object_type = "Consumable",
@@ -1246,7 +1245,6 @@ local mimic = {
     dependencies = {
         items = {
           "set_entr_inversions",
-          "cry_banana"
         }
     },
     object_type = "Consumable",
@@ -1311,7 +1309,6 @@ local superego = {
     dependencies = {
         items = {
           "set_entr_inversions",
-          "entr_superego"
         }
     },
     object_type = "Consumable",
@@ -1651,8 +1648,8 @@ local pulsar = {
 local beyond = {
     dependencies = {
         items = {
-          "set_entr_inversions",
-          "set_entr_entropics"
+            "set_entr_inversions",
+            "set_entr_entropic"
         }
     },
     object_type = "Consumable",
