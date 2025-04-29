@@ -323,6 +323,38 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
     return card
 end
 
+SMODS.Back({
+	object_type = "Back",
+	name = "Butterfly Deck",
+	key = "butterfly",
+	pos = { x = 3, y = 0 },
+	order = 1,
+	atlas = "decks",
+  config = { vouchers = { "v_cry_command_prompt", "v_cry_satellite_uplink" } },
+  calculate = function(self, back, context)
+    if context.setting_blind and G.GAME.blind_on_deck == "Boss" then
+      G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        func = function()
+          local c = create_card("Code", G.consumeables, nil, nil, nil, nil, "c_cry_revert") 
+          c:set_edition("e_negative")
+          c:add_to_deck()
+          G.consumeables:emplace(c)
+          return true
+        end}))
+    end
+  end
+})
+local ref = pseudorandom
+function pseudorandom(key,min,max)
+  if Entropy.DeckOrSleeve("butterfly") then key = "butterfly" end
+  return ref(key,min,max)
+end
+local eref = pseudorandom_element
+function pseudorandom_element(elements, pseudokey)
+  if Entropy.DeckOrSleeve("butterfly") then pseudokey = pseudoseed("butterfly") end
+  return eref(elements, pseudokey)
+end
 --cryptid enh/edition/seal decks here
 SMODS.Atlas { key = 'crypt_deck', path = 'crypt_decks.png', px = 71, py = 95 }
 Cryptid.edeck_sprites.seal.entr_cerulean = {atlas="entr_crypt_deck", pos = {x=0,y=0}}

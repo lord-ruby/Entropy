@@ -390,6 +390,15 @@ local decs = {
 					"Start with an {C:dark_edition}Absolute, Negative{} Destiny",
 					"Cards have a higher chance to be Enhanced"
 				}
+			},
+			b_entr_butterfly = {
+				name = "Butterfly Deck",
+				text =  {
+					"All {c:attention}Randomn{} outcomes",
+					"can affect eachother",
+					"Gain a {C:dark_edition}Negative{} {C:attention}Revert{}",
+					"when a Boss-Blind is selected"
+				}
 			}
 		},
 		Sleeve = {
