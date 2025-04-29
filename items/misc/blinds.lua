@@ -1,4 +1,11 @@
-SMODS.Blind({
+local sun = {
+	dependencies = {
+        items = {
+          "set_entr_blinds"
+        }
+    },
+	object_type = "Blind",
+    order = 0,
 	name = "entr-scarlet-sun",
 	key = "scarlet_sun",
 	pos = { x = 0, y = 1 },
@@ -11,9 +18,16 @@ SMODS.Blind({
 		max = 10,
 		showdown = true,
 	}
-})
+}
 
-SMODS.Blind({
+local baracuda ={
+	dependencies = {
+        items = {
+          "set_entr_blinds"
+        }
+    },
+	object_type = "Blind",
+    order = 1,
 	key = "burgundy_baracuda",
 	pos = { x = 0, y = 2 },
 	atlas = "blinds",
@@ -35,9 +49,16 @@ SMODS.Blind({
 				return {remove=true}
 			end
 	end
-})
+}
 
-SMODS.Blind({
+local dawn = {
+	dependencies = {
+        items = {
+          "set_entr_blinds"
+        }
+    },
+	object_type = "Blind",
+    order = 2,
 	key = "diamond_dawn",
 	pos = { x = 0, y = 3 },
 	atlas = "blinds",
@@ -71,9 +92,16 @@ SMODS.Blind({
         G.hand:change_size(-self.config.extra.hand_size)
         G.FUNCS.draw_from_deck_to_hand(-self.config.extra.hand_size)
     end
-})
+}
 
-SMODS.Blind({
+local orchard = {
+	dependencies = {
+        items = {
+          "set_entr_blinds"
+        }
+    },
+	object_type = "Blind",
+    order = 3,
 	key = "olive_orchard",
 	pos = { x = 0, y = 4 },
 	atlas = "blinds",
@@ -99,9 +127,16 @@ SMODS.Blind({
 			end)
 		end
 	end,
-})
+}
 
-SMODS.Blind({
+local comet = {
+	dependencies = {
+        items = {
+          "set_entr_blinds"
+        }
+    },
+	object_type = "Blind",
+    order = 4,
 	key = "citrine_comet",
 	pos = { x = 0, y = 5 },
 	atlas = "blinds",
@@ -135,7 +170,7 @@ SMODS.Blind({
 			end
 		end
 	end,
-})
+}
 Entropy.EEBlacklist = {
 	bl_cry_obsidian_orb=true,
 	bl_entr_endless_entropy_phase_one=true,
@@ -146,7 +181,14 @@ Entropy.EEBlacklist = {
 	bl_cry_vermillion_virus=true,
 	bl_cry_turquoise_tornado=true
 }
-SMODS.Blind({
+local phase1 = {
+	dependencies = {
+        items = {
+          "set_entr_blinds"
+        }
+    },
+	object_type = "Blind",
+    order = 663,
 	key = "endless_entropy_phase_one",
 	pos = { x = 0, y = 6 },
 	atlas = "blinds",
@@ -173,9 +215,16 @@ SMODS.Blind({
 			G.FUNCS.draw_from_discard_to_deck()
 		end
 	end,
-})
+}
 
-SMODS.Blind({
+local phase2 = {
+	dependencies = {
+        items = {
+          "set_entr_blinds"
+        }
+    },
+	object_type = "Blind",
+    order = 664,
 	key = "endless_entropy_phase_three",
 	pos = { x = 0, y = 7 },
 	atlas = "blinds",
@@ -222,9 +271,16 @@ SMODS.Blind({
 	setting_blind = function()
 		G.GAME.round_resets.lost = false
 	end
-})	
+}
 
-SMODS.Blind({
+local phase3 = {
+	dependencies = {
+        items = {
+          "set_entr_blinds"
+        }
+    },
+	object_type = "Blind",
+    order = 665,
 	key = "endless_entropy_phase_two",
 	pos = { x = 0, y = 8 },
 	atlas = "blinds",
@@ -256,9 +312,16 @@ SMODS.Blind({
 	set_blind = function()
 		G.GAME.blind.chips = G.GAME.blind.chips ^ 1.25
 	end
-})
+}
 
-SMODS.Blind({
+local phase4 = {
+	dependencies = {
+        items = {
+          "set_entr_blinds"
+        }
+    },
+	object_type = "Blind",
+    order = 666,
 	key = "endless_entropy_phase_four",
 	pos = { x = 0, y = 9 },
 	atlas = "blinds",
@@ -657,7 +720,7 @@ SMODS.Blind({
 			end
 		end
 	end,
-})
+}
 
 --for wiki editors these arent 4 seperate blinds but 4 phases of endless entropy
 
@@ -781,3 +844,16 @@ function create_UIBox_blind_popup(blind, discovered, vars)
    }}
   end 
   
+return {
+	items = {
+		sun,
+		baracuda,
+		dawn,
+		orchard,
+		comet,
+		phase1,
+		phase2,
+		phase3,
+		phase4
+	}
+}

@@ -280,7 +280,14 @@ local new = {
     end,
 }
 SMODS.Atlas({key = 'blinds', path = 'blinds.png', px = 34, py = 34, frames = 21, atlas_table = 'ANIMATION_ATLAS'})
-SMODS.Blind({
+local rr = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+	object_type = "Blind",
+    order = 999,
 	name = "entr-red",
 	key = "red",
 	pos = { x = 0, y = 0 },
@@ -290,7 +297,7 @@ SMODS.Blind({
     boss = {min=1,max=9999},
     dollars = 3,
     in_pool = function(self) return false end
-})
+}
 
 local interference = {
     dependencies = {
@@ -2406,6 +2413,7 @@ return {
         multithread,
         temporary,
         autostart,
-        local_card
+        local_card,
+        rr
     }
 }
