@@ -46,6 +46,7 @@ local supersede = {
         items = {
           "set_entr_vouchers",
           "set_entr_inversions",
+          "set_cry_tier3"
         }
     },
 	object_type = "Voucher",
@@ -61,7 +62,6 @@ local supersede = {
         G.GAME.Supersede = nil
     end,
     loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue+1] = G.P_CENTERS.c_entr_flipside
     end
 }
 
