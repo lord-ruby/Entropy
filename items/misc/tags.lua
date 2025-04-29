@@ -615,7 +615,7 @@ local unbounded_pack = {
             "j_entr_exousia"
         }
     },
-	order = 4,
+	order = 94,
 	shiny_atlas="entr_shiny_ascendant_tags",
     key = "unbounded",
     set = "Booster",
@@ -977,7 +977,7 @@ local blind_pack = {
             "j_entr_exousia"
         }
     },
-	order = 5,
+	order = 95,
 	shiny_atlas="entr_shiny_ascendant_tags",
     key = "blind",
     set = "Booster",
@@ -1069,7 +1069,7 @@ local reference_pack = {
             "j_entr_exousia"
         }
     },
-	order = 6,
+	order = 96,
 	shiny_atlas="entr_shiny_ascendant_tags",
     key = "reference_pack",
     set = "Booster",
