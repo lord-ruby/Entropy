@@ -182,9 +182,14 @@ SMODS.ConsumableType({
 	default = "c_entr_pluto"
 })
 
+local planets = {}
+local order = 0
 
 function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,level, name,set_badges,loc_vars,config)
-  SMODS.Consumable({
+  order = order + 1
+  planets[#planets+1]={
+    object_type="Consumable",
+    order = order,
     key = key,
     set = "RPlanet",
     unlocked = true,
@@ -219,7 +224,8 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
           }
         }
     end,
-  })
+  }
+  return planets[#planets]
 end
 Entropy.ReversePlanets = {
   {name="Pair",key="mercury",sprite_pos={x=7,y=0}},
@@ -593,3 +599,7 @@ function Entropy.StrangeSingle(self, card, area, copier,num)
     { mult = 0, chips = 0, handname = "", level = "" }
   )
 end
+
+return {
+  items = planets
+}
