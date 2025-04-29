@@ -180,7 +180,7 @@ end
 SMODS.Joker({
     key = "strawberry_pie",
     config = {
-        level_amount = 2
+        level_amount = 1.25
     },
     rarity = 3,
     cost = 10,
@@ -191,6 +191,7 @@ SMODS.Joker({
     pos = { x = 2, y = 1 },
     atlas = "jokers",
     demicoloncompat = true,
+    pools = { ["Food"] = true },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
