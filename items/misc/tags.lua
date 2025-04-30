@@ -105,7 +105,7 @@ SMODS.Atlas {
   local epic = Entropy.RareTag("cry_epic", "epic", true, "cry_epic", {x=1,y=0}, 0, nil,4)
   local legendary = Entropy.RareTag(4, "legendary", true, "Legendary", {x=2,y=0}, 0, true,5)
   local exotic = Entropy.RareTag("cry_exotic", "exotic", true, "cry_exotic", {x=3,y=0}, 0, nil,6)
-  local entropic Entropy.RareTag("entr_hyper_exotic", "entropic", true, "entr_hyper_exotic", {x=4,y=0}, 0, nil,7)
+  local entropic = Entropy.RareTag("entr_hyper_exotic", "entropic", true, "entr_hyper_exotic", {x=4,y=0}, 0, nil,7)
 
   local copying = {
 	object_type = "Tag",
@@ -1314,6 +1314,11 @@ return {
 	items = {
 		dog,
 		solar,
+		rare,
+		epic,
+		legendary,
+		exotic,
+		entropic
 		negative,
 		poly,
 		foil,
