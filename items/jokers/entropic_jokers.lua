@@ -3,7 +3,7 @@ local epitachyno = {
     order = "900",
     key = "epitachyno",
     atlas = "exotic_jokers",
-    rarity = "entr_entropic"
+    rarity = "entr_entropic",
     pos = {x=0,y=1},
     soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
     config = {
