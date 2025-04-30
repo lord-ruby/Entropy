@@ -275,7 +275,7 @@ end
 
 G.FUNCS.can_open_booster = function(e)
     if
-        not G.pack_cards or G.pack_cards.cards and #G.pack_cards.cards <= 0
+        G.STATE ~= G.STATES.SMODS_BOOSTER_OPENED
     then
         e.config.colour = G.C.GREEN
         e.config.button = "open_booster"
