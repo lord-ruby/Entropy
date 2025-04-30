@@ -133,7 +133,7 @@ local decs = {
 					"degrees clockwise"
 				}
 			},
-			j_entr_acellero = {
+			j_entr_epitachyno = {
 				name = "Epitachyno",
 				text = {
  					"{X:dark_edition,C:white}^#1#{} to all other Joker values",
@@ -1649,7 +1649,7 @@ local decs = {
 			entr_nilrank = "Nil"
 		},
 		dictionary = {
-			k_entr_hyper_exotic = "Entropic",
+			k_entr_entropic = "Entropic",
 			k_entr_reverse_legendary = "Legendary?",
 			k_entr_zenith = "Zenith",
 
