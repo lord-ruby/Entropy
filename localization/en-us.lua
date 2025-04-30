@@ -56,7 +56,7 @@ local decs = {
 				name = "Entropic Jokers",
 				text = {
 					"Powerful Jokers with",
-					"{C:red}Entropic{} rarity",
+					"{C:entr_hyper_exotic}Entropic{} rarity",
 				},
 			},
 			set_entr_vouchers = {
@@ -91,7 +91,7 @@ local decs = {
 					"{C:cry_epic}Epic{} Jokers each give {X:mult,C:white} X#2# {} Mult",
 					"{C:legendary}Legendary{} Jokers each give {X:mult,C:white} X#3# {} Mult",
 					"{C:cry_exotic}Exotic{} Jokers each give {X:mult,C:white} X#4# {} Mult",
-					"{C:red}Entropic {}jokers each give {X:mult,C:white} X#5# {} Mult"
+					"{C:entr_hyper_exotic}Entropic{} jokers each give {X:mult,C:white} X#5# {} Mult"
 				},
 				unlock = {
 					"Obtain a {C:red}Rare{},",
@@ -113,7 +113,7 @@ local decs = {
 			j_entr_ruby = {
 				name = "Ruby",
 				text = {
-					"{V:1,E:1}You may never lose.{}",
+					"{C:entr_zenith,E:1}You may never lose.{}",
 					"{C:inactive}(#1#){}",
 					"{C:inactive}(Prevents losing unconditionally)"
 				}
@@ -453,7 +453,7 @@ local decs = {
 			b_entr_doc = {
 				name = "Deck of Containment",
 				text =  {
-								"{C:red}Beyond{} has higher chances of showing",
+								"{C:entr_hyper_exotic}Beyond{} has higher chances of showing",
 								"up and {X:blue,C:white}Chips{} are lowered",
 								"based on how high your {X:dark_edition,C:white}Entropy{} is",
 								"Gain {X:dark_edition,C:white}Entropy{} when playing",
@@ -498,7 +498,7 @@ local decs = {
 			sleeve_entr_doc = {
 				name = "Anomalous Sleeve",
 				text = {
-					"{C:red}Beyond{} has higher chances of showing up and",
+					"{C:entr_hyper_exotic}Beyond{} has higher chances of showing up and",
 					"{X:blue,C:white}Chips{} are lowered based on how high",
 					"your {X:dark_edition,C:white}Entropy{} is, Gain {X:dark_edition,C:white}Entropy{}",
 					"when playing Editioned/Enhanced cards, secret hands",
@@ -958,7 +958,7 @@ local decs = {
 				name = "Beyond",
 				text = {
 					"Create a random",
-					"{V:1,E:1}Entropic {}Joker",
+					"{C:entr_hyper_exotic,E:1}Entropic{} Joker",
 					"Banish all other held Jokers"
 				}
 			},
@@ -966,7 +966,7 @@ local decs = {
                 name="Fervour",
                 text={
                     "Creates a",
-                    "{V:1,E:1}Legendary? {}Joker",
+                    "{C:entr_reverse_legendary,E:1}Legendary? {}Joker",
                     "{C:inactive}(Must have room)",
                 },
             },
@@ -1257,7 +1257,7 @@ local decs = {
 				name = "Entropic Stake",
 				colour = "Ascendant",
 				text = {
-					"{C:red}Entropic{} Joker blind scaling",
+					"{C:entr_hyper_exotic}Entropic{} Joker blind scaling",
 					"{C:red}always{} applies"
 				},
 			},
@@ -1265,7 +1265,7 @@ local decs = {
 				name = "Zenith Stake",
 				colour = "Ascendant",
 				text = {
-					"{E:1,C:red}All Blinds are Endless Entropy{}",
+					"{E:1,C:entr_zenith}All Blinds are Endless Entropy{}",
 				},
 			},
 		},
@@ -1300,7 +1300,7 @@ local decs = {
 			},
 			tag_entr_ascendant_entropic_tag = {
 				name = "{C:gold}Entropic Tag{}",
-				text = { "Shop has a free", "{C:red}Entropic Joker{}" },
+				text = { "Shop has a free", "{C:entr_hyper_exotic}Entropic Joker{}" },
 			},
 			tag_entr_ascendant_copying_tag = {
 				name = "{C:gold}Duplicate Tag{}",
@@ -1389,7 +1389,7 @@ local decs = {
 			tag_entr_ascendant_unbounded_tag = {
 				name = "{C:gold}Unbounded Tag{}",
 				text = {"Gives a free {C:spectral}Spectral Pack",
-				"with {C:green,E:1}Pointer{} and {C:cry_exotic,E:1}Beyond{}", },
+				"with {C:green,E:1}Pointer{} and {C:entr_hyper_exotic,E:1}Beyond{}", },
 			},
 			tag_entr_ascendant_ejoker_tag = {
 				name = "{C:gold}Buffoon Tag{}",

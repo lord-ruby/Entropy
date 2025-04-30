@@ -185,34 +185,41 @@ G.C.Entropy = {}
 G.C.Entropy.OTHERS = {
     EqMult = HEX("CD8C8C")
 }
-G.C.Entropy.HYPER_EXOTIC = {
-    G.C.RED,
-    G.C.GOLD,
-    G.C.GREEN,
-    G.C.BLUE,
-    G.C.PURPLE
+G.C.Entropy.HYPER_EXOTIC = SMODS.Gradient{
+    key = "entropic_gradient",
+    colours = {
+        G.C.RED,
+        G.C.GOLD,
+        G.C.GREEN,
+        G.C.BLUE,
+        G.C.PURPLE
+    }
 }
-G.C.Entropy.REVERSE_LEGENDARY = {
-    [1] = HEX("ff00c4"),
-    [2] = HEX("ff00c4"),
-    [3] = HEX("FF00FF"),
-    [4] = HEX("FF0000"),
-    [5] = HEX("FF0000"),
+G.C.Entropy.REVERSE_LEGENDARY = SMODS.Gradient{
+    key = "reverse_legendary_gradient",
+    colours = {
+        HEX("ff00c4"),
+        HEX("FF00FF"),
+        HEX("FF0000"),
+    }
 }
 
-G.C.Entropy.ZENITH = {
-    HEX("a20000"),
-    HEX("a15000"),
-    HEX("a3a101"),
-    HEX("626262"),
-    HEX("416600"),
-    HEX("028041"),
-    HEX("008284"),
-    HEX("005683"),
-    HEX("000056"),
-    HEX("2b0157"),
-    HEX("6a016a"),
-    HEX("77003c"),
+G.C.Entropy.ZENITH = SMODS.Gradient{
+    key = "zenith_gradient",
+    colours = {
+        HEX("a20000"),
+        HEX("a15000"),
+        HEX("a3a101"),
+        HEX("626262"),
+        HEX("416600"),
+        HEX("028041"),
+        HEX("008284"),
+        HEX("005683"),
+        HEX("000056"),
+        HEX("2b0157"),
+        HEX("6a016a"),
+        HEX("77003c"),
+    }
 }
 
 local loc_colour_ref = loc_colour
@@ -220,17 +227,17 @@ local loc_colour_ref = loc_colour
 SMODS.Rarity({
 	key = "hyper_exotic",
 	loc_txt = {},
-	badge_colour = HEX("FF0000"),
+	badge_colour = G.C.Entropy.HYPER_EXOTIC,
 })
 SMODS.Rarity({
 	key = "reverse_legendary",
 	loc_txt = {},
-	badge_colour = HEX("FF0001"),
+	badge_colour = G.C.Entropy.REVERSE_LEGENDARY,
 })
 SMODS.Rarity({
 	key = "zenith",
 	loc_txt = {},
-	badge_colour = HEX("FF0002"),
+	badge_colour = G.C.Entropy.ZENITH,
 })
 function loc_colour(_c, default)
     if not G.ARGS.LOC_COLOURS then
@@ -239,9 +246,9 @@ function loc_colour(_c, default)
         G.ARGS.LOC_COLOURS.entr_colours = true
         local new_colors = {
             entr_eqmult = G.C.Entropy.OTHERS.EqMult,
-            entr_hyper_exotic = {2,2,2,2},
-            entr_reverse_legendary = {3,3,3,3},
-            entr_zenith = {4,4,4,4}
+            entr_hyper_exotic = G.C.Entropy.HYPER_EXOTIC,
+            entr_reverse_legendary = G.C.Entropy.REVERSE_LEGENDARY,
+            entr_zenith = G.C.Entropy.ZENITH
         }
 
         for k, v in pairs(new_colors) do
@@ -258,46 +265,6 @@ entr_define_dt = 0
 local cdt = 0
 function Game:update(dt)
     upd(self, dt)
-    cdt = cdt + dt
-    if cdt > 0.01 then
-        anim_timer2 = anim_timer2 + dt/2.0
-        local anim_timer = math.floor(anim_timer2)
-        local p = anim_timer2 - anim_timer
-        G.C.ENTR_HYPER_EXOTIC = {0,0,0,0}
-        G.C.ENTR_REVERSE_LEGENDARY = {0,0,0,0}
-        G.C.ENTR_ZENITH = {0,0,0,0}
-        local num = 5
-        local num2 = 12
-        if G.C.Entropy.HYPER_EXOTIC and G.C.Entropy.HYPER_EXOTIC[anim_timer%num+1] then
-            local col1 = G.C.Entropy.HYPER_EXOTIC[anim_timer%num+1]
-            local col2 = G.C.Entropy.HYPER_EXOTIC[(anim_timer+1)%num+1]
-            for i = 1, 4 do     
-                G.C.ENTR_HYPER_EXOTIC[i] = col1[i]*(1-p) + col2[i]* p
-            end
-            G.C.RARITY["entr_hyper_exotic"] = G.C.ENTR_HYPER_EXOTIC
-        end
-        if G.C.Entropy.REVERSE_LEGENDARY and G.C.Entropy.REVERSE_LEGENDARY[anim_timer%num+1] then
-            local col12 = G.C.Entropy.REVERSE_LEGENDARY[anim_timer%num+1]
-            local col22 = G.C.Entropy.REVERSE_LEGENDARY[(anim_timer+1)%num+1]
-            if col22 then
-                for i = 1, 4 do     
-                    G.C.ENTR_REVERSE_LEGENDARY[i] = col12[i]*(1-p) + col22[i]* p
-                end
-            end
-            G.C.RARITY["entr_reverse_legendary"] = G.C.ENTR_REVERSE_LEGENDARY
-        end
-        if G.C.Entropy.ZENITH and G.C.Entropy.ZENITH[anim_timer%num2+1] then
-            local col122 = G.C.Entropy.ZENITH[anim_timer%num2+1]
-            local col222 = G.C.Entropy.ZENITH[(anim_timer+1)%num2+1]
-            if col222 then
-                for i = 1, 4 do     
-                    G.C.ENTR_ZENITH[i] = col122[i]*(1-p) + col222[i]* p
-                end
-            end
-            G.C.RARITY["entr_zenith"] = G.C.ENTR_ZENITH
-        end
-        cdt = 0
-    end
     entr_define_dt = entr_define_dt + dt
     if G.P_CENTERS and G.P_CENTERS.c_entr_define and entr_define_dt > 0.5 then
 		entr_define_dt = 0
@@ -310,11 +277,6 @@ local card_hoverref = Card.draw
 
 function Card:draw(layer)
     card_hoverref(self, layer)
-    pcall(function()
-        if self.config and self.config.h_popup and self.config.center and self.config.center.rarity == "entr_hyper_exotic" then self.config.h_popup.nodes[1].nodes[1].nodes[1].nodes[5].nodes[1].nodes[1].config.colour = G.C.RARITY["entr_hyper_exotic"] end
-        if self.config and self.config.h_popup and self.config.center and self.config.center.rarity and self.config.center.rarity == "entr_zenith" then self.config.h_popup.nodes[1].nodes[1].nodes[1].nodes[5].nodes[1].nodes[1].config.colour = self.config.center.rare_color and self.config.center:rare_color(self) or G.C.RARITY["entr_zenith"] end
-        if self.config and self.config.h_popup and self.config.center and self.config.center.rarity == "entr_reverse_legendary" then self.config.h_popup.nodes[1].nodes[1].nodes[1].nodes[5].nodes[1].nodes[1].config.colour = G.C.RARITY["entr_reverse_legendary"] end
-    end)
     if self.config and self.config.center and self.config.center.set == "RSpectral" then
         self.children.center:draw_shader('booster', nil, self.ARGS.send_to_shader)
     end
@@ -414,24 +376,6 @@ function Card:draw(layer)
         )
     end
 end
---ew
-local textdrawref = DynaText.update
-function DynaText:update() 
-    --this is really disgusting
-    if self.strings[self.focused_string].string == "Entropic " then
-        self.colours[1] = G.C.RARITY["entr_hyper_exotic"]
-    end
-    if self.strings[self.focused_string].string == "Legendary? " then
-        self.colours[1] = G.C.RARITY["entr_reverse_legendary"]
-    end
-    if self.strings[self.focused_string].string == "You may never lose." then
-        self.colours[1] = G.C.RARITY["entr_zenith"]
-    end
-    textdrawref(self)
-    --("(Current rarity:"):gsub(":", ""):find(localize("k_curr_rarity"))
-end
---a modified version of how cryptid does this for gateway because theres otherwise no way to get it to pulsate
-
 
 local set_spritesref = Card.set_sprites
 function Card:set_sprites(_center, _front)
