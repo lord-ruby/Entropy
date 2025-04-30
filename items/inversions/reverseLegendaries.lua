@@ -411,7 +411,7 @@ local membership = {
     key = "membership",
     config = {
         x_asc_mod = 1,
-        num = 53
+        num = 86
     },
     dependencies = {
         items = {
