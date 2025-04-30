@@ -1322,6 +1322,7 @@ return {
 		solar_asc,
 		voucher,
 		saint,
+		copying,
 		better_voucher,
 		infdiscard,
 		cat_asc,
