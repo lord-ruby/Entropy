@@ -1,5 +1,7 @@
 local i = {
-
+    "items/misc/atlases",
+    "items/misc/rarities",
+    "items/jokers/entropic_jokers"
 }
 local items = {}
 for _, v in pairs(i) do
