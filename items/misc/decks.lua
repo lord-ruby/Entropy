@@ -282,15 +282,17 @@ function ease_entropy(mod)
               col = G.C.RED
           end
           G.GAME.entropy = (G.GAME.entropy or 0) + mod
-          G.HUD:recalculate()
-          attention_text({
-            text = text..tostring(math.abs(mod)),
-            scale = 1, 
-            hold = 0.7,
-            cover = round_UI.parent,
-            cover_colour = col,
-            align = 'cm',
-            })
+          if round_UI then
+            G.HUD:recalculate()
+              attention_text({
+                text = text..tostring(math.abs(mod)),
+                scale = 1, 
+                hold = 0.7,
+                cover = round_UI.parent,
+                cover_colour = col,
+                align = 'cm',
+              })
+          end
           --Play a chip sound
           play_sound('timpani', 0.8)
           play_sound('generic1')
