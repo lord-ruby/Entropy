@@ -423,21 +423,6 @@ function Blind:load(blindTable)
     end 
 end
 
-function SMODS.find_card(key, count_debuffed)
-    local results = {}
-    if not G.jokers or not G.jokers.cards then return {} end
-    for _, area in ipairs(SMODS.get_card_areas('jokers')) do
-        if area and area.cards then
-            for _, v in pairs(area.cards) do
-                if v and type(v) == 'table' and v.config.center.key == key and (count_debuffed or not v.debuff) then
-                    table.insert(results, v)
-                end
-            end
-        end
-    end
-    return results
-end
-
 create_UIBox_your_collection_seals = function()
     return SMODS.card_collection_UIBox(G.P_CENTER_POOLS.Seal, {6,6}, {
         snap_back = true,
