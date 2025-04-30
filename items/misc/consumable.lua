@@ -237,7 +237,6 @@ function CreateShopInversion(key, set, area)
           return card
 end
 function HasFlipside()
-    Entropy.ReverseFlipsideInversions()
     if G.consumeables and G.consumeables.cards then for i, v in pairs(G.consumeables.cards) do if v.config.center.name == "entr-Flipside" then return true end end end
     if G.pack_cards and G.pack_cards.cards then for i, v in pairs(G.pack_cards.cards) do if v.config.center.name == "entr-Flipside" then return true end end end
     --ccd support

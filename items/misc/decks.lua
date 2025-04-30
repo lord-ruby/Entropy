@@ -22,7 +22,6 @@ function Card:set_ability(center, initial, delay_sprites)
     p_buffoon_jumbo_1="p_standard_mega_1",
     p_buffoon_mega_1="p_standard_mega_1"
   }
-	Entropy.ReverseFlipsideInversions()
     if G.SETTINGS.paused then
       matref(self, center, initial, delay_sprites)
     else
