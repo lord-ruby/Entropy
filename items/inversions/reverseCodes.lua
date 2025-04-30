@@ -705,6 +705,7 @@ function Game:update(dt)
     if G.STATE == nil and G.pack_cards == nil and G.GAME.DefineBoosterState then
         G.STATE = G.GAME.DefineBoosterState
         G.STATE_COMPLETE = false
+        G.GAME.DefineBoosterState = nil
     end
     if G.hand and #G.hand.highlighted <= 0 and G.play and #G.play.cards <= 0 then
         if G.GAME.current_round.current_hand.entr_trans_num_text ~= "" or G.GAME.current_round.current_hand.cry_asc_num_text ~= "" then
@@ -2257,11 +2258,11 @@ end
 
 local emplace = CardArea.emplace
 function CardArea:emplace(card, location, stay_flipped)
-    if self == G.pack_cards then self.config.highlighted_limit = 99 end
+    if self == G.pack_cards then self.config.highlighted_limit = 2 end
     card = card or {}
     local s = self.base and self.base.name or ""
     local key = G.GAME.DefineKeys and (G.GAME.DefineKeys[s] or G.GAME.DefineKeys[card.config.center.key])
-    if self.config.collection or G.SETTINGS.paused then
+    if self.config.collection or G.SETTINGS.paused or not G.GAME.DefineKeys then
         emplace(self, card,location,stay_flipped)
     else
         if G.GAME.DefineKeys and key and key.playing_card and self.config.type ~= "play" then

@@ -115,7 +115,7 @@ function Game:update(dt)
         G.GAME.RubyAnteTextNum = G.GAME.round_resets.ante
     end
     if G.GAME.Ruby and G.hand then
-        if G.GAME.current_round.current_hand.mult ~= "Infinity" and #G.hand.highlighted > 0 or #G.play.cards > 0 and not G.pack_cards then
+        if G.GAME.current_round.current_hand.mult ~= "Infinity" and (#G.hand.highlighted > 0 or #G.play.cards > 0) and not G.pack_cards then
             update_hand_text_random(
                 { nopulse = true, immediate=true },
                 { mult = "Infinity", chips = "1"}
@@ -144,13 +144,6 @@ function Game:update(dt)
                 end
             end
             for i, v in pairs(G.shop_vouchers.cards) do
-                if v.config.center.key == G.GAME.Ruby and not v.die then
-                    v:start_dissolve();v.die = true
-                end
-            end
-        end
-        if G.pack_cards then
-            for i, v in pairs(G.pack_cards.cards) do
                 if v.config.center.key == G.GAME.Ruby and not v.die then
                     v:start_dissolve();v.die = true
                 end
