@@ -184,7 +184,6 @@ function SMODS.injectItems(...)
     })
     SMODS.ObjectTypes.BlindTokens:inject()
     Entropy.ReverseFlipsideInversions()
-    
 end
 
 
