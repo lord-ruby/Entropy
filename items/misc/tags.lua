@@ -1318,7 +1318,7 @@ return {
 		epic,
 		legendary,
 		exotic,
-		entropic
+		entropic,
 		negative,
 		poly,
 		foil,
