@@ -176,7 +176,7 @@ local decs = {
  					"{X:dark_edition,C:white}#1#{} Mult",
 					"All cards are {C:dark_edition}Jolly{}",
 					"Increase operator once for every",
-					"{C:attention}#2#{} Pairs in hand",
+					"{C:attention}#2#{} Pairs in played hand",
 					"{C:inactive}(Currently: #3#){}"
 				}
 			},
