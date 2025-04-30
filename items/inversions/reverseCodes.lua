@@ -2262,7 +2262,7 @@ function CardArea:emplace(card, location, stay_flipped)
     card = card or {}
     local s = self.base and self.base.name or ""
     local key = G.GAME.DefineKeys and (G.GAME.DefineKeys[s] or G.GAME.DefineKeys[card.config.center.key])
-    if self.config.collection or G.SETTINGS.paused or not G.GAME.DefineKeys then
+    if self.config.collection or G.SETTINGS.paused or not G.GAME.DefineKeys or (not G.GAME.DefineKeys[card.config.center.key] and not G.GAME.DefineKeys[card.base.name or ""]) then
         emplace(self, card,location,stay_flipped)
     else
         if G.GAME.DefineKeys and key and key.playing_card and self.config.type ~= "play" then
