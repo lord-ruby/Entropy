@@ -398,16 +398,21 @@ local link = {
 
     end
 }
-
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, initial, delay_sprites)
     local link = self.ability and self.ability.link or nil
     if not self.ability or not self.ability.disavow or center.key == "m_entr_disavowed" then set_abilityref(self, center, initial, delay_sprites) end
     self.ability.link = link
     if self.ability.link and not initial then
-        if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.link == self.ability.link then set_abilityref(v,center, initial, delay_sprites);v.ability.link=link end end end
-        if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.link == self.ability.link then set_abilityref(v,center, initial, delay_sprites);v.ability.link=link end end end
-        if G.playing_cards then for i, v in pairs(G.playing_cards) do if v.ability.link == self.ability.link then set_abilityref(v, new);v.ability.link=link end end end
+        if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.link == self.ability.link then 
+            set_abilityref(v,center, initial, delay_sprites);v.ability.link=link 
+        end end end
+        if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.link == self.ability.link then 
+            set_abilityref(v,center, initial, delay_sprites);v.ability.link=link 
+        end end end
+        if G.playing_cards then for i, v in pairs(G.playing_cards) do if v.ability.link == self.ability.link then 
+            set_abilityref(v, new);v.ability.link=link 
+        end end end
     end
 end
 

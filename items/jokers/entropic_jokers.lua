@@ -1096,6 +1096,7 @@ local katarraktis = {
     cost = 150,
     unlocked = true,
     eternal_compat = true,
+    blueprint_compat = true,
     pos = { x = 3, y = 3 },
     config = {
         basetriggers=1
