@@ -133,7 +133,17 @@ local pack = {
     ease_background_colour = function(self)
 		ease_colour(G.C.DYN_UI.MAIN, HEX("851628"))
 		ease_background_colour({ new_colour = HEX("3c020b"), special_colour = HEX("3c020b"), contrast = 2 })
-	end
+	end,
+    cry_digital_hallucinations = {
+		colour = G.C.RED,
+		loc_key = "k_reference_pack",
+		create = function()
+			local ccard = create_inverted_card()
+			ccard:set_edition({ negative = true }, true)
+			ccard:add_to_deck()
+			G.consumeables:emplace(ccard)
+		end,
+	},
 }
 local jumbo = {
     dependencies = {
@@ -171,7 +181,17 @@ local jumbo = {
     ease_background_colour = function(self)
 		ease_colour(G.C.DYN_UI.MAIN, HEX("851628"))
 		ease_background_colour({ new_colour = HEX("3c020b"), special_colour = HEX("3c020b"), contrast = 2 })
-	end
+	end,
+    cry_digital_hallucinations = {
+		colour = G.C.RED,
+		loc_key = "k_reference_pack",
+		create = function()
+			local ccard = create_inverted_card()
+			ccard:set_edition({ negative = true }, true)
+			ccard:add_to_deck()
+			G.consumeables:emplace(ccard)
+		end,
+	},
 }
 local mega = {
     dependencies = {
@@ -209,7 +229,17 @@ local mega = {
     ease_background_colour = function(self)
 		ease_colour(G.C.DYN_UI.MAIN, HEX("851628"))
 		ease_background_colour({ new_colour = HEX("3c020b"), special_colour = HEX("3c020b"), contrast = 2 })
-	end
+	end,
+    cry_digital_hallucinations = {
+		colour = G.C.RED,
+		loc_key = "k_reference_pack",
+		create = function()
+			local ccard = create_inverted_card()
+			ccard:set_edition({ negative = true }, true)
+			ccard:add_to_deck()
+			G.consumeables:emplace(ccard)
+		end,
+	},
 }
 
 

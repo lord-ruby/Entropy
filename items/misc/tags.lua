@@ -1004,7 +1004,17 @@ local blind_pack = {
     ease_background_colour = function(self)
 		ease_colour(G.C.DYN_UI.MAIN, HEX("709284"))
 		ease_background_colour({ new_colour = HEX("709284"), special_colour = HEX("3e5149"), contrast = 2 })
-	end
+	end,
+	cry_digital_hallucinations = {
+		colour = G.C.GREEN,
+		loc_key = "k_reference_pack",
+		create = function()
+			local ccard = create_card("BlindTokens", area or G.pack_cards, nil, nil, true, true, nil, "reference")
+			ccard:set_edition({ negative = true }, true)
+			ccard:add_to_deck()
+			G.consumeables:emplace(ccard)
+		end,
+	},
 }
 
 
@@ -1099,7 +1109,17 @@ local reference_pack = {
     ease_background_colour = function(self)
 		ease_colour(G.C.DYN_UI.MAIN, G.C.BLUE)
 		ease_background_colour({ new_colour = G.C.RED, special_colour = G.C.BLUE, contrast = 2 })
-	end
+	end,
+	cry_digital_hallucinations = {
+		colour = G.C.GREEN,
+		loc_key = "k_reference_pack",
+		create = function()
+			local ccard = create_card("Reference", area or G.pack_cards, nil, nil, true, true, nil, "reference")
+			ccard:set_edition({ negative = true }, true)
+			ccard:add_to_deck()
+			G.jokers:emplace(ccard)
+		end,
+	},
 }
 
 local cavendish = {

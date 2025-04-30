@@ -566,6 +566,7 @@ function Entropy.GetOddsLocs(card, odds, numerator)
 end
 
 function Entropy.BlindIs(orig, newkey)
+    if not orig then return false end
     if orig.config.blind.key  == newkey then return true end
     if G.P_BLINDS[orig.config.blind.key] and G.P_BLINDS[orig.config.blind.key].counts_as and G.P_BLINDS[orig.config.blind.key].counts_as[newkey] then return true end
     if orig.counts_as and orig.counts_as[newkey] then return true end
