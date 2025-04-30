@@ -419,7 +419,7 @@ local dekatria = {
             end
             card.ability.pairs_current = card.ability.pairs_current + pairs
             if to_big(card.ability.pairs_needed) < to_big(1e-300) then card.ability.pairs_needed = 1e-300 end
-            while card.ability.pairs_current >= card.ability.pairs_needed do
+            while to_big(card.ability.pairs_current) >= to_big(card.ability.pairs_needed) do
                 card.ability.pairs_current = card.ability.pairs_current - card.ability.pairs_needed
                 card.ability.pairs_needed = card.ability.pairs_needed * 2
                 card.ability.immutable.arrows = card.ability.immutable.arrows + 1
