@@ -100,12 +100,12 @@ local helios = {
         }
     end,
     add_to_deck = function()
-        G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + 99
+        G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + 308
         G.GAME.HyperspaceActuallyUsed = G.GAME.used_vouchers.v_cry_hyperspacetether
         G.GAME.used_vouchers.v_cry_hyperspacetether = true
     end,
     remove_from_deck = function()
-        G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 99
+        G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 308
         G.GAME.used_vouchers.v_cry_hyperspacetether = G.GAME.HyperspaceActuallyUsed
     end
 }
