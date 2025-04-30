@@ -765,6 +765,7 @@ function Game:update(dt)
 	end
 end
 
+local orig = create_UIBox_blind_popup
 function create_UIBox_blind_popup(blind, discovered, vars)
 	local blind_text = {}
 	
@@ -838,6 +839,7 @@ function create_UIBox_blind_popup(blind, discovered, vars)
 			{n=G.UIT.T, config={text = localize('ph_defeat_this_blind_2'), scale = 0.4, colour = G.C.UI.TEXT_DARK}},
 		  }},
 		}}
+		return orig(blind, discovered, vars)
 	end
    return {n=G.UIT.ROOT, config={align = "cm", padding = 0.05, colour = lighten(G.C.JOKER_GREY, 0.5), r = 0.1, emboss = 0.05}, nodes={
 	{n=G.UIT.R, config={align = "cm", emboss = 0.05, r = 0.1, minw = 2.5, padding = 0.1, colour = not discovered and G.C.JOKER_GREY or blind.boss_colour or G.C.GREY}, nodes={

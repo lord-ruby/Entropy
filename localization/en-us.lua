@@ -1636,6 +1636,14 @@ local decs = {
 					"Mult"
 				}
 			},
+		},
+		DescriptionDummy = {
+			dd_entr_zenith_blind  = {
+                name="Zenith Blind",
+                text={
+                    "{C:red}Run.{}"
+                },
+            },
 		}
 	},
 	misc = {
@@ -1722,7 +1730,8 @@ local decs = {
 			ph_cards_defined = "Redefinitions this run",
 			ph_definitions = "No redefinitions this run", 
 			ph_leftright = "The left card always converts to the right card",
-			b_definitions = "Definitions"
+			b_definitions = "Definitions",
+			k_akyrs_blind_difficult_zenith = "Zenith Blind",
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",
