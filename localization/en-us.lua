@@ -378,7 +378,8 @@ local decs = {
 			bl_entr_olive_orchard = {
 				name = "Olive Orchard",
 				text = {
-					"Discarded and played cards become Disavowed",
+					"Cards in hand become disavowed",
+					"when playing or discarding"
 				}
 			},
 			bl_entr_citrine_comet = {
