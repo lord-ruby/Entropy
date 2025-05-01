@@ -59,7 +59,7 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "main.lua"
-pattern = '''function love.load() '''
+pattern = '''function love.load()'''
 position = "before"
 payload = '''
 Entropy = {}

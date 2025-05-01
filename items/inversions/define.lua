@@ -10,7 +10,7 @@ local define = {
     
 
     atlas = "miscc",
-    order=34,
+    order=34-100,
     soul_rate = 0,
     name = "entr-Define",
     hidden = true,
