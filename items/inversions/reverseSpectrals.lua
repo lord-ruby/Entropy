@@ -1707,6 +1707,9 @@ local beyond = {
 			end,
 		}))
 		delay(0.6)
+        if Entropy.DeckOrSleeve("doc") then
+            ease_entropy(-G.GAME.entropy)
+        end
     end,
     can_use = function(self, card)
         return true
