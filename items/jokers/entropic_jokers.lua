@@ -157,6 +157,28 @@ function G.FUNCS.get_poker_hand_info(_cards)
             { mult = 0, chips = 0}
         )
     end
+    local all_flesh = true
+    for i, v in pairs(scoring_hand) do
+        if v.config.center.key ~= "m_entr_flesh" then all_flesh = false end
+    end
+    if all_flesh then
+        if text == "Flush" then 
+            disp_text = "entr-Flesh"
+			loc_disp_text = localize(disp_text, "poker_hands")
+        end
+        if text == "Flush House" then 
+            disp_text = "entr-Flesh_House"
+			loc_disp_text = localize(disp_text, "poker_hands")
+        end
+        if text == "Flush Five" then 
+            disp_text = "entr-Flesh_Five"
+			loc_disp_text = localize(disp_text, "poker_hands")
+        end
+        if text == "Straight Flush" then 
+            disp_text = "entr-Straight_Flesh"
+			loc_disp_text = localize(disp_text, "poker_hands")
+        end
+    end
     return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
 

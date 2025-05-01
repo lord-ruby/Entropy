@@ -1836,6 +1836,10 @@ local decs = {
 		},
 		poker_hands = {
 			["entr_All"] = Cryptid_config.family_mode and "All" or "Literally Fucking Everything",
+			["entr-Flesh"] = "Flesh",
+			["entr-Straight_Flesh"] = "Straight Flesh",
+			["entr-Flesh_House"] = "Flesh House",
+			["entr-Flesh_Five"] = "Flesh Five",
 		},
 		poker_hand_descriptions = {
 			entr_All = {

@@ -36,7 +36,7 @@ local FlipsideInversions = {
     ["c_cry_chambered"]="c_entr_entomb",
     ["c_cry_conduit"]="c_entr_conduct",
     --tarots
-    --["c_fool"] = "c_entr_fool",
+    ["c_fool"] = "c_entr_master",
     --planets
     ["c_cry_white_hole"] = "c_entr_pulsar",
     ["c_black_hole"] = "c_entr_quasar",
