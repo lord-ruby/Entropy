@@ -279,10 +279,8 @@ local verdant = {
             local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
             G.FUNCS.get_poker_hand_info(G.play.cards)
             if #scoring_hand == 1 then
-                local key = pseudorandom_element(Entropy.FlipsideInversions, pseudoseed("verdant"))
-                while G.P_CENTERS[key].set ~= "RCode" do key = pseudorandom_element(Entropy.FlipsideInversions, pseudoseed("verdant")) end
                 if #G.consumeables.cards < G.consumeables.config.card_limit then
-                    local c = create_card("Consumables", G.consumeables, nil, nil, nil, nil, key) 
+                    local c = create_card("RCode", G.consumeables, nil, nil, nil, nil, nil) 
                     c:add_to_deck()
                     G.consumeables:emplace(c)
                 end
