@@ -274,12 +274,65 @@ local recursive_joker = {
         end
     end
 }
+local dr_sunshine = {
+    order = 6,
+    object_type = "Joker",
+    key = "dr_sunshine",
+    config = {
+        plus_asc = 0,
+        plus_asc_mod = 0.25
+    },
+    rarity = 3,
+    cost = 10,
+    unlocked = true,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 4, y = 1 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    pools = { ["Food"] = true },
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                number_format(card.ability.plus_asc_mod),
+                number_format(card.ability.plus_asc),
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.remove_playing_cards and not context.blueprint then
+            for i, v in pairs(context.removed) do
+                card.ability.plus_asc = (card.ability.plus_asc or 0) + (card.ability.plus_asc_mod or 0.25)
+                card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("entr_ascended"), colour = G.C.GREEN }
+				)
+                local card = context.removed[i]
+            end
+        end
+        if context.joker_main and card.ability.plus_asc > 0 then
+            return {
+                plus_asc = card.ability.plus_asc
+            }
+        end
+    end
+}
 return {
     items = {
         surreal,
         tesseract,
         solarflare,
         strawberry_pie,
-        recursive_joker
+        recursive_joker,
+        dr_sunshine
     }
 }

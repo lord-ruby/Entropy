@@ -346,6 +346,15 @@ local decs = {
 					"{C:attention}Joker{} {X:dark_edition,C:white}Twice{} as",
 					"many times as the previous"
 				}
+			},
+			j_entr_dr_sunshine = {
+				name = "Dr. Sunshine",
+				text = {
+					"This {C:attention}Joker{} gains",
+					"{C:gold}+#1#{} Ascension Power",
+					"when a playing card is {C:attention}destroyed{}",
+					"{C:inactive}(Currently: {}{C:gold}+#2#{}{C:inactive}){}"
+				}
 			}
 		},
 		Blind = {
@@ -1733,6 +1742,7 @@ local decs = {
 			ph_leftright = "The left card always converts to the right card",
 			b_definitions = "Definitions",
 			k_akyrs_blind_difficult_zenith = "Zenith Blind",
+			entr_ascended = "Ascended!"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",
