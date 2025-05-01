@@ -278,7 +278,7 @@ local ieros = {
 function create_card_for_shop(area)
     if area == G.shop_jokers and G.SETTINGS.tutorial_progress and G.SETTINGS.tutorial_progress.forced_shop and G.SETTINGS.tutorial_progress.forced_shop[#G.SETTINGS.tutorial_progress.forced_shop] then
       local t = G.SETTINGS.tutorial_progress.forced_shop
-local card = create_card(v.type, area, nil, nil, nil, nil, nil, 'sho')      local _center = G.P_CENTERS[t[#t]] or G.P_CENTERS.c_empress
+      local _center = G.P_CENTERS[t[#t]] or G.P_CENTERS.c_empress
       local card = Card(area.T.x + area.T.w/2, area.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, _center, {bypass_discovery_center = true, bypass_discovery_ui = true})
       t[#t] = nil
       if not t[1] then G.SETTINGS.tutorial_progress.forced_shop = nil end
