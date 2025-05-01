@@ -516,6 +516,7 @@ local insatiable_dagger = {
                         card:juice_up(0.8, 0.8)
                         sliced_card:start_dissolve({ HEX("a800ff") }, nil, 1.6)
                         G.GAME.banned_keys[sliced_card.config.center.key] = true
+                        eval_card(sliced_card, {banishing_card = true, banisher = card, card = sliced_card, cardarea = sliced_card.area})
                         play_sound("slice1", 0.96 + math.random() * 0.08)
                         local check2
                         if not Card.no(G.jokers.cards[check], "immutable", true) then
@@ -610,7 +611,7 @@ local chocolate_egg = {
     demicoloncompat = true,
     pools = { ["Food"] = true, ["Candy"] = true },
     calculate = function(self, card, context)
-        if context.banishing_card then
+        if context.banishing_card and context.area == G.jokers and G.jokers then
             card.ability.no_destroy = true
             local c = create_card("Joker", G.jokers, nil, "Rare")
             c:add_to_deck()
@@ -625,7 +626,7 @@ local chocolate_egg = {
 local start_dissolveref = Card.start_dissolve
 function Card:start_dissolve(...)
     start_dissolveref(self, ...)
-    if self.config.center.key == "j_entr_chocolate_egg" and not self.ability.no_destroy then
+    if self.config.center.key == "j_entr_chocolate_egg" and not self.ability.no_destroy and self.area == G.jokers and G.jokers then
         local c = create_card("Joker", G.jokers, nil, "Rare")
         c:add_to_deck()
         G.jokers:emplace(c)

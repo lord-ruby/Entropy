@@ -392,7 +392,7 @@ local decs = {
 				name = "Insatiable Dagger",
 				text = {
 					"When {C:attention}Blind{} is selected",
-					"destroy rightmost Joker",
+					"banish rightmost Joker",
 					"Joker to the left gains {C:attention}1%{}",
 					"of its sell value as {C:purple}xValues{}"
 				}
