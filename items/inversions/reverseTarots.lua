@@ -57,17 +57,52 @@ local master = {
         return G.GAME.last_inversion
 	end,
     loc_vars = function(self, q, card)
+        card.ability.last_inversion = G.GAME.last_inversion and G.localization.descriptions[G.GAME.last_inversion.set][G.GAME.last_inversion.key].name or "None"
         return {
-            vars = {
-                G.GAME.last_inversion and G.GAME.last_inversion.key or "None"
-            }
+            main_end = (card.area and card.area == G.consumeables) and {
+				{
+					n = G.UIT.C,
+					config = { align = "bm", minh = 0.4 },
+					nodes = {
+						{
+							n = G.UIT.C,
+							config = {
+								ref_table = card,
+								align = "m",
+								colour = G.C.JOKER_GREY,
+								r = 0.05,
+								padding = 0.1,
+								func = "has_inversion",
+							},
+							nodes = {
+								{
+									n = G.UIT.T,
+									config = {
+										ref_table = card.ability,
+										ref_value = "last_inversion",
+										colour = G.C.UI.TEXT_LIGHT,
+										scale = 0.32*0.8,
+									},
+								},
+							},
+						},
+					},
+				},
+			} or nil,
         }
     end
 }
+G.FUNCS.has_inversion = function(e) 
+    if G.GAME.last_inversion then 
+        e.config.colour = mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8)
+    else
+        e.config.colour = mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8)
+    end
+ end
 local ref = G.FUNCS.use_card
 G.FUNCS.use_card = function(e, mute, nosave)
     local card = e.config.ref_table
-    if Entropy.FlipsideInversions[card.config.center.key] and not Entropy.FlipsidePureInversions[card.config.center.key] then
+    if Entropy.FlipsideInversions[card.config.center.key] and not Entropy.FlipsidePureInversions[card.config.center.key] and card.config.center.key ~= "c_entr_master" then
         G.GAME.last_inversion = {
             key = card.config.center.key,
             set = card.config.center.set

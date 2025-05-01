@@ -135,7 +135,7 @@ function Card:set_debuff(should_debuff)
     set_debuffref(self, should_debuff)
 end
 
-local insignia = Entropy.SealSpectral("insignia", {x=9,y=4}, "entr_silver",3.5)
+local insignia = Entropy.SealSpectral("insignia", {x=9,y=4}, "entr_silver",-100+3.5)
 
 local siphon = {
     dependencies = {
@@ -643,7 +643,7 @@ local crypt = {
 }
 
 
-local rendezvous = Entropy.SealSpectral("rendezvous", {x=10,y=5}, "entr_crimson",10.5)
+local rendezvous = Entropy.SealSpectral("rendezvous", {x=10,y=5}, "entr_crimson",-100+10.5)
 
 local charm = {
     dependencies = {
@@ -703,8 +703,8 @@ local charm = {
 }
 
 
-local eclipse = Entropy.SealSpectral("eclipse", {x=12,y=5}, "entr_sapphire",12)
-local calamity = Entropy.SealSpectral("calamity", {x=6,y=6}, "entr_pink",13)
+local eclipse = Entropy.SealSpectral("eclipse", {x=12,y=5}, "entr_sapphire",-100+12)
+local calamity = Entropy.SealSpectral("calamity", {x=6,y=6}, "entr_pink",-100+13)
 
 local entropy = {
     dependencies = {
@@ -1387,8 +1387,8 @@ local superego_sticker = {
     end,
     loc_vars = function(self, q, card) return {vars={card.ability and math.floor(card.ability.superego_copies or 0) or 0}} end
 }
-local cerulean = Entropy.SealSpectral("downpour", {x=12,y=7}, "entr_cerulean",24)
-local script = Entropy.SealSpectral("script", {x=6,y=8}, "entr_verdant",25)
+local downpour = Entropy.SealSpectral("downpour", {x=12,y=7}, "entr_cerulean",-100+24)
+local script = Entropy.SealSpectral("script", {x=6,y=8}, "entr_verdant",-100+25)
 
 local engulf = {
     dependencies = {
@@ -1806,6 +1806,13 @@ return {
         conduct,
         pulsar,
         beyond,
-        regenerate
+        regenerate,
+        insignia,
+        rendezvous,
+        charm,
+        eclipse,
+        calamity,
+        downpour,
+        script
     }
 }

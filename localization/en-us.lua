@@ -1320,6 +1320,17 @@ local decs = {
 				}
 			},
 		},
+		RTarot = {
+			c_entr_master = {
+				name = "The Master",
+				text = {
+					"Creates the last",
+					"{C:red}Inverted{} card",
+					"used during this run",
+					"{s:0.8,C:red}The Master{} {s:0.8}excluded{}"
+				}
+			}
+		},
 		Stake = {
 			stake_entr_entropic = {
 				name = "Entropic Stake",
