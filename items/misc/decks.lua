@@ -285,6 +285,7 @@ function ease_entropy(mod)
           G.GAME.entropy = (G.GAME.entropy or 0) + mod
           if round_UI then
             G.HUD:recalculate()
+            if not Talisman.config_file.disable_anims then
               attention_text({
                 text = text..tostring(math.abs(mod)),
                 scale = 1, 
@@ -293,10 +294,13 @@ function ease_entropy(mod)
                 cover_colour = col,
                 align = 'cm',
               })
+            end
           end
           --Play a chip sound
-          play_sound('timpani', 0.8)
-          play_sound('generic1')
+          if not Talisman.config_file.disable_anims then
+            play_sound('timpani', 0.8)
+            play_sound('generic1')
+          end
           return true
       end
     }))
