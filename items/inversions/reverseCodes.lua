@@ -224,7 +224,6 @@ local break_card = {
 			trigger = "immediate",
 			func = function()
                 G.STATE = 7
-				G.GAME.USING_CODE = true
 				--G.GAME.USING_RUN = true
 				--G.GAME.RUN_STATE_COMPLETE = 0
 				G.STATE_COMPLETE = false
