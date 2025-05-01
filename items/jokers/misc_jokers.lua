@@ -422,6 +422,59 @@ local antidagger = {
         end
     end
 }
+
+local solar_dagger = {
+    order = 9,
+    object_type = "Joker",
+    key = "solar_dagger",
+    rarity = 3,
+    cost = 8,
+    
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 6, y = 1 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    config = { x_asc = 1 },
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                number_format(card.ability.x_asc)
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
+            local check
+            for i, v in pairs(G.jokers.cards) do
+                if v == card and G.jokers.cards[i+1] then check = i+1 end
+            end
+            if check then
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        local sliced_card = G.jokers.cards[check]
+                        card.ability.x_asc =
+                            lenient_bignum(to_big(card.ability.x_asc) + sliced_card.sell_cost * 0.1)
+                        card:juice_up(0.8, 0.8)
+                        sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
+                        play_sound("slice1", 0.96 + math.random() * 0.08)
+                        return true
+                    end,
+                }))
+            end
+        end
+        if context.joker_main then
+            return {
+                asc = card.ability.x_asc
+            }
+        end
+    end
+}
 return {
     items = {
         surreal,
@@ -431,6 +484,7 @@ return {
         recursive_joker,
         dr_sunshine,
         antidagger,
+        solar_dagger,
         sunny_joker
     }
 }

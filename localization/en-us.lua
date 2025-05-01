@@ -368,6 +368,25 @@ local decs = {
 					"Discarded cards become",
 					"{C:attention}flesh{} cards"
 				}
+			},
+			j_entr_antidagger = {
+				name = "Anti-Dagger",
+				text = {
+					"Unbanish a random banished Joker",
+					"when a {C:attention}blind{} is selected",
+					"{C:green}#1# in #2#{} chance to {C:attention}banish{}",
+					"this Joker and {C:attention}another{} Joker"
+				}
+			},
+			j_entr_solar_dagger = {
+				name = "Solar Dagger",
+				text = {
+					"When {C:attention}Blind{} is selected",
+					"destroy Joker to the right",
+					"and permanently add {C:attention}one tenth{}",
+					"its sell value to this Jokers {C:gold}Ascension Power{}",
+					"{C:inactive}(Currently: {X:gold,C:white}X#1#{} {C:inactive}Ascension Power){}"
+				}
 			}
 		},
 		Blind = {
