@@ -387,6 +387,23 @@ local decs = {
 					"its sell value to this Jokers {C:gold}Ascension Power{}",
 					"{C:inactive}(Currently: {X:gold,C:white}X#1#{} {C:inactive}Ascension Power){}"
 				}
+			},
+			j_entr_insatiable_dagger = {
+				name = "Insatiable Dagger",
+				text = {
+					"When {C:attention}Blind{} is selected",
+					"destroy rightmost Joker",
+					"Joker to the left gains {C:attention}1%{}",
+					"of its sell value as {C:purple}xValues{}"
+				}
+			},
+			j_entr_rusty_shredder = {
+				name = "Rusty Shredder",
+				text = {
+					"{C:green}#1# in #2#{} chance to create",
+					"a {C:attention}temporary{} {C:dark_edition}Negative{}",
+					"copy of discarded cards"
+				}
 			}
 		},
 		Blind = {

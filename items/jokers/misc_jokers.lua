@@ -375,6 +375,7 @@ local antidagger = {
         }
     },
     blueprint_compat = true,
+    immutable = true,
     eternal_compat = true,
     pos = { x = 6, y = 0 },
     atlas = "jokers",
@@ -490,6 +491,7 @@ local insatiable_dagger = {
     },
     blueprint_compat = true,
     eternal_compat = true,
+    immutable = true,
     pos = { x = 7, y = 0 },
     atlas = "jokers",
     calculate = function(self, card, context)
@@ -504,17 +506,18 @@ local insatiable_dagger = {
                         local sliced_card = G.jokers.cards[#G.jokers.cards]
                         card:juice_up(0.8, 0.8)
                         sliced_card:start_dissolve({ HEX("a800ff") }, nil, 1.6)
+                        G.GAME.banned_keys[sliced_card.config.center.key] = true
                         play_sound("slice1", 0.96 + math.random() * 0.08)
                         local check2
-                        if not Card.no(G.jokers.cards[i-1], "immutable", true) then
-                            Cryptid.with_deck_effects(G.jokers.cards[i-1], function(card)
-                                Cryptid.misprintize(G.jokers.cards[i-1], { min = sliced_card.sell_cost * 0.05, max = sliced_card.sell_cost * 0.05 }, nil, true)
+                        if not Card.no(G.jokers.cards[check], "immutable", true) then
+                            Cryptid.with_deck_effects(G.jokers.cards[check], function(card)
+                                Cryptid.misprintize(G.jokers.cards[check], { min = sliced_card.sell_cost * 0.01 + 1, max = sliced_card.sell_cost * 0.01 + 1 }, nil, true)
                             end)
                             check2 = true
                         end
                         if check2 then
                             card_eval_status_text(
-                                G.jokers.cards[i-1],
+                                G.jokers.cards[check],
                                 "extra",
                                 nil,
                                 nil,
@@ -529,6 +532,49 @@ local insatiable_dagger = {
         end
     end
 }
+
+local rusty_shredder = {
+    order = 11,
+    object_type = "Joker",
+    key = "rusty_shredder",
+    rarity = 2,
+    cost = 5,
+    
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    immutable = true,
+    eternal_compat = true,
+    pos = { x = 7, y = 1 },
+    atlas = "jokers",
+    config = {extra = {odds = 3}},
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = {key = 'e_negative_playing_card', set = 'Edition', config = {extra = 1}}
+        info_queue[#info_queue+1] = {key = "temporary", set = "Other"}
+        return {
+            vars = {
+                cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
+            },
+        }
+    end,
+    calculate = function (self, card, context)
+        if (context.pre_discard) then
+            for i, v in pairs(G.hand.highlighted) do
+                if pseudorandom("rusty_shredder")
+                < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
+                    local c = copy_card(v)
+                    c:set_edition("e_negative")
+                    c.ability.temporary = true
+                    c:add_to_deck()
+                    G.hand:emplace(c)
+                end
+            end
+        end
+    end,
+}
 return {
     items = {
         surreal,
@@ -540,6 +586,7 @@ return {
         antidagger,
         solar_dagger,
         insatiable_dagger,
+        rusty_shredder,
         sunny_joker
     }
 }
