@@ -1,9 +1,9 @@
 SMODS.Atlas { key = 'reverse_legendary', path = 'reverse_legendaries.png', px = 71, py = 95 }
 
-local perkeo = {
+local oekrep = {
     order = 200,
     object_type = "Joker",
-    key = "perkeo",
+    key = "oekrep",
     config = {
         qmult = 4
     },
@@ -29,11 +29,11 @@ local perkeo = {
     calculate = function (self, card, context)
         if context.ending_shop or context.forcetrigger then
             if #G.consumeables.cards > 0 then
-                local e = pseudorandom_element(G.consumeables.cards, pseudoseed("rperkeo"))
+                local e = pseudorandom_element(G.consumeables.cards, pseudoseed("roekrep"))
                 local set = e.config.center.set
                 local tries = 0
                 while not Entropy.BoosterSets[set] and tries < 100 do
-                    e = pseudorandom_element(G.consumeables.cards, pseudoseed("rperkeo"))
+                    e = pseudorandom_element(G.consumeables.cards, pseudoseed("roekrep"))
                     set = e.config.center.set
                 end 
                 if Entropy.BoosterSets[set] then
@@ -51,7 +51,7 @@ local perkeo = {
                         card_limit=1,
                         type="negative"
                     })
-                    c.RPerkeoPack = true
+                    c.RoekrepPack = true
                     G.consumeables:align_cards()
                     G.consumeables.config.card_limit = G.consumeables.config.card_limit + 1
                 end
@@ -78,10 +78,10 @@ function CardArea:remove_card(card, discarded_only)
     end
     return c
 end
-local chicot = {
+local tocihc = {
     order = 201,
     object_type = "Joker",
-    key = "chicot",
+    key = "tocihc",
     config = {
         qmult = 4
     },
@@ -160,10 +160,10 @@ local BoosterSets = {
     ["RSpectral"] = "p_entr_twisted_pack_mega",
 }
 for i, v in pairs(BoosterSets) do Entropy.BoosterSets[i] = v end
-local yorick = {
+local kciroy = {
     order = 202,
     object_type = "Joker",
-    key = "yorick",
+    key = "kciroy",
     config = {
         csl = 23,
         hs = 2.3,
@@ -270,10 +270,10 @@ function CardArea:draw()
 end
 
 
-local trib = {
+local teluobirt = {
     order = 203,
     object_type = "Joker",
-    key = "triboulet",
+    key = "teluobirt",
     rarity = "entr_reverse_legendary",
     cost = 20,
     
@@ -337,10 +337,10 @@ local trib = {
     end
 }
 
-local canio = {
+local oinac = {
     order = 204,
     object_type = "Joker",
-    key = "canio",
+    key = "oinac",
     rarity = "entr_reverse_legendary",
     cost = 20,
     
@@ -405,10 +405,10 @@ local canio = {
     end
 }
 
-local membership = {
+local entropy_card = {
     order = 205,
     object_type = "Joker",
-    key = "membership",
+    key = "entropy_card",
     config = {
         x_asc_mod = 1,
         num = 86
@@ -446,11 +446,11 @@ local membership = {
 }
 return {
     items = {
-        perkeo,
-        canio,
-        chicot,
-        yorick,
-        trib,
-        membership
+        oekrep,
+        oinac,
+        tocihc,
+        kciroy,
+        teluobirt,
+        entropy_card
     }
 }

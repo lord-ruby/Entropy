@@ -180,7 +180,7 @@ local decs = {
 					"{C:inactive}(Currently: #3#){}"
 				}
 			},
-			j_entr_perkeo = {
+			j_entr_oekrep = {
 				name = "Oekrep",
 				text = {
 					"Destroy a {C:attention}random{} consumable and",
@@ -188,7 +188,7 @@ local decs = {
 					"Mega Booster Pack at the end of the {C:attention}shop{}"
 				}
 			},
-			j_entr_yorick = {
+			j_entr_kciroy = {
 				name = "Kciroy",
 				text = {
 					"{C:dark_edition}X#1#{} Hand size, {C:dark_edition}+#2#{} card selection limit",
@@ -197,7 +197,7 @@ local decs = {
 					"{C:inactive}(Currently{} {X:dark_edition,C:white}^#6#{} {C:inactive}Chips){}"
 				}
 			},
-			j_entr_chicot = {
+			j_entr_tocihc = {
 				name = "Tocihc",
 				text = {
 					"Create the {C:attention}current{} Blind's skip",
@@ -206,7 +206,7 @@ local decs = {
 					"{C:inactive}(Currently: #1#){}"
 				}
 			},
-			j_entr_triboulet = {
+			j_entr_teluobirt = {
 				name = "Teluobirt",
 				text = {
 					"Scored {C:attention}Jacks{} give {X:chips,C:white}XChips{}",
@@ -215,7 +215,7 @@ local decs = {
 					"order in the played hand"
 				}
 			},
-			j_entr_canio = {
+			j_entr_oinac = {
 				name = "Oinac",
 				text = {
 					"This Joker gains {X:dark_edition,C:white}^#1#{} Chips",
@@ -225,7 +225,7 @@ local decs = {
 					"{C:inactive}(Currently: {}{X:dark_edition,C:white}^#2#{} {C:inactive}Chips){}"
 				}
 			},
-			j_entr_membership = {
+			j_entr_entropy_card = {
 				name = "Drac Pihsrebmem",
 				text = {
 					"{X:gold,C:white}X#1#{} Ascension Power for",
@@ -788,7 +788,7 @@ local decs = {
 			}
 		},
 		RPlanet = {
-			c_entr_pluto = {
+			c_entr_regulus = {
 				name = "Regulus",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
@@ -796,7 +796,7 @@ local decs = {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
-			c_entr_mercury = {
+			c_entr_hydrae = {
 				name = "CZ Hydrae",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
@@ -804,7 +804,7 @@ local decs = {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
-			c_entr_venus = {
+			c_entr_vega = {
 				name = "Vega",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
@@ -812,7 +812,7 @@ local decs = {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
-			c_entr_earth = {
+			c_entr_polaris = {
 				name = "Polaris",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
@@ -820,7 +820,7 @@ local decs = {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
-			c_entr_mars = {
+			c_entr_cassiopeiae = {
 				name = "Rho Cassiopeiae",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
@@ -828,7 +828,7 @@ local decs = {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
-			c_entr_jupiter = {
+			c_entr_pegasi = {
 				name = "UU Pegasi",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
@@ -836,7 +836,7 @@ local decs = {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
-			c_entr_saturn = {
+			c_entr_persei = {
 				name = "RS Persei",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
@@ -844,7 +844,7 @@ local decs = {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
-			c_entr_uranus = {
+			c_entr_ophiuchi = {
 				name = "RT Ophiuchi",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
@@ -852,7 +852,7 @@ local decs = {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
-			c_entr_neptune = {
+			c_entr_carinae = {
 				name = "V349 Carinae",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
@@ -860,7 +860,7 @@ local decs = {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
-			c_entr_ceres = {
+			c_entr_procyon = {
 				name = "Procyon B",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
@@ -868,7 +868,7 @@ local decs = {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
-			c_entr_planet_x = {
+			c_entr_tauri = {
 				name = "Tauri",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
@@ -876,7 +876,7 @@ local decs = {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
-			c_entr_eris = {
+			c_entr_sirius = {
 				name = "Sirius B",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
@@ -884,7 +884,7 @@ local decs = {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
-			c_entr_universe = {
+			c_entr_multiverse = {
 				name = Cryptid_config.family_mode and "Multiverse" or "The Multiverse In Its Fucking Entirety",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
@@ -892,7 +892,7 @@ local decs = {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
-			c_entr_marsmoons = {
+			c_entr_binarystars = {
 				name = "Mizar & Alcor",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
@@ -900,7 +900,7 @@ local decs = {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
-			c_entr_void = {
+			c_entr_dark_matter = {
 				name = "Dark Matter",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
@@ -908,7 +908,7 @@ local decs = {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
-			c_entr_asteroidbelt = {
+			c_entr_dyson_swarm = {
 				name = "Dyson Swarm",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
@@ -916,7 +916,7 @@ local decs = {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
-			c_entr_planetlua = {
+			c_entr_starlua = {
 				name = "Star.lua",
 				text = {
 					"{C:green}#1# in #2#{} chance to",
@@ -925,7 +925,7 @@ local decs = {
 					"{C:gold}+#3#{} Ascension Power",
 				}
 			},
-			c_entr_nstar = {
+			c_entr_strange_star = {
 				name = "Strange Star",
 				text = {
 					"Upgrade a random",
@@ -936,7 +936,7 @@ local decs = {
 					"{C:inactive}(Currently{C:attention} #1#{C:inactive}){}",
 				}
 			},
-			c_entr_sunplanet = {
+			c_entr_nemesis = {
 				name = "Nemesis",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
@@ -945,7 +945,7 @@ local decs = {
 					"{C:inactive}(Currently {X:gold,C:white}X(#3#^#4#asc){C:inactive})",
 				}
 			},
-			c_entr_Sydan = {
+			c_entr_paras = {
 				name = "Paras",
 				text = {
 					"({V:1}lvl.#4#{}{C:gold}#8#{})({V:2}lvl.#5#{}{C:gold}#9#{})({V:3}lvl.#6#{}{C:gold}#10#{})",
@@ -956,7 +956,7 @@ local decs = {
 					"{C:gold}+#7#{} Ascension Power"
 				},
 			},
-			c_entr_Timantti = {
+			c_entr_jatka = {
 				name = "Jatka",
 				text = {
 					"({V:1}lvl.#4#{}{C:gold}#8#{})({V:2}lvl.#5#{}{C:gold}#9#{})({V:3}lvl.#6#{}{C:gold}#10#{})",
@@ -967,8 +967,8 @@ local decs = {
 					"{C:gold}+#7#{} Ascension Power"
 				},
 			},
-			c_entr_Klubi = {
-				name = "Roua",
+			c_entr_rouva = {
+				name = "Rouva",
 				text = {
 					"({V:1}lvl.#4#{}{C:gold}#8#{})({V:2}lvl.#5#{}{C:gold}#9#{})({V:3}lvl.#6#{}{C:gold}#10#{})",
 					"Level up",
@@ -978,7 +978,7 @@ local decs = {
 					"{C:gold}+#7#{} Ascension Power"
 				},
 			},
-			c_entr_Lapio = {
+			c_entr_assa = {
 				name = "Assa",
 				text = {
 					"({V:1}lvl.#4#{}{C:gold}#8#{})({V:2}lvl.#5#{}{C:gold}#9#{})({V:3}lvl.#6#{}{C:gold}#10#{})",
@@ -989,7 +989,7 @@ local decs = {
 					"{C:gold}+#7#{} Ascension Power"
 				},
 			},
-			c_entr_Kaikki = {
+			c_entr_kivi = {
 				name = "Kivi",
 				text = {
 					"({V:1}lvl.#4#{}{C:gold}#8#{})({V:2}lvl.#5#{}{C:gold}#9#{})({V:3}lvl.#6#{}{C:gold}#10#{})",
@@ -1833,7 +1833,7 @@ for i, v in pairs(decs.descriptions.Blind) do
 	local text = {}
 	for i2, v2 in pairs(v.text or {}) do text[#text+1]=v2 end
 	CBlind["c_entr_"..i] = {
-		name=v.name,
+		name=v.name.." Token",
 		text={
 			--text,
 			{"Use to change the upcoming Blind"},
@@ -1844,7 +1844,7 @@ for i, v in pairs(G.localization.descriptions.Blind) do
 	local text = {}
 	for i2, v2 in pairs(v.text or {}) do text[#text+1]=v2 end
 	CBlind["c_entr_"..i] = {
-		name=v.name,
+		name=v.name.." Token",
 		text={
 			--text,
 			{"Use to change the upcoming Blind"},

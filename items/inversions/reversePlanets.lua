@@ -185,12 +185,12 @@ SMODS.ConsumableType({
 local planets = {}
 local order = 0
 
-function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,level, name,set_badges,loc_vars,config)
+function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,level, name,set_badges,loc_vars,config, new_key)
   order = order + 1
   planets[#planets+1]={
     object_type="Consumable",
     order = order - 200,
-    key = key,
+    key = new_key,
     set = "RPlanet",
     
     dependencies = {
@@ -232,19 +232,19 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
   return planets[#planets]
 end
 Entropy.ReversePlanets = {
-  {name="Pair",key="mercury",sprite_pos={x=7,y=0}},
-  {name="Three of a Kind",key="venus",sprite_pos={x=8,y=0}},
-  {name="Full House",key="earth",sprite_pos={x=9,y=0}},
-  {name="Four of a Kind",key="mars",sprite_pos={x=10,y=0}},
-  {name="Flush",key="jupiter",sprite_pos={x=11,y=0}},
-  {name="Straight",key="saturn",sprite_pos={x=12,y=0}},
-  {name="Two Pair",key="uranus",sprite_pos={x=6,y=1}},
-  {name="Straight Flush",key="neptune",sprite_pos={x=7,y=1}},
-  {name="High Card",key="pluto",sprite_pos={x=6,y=0}},
-  {name="Five of a Kind",key="planet_x",sprite_pos={x=9,y=1}},
-  {name="Flush House",key="ceres",sprite_pos={x=8,y=1}},
-  {name="Flush Five",key="eris",sprite_pos={x=10,y=1}},
-  {name="", key="planetlua",sprite_pos={x=8,y=2},prefix = "c_cry_",config = {
+  {name="Pair",key="mercury",sprite_pos={x=7,y=0}, new_key="hydrae"},
+  {name="Three of a Kind",key="venus",sprite_pos={x=8,y=0},new_key="vega"},
+  {name="Full House",key="earth",sprite_pos={x=9,y=0},new_key="polaris"},
+  {name="Four of a Kind",key="mars",sprite_pos={x=10,y=0},new_key="cassiopeiae"},
+  {name="Flush",key="jupiter",sprite_pos={x=11,y=0},new_key="pegasi"},
+  {name="Straight",key="saturn",sprite_pos={x=12,y=0},new_key="persei"},
+  {name="Two Pair",key="uranus",sprite_pos={x=6,y=1},new_key="ophiuchi"},
+  {name="Straight Flush",key="neptune",sprite_pos={x=7,y=1},new_key="carinae"},
+  {name="High Card",key="pluto",sprite_pos={x=6,y=0},new_key="regulus"},
+  {name="Five of a Kind",key="planet_x",sprite_pos={x=9,y=1},new_key="tauri"},
+  {name="Flush House",key="ceres",sprite_pos={x=8,y=1},new_key="procyon"},
+  {name="Flush Five",key="eris",sprite_pos={x=10,y=1},new_key="sirius"},
+  {name="", key="planetlua",sprite_pos={x=8,y=2}, new_key="starlua", prefix = "c_cry_",config = {
     level = 2,
     odds = 5
   },
@@ -265,19 +265,19 @@ Entropy.ReversePlanets = {
     end
   end
   },
-  {name="cry_Bulwark", key="asteroidbelt",sprite_pos={x=12,y=1},prefix = "c_cry_",set_badges = function(self, card, badges)
+  {name="cry_Bulwark", new_key = "dyson_swarm", key="asteroidbelt",sprite_pos={x=12,y=1},prefix = "c_cry_",set_badges = function(self, card, badges)
     badges[1] = create_badge(localize("k_planet_dyson_swarm"), get_type_colour(self or card.config, card), nil, 1.2)
   end},
-  {name="cry_Clusterfuck", key="void",sprite_pos={x=11,y=1},prefix = "c_cry_",set_badges = function(self, card, badges)
+  {name="cry_Clusterfuck", new_key = "dark_matter", key="void",sprite_pos={x=11,y=1},prefix = "c_cry_",set_badges = function(self, card, badges)
     badges[1] = create_badge("", get_type_colour(self or card.config, card), nil, 1.2)
   end},
-  {name="cry_UltPair", key="marsmoons",sprite_pos={x=6,y=2},prefix = "c_cry_",set_badges = function(self, card, badges)
+  {name="cry_UltPair", key="marsmoons", new_key = "binarystars", sprite_pos={x=6,y=2},prefix = "c_cry_",set_badges = function(self, card, badges)
     badges[1] = create_badge(localize("k_planet_binary_star"), get_type_colour(self or card.config, card), nil, 1.2)
   end},
-  {name="cry_WholeDeck", key="universe",sprite_pos={x=7,y=2},prefix = "c_cry_",set_badges = function(self, card, badges)
+  {name="cry_WholeDeck", key="universe", new_key = "multiverse", sprite_pos={x=7,y=2},prefix = "c_cry_",set_badges = function(self, card, badges)
     badges[1] = create_badge(localize("k_planet_multiverse"), get_type_colour(self or card.config, card), nil, 1.2)
   end},
-  {name="", key="nstar",sprite_pos={x=9,y=2},prefix = "c_cry_",
+  {name="", key="nstar", new_key = "strange_star", sprite_pos={x=9,y=2},prefix = "c_cry_",
   loc_vars = function(self,q,card) 
     return {
       vars = {
@@ -290,7 +290,7 @@ Entropy.ReversePlanets = {
     Entropy.StrangeSingle(self,card,area,copier,number)
   end
   },
-  {name="", key="sunplanet",sprite_pos={x=10,y=2},prefix = "c_cry_", config = {extra = 0.1},
+  {name="", key="sunplanet", new_key = "nemesis", sprite_pos={x=10,y=2},prefix = "c_cry_", config = {extra = 0.1},
     loc_vars = function(self,q,card) 
       local levelone = (G.GAME.nemesislevel and G.GAME.nemesislevel or 0) + 1
       local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
@@ -350,17 +350,17 @@ Entropy.ReversePlanets = {
       )
     end
   },
-  {name="", key="Timantti",sprite_pos={x=8,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"High Card", "Pair", "Two Pair"}}, loc_vars = Entropy.ReverseSuitLocVars},
-  {name="", key="Klubi",sprite_pos={x=9,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Three of a Kind", "Straight", "Flush"}}, loc_vars = Entropy.ReverseSuitLocVars},
-  {name="", key="Sydan",sprite_pos={x=10,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Full House", "Four of a Kind", "Straight Flush"}}, loc_vars = Entropy.ReverseSuitLocVars},
-  {name="", key="Lapio",sprite_pos={x=11,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Five of a Kind", "Flush House", "Flush Five"}}, loc_vars = Entropy.ReverseSuitLocVars},
-  {name="", key="Kaikki",sprite_pos={x=12,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"cry_Bulwark", "cry_Clusterfuck", "cry_UltPair"}}, loc_vars = Entropy.ReverseSuitLocVars},
+  {name="", key="Timantti", new_key = "jatka", sprite_pos={x=8,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"High Card", "Pair", "Two Pair"}}, loc_vars = Entropy.ReverseSuitLocVars},
+  {name="", key="Klubi", new_key = "rouva", sprite_pos={x=9,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Three of a Kind", "Straight", "Flush"}}, loc_vars = Entropy.ReverseSuitLocVars},
+  {name="", key="Sydan", new_key = "paras", sprite_pos={x=10,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Full House", "Four of a Kind", "Straight Flush"}}, loc_vars = Entropy.ReverseSuitLocVars},
+  {name="", key="Lapio", new_key = "assa", sprite_pos={x=11,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Five of a Kind", "Flush House", "Flush Five"}}, loc_vars = Entropy.ReverseSuitLocVars},
+  {name="", key="Kaikki", new_key = "kivi", sprite_pos={x=12,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"cry_Bulwark", "cry_Clusterfuck", "cry_UltPair"}}, loc_vars = Entropy.ReverseSuitLocVars},
 }
 function Entropy.RegisterReversePlanets()
   Entropy.RPlanetLocs = {}
     for i, v in pairs(Entropy.ReversePlanets) do
-		Entropy.RegisterReversePlanet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name,v.set_badges,v.loc_vars,v.config)
-		Entropy.FlipsideInversions[(v.prefix or "c_")..v.key] = "c_entr_"..v.key
+		Entropy.RegisterReversePlanet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name,v.set_badges,v.loc_vars,v.config,v.new_key)
+		Entropy.FlipsideInversions[(v.prefix or "c_")..v.key] = "c_entr_"..v.new_key
 	end
 end
 
