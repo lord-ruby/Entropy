@@ -295,7 +295,6 @@ local dr_sunshine = {
     pos = { x = 4, y = 1 },
     atlas = "jokers",
     demicoloncompat = true,
-    pools = { ["Food"] = true },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
@@ -326,6 +325,43 @@ local dr_sunshine = {
         end
     end
 }
+
+local sunny_joker = {
+    order = 7,
+    object_type = "Joker",
+    key = "sunny_joker",
+    config = {
+        plus_asc = 2
+    },
+    rarity = 2,
+    cost = 5,
+    unlocked = true,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 5, y = 1 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    pools = { ["Meme"] = true },
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                number_format(card.ability.plus_asc),
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main then
+            return {
+                plus_asc = card.ability.plus_asc
+            }
+        end
+    end
+}
 return {
     items = {
         surreal,
@@ -333,6 +369,7 @@ return {
         solarflare,
         strawberry_pie,
         recursive_joker,
-        dr_sunshine
+        dr_sunshine,
+        sunny_joker
     }
 }

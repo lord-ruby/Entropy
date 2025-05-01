@@ -355,6 +355,19 @@ local decs = {
 					"when a playing card is {C:attention}destroyed{}",
 					"{C:inactive}(Currently: {}{C:gold}+#2#{}{C:inactive}){}"
 				}
+			},
+			j_entr_sunny_joker = {
+				name = "Sunny Joker",
+				text = {
+					"{C:gold}+#1#{} Ascension Power"
+				}
+			},
+			j_entr_metanoia = {
+				name = "Metanoia",
+				text = {
+					"Discarded cards become",
+					"{C:attention}flesh{} cards"
+				}
 			}
 		},
 		Blind = {

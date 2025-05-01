@@ -221,11 +221,41 @@ local trapezium = {
         end
 	end
 }
+
+local metanoia = {
+    order = 104,
+    object_type = "Joker",
+    key = "metanoia",
+    rarity = "cry_epic",
+    cost = 10,
+    unlocked = true,
+    dependencies = {
+        items = {
+            "set_cry_epic"
+        }
+    },
+    blueprint_compat = false,
+    eternal_compat = true,
+    pos = { x = 5, y = 0 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue+1]=G.P_CENTERS.m_entr_flesh
+    end,
+    calculate = function (self, card, context)
+        if (context.pre_discard) then
+            Entropy.FlipThen(G.hand.highlighted, function(card)
+                card:set_ability(G.P_CENTERS.m_entr_flesh)
+            end)
+        end
+    end,
+}
 return {
     items = {
         burnt_m,
         chaos,
         dni,
-        trapezium
+        trapezium,
+        metanoia
     }
 }
