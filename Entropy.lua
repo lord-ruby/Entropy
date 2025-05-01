@@ -92,8 +92,22 @@ if SMODS and SMODS.calculate_individual_effect then
             end
             return true
         end
+        if (key == 'plus_asc') or (key == 'plusasc_mod') then
+            local e = card_eval_status_text
+            local orig = G.GAME.asc_power_hand or 0
+            G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand or 0) + to_big(amount)
+            G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (to_big(G.GAME.current_round.current_hand.cry_asc_num) + G.GAME.asc_power_hand) .. ")"
+            card_eval_status_text = function() end
+            scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
+            scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
+            card_eval_status_text = e
+            if not Talisman.config_file.disable_anims then
+                card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "+"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
+            end
+            return true
+        end
     end
-    for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'asc', 'asc_mod'}) do
+    for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'asc', 'asc_mod', 'plus_asc', 'plusasc_mod'}) do
         table.insert(SMODS.calculation_keys, v)
     end
 end
