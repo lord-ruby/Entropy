@@ -418,10 +418,10 @@ local antidagger = {
                     local joker = pseudorandom_element(G.jokers.cards, pseudoseed("antidagger"))
                     G.GAME.banned_keys["j_entr_antidagger"] = true
                     G.GAME.banned_keys[joker.config.center.key] = true
+                    eval_card(joker, {banishing_card = true, banisher = card, card = joker, cardarea = joker.area})
                     joker:start_dissolve()
                     card:start_dissolve()
                     play_sound("slice1", 0.96 + math.random() * 0.08)
-                    eval_card(joker, {banishing_card = true, banisher = card, card = joker, cardarea = joker.area})
             end
         end
     end,
@@ -590,6 +590,47 @@ local rusty_shredder = {
         idea = {"cassknows"}
     }
 }
+
+local chocolate_egg = {
+    order = 12,
+    object_type = "Joker",
+    key = "chocolate_egg",
+    rarity = 2,
+    cost = 5,
+    
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 8, y = 0 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    pools = { ["Food"] = true, ["Candy"] = true },
+    calculate = function(self, card, context)
+        if context.banishing_card then
+            card.ability.no_destroy = true
+            local c = create_card("Joker", G.jokers, nil, "Rare")
+            c:add_to_deck()
+            G.jokers:emplace(c)
+        end
+        if context.selling_self then card.ability.no_destroy = true end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
+}
+local start_dissolveref = Card.start_dissolve
+function Card:start_dissolve(...)
+    start_dissolveref(self, ...)
+    if self.config.center.key == "j_entr_chocolate_egg" and not self.ability.no_destroy then
+        local c = create_card("Joker", G.jokers, nil, "Rare")
+        c:add_to_deck()
+        G.jokers:emplace(c)
+    end
+end
 return {
     items = {
         surreal,
@@ -602,6 +643,7 @@ return {
         solar_dagger,
         insatiable_dagger,
         rusty_shredder,
-        sunny_joker
+        sunny_joker,
+        chocolate_egg
     }
 }

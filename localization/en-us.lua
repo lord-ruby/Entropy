@@ -404,6 +404,15 @@ local decs = {
 					"a {C:attention}temporary{} {C:dark_edition}Negative{}",
 					"copy of discarded cards"
 				}
+			},
+			j_entr_chocolate_egg = {
+				name = "Chocolate Egg",
+				text = {
+					"Create a random {C:green}Uncommon{} Joker",
+					"when this joker is destroyed",
+					"create a random {C:red}Rare{} Joker instead",
+					"when this Joker is {C:red}banished{}"
+				}
 			}
 		},
 		Blind = {
