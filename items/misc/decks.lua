@@ -132,10 +132,12 @@ local use_cardref = G.FUNCS.use_card
 G.FUNCS.use_card = function(e, mute, nosave)
 	local card = e.config.ref_table
 	if card.config.center.set ~= "Booster" and Entropy.DeckOrSleeve("doc") then
+    local num = 1
+    for i, v in pairs(G.GAME.entr_bought_decks or {}) do if v == "b_entr_doc" or v == "sleeve_entr_doc" then num = num + 1 end
 		if Entropy.FlipsideInversions[card.config.center.key] and not Entropy.FlipsidePureInversions[card.config.center.key] then
-			ease_entropy(4)
+			ease_entropy(4*num)
 		else
-			ease_entropy(2)
+			ease_entropy(2*num)
 		end
 	end
 	use_cardref(e, mute, nosave)
