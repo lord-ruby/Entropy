@@ -609,10 +609,10 @@ function CardArea:emplace(card, ...)
         if self == G.jokers or self == G.consumeables or self == G.deck or self == G.hand then
             G.FUNCS.buy_deckorsleeve({config = {ref_table = {card}}})
         else
-            emplace_ref(card, ...)
+            emplace_ref(self, card, ...)
         end
     else
-        emplace_ref(card, ...)
+        emplace_ref(self, card, ...)
     end
 end
 local gfcfbs = G.FUNCS.check_for_buy_space
