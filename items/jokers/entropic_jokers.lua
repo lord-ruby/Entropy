@@ -624,18 +624,6 @@ G.FUNCS.check_for_buy_space = function(card)
 	end
 	return gfcfbs(card)
 end
-local blind_type = {
-	object_type = "ConsumableType",
-	key = "CBlind",
-	primary_colour = HEX("ab3a3e"),
-	secondary_colour = HEX("ab3a3e"),
-	--collection_rows = { 4, 5 },
-	shop_rate = 0.0,
-	default = "c_entr_bl_small",
-    hidden=true,
-    object_type = "ConsumableType",
-    order=99,
-}
 
 Entropy.BlindC = {}
 local blinds = {}
