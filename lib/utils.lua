@@ -857,7 +857,7 @@ function Entropy.StackEvalReturns(orig, new, etype)
     end
 end
 
-function Entropy.RandomForcetrigger(card, num)
+function Entropy.RandomForcetrigger(card, num,context)
     local res = { }
 			local cards = Entropy.GetRandomCards({G.jokers, G.hand, G.consumeables, G.play}, num, "fractured", function(card) return not card.edition or card.edition.key ~= "e_entr_fractured" end)
 			for i, v in pairs(cards) do

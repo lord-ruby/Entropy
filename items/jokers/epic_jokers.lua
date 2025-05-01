@@ -188,7 +188,7 @@ local trapezium = {
 					end,
 				}))
 			end
-            return Entropy.RandomForcetrigger(card, card and card.ability.forcetrigger or 5)
+            return Entropy.RandomForcetrigger(card, card and card.ability.forcetrigger or 5, context)
 		end
 		if context.individual and context.cardarea == G.play then
 			if context.other_card.edition and context.other_card.edition.retrig then
@@ -213,11 +213,11 @@ local trapezium = {
 					card = card,
 				}
 			else
-                return Entropy.RandomForcetrigger(card, card and card.ability.forcetrigger or 5)
+                return Entropy.RandomForcetrigger(card, card and card.ability.forcetrigger or 5, context)
 			end
 		end
         if context.forcetrigger then
-            return Entropy.RandomForcetrigger(card, card and card.ability.forcetrigger or 5)
+            return Entropy.RandomForcetrigger(card, card and card.ability.forcetrigger or 5, context)
         end
 	end
 }

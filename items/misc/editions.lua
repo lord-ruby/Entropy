@@ -111,7 +111,7 @@ local fractured ={
 			context.main_scoring
 			and context.cardarea == G.play
 		) then
-			return Entropy.RandomForcetrigger(card, card and card.edition and card.edition.retrig or 3)
+			return Entropy.RandomForcetrigger(card, card and card.edition and card.edition.retrig or 3, context)
 		end
 	end,
 	entr_credits = {
