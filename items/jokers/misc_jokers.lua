@@ -319,7 +319,7 @@ local dr_sunshine = {
                 local card = context.removed[i]
             end
         end
-        if context.joker_main and card.ability.plus_asc > 0 then
+        if context.joker_main and to_big(card.ability.plus_asc) > to_big(0) then
             return {
                 plus_asc = card.ability.plus_asc
             }
