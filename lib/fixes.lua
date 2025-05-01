@@ -657,6 +657,12 @@ function Cryptid.misprintize(card, override, force_reset, stack, grow_type, pow_
         if card.edition and card.edition.negative and card.area == G.jokers then
             G.jokers.config.card_limit = G.jokers.config.card_limit + 1
         end
+    elseif G.consumeables then
+        local limit = G.consumeables.config.card_limit
+        ref(card,override,force_reset,stack,grow_type,pow_level)
+        if card.edition and card.edition.negative and card.area == G.consumeables then
+            G.consumeables.config.card_limit = G.consumeables.config.card_limit + 1
+        end
     else
         ref(card,override,force_reset,stack,grow_type,pow_level)
     end
