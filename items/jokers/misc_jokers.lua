@@ -359,7 +359,10 @@ local sunny_joker = {
                 plus_asc = card.ability.plus_asc
             }
         end
-    end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
 }
 
 local antidagger = {
@@ -421,7 +424,10 @@ local antidagger = {
                     eval_card(joker, {banishing_card = true, banisher = card, card = joker, cardarea = joker.area})
             end
         end
-    end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
 }
 
 local solar_dagger = {
@@ -474,7 +480,10 @@ local solar_dagger = {
                 asc = card.ability.x_asc
             }
         end
-    end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
 }
 
 local insatiable_dagger = {
@@ -530,7 +539,10 @@ local insatiable_dagger = {
                 }))
             end
         end
-    end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
 }
 
 local rusty_shredder = {
@@ -574,6 +586,9 @@ local rusty_shredder = {
             end
         end
     end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
 }
 return {
     items = {
