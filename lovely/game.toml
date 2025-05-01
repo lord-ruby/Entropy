@@ -43,7 +43,7 @@ if G.GAME.modifiers.ccd2 then
         else
             key = pseudorandom_element(G.P_CENTERS, pseudoseed("segfault"))
             local tries = 0
-            while key.set ~= ptype or key.no_doe do
+            while key.set ~= ptype or key.no_doe or G.GAME.banned_keys[key.key] do --i love when my key has keys
                 key = pseudorandom_element(G.P_CENTERS, pseudoseed("segfault"))
                 tries = tries + 1
             end

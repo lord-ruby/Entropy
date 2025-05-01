@@ -732,7 +732,7 @@ local entropy = {
                 enhancement_type = pseudorandom_element({"Tarot","Planet","Spectral","Code","RPlanet","RSpectral","RCode"}, pseudoseed("entropy"))
             end
             local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("entropy")).key
-            while G.P_CENTERS[enhancement].no_doe do
+            while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
                 enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("entropy")).key
             end
             local seal = pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("entropy")).key
@@ -1098,7 +1098,7 @@ local fusion = {
                 card:set_ability(G.P_CENTERS.c_base)
             else
                 local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("fusion")).key
-                while G.P_CENTERS[enhancement].no_doe or (G.P_CENTERS[enhancement].soul_rate and pseudorandom("fusion") > 0.02) do
+                while G.P_CENTERS[enhancement].no_doe or (G.P_CENTERS[enhancement].soul_rate and pseudorandom("fusion") > 0.02) or G.GAME.banned_keys[enhancement] do
                     enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("fusion")).key
                 end
                 card:set_ability(G.P_CENTERS[enhancement])
