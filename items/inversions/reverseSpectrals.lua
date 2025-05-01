@@ -19,7 +19,7 @@ local changeling = {
     order = -100 + 0,
     key = "changeling",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -69,7 +69,7 @@ local rend = {
     order = -100 + 1,
     key = "rend",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -101,7 +101,7 @@ local inscribe = {
     order = -100 + 2,
     key = "inscribe",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -147,7 +147,7 @@ local siphon = {
     order = -100 + 4,
     key = "siphon",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -195,7 +195,7 @@ local ward = {
     order = -100 + 5,
     key = "ward",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -246,7 +246,7 @@ local disavow = {
     order = -100 + 6,
     key = "disavow",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -321,7 +321,7 @@ local pact = {
     order = -100 + 7,
     key = "pact",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -490,7 +490,7 @@ local ichor = {
     order = -100 + 8,
     key = "ichor",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -538,7 +538,7 @@ local rejuvenate = {
     order = -100 + 9,
     key = "rejuvenate",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -606,7 +606,7 @@ local crypt = {
     order = -100 + 10,
     key = "crypt",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -656,7 +656,7 @@ local charm = {
     order = -100 + 11,
     key = "charm",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -716,7 +716,7 @@ local entropy = {
     order = -100 + 14,
     key = "entropy",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -764,7 +764,7 @@ local fervour = {
     order = -100 + 15,
     key = "fervour",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -817,7 +817,7 @@ local quasar = {
     order = -100 + 16,
     key = "quasar",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -908,7 +908,7 @@ local weld = {
     order = -100 + 17,
     key = "weld",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1020,7 +1020,7 @@ local cleanse = {
     order = -100 + 18,
     key = "cleanse",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1068,7 +1068,7 @@ local fusion = {
     order = -100 + 19,
     key = "fusion",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1127,7 +1127,7 @@ local substitute = {
     order = -100 + 20,
     key = "substitute",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1197,7 +1197,7 @@ local evocation = {
     order = -100 + 21,
     key = "evocation",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1256,7 +1256,7 @@ local mimic = {
     order = -100 + 22,
     key = "mimic",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1320,7 +1320,7 @@ local superego = {
     order = -100 + 23,
     key = "superego",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1401,7 +1401,7 @@ local engulf = {
     order = -100 + 26,
     key = "engulf",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1437,7 +1437,7 @@ local offering = {
     order = -100 + 27,
     key = "offering",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1484,7 +1484,7 @@ local entomb = {
     order = -100 + 28,
     key = "entomb",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1534,7 +1534,7 @@ local conduct = {
     order = -100 + 29,
     key = "conduct",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
 	pos = {x=10,y=6},
@@ -1582,7 +1582,7 @@ local pulsar = {
     order = -100 + 30,
     key = "pulsar",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1661,7 +1661,7 @@ local beyond = {
     order = -100 + 31,
     key = "beyond",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1687,6 +1687,7 @@ local beyond = {
                                 check_for_unlock({ type = "what_have_you_done" })
                             end
                             v:start_dissolve(nil, _first_dissolve)
+                            SMODS.calculate_context({banishing_card = true, banisher = card, card = v})
                         end
                     end
                     return true
@@ -1731,7 +1732,7 @@ local regenerate = {
     order = -100 + 32,
     key = "regenerate",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {

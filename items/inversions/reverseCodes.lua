@@ -19,7 +19,7 @@ local memory_leak = {
     order = 1,
     key = "memory_leak",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -48,7 +48,7 @@ local root_kit = {
     order = 2,
     key = "root_kit",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -85,7 +85,7 @@ local bootstrap = {
     order = 3,
     key = "bootstrap",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -143,7 +143,7 @@ local quickload = {
     order = 4,
     key = "quickload",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     pos = {x=3,y=1},
@@ -197,7 +197,7 @@ local break_card = {
     order = 5,
     key = "break",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -252,7 +252,7 @@ local new = {
     order = 6,
     key = "new",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -309,7 +309,7 @@ local interference = {
     order = 7,
     key = "interference",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -340,7 +340,7 @@ local constant = {
     order = 8,
     key = "constant",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     pos = {x=2,y=2},
@@ -380,7 +380,7 @@ local pseudorandom = {
     order = 9,
     key = "pseudorandom",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     pos = {x=3,y=2},
@@ -501,7 +501,7 @@ local inherit = {
     order = 10,
     key = "inherit",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     pos = {x=4,y=2},
@@ -766,7 +766,7 @@ local fork = {
     order = 11,
     key = "fork",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -841,7 +841,7 @@ local push = {
     order = 12,
     key = "push",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1009,7 +1009,7 @@ local increment = {
     order = 13,
     key = "increment",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1054,7 +1054,7 @@ local decrement = {
     order = 14,
     key = "decrement",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1116,7 +1116,7 @@ local invariant = {
     order = 15,
     key = "invariant",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1272,7 +1272,7 @@ local cookies = {
     order = 17,
     key = "cookies",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1305,7 +1305,7 @@ local segfault = {
     order = 18,
     key = "segfault",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1357,7 +1357,7 @@ local sudo = {
     order = 19,
     key = "sudo",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1572,7 +1572,7 @@ local overflow = {
     order = 20,
     key = "overflow",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1607,7 +1607,7 @@ local refactor = {
     order = 21,
     key = "refactor",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -1671,7 +1671,7 @@ local hotfix = {
     order = 22,
     key = "hotfix",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     pos = {x=1,y=5},
@@ -1757,7 +1757,7 @@ local ctrl_x = {
     order = 23,
     key = "ctrl_x",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     pos = {x=2,y=5},
@@ -1835,7 +1835,7 @@ local multithread = {
     order = 24,
     key = "multithread",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     config = {
@@ -2113,7 +2113,7 @@ local autostart = {
     order = 25,
     key = "autostart",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     pos = {x=4,y=5},
@@ -2159,7 +2159,7 @@ local local_card = {
     order = 26,
     key = "local",
     set = "RCode",
-    unlocked = true,
+    
 
     atlas = "miscc",
     pos = {x=0,y=6},

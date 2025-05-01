@@ -13,7 +13,7 @@ SMODS.Atlas { key = 'rtarot', path = 'reverse_tarots.png', px = 71, py = 95 }
 SMODS.Consumable({
     key = "fool",
     set = "RTarot",
-    unlocked = true,
+    
 
     atlas = "rtarot",
     config = {

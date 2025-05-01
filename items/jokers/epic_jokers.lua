@@ -7,7 +7,7 @@ local burnt_m = {
     },
     rarity = "cry_epic",
     cost = 10,
-    unlocked = true,
+    
     dependencies = {
         items = {
             "set_cry_epic"
@@ -87,7 +87,7 @@ local chaos= {
     key = "chaos",
     rarity = "cry_epic",
     cost = 15,
-    unlocked = true,
+    
 
     eternal_compat = true,
     pos = { x = 0, y = 1 },
@@ -105,7 +105,7 @@ local dni = {
     },
     rarity = "cry_epic",
     cost = 10,
-    unlocked = true,
+    
     dependencies = {
         items = {
             "set_cry_epic"
@@ -151,7 +151,7 @@ local trapezium = {
     },
     rarity = "cry_epic",
     cost = 10,
-    unlocked = true,
+    
     dependencies = {
         items = {
             "set_cry_epic"
@@ -228,7 +228,7 @@ local metanoia = {
     key = "metanoia",
     rarity = "cry_epic",
     cost = 10,
-    unlocked = true,
+    
     dependencies = {
         items = {
             "set_cry_epic"
@@ -238,7 +238,6 @@ local metanoia = {
     eternal_compat = true,
     pos = { x = 5, y = 0 },
     atlas = "jokers",
-    demicoloncompat = true,
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue+1]=G.P_CENTERS.m_entr_flesh
     end,

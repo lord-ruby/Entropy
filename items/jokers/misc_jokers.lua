@@ -7,7 +7,7 @@ local surreal = {
     },
     rarity = 1,
     cost = 7,
-    unlocked = true,
+    
     dependencies = {
         items = {
             "set_entr_misc_jokers"
@@ -46,7 +46,7 @@ local tesseract = {
     },
     rarity = 1,
     cost = 3,
-    unlocked = true,
+    
     pools = { ["Meme"] = true },
     blueprint_compat = true,
     eternal_compat = true,
@@ -101,7 +101,7 @@ local solarflare = {
     },
     rarity = 2,
     cost = 2,
-    unlocked = true,
+    
     dependencies = {
         items = {
             "set_entr_misc_jokers"
@@ -200,7 +200,7 @@ local strawberry_pie = {
     },
     rarity = 3,
     cost = 10,
-    unlocked = true,
+    
     dependencies = {
         items = {
             "set_entr_misc_jokers"
@@ -244,7 +244,7 @@ local recursive_joker = {
     },
     rarity = 2,
     cost = 4,
-    unlocked = true,
+    
     dependencies = {
         items = {
             "set_entr_misc_jokers"
@@ -284,7 +284,7 @@ local dr_sunshine = {
     },
     rarity = 3,
     cost = 10,
-    unlocked = true,
+    
     dependencies = {
         items = {
             "set_entr_misc_jokers"
@@ -304,8 +304,8 @@ local dr_sunshine = {
         }
     end,
     calculate = function(self, card, context)
-        if context.remove_playing_cards and not context.blueprint then
-            for i, v in pairs(context.removed) do
+        if context.remove_playing_cards and not context.blueprint or context.forcetrigger then
+            for i, v in pairs(context.removed or {1}) do
                 card.ability.plus_asc = (card.ability.plus_asc or 0) + (card.ability.plus_asc_mod or 0.25)
                 card_eval_status_text(
 					card,
@@ -315,10 +315,9 @@ local dr_sunshine = {
 					nil,
 					{ message = localize("entr_ascended"), colour = G.C.GREEN }
 				)
-                local card = context.removed[i]
             end
         end
-        if context.joker_main and to_big(card.ability.plus_asc) > to_big(0) then
+        if (context.joker_main or context.forcetrigger) and to_big(card.ability.plus_asc) > to_big(0) then
             return {
                 plus_asc = card.ability.plus_asc
             }
@@ -335,7 +334,7 @@ local sunny_joker = {
     },
     rarity = 2,
     cost = 5,
-    unlocked = true,
+    
     dependencies = {
         items = {
             "set_entr_misc_jokers"
@@ -355,10 +354,71 @@ local sunny_joker = {
         }
     end,
     calculate = function(self, card, context)
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             return {
                 plus_asc = card.ability.plus_asc
             }
+        end
+    end
+}
+
+local antidagger = {
+    order = 8,
+    object_type = "Joker",
+    key = "antidagger",
+    rarity = 3,
+    cost = 8,
+    
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 6, y = 0 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    config = { extra = { odds = 6 } },
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.setting_blind then
+            local keys = {}
+            for i, v in pairs(G.GAME.banned_keys) do
+                keys[#keys+1]=i
+            end
+            if #keys > 0 then
+                local key = pseudorandom_element(keys, pseudoseed("antidagger"))
+                while not G.P_CENTERS[key] or G.P_CENTERS[key].set ~= "Joker" do
+                    key = pseudorandom_element(keys, pseudoseed("antidagger"))
+                end
+                G.GAME.banned_keys[key] = nil
+                local c = SMODS.create_card({
+                    area = G.jokers,
+                    set="Joker",
+                    key = key
+                })
+                c:add_to_deck()
+                G.jokers:emplace(c)
+            end
+            if pseudorandom("antidagger")
+            < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
+                / card.ability.extra.odds then
+                    local joker = pseudorandom_element(G.jokers.cards, pseudoseed("antidagger"))
+                    G.GAME.banned_keys["j_entr_antidagger"] = true
+                    G.GAME.banned_keys[joker.config.center.key] = true
+                    joker:start_dissolve()
+                    card:start_dissolve()
+                    play_sound("slice1", 0.96 + math.random() * 0.08)
+                    eval_card(joker, {banishing_card = true, banisher = card, card = joker})
+            end
         end
     end
 }
@@ -370,6 +430,7 @@ return {
         strawberry_pie,
         recursive_joker,
         dr_sunshine,
+        antidagger,
         sunny_joker
     }
 }

@@ -7,7 +7,7 @@ local define = {
     object_type = "Consumable",
     key = "define",
     set = "RSpectral",
-    unlocked = true,
+    
 
     atlas = "miscc",
     order=34,

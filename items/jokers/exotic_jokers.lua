@@ -6,7 +6,7 @@ local stillicidium = {
     cost = 50,
     atlas = "exotic_jokers",
     soul_pos = { x = 2, y = 0, extra = { x = 1, y = 0 } },
-    unlocked = true,
+    
     dependencies = {
         items = {
             "set_cry_exotic"

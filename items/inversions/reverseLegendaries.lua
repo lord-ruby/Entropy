@@ -14,7 +14,7 @@ local perkeo = {
     },
     rarity = "entr_reverse_legendary",
     cost = 20,
-    unlocked = true,
+    
 
     blueprint_compat = true,
     eternal_compat = true,
@@ -92,7 +92,7 @@ local chicot = {
     },
     rarity = "entr_reverse_legendary",
     cost = 20,
-    unlocked = true,
+    
 
     blueprint_compat = true,
     eternal_compat = true,
@@ -179,7 +179,7 @@ local yorick = {
     },
     rarity = "entr_reverse_legendary",
     cost = 20,
-    unlocked = true,
+    
 
     blueprint_compat = true,
     eternal_compat = true,
@@ -276,7 +276,7 @@ local trib = {
     key = "triboulet",
     rarity = "entr_reverse_legendary",
     cost = 20,
-    unlocked = true,
+    
     dependencies = {
         items = {
           "set_entr_inversions"
@@ -343,7 +343,7 @@ local canio = {
     key = "canio",
     rarity = "entr_reverse_legendary",
     cost = 20,
-    unlocked = true,
+    
 
     blueprint_compat = true,
     eternal_compat = true,
@@ -420,7 +420,7 @@ local membership = {
     },
     rarity = "entr_reverse_legendary",
     cost = 20,
-    unlocked = true,
+    
 
     blueprint_compat = true,
     eternal_compat = true,

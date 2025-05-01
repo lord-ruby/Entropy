@@ -72,7 +72,7 @@ for i, v in pairs(FlipsideInversions) do Entropy.FlipsideInversions[i] = v end
 local flipside = {
     key = "flipside",
     set = "Spectral",
-    unlocked = true,
+    
     order=35,
     object_type = "Consumable",
     atlas = "miscc",
@@ -961,7 +961,7 @@ end
 local destiny = {
     key = "destiny",
     set = "Spectral",
-    unlocked = true,
+    
     order = 36,
     object_type = "Consumable",
     atlas = "miscc",
@@ -1004,7 +1004,7 @@ local destiny = {
 local shatter = {
     key = "shatter",
     set = "Spectral",
-    unlocked = true,
+    
     order = 37,
     object_type = "Consumable",
     config = {limit = 2},

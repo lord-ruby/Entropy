@@ -12,7 +12,7 @@ local epitachyno = {
     },
     rarity = "entr_hyper_exotic",
     cost = 150,
-    unlocked = true,
+    
     dependencies = {
         items = {
             "set_entr_entropic"
@@ -76,7 +76,7 @@ local helios = {
     key = "helios",
     rarity = "entr_hyper_exotic",
     cost = 150,
-    unlocked = true,
+    
 
     blueprint_compat = true,
     eternal_compat = true,
@@ -187,7 +187,7 @@ local xekanos = {
     key = "xekanos",
     rarity = "entr_hyper_exotic",
     cost = 150,
-    unlocked = true,
+    
 
     blueprint_compat = true,
     eternal_compat = true,
@@ -230,7 +230,7 @@ local ieros = {
     key = "ieros",
     rarity = "entr_hyper_exotic",
     cost = 150,
-    unlocked = true,
+    
 
     blueprint_compat = true,
     eternal_compat = true,
@@ -375,7 +375,7 @@ local dekatria = {
     key = "dekatria",
     rarity = "entr_hyper_exotic",
     cost = 150,
-    unlocked = true,
+    
 
     blueprint_compat = true,
     eternal_compat = true,
@@ -467,7 +467,7 @@ local anaptyxi = {
     key = "anaptyxi",
     rarity = "entr_hyper_exotic",
     cost = 150,
-    unlocked = true,
+    
     name = "cry-Scalae",
     blueprint_compat = true,
     eternal_compat = true,
@@ -582,7 +582,7 @@ local parakmi = {
     key = "parakmi",
     rarity = "entr_hyper_exotic",
     cost = 150,
-    unlocked = true,
+    
 
     blueprint_compat = true,
     eternal_compat = true,
@@ -647,7 +647,7 @@ function Entropy.RegisterBlinds()
         blinds[#blinds+1] = {
             key = "entr_"..i,
             set = "CBlind",
-            unlocked = true,
+            
             pos = {x=9999,y=9999},
             config = {
                 blind = i,
@@ -724,7 +724,7 @@ function Entropy.RegisterBlinds()
                 key = "entr_"..i,
                 set = "CBlind",
                 atlas="exotic_jokers",
-                unlocked = true,
+                
                 pos = {x=9999,y=9999},
                 config = {
                     blind = i,
@@ -969,7 +969,7 @@ local exousia = {
     key = "exousia",
     rarity = "entr_hyper_exotic",
     cost = 150,
-    unlocked = true,
+    
 
     blueprint_compat = true,
     eternal_compat = true,
@@ -1031,7 +1031,7 @@ local akyros = {
     key = "akyros",
     rarity = "entr_hyper_exotic",
     cost = 150,
-    unlocked = true,
+    
 
     blueprint_compat = true,
     eternal_compat = true,
@@ -1106,7 +1106,7 @@ local katarraktis = {
     key = "katarraktis",
     rarity = "entr_hyper_exotic",
     cost = 150,
-    unlocked = true,
+    
     eternal_compat = true,
     blueprint_compat = true,
     pos = { x = 3, y = 3 },
