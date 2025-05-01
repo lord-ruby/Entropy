@@ -426,7 +426,8 @@ local antidagger = {
         end
     end,
     entr_credits = {
-        idea = {"cassknows"}
+        idea = {"cassknows"},
+        art = {"cassknows"}
     }
 }
 

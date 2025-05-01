@@ -5,7 +5,7 @@ local i = {
     "items/inversions/reverseLegendaries", 
     "items/jokers/exotic_jokers",
     "items/jokers/entropic_jokers",
-    --"reverseTarots",
+    "items/inversions/reverseTarots",
     "items/misc/consumable",
     "items/inversions/reversePlanets",
     "items/inversions/reverseSpectrals",
@@ -495,22 +495,6 @@ local oldfunc = Game.main_menu
         px = 34,
         py = 34,
     }):register()
-
-
-
-
-local start_ref = Game.start_run
-
-function Game:start_run(args)
-    start_ref(self, args)
-    --G.GAME.RootKit = nil
-    --G.GAME.USING_BREAK = nil
-    --G.GAME.Overflow = nil
-    --G.GAME.DefineKeys = {}
-    --G.GAME.Marked = nil
-    --G.GAME.TrumpCard = nil
-    --G.GAME.Supercede = nil
-end
 
 local smcmb = SMODS.create_mod_badges
 function SMODS.create_mod_badges(obj, badges)

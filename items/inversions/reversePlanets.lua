@@ -179,7 +179,7 @@ SMODS.ConsumableType({
 	collection_rows = { 6, 6 },
 	shop_rate = 0.0,
 	loc_txt = {},
-	default = "c_entr_pluto"
+	default = "c_entr_regulus"
 })
 
 local planets = {}

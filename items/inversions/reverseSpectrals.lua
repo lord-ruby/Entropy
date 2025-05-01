@@ -6,7 +6,7 @@ SMODS.ConsumableType({
 	collection_rows = { 4, 5 },
 	shop_rate = 0.0,
 	loc_txt = {},
-	default = "c_entr_memory_leak"
+	default = "c_entr_changeling"
 })
 
 local changeling = {
