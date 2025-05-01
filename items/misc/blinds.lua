@@ -448,6 +448,7 @@ local phase4 = {
 				G.hand:change_size(1)
 			end
 		end
+		G.GAME.EEBuildup = false
 	end,
 	press_play = function(self)
 		for k, _ in pairs(Entropy.GetEEBlinds()) do
