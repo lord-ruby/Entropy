@@ -417,7 +417,7 @@ local antidagger = {
                     joker:start_dissolve()
                     card:start_dissolve()
                     play_sound("slice1", 0.96 + math.random() * 0.08)
-                    eval_card(joker, {banishing_card = true, banisher = card, card = joker})
+                    eval_card(joker, {banishing_card = true, banisher = card, card = joker, cardarea = joker.area})
             end
         end
     end
@@ -461,7 +461,7 @@ local solar_dagger = {
                         card.ability.x_asc =
                             lenient_bignum(to_big(card.ability.x_asc) + sliced_card.sell_cost * 0.1)
                         card:juice_up(0.8, 0.8)
-                        sliced_card:start_dissolve({ HEX("57ecab") }, nil, 1.6)
+                        sliced_card:start_dissolve({ HEX("ff9000") }, nil, 1.6)
                         play_sound("slice1", 0.96 + math.random() * 0.08)
                         return true
                     end,
@@ -475,6 +475,60 @@ local solar_dagger = {
         end
     end
 }
+
+local insatiable_dagger = {
+    order = 10,
+    object_type = "Joker",
+    key = "insatiable_dagger",
+    rarity = 3,
+    cost = 8,
+    
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 7, y = 0 },
+    atlas = "jokers",
+    calculate = function(self, card, context)
+        if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
+            local check
+            for i, v in pairs(G.jokers.cards) do
+                if v == card and G.jokers.cards[i-1] then check = i-1 end
+            end
+            if check then
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        local sliced_card = G.jokers.cards[#G.jokers.cards]
+                        card:juice_up(0.8, 0.8)
+                        sliced_card:start_dissolve({ HEX("a800ff") }, nil, 1.6)
+                        play_sound("slice1", 0.96 + math.random() * 0.08)
+                        local check2
+                        if not Card.no(G.jokers.cards[i-1], "immutable", true) then
+                            Cryptid.with_deck_effects(G.jokers.cards[i-1], function(card)
+                                Cryptid.misprintize(G.jokers.cards[i-1], { min = sliced_card.sell_cost * 0.05, max = sliced_card.sell_cost * 0.05 }, nil, true)
+                            end)
+                            check2 = true
+                        end
+                        if check2 then
+                            card_eval_status_text(
+                                G.jokers.cards[i-1],
+                                "extra",
+                                nil,
+                                nil,
+                                nil,
+                                { message = localize("k_upgrade_ex"), colour = G.C.GREEN }
+                            )
+                        end
+                        return true
+                    end,
+                }))
+            end
+        end
+    end
+}
 return {
     items = {
         surreal,
@@ -485,6 +539,7 @@ return {
         dr_sunshine,
         antidagger,
         solar_dagger,
+        insatiable_dagger,
         sunny_joker
     }
 }

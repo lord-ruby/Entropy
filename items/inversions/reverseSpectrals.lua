@@ -1687,7 +1687,7 @@ local beyond = {
                                 check_for_unlock({ type = "what_have_you_done" })
                             end
                             v:start_dissolve(nil, _first_dissolve)
-                            SMODS.calculate_context({banishing_card = true, banisher = card, card = v})
+                            eval_card(v, {banishing_card = true, banisher = card, card = v, cardarea = v.area})
                         end
                     end
                     return true
