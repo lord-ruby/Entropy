@@ -395,14 +395,9 @@ local ambisinister = {
 	pos = { x = 5, y = 0 },
 	atlas = "decks",
   apply = function()
-    G.E_MANAGER:add_event(Event({
-      trigger = 'after',
-      func = function()
-        G.jokers.config.card_limit = G.jokers.config.card_limit + 3
-        G.hand.config.highlight_limit = G.jokers.config.card_limit - #G.jokers.cards
-        return true
-      end
-    }))
+    G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots + 3
+    Entropy.last_csl = nil
+    Entropy.last_slots = nil
   end
 }
 local ref = pseudorandom
@@ -514,6 +509,12 @@ if CardSleeves then
     key = "ambisinister",
     atlas = "sleeves",
     pos = { x = 1, y = 0 },
+    config = {joker_slot=3},
+    apply = function()
+      G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots + 3
+      Entropy.last_csl = nil
+      Entropy.last_slots = nil
+    end
   }
 end
 

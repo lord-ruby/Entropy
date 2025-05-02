@@ -376,7 +376,7 @@ G.FUNCS.buy_deckorsleeve_from_shop = function(e)
     ease_dollars(-c1.cost)
     c1.area:remove_card(c1)
     if c1.config.center.apply then
-        c1.config.center:apply()
+        c1.config.center:apply(false)
     end
     for i, v in pairs(c1.config.center.config or {}) do
         if i == "hands" then 
@@ -452,7 +452,7 @@ G.FUNCS.buy_deckorsleeve = function(e)
     --c1:open()
     c1.area:remove_card(c1)
     if c1.config.center.apply then
-        c1.config.center:apply()
+        c1.config.center:apply(false)
     end
     for i, v in pairs(c1.config.center.config or {}) do
         if i == "hands" then 

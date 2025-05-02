@@ -293,8 +293,8 @@ local anim_timer2 = 0
 local entr_define_dt = 0
 local entr_antireal_dt = 0
 local cdt = 0
-local last_csl
-local last_slots
+Entropy.last_csl = nil
+Entropy.last_slots = nil
 function Game:update(dt)
     upd(self, dt)
     entr_define_dt = entr_define_dt + dt
@@ -320,19 +320,24 @@ function Game:update(dt)
 	end
     cdt = cdt + dt
     if Entropy.DeckOrSleeve("ambisinister") and cdt > 0.05 and G.jokers then
-        if not last_csl then last_csl = G.hand.config.highlighted_limit end
-        if not last_slots then last_slots = (G.jokers.config.card_limit - #G.jokers.cards) end
-        local slots_diff = (G.jokers.config.card_limit - #G.jokers.cards) - last_slots
-        local csl_diff = (G.hand.config.highlighted_limit) - last_csl
+        if not Entropy.last_csl then Entropy.last_csl = G.hand.config.highlighted_limit end
+        if not Entropy.last_slots then Entropy.last_slots = (G.jokers.config.card_limit - #G.jokers.cards) end
+        local slots_diff = (G.jokers.config.card_limit - #G.jokers.cards) - Entropy.last_slots
+        local csl_diff = (G.hand.config.highlighted_limit) - Entropy.last_csl
         if csl_diff ~= 0 then
             G.jokers.config.card_limit = G.jokers.config.card_limit + csl_diff
         end
         if slots_diff ~= 0 then
             G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + slots_diff
         end
-        last_slots = G.jokers.config.card_limit - #G.jokers.cards
+        Entropy.last_slots = G.jokers.config.card_limit - #G.jokers.cards
         G.hand.config.highlighted_limit = (G.jokers.config.card_limit - #G.jokers.cards)
-        last_csl = G.hand.config.highlighted_limit
+        Entropy.last_csl = G.hand.config.highlighted_limit
+    end
+    if not Entropy.DeckOrSleeve("ambisinister") and cdt > 0.05 then
+        Entropy.last_csl = nil
+        Entropy.last_slots = nil
+        cdt = 0
     end
 end
 
