@@ -395,7 +395,16 @@ local ambisinister = {
 	key = "ambisinister",
 	pos = { x = 5, y = 0 },
 	atlas = "decks",
-  config = { joker_slot = 3 },
+  apply = function()
+    G.E_MANAGER:add_event(Event({
+      trigger = 'after',
+      func = function()
+        G.jokers.config.card_limit = G.jokers.config.card_limit + 3
+        G.hand.config.highlight_limit = G.jokers.config.card_limit - #G.jokers.cards
+        return true
+      end
+    }))
+  end
 }
 local ref = pseudorandom
 function pseudorandom(key,min,max)

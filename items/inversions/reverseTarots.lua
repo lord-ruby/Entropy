@@ -59,7 +59,7 @@ local master = {
     loc_vars = function(self, q, card)
         card.ability.last_inversion = G.GAME.last_inversion and G.localization.descriptions[G.GAME.last_inversion.set][G.GAME.last_inversion.key].name or "None"
         return {
-            main_end = (card.area and card.area == G.consumeables) and {
+            main_end = (card.area and (card.area == G.consumeables or card.area == G.pack_cards or card.area == G.hand)) and {
 				{
 					n = G.UIT.C,
 					config = { align = "bm", minh = 0.4 },

@@ -185,9 +185,9 @@ local sapphire = {
         if context.main_scoring and context.cardarea == G.play then
             local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
             G.FUNCS.get_poker_hand_info(G.play.cards)
-            local pkey = "pluto"
+            local pkey = "regulus"
             for i, v in pairs(Entropy.ReversePlanets) do
-                if v.name == text then pkey = v.key end
+                if v.name == text then pkey = v.new_key end
             end
             local key = "c_entr_"..pkey
             if #G.consumeables.cards < G.consumeables.config.card_limit then
@@ -312,9 +312,9 @@ local cerulean = {
         if context.main_scoring and context.cardarea == G.play then
             local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
             G.FUNCS.get_poker_hand_info(G.play.cards)
-            local pkey = "pluto"
+            local pkey = "regulus"
             for i, v in pairs(Entropy.ReversePlanets) do
-                if v.name == text then pkey = v.key end
+                if v.name == text then pkey = v.new_key end
             end
             local key = "c_entr_"..pkey
             for i = 1, 3 do
