@@ -1762,6 +1762,72 @@ local decs = {
 		}
 	},
 	misc = {
+		tutorial = {
+			cry_intro_1 = {
+				"Hello, I'm {C:attention}Joseph J. Joker{}!",
+				"Welcome to {C:entr_hyper_exotic,E:1}Entropy{}!",
+			},
+			cry_intro_2 = {
+				"It looks like you've never",
+				"played {C:entr_hyper_exotic,E:1}Entropy{} on this profile before.",
+				"Let me show you how things work!",
+			},
+			cry_intro_3 = {
+				"*grows hands*",
+			},
+			cry_intro_4 = {
+				"It's hard to summarize this mod in",
+				"a few sentences, but what I will say",
+				"is that you're in for an {C:entr_hyper_exotic,E:1}even wilder{} ride!",
+				"This isn't the same {C:attention}Cryptid{} you've played before...",
+			},
+			cry_intro_5 = {
+				"As you might be able to tell by these",
+				"{C:entr_hyper_exotic}gamesets{}, I like the letter {C:attention}M{}.",
+				"Select a gameset for me to explain...",
+				"{s:0.8}Note: Gameset balancing is a heavy work in progress.",
+				"{s:0.8}Expect things to change frequently!",
+			},
+			cry_modest_1 = {
+				"Seeking an experience close to vanilla?",
+				"Then the {C:entr_hyper_exotic}Modest{} gameset is for you!",
+			},
+			cry_modest_2 = {
+				"Still, be careful of the gimmicks hiding",
+				"throughout Entropy! You never know",
+				"what you'll find on the next round...",
+			},
+			cry_mainline_1 = {
+				"Wanna {E:1,C:attention}break{} the game? Good news, you can",
+				"do it without going off the deep end!",
+			},
+			cry_mainline_2 = {
+				"Things are still nuts here, but you'll have",
+				"the chance to experience the {C:entr_hyper_exotic}progression{}",
+				"system. Just don't get too comfortable...",
+			},
+			cry_mainline_3 = {
+				"Because you'll definitely be stronger, but",
+				"I've crafted some {E:1,C:dark_edition}bosses{} that",
+				"might make you regret selecting this {C:entr_hyper_exotic}gameset{}...",
+			},
+			cry_madness_1 = {
+				"You lookin' to completely {C:red,E:1}annihilate{} your hard drive?",
+				"Oh, how fun! The {C:entr_hyper_exotic}Madness{} gameset says",
+				"'Balance? {E:1,C:red}WHAT'S THAT!?{}'",
+			},
+			cry_madness_2 = {
+				"I've spent weeks of sleepless, {C:green}Monster Energy{}-fueled",
+				"nights working to ensure this gameset is",
+				"{C:entr_hyper_exotic}PERFECTLY BALANCED{}, just for you!",
+			},
+			cry_madness_3 = {
+				"You'll start with everything unlocked, so you",
+				"can unleash the {C:red,E:1}full power{} of Entropy!",
+				"Just be careful not to {C:attention,E:1}crash{} the game,",
+				"as that'll probably happen before you lose...",
+			},
+		},
 		achievement_names = {
 			ach_entr_unstable_concoction = "Unstable Concoction"
 		},

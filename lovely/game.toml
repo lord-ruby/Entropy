@@ -330,3 +330,11 @@ payload = '''
           tab_definition_function = G.GAME.entr_bought_decks and #G.GAME.entr_bought_decks > 0 and G.UIDEF.bought_decks,
         },'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = 'Cryptid.profile_prefix = "M"'
+position = "after"
+payload = 'Cryptid.profile_prefix = Cryptid.profile_prefix == "M" and "E" or Cryptid.profile_prefix.."E"'
+match_indent = true
