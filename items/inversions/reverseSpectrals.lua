@@ -346,11 +346,6 @@ local pact = {
                     v2.ability.link = linktxt
                 end
             end
-            for i, v2 in pairs(G.playing_cards) do
-                if v2 ~= v and v.ability.link and v.ability.link == v2.ability.link then
-                    v2.ability.link = linktxt
-                end
-            end
             v.ability.link = linktxt
             v:juice_up()
         end
@@ -410,8 +405,8 @@ function Card:set_ability(center, initial, delay_sprites)
         if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.link == self.ability.link then 
             set_abilityref(v,center, initial, delay_sprites);v.ability.link=link 
         end end end
-        if G.playing_cards then for i, v in pairs(G.playing_cards) do if v.ability.link == self.ability.link then 
-            set_abilityref(v, new);v.ability.link=link 
+        if G.discard and G.discard.cards then for i, v in pairs(G.discard.cards) do if v.ability.link == self.ability.link then 
+            set_abilityref(v,center, initial, delay_sprites);v.ability.link=link 
         end end end
     end
 end
@@ -422,7 +417,7 @@ function Card:set_edition(center, initial, delay_sprites)
     if self.ability.link then
     if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.link == self.ability.link then set_editionref(v,center, initial, delay_sprites) end end end
     if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.link == self.ability.link then set_editionref(v, center, initial, delay_sprites) end end end
-    if G.playing_cards then for i, v in pairs(G.playing_cards) do if v.ability.link == self.ability.link then set_editionref(v, center, initial, delay_sprites) end end end    
+    if G.discard then for i, v in pairs(G.discard.cards) do if v.ability.link == self.ability.link then set_editionref(v, center, initial, delay_sprites) end end end    
     end
 end
 
@@ -433,7 +428,7 @@ function Card:change_suit(new)
     if self.ability.link and new ~= old then
     if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.link == self.ability.link then set_suitref(v, new) end end end
     if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.link == self.ability.link then set_suitref(v, new) end end end
-    if G.playing_cards then for i, v in pairs(G.playing_cards) do if v.ability.link == self.ability.link then set_suitref(v, new) end end end
+    if G.discard then for i, v in pairs(G.discard.cards) do if v.ability.link == self.ability.link then set_suitref(v, new) end end end
     end
 end
 
@@ -443,7 +438,7 @@ function Card:set_base(card, initial)
     if self.ability.link then
         if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.link == self.ability.link then set_baseref(v, card, initial) end end end
         if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.link == self.ability.link then set_baseref(v, card, initial) end end end
-        if G.playing_cards then for i, v in pairs(G.playing_cards) do if v.ability.link == self.ability.link then set_baseref(v, card, initial) end end end
+        if G.discard and G.discard.cards then for i, v in pairs(G.discard.cards) do if v.ability.link == self.ability.link then set_baseref(v, card, initial) end end end
     end
 end
 
@@ -453,7 +448,7 @@ function Card:set_seal(card, initial)
     if self.ability.link then
         if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.link == self.ability.link then set_sealref(v, card, initial) end end end
         if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.link == self.ability.link then set_sealref(v, card, initial) end end end
-        if G.playing_cards then for i, v in pairs(G.playing_cards) do if v.ability.link == self.ability.link then set_sealref(v, card, initial) end end end
+        if G.discard and G.discard.cards then for i, v in pairs(G.discard.cards) do if v.ability.link == self.ability.link then set_sealref(v, card, initial) end end end
     end
 end
 
@@ -465,7 +460,7 @@ function SMODS.change_base(card, suit, rank)
     if link then
         if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.link == card.ability.link then change_baseref(v, suit, rank) end end end
         if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.link == card.ability.link then change_baseref(v, suit, rank) end end end
-        if G.playing_cards then for i, v in pairs(G.playing_cards) do if v.ability.link == card.ability.link then change_baseref(v, suit, rank) end end end
+        if G.discard then for i, v in pairs(G.discard.cards) do if v.ability.link == card.ability.link then change_baseref(v, suit, rank) end end end
     end
     return card2
 end
@@ -476,7 +471,7 @@ function Card:start_dissolve(...)
     if self.ability.link then
         if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.link == self.ability.link then start_dissolveref(v,...) end end end
         if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.link == self.ability.link then start_dissolveref(v,...) end end end
-        if G.playing_cards then for i, v in pairs(G.playing_cards) do if v.ability.link == self.ability.link then start_dissolveref(v,...) end end end
+        if G.discard and G.discard.cards then for i, v in pairs(G.discard.cards) do if v.ability.link == self.ability.link then start_dissolveref(v,...) end end end
     end
 end
 

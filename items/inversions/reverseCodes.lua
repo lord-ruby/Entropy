@@ -333,7 +333,7 @@ local constant = {
     atlas = "miscc",
     pos = {x=2,y=2},
     use = function(self, card, area, copier)
-        for i, v in pairs(G.playing_cards) do
+        for i, v in pairs(G.discard.cards) do
             if v.base.id == G.hand.highlighted[1].base.id then
                 copy_card(G.hand.highlighted[1],v)
             end
@@ -630,7 +630,7 @@ G.FUNCS.inherit_apply = function()
     if enh_suffix and base_enh ~= "c_base" then
         G.PREVIOUS_ENTERED_ENH = G.ENTERED_ENH
         G.GAME.USING_CODE = false
-        Entropy.ChangeEnhancements({G.playing_cards, G.deck, G.hand}, enh_suffix, base_enh, true)
+        Entropy.ChangeEnhancements({G.discard, G.deck, G.hand}, enh_suffix, base_enh, true)
         G.CHOOSE_ENH:remove()
     end
 end
