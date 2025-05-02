@@ -408,9 +408,9 @@ local decs = {
 			j_entr_chocolate_egg = {
 				name = "Chocolate Egg",
 				text = {
-					"Create a random {C:green}Uncommon{} Joker",
+					"Create a random {C:red}Rare{} Joker",
 					"when this joker is destroyed",
-					"create a random {C:red}Rare{} Joker instead",
+					"create a random {C:cry_epic}Epic{} Joker instead",
 					"when this Joker is {C:red}banished{}"
 				}
 			},

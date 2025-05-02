@@ -614,7 +614,7 @@ local chocolate_egg = {
     calculate = function(self, card, context)
         if context.banishing_card and context.area == G.jokers and G.jokers then
             card.ability.no_destroy = true
-            local c = create_card("Joker", G.jokers, nil, "Rare")
+            local c = create_card("Joker", G.jokers, nil, "cry_epic")
             c:add_to_deck()
             G.jokers:emplace(c)
         end
