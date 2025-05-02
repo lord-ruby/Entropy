@@ -381,11 +381,9 @@ local pseudorandom = {
             ["shop_booster"]=true,
             ["shop_vouchers"]=true
         }
-        for i, v in pairs(G) do
-            if type(v) == "table" and v.cards and allowed[i] then
-                for ind, card in pairs(v.cards) do
-                    Entropy.ApplySticker(card, "entr_pseudorandom")
-                end
+        for i, v in pairs(allowed) do
+            for ind, card in pairs(G[i].cards) do
+                Entropy.ApplySticker(card, "entr_pseudorandom")
             end
         end
     end,
@@ -2184,7 +2182,7 @@ local DefineBlacklist = {
 }
 for i, v in pairs(DefineBlacklist) do Entropy.DefineBlacklist[i] = v end
 function GetSelectedCard()
-    for i, v in pairs(G) do
+    for i, v in pairs({G.consumeables, G.jokers, G.pack_cards, G.hand}) do
         if type(v) == "table" and v.cards and v.highlighted then
             if #v.highlighted > 0 then
                 for j, c in pairs(v.highlighted) do
@@ -2205,8 +2203,8 @@ function GetSelectedCard()
 end
 function GetSelectedCards()
     local total = 0
-    for i, v in pairs(G) do
-        if type(v) == "table" and v.cards and v.highlighted then
+    for i, v in pairs({G.jokers, G.consumeables, G.pack_cards, G.hand}) do
+        if v.highlighted then
             total = total + #v.highlighted
         end
     end

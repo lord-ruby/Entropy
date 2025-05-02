@@ -1310,7 +1310,7 @@ local decs = {
 				text = {
 					"Apply the {C:attention}previous{} Edition",
 					"to adjacent cards of 1 selected card",
-					"consumable",
+					"or consumable",
 					"{C:inactive}(Currently: #1#){}"
 				}
 			},
