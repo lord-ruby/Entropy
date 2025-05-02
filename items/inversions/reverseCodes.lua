@@ -973,7 +973,7 @@ function end_round()
                         if card.area ~= G.hand and card.area ~= G.play and card.area ~= G.jokers and card.area ~= G.consumeables then card.states.visible = false end
                         card:remove_from_deck()
                         card:start_dissolve()
-                        remove_temp[#remove_temp+1]=card
+                        if card.ability.temporary then remove_temp[#remove_temp+1]=card end
                     end
                     if card.ability.superego then
                         card.ability.superego_copies = (card.ability.superego_copies or 0) + 0.5
