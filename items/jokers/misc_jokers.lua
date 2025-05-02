@@ -522,7 +522,7 @@ local insatiable_dagger = {
                         local check2
                         if not Card.no(G.jokers.cards[check], "immutable", true) then
                             Cryptid.with_deck_effects(G.jokers.cards[check], function(card)
-                                Cryptid.misprintize(G.jokers.cards[check], { min = sliced_card.sell_cost * 0.01 + 1, max = sliced_card.sell_cost * 0.01 + 1 }, nil, true)
+                                Cryptid.misprintize(G.jokers.cards[check], { min = sliced_card.sell_cost * 0.05 + 1, max = sliced_card.sell_cost * 0.05 + 1 }, nil, true)
                             end)
                             check2 = true
                         end

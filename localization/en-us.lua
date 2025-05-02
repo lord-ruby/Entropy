@@ -393,7 +393,7 @@ local decs = {
 				text = {
 					"When {C:attention}Blind{} is selected",
 					"banish rightmost Joker",
-					"Joker to the left gains {C:attention}1%{}",
+					"Joker to the left gains {C:attention}5%{}",
 					"of its sell value as {C:purple}xValues{}"
 				}
 			},
