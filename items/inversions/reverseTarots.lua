@@ -27,11 +27,11 @@ SMODS.ConsumableType({
 -- 16 - Tower -     Village
 -- 17 - Star -     Ocean
 -- 18 - Moon -     Forest
--- 19 - Sun -     Mountain
+-- 19 - Sun -     Mountain --cassknows & lfmoth
 -- 20 - Judgement -     Forgiveness
 -- 21 - World -     Tent
 -- 23 - Eclipse -     Noon (Zenith) [Penumbra] {Umbra} <Bra> 'Shadow'
--- 29 - Seraph -     Imp
+-- 29 - Seraph -     Imp --cassknows & lfmoth
 -- 29 - Instability -     Equality
 -- 28 - Blessing -     Prophecy
 -- 27 - Automaton -     Mallet

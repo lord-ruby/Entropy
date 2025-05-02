@@ -1912,7 +1912,6 @@ local decs = {
 			ph_definitions = "No redefinitions this run", 
 			ph_leftright = "The left card always converts to the right card",
 			b_definitions = "Definitions",
-			k_akyrs_blind_difficult_zenith = "Zenith Blind",
 			entr_ascended = "Ascended!"
 		},
 		v_dictionary = {
@@ -1961,8 +1960,7 @@ for i, v in pairs(decs.descriptions.Blind) do
 	CBlind["c_entr_"..i] = {
 		name=v.name.." Token",
 		text={
-			--text,
-			{"Use to change the upcoming Blind"},
+			"Use to change the upcoming Blind",
 		}
 	}
 end
@@ -1972,8 +1970,7 @@ for i, v in pairs(G.localization.descriptions.Blind) do
 	CBlind["c_entr_"..i] = {
 		name=v.name.." Token",
 		text={
-			--text,
-			{"Use to change the upcoming Blind"},
+			"Use to change the upcoming Blind",
 		}
 	}
 end
