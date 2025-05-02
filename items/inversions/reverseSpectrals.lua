@@ -622,9 +622,7 @@ local crypt = {
             end 
         end
         Entropy.FlipThen(G.jokers.highlighted, function(v, area)
-            if v == joker then
-
-            else
+            if v ~= joker then            
                 copy_card(joker, v)
                 v:set_edition()
             end

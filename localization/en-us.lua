@@ -1224,7 +1224,7 @@ local decs = {
 					"Select {C:attention}#1#{} Jokers",
 					"convert the {C:attention}left{} Joker",
 					"into the {C:attention}right{} Joker",
-					"then {C:attention}strip{} all modifications",
+					"then {C:attention}strip{} its edition",
 				}
 			},
 			c_entr_charm = {
