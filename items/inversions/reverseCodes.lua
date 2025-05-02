@@ -956,7 +956,7 @@ local e_round = end_round
 function end_round()
     e_round()
     local remove_temp = {}
-    for i, v in pairs({G.deck, G.jokers, G.hand,{cards = G.playing_cards}, G.consumeables, G.discard}) do
+    for i, v in pairs({G.jokers, G.hand, G.consumeables, G.discard, G.deck}) do
             for ind, card in pairs(v.cards) do
                 if card.ability then
                     if card.ability.entr_hotfix then
