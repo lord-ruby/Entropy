@@ -973,14 +973,17 @@ local destiny = {
         }
     },
     use = function(self, card, area, copier)
+        local remove = {}
         for i, v in pairs(G.hand.highlighted) do
             if v.config.center.key ~= "c_base" or pseudorandom("crafting") < 0.4 then
                 v:start_dissolve()
                 v.ability.temporary2 = true
+                remove[#remove+1]=v
             else
                 Entropy.DiscardSpecific({v})
             end
         end
+        if #remove > 0 then SMODS.calculate_context({remove_playing_cards = true, removed=remove}) end
         add_joker(Entropy.GetRecipe(G.hand.highlighted))
         if Entropy.DeckOrSleeve("crafting") then
             local card2 = copy_card(card)

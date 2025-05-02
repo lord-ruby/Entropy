@@ -154,19 +154,25 @@ local comet = {
 			for i, v in pairs(G.hand.highlighted) do
 				v.destroy_adjacent = true
 			end
+			local remove = {}
 			for i, v in pairs(G.hand.cards) do
 				if v.destroy_adjacent and not v.destroyed_adjacent then
 					if G.hand.cards[i-1] and pseudorandom("citrine") < 0.5 then
 						G.hand.cards[i-1]:start_dissolve()
 						G.hand.cards[i-1].ability.temporary2 = true
+						remove[#remove+1]=G.hand.cards[i-1]
 					end
 					if G.hand.cards[i+1] and pseudorandom("citrine") < 0.5 then
 						G.hand.cards[i+1]:start_dissolve()
 						G.hand.cards[i+1].ability.temporary2 = true
+						remove[#remove+1]=G.hand.cards[i+1]
 					end
 					v.destroy_adjacent = false
 					v.destroyed_adjacent = true
 				end
+			end
+			if #remove >0 then
+				SMODS.calculate_context({remove_playing_cards = true, removed=remove})
 			end
 		end
 	end,

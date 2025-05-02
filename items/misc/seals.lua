@@ -253,6 +253,7 @@ local pink = {
                 c:add_to_deck()
                 G.consumeables:emplace(c)
             end
+            SMODS.calculate_context({remove_playing_cards = true, removed={card}})
         end
         if context.forcetrigger then
             local c = create_card("Twisted", G.consumeables, nil, nil, true, true, nil, "twisted") 
@@ -331,6 +332,7 @@ local cerulean = {
             for i, v in pairs(scoring_hand) do
                 v.ability.temporary2 = true
             end
+            SMODS.calculate_context({remove_playing_cards = true, removed=scoring_hand})
         end
         if context.forcetrigger then
             local text, loc_disp_text, poker_hands, scoring_hand, disp_text =

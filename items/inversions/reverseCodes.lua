@@ -955,7 +955,8 @@ end
 local e_round = end_round
 function end_round()
     e_round()
-    for i, v in pairs({G.deck, G.jokers, G.hand,{cards = G.playing_cards}, G.consumeables}) do
+    local remove_temp = {}
+    for i, v in pairs({G.deck, G.jokers, G.hand,{cards = G.playing_cards}, G.consumeables, G.discard}) do
             for ind, card in pairs(v.cards) do
                 if card.ability then
                     if card.ability.entr_hotfix then
@@ -972,6 +973,7 @@ function end_round()
                         if card.area ~= G.hand and card.area ~= G.play and card.area ~= G.jokers and card.area ~= G.consumeables then card.states.visible = false end
                         card:remove_from_deck()
                         card:start_dissolve()
+                        remove_temp[#remove_temp+1]=card
                     end
                     if card.ability.superego then
                         card.ability.superego_copies = (card.ability.superego_copies or 0) + 0.5
@@ -983,6 +985,9 @@ function end_round()
                     end
                 end
             end
+    end
+    if #remove_temp > 0 then
+        SMODS.calculate_context({remove_playing_cards = true, removed=remove_temp})
     end
 end
 local increment = {

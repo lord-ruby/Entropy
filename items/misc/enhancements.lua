@@ -31,9 +31,11 @@ local flesh = {
 			card.ability.temporary2 = true
 			card:remove_from_deck()
             card:start_dissolve()
+			SMODS.calculate_context({remove_playing_cards = true, removed={card}})
         end
 		if context.forcetrigger then
 			card.ability.temporary2 = true
+			SMODS.calculate_context({remove_playing_cards = true, removed={card}})
 		end
 	end,
 }
