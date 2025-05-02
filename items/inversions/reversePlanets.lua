@@ -214,7 +214,7 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
     end,
     can_use = function(self, card)
         return true
-	end,
+	  end,
     loc_vars = loc_vars or function(self, q, card)
         return {
           vars = {
@@ -228,6 +228,10 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
           }
         }
     end,
+    in_pool = function(self, args)
+      if G.GAME.hands[self.config.handname] and G.GAME.hands[self.config.handname].visible then return true end
+      return false
+    end
   }
   return planets[#planets]
 end
