@@ -393,7 +393,7 @@ local ambisinister = {
     }
   },
 	key = "ambisinister",
-	pos = { x = 4, y = 0 },
+	pos = { x = 5, y = 0 },
 	atlas = "decks",
   config = { joker_slot = 3 },
 }

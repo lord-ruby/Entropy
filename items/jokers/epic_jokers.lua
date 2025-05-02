@@ -133,7 +133,8 @@ local dni = {
             end
         end
         if context.after then
-            card.ability.suit = pseudorandom_element(G.deck.cards, pseudoseed("dni")).base.suit
+            local card2 = pseudorandom_element(G.deck.cards, pseudoseed("dni"))
+            card.ability.suit = card2 and card2.base.suit or card.ability.suit
         end
     end,
     entr_credits = {
