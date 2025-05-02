@@ -1912,7 +1912,8 @@ local decs = {
 			ph_definitions = "No redefinitions this run", 
 			ph_leftright = "The left card always converts to the right card",
 			b_definitions = "Definitions",
-			entr_ascended = "Ascended!"
+			entr_ascended = "Ascended!",
+			k_entr_freebird = "Antireal (Freebird by Lynyrd Skynyrd - Copyrighted)",
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

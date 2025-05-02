@@ -702,6 +702,13 @@ SMODS.Sound({
 	end,
 })
 SMODS.Sound({
+	key = "music_freebird",
+	path = "music_freebird.ogg",
+	select_music_track = function()
+		return HasJoker("j_entr_antireal") and Entropy.config.freebird and 10^200
+	end,
+})
+SMODS.Sound({
 	key = "music_fall",
 	path = "music_fall.ogg",
 	select_music_track = function()
@@ -779,6 +786,14 @@ local entrConfigTab = function()
 		active_colour = HEX("40c76d"),
 		ref_table = Entropy.config,
 		ref_value = "blind_tokens",
+		callback = function()
+        end,
+	})
+    entr_nodes[#entr_nodes + 1] = create_toggle({
+		label = localize("k_entr_freebird"),
+		active_colour = HEX("40c76d"),
+		ref_table = Entropy.config,
+		ref_value = "freebird",
 		callback = function()
         end,
 	})
