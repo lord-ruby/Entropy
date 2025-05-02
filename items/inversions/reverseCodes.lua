@@ -2315,34 +2315,6 @@ function CardArea:emplace(card, location, stay_flipped)
     end
 end
 
-G.FUNCS.HUD_blind_debuff = function(e)
-	local scale = 0.4
-	local num_lines = #G.GAME.blind.loc_debuff_lines
-	while G.GAME.blind.loc_debuff_lines[num_lines] == '' do
-		num_lines = num_lines - 1
-	end
-	local padding = 0.05
-	if num_lines > 5 then
-		local excess_height = (0.3 + padding)*(num_lines - 5)
-		padding = padding - excess_height / (num_lines + 1)
-	end
-	e.config.padding = padding
-	if num_lines > #e.children then
-		for i = #e.children+1, num_lines do
-			local node_def = {n = G.UIT.R, config = {align = "cm", minh = 0.3, maxw = 4.2}, nodes = {
-				{n = G.UIT.T, config = {ref_table = G.GAME.blind.loc_debuff_lines, ref_value = i, scale = scale * 0.9, colour = G.C.UI.TEXT_LIGHT}}}}
-			e.UIBox:set_parent_child(node_def, e)
-		end
-	elseif num_lines < #e.children then
-		for i = num_lines+1, #e.children do
-			e.children[i]:remove()
-			e.children[i] = nil
-		end
-	end
-	e.UIBox:recalculate()
-end
-
-
 function GetDefinePlayingCard(tbl, area, insert, emplace, shop)    
     local _card = create_card("Base", area, nil, nil, nil, nil, nil, "pointer")
     if shop then

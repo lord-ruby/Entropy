@@ -417,7 +417,7 @@ local decs = {
 			j_entr_antireal = {
 				name = "Antireal Joker",
 				text = {
-					"{X:gold,C:white}^#1#{} Ascension Power per",
+					"{X:gold,C:white}+^#1#{} Ascension Power per",
 					"empty Joker slot",
 					"{s:0.8}Antireal Joker included{}",
 					"{C:inactive}(Currently{} {X:gold,C:white}^#2#{}{C:inactive}){}"
