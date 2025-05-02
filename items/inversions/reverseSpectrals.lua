@@ -1681,7 +1681,7 @@ local beyond = {
 				trigger = "before",
 				delay = 0.75,
 				func = function()
-                    if not (G.GAME.entropy >= 200) then
+                    if not (to_big(G.GAME.entropy) >= to_big(200)) then
                         if not v.ability.cry_absolute then
                             if v.config.center.rarity == "cry_exotic" then
                                 check_for_unlock({ type = "what_have_you_done" })
