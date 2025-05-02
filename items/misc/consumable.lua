@@ -1004,7 +1004,7 @@ local destiny = {
     no_doe = true,
     in_pool = function()
         return false
-    end
+    end,
     weight = 0
 }
 
