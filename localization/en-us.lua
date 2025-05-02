@@ -545,6 +545,15 @@ local decs = {
 					"Gain a {C:dark_edition}Negative{} {C:attention}Revert{}",
 					"when a Boss-Blind is selected"
 				}
+			},
+			b_entr_ambisinister = {
+				name = "Ambisinister Deck",
+				text =  {
+					"{C:attention}Joker Slots{} and",
+					"{C:dark_edition}Card Selection Limit{}",
+					"are now a shared resource",
+					"{C:attention}+3{} Joker Slots"
+				}
 			}
 		},
 		Sleeve = {
@@ -571,6 +580,24 @@ local decs = {
 					"your {X:dark_edition,C:white}Entropy{} is, Gain {X:dark_edition,C:white}Entropy{}",
 					"when playing Editioned/Enhanced cards, secret hands",
 					"or using consumables"
+				},
+			},
+			sleeve_entr_butterfly = {
+				name = "Butterfly Sleeve",
+				text = {
+					"All {c:attention}Random{} outcomes",
+					"can affect eachother",
+					"Gain a {C:dark_edition}Negative{} {C:attention}Revert{}",
+					"when a Boss-Blind is selected"
+				},
+			},
+			sleeve_entr_ambisinister = {
+				name = "Ambisinister Sleeve",
+				text = {
+					"{C:attention}Joker Slots{} and",
+					"{C:dark_edition}Card Selection Limit{}",
+					"are now a shared resource",
+					"{C:attention}+3{} Joker Slots"
 				},
 			},
 		},

@@ -61,7 +61,6 @@ local redefined = {
 	name = "CCD 2.0",
 	key = "ccd2",
 	pos = { x = 1, y = 0 },
-	order = 1,
 	atlas = "decks",
 	apply = function(self)
 		G.GAME.modifiers.ccd2 = true
@@ -82,7 +81,6 @@ local containment = {
 	name = "Deck of Containment",
 	key = "doc",
 	pos = { x = 2, y = 0 },
-	order = 1,
 	atlas = "decks",
 	apply = function(self)
 		G.GAME.entropy = 0
@@ -321,7 +319,6 @@ local destiny = {
 	name = "Deck of Destiny",
 	key = "crafting",
 	pos = { x = 3, y = 0 },
-	order = 1,
 	atlas = "decks",
 	apply = function(self)
 		G.GAME.modifiers.crafting = true
@@ -370,7 +367,6 @@ local butterfly = {
 	name = "Butterfly Deck",
 	key = "butterfly",
 	pos = { x = 4, y = 0 },
-	order = 1,
 	atlas = "decks",
   config = { vouchers = { "v_cry_command_prompt", "v_cry_satellite_uplink" } },
   calculate = function(self, back, context)
@@ -386,6 +382,20 @@ local butterfly = {
         end}))
     end
   end
+}
+
+local ambisinister = {
+  object_type = "Back",
+  order = 5,
+  dependencies = {
+    items = {
+      "set_entr_decks"
+    }
+  },
+	key = "ambisinister",
+	pos = { x = 4, y = 0 },
+	atlas = "decks",
+  config = { joker_slot = 3 },
 }
 local ref = pseudorandom
 function pseudorandom(key,min,max)
@@ -486,6 +496,17 @@ if CardSleeves then
       end
     end
   }
+  CardSleeves.Sleeve {
+    key = "butterfly",
+    atlas = "sleeves",
+    pos = { x = 1, y = 0 },
+  }
+
+  CardSleeves.Sleeve {
+    key = "ambisinister",
+    atlas = "sleeves",
+    pos = { x = 1, y = 0 },
+  }
 end
 
 return {
@@ -494,6 +515,7 @@ return {
     redefined,
     destiny,
     containment,
-    butterfly
+    butterfly,
+    ambisinister
   }
 }

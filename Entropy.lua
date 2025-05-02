@@ -277,6 +277,8 @@ local upd = Game.update
 local anim_timer2 = 0
 entr_define_dt = 0
 local cdt = 0
+local last_csl
+local last_slots
 function Game:update(dt)
     upd(self, dt)
     entr_define_dt = entr_define_dt + dt
@@ -285,6 +287,22 @@ function Game:update(dt)
 		local pointerobj = G.P_CENTERS.c_entr_define
 		pointerobj.pos.x = (pointerobj.pos.x == 4) and 5 or 4
 	end
+    cdt = cdt + dt
+    if Entropy.DeckOrSleeve("ambisinister") and cdt > 0.05 and G.jokers then
+        if not last_csl then last_csl = G.hand.config.highlighted_limit end
+        if not last_slots then last_slots = (G.jokers.config.card_limit - #G.jokers.cards) end
+        local slots_diff = (G.jokers.config.card_limit - #G.jokers.cards) - last_slots
+        local csl_diff = (G.hand.config.highlighted_limit) - last_csl
+        if csl_diff ~= 0 then
+            G.jokers.config.card_limit = G.jokers.config.card_limit + csl_diff
+        end
+        if slots_diff ~= 0 then
+            G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + slots_diff
+        end
+        last_slots = G.jokers.config.card_limit - #G.jokers.cards
+        G.hand.config.highlighted_limit = (G.jokers.config.card_limit - #G.jokers.cards)
+        last_csl = G.hand.config.highlighted_limit
+    end
 end
 
 local card_hoverref = Card.draw
