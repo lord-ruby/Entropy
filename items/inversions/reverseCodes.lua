@@ -932,6 +932,7 @@ local editions = ({
 })
 function CanCreateRuby()
     if SMODS.Mods.jen and SMODS.Mods.jen.can_load then return false end
+    if #G.jokers.cards < 29 then return false end
     local has_all_exotics = true
     for i, v in pairs(G.P_CENTERS) do
         if v.rarity == "cry_exotic" or v.rarity == "entr_hyper_exotic" then
@@ -956,8 +957,7 @@ end
 local e_round = end_round
 function end_round()
     e_round()
-    for i, v in pairs(G) do
-        if type(v) == "table" and v.cards then
+    for i, v in pairs({G.deck, G.jokers, G.hand,{cards = G.playing_cards}, G.consumeables}) do
             for ind, card in pairs(v.cards) do
                 if card.ability then
                     if card.ability.entr_hotfix then
@@ -984,7 +984,6 @@ function end_round()
                     end
                 end
             end
-        end
     end
 end
 local increment = {
