@@ -1001,6 +1001,10 @@ local destiny = {
             G.hand and #G.hand.highlighted == 5 and localize({type = "name_text", set = "Joker", key = Entropy.GetRecipe(G.hand.highlighted)}) or "none"
         }}
     end,
+    no_doe = true,
+    in_pool = function()
+        return false
+    end
     weight = 0
 }
 
