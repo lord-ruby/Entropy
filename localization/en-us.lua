@@ -413,6 +413,15 @@ local decs = {
 					"create a random {C:red}Rare{} Joker instead",
 					"when this Joker is {C:red}banished{}"
 				}
+			},
+			j_entr_antireal = {
+				name = "Antireal Joker",
+				text = {
+					"{X:gold,C:white}^#1#{} Ascension Power per",
+					"empty Joker slot",
+					"{s:0.8}Antireal Joker included{}",
+					"{C:inactive}(Currently{} {X:gold,C:white}^#2#{}{C:inactive}){}"
+				}
 			}
 		},
 		Blind = {

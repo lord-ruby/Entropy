@@ -106,8 +106,23 @@ if SMODS and SMODS.calculate_individual_effect then
             end
             return true
         end
+        if (key == 'exp_asc') or (key == 'exp_asc_mod') then
+            local e = card_eval_status_text
+            local orig = G.GAME.asc_power_hand or 0
+            G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand or 0) ^ to_big(amount)
+            if G.GAME.current_round.current_hand.cry_asc_num == 0 then G.GAME.current_round.current_hand.cry_asc_num = 1 end
+            G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (to_big(G.GAME.current_round.current_hand.cry_asc_num) ^ to_big(G.GAME.asc_power_hand)) .. ")"
+            card_eval_status_text = function() end
+            scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
+            scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
+            card_eval_status_text = e
+            if not Talisman.config_file.disable_anims then
+                card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "^"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
+            end
+            return true
+        end
     end
-    for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'asc', 'asc_mod', 'plus_asc', 'plusasc_mod'}) do
+    for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'asc', 'asc_mod', 'plus_asc', 'plusasc_mod', 'exp_asc', 'exp_asc_mod'}) do
         table.insert(SMODS.calculation_keys, v)
     end
 end
@@ -275,7 +290,8 @@ end
 
 local upd = Game.update
 local anim_timer2 = 0
-entr_define_dt = 0
+local entr_define_dt = 0
+local entr_antireal_dt = 0
 local cdt = 0
 local last_csl
 local last_slots
@@ -286,6 +302,21 @@ function Game:update(dt)
 		entr_define_dt = 0
 		local pointerobj = G.P_CENTERS.c_entr_define
 		pointerobj.pos.x = (pointerobj.pos.x == 4) and 5 or 4
+	end
+
+    entr_antireal_dt = entr_antireal_dt + dt
+    if G.P_CENTERS and G.P_CENTERS.j_entr_antireal and entr_antireal_dt > 0.05 then
+		entr_antireal_dt = 0
+		local obj = G.P_CENTERS.j_entr_antireal
+		obj.pos.x = obj.pos.x + 1 
+        if obj.pos.x > 11 then
+            obj.pos.x = 0
+            obj.pos.y = obj.pos.y + 1
+        end
+        if obj.pos.y > 9 then
+            obj.pos.y = 0
+            obj.pos.x = 0
+        end
 	end
     cdt = cdt + dt
     if Entropy.DeckOrSleeve("ambisinister") and cdt > 0.05 and G.jokers then

@@ -250,12 +250,49 @@ local metanoia = {
         end
     end,
 }
+SMODS.Atlas { key = 'antireal_joker', path = 'antireal_joker.png', px = 71, py = 95 }
+local antireal = {
+    order = 105,
+    object_type = "Joker",
+    key = "antireal",
+    rarity = "cry_epic",
+    cost = 15,
+    
+    dependencies = {
+        items = {
+            "set_cry_epic"
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 0, y = 0 },
+    atlas = "antireal_joker",
+    config = {
+        exp_per_slot = 1
+    },
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                card.ability.exp_per_slot,
+                G.jokers and (G.jokers.config.card_limit - #G.jokers.cards + (HasJoker("j_entr_antireal") or 0)) * card.ability.exp_per_slot or 1
+            }
+        }
+    end,
+    calculate = function (self, card, context)
+        if context.joker_main then
+            return {
+                exp_asc = (G.jokers.config.card_limit - #G.jokers.cards + HasJoker("j_entr_antireal") or 0) * card.ability.exp_per_slot
+            }
+        end
+    end,
+}
 return {
     items = {
         burnt_m,
         chaos,
         dni,
         trapezium,
-        metanoia
+        metanoia,
+        antireal
     }
 }
