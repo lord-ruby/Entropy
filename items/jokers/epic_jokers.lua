@@ -193,11 +193,7 @@ local trapezium = {
 		end
 		if context.individual and context.cardarea == G.play then
 			if context.other_card.edition and context.other_card.edition.retrig then
-				return {
-					asc = lenient_bignum(card.ability.asc),
-					colour = G.C.MULT,
-					card = card,
-				}
+                return Entropy.RandomForcetrigger(card, card and card.ability.forcetrigger or 5, context)
 			end
 		end
 		if
