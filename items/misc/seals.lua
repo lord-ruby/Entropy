@@ -328,12 +328,9 @@ local cerulean = {
                     card:add_to_deck()
                     G.consumeables:emplace(c)
                 end
-
-        end
-        if context.destroy_card and context.cardarea == G.play then
-            local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
-            G.FUNCS.get_poker_hand_info(G.play.cards)
-            for i, v in pairs(scoring_hand) do v.ability.temporary2 = true end
+            for i, v in pairs(scoring_hand) do
+                v.ability.temporary2 = true
+            end
         end
         if context.forcetrigger then
             local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
