@@ -175,27 +175,6 @@ local quickload = {
 		},
 	},
 }
-local dft = Blind.defeat
-function Blind:defeat(s)
-    if self.config.blind.key ~= nil then
-        dft(self, s)
-    end
-
-end
-local atm = Moveable.align_to_major
-function Moveable:align_to_major()
-    if not self.role then
-        self.role = {}
-    end
-    if not self.role.offset then 
-        self.role.offset = {}
-    end
-    self.alignment.offset.y = self.alignment.offset.y or 0
-    self.alignment.offset.x = self.alignment.offset.x or 0
-    self.role.offset.y = self.role.offset.y or 0
-    self.role.offset.x = self.role.offset.x or 0
-    atm(self)
-end
 local break_timer = 0
 local break_card = {
     dependencies = {
