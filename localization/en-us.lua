@@ -429,8 +429,8 @@ local decs = {
 					"{C:green}#1# in #2#{} chance for drawn",
 					"cards to become {C:diamonds}Diamonds{}",
 					"Played diamonds {C:red}banish{} a random {C:attention}Joker{}",
-					"Self destructs when 8 or more",
-					"{C:diamonds}Diamonds{} are drawn to hand",
+					"Self destructs when 7 or more",
+					"{C:diamonds}Diamonds{} are held when hand played",
 					"{C:inactive,S:0.8}Do not look at the yellow sign.{}"
 				}
 			}
