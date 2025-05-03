@@ -250,7 +250,6 @@ local new = {
     },
     pos = {x=0,y=2},
     use = function(self, card, area, copier)
-        Interfere()
         G.GAME.round_resets.red_room = true
         G.GAME.round_resets.blind_states['Red'] = "Select"
         if G.blind_select then        
@@ -307,7 +306,6 @@ local interference = {
     },
     pos = {x=1,y=2},
     use = function(self, card, area, copier)
-        Interfere()
         G.GAME.Interfered = true
     end,
     can_use = function(self, card)
@@ -1964,11 +1962,6 @@ function paste_card(other, new_card, card_scale, playing_card, strip_edition)
     new_card.pinned = other.pinned
 
     return new_card
-end
-
-function Interfere()
-    G.GAME.blind.chips = G.GAME.blind.chips * pseudorandom("interference")+0.22
-    G.GAME.InterferencePayoutMod = pseudorandom("interference")+0.85
 end
 
 local update_round_evalref = Game.update_round_eval

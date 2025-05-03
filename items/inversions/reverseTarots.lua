@@ -31,7 +31,7 @@ SMODS.ConsumableType({
 -- 20 - Judgement -     Forgiveness
 -- 21 - World -     Tent
 -- 23 - Eclipse -     Noon (Zenith) [Penumbra] {Umbra} <Bra> 'Shadow'
--- 29 - Seraph -     Imp --cassknows & lfmoth
+-- 29 - Seraph -     Imp --lfmoth
 -- 29 - Instability -     Equality
 -- 28 - Blessing -     Prophecy
 -- 27 - Automaton -     Mallet
