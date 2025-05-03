@@ -5,7 +5,8 @@ local decs = {
 				name = "Flesh Card",
 				text = {
 					"{C:green}#1# in #2#{} chance to",
-					"destroy this card when {C:attention}discarded{}"
+					"destroy this card",
+					"when {C:attention}discarded{}"
 				}
 			},
 			m_entr_disavowed = {
