@@ -1192,15 +1192,22 @@ function create_card_for_shop(area)
             if not card.glitchedcrown then
                 card.glitchedcrown = {}
             end
+            card.glitchedcrown[1] = card.config.center.key
             card.glitchedcrown[#card.glitchedcrown+1] = pseudorandom_element(G.P_CENTER_POOLS[card.config.center.set], pseudokey("gcrown")).key
-            card.glitcheddt = 0.1 + 5/(4 + HasJoker("j_entr_apeirostemma"))
+            card.glitcheddt = 0.25 + 5/(4 + HasJoker("j_entr_apeirostemma"))
         end
     end
+    return card
 end
 local ref = Card.update
 function Card:update(dt)
     if self.area == G.shop_jokers or self.area == G.shop_booster or self.area == G.shop_vouchers then
-        card.gdt2 = (card.gdt2 or 0) + 1
+        card.gdt2 = (card.gdt2 or 0) + dt
+        if card.gdt2 > card.glitcheddt then
+            card.glitchedindex = (card.glitchedindex or 0) + 1
+            card:set_ability(card.glitchedcrown[(card.glitchedindex)%#card.glitchedcrown + 1])
+            card.gdt2 = 0
+        end
     end
 end
 local items = {
@@ -1214,7 +1221,7 @@ local items = {
     exousia,
     akyros,
     katarraktis,
-    apeirostemma
+    apeirostemma,
     blind_type
 }
 return {
