@@ -418,6 +418,7 @@ local antidagger = {
                     local joker = pseudorandom_element(G.jokers.cards, pseudoseed("antidagger"))
                     G.GAME.banned_keys["j_entr_antidagger"] = true
                     G.GAME.banned_keys[joker.config.center.key] = true
+                    joker.getting_sliced = true
                     eval_card(joker, {banishing_card = true, banisher = card, card = joker, cardarea = joker.area})
                     joker:start_dissolve()
                     card:start_dissolve()
@@ -466,6 +467,7 @@ local solar_dagger = {
                 G.E_MANAGER:add_event(Event({
                     func = function()
                         local sliced_card = G.jokers.cards[check]
+                        sliced_card.getting_sliced
                         card.ability.x_asc =
                             lenient_bignum(to_big(card.ability.x_asc) + sliced_card.sell_cost * 0.1)
                         card:juice_up(0.8, 0.8)
@@ -515,6 +517,7 @@ local insatiable_dagger = {
                 G.E_MANAGER:add_event(Event({
                     func = function()
                         local sliced_card = G.jokers.cards[#G.jokers.cards]
+                        sliced_card.getting_sliced = true
                         card:juice_up(0.8, 0.8)
                         sliced_card:start_dissolve({ HEX("a800ff") }, nil, 1.6)
                         G.GAME.banned_keys[sliced_card.config.center.key] = true
@@ -590,7 +593,8 @@ local rusty_shredder = {
         end
     end,
     entr_credits = {
-        idea = {"cassknows"}
+        idea = {"cassknows"},
+        art = {"lfmoth"}
     }
 }
 
