@@ -979,6 +979,7 @@ function end_round()
                         card:start_dissolve()
                         if card.ability.temporary then remove_temp[#remove_temp+1]=card end
                     end
+                    if card.ability.entr_yellow_sign then card.ability.entr_yellow_sign = nil end
                     if card.ability.superego then
                         card.ability.superego_copies = (card.ability.superego_copies or 0) + 0.5
                     end

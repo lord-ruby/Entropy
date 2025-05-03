@@ -23,6 +23,8 @@ local jokerinyellow = {
     },
     soul_pos = {x=9,y=1},
     loc_vars = function(self, q, card)
+        q[#q+1] = {key ="entr_yellow_sign", set="Other"}
+        q[#q+1] = {key ="temporary", set="Other"}
         return {
             vars = {
                 math.min(cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)*2, card.ability.extra.odds),
@@ -99,11 +101,56 @@ local jokerinyellow = {
             end
             if total >= 7 then card:start_dissolve() end
         end
+        if context.check then 
+			for i, v in pairs(G.hand.cards) do if not v.highlighted then v.kiy_temp = false;v.kiy_temped = false end end
+			for i, v in pairs(G.hand.highlighted) do
+				v.kiy_temp = true
+			end
+            local cards = {}
+            for i, v in pairs({G.hand.cards, G.jokers.cards, G.consumeables.cards}) do for i2, v2 in pairs(v) do cards[#cards+1] = v2 end end
+			for i, v in pairs(G.hand.cards) do
+				if v.kiy_temp and not v.kiy_temped and v:is_suit("Diamonds") then
+					local card = pseudorandom_element(cards, pseudoseed("kiy"))
+                    card.ability.temporary = true
+					v.kiy_temp = false
+					v.kiy_temped = true
+				end
+			end
+		end
     end
 }
 
+local yellow_sign = {
+    atlas = "entr_stickers",
+    pos = { x = 5, y = 1 },
+    key = "entr_yellow_sign",
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Sticker",
+    order = -66.6,
+    no_sticker_sheet = true,
+    prefix_config = { key = false },
+    badge_colour = HEX("ffa200"),
+    apply = function(self,card,val) 
+        card.ability.entr_yellow_sign = true
+    end,
+    calculate = function(self, card, context)
+        if context.after then
+            card.ability.entr_yellow_sign = false
+        end
+    end
+}
+local suit_ref = Card.is_suit
+function Card:is_suit(suit, ...)
+    if self.ability.entr_yellow_sign and suit == "Diamonds" then return true 
+    else return suit_ref(self, suit, ...) end
+end
 return {
     items = {
-        jokerinyellow
+        jokerinyellow,
+        yellow_sign
     }
 }
