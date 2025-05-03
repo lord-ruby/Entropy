@@ -696,7 +696,7 @@ function Game:update(dt)
     if G.STATE == nil and not G.DefineBoosterState then
         G.STATE = 1
         G.STATE_COMPLETE = false
-    end
+    end 
     if G.hand and #G.hand.highlighted <= 0 and G.play and #G.play.cards <= 0 then
         if G.GAME.current_round.current_hand.entr_trans_num_text ~= "" or G.GAME.current_round.current_hand.cry_asc_num_text ~= "" then
             ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)

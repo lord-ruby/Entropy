@@ -44,9 +44,12 @@ local jokerinyellow = {
                     delay = delay,
                     func = function()
                         local card = pseudorandom_element(cards, pseudoseed("kiy"))
-                        eval_card(card, {banishing_card = true, banisher = card, card = card, cardarea = G.jokers})
-                        card:start_dissolve()
-                        G.GAME.banned_keys[card.config.center.key] = true
+                        if card then
+                            eval_card(card, {banishing_card = true, banisher = card, card = card, cardarea = G.jokers})
+                            card:start_dissolve()
+                            G.GAME.banned_keys[card.config.center.key] = true
+                        end
+                        return true
                     end
                 }))
                 card_eval_status_text(
@@ -73,9 +76,11 @@ local jokerinyellow = {
                         delay = 0.2,
                         func = function()
                             local card = pseudorandom_element(cards, pseudoseed("kiy"))
-                            eval_card(card, {banishing_card = true, banisher = card, card = card, cardarea = G.jokers})
-                            card:start_dissolve()
-                            G.GAME.banned_keys[card.config.center.key] = true
+                            if card then
+                                eval_card(card, {banishing_card = true, banisher = card, card = card, cardarea = G.jokers})
+                                card:start_dissolve()
+                                G.GAME.banned_keys[card.config.center.key] = true
+                            end
                             return true
                         end
                     })) 
