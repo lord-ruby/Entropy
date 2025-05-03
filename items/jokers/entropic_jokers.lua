@@ -1184,29 +1184,32 @@ local apeirostemma = {
     soul_pos = { x = 5, y = 3, extra = { x = 4, y = 3 } },
     atlas = "exotic_jokers",
 }
-local ref = create_card_for_shop
-function create_card_for_shop(area)
-    local card = ref(area)
-    if HasJoker("j_entr_apeirostemma") then
+local ref = create_card
+function create_card(set, area, ...)
+    local card = ref(set, area, ...)
+    if HasJoker("j_entr_apeirostemma") and (area == G.shop_jokers or area == G.shop_booster or area == G.shop_vouchers) and G.shop_jokers then
         for i = 1, 4 + HasJoker("j_entr_apeirostemma") do
             if not card.glitchedcrown then
                 card.glitchedcrown = {}
             end
             card.glitchedcrown[1] = card.config.center.key
-            card.glitchedcrown[#card.glitchedcrown+1] = pseudorandom_element(G.P_CENTER_POOLS[card.config.center.set], pseudokey("gcrown")).key
-            card.glitcheddt = 0.25 + 5/(4 + HasJoker("j_entr_apeirostemma"))
+            card.glitchedcrown[#card.glitchedcrown+1] = pseudorandom_element(G.P_CENTER_POOLS[card.config.center.set], pseudoseed("gcrown")).key
+            card.glitcheddt = 0.33 + 5/(4 + HasJoker("j_entr_apeirostemma"))
         end
     end
     return card
 end
 local ref = Card.update
 function Card:update(dt)
-    if self.area == G.shop_jokers or self.area == G.shop_booster or self.area == G.shop_vouchers then
-        card.gdt2 = (card.gdt2 or 0) + dt
-        if card.gdt2 > card.glitcheddt then
-            card.glitchedindex = (card.glitchedindex or 0) + 1
-            card:set_ability(card.glitchedcrown[(card.glitchedindex)%#card.glitchedcrown + 1])
-            card.gdt2 = 0
+    ref(self, dt)
+    if (self.area == G.shop_jokers or self.area == G.shop_booster or self.area == G.shop_vouchers) and G.shop_jokers then
+        if self.glitchedcrown then
+            self.gdt2 = (self.gdt2 or 0) + dt
+            if self.gdt2 > self.glitcheddt then
+                self.glitchedindex = (self.glitchedindex or 0) + 1
+                self:set_ability(G.P_CENTERS[self.glitchedcrown[(self.glitchedindex)%#self.glitchedcrown + 1]], true, false)
+                self.gdt2 = 0
+            end
         end
     end
 end
