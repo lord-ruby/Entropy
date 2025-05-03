@@ -306,6 +306,8 @@ local interference = {
     },
     pos = {x=1,y=2},
     use = function(self, card, area, copier)
+        G.GAME.blind.chips = G.GAME.blind.chips * pseudorandom("interference")+0.22
+        G.GAME.InterferencePayoutMod = pseudorandom("interference")+0.85
         G.GAME.Interfered = true
     end,
     can_use = function(self, card)
