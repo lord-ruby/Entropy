@@ -117,7 +117,11 @@ local jokerinyellow = {
 				end
 			end
 		end
-    end
+    end,
+    entr_credits = {
+        idea = {"cassknows"},
+        art = {"cassknows"}
+    }
 }
 
 local yellow_sign = {
