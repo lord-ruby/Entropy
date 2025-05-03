@@ -51,7 +51,7 @@ local oekrep = {
                         card_limit=1,
                         type="negative"
                     })
-                    c.RoekrepPack = true
+                    c.RPerkeoPack = true
                     G.consumeables:align_cards()
                     G.consumeables.config.card_limit = G.consumeables.config.card_limit + 1
                 end
