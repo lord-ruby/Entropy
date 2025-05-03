@@ -327,3 +327,25 @@ pattern = 'Cryptid.profile_prefix = "M"'
 position = "after"
 payload = 'Cryptid.profile_prefix = Cryptid.profile_prefix == "M" and "E" or Cryptid.profile_prefix.."E"'
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = 'if card and card.playing_card then SMODS.drawn_cards[#SMODS.drawn_cards+1] = card end'
+position = "after"
+payload = '''if card and card.playing_card and HasJoker("j_entr_jokerinyellow") then
+                for i, v in pairs(G.jokers.cards) do
+                    if v.config.center.key == "j_entr_jokerinyellow" then
+                        if pseudorandom("kiy") / 2 < cry_prob(v.ability.cry_prob, v.ability.extra.odds, v.ability.cry_rigged) / v.ability.extra.odds then
+                            SMODS.change_base(card, "Diamonds")
+                        end
+                        local total = 0
+                        for i, c in pairs(G.hand.cards) do
+                            if c:is_suit("Diamonds") then total = total + 1 end
+                        end
+                        if total >= 8 then v:start_dissolve() end
+                    end
+                end
+            end
+'''
+match_indent = true
