@@ -49,18 +49,18 @@ local jokerinyellow = {
                             eval_card(card, {banishing_card = true, banisher = card, card = card, cardarea = G.jokers})
                             card:start_dissolve()
                             G.GAME.banned_keys[card.config.center.key] = true
+                            card_eval_status_text(
+                                card,
+                                "extra",
+                                nil,
+                                nil,
+                                nil,
+                                { message = localize("entr_kiy_banished"), colour = G.C.GREEN }
+                            )
                         end
                         return true
                     end
                 }))
-                card_eval_status_text(
-                    card,
-                    "extra",
-                    nil,
-                    nil,
-                    nil,
-                    { message = localize("entr_kiy_banished"), colour = G.C.GREEN }
-                )
             end
         end
         if context.after then
@@ -81,18 +81,18 @@ local jokerinyellow = {
                                 eval_card(card, {banishing_card = true, banisher = card, card = card, cardarea = G.jokers})
                                 card:start_dissolve()
                                 G.GAME.banned_keys[card.config.center.key] = true
+                                card_eval_status_text(
+                                    card,
+                                    "extra",
+                                    nil,
+                                    nil,
+                                    nil,
+                                    { message = localize("entr_kiy_banished"), colour = G.C.GREEN }
+                                )
                             end
                             return true
                         end
                     })) 
-                    card_eval_status_text(
-                        card,
-                        "extra",
-                        nil,
-                        nil,
-                        nil,
-                        { message = localize("entr_kiy_banished"), colour = G.C.GREEN }
-                    )
                 end
             end
         end
