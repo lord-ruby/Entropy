@@ -172,8 +172,8 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     for(int i=0; i<TileC; i += 2){
    		
-		pointCenters[i][0] = pow(1.73 * (2 + sin(3.38 * (0.3 + i/3.0) * (0.17 + i))), -1) * cos(t2 + 11.0 * i);
-    	pointCenters[i][1] = pow(1.17 * (2 + cos(2.11 * (0.3 + i/5.0) * (0.31 + i))), -1) * sin(t2 + 7.0 * i + 2);
+		pointCenters[i][0] = pow(1.73 * (2.0 + sin(3.38 * (0.3 + i/3.0) * (0.17 + i))), -1) * cos(t2 + 11.0 * i);
+    	pointCenters[i][1] = pow(1.17 * (2.0 + cos(2.11 * (0.3 + i/5.0) * (0.31 + i))), -1) * sin(t2 + 7.0 * i + 2.0);
 		float vecSize = pointCenters[i][0]*pointCenters[i][0] + pointCenters[i][1]*pointCenters[i][1];
 		pointCenters[i][0] = pointCenters[i][0] / (vecSize + 0.1);
 		pointCenters[i][1] = pointCenters[i][1] / (vecSize + 0.1);
@@ -181,7 +181,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	}
 
 	    for(int i=0; i<TileC; i += 2){
-		float rescale = mod(i, 5) - 1;
+		float rescale = mod(i, 5) - 1.0;
 		rescale = max(0.0, rescale);
 		rescale = min(1.0, rescale);
 		rescale = 2.8*rescale + 0.2 + sin(i + t2 + 0.11)*0.3;

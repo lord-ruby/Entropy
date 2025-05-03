@@ -23,6 +23,7 @@ local i = {
     "items/misc/seals", 
     "items/misc/enhancements", 
     "items/misc/blinds", 
+    "items/jokers/cursed_jokers",
     "items/misc/content_sets",
     "lib/gameset_overrides",
     "compat/loader"

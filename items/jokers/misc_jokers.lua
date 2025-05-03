@@ -612,7 +612,15 @@ local chocolate_egg = {
     demicoloncompat = true,
     pools = { ["Food"] = true, ["Candy"] = true },
     calculate = function(self, card, context)
-        if context.banishing_card and context.area == G.jokers and G.jokers then
+        if context.banishing_card and context.cardarea == G.jokers and G.jokers then
+            card_eval_status_text(
+                card,
+                "extra",
+                nil,
+                nil,
+                nil,
+                { message = localize("entr_opened"), colour = G.C.GREEN }
+            )
             card.ability.no_destroy = true
             local c = create_card("Joker", G.jokers, nil, "cry_epic")
             c:add_to_deck()
@@ -628,6 +636,14 @@ local start_dissolveref = Card.start_dissolve
 function Card:start_dissolve(...)
     start_dissolveref(self, ...)
     if self.config.center.key == "j_entr_chocolate_egg" and not self.ability.no_destroy and self.area == G.jokers and G.jokers then
+        card_eval_status_text(
+            self,
+            "extra",
+            nil,
+            nil,
+            nil,
+            { message = localize("entr_opened"), colour = G.C.GREEN }
+        )
         local c = create_card("Joker", G.jokers, nil, "Rare")
         c:add_to_deck()
         G.jokers:emplace(c)

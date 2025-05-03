@@ -422,6 +422,17 @@ local decs = {
 					"{s:0.8}Antireal Joker included{}",
 					"{C:inactive}(Currently{} {X:gold,C:white}^#2#{}{C:inactive}){}"
 				}
+			},
+			j_entr_jokerinyellow = {
+				name = "The Joker in Yellow",
+				text = {
+					"{C:green}#1# in #2#{} chance for drawn",
+					"cards to become {C:diamonds}Diamonds{}",
+					"Played diamonds {C:red}banish{} a random {C:attention}Joker{}",
+					"Self destructs when 8 or more",
+					"{C:diamonds}Diamonds{} are drawn to hand",
+					"{C:inactive,S:0.8}Do not look at the yellow sign.{}"
+				}
 			}
 		},
 		Blind = {
@@ -1923,6 +1934,9 @@ local decs = {
 			b_reset_gameset_modest = "Reset Gameset Config (Ethereal)",
 			b_reset_gameset_mainline = "Reset Gameset Config (Elysian)",
 			b_reset_gameset_madness = "Reset Gameset Config (Exalted)",
+
+			entr_opened = "Opened!",
+			entr_kiy_banished = "Banished."
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",
