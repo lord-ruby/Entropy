@@ -483,7 +483,8 @@ local solar_dagger = {
         end
     end,
     entr_credits = {
-        idea = {"cassknows"}
+        idea = {"cassknows"},
+        art = {"cassknows", "Strum"}
     }
 }
 
