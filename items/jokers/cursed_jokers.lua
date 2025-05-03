@@ -21,6 +21,7 @@ local jokerinyellow = {
             odds = 7
         }
     },
+    soul_pos = {x=9,y=1},
     loc_vars = function(self, q, card)
         return {
             vars = {
