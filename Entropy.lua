@@ -24,6 +24,7 @@ local i = {
     "items/misc/enhancements", 
     "items/misc/blinds", 
     "items/misc/content_sets",
+    "lib/gameset_overrides",
     "compat/loader"
 }
 local items = {}
