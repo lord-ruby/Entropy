@@ -69,7 +69,6 @@ local jokerinyellow = {
             local total = 0
             for i, v2 in pairs(G.play.cards) do
                 if v2:is_suit("Diamonds") then
-                    total = total + 1
                     local cards = {}
                     for i, v in pairs(G.jokers.cards) do
                         if not v.ability.eternal and not v.ability.cry_absolute and v.config.center.key ~= "j_entr_jokerinyellow" then
@@ -97,6 +96,11 @@ local jokerinyellow = {
                             return true
                         end
                     })) 
+                end
+            end
+            for i, v2 in pairs(G.hand.cards) do
+                if v2:is_suit("Diamonds") then
+                    total = total + 1
                 end
             end
             if total >= 7 then card:start_dissolve() end

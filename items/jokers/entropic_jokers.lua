@@ -1162,6 +1162,47 @@ local katarraktis = {
         art = {"cassknows"}
     }
 }
+
+local apeirostemma = {
+    order = 410,
+    object_type = "Joker",
+    key = "apeirostemma",
+    rarity = "entr_hyper_exotic",
+    cost = 150,
+    
+    eternal_compat = true,
+    blueprint_compat = true,
+    pos = { x = 3, y = 3 },
+    config = {
+        basetriggers=1
+    },
+    dependencies = {
+        items = {
+            "set_entr_entropic"
+        }
+    },
+    soul_pos = { x = 5, y = 3, extra = { x = 4, y = 3 } },
+    atlas = "exotic_jokers",
+}
+local ref = create_card_for_shop
+function create_card_for_shop(area)
+    local card = ref(area)
+    if HasJoker("j_entr_apeirostemma") then
+        for i = 1, 4 + HasJoker("j_entr_apeirostemma") do
+            if not card.glitchedcrown then
+                card.glitchedcrown = {}
+            end
+            card.glitchedcrown[#card.glitchedcrown+1] = pseudorandom_element(G.P_CENTER_POOLS[card.config.center.set], pseudokey("gcrown")).key
+            card.glitcheddt = 0.1 + 5/(4 + HasJoker("j_entr_apeirostemma"))
+        end
+    end
+end
+local ref = Card.update
+function Card:update(dt)
+    if self.area == G.shop_jokers or self.area == G.shop_booster or self.area == G.shop_vouchers then
+        card.gdt2 = (card.gdt2 or 0) + 1
+    end
+end
 local items = {
     epitachyno,
     helios,
@@ -1173,6 +1214,7 @@ local items = {
     exousia,
     akyros,
     katarraktis,
+    apeirostemma
     blind_type
 }
 return {
