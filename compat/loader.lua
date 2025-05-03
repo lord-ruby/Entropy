@@ -184,6 +184,7 @@ function SMODS.injectItems(...)
     })
     SMODS.ObjectTypes.BlindTokens:inject()
     Entropy.ReverseFlipsideInversions()
+    G.ASSET_ATLAS["cry_gameset"] = Entropy.GamesetAtlas
 end
 
 

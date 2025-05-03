@@ -1783,14 +1783,14 @@ local decs = {
 			},
 			cry_intro_5 = {
 				"As you might be able to tell by these",
-				"{C:entr_hyper_exotic}gamesets{}, I like the letter {C:attention}M{}.",
+				"{C:entr_hyper_exotic}gamesets{}, I like the letter {C:attention}E{}.",
 				"Select a gameset for me to explain...",
 				"{s:0.8}Note: Gameset balancing is a heavy work in progress.",
 				"{s:0.8}Expect things to change frequently!",
 			},
 			cry_modest_1 = {
 				"Seeking an experience close to vanilla?",
-				"Then the {C:entr_hyper_exotic}Modest{} gameset is for you!",
+				"Then the {C:entr_hyper_exotic}Ethereal{} gameset is for you!",
 			},
 			cry_modest_2 = {
 				"Still, be careful of the gimmicks hiding",
@@ -1813,7 +1813,7 @@ local decs = {
 			},
 			cry_madness_1 = {
 				"You lookin' to completely {C:red,E:1}annihilate{} your hard drive?",
-				"Oh, how fun! The {C:entr_hyper_exotic}Madness{} gameset says",
+				"Oh, how fun! The {C:entr_hyper_exotic}Exalted{} gameset says",
 				"'Balance? {E:1,C:red}WHAT'S THAT!?{}'",
 			},
 			cry_madness_2 = {
@@ -1914,6 +1914,15 @@ local decs = {
 			b_definitions = "Definitions",
 			entr_ascended = "Ascended!",
 			k_entr_freebird = "Antireal (Freebird by Lynyrd Skynyrd - Copyrighted)",
+
+			cry_gameset_modest = "Ethereal",
+			cry_gameset_mainline = "Elysian",
+			cry_gameset_madness = "Exalted",
+			cry_gameset_custom = "Emergent",
+
+			b_reset_gameset_modest = "Reset Gameset Config (Ethereal)",
+			b_reset_gameset_mainline = "Reset Gameset Config (Elysian)",
+			b_reset_gameset_madness = "Reset Gameset Config (Exalted)",
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",
@@ -1959,7 +1968,7 @@ for i, v in pairs(decs.descriptions.Blind) do
 	local text = {}
 	for i2, v2 in pairs(v.text or {}) do text[#text+1]=v2 end
 	CBlind["c_entr_"..i] = {
-		name=v.name.." Token",
+		name=(v.name or "Blind").." Token",
 		text={
 			"Use to change the upcoming Blind",
 		}
@@ -1969,7 +1978,7 @@ for i, v in pairs(G.localization.descriptions.Blind) do
 	local text = {}
 	for i2, v2 in pairs(v.text or {}) do text[#text+1]=v2 end
 	CBlind["c_entr_"..i] = {
-		name=v.name.." Token",
+		name=(v.name or "Blind").." Token",
 		text={
 			"Use to change the upcoming Blind",
 		}

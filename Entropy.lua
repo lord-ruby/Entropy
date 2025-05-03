@@ -824,3 +824,9 @@ end
 for i, v in pairs(SMODS.Blind.obj_table) do
     Cryptid.pointerblistify(i)
 end
+Entropy.GamesetAtlas = SMODS.Atlas({
+	key = "gameset",
+	path = "entr_gameset.png",
+	px = 29,
+	py = 29,
+})
