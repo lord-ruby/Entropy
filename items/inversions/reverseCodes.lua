@@ -688,10 +688,14 @@ function Game:update(dt)
         end
         hand_dt2 = 0
     end
-    if G.STATE == nil and G.pack_cards == nil and G.GAME.DefineBoosterState then
+    if G.STATE == nil and (G.pack_cards == nil or #G.pack_cards == 0) and G.GAME.DefineBoosterState then
         G.STATE = G.GAME.DefineBoosterState
         G.STATE_COMPLETE = false
         G.GAME.DefineBoosterState = nil
+    end
+    if G.STATE == nil and not G.DefineBoosterState then
+        G.STATE = 1
+        G.STATE_COMPLETE = false
     end
     if G.hand and #G.hand.highlighted <= 0 and G.play and #G.play.cards <= 0 then
         if G.GAME.current_round.current_hand.entr_trans_num_text ~= "" or G.GAME.current_round.current_hand.cry_asc_num_text ~= "" then
