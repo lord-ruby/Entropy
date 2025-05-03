@@ -81,10 +81,10 @@ if SMODS and SMODS.calculate_individual_effect then
         end
         if (key == 'asc') or (key == 'asc_mod') then
             local e = card_eval_status_text
-            local orig = G.GAME.asc_power_hand or 0
-            G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand or 1) * to_big(amount)
+            local orig = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num)
+            G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num) * to_big(amount)
             if G.GAME.current_round.current_hand.cry_asc_num == 0 then G.GAME.current_round.current_hand.cry_asc_num = 1 end
-            G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (to_big(G.GAME.current_round.current_hand.cry_asc_num) * G.GAME.asc_power_hand) .. ")"
+            G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (to_big(G.GAME.asc_power_hand)) .. ")"
             card_eval_status_text = function() end
             scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
             scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
@@ -96,9 +96,9 @@ if SMODS and SMODS.calculate_individual_effect then
         end
         if (key == 'plus_asc') or (key == 'plusasc_mod') then
             local e = card_eval_status_text
-            local orig = G.GAME.asc_power_hand or 0
-            G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand or 0) + to_big(amount)
-            G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (to_big(G.GAME.current_round.current_hand.cry_asc_num) + G.GAME.asc_power_hand) .. ")"
+            local orig = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num)
+            G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num) + to_big(amount)
+            G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (to_big(G.GAME.asc_power_hand)) .. ")"
             card_eval_status_text = function() end
             scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
             scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
@@ -110,10 +110,10 @@ if SMODS and SMODS.calculate_individual_effect then
         end
         if (key == 'exp_asc') or (key == 'exp_asc_mod') then
             local e = card_eval_status_text
-            local orig = G.GAME.asc_power_hand or 0
-            G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand or 0) ^ to_big(amount)
+            local orig = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num)
+            G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num) ^ to_big(amount)
             if G.GAME.current_round.current_hand.cry_asc_num == 0 then G.GAME.current_round.current_hand.cry_asc_num = 1 end
-            G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (to_big(G.GAME.current_round.current_hand.cry_asc_num) ^ to_big(G.GAME.asc_power_hand)) .. ")"
+            G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (to_big(G.GAME.asc_power_hand)) .. ")"
             card_eval_status_text = function() end
             scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
             scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)

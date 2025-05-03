@@ -767,54 +767,37 @@ local fork = {
         if area then
 			area:remove_from_highlighted(card)
 		end
-        if G.hand.highlighted[1] then
-            local card = copy_card(G.hand.highlighted[1])
-			G.E_MANAGER:add_event(Event({
-                trigger="immediate",
-				func = function()
-                    local ed = pseudorandom_element(G.P_CENTERS)
-                    while ed.set ~= "Enhanced" do
-                        ed = pseudorandom_element(G.P_CENTERS)
-                    end
-                    card:set_ability(ed)
-                    card:set_edition({
-                        cry_glitched = true,
-                    })
-					card:add_to_deck()
-					table.insert(G.playing_cards, card)
-					G.hand:emplace(card)
-					playing_card_joker_effects({ card })
-					return true
-				end,
-			}))
-        end
-        if G.pack_cards and #G.pack_cards.highlighted then
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					local card = copy_card(G.pack_cards.highlighted[1])
-                    card:set_edition({
-                        cry_glitched = true,
-                    })
-                    local ed = pseudorandom_element(G.P_CENTERS)
-                    while ed.set ~= "Enhanced" do
-                        ed = pseudorandom_element(G.P_CENTERS)
-                    end
-                    card:set_ability(ed)
-					card:add_to_deck()
-					table.insert(G.playing_cards, card)
-					G.deck:emplace(card)
-					playing_card_joker_effects({ card })
-					return true
-				end,
-			}))
+        local total, cards = Entropy.GetHighlightedCards({G.hand, G.pack_cards}, {c_entr_fork=true})
+        if total > 0 then
+            for i, orig in pairs(cards) do
+                local card = copy_card(orig)
+                G.E_MANAGER:add_event(Event({
+                    trigger="immediate",
+                    func = function()
+                        local ed = pseudorandom_element(G.P_CENTERS)
+                        while ed.set ~= "Enhanced" do
+                            ed = pseudorandom_element(G.P_CENTERS)
+                        end
+                        card:set_ability(ed)
+                        card:set_edition({
+                            cry_glitched = true,
+                        })
+                        card:add_to_deck()
+                        table.insert(G.playing_cards, card)
+                        orig.area:emplace(card)
+                        playing_card_joker_effects({ card })
+                        return true
+                    end,
+                }))
+            end
         end
     end,
     can_use = function(self, card)
-        if not G.pack_cards and G.STATE ~= 999 then
-            return #G.hand.highlighted == 1 or (G.pack_cards and #G.pack_cards.highlighted == 1)
-        else 
-            return false
+        local num, cards = Entropy.GetHighlightedCards({G.hand, G.pack_cards}, {c_entr_fork=true})
+        for i, v in pairs(cards) do
+            if v.area == G.pack_cards and not v.base.suit then num = num - 1 end
         end
+        return num <= card.ability.extra and num > 0
     end,
     loc_vars = function(self, q, card)
         return {
