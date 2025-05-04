@@ -402,7 +402,12 @@ local oinac = {
 				colour = { 0.8, 0.45, 0.85, 1 }, --plasma colors
 			}
         end
-    end
+    end,
+	entr_credits = {
+		idea = {
+			"cassknows",
+		},
+	},
 }
 
 local entropy_card = {
