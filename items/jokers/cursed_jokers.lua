@@ -27,7 +27,7 @@ local jokerinyellow = {
         q[#q+1] = {key ="temporary", set="Other"}
         return {
             vars = {
-                math.min(cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)*2, card.ability.extra.odds),
+                math.min(cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds),
                 card.ability.extra.odds,
             }
         }
