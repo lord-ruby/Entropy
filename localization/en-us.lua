@@ -632,14 +632,24 @@ local decs = {
 			},
 		},
 		RTarot = {
-			c_entr_fool = {
-				name = "The Fool?",
+			c_entr_master = {
+				name = "The Master",
 				text = {
-					"Reverse {C:attention}1{} selected",
-					"Tarot or Reverse Tarot"
+					"Creates the last",
+					"{C:red}Inverted{} card",
+					"used during this run",
+					"{s:0.8,C:red}The Master{} {s:0.8}excluded{}"
+				}
+			},
+			c_entr_statue = {
+				name = "The Statue",
+				text = {
+					"Convert {C:attention}#1#{} random card#<s>1#",
+					"in the whole deck to {C:attention}#2#{}",
+					"selected card#<s>2# then transform the",
+					"selected card#<s>2# into a blank {C:attention}Stone Card{}"
 				}
 			}
-			
 		},
 		Voucher = {
 			v_entr_marked = {
@@ -1376,17 +1386,6 @@ local decs = {
 					"{C:attention}#1#{} selected cards in hand",
 				}
 			},
-		},
-		RTarot = {
-			c_entr_master = {
-				name = "The Master",
-				text = {
-					"Creates the last",
-					"{C:red}Inverted{} card",
-					"used during this run",
-					"{s:0.8,C:red}The Master{} {s:0.8}excluded{}"
-				}
-			}
 		},
 		Stake = {
 			stake_entr_entropic = {

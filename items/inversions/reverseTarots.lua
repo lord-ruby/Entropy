@@ -41,7 +41,7 @@ local master = {
     set = "RTarot",
     atlas = "rtarot",
     object_type = "Consumable",
-    order = -901,
+    order = -900,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -110,8 +110,56 @@ G.FUNCS.use_card = function(e, mute, nosave)
     end
     ref(e, mute, nosave)
 end
+
+local statue = {
+    key = "statue",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -901+13,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        convert_per = 3,
+        select = 1
+    },
+    pos = {x=3,y=1},
+    use = function(self, card2)
+        local num, cards = Entropy.GetHighlightedCards({G.hand}, {c_entr_statue=true})
+        Entropy.FlipThen(cards, function(card)
+            card:set_ability(G.P_CENTERS.m_stone)
+            card:set_edition()
+            card.seal = nil
+        end)
+        G.E_MANAGER:add_event(Event({
+			func = function()
+                for i = 1, card2.ability.convert_per do
+                    local card3 = pseudorandom_element(G.deck.cards, pseudoseed("statue"))
+                    copy_card(#cards == 1 and #cards[1] or pseudorandom_element(cards, pseudoseed("statue")), card3)
+                end
+            end
+        }))
+    end,
+    can_use = function(self, card)
+        local num = Entropy.GetHighlightedCards({G.hand}, {c_entr_statue=true})
+        return num > 0 and num <= card.ability.select and #G.hand.cards > 0
+    end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.m_stone
+        return {
+            vars = {
+                card.ability.convert_per,
+                card.ability.select
+            }
+        }
+    end
+}
 return {
     items = {
-        master
+        master,
+        statue
     }
 }
