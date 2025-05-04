@@ -143,15 +143,9 @@ function SMODS.injectItems(...)
         "j_cry_biggestm",
         "j_cry_jollysus",
         "j_cry_demicolon",
-        "j_cry_stella_mortis",
         "j_cry_python",
-        "j_cry_primus",
-        "j_cry_circulus_pistoris",
-        "j_entr_stillicidium",
         "j_entr_surreal_joker",
-        "j_entr_xekanos",
         "j_entr_burnt_m",
-        "j_entr_anaptyxi",
         "j_entr_chaos",
         "j_entr_strawberry_pie"
     }
