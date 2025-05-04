@@ -504,7 +504,6 @@ local oldfunc = Game.main_menu
 			{ bypass_discovery_center = true }
 		)
             for i, v in pairs(G.title_top.cards) do
-                if v.config.center.key == "c_cryptid" then v:start_dissolve() end
                 if v.base and v.base.value and v.base.value == "Ace" then v:set_edition("e_entr_solar") end
             end
 		-- recenter the title
