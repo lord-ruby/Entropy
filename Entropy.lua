@@ -82,7 +82,7 @@ if SMODS and SMODS.calculate_individual_effect then
         if (key == 'asc') or (key == 'asc_mod') then
             local e = card_eval_status_text
             local orig = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num)
-            G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num) * to_big(amount)
+            G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 1) + G.GAME.current_round.current_hand.cry_asc_num) * to_big(amount)
             if G.GAME.current_round.current_hand.cry_asc_num == 0 then G.GAME.current_round.current_hand.cry_asc_num = 1 end
             G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (to_big(G.GAME.asc_power_hand)) .. ")"
             card_eval_status_text = function() end

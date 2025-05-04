@@ -62,12 +62,19 @@ local oekrep = {
 
 local add_ref = CardArea.emplace
 function CardArea:emplace(card, location, stay_flipped)
-    add_ref(self, card, location, stay_flipped)
+
     if self == G.hand and G.hand and G.GAME.h_side_mult and G.GAME.h_side_mult ~= 1 then
         G.hand.config.card_limit = G.hand.config.card_limit + 1 - 1/(G.GAME.h_side_mult)
         if G.hand.config.card_limit - #G.hand.cards >= 4 then
             G.FUNCS.draw_from_deck_to_hand(1)
         end
+    end
+    if G.consumeables and self == G.consumeables and card and card.config.center.set == "Joker" then
+        add_ref(G.jokers, card, location, stay_flipped)
+    elseif G.jokers and self == G.jokers and card and card.ability.consumeable then
+        add_ref(G.consumeables, card, location, stay_flipped)
+    else
+        add_ref(self, card, location, stay_flipped)
     end
 end
 local remove_ref = CardArea.remove_card
