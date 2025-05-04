@@ -355,7 +355,7 @@ G.FUNCS.define_apply = function()
 					local _ed = ""
 					local _seal = ""
 					local _stickers = {}
-                    local card = GetSelectedCard()
+                    local card = Entropy.GetHighlightedCard({G.hand, G.pack_cards, G.jokers, G.consumeables, G.shop_jokers, G.shop_booster, G.shop_vouchers})
 					for m = #words, 1, -1 do
 						-- we have a word. figure out what that word is
 						-- this is dodgy spaghetti but w/ever

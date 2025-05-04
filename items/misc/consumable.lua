@@ -91,7 +91,7 @@ local flipside = {
     name = "entr-Flipside",
     pos = {x=3,y=0},
     use = function(self, card, area, copier)
-        local c, a, i = GetSelectedConsumable()
+        local c, a, i = Entropy.GetHighlightedCard({G.hand, G.jokers, G.shop_jokers, G.hand, G.pack_cards, G.shop_booster, G.shop_vouchers, G.consumeables}, nil, card)
         if c and c.config.center and c.config.center.key == "c_entr_flipside" then
             c:shatter()
             card:shatter()
@@ -155,62 +155,6 @@ function GetID(id)
     for i, v in pairs(G.P_CENTERS) do if v.name == id then return i end end
     return id
 end
-function GetSelectedConsumable()
-    if #G.hand.highlighted > 0 then
-        for i, v in pairs(G.hand.highlighted) do
-            if v.ability.consumeable and GetID(v.ability.name) ~= "c_entr_flipside" then
-                return v, G.hand, i
-            end
-        end
-    end
-    if G.pack_cards and #G.pack_cards.highlighted > 0 then
-        for i, v in pairs(G.pack_cards.highlighted) do
-            if v.config.center.name ~= "entr-flipside" and not banned_sets[v.config.center.set] then
-                return v, G.pack_cards, i
-            end
-        end
-    end
-    if G.shop_jokers and #G.shop_jokers.highlighted > 0 then
-        for i, v in pairs(G.shop_jokers.highlighted) do
-            if v.config.center.name ~= "entr-flipside" and not banned_sets[v.config.center.set] then
-                return v, G.shop_jokers, i
-            end
-        end
-    end
-    if #G.consumeables.highlighted > 0 then
-        for i, v in pairs(G.consumeables.highlighted) do
-            if v.config.center.name ~= "entr-flipside" then
-                return v, G.consumeables, i
-            end
-        end
-    end
-    return nil
-end
-function GetHighlightedConsumables()
-    local total  = 0
-    if #G.consumeables.highlighted > 0 then
-        for i, v in pairs(G.consumeables.highlighted) do
-            if v.config.center.name ~= "entr-flipside" then
-                total = total + 1
-            end
-        end
-    end
-    if G.shop_jokers and #G.shop_jokers.highlighted > 0 then
-        for i, v in pairs(G.shop_jokers.highlighted) do
-            if v.config.center.name ~= "entr-flipside" and not banned_sets[v.config.center.set] then
-                total = total + 1
-            end
-        end
-    end
-    if G.pack_cards and #G.pack_cards.highlighted > 0 then
-        for i, v in pairs(G.pack_cards.highlighted) do
-            if v.config.center.name ~= "entr-flipside" and not banned_sets[v.config.center.set] then
-                total = total + 1
-            end
-        end
-    end
-    return total
-end
 function CreateShopInversion(key, set, area)
 
     local forced_tag = nil
@@ -239,8 +183,6 @@ end
 function HasFlipside()
     if G.consumeables and G.consumeables.cards then for i, v in pairs(G.consumeables.cards) do if v.config.center.name == "entr-Flipside" then return true end end end
     if G.pack_cards and G.pack_cards.cards then for i, v in pairs(G.pack_cards.cards) do if v.config.center.name == "entr-Flipside" then return true end end end
-    --ccd support
-    if G.deck and G.deck.cards then for i, v in pairs(G.deck.cards) do if v.ability.consumeable and v.ability.name == "entr-Flipside" then return true end end end
     if G.hand and G.hand.cards then for i, v in pairs(G.hand.cards) do if v.ability.consumeable and v.ability.name == "entr-Flipside" then return true end end end
 end
 

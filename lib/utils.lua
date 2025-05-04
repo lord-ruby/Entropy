@@ -243,7 +243,7 @@ function Entropy.SealSpectral(key, sprite_pos, seal,order)
         --soul_pos = { x = 5, y = 0},
         use = Entropy.ModifyHandCard({seal=seal}),
         can_use = function(self, card)
-            local num = Entropy.GetHighlightedCards({G.hand}, {[key]=true})
+            local num = Entropy.GetHighlightedCards({G.hand}, nil, card)
             return num > 0 and num <= card.ability.highlighted
         end,
         loc_vars = function(self, q, card)

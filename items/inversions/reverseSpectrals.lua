@@ -79,7 +79,8 @@ local rend = {
     --soul_pos = { x = 5, y = 0},
     use = Entropy.ModifyHandCard({enhancement="m_entr_flesh"}),
     can_use = function(self, card)
-        return G.hand and #G.hand.highlighted > 0 and #G.hand.highlighted <= card.ability.num
+        local num = Entropy.GetHighlightedCards({G.hand}, nil, card)
+        return num > 0 and num <= card.ability.num
 	end,
     loc_vars = function(self, q, card)
         q[#q+1]=G.P_CENTERS.m_entr_flesh
@@ -351,7 +352,8 @@ local pact = {
         end
     end,
     can_use = function(self, card)
-        return G.hand and #G.hand.highlighted <= card.ability.selected and #G.hand.highlighted > 0
+        local num = Entropy.GetHighlightedCards({G.hand}, nil, card)
+        return num <= card.ability.selected and num > 0
 	end,
     loc_vars = function(self, q, card)
         return {
@@ -576,7 +578,8 @@ local rejuvenate = {
         ease_dollars(card2.ability.dollars)
     end,
     can_use = function(self, card)
-        return G.hand and #G.hand.highlighted <= 1 and #G.hand.highlighted > 0
+        local num = Entropy.GetHighlightedCards({G.hand}, nil, card)
+        return num <= 1 and num > 0
 	end,
     loc_vars = function(self, q, card)
         return {
@@ -736,7 +739,8 @@ local entropy = {
         end)
     end,
     can_use = function(self, card)
-        return G.hand and #G.hand.highlighted <= card.ability.select and #G.hand.highlighted > 0
+        local num = Entropy.GetHighlightedCards({G.hand}, nil, card)
+        return num <= card.ability.select and num > 0
 	end,
     loc_vars = function(self, q, card)
         return {
@@ -1084,8 +1088,8 @@ local fusion = {
             cards[i] = G.hand.cards[i] 
         end
         Entropy.FlipThen(cards, function(card,area)
-            local sel = GetSelectedCard()
-            local enhancement_type = sel.config.center.set
+            local sel = Entropy.GetHighlightedCard({G.jokers, G.consumeables, G.hand}, {c_base=true}, card)
+            local enhancement_type = sel.ability and sel.ability.set or sel.config.center.set
             if sel.area == G.hand then
                 SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("fusion")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("fusion")))
                 card:set_ability(G.P_CENTERS.c_base)
@@ -1099,7 +1103,7 @@ local fusion = {
         end)
     end,
     can_use = function(self, card)
-        return G.hand and #G.hand.cards > 0 and Entropy.GetHighlightedCards(nil, nil, card) == 2
+        return G.hand and #G.hand.cards > 0 and Entropy.GetHighlightedCards({G.jokers, G.consumeables, G.hand}, {c_base=true}, card) == 1
 	end,
     loc_vars = function(self, q, card)
         return {

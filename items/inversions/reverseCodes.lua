@@ -350,7 +350,7 @@ local constant = {
         end
     end,
     can_use = function(self, card)
-        return #G.hand.highlighted == 1
+        return Entropy.GetHighlightedCards({G.hand}, nil, card) == 1
 	end,
     loc_vars = function(self, q, card)
         return {
@@ -509,7 +509,7 @@ local inherit = {
 		G.CHOOSE_ENH:align_to_major()
     end,
     can_use = function(self, card)
-        return #G.hand.highlighted == 1 and G.hand.highlighted[1].config.center.key ~= "c_base"
+        return Entropy.GetHighlightedCards({G.hand}, {c_base=true}, card) == 1
 	end,
     loc_vars = function(self, q, card)
         return {
@@ -707,7 +707,8 @@ function Game:update(dt)
     end
 end
 function FindPush()
-    if GetSelectedCard() and GetSelectedCard().config.center.key == "c_entr_push" then return GetSelectedCard() end
+    local card = Entropy.GetHighlightedCard({G.hand, G.consumeables, G.pack_cards})
+    if card and card.config.center.key == "c_entr_push" then return card end
     for i, v in pairs(G.consumeables.cards) do
         if v.config.center.key == "c_entr_push" then return v end
     end
@@ -1658,7 +1659,7 @@ local hotfix = {
         Entropy.ApplySticker(Entropy.GetHighlightedCard({G.hand, G.jokers, G.consumeables}, nil, card), "entr_hotfix")
     end,
     can_use = function(self, card)
-        return Entropy.GetHighlightedCard({G.hand, G.jokers, G.consumeables}, nil, card)
+        return Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, nil, card) == 1
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "entr_hotfix", set="Other"}
@@ -1761,7 +1762,7 @@ local ctrl_x = {
             area:align_cards()
             G.GAME.ControlXCard = nil
         else
-            local card2 = GetSelectedCard()
+            local card2 = Entropy.GetHighlightedCard({G.hand, G.jokers, G.shop_jokers, G.pack_cards, G.shop_booster, G.shop_vouchers, G.consumeables})
             local area2 = nil
             for i, v in pairs(G) do
                 if v == card2.area then area2 = i end
@@ -1789,7 +1790,8 @@ local ctrl_x = {
         end
     end,
     can_use = function(self, card)
-        return (GetSelectedCard() and GetSelectedCards() == 2) or (G.GAME.ControlXCard)
+        return (Entropy.GetHighlightedCards({G.hand, G.jokers, G.shop_jokers, G.pack_cards, G.shop_booster, G.shop_vouchers, G.consumeables}, nil, card) == 1) 
+        or (G.GAME.ControlXCard)
 	end,
     loc_vars = function(self, q, card)
         return {
@@ -1835,7 +1837,7 @@ local multithread = {
         end 
     end,
     can_use = function(self, card)
-        return #G.hand.highlighted > 0
+        return Entropy.GetHighlightedCards({G.hand}, nil, card) > 0
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "temporary", set="Other"}
@@ -2170,35 +2172,6 @@ local DefineBlacklist = {
     ["p_cry_empowered"] = true
 }
 for i, v in pairs(DefineBlacklist) do Entropy.DefineBlacklist[i] = v end
-function GetSelectedCard()
-    for i, v in pairs({G.consumeables, G.jokers, G.pack_cards, G.hand}) do
-        if type(v) == "table" and v.cards and v.highlighted then
-            if #v.highlighted > 0 then
-                for j, c in pairs(v.highlighted) do
-                    if c.ability.name ~= "entr-Define" and not Entropy.DefineBlacklist[c.config.center.key] then
-                        return c
-                    end
-                end
-            end
-        end
-    end
-    if #G.jokers.highlighted > 0 then
-        for j, c in pairs(G.jokers.highlighted) do
-            if c.ability.name ~= "entr-Define" and not Entropy.DefineBlacklist[c.config.center.key] then
-                return c
-            end
-        end
-    end
-end
-function GetSelectedCards()
-    local total = 0
-    for i, v in pairs({G.jokers, G.consumeables, G.pack_cards, G.hand}) do
-        if v.highlighted then
-            total = total + #v.highlighted
-        end
-    end
-    return total
-end
 local matref = Card.set_ability
 function Card:set_ability(center, initial, delay_sprites)
     if G.SETTINGS.paused then             matref(self, center or {}, initial, delay_sprites)
