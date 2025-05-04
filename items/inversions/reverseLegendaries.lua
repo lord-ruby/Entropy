@@ -416,7 +416,7 @@ local entropy_card = {
     key = "entropy_card",
     config = {
         x_asc_mod = 1,
-        num = 126
+        num = 155
     },
     dependencies = {
         items = {
