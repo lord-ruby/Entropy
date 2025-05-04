@@ -689,23 +689,23 @@ local lotteryticket = {
         if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
             G.E_MANAGER:add_event(Event({
                 func = function()
-                    ease_dollars(-card.ability.extra.lose)
                     if pseudorandom("lottery")
                     < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
                         if pseudorandom("lottery")
                         < cry_prob(card.ability.cry_prob, card.ability.extra.odds2, card.ability.cry_rigged) / card.ability.extra.odds2 then
-                            ease_dollars(card.ability.extra.payoutlarge)
+                            ease_dollars(card.ability.extra.payoutlarge-card.ability.extra.lose)
                         else
-                            ease_dollars(card.ability.extra.payoutsmall)
+                            ease_dollars(card.ability.extra.payoutsmall-card.ability.extra.lose)
                         end
+                    else
+                        ease_dollars(-card.ability.extra.lose)
                     end
                     return true
                 end
             }))
         end
         if context.forcetrigger then
-            ease_dollars(-card.ability.extra.lose)
-            ease_dollars(card.ability.extra.payoutlarge)
+            ease_dollars(card.ability.extra.payoutlarge-card.ability.extra.lose)
         end
     end,
 }
