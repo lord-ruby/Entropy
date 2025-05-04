@@ -865,7 +865,7 @@ function Entropy.GetGlitchedCrown(card)
         end
         card.glitchedcrown[1] = card.config.center.key
         card.glitchedcrown[#card.glitchedcrown+1] = pseudorandom_element(G.P_CENTER_POOLS[set], pseudoseed("gcrown")).key
-        while G.P_CENTERS[card.glitchedcrown[#card.glitchedcrown]].no_doe then
+        while G.P_CENTERS[card.glitchedcrown[#card.glitchedcrown]].no_doe do
             card.glitchedcrown[#card.glitchedcrown] = pseudorandom_element(G.P_CENTER_POOLS[set], pseudoseed("gcrown")).key
         end
         card.glitcheddt = 2 + 5/(4 + HasJoker("j_entr_apeirostemma"))

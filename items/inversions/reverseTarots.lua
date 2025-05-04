@@ -30,11 +30,11 @@ SMODS.ConsumableType({
 -- 19 - Sun -     Mountain --cassknows & lfmoth
 -- 20 - Judgement -     Forgiveness
 -- 21 - World -     Tent
--- 23 - Eclipse -     Noon (Zenith) [Penumbra] {Umbra} <Bra> 'Shadow'
--- 29 - Seraph -     Imp --lfmoth
--- 29 - Instability -     Equality
--- 28 - Blessing -     Prophecy
--- 27 - Automaton -     Mallet
+-- 22 - Eclipse -     Noon (Zenith) [Penumbra] {Umbra} <Bra> 'Shadow'
+-- 23 - Blessing -     Prophecy
+-- 24 - Seraph -     Imp --lfmoth
+-- 25 - Instability -     Equality
+-- 32 - Automaton -     Mallet
 SMODS.Atlas { key = 'rtarot', path = 'reverse_tarots.png', px = 71, py = 95 }
 local master = {
     key = "master",
