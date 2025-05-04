@@ -1190,8 +1190,8 @@ G.FUNCS.reroll_shop = function(e)
     if G.GAME.current_round.reroll_cost > 0 then 
       inc_career_stat('c_shop_dollars_spent', G.GAME.current_round.reroll_cost)
       inc_career_stat('c_shop_rerolls', 1)
-      ease_dollars(-G.GAME.current_round.reroll_cost)
     end
+    ease_dollars(-G.GAME.current_round.reroll_cost)
     G.E_MANAGER:add_event(Event({
         trigger = 'immediate',
         func = function()
