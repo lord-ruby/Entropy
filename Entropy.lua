@@ -5,7 +5,7 @@ local i = {
     "items/inversions/reverseLegendaries", 
     "items/jokers/exotic_jokers",
     "items/jokers/entropic_jokers",
-    --"items/inversions/reverseTarots",
+    "items/inversions/reverseTarots",
     "items/misc/consumable",
     "items/inversions/reversePlanets",
     "items/inversions/reverseSpectrals",
