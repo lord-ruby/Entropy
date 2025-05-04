@@ -1099,7 +1099,7 @@ local fusion = {
         end)
     end,
     can_use = function(self, card)
-        return G.hand and #G.hand.cards > 0 and Entropy.GetHighlightedCards() == 2
+        return G.hand and #G.hand.cards > 0 and Entropy.GetHighlightedCards(nil, nil, card) == 2
 	end,
     loc_vars = function(self, q, card)
         return {
@@ -1258,7 +1258,7 @@ local mimic = {
 	pos = {x=12,y=6},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
-        local orig = Entropy.GetHighlightedCard(nil, {["c_entr_mimic"]=true})
+        local orig = Entropy.GetHighlightedCard(nil, nil, card2)
         local newcard = copy_card(orig)
         newcard:add_to_deck()
         newcard.ability.perishable = true
@@ -1283,7 +1283,7 @@ local mimic = {
         end
     end,
     can_use = function(self, card)
-        return Entropy.GetHighlightedCards(nil, {["c_entr_mimic"]=true}) == card.ability.num
+        return Entropy.GetHighlightedCards(nil, nil, card) == card.ability.num
 	end,
     loc_vars = function(self, q, card)
         return {
@@ -1322,14 +1322,14 @@ local superego = {
 	pos = {x=8,y=6},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
-        local card = Entropy.GetHighlightedCard({G.jokers}, {["c_entr_mimic"]=true})
+        local card = Entropy.GetHighlightedCard({G.jokers}, nil, card2)
         card.ability.superego = true
         card.ability.superego_copies = 0
         card.debuff = true
         card.sell_cost = 0
     end,
     can_use = function(self, card)
-        return Entropy.GetHighlightedCards({G.jokers}, {["c_entr_mimic"]=true}) == card.ability.num
+        return Entropy.GetHighlightedCards({G.jokers}, nil, card) == card.ability.num
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = {key="superego", set="Other", vars = {0}}
@@ -1408,7 +1408,7 @@ local engulf = {
         end)
     end,
     can_use = function(self, card)
-        return Entropy.GetHighlightedCards({G.hand}, {["c_entr_engulf"]=true}) == card.ability.num
+        return Entropy.GetHighlightedCards({G.hand}, nil, card) == card.ability.num
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] =  G.P_CENTERS.e_entr_solar
@@ -1506,7 +1506,7 @@ local entomb = {
         end
     end,
     can_use = function(self, card)
-        return G.consumeables and Entropy.GetHighlightedCards({G.consumeables}, {c_entr_entomb=true}) > 0 and Entropy.GetHighlightedCards({G.consumeables}, {c_entr_entomb=true}) <= card.ability.num
+        return G.consumeables and Entropy.GetHighlightedCards({G.consumeables}, nil, card) > 0 and Entropy.GetHighlightedCards({G.consumeables}, nil, card) <= card.ability.num
 	end,
     loc_vars = function(self, q, card)
         return {
@@ -1533,7 +1533,7 @@ local conduct = {
 	pos = {x=10,y=6},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
-        local card = Entropy.GetHighlightedCard(nil, {c_entr_conduct = true})
+        local card = Entropy.GetHighlightedCard(nil, nil, card2)
         local area = card.area
         local edition = Entropy.FindPreviousInPool(card.edition.key, "Edition")
         local cards = {}
@@ -1548,14 +1548,14 @@ local conduct = {
         end)
     end,
     can_use = function(self, card)
-        return Entropy.GetHighlightedCards(nil, {c_entr_conduct = true}) == 1 and Entropy.GetHighlightedCard(nil, {c_entr_conduct = true}).edition
-        and Entropy.GetHighlightedCard(nil, {c_entr_conduct = true}).edition.key
+        return Entropy.GetHighlightedCards(nil, nil, card) == 1 and Entropy.GetHighlightedCard(nil, nil, card).edition
+        and Entropy.GetHighlightedCard(nil, nil, card).edition.key
 	end,
     loc_vars = function(self,q,card)
         local str = "none"
-        if Entropy.GetHighlightedCards(nil, {c_entr_conduct = true}) == 1 and Entropy.GetHighlightedCard(nil, {c_entr_conduct = true}).edition 
-            and Entropy.FindPreviousInPool(Entropy.GetHighlightedCard(nil, {c_entr_conduct = true}).edition.key, "Edition") then
-            str = G.localization.descriptions.Edition[Entropy.FindPreviousInPool(Entropy.GetHighlightedCard(nil, {c_entr_conduct = true}).edition.key, "Edition")].name
+        if Entropy.GetHighlightedCards(nil, nil, card) == 1 and Entropy.GetHighlightedCard(nil, nil, card).edition 
+            and Entropy.FindPreviousInPool(Entropy.GetHighlightedCard(nil, nil, card).edition.key, "Edition") then
+            str = G.localization.descriptions.Edition[Entropy.FindPreviousInPool(Entropy.GetHighlightedCard(nil, nil, card).edition.key, "Edition")].name
         end
         return {
             vars = {
@@ -1737,7 +1737,7 @@ local regenerate = {
 	pos = {x=8,y=8},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card, area, copier)
-        local _, cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeable}, {c_entr_regenerate=true})
+        local _, cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeable}, nil, card)
         Entropy.FlipThen(cards, function(card)
             if card.config.center.set == "Enhanced" then
                 if card.config.center.key == "m_entr_disavowed" then
@@ -1760,7 +1760,7 @@ local regenerate = {
         end)
     end,
     can_use = function(self, card)
-        local num = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeable}, {c_entr_regenerate=true})
+        local num = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeable}, nil, card)
         return num > 0 and num <= card.ability.limit
 	end,
     loc_vars = function(self, q, card)

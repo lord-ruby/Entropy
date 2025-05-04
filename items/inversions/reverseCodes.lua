@@ -767,7 +767,7 @@ local fork = {
         if area then
 			area:remove_from_highlighted(card)
 		end
-        local total, cards = Entropy.GetHighlightedCards({G.hand, G.pack_cards}, {c_entr_fork=true})
+        local total, cards = Entropy.GetHighlightedCards({G.hand, G.pack_cards}, nil, card)
         if total > 0 then
             for i, orig in pairs(cards) do
                 local card = copy_card(orig)
@@ -793,7 +793,7 @@ local fork = {
         end
     end,
     can_use = function(self, card)
-        local num, cards = Entropy.GetHighlightedCards({G.hand, G.pack_cards}, {c_entr_fork=true})
+        local num, cards = Entropy.GetHighlightedCards({G.hand, G.pack_cards}, nil, card)
         for i, v in pairs(cards) do
             if v.area == G.pack_cards and not v.base.suit then num = num - 1 end
         end
@@ -1103,10 +1103,10 @@ local invariant = {
     },
     pos = {x=4,y=3},
     use = function(self, card, area, copier)
-        Entropy.ApplySticker(Entropy.GetHighlightedCard({G.shop_jokers, G.shop_booster, G.shop_vouchers}), "entr_pinned")
+        Entropy.ApplySticker(Entropy.GetHighlightedCard({G.shop_jokers, G.shop_booster, G.shop_vouchers}, nil, card), "entr_pinned")
     end,
     can_use = function(self, card)
-        return Entropy.GetHighlightedCard({G.shop_jokers, G.shop_booster, G.shop_vouchers})
+        return Entropy.GetHighlightedCard({G.shop_jokers, G.shop_booster, G.shop_vouchers}, nil, card)
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "entr_pinned", set="Other"}
@@ -1655,10 +1655,10 @@ local hotfix = {
     atlas = "miscc",
     pos = {x=1,y=5},
     use = function(self, card, area, copier)
-        Entropy.ApplySticker(Entropy.GetHighlightedCard({G.hand, G.jokers, G.consumeables}, {"c_entr_hotfix"}), "entr_hotfix")
+        Entropy.ApplySticker(Entropy.GetHighlightedCard({G.hand, G.jokers, G.consumeables}, nil, card), "entr_hotfix")
     end,
     can_use = function(self, card)
-        return Entropy.GetHighlightedCard({G.hand, G.jokers, G.consumeables}, {"c_entr_hotfix"})
+        return Entropy.GetHighlightedCard({G.hand, G.jokers, G.consumeables}, nil, card)
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "entr_hotfix", set="Other"}
@@ -2144,7 +2144,7 @@ local local_card = {
         Entropy.FlipThen(G.hand.highlighted, function(card) card.ability.temporary = true end)
     end,
     can_use = function(self, card)
-        return G.hand and Entropy.GetHighlightedCards({G.hand}, {["c_entr_local"]=true}) > 0 and Entropy.GetHighlightedCards({G.hand}, {["c_entr_local"]=true}) <= card.ability.select
+        return G.hand and Entropy.GetHighlightedCards({G.hand}, nil, card) > 0 and Entropy.GetHighlightedCards({G.hand}, nil, card) <= card.ability.select
 	end,
     loc_vars = function(self, q, card)
         q[#q+1]={set="Other",key="temporary"}

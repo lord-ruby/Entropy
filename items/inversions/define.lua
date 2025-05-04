@@ -43,7 +43,7 @@ local define = {
 		G.CHOOSE_CARD:align_to_major()
     end,
     can_use = function(self, card)
-        local num = Entropy.GetHighlightedCards({G.hand, G.pack_cards, G.jokers, G.consumeables, G.shop_jokers, G.shop_booster, G.shop_vouchers}, {c_entr_define=true})
+        local num = Entropy.GetHighlightedCards({G.hand, G.pack_cards, G.jokers, G.consumeables, G.shop_jokers, G.shop_booster, G.shop_vouchers}, nil, card)
         return num > 0 and num <= 1
 	end,
     loc_vars = function(self, q, card)
@@ -167,7 +167,7 @@ end
 Cryptid.aliases["define"] = "#define"
 G.FUNCS.define_apply = function()
     local current_card
-    local card = Entropy.GetHighlightedCard({G.hand, G.pack_cards, G.jokers, G.consumeables, G.shop_jokers, G.shop_booster, G.shop_vouchers}, {c_entr_define=true})
+    local card = Entropy.GetHighlightedCard({G.hand, G.pack_cards, G.jokers, G.consumeables, G.shop_jokers, G.shop_booster, G.shop_vouchers})
     local entered_card = G.ENTERED_CARD
 
     G.PREVIOUS_ENTERED_CARD = G.ENTERED_CARD

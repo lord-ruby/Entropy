@@ -68,23 +68,23 @@ function Entropy.ApplySticker(card, key)
     end
 end
 
-function Entropy.GetHighlightedCard(areas, blacklist)
+function Entropy.GetHighlightedCard(areas, blacklist, cardblist)
     for i, v in pairs(areas or {G.hand, G.pack_cards, G.jokers, G.consumeables}) do
         if v.cards and v.highlighted then
             if #v.highlighted > 0 then
-                if not (blacklist or {})[v.highlighted[1].config.center.key] then return v.highlighted[1] end
+                if not (blacklist or {})[v.highlighted[1].config.center.key] and v ~= cardblist then return v.highlighted[1] end
             end
         end
     end
 end
-function Entropy.GetHighlightedCards(areas, blacklist)
+function Entropy.GetHighlightedCards(areas, blacklist, cardblist)
     local total = 0
     local cards = {}
     for i, v in pairs(areas or {G.hand, G.pack_cards, G.jokers, G.consumeables}) do
         if v.cards and v.highlighted then
             if #v.highlighted > 0 then
                 for i2, v2 in pairs(v.highlighted) do
-                    if not (blacklist or {})[v.highlighted[i2].config.center.key] then total=total+1;cards[#cards+1]=v2 end
+                    if not (blacklist or {})[v.highlighted[i2].config.center.key] and v2 ~= cardblist then total=total+1;cards[#cards+1]=v2 end
                 end
             end
         end

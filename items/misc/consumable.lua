@@ -133,7 +133,7 @@ local flipside = {
         end
 end,
     can_use = function(self, card)
-        local card2 = Entropy.GetHighlightedCard()
+        local card2 = Entropy.GetHighlightedCard(nil, nil, card)
         if card ~= card2 then
             return card2 and card2.config and Entropy.FlipsideInversions[card2.config.center.key] ~= nil
         end
@@ -1028,7 +1028,7 @@ local shatter = {
         end)
     end,
     can_use = function(self, card)
-        local num = Entropy.GetHighlightedCards({G.hand}, {c_entr_shatter=true})
+        local num = Entropy.GetHighlightedCards({G.hand}, nil, card)
         return num > 0 and num <= card.ability.limit
 	end,
     loc_vars = function(self, q, card)

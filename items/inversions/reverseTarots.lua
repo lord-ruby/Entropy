@@ -128,7 +128,7 @@ local statue = {
     },
     pos = {x=3,y=1},
     use = function(self, card2)
-        local num, cards = Entropy.GetHighlightedCards({G.hand}, {c_entr_statue=true})
+        local num, cards = Entropy.GetHighlightedCards({G.hand}, nil, card)
         Entropy.FlipThen(cards, function(card)
             card:set_ability(G.P_CENTERS.m_stone)
             card:set_edition()
@@ -144,7 +144,7 @@ local statue = {
         }))
     end,
     can_use = function(self, card)
-        local num = Entropy.GetHighlightedCards({G.hand}, {c_entr_statue=true})
+        local num = Entropy.GetHighlightedCards({G.hand}, nil, card)
         return num > 0 and num <= card.ability.select and #G.hand.cards > 0
     end,
     loc_vars = function(self, q, card)
