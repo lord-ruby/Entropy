@@ -853,3 +853,21 @@ function Entropy.GetRandomSet(parakmi)
         _type = Entropy.ChaosConversions[center.set] or center.set or _type
         return _type
 end
+
+function Entropy.GetGlitchedCrown(card)
+    for i = 1, 4 + HasJoker("j_entr_apeirostemma") do
+        if not card.glitchedcrown then
+            card.glitchedcrown = {}
+        end
+        local set = card.config.center.set 
+        if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi"))) then
+            set = Entropy.GetRandomSet(next(find_joker("j_entr_parakmi")))
+        end
+        card.glitchedcrown[1] = card.config.center.key
+        card.glitchedcrown[#card.glitchedcrown+1] = pseudorandom_element(G.P_CENTER_POOLS[set], pseudoseed("gcrown")).key
+        while G.P_CENTERS[card.glitchedcrown[#card.glitchedcrown]].no_doe then
+            card.glitchedcrown[#card.glitchedcrown] = pseudorandom_element(G.P_CENTER_POOLS[set], pseudoseed("gcrown")).key
+        end
+        card.glitcheddt = 2 + 5/(4 + HasJoker("j_entr_apeirostemma"))
+    end
+end

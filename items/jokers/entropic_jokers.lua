@@ -1182,18 +1182,7 @@ local ref = create_card
 function create_card(set, area, ...)
     local card = ref(set, area, ...)
     if HasJoker("j_entr_apeirostemma") and (area == G.shop_jokers or area == G.shop_booster or area == G.shop_vouchers) and G.shop_jokers then
-        for i = 1, 4 + HasJoker("j_entr_apeirostemma") do
-            if not card.glitchedcrown then
-                card.glitchedcrown = {}
-            end
-            local set = card.config.center.set 
-            if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi"))) then
-                set = Entropy.GetRandomSet(next(find_joker("j_entr_parakmi")))
-            end
-            card.glitchedcrown[1] = card.config.center.key
-            card.glitchedcrown[#card.glitchedcrown+1] = pseudorandom_element(G.P_CENTER_POOLS[set], pseudoseed("gcrown")).key
-            card.glitcheddt = 2 + 5/(4 + HasJoker("j_entr_apeirostemma"))
-        end
+        Entropy.GetGlitchedCrown(card)
     end
     return card
 end
@@ -1223,18 +1212,7 @@ function Card:update(dt)
                 end
             end
         elseif not self.glitchedcrown and HasJoker("j_entr_apeirostemma") then
-            for i = 1, 4 + HasJoker("j_entr_apeirostemma") do
-                if not self.glitchedcrown then
-                    self.glitchedcrown = {}
-                end
-                local set = self.config.center.set 
-                if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi"))) then
-                    set = Entropy.GetRandomSet(next(find_joker("j_entr_parakmi")))
-                end
-                self.glitchedcrown[1] = self.config.center.key
-                self.glitchedcrown[#self.glitchedcrown+1] = pseudorandom_element(G.P_CENTER_POOLS[set], pseudoseed("gcrown")).key
-                self.glitcheddt = 2 + 5/(4 + HasJoker("j_entr_apeirostemma"))
-            end
+            Entropy.GetGlitchedCrown(self)
         end
     end
 end
