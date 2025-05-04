@@ -1164,9 +1164,8 @@ local apeirostemma = {
     key = "apeirostemma",
     rarity = "entr_hyper_exotic",
     cost = 150,
-    
+    immutable = true,
     eternal_compat = true,
-    blueprint_compat = true,
     pos = { x = 3, y = 4 },
     config = {
         basetriggers=1
