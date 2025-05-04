@@ -281,6 +281,10 @@ local antireal = {
             }
         end
     end,
+    entr_credits = {
+	idea = {"cassknows"},
+	art = {"notmario", "cassknows"}
+    }
 }
 return {
     items = {
