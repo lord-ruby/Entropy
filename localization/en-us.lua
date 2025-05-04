@@ -434,6 +434,15 @@ local decs = {
 					"to a random card of any type.",
 					"Self destructs if {C:attention}7 Diamonds{} are held when hand played"
 				}
+			},
+			j_entr_apeirostemma = {
+				name = "Apeirostemma",
+				text = {
+					"Cards in the {C:attention}shop{}",
+					"now cycle between 5 random cards",
+					"of the same type",
+					"changing every {C:attention}2{} seconds"
+				}
 			}
 		},
 		Blind = {

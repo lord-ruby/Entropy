@@ -374,7 +374,7 @@ G.FUNCS.buy_deckorsleeve_from_shop = function(e)
     --G.GAME.DefineBoosterState = G.STATE
     --c1:open()
     ease_dollars(-c1.cost)
-    c1.area:remove_card(c1)
+    if c1.area then c1.area:remove_card(c1) end
     if c1.config.center.apply then
         c1.config.center:apply(false)
     end
@@ -450,7 +450,7 @@ G.FUNCS.buy_deckorsleeve = function(e)
     local c1 = e.config.ref_table
     --G.GAME.DefineBoosterState = G.STATE
     --c1:open()
-    c1.area:remove_card(c1)
+    if c1.area then c1.area:remove_card(c1) end
     if c1.config.center.apply then
         c1.config.center:apply(false)
     end

@@ -571,22 +571,14 @@ Entropy.ChaosBlacklist["Content Set"] = true
 Entropy.ParakmiBlacklist["Content Set"] = true
 Entropy.ParakmiBlacklist.Edition = true
 Entropy.ParakmiBlacklist.Default = true
+Entropy.ParakmiBlacklist.sleeve_casl_none = true
 Entropy.ChaosConversions.RCode = "Twisted"
 Entropy.ChaosConversions.RPlanet = "Twisted"
 Entropy.ChaosConversions.RSpectral = "Twisted"
 local ref = create_card
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
     if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi"))) and not forced_key then
-        local center = pseudorandom_element(G.P_CENTERS, pseudoseed("chaos"))
-        if next(find_joker("j_entr_chaos")) and not next(find_joker("j_entr_parakmi")) then
-            while not center.set or Entropy.ChaosBlacklist[center.set] or Entropy.ChaosBlacklist[center.key] do
-                center = pseudorandom_element(G.P_CENTERS, pseudoseed("chaos"))
-            end
-        end 
-        while not center.set or Entropy.ParakmiBlacklist[center.set] or Entropy.ParakmiBlacklist[center.key] or (MP and center.set == "CBlind") do
-            center = pseudorandom_element(G.P_CENTERS, pseudoseed("chaos"))
-        end
-        _type = Entropy.ChaosConversions[center.set] or center.set or _type
+        _type = Entropy.GetRandomSet(next(find_joker("j_entr_parakmi")))
     end
     if _type == "CBlind" then
         _type = "BlindTokens"
@@ -624,6 +616,9 @@ local parakmi = {
     end,
     calculate = function(self, card, context)
     end,
+    add_to_deck = function()
+        G.GAME.banned_keys["sleeve_casl_none"] = true
+    end
 }
 local emplace_ref = CardArea.emplace
 function CardArea:emplace(card, ...)
@@ -1172,7 +1167,7 @@ local apeirostemma = {
     
     eternal_compat = true,
     blueprint_compat = true,
-    pos = { x = 3, y = 3 },
+    pos = { x = 3, y = 4 },
     config = {
         basetriggers=1
     },
@@ -1181,7 +1176,7 @@ local apeirostemma = {
             "set_entr_entropic"
         }
     },
-    soul_pos = { x = 5, y = 3, extra = { x = 4, y = 3 } },
+    soul_pos = { x = 5, y = 4, extra = { x = 4, y = 4 } },
     atlas = "exotic_jokers",
 }
 local ref = create_card
@@ -1192,9 +1187,13 @@ function create_card(set, area, ...)
             if not card.glitchedcrown then
                 card.glitchedcrown = {}
             end
+            local set = card.config.center.set 
+            if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi"))) then
+                set = Entropy.GetRandomSet(next(find_joker("j_entr_parakmi")))
+            end
             card.glitchedcrown[1] = card.config.center.key
-            card.glitchedcrown[#card.glitchedcrown+1] = pseudorandom_element(G.P_CENTER_POOLS[card.config.center.set], pseudoseed("gcrown")).key
-            card.glitcheddt = 0.33 + 5/(4 + HasJoker("j_entr_apeirostemma"))
+            card.glitchedcrown[#card.glitchedcrown+1] = pseudorandom_element(G.P_CENTER_POOLS[set], pseudoseed("gcrown")).key
+            card.glitcheddt = 2 + 5/(4 + HasJoker("j_entr_apeirostemma"))
         end
     end
     return card
@@ -1203,15 +1202,57 @@ local ref = Card.update
 function Card:update(dt)
     ref(self, dt)
     if (self.area == G.shop_jokers or self.area == G.shop_booster or self.area == G.shop_vouchers) and G.shop_jokers then
-        if self.glitchedcrown then
+        if self.glitchedcrown and self.states.visible then
             self.gdt2 = (self.gdt2 or 0) + dt
             if self.gdt2 > self.glitcheddt then
+                local area = self.area
                 self.glitchedindex = (self.glitchedindex or 0) + 1
-                self:set_ability(G.P_CENTERS[self.glitchedcrown[(self.glitchedindex)%#self.glitchedcrown + 1]], true, false)
+                local center = G.P_CENTERS[self.glitchedcrown[(self.glitchedindex)%#self.glitchedcrown + 1]]
+                if center.soul_pos or center.key == "c_cry_gateway" or center.key == "c_entr_fervour" or center.key == "c_entr_beyond" then
+                    self:set_ability(center, true, false)
+                else
+                    self:set_ability(center, true, false)
+                end
+                self.area = area
                 self.gdt2 = 0
+                if self.children.buy_button then
+                    self.children.price:remove()
+                    self.children.price = nil
+                    self.children.buy_button:remove()
+                    self.children.buy_button = nil
+                    create_shop_card_ui(self, center.set, self.area)
+                end
+            end
+        elseif not self.glitchedcrown and HasJoker("j_entr_apeirostemma") then
+            for i = 1, 4 + HasJoker("j_entr_apeirostemma") do
+                if not self.glitchedcrown then
+                    self.glitchedcrown = {}
+                end
+                local set = self.config.center.set 
+                if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi"))) then
+                    set = Entropy.GetRandomSet(next(find_joker("j_entr_parakmi")))
+                end
+                self.glitchedcrown[1] = self.config.center.key
+                self.glitchedcrown[#self.glitchedcrown+1] = pseudorandom_element(G.P_CENTER_POOLS[set], pseudoseed("gcrown")).key
+                self.glitcheddt = 2 + 5/(4 + HasJoker("j_entr_apeirostemma"))
             end
         end
     end
+end
+
+local save_ref = Card.save
+function Card:save()
+    local tbl = save_ref(self)
+    tbl["glitchedcrown"] = self.glitchedcrown
+    tbl["glitcheddt"] = self.glitcheddt
+    return tbl
+end
+
+local load_ref =  Card.load
+function Card:load(cardTable, other_card)
+    load_ref(self, cardTable, other_card)
+    self.glitchedcrown = cardTable.glitchedcrown
+    self.glitcheddt = cardTable.glitcheddt
 end
 local items = {
     epitachyno,

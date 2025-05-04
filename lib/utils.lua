@@ -838,3 +838,18 @@ end
 function Entropy.CheckDependencies(deps)
     return true
 end
+
+function Entropy.GetRandomSet(parakmi)
+    local _type
+        local center = pseudorandom_element(G.P_CENTERS, pseudoseed("chaos"))
+        if not parakmi then
+            while not center.set or Entropy.ChaosBlacklist[center.set] or Entropy.ChaosBlacklist[center.key] do
+                center = pseudorandom_element(G.P_CENTERS, pseudoseed("chaos"))
+            end
+        end 
+        while not center.set or Entropy.ParakmiBlacklist[center.set] or Entropy.ParakmiBlacklist[center.key] or (MP and center.set == "CBlind") do
+            center = pseudorandom_element(G.P_CENTERS, pseudoseed("chaos"))
+        end
+        _type = Entropy.ChaosConversions[center.set] or center.set or _type
+        return _type
+end

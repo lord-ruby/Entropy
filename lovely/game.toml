@@ -312,11 +312,11 @@ position = "before"
 payload = '''
         {
           label = G.GAME.DefineKeys and localize('b_definitions'),
-          tab_definition_function = G.GAME.define_keys and G.UIDEF.define_keys,
+          tab_definition_function = G.GAME.define_keys and G.UIDEF.define_keys or nil,
         },
         {
-          label = G.GAME.entr_bought_decks and #G.GAME.entr_bought_decks > 0 and localize('b_decks'),
-          tab_definition_function = G.GAME.entr_bought_decks and #G.GAME.entr_bought_decks > 0 and G.UIDEF.bought_decks,
+          label = G.GAME.entr_bought_decks and #G.GAME.entr_bought_decks > 0 and localize('b_decks') or nil, 
+          tab_definition_function = G.GAME.entr_bought_decks and #G.GAME.entr_bought_decks > 0 and G.UIDEF.bought_decks or nil,
         },'''
 match_indent = true
 
@@ -336,7 +336,7 @@ position = "after"
 payload = '''if card and card.playing_card and HasJoker("j_entr_jokerinyellow") then
                 for i, v in pairs(G.jokers.cards) do
                     if v.config.center.key == "j_entr_jokerinyellow" then
-                        if pseudorandom("kiy") / 2 < cry_prob(v.ability.cry_prob, v.ability.extra.odds, v.ability.cry_rigged) / v.ability.extra.odds then
+                        if pseudorandom("kiy") < cry_prob(v.ability.cry_prob, v.ability.extra.odds, v.ability.cry_rigged) / v.ability.extra.odds then
                             card.ability.entr_yellow_sign = true
                         end
                     end

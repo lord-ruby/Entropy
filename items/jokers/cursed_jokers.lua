@@ -18,7 +18,7 @@ local jokerinyellow = {
     no_dbl = true,
     config = {
         extra = {
-            odds = 7
+            odds = 6
         }
     },
     soul_pos = {x=9,y=1},
