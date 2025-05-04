@@ -443,6 +443,14 @@ local decs = {
 					"of the same type",
 					"changing every {C:attention}2{} seconds"
 				}
+			},
+			j_entr_lotteryticket = {
+				name = "Lottery Ticket",
+				text = {
+					"Lose {C:gold}$#4#{} at the end of round",
+					"{C:green}#1# in #2#{} Chance to earn {C:gold}$#5#{}",
+					"{C:green}#1# in #3#{} Chance to earn {C:gold}$#6#{} instead"
+				}
 			}
 		},
 		Blind = {

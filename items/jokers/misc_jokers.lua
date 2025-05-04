@@ -654,6 +654,61 @@ function Card:start_dissolve(...)
         G.jokers:emplace(c)
     end
 end
+
+local lotteryticket = {
+    order = 13,
+    object_type = "Joker",
+    key = "lotteryticket",
+    rarity = 2,
+    cost = 3,
+    
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    blueprint_compat=true,
+    demicoloncompat=true,
+    eternal_compat = true,
+    pos = { x = 9, y = 0 },
+    atlas = "jokers",
+    config = {extra = {odds = 5, odds2 = 5, lose=1, payoutsmall = 20, payoutlarge = 50}},
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
+                card.ability.extra.odds2*card.ability.extra.odds,
+                card.ability.extra.lose,
+                card.ability.extra.payoutsmall,
+                card.ability.extra.payoutlarge
+            },
+        }
+    end,
+    calculate = function (self, card, context)
+        if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    ease_dollars(-card.ability.extra.lose)
+                    if pseudorandom("lottery")
+                    < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
+                        if pseudorandom("lottery")
+                        < cry_prob(card.ability.cry_prob, card.ability.extra.odds2, card.ability.cry_rigged) / card.ability.extra.odds2 then
+                            ease_dollars(card.ability.extra.payoutlarge)
+                        else
+                            ease_dollars(card.ability.extra.payoutsmall)
+                        end
+                    end
+                    return true
+                end
+            }))
+        end
+        if context.forcetrigger then
+            ease_dollars(-card.ability.extra.lose)
+            ease_dollars(card.ability.extra.payoutlarge)
+        end
+    end,
+}
 return {
     items = {
         surreal,
@@ -667,6 +722,7 @@ return {
         insatiable_dagger,
         rusty_shredder,
         sunny_joker,
-        chocolate_egg
+        chocolate_egg,
+        lotteryticket
     }
 }
