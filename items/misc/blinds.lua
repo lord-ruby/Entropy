@@ -206,6 +206,7 @@ local phase1 = {
 		min = 32,
 		max = 32,
 	},
+	no_disable=true,
 	in_pool = function() return false end,
 	next_phase = "bl_entr_endless_entropy_phase_three",
 	calculate = function(self, blind, context)
@@ -242,6 +243,7 @@ local phase2 = {
 		min = 32,
 		max = 32,
 	},
+	no_disable=true,
 	in_pool = function() return false end,
 	next_phase = "bl_entr_endless_entropy_phase_two",
 	calculate = function(self, blind, context)
@@ -301,6 +303,7 @@ local phase3 = {
 		min = 32,
 		max = 32,
 	},
+	no_disable=true,
 	exponent = {
 		1, 1.25
 	},
@@ -338,6 +341,7 @@ local phase4 = {
     mult=1,
 	no_ee = true,
     dollars = 8,
+	no_disable=true,
 	boss = {
 		min = 32,
 		max = 32,
@@ -731,6 +735,11 @@ local phase4 = {
 		end
 	end,
 }
+
+local disable_ref = Blind.disable
+function Blind:disable()
+	if not self.config.blind.no_disable then disable_ref(self)
+end
 
 --for wiki editors these arent 4 seperate blinds but 4 phases of endless entropy
 
