@@ -112,8 +112,7 @@ if SMODS and SMODS.calculate_individual_effect then
             local e = card_eval_status_text
             local orig = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num)
             G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num) ^ to_big(amount)
-            if G.GAME.current_round.current_hand.cry_asc_num == 0 then G.GAME.current_round.current_hand.cry_asc_num = 1 end
-            G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (to_big(G.GAME.asc_power_hand)) .. ")"
+            if G.GAME.asc_power_hand ~= 0 then G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (to_big(G.GAME.asc_power_hand)) .. ")" end
             card_eval_status_text = function() end
             scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
             scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
