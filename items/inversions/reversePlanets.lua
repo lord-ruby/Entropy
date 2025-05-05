@@ -185,7 +185,7 @@ SMODS.ConsumableType({
 local planets = {}
 local order = 0
 
-function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,level, name,set_badges,loc_vars,config, new_key)
+function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,level, name,set_badges,loc_vars,config, new_key, calc)
   order = order + 1
   planets[#planets+1]={
     object_type="Consumable",
@@ -231,7 +231,21 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
     in_pool = function(self, args)
       if G.GAME.hands[self.config.handname] and G.GAME.hands[self.config.handname].visible then return true end
       return false
-    end
+    end,
+    calculate = calc or function(self, card, context)
+      if
+        G.GAME.used_vouchers.v_observatory
+        and context.joker_main
+        and (
+          context.scoring_name == card.ability.handname
+        )
+      then
+        local value = G.P_CENTERS.v_observatory.config.extra
+        return {
+          asc = value,
+        }
+      end
+    end,
   }
   return planets[#planets]
 end
@@ -267,6 +281,21 @@ Entropy.ReversePlanets = {
     else
       Entropy.StarLuaSingle(self,card,area,copier)
     end
+  end,
+  calc = function(self, card, context)
+    if
+      G.GAME.used_vouchers.v_observatory
+      and context.joker_main
+      and (
+        context.scoring_name == card.ability.handname
+      )
+      and pseudorandom("starlua") < 0.25
+    then
+      local value = G.P_CENTERS.v_observatory.config.extra
+      return {
+        asc = value,
+      }
+    end
   end
   },
   {name="cry_Bulwark", new_key = "dyson_swarm", key="asteroidbelt",sprite_pos={x=12,y=1},prefix = "c_cry_",set_badges = function(self, card, badges)
@@ -292,7 +321,8 @@ Entropy.ReversePlanets = {
   end,
   func = function(self,card,area,copier,number)
     Entropy.StrangeSingle(self,card,area,copier,number)
-  end
+  end,
+  calc = function() end
   },
   {name="", key="sunplanet", new_key = "nemesis", sprite_pos={x=10,y=2},prefix = "c_cry_", config = {extra = 0.1},
     loc_vars = function(self,q,card) 
@@ -352,18 +382,29 @@ Entropy.ReversePlanets = {
         { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
         { mult = 0, chips = 0, handname = "", level = "" }
       )
-    end
+    end,
+    calc = function(self, card, context)
+      if
+        G.GAME.used_vouchers.v_observatory
+        and context.joker_main
+      then
+        local value = G.P_CENTERS.v_observatory.config.extra
+        return {
+          exp_asc = value,
+        }
+      end
+    end,
   },
-  {name="", key="Timantti", new_key = "jatka", sprite_pos={x=8,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"High Card", "Pair", "Two Pair"}}, loc_vars = Entropy.ReverseSuitLocVars},
-  {name="", key="Klubi", new_key = "rouva", sprite_pos={x=9,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Three of a Kind", "Straight", "Flush"}}, loc_vars = Entropy.ReverseSuitLocVars},
-  {name="", key="Sydan", new_key = "paras", sprite_pos={x=10,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Full House", "Four of a Kind", "Straight Flush"}}, loc_vars = Entropy.ReverseSuitLocVars},
-  {name="", key="Lapio", new_key = "assa", sprite_pos={x=11,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Five of a Kind", "Flush House", "Flush Five"}}, loc_vars = Entropy.ReverseSuitLocVars},
-  {name="", key="Kaikki", new_key = "kivi", sprite_pos={x=12,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"cry_Bulwark", "cry_Clusterfuck", "cry_UltPair"}}, loc_vars = Entropy.ReverseSuitLocVars},
+  {name="", key="Timantti", new_key = "jatka", sprite_pos={x=8,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"High Card", "Pair", "Two Pair"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc},
+  {name="", key="Klubi", new_key = "rouva", sprite_pos={x=9,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Three of a Kind", "Straight", "Flush"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc},
+  {name="", key="Sydan", new_key = "paras", sprite_pos={x=10,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Full House", "Four of a Kind", "Straight Flush"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc},
+  {name="", key="Lapio", new_key = "assa", sprite_pos={x=11,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Five of a Kind", "Flush House", "Flush Five"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc},
+  {name="", key="Kaikki", new_key = "kivi", sprite_pos={x=12,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"cry_Bulwark", "cry_Clusterfuck", "cry_UltPair"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc},
 }
 function Entropy.RegisterReversePlanets()
   Entropy.RPlanetLocs = {}
     for i, v in pairs(Entropy.ReversePlanets) do
-		Entropy.RegisterReversePlanet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name,v.set_badges,v.loc_vars,v.config,v.new_key)
+		Entropy.RegisterReversePlanet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name,v.set_badges,v.loc_vars,v.config,v.new_key, v.calc)
 		Entropy.FlipsideInversions[(v.prefix or "c_")..v.key] = "c_entr_"..v.new_key
 	end
 end
@@ -606,6 +647,23 @@ function Entropy.StrangeSingle(self, card, area, copier,num)
     { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
     { mult = 0, chips = 0, handname = "", level = "" }
   )
+end
+
+function Entropy.ReverseSuitCalc(self, card, context)
+  for i, v in pairs(card.ability.handnames) do
+    if
+      G.GAME.used_vouchers.v_observatory
+      and context.joker_main
+      and (
+        context.scoring_name == v
+      )
+    then
+      local value = G.P_CENTERS.v_observatory.config.extra
+      return {
+        asc = value,
+      }
+    end
+  end
 end
 
 return {

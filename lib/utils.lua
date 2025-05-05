@@ -221,6 +221,14 @@ function Entropy.ModifyHandCard(modifications, cards)
         end)
     end
 end
+function Entropy.SafeGetNodes(ind, card)
+    if card and card.config and card.config.h_popup 
+    and card.config.h_popup.nodes and card.config.h_popup.nodes[1]
+    and card.config.h_popup.nodes[1].nodes and card.config.h_popup.nodes[1].nodes[1]
+    and card.config.h_popup.nodes[1].nodes[1].nodes and card.config.h_popup.nodes[1].nodes[1].nodes[1]
+    and card.config.h_popup.nodes[1].nodes[1].nodes[1].nodes and card.config.h_popup.nodes[1].nodes[1].nodes[1].nodes[ind] then
+    return card.config.h_popup.nodes[1].nodes[1].nodes[1].nodes[ind] end
+end
 
 function Entropy.SealSpectral(key, sprite_pos, seal,order)
     return {
