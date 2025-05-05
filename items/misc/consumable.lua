@@ -92,7 +92,6 @@ local flipside = {
     pos = {x=3,y=0},
     use = function(self, card, area, copier)
         local c = Entropy.GetHighlightedCard({G.hand, G.jokers, G.shop_jokers, G.hand, G.pack_cards, G.shop_booster, G.shop_vouchers, G.consumeables}, nil, card)
-        local a = c.area
         if c and c.config.center and c.config.center.key == "c_entr_flipside" then
             c:shatter()
             card:shatter()
@@ -105,45 +104,21 @@ local flipside = {
                     (Entropy.FlipsideInversions[c.config.center.key] or
                         (c.ability and Entropy.FlipsideInversions[GetID(c.ability.name)]))
              then
-                local card
-                if a.config.type == "hand" then
-                    a.highlighted[i]:set_ability(G.P_CENTERS[Entropy.FlipsideInversions[GetID(c.ability.name)]], true, nil)
-                    return
-                else
-                    if a.config.type == "shop" then
-                        card = CreateShopInversion(Entropy.FlipsideInversions[c.config.center.key], c.config.center.set, a)
-                    else
-                        card =
-                            create_card(
-                            c.config.center.set,
-                            a,
-                            nil,
-                            nil,
-                            nil,
-                            nil,
-                            Entropy.FlipsideInversions[c.config.center.key],
-                            "sho"
-                        )
-                    end
-                    card:add_to_deck()
-                    a:emplace(card)
-                    c:start_dissolve()
-                    return
-                end
+                local key = (Entropy.FlipsideInversions[c.config.center.key] or
+                (c.ability and Entropy.FlipsideInversions[GetID(c.ability.name)]))
+                Entropy.FlipThen({c}, function(card)
+                    card:set_ability(G.P_CENTERS[key])
+                end)
             end
         end
 end,
     can_use = function(self, card)
         local card2 = Entropy.GetHighlightedCard(nil, nil, card)
-        if card ~= card2 then
-            return card2 and card2.config and Entropy.FlipsideInversions[card2.config.center.key] ~= nil
-        end
+        return card2 and card2.config and Entropy.FlipsideInversions[card2.config.center.key] ~= nil
 	end,
     loc_vars = function(self, q, card)
         return {vars = {
-            card.ability.extra.selected > 1 and "up to " or "",
             card.ability.extra.selected,
-            card.ability.extra.selected > 1 and " selected cards " or " selected card ",
         }}
     end
 }
