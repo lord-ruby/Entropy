@@ -346,7 +346,7 @@ local card_hoverref = Card.draw
 
 function Card:draw(layer)
     card_hoverref(self, layer)
-    if self.config and self.config.center and self.config.center.set == "RSpectral" then
+    if self.config and self.config.center and self.config.center.set == "RSpectral" and self.sprite_facing == "front" then
         self.children.center:draw_shader('booster', nil, self.ARGS.send_to_shader)
     end
     if self.ability.name == "entr-Beyond" and (self.config.center.discovered or self.bypass_discovery_center) then

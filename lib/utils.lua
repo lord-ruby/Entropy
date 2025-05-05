@@ -72,7 +72,9 @@ function Entropy.GetHighlightedCard(areas, blacklist, cardblist)
     for i, v in pairs(areas or {G.hand, G.pack_cards, G.jokers, G.consumeables}) do
         if v.cards and v.highlighted then
             if #v.highlighted > 0 then
-                if not (blacklist or {})[v.highlighted[1].config.center.key] and v ~= cardblist then return v.highlighted[1] end
+                for i2, v2 in pairs(v.highlighted) do
+                    if not (blacklist or {})[v.highlighted[i2].config.center.key] and v2 ~= cardblist then return v2 end
+                end
             end
         end
     end

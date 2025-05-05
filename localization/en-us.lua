@@ -1375,7 +1375,7 @@ local decs = {
 			c_entr_flipside = {
 				name = "Flipside",
 				text = {
-					"Converts {C:attention}#1#{} selected consumables#<s>1#",
+					"Converts {C:attention}#1#{} selected consumable#<s>1#",
 					"Into an {C:red}Inverted{} variant",
 				}
 			},

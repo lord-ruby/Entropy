@@ -35,6 +35,7 @@ local FlipsideInversions = {
     ["c_cry_adversary"]="c_entr_offering",
     ["c_cry_chambered"]="c_entr_entomb",
     ["c_cry_conduit"]="c_entr_conduct",
+    ["c_entr_shatter"] = "c_entr_regenerate",
     --tarots
     ["c_fool"] = "c_entr_master",
     --planets
@@ -91,30 +92,34 @@ local flipside = {
     name = "entr-Flipside",
     pos = {x=3,y=0},
     use = function(self, card, area, copier)
-        local c = Entropy.GetHighlightedCard({G.hand, G.jokers, G.shop_jokers, G.hand, G.pack_cards, G.shop_booster, G.shop_vouchers, G.consumeables}, nil, card)
-        if c and c.config.center and c.config.center.key == "c_entr_flipside" then
-            c:shatter()
-            card:shatter()
-            Entropy.FlipThen(Entropy.AllAreaCards(function(card) return card and card.config and Entropy.FlipsideInversions[card.config.center.key] end), function(card, area)
-                card:set_ability(G.P_CENTERS[Entropy.FlipsideInversions[card.config.center.key]])
-            end)
-        else
-            if
-                c and c.config.center and
-                    (Entropy.FlipsideInversions[c.config.center.key] or
-                        (c.ability and Entropy.FlipsideInversions[GetID(c.ability.name)]))
-             then
-                local key = (Entropy.FlipsideInversions[c.config.center.key] or
-                (c.ability and Entropy.FlipsideInversions[GetID(c.ability.name)]))
-                Entropy.FlipThen({c}, function(card)
-                    card:set_ability(G.P_CENTERS[key])
+        local num, cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.shop_jokers, G.pack_cards, G.shop_booster, G.shop_vouchers, G.consumeables}, nil, card)
+        local buffer = {}
+        for i, c in pairs(cards) do
+            if c and c.config.center and c.config.center.key == "c_entr_flipside" then
+                c:shatter()
+                card:shatter()
+                Entropy.FlipThen(Entropy.AllAreaCards(function(card) return card and card.config and Entropy.FlipsideInversions[card.config.center.key] end), function(card, area)
+                    card:set_ability(G.P_CENTERS[Entropy.FlipsideInversions[card.config.center.key]])
                 end)
+            else
+                if (Entropy.FlipsideInversions[c.config.center.key] or
+                (c.ability and Entropy.FlipsideInversions[GetID(c.ability.name)])) then 
+                    buffer[#buffer+1]=c 
+                end
             end
         end
-end,
+        Entropy.FlipThen(buffer, function(c)
+            local key = (Entropy.FlipsideInversions[c.config.center.key])
+            c:set_ability(G.P_CENTERS[key])       
+        end)
+    end,
     can_use = function(self, card)
-        local card2 = Entropy.GetHighlightedCard(nil, nil, card)
-        return card2 and card2.config and Entropy.FlipsideInversions[card2.config.center.key] ~= nil
+        local num, cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.shop_jokers, G.pack_cards, G.shop_booster, G.shop_vouchers, G.consumeables}, nil, card)
+        local canflip = false
+        for i, c in pairs(cards) do
+            if (Entropy.FlipsideInversions[c.config.center.key]) then canflip = true end
+        end
+        return num > 0 and num <= card.ability.extra.selected and canflip
 	end,
     loc_vars = function(self, q, card)
         return {vars = {
@@ -127,10 +132,6 @@ local banned_sets ={
     ["Voucher"]=true,
     ["Booster"]=true
 }
-function GetID(id)
-    for i, v in pairs(G.P_CENTERS) do if v.name == id then return i end end
-    return id
-end
 function CreateShopInversion(key, set, area)
 
     local forced_tag = nil
