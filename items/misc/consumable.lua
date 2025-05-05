@@ -295,9 +295,19 @@ G.FUNCS.buy_deckorsleeve_from_shop = function(e)
     --G.GAME.DefineBoosterState = G.STATE
     --c1:open()
     ease_dollars(-c1.cost)
+    if not c1.config then
+        c1.config = {}
+    end
+    if not c1.config.center then
+        c1.config.center = G.P_CENTERS[c1.center_key]
+    end
     if c1.area then c1.area:remove_card(c1) end
-    if c1.config.center.apply then
-        c1.config.center:apply(false)
+    if c1.config and c1.config.center and c1.config.center.apply then
+        if c1.config.center.set == "Sleeve" then
+            c1.config.center:apply(c1.config.center)
+        else    
+            c1.config.center:apply(false)
+        end
     end
     for i, v in pairs(c1.config.center.config or {}) do
         if i == "hands" then 
