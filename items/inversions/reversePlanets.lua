@@ -132,6 +132,8 @@ function Entropy.ReversePlanetUse(handname, card, amt)
   amt = amt or 1
   local used_consumable = copier or card
   card.ability.level = card.ability.level or 2
+  local c = copy_table(G.C.UI_CHIPS)
+  local m = copy_table(G.C.UI_MULT)
   delay(0.4)
   update_hand_text(
     { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
@@ -145,8 +147,8 @@ function Entropy.ReversePlanetUse(handname, card, amt)
     delay = 0.2,
     func = function()
       play_sound("tarot1")
-      ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
-      ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
+      ease_colour(G.C.UI_CHIPS, HEX("ffb400"), 0.1)
+      ease_colour(G.C.UI_MULT, HEX("ffb400"), 0.1)
       Cryptid.pulse_flame(0.01, sunlevel)
       if used_consumable.juice_up then used_consumable:juice_up(0.8, 0.5) end
       G.E_MANAGER:add_event(Event({
@@ -155,8 +157,8 @@ function Entropy.ReversePlanetUse(handname, card, amt)
         blocking = false,
         delay = 1.2,
         func = function()
-          ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
-          ease_colour(G.C.UI_MULT, G.C.RED, 1)
+          ease_colour(G.C.UI_CHIPS, c, 1)
+          ease_colour(G.C.UI_MULT, m, 1)
           return true
         end,
       }))

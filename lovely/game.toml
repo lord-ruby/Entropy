@@ -404,3 +404,12 @@ payload = '''
 		G.title_top.T.x = G.title_top.T.x - 0.8
 '''
 match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "engine/ui.lua"
+pattern = 'if self.config.colour[4] > 0.01 then'
+position = "before"
+payload = '''if not self.config.colour then self.config.colour = {1,1,1,1} end'''
+match_indent = true
