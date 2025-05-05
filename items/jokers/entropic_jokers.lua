@@ -496,6 +496,7 @@ local anaptyxi = {
     pos = { x = 0, y = 6 },
     config = {
         extra = {
+            scale_base = 2,
             scale=2,
             scale_mod=1
         }
@@ -533,34 +534,33 @@ local anaptyxi = {
                         1
                         + (
                             (to_big(orig_scale_scale) / to_big(true_base))
-                            ^ (to_big(1) / to_big(2))
+                            ^ (to_big(1) / to_big(card.ability.extra.scale_base))
                         )
-                    ) ^ to_big(2)
+                    ) ^ to_big(card.ability.extra.scale_base)
                 )
         )
         if not Cryptid.is_card_big(joker) and to_big(new_scale) >= to_big(1e300) then
             new_scale = 1e300
         end
-        if joker.config.center.key == "j_entr_anaptyxi" then return true_base end
+        if number_format(new_scale) == "Infinity" then new_scale = to_big(1e300) end
         for i, v in pairs(G.jokers.cards) do
-            if (v ~= joker and v.config.center.key ~= "j_entr_anaptyxi") then
-                    if not Card.no(v, "immutable", true) then
-                    Cryptid.with_deck_effects(v, function(card2)
-                        Cryptid.misprintize(card2, { min = card.ability.extra.scale*new_scale, max = card.ability.extra.scale*new_scale}, nil, true, "+")
-                    end)
-                    card_eval_status_text(
-                        v,
-                        "extra",
-                        nil,
-                        nil,
-                        nil,
-                        { message = "+ "..number_format(card.ability.extra.scale*new_scale) })
-                    end
+            if not Card.no(v, "immutable", true) and v ~= card and v ~= joker then
+                Cryptid.with_deck_effects(v, function(card2)
+                    Cryptid.misprintize(card2, { min = to_big(card.ability.extra.scale*new_scale), max = to_big(card.ability.extra.scale*new_scale)}, nil, true, "+")
+                end)
+                card_eval_status_text(
+                    v,
+                    "extra",
+                    nil,
+                    nil,
+                    nil,
+                    { message = "+ "..number_format(to_big(card.ability.extra.scale*new_scale)) }
+                )
             end
         end
-		return new_scale
+        return new_scale
 	end,
-}  
+}
 
 Entropy.ChaosBlacklist.Back = true
 Entropy.ChaosBlacklist.Sleeve = true
