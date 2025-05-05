@@ -880,7 +880,7 @@ function Entropy.UpgradeEnhancement(card)
     --     if v.i == enh and temp[i+1] then return temp[i+1].i end
     -- end
     for i, v in pairs(G.P_CENTER_POOLS.Enhanced) do
-        if v.key == enh then return G.P_CENTER_POOLS.Enhanced[i+1] or enh
+        if v.key == enh then return G.P_CENTER_POOLS.Enhanced[i+1] or enh end
     end
     return enh
 end
