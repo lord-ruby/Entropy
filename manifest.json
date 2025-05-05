@@ -7,7 +7,7 @@
     "prefix": "entr",
     "author": ["Ruby"],
     "main_file": "Entropy.lua",
-    "priority": 666666666666666666666,
+    "priority": 666,
     "badge_colour": "FE0001",
     "dependencies": [
         "Steamodded",
