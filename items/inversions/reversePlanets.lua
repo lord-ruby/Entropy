@@ -51,7 +51,7 @@ end
 
 
 function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
-  local curr2 = to_big(((G.GAME.hands[hand].AscensionPower or 0)) * (1+(G.GAME.nemesisnumber or 0))) ^ to_big(G.GAME.hands[hand].TranscensionPower)
+  local curr2 = to_big(((G.GAME.hands[hand].AscensionPower or 0)) * (1+(G.GAME.nemesisnumber or 0))) ^ to_big(G.GAME.hands[hand].TranscensionPower or 1)
 	if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true then
 		return num
 	end
