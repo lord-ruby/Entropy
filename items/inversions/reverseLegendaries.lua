@@ -69,12 +69,16 @@ function CardArea:emplace(card, location, stay_flipped)
             G.FUNCS.draw_from_deck_to_hand(1)
         end
     end
-    if G.consumeables and self == G.consumeables and card and card.config.center.set == "Joker" then
-        add_ref(G.jokers, card, location, stay_flipped)
-    elseif G.jokers and self == G.jokers and card and card.ability.consumeable then
-        add_ref(G.consumeables, card, location, stay_flipped)
-    else
+    if G.GAME.akyrs_any_drag then
         add_ref(self, card, location, stay_flipped)
+    else
+        if G.consumeables and self == G.consumeables and card and card.config.center.set == "Joker" then
+            add_ref(G.jokers, card, location, stay_flipped)
+        elseif G.jokers and self == G.jokers and card and card.ability.consumeable then
+            add_ref(G.consumeables, card, location, stay_flipped)
+        else
+            add_ref(self, card, location, stay_flipped)
+        end
     end
 end
 local remove_ref = CardArea.remove_card

@@ -388,7 +388,7 @@ G.FUNCS.buy_deckorsleeve = function(e)
         if i == "hand_size" then G.hand.config.card_limit = G.hand.config.card_limit + v end
         if i == "dollars" then ease_dollars(v) end
     end
-    if c1.config.center.config and c1.config.center.config.cry_beta then
+    if c1.config and c1.center.config and c1.config.center.config and c1.config.center.config and c1.config.center.config.cry_beta then
         local count = G.consumeables.config.card_limit
         local cards = {}
         for i, v in pairs(G.jokers.cards) do

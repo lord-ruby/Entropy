@@ -622,15 +622,15 @@ local parakmi = {
 }
 local emplace_ref = CardArea.emplace
 function CardArea:emplace(card, ...)
-    if card.config.center.set == "Back" or card.config.center.set == "Sleeve" then
-        if self == G.jokers or self == G.consumeables or self == G.deck or self == G.hand then
-            G.FUNCS.buy_deckorsleeve({config = {ref_table = {card}}})
+        if card.config.center.set == "Back" or card.config.center.set == "Sleeve" then
+            if self == G.jokers or self == G.consumeables or self == G.deck or self == G.hand then
+                G.FUNCS.buy_deckorsleeve({config = {ref_table = {card}}})
+            else
+                emplace_ref(self, card, ...)
+            end
         else
             emplace_ref(self, card, ...)
         end
-    else
-        emplace_ref(self, card, ...)
-    end
 end
 local gfcfbs = G.FUNCS.check_for_buy_space
 G.FUNCS.check_for_buy_space = function(card)
