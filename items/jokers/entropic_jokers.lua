@@ -542,7 +542,7 @@ local anaptyxi = {
         if not Cryptid.is_card_big(joker) and to_big(new_scale) >= to_big(1e300) then
             new_scale = 1e300
         end
-        if number_format(new_scale) == "Infinity" then new_scale = to_big(1e300) end
+        if number_format(to_big(new_scale)) == "Infinity" then new_scale = to_big(1e300) end
         for i, v in pairs(G.jokers.cards) do
             if not Card.no(v, "immutable", true) and v ~= card and v ~= joker then
                 Cryptid.with_deck_effects(v, function(card2)
