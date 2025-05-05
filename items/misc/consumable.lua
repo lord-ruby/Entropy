@@ -91,7 +91,8 @@ local flipside = {
     name = "entr-Flipside",
     pos = {x=3,y=0},
     use = function(self, card, area, copier)
-        local c, a, i = Entropy.GetHighlightedCard({G.hand, G.jokers, G.shop_jokers, G.hand, G.pack_cards, G.shop_booster, G.shop_vouchers, G.consumeables}, nil, card)
+        local c = Entropy.GetHighlightedCard({G.hand, G.jokers, G.shop_jokers, G.hand, G.pack_cards, G.shop_booster, G.shop_vouchers, G.consumeables}, nil, card)
+        local a = c.area
         if c and c.config.center and c.config.center.key == "c_entr_flipside" then
             c:shatter()
             card:shatter()
