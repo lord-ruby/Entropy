@@ -738,7 +738,7 @@ local phase4 = {
 
 local disable_ref = Blind.disable
 function Blind:disable()
-	if not self.config.blind.no_disable then disable_ref(self)
+	if not self.config.blind.no_disable then disable_ref(self) end
 end
 
 --for wiki editors these arent 4 seperate blinds but 4 phases of endless entropy
