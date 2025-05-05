@@ -406,8 +406,10 @@ function pseudorandom(key,min,max)
   return ref(key,min,max)
 end
 local eref = pseudorandom_element
-function pseudorandom_element(elements, pseudokey)
-  if Entropy.DeckOrSleeve("butterfly") then pseudokey = pseudoseed("butterfly") end
+function pseudorandom_element(elements, pseudokey, part)
+  if not part then
+    if Entropy.DeckOrSleeve("butterfly") then pseudokey = pseudoseed("butterfly") end
+  end
   return eref(elements, pseudokey)
 end
 --cryptid enh/edition/seal decks here

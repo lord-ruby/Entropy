@@ -437,3 +437,19 @@ pattern = 'if self.config.colour[4] > 0.01 then'
 position = "before"
 payload = '''if not self.config.colour then self.config.colour = {1,1,1,1} end'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "engine/particles.lua"
+pattern = 'colour = pseudorandom_element(self.colours)'
+position = "at"
+payload = '''colour = pseudorandom_element(self.colours, pseudoseed("particles"), "particles")'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "engine/moveable.lua"
+pattern = 'r_amt = ((rot_amt or pseudorandom_element({0.6*amount, -0.6*amount})) or 0),'
+position = "at"
+payload = '''r_amt = ((rot_amt or pseudorandom_element({0.6*amount, -0.6*amount}, nil, true)) or 0),'''
+match_indent = true
