@@ -665,6 +665,14 @@ local decs = {
 					"randomly {C:attention}upgrade{} the enhancement",
 					"of up to #3# selected card#<s>1#"
 				}
+			},
+			c_entr_feast = {
+				name = "Feast",
+				text = {
+					"{C:attention}Sell{} and {C:attention}Destroy{}",
+					"#<up to >1##1# selected card#<s>1#",
+					"from the {C:attention}shop{}"
+				}
 			}
 		},
 		Voucher = {

@@ -224,10 +224,53 @@ local statue = {
         }
     end
 }
+
+local feast = {
+    key = "feast",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -901+14,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        select = 2
+    },
+    pos = {x=4,y=1},
+    use = function(self, card2)
+        local num, cards = Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, nil, card)
+        for i, v in pairs(cards) do
+            local card = cards[i]
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    ease_dollars(card.cost)
+                    card:start_dissolve()
+                    return true
+                end
+            }))
+        end
+            
+    end,
+    can_use = function(self, card)
+        local num = Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, nil, card)
+        return num > 0 and num <= card.ability.select
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.select
+            }
+        }
+    end
+}
 return {
     items = {
         master,
         statue,
-        whetstone
+        whetstone,
+        feast
     }
 }
