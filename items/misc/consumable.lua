@@ -372,7 +372,7 @@ G.FUNCS.buy_deckorsleeve = function(e)
     --G.GAME.DefineBoosterState = G.STATE
     --c1:open()
     if c1.area then c1.area:remove_card(c1) end
-    if c1.config.center.apply then
+    if c1.config and c1.config.center and c1.config.center.apply then
         c1.config.center:apply(false)
     end
     for i, v in pairs(c1.config.center.config or {}) do
