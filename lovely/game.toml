@@ -134,6 +134,22 @@ Entropy.FixedRecipes = {
     c_basec_basec_basec_basec_base = "j_joker",
     m_steelm_steelm_steelm_steelm_steel = "j_cry_clockwork"
 }
+Entropy.EnhancementPoints ={
+        m_entr_disavowed=0,
+        c_base=1,
+        m_bonus=3.1,
+        m_mult=3.2,
+        m_wild=4.1,
+        m_lucky=4.2,
+        m_stone=5.1,
+        m_entr_flesh=5.2,
+        m_steel=6.1,
+        m_gold=6.2,
+        m_cry_echo=6.3,
+        m_glass=7.1,
+        m_cry_light=7.2,
+        m_cry_abstract=9.1
+    }
 --these cannot show up as blink tokens
 Entropy.BlindTokenBlacklist = {
   bl_entr_endless_entropy_phase_one=true,

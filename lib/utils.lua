@@ -425,22 +425,7 @@ end
 
 
 function Entropy.GetRecipe(cards)
-    local enhancements = {
-        c_base=1,
-        m_bonus=3.1,
-        m_mult=3.2,
-        m_wild=4.1,
-        m_glass=7.1,
-        m_steel=6.1,
-        m_stone=5.1,
-        m_gold=6.2,
-        m_lucky=4.2,
-        m_cry_echo=6.2,
-        m_cry_light=7.2,
-        m_entr_flesh=5.2,
-        m_entr_disavowed=0,
-        m_cry_abstract=9.1
-    }
+    local enhancements = Entropy.EnhancementPoints
     local rares = {}
     for i, v in pairs(G.P_CENTER_POOLS.Joker) do
         if not rares[v.rarity] then rares[v.rarity] = {} end
@@ -880,4 +865,22 @@ function Entropy.GetGlitchedCrown(card)
         end
         card.glitcheddt = 2 + 5/(4 + HasJoker("j_entr_apeirostemma"))
     end
+end
+
+function Entropy.UpgradeEnhancement(card)
+    local enh = card.config.center.key
+    -- local changed = nil
+    -- local curr = -1
+    -- local temp = {}
+    -- for i, v in pairs(Entropy.EnhancementPoints) do
+    --     temp[#temp+1] = {i=i,v=v}
+    -- end
+    -- table.sort(temp, function(a,b) return a.v < b.v end)
+    -- for i, v in ipairs(temp) do
+    --     if v.i == enh and temp[i+1] then return temp[i+1].i end
+    -- end
+    for i, v in pairs(G.P_CENTER_POOLS.Enhanced) do
+        if v.key == enh then return G.P_CENTER_POOLS.Enhanced[i+1] or enh
+    end
+    return enh
 end

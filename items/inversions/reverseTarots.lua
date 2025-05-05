@@ -21,7 +21,7 @@ SMODS.ConsumableType({
 -- 10 - Wheel of Fortune -     Whetstone
 -- 11 - Strength -     Endurance
 -- 12 - Hanged Man -     Advisor
--- 13 - Death -     Statue
+-- 13 - Death -     Statue (Coded)
 -- 14 - Temperance -     Feast
 -- 15 - Devil -     Companion
 -- 16 - Tower -     Village
@@ -111,6 +111,73 @@ G.FUNCS.use_card = function(e, mute, nosave)
     ref(e, mute, nosave)
 end
 
+local whetstone = {
+    key = "whetstone",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -901+10,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        select = 2,
+        extra = {odds = 2}
+    },
+    pos = {x=0,y=1},
+    use = function(self, card2)
+        if pseudorandom("whetstone")
+        < cry_prob(card2.ability.cry_prob, card2.ability.extra.odds, card2.ability.cry_rigged) / card2.ability.extra.odds then
+            local num, cards = Entropy.GetHighlightedCards({G.hand}, nil, card)
+            Entropy.FlipThen(cards, function(card)
+                local enh = Entropy.UpgradeEnhancement(card)
+                card:set_ability(G.P_CENTERS[enh])
+                for i = 1, math.floor(pseudorandom("whetstone")*2+0.5) do
+                    enh = Entropy.UpgradeEnhancement(card)
+                    card:set_ability(G.P_CENTERS[enh])
+                end
+                if enh ~= card.config.center.key then
+                    card:set_ability(G.P_CENTERS[enh])
+                end
+            end)
+        else
+            local used_tarot = card2
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                attention_text({
+                  text = localize('k_nope_ex'),
+                  scale = 1.3, 
+                  hold = 1.4,
+                  major = used_tarot,
+                  backdrop_colour = G.C.RED,
+                  align = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK) and 'tm' or 'cm',
+                  offset = {x = 0, y = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK) and -0.2 or 0},
+                  silent = true
+                  })
+                  G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.06*G.SETTINGS.GAMESPEED, blockable = false, blocking = false, func = function()
+                    play_sound('tarot2', 0.76, 0.4);return true end}))
+                  play_sound('tarot2', 1, 0.4)
+                  used_tarot:juice_up(0.3, 0.5)
+              return true end }))
+        end
+    end,
+    can_use = function(self, card)
+        local num = Entropy.GetHighlightedCards({G.hand}, nil, card)
+        return num > 0 and num <= card.ability.select
+    end,
+    loc_vars = function(self, q, card)
+        --q[#q+1] = G.P_CENTERS.m_stone
+        return {
+            vars = {
+                cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+                card.ability.extra.odds,
+                card.ability.select
+            }
+        }
+    end
+}
+
 local statue = {
     key = "statue",
     set = "RTarot",
@@ -160,6 +227,7 @@ local statue = {
 return {
     items = {
         master,
-        statue
+        statue,
+        whetstone
     }
 }

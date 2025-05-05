@@ -657,6 +657,14 @@ local decs = {
 					"selected card#<s>2# then transform the",
 					"selected card#<s>2# into a blank {C:attention}Stone Card{}"
 				}
+			},
+			c_entr_whetstone = {
+				name = "Whetstone",
+				text = {
+					"{C:green}#1# in #2#{} chance to",
+					"randomly {C:attention}upgrade{} the enhancement",
+					"of up to #3# selected card#<s>1#"
+				}
 			}
 		},
 		Voucher = {

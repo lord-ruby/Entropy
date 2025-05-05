@@ -38,6 +38,8 @@ local FlipsideInversions = {
     ["c_entr_shatter"] = "c_entr_regenerate",
     --tarots
     ["c_fool"] = "c_entr_master",
+    ["c_wheel_of_fortune"] = "c_entr_whetstone"
+    ["c_death"] = "c_entr_statue",
     --planets
     ["c_cry_white_hole"] = "c_entr_pulsar",
     ["c_black_hole"] = "c_entr_quasar",
