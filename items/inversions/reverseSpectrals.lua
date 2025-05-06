@@ -696,6 +696,9 @@ local charm = {
             }
         }
     end,
+    entr_credits = {
+        idea = {"crabus72"}
+    },
 }
 
 
