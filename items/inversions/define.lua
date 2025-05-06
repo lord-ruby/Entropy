@@ -8,7 +8,8 @@ local define = {
     key = "define",
     set = "RSpectral",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     order=34-100,
     soul_rate = 0,

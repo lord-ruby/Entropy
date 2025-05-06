@@ -25,6 +25,8 @@ local changeling = {
     config = {
         num = 3
     },
+    can_stack = true,
+	can_divide = true,
 	pos = {x=6,y=4},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
@@ -70,7 +72,8 @@ local rend = {
     key = "rend",
     set = "RSpectral",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         num = 3
@@ -102,7 +105,8 @@ local inscribe = {
     order = -100 + 2,
     key = "inscribe",
     set = "RSpectral",
-    
+    can_stack = true,
+	can_divide = true,
 
     atlas = "miscc",
     config = {
@@ -148,7 +152,8 @@ local siphon = {
     order = -100 + 4,
     key = "siphon",
     set = "RSpectral",
-    
+    can_stack = true,
+	can_divide = true,
 
     atlas = "miscc",
     config = {
@@ -196,7 +201,8 @@ local ward = {
     order = -100 + 5,
     key = "ward",
     set = "RSpectral",
-    
+    can_stack = true,
+	can_divide = true,
 
     atlas = "miscc",
     config = {
@@ -247,7 +253,8 @@ local disavow = {
     order = -100 + 6,
     key = "disavow",
     set = "RSpectral",
-    
+    can_stack = true,
+	can_divide = true,
 
     atlas = "miscc",
     config = {
@@ -322,7 +329,8 @@ local pact = {
     order = -100 + 7,
     key = "pact",
     set = "RSpectral",
-    
+    can_stack = true,
+	can_divide = true,
 
     atlas = "miscc",
     config = {
@@ -488,7 +496,8 @@ local ichor = {
     key = "ichor",
     set = "RSpectral",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         num = 2
@@ -536,7 +545,8 @@ local rejuvenate = {
     key = "rejuvenate",
     set = "RSpectral",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         dollars = -15,
@@ -604,7 +614,8 @@ local crypt = {
     order = -100 + 10,
     key = "crypt",
     set = "RSpectral",
-    
+    can_stack = true,
+	can_divide = true,
 
     atlas = "miscc",
     config = {
@@ -652,7 +663,8 @@ local charm = {
     order = -100 + 11,
     key = "charm",
     set = "RSpectral",
-    
+    can_stack = true,
+	can_divide = true,
 
     atlas = "miscc",
     config = {
@@ -712,7 +724,8 @@ local entropy = {
     order = -100 + 14,
     key = "entropy",
     set = "RSpectral",
-    
+    can_stack = true,
+	can_divide = true,
 
     atlas = "miscc",
     config = {
@@ -762,7 +775,8 @@ local fervour = {
     key = "fervour",
     set = "RSpectral",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
 
@@ -906,7 +920,8 @@ local weld = {
     key = "weld",
     set = "RSpectral",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         select = 1,
@@ -1018,7 +1033,8 @@ local cleanse = {
     key = "cleanse",
     set = "RSpectral",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         dollarpc = 1
@@ -1125,7 +1141,8 @@ local substitute = {
     key = "substitute",
     set = "RSpectral",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         num = 3,
@@ -1194,7 +1211,8 @@ local evocation = {
     order = -100 + 21,
     key = "evocation",
     set = "RSpectral",
-    
+    can_stack = true,
+	can_divide = true,
 
     atlas = "miscc",
     config = {
@@ -1254,7 +1272,8 @@ local mimic = {
     key = "mimic",
     set = "RSpectral",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         num = 1,
@@ -1317,7 +1336,8 @@ local superego = {
     order = -100 + 23,
     key = "superego",
     set = "RSpectral",
-    
+    can_stack = true,
+	can_divide = true,
 
     atlas = "miscc",
     config = {
@@ -1398,7 +1418,8 @@ local engulf = {
     order = -100 + 26,
     key = "engulf",
     set = "RSpectral",
-    
+    can_stack = true,
+	can_divide = true,
 
     atlas = "miscc",
     config = {
@@ -1434,7 +1455,8 @@ local offering = {
     order = -100 + 27,
     key = "offering",
     set = "RSpectral",
-    
+    can_stack = true,
+	can_divide = true,
 
     atlas = "miscc",
     config = {
@@ -1481,7 +1503,8 @@ local entomb = {
     order = -100 + 28,
     key = "entomb",
     set = "RSpectral",
-    
+    can_stack = true,
+	can_divide = true,
 
     atlas = "miscc",
     config = {
@@ -1531,7 +1554,8 @@ local conduct = {
     order = -100 + 29,
     key = "conduct",
     set = "RSpectral",
-    
+    can_stack = true,
+	can_divide = true,
 
     atlas = "miscc",
 	pos = {x=10,y=6},
@@ -1580,7 +1604,8 @@ local pulsar = {
     key = "pulsar",
     set = "RSpectral",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         level = 4
@@ -1658,7 +1683,8 @@ local beyond = {
     order = -100 + 31,
     key = "beyond",
     set = "RSpectral",
-    
+    can_stack = true,
+	can_divide = true,
 
     atlas = "miscc",
     config = {
@@ -1733,7 +1759,8 @@ local regenerate = {
     key = "regenerate",
     set = "RSpectral",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         limit = 2

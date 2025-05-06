@@ -90,7 +90,9 @@ local master = {
 				},
 			} or nil,
         }
-    end
+    end,
+    can_stack = true,
+	can_divide = true,
 }
 local servant = {
     key = "servant",
@@ -135,7 +137,9 @@ local servant = {
                 card.ability.create
             }
         }
-    end
+    end,
+    can_stack = true,
+	can_divide = true,
 }
 G.FUNCS.has_inversion = function(e) 
     if G.GAME.last_inversion then 
@@ -220,7 +224,9 @@ local whetstone = {
                 card.ability.select
             }
         }
-    end
+    end,
+    can_stack = true,
+	can_divide = true,
 }
 
 local endurance = {
@@ -263,7 +269,9 @@ local endurance = {
                 card.ability.factor
             }
         }
-    end
+    end,
+    can_stack = true,
+	can_divide = true,
 }
 
 local statue = {
@@ -310,7 +318,9 @@ local statue = {
                 card.ability.select
             }
         }
-    end
+    end,
+    can_stack = true,
+	can_divide = true,
 }
 
 local feast = {
@@ -352,7 +362,9 @@ local feast = {
                 card.ability.select
             }
         }
-    end
+    end,
+    can_stack = true,
+	can_divide = true,
 }
 return {
     items = {

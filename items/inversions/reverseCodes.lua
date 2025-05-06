@@ -30,7 +30,8 @@ local memory_leak = {
     key = "memory_leak",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
 
@@ -59,7 +60,8 @@ local root_kit = {
     key = "root_kit",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         extra = {
@@ -96,7 +98,8 @@ local bootstrap = {
     key = "bootstrap",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         extra = {
@@ -157,7 +160,8 @@ local quickload = {
     order = 4,
     key = "quickload",
     set = "RCode",
-    
+    can_stack = true,
+	can_divide = true,
 
     atlas = "miscc",
     pos = {x=3,y=1},
@@ -191,7 +195,8 @@ local break_card = {
     key = "break",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         extra = {
@@ -245,7 +250,8 @@ local new = {
     key = "new",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         extra = {
@@ -301,7 +307,8 @@ local interference = {
     key = "interference",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         extra = {
@@ -333,7 +340,8 @@ local constant = {
     key = "constant",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     pos = {x=2,y=2},
     use = function(self, card, area, copier)
@@ -373,7 +381,8 @@ local pseudorandom = {
     key = "pseudorandom",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     pos = {x=3,y=2},
     use = function(self, card, area, copier)
@@ -492,7 +501,8 @@ local inherit = {
     key = "inherit",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     pos = {x=4,y=2},
     use = function(self, card, area, copier)
@@ -762,7 +772,8 @@ local fork = {
     key = "fork",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         extra = 1
@@ -820,7 +831,8 @@ local push = {
     key = "push",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         extra = 1
@@ -994,7 +1006,8 @@ local increment = {
     key = "increment",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         extra = 1
@@ -1038,7 +1051,8 @@ local decrement = {
     order = 14,
     key = "decrement",
     set = "RCode",
-    
+    can_stack = true,
+	can_divide = true,
 
     atlas = "miscc",
     config = {
@@ -1101,7 +1115,8 @@ local invariant = {
     key = "invariant",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         extra = 1
@@ -1257,7 +1272,8 @@ local cookies = {
     key = "cookies",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
     },
@@ -1290,7 +1306,8 @@ local segfault = {
     key = "segfault",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         extra = 1
@@ -1342,7 +1359,8 @@ local sudo = {
     key = "sudo",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         extra = {
@@ -1557,7 +1575,8 @@ local overflow = {
     key = "overflow",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
         extra = {
@@ -1592,7 +1611,8 @@ local refactor = {
     key = "refactor",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
     },
@@ -1656,7 +1676,8 @@ local hotfix = {
     key = "hotfix",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     pos = {x=1,y=5},
     use = function(self, card, area, copier)
@@ -1742,7 +1763,8 @@ local ctrl_x = {
     key = "ctrl_x",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     pos = {x=2,y=5},
     use = function(self, card, area, copier)
@@ -1821,7 +1843,8 @@ local multithread = {
     key = "multithread",
     set = "RCode",
     
-
+    can_stack = true,
+	can_divide = true,
     atlas = "miscc",
     config = {
     },
@@ -2093,7 +2116,8 @@ local autostart = {
     order = 25,
     key = "autostart",
     set = "RCode",
-    
+    can_stack = true,
+	can_divide = true,
 
     atlas = "miscc",
     pos = {x=4,y=5},
@@ -2139,7 +2163,8 @@ local local_card = {
     order = 26,
     key = "local",
     set = "RCode",
-    
+    can_stack = true,
+	can_divide = true,
 
     atlas = "miscc",
     pos = {x=0,y=6},
