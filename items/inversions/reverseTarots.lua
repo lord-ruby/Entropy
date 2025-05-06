@@ -301,7 +301,7 @@ local statue = {
 			func = function()
                 for i = 1, card2.ability.convert_per do
                     local card3 = pseudorandom_element(G.deck.cards, pseudoseed("statue"))
-                    copy_card(#cards == 1 and #cards[1] or pseudorandom_element(cards, pseudoseed("statue")), card3)
+                    copy_card(#cards == 1 and cards[1] or pseudorandom_element(cards, pseudoseed("statue")), card3)
                 end
             end
         }))
