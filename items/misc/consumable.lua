@@ -531,7 +531,7 @@ function G.UIDEF.use_and_sell_buttons(card)
 					},
                 }
             }
-        elseif ((card.ability.set == "RCode" or card.ability.set == "CBlind") or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front) and (card.ability.consumeable) then
+        elseif ((card.ability.set == "RCode" or card.ability.set == "CBlind" or card.ability.set == "RTarot") or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front) and (card.ability.consumeable) then
 			return {
 				n = G.UIT.ROOT,
 				config = { padding = -0.1, colour = G.C.CLEAR },
@@ -551,7 +551,7 @@ function G.UIDEF.use_and_sell_buttons(card)
 							colour = G.C.UI.BACKGROUND_INACTIVE,
 							one_press = true,
 							button = "use_card",
-							func = (card.ability.set == "RCode" or card.ability.set == "CBlind") and "can_reserve_card" or "can_reserve_card_to_deck",
+							func = (card.ability.set == "RCode" or card.ability.set == "CBlind" or card.ability.set == "RTarot") and "can_reserve_card" or "can_reserve_card_to_deck",
 						},
 						nodes = {
 							{
