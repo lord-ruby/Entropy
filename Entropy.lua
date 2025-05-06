@@ -65,20 +65,7 @@ if SMODS and SMODS.calculate_individual_effect then
     local scie = SMODS.calculate_individual_effect
     function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
         local ret
-        if key == 'level_up' then
-            if effect.card and effect.card ~= scored_card then juice_card(effect.card) end
-            local hand_type = effect and effect.level_up_hand or G.GAME.last_hand_played
-            --ew ew ew ew ew ew ew
-            level_up_hand(nil, hand_type, false, type(amount) == 'number' and amount or 1)
-            G.GAME.hands[hand_type].level = (G.GAME.hands[hand_type].level or 1) - (type(amount) == 'number' and amount or 1)
-            G.E_MANAGER:add_event(Event({trigger = 'before', func = function()
-                level_up_hand(nil, hand_type, true, type(amount) == 'number' and amount or 1)
-                return true
-            end}))
-            return true
-        else
-            ret = scie(effect, scored_card, key, amount, from_edition)
-        end
+        ret = scie(effect, scored_card, key, amount, from_edition)
         if ret then
           return ret
         end
@@ -844,3 +831,23 @@ Entropy.GamesetAtlas = SMODS.Atlas({
 	px = 29,
 	py = 29,
 })
+
+local ref = level_up_hand
+function level_up_hand(card, hand, instant, amount)
+    local level = G.GAME.hands[hand].level
+    local mult = G.GAME.hands[hand].mult
+    local chips = G.GAME.hands[hand].chips
+    local l_mult = G.GAME.hands[hand].l_mult
+    local l_chips = G.GAME.hands[hand].l_chips
+    ref(card, hand, instant, amount)
+    G.GAME.hands[hand].level = (G.GAME.hands[hand].level or 1) - amount
+    G.GAME.hands[hand].mult = mult
+    G.GAME.hands[hand].chips = chips
+    G.GAME.hands[hand].l_mult = l_mult
+    G.GAME.hands[hand].l_chips = l_chips
+    G.E_MANAGER:add_event(Event({trigger = 'immediate', func = function()
+        ref(card, hand, true, amount)
+        G.GAME.hands[hand].level = level + amount
+        return true
+    end}))
+end
