@@ -667,11 +667,19 @@ local decs = {
 				}
 			},
 			c_entr_feast = {
-				name = "Feast",
+				name = "The Feast",
 				text = {
 					"{C:attention}Sell{} and {C:attention}Destroy{}",
 					"#<up to >1##1# selected card#<s>1#",
 					"from the {C:attention}shop{}"
+				}
+			},
+			c_entr_servant = {
+				name = "The Servant",
+				text = {
+					"Create {C:attention}#1#{} random consumable#<s>1# of an",
+					"{C:red}Inversed{} type of #<up to >2#{C:attention}#2#{} selected card#<s>2#",
+					"{C:inactive}(Must have room){}"
 				}
 			}
 		},

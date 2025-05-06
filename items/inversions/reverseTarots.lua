@@ -8,33 +8,33 @@ SMODS.ConsumableType({
 	loc_txt = {},
 	default = "c_entr_fool"
 })
--- 0 - Fool -     Master (Coded)
--- 1 - Magician -     Carpenter
--- 2 - High Priestess -     Oracle
--- 3 - Empress -     Princess
--- 4 - Emperor -     Servant
--- 5 - Hierophant -     Heretic
--- 6 - Lovers -     Feud
--- 7 - Chariot -     Scar
--- 8 - Justice -     Dagger
--- 9 - Hermit -     Earl
--- 10 - Wheel of Fortune -     Whetstone
+-- 0 - The Fool -     The Master (Coded)
+-- 1 - The Magician -    The Carpenter
+-- 2 - The High Priestess -    The Oracle
+-- 3 - The Empress -    The Princess
+-- 4 - The Emperor -    The Servant (Coded)
+-- 5 - The Hierophant -    The Heretic
+-- 6 - The Lovers -     The Feud
+-- 7 - The Chariot -     The Scar
+-- 8 - Justice -     The Dagger
+-- 9 - The Hermit -     The Earl
+-- 10 - The Wheel of Fortune -   Whetstone (idk about this one) (Coded)
 -- 11 - Strength -     Endurance
--- 12 - Hanged Man -     Advisor
--- 13 - Death -     Statue (Coded)
--- 14 - Temperance -     Feast
--- 15 - Devil -     Companion
--- 16 - Tower -     Village
--- 17 - Star -     Ocean
--- 18 - Moon -     Forest
--- 19 - Sun -     Mountain --cassknows & lfmoth
+-- 12 - The Hanged Man -    The Advisor
+-- 13 - Death -    The Statue (Coded)
+-- 14 - Temperance -    The Feast (Coded)
+-- 15 - The Devil -     The Companion
+-- 16 - The Tower -   The Village
+-- 17 - The Star -    The Ocean
+-- 18 - The Moon -     The Forest
+-- 19 - The Sun -     The Mountain --cassknows & lfmoth
 -- 20 - Judgement -     Forgiveness
--- 21 - World -     Tent
--- 22 - Eclipse -     Noon (Zenith) [Penumbra] {Umbra} <Bra> 'Shadow'
--- 23 - Blessing -     Prophecy
--- 24 - Seraph -     Imp --lfmoth
--- 25 - Instability -     Equality
--- 32 - Automaton -     Mallet
+-- 21 - The World -     The Tent
+-- 22 - The Eclipse -     Penumbra
+-- 23 - Blessing -     The Prophecy
+-- 24 - The Seraph -     The Imp --lfmoth
+-- 25 - Instability -     Integrity
+-- 32 - The Automaton -     The Mallet
 SMODS.Atlas { key = 'rtarot', path = 'reverse_tarots.png', px = 71, py = 95 }
 local master = {
     key = "master",
@@ -89,6 +89,51 @@ local master = {
 					},
 				},
 			} or nil,
+        }
+    end
+}
+local servant = {
+    key = "servant",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -900 + 4,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        select = 1,
+        create = 1
+    },
+    pos = {x=4, y = 0},
+    use = function(self, card, area, copier)
+        local num, cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, nil, card)
+        for i, v in pairs(cards) do
+            if Entropy.FlipsideInversions[v.config.center.key] then
+                local set = G.P_CENTERS[Entropy.FlipsideInversions[v.config.center.key]].set
+                for i = 1, card.ability.create do
+                    if #G.consumeables.cards < G.consumeables.config.card_limit then
+                        local c = create_card(set, G.consumeables, nil, nil, nil, nil, nil)
+                        G.GAME.last_inversion = nil
+                        c:add_to_deck()
+                        G.consumeables:emplace(c)
+                    end
+                end
+            end
+        end
+    end,
+    can_use = function(self, card)
+        local num, cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, nil, card)
+        return num > 0 and num <= card.ability.select and Entropy.TableAny(cards, function(value) return Entropy.FlipsideInversions[value.config.center.key] end)
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.select,
+                card.ability.create
+            }
         }
     end
 }
@@ -271,6 +316,7 @@ return {
         master,
         statue,
         whetstone,
-        feast
+        feast,
+        servant
     }
 }

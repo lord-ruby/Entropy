@@ -884,3 +884,7 @@ function Entropy.UpgradeEnhancement(card)
     end
     return enh
 end
+
+function Entropy.TableAny(table, func)
+    for i, v in pairs(table) do if func(v) then return true end end
+end
