@@ -681,6 +681,14 @@ local decs = {
 					"{C:red}Inversed{} type of #<up to >2#{C:attention}#2#{} selected card#<s>2#",
 					"{C:inactive}(Must have room){}"
 				}
+			},
+			c_entr_endurance = {
+				name = "Endurance",
+				text = {
+					"Multiply #1# selected card#<s>1#",
+					"values by {C:attention}#2#{} then",
+					"apply perishable"
+				}
 			}
 		},
 		Voucher = {

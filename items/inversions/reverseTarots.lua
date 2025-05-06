@@ -19,7 +19,7 @@ SMODS.ConsumableType({
 -- 8 - Justice -     The Dagger
 -- 9 - The Hermit -     The Earl
 -- 10 - The Wheel of Fortune -   Whetstone (idk about this one) (Coded)
--- 11 - Strength -     Endurance
+-- 11 - Strength -     Endurance (Coded)
 -- 12 - The Hanged Man -    The Advisor
 -- 13 - Death -    The Statue (Coded)
 -- 14 - Temperance -    The Feast (Coded)
@@ -223,6 +223,49 @@ local whetstone = {
     end
 }
 
+local endurance = {
+    key = "endurance",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -901+11,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        select = 1,
+        factor = 1.5
+    },
+    pos = {x=1,y=1},
+    use = function(self, card2)
+        local num, cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, nil, card)
+        Entropy.FlipThen(cards, function(card)
+            card.ability.perishable = true -- Done manually to bypass perish compat
+            card.ability.perish_tally = G.GAME.perishable_rounds
+            if not Card.no(card, "immutable", true) then
+                Cryptid.with_deck_effects(card, function(card3)
+                    Cryptid.misprintize(card3, { min=card2.ability.factor,max=card2.ability.factor }, nil, true)
+                end)
+            end
+        end)
+    end,
+    can_use = function(self, card)
+        local num = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, nil, card)
+        return num > 0 and num <= card.ability.select
+    end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {key = "perishable", set="Other", vars = {5, 5}}
+        return {
+            vars = {
+                card.ability.select,
+                card.ability.factor
+            }
+        }
+    end
+}
+
 local statue = {
     key = "statue",
     set = "RTarot",
@@ -317,6 +360,7 @@ return {
         statue,
         whetstone,
         feast,
-        servant
+        servant,
+        endurance
     }
 }
