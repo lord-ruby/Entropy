@@ -847,3 +847,18 @@ function Sprite:init(X, Y, W, H, new_sprite_atlas, sprite_pos)
     if new_sprite_atlas == nil then new_sprite_atlas = G.ASSET_ATLAS.Joker end
     ref(self, X, Y, W, H, new_sprite_atlas, sprite_pos)
 end
+
+function UIElement:update_text()
+    if self.config and self.config.text and not self.config.text_drawable then
+        self.config.lang = self.config.lang or G.LANG
+        self.config.text_drawable = love.graphics.newText(self.config.lang.font.FONT, {G.C.WHITE,self.config.text})
+    end
+    if type(self.config.prev_value) == "string" and type(self.config.text) == "string" then 
+        if self.config.ref_table and self.config.ref_table[self.config.ref_value] ~= self.config.prev_value then
+            self.config.text = tostring(self.config.ref_table[self.config.ref_value])
+            self.config.text_drawable:set(self.config.text)
+            if not self.config.no_recalc and self.config.prev_value and string.len(self.config.prev_value) ~= string.len(self.config.text) then self.UIBox:recalculate() end
+            self.config.prev_value = self.config.ref_table[self.config.ref_value] 
+        end
+    end
+end
