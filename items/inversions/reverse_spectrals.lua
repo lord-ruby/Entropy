@@ -1,10 +1,53 @@
+local changeling = {
+    object_type = "Consumable",
+    order = 2000,
+    key = "changeling",
+    inversion = "c_familiar",
+    pos = {x = 6, y = 4},
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = { random = 3 },
+    atlas = "consumables",
+    set = "RSpectral",
+    
+    use = function(self, card)
+        local cards = {}
+        for i, v in pairs(G.hand.cards) do cards[#cards+1]=v
+        table.sort(cards, function(a,b)
+            return pseudorandom("changeling_cards") > pseudorandom("changeling_cards")
+        end)
+        local actual = {}
+        for i = 1, card.ability.random do
+            actual[i] = cards[i]
+        end
+        Entropy.FlipThen(actual, function(card)
+            card:set_edition(pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("changeling_edition")).key)
+            SMODS.change_base(card, nil, pseudorandom_element({"King", "Queen", "Jack"}, pseudoseed("changeling_rank")))
+        end)
+    end,
+    can_use = function()
+        return G.hand and #G.hand.cards > 0
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.random
+            }
+        }
+    end
+}
+
+
 local beyond = {
     object_type = "Consumable",
     order = 2000 + 31,
     key = "beyond",
     inversion = "c_cry_gateway",
     pos = {x = 0, y = 0},
-    soul_pos = {x=2, y=0, extra = {x=1,y=0}},
+    tsoul_pos = {x=2, y=0, extra = {x=1,y=0}},
     dependencies = {
         items = {"set_entr_entropics"}
     },
@@ -52,6 +95,7 @@ local beyond = {
 
 return {
     items = {
+        changeling,
         beyond
     }
 }

@@ -399,7 +399,7 @@ function Entropy.RegisterReversePlanets()
   Entropy.RPlanetLocs = {}
     for i, v in pairs(Entropy.ReversePlanets) do
 		Entropy.RegisterReversePlanet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name,v.set_badges,v.loc_vars,v.config,v.new_key, v.calc)
-		Entropy.FlipsideInversions[(v.prefix or "c_")..v.key] = "c_entr_"..v.new_key
+        planets[#planets].inversion = (v.prefix or "c_")..v.key
 	end
 end
 
