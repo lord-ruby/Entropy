@@ -347,7 +347,7 @@ local link = {
         }
     },
     object_type = "Sticker",
-    order = -100 + 0,
+    order = 2000 + 0,
     no_sticker_sheet = true,
     prefix_config = { key = false },
     badge_colour = HEX("FF00FF"),
@@ -477,6 +477,161 @@ local rejuvenate = {
         idea = {"crabus"}
     }
 }
+
+local crypt = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 10,
+    key = "crypt",
+    set = "RSpectral",
+    inversion = "c_ankh",
+    atlas = "consumables",
+    config = {
+        select = 2,
+    },
+	pos = {x=9,y=5},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        local joker = nil
+        for i, v in pairs(G.jokers.cards) do 
+            if v.highlighted then 
+                joker = v 
+            end 
+        end
+        Entropy.FlipThen(G.jokers.highlighted, function(v, area)
+            if v ~= joker then            
+                copy_card(joker, v)
+                v:set_edition()
+            end
+        end)
+    end,
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.jokers}, card)
+        return #cards > 1 and #cards <= card.ability.select
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.select,
+            }
+        }
+    end,
+}
+
+local charm = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "e_cry_astral"
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 11,
+    key = "charm",
+    set = "RSpectral",
+    can_stack = true,
+	can_divide = true,
+
+    atlas = "consumables",
+    config = {
+        select = 1,
+    },
+	pos = {x=11,y=5},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        for i, v in pairs(G.jokers.highlighted) do
+            v:set_edition("e_cry_astral")
+            v.ability.eternal = true
+        end
+        local joker = nil
+        local tries = 100
+        while (joker == nil or joker.ability.eternal or joker.ability.cry_absolute) and tries > 0 do
+            joker = pseudorandom_element(G.jokers.cards, pseudoseed("charm"))
+            tries = tries - 1
+        end
+        if joker then
+            joker:start_dissolve()
+            G.GAME.banned_keys[joker.config.center.key] = true
+        end
+    end,
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.jokers}, card)
+        local any_can_banish = false
+        for i, joker in pairs(cards) do
+            if not joker.ability.eternal and not joker.ability.cry_absolute and not joker.highlighted then
+                any_can_banish = true
+            end
+        end
+        return #cards <= card.ability.select and #cards > 0 and any_can_banish
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.e_cry_astral
+        q[#q+1] = {key="eternal",set="Other"}
+        return {
+            vars = {
+                card.ability.select,
+            }
+        }
+    end,
+    entr_credits = {
+        idea = {"crabus"}
+    },
+}
+
+local entropy = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 14,
+    key = "entropy",
+    set = "RSpectral",
+    
+    inversion = "c_cryptid",
+
+    atlas = "consumables",
+    config = {
+        select = 2,
+    },
+	pos = {x=7,y=6},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        Entropy.FlipThen(G.hand.highlighted, function(card,area)
+            local edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy")).key
+            local enhancement_type = pseudorandom_element({"Enhanced","Enhanced","Enhanced","Joker","Consumable","Voucher","Booster"}, pseudoseed("entropy"))
+            if enhancement_type == "Consumable" then
+                enhancement_type = pseudorandom_element({"Tarot","Planet","Spectral","Code","RPlanet","RSpectral","RCode"}, pseudoseed("entropy"))
+            end
+            local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("entropy")).key
+            while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
+                enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("entropy")).key
+            end
+            local seal = pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("entropy")).key
+            card:set_edition(edition)
+            card:set_ability(G.P_CENTERS[enhancement])
+            card:set_seal(seal)
+            SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("entropy")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("entropy")))
+        end)
+    end,
+    can_use = function(self, card)
+        local num = Entropy.GetHighlightedCards({G.hand}, card)
+        return num <= card.ability.select and num > 0
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.select,
+            }
+        }
+    end,
+}
+
 local beyond = {
     object_type = "Consumable",
     order = 2000 + 31,
@@ -547,6 +702,9 @@ return {
         link,
         ichor,
         rejuvenate,
+        crypt,
+        charm,
+        entropy,
         beyond
     }
 }

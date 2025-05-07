@@ -249,3 +249,42 @@ function Card:start_dissolve(...)
         end
     end
 end
+
+local oldfunc = Game.main_menu
+	Game.main_menu = function(change_context)
+		local ret = oldfunc(change_context)
+		-- adds a Beyond spectral to the main menu
+        -- thanks to cryptid for this code
+		-- make the title screen use different background colors
+		G.SPLASH_BACK:define_draw_steps({
+			{
+				shader = "splash",
+				send = {
+					{ name = "time", ref_table = G.TIMERS, ref_value = "REAL_SHADER" },
+					{ name = "vort_speed", val = 0.4 },
+					{ name = "colour_1", ref_table = Entropy, ref_value = "entropic_gradient" },
+					{ name = "colour_2", ref_table = G.C, ref_value = "CRY_EXOTIC" },
+				},
+			},
+		})
+
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0,
+			blockable = false,
+			blocking = false,
+			func = function()
+                for i, v in pairs(G.title_top.cards) do
+                    --if v.base and v.base.value and v.base.value == "Ace" then v:set_edition("e_entr_solar") end
+                    if v.config.center_key == "c_cryptid" then 
+                        v:set_ability(G.P_CENTERS.c_entr_entropy)
+                        v.T.w = v.T.w * 1.1 * 1.2
+                        v.T.h = v.T.h * 1.1 * 1.2
+                    end
+                end
+				return true
+			end,
+		}))
+
+		return ret
+	end
