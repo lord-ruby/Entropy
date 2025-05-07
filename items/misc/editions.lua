@@ -66,7 +66,7 @@ SMODS.Shader({
 
 local fractured ={
 	object_type = "Edition",
-	order = 2,
+	order = 9000+2,
     key="fractured",
     shader="fractured",
     config = {

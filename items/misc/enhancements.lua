@@ -4,7 +4,7 @@ local flesh = {
           "set_entr_misc"
         }
     },
-	order = 1,
+	order = 10000+1,
 	object_type = "Enhancement",
 	key = "flesh",
 	atlas = "enhancements",
@@ -46,7 +46,7 @@ local disavowed = {
           "set_entr_misc"
         }
     },
-	order = 2,
+	order = 10000+2,
 	object_type = "Enhancement",
 	key = "disavowed",
 	atlas = "enhancements",
