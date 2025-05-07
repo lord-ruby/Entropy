@@ -622,7 +622,13 @@ G.FUNCS.hand_mult_UI_set = function(e)
 	if calc > to_big(-1e100) and calc < to_big(1e100) then
 		calc = to_number(calc)
 	end
-    if number_format(to_big(calc)) == "Infinity" then calc = to_big(1e300) end
+    if number_format(to_big(calc)) == "Infinity" then 
+        if type(calc) == "table" then
+            calc = to_big(1e300) 
+        else
+            calc = 1e300
+        end
+    end
 	return calc
 end
 
