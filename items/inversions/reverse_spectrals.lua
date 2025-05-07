@@ -347,7 +347,7 @@ local link = {
         }
     },
     object_type = "Sticker",
-    order = 2000 + 0,
+    order = 2500 + 0,
     no_sticker_sheet = true,
     prefix_config = { key = false },
     badge_colour = HEX("FF00FF"),
@@ -1227,7 +1227,7 @@ local superego_sticker = {
         }
     },
     object_type = "Sticker",
-    order = 2000 + 2,
+    order = 2500 + 2,
     atlas = "entr_stickers",
     pos = { x = 4, y = 1 },
     key = "superego",

@@ -6,7 +6,7 @@ local marked = {
         }
     },
 	object_type = "Voucher",
-    order = 0,
+    order = -2000,
     key = "marked",
     atlas = "vouchers",
     pos = {x=0, y=0},
@@ -26,7 +26,7 @@ local trump_card = {
         }
     },
 	object_type = "Voucher",
-    order = 1,
+    order = -2000+1,
     key = "trump_card",
     atlas = "vouchers",
     pos = {x=1, y=0},
@@ -48,7 +48,7 @@ local supersede = {
         }
     },
 	object_type = "Voucher",
-    order = 2,
+    order = -2000+2,
     key = "supersede",
     atlas = "vouchers",
     pos = {x=2, y=0},

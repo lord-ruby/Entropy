@@ -5,7 +5,7 @@ local crimson = {
         }
     },
 	object_type = "Seal",
-    order = 1,
+    order = 3001,
     key="entr_crimson",
     atlas = "seals",
     pos = {x=0,y=0},
@@ -21,7 +21,7 @@ local sapphire = {
         }
     },
 	object_type = "Seal",
-    order = 2,
+    order = 3002,
     key="entr_sapphire",
     atlas = "seals",
     pos = {x=1,y=0},
@@ -56,7 +56,7 @@ local silver = {
         }
     },
 	object_type = "Seal",
-    order = 3,
+    order = 3003,
     key="entr_silver",
     atlas = "seals",
     pos = {x=2,y=0},
@@ -83,7 +83,7 @@ local pink = {
         }
     },
 	object_type = "Seal",
-    order = 4,
+    order = 3004,
     key="entr_pink",
     atlas = "seals",
     pos = {x=3,y=0},
@@ -115,7 +115,7 @@ local verdant = {
         }
     },
 	object_type = "Seal",
-    order = 5,
+    order = 3005,
     key="entr_verdant",
     atlas = "seals",
     pos = {x=4,y=0},
@@ -149,7 +149,7 @@ local cerulean = {
         }
     },
 	object_type = "Seal",
-    order = 6,
+    order = 3006,
     key="entr_cerulean",
     atlas = "seals",
     pos = {x=5,y=0},

@@ -5,7 +5,7 @@ local define = {
     inversion = "c_cry_pointer",
     pos = {x = 4, y = 4},
     dependencies = {
-        items = {"set_entr_entropics"}
+        items = {"set_entr_inversions"}
     },
     atlas = "consumables",
     set = "RSpectral",

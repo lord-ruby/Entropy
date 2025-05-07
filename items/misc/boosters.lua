@@ -5,7 +5,7 @@ local pack = {
         }
     },
 	object_type = "Booster",
-    order = 40,
+    order = -1003,
     key = "twisted_pack_normal",
     set = "Booster",
     config = { extra = 3, choose = 1 },
@@ -52,7 +52,7 @@ local jumbo = {
         }
     },
 	object_type = "Booster",
-    order = 41,
+    order = -1002,
     key = "twisted_pack_jumbo",
     set = "Booster",
     config = { extra = 5, choose = 1 },
@@ -99,7 +99,7 @@ local mega = {
         }
     },
 	object_type = "Booster",
-    order = 42,
+    order = -1001,
     key = "twisted_pack_mega",
     set = "Booster",
     config = { extra = 5, choose = 2 },

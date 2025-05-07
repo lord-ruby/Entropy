@@ -53,7 +53,7 @@ local decs = {
 					"{C:cry_ascendant}Thematic Set",
 				},
 			},
-			set_entr_entropic = {
+			set_entr_entropics = {
 				name = "Entropic Jokers",
 				text = {
 					"Powerful Jokers with",
