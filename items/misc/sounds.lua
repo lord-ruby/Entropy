@@ -49,3 +49,8 @@ SMODS.Sound({
 -- 		return (G.GAME.blind and blinds[G.GAME.blind.config.blind.key]) and 10^306
 -- 	end,
 -- })
+
+SMODS.Sound({
+	key = "e_solar",
+	path = "e_solar.ogg",
+})

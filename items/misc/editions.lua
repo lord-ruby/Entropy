@@ -2,10 +2,6 @@ SMODS.Shader({
     key="solar",
     path="solar.fs"
 })
-SMODS.Sound({
-	key = "e_solar",
-	path = "e_solar.ogg",
-})
 
 local solar = {
 	object_type = "Edition",
