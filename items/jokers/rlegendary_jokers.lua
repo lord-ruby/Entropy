@@ -304,12 +304,91 @@ local entropy_card = {
     end
 }
 
+
+local kciroy = {
+    order = 202,
+    object_type = "Joker",
+    key = "kciroy",
+    config = {
+        csl = 23,
+        hs = 8,
+        neededd = 114,
+        currd = 0,
+        echips = 1,
+        echips_mod = 0.5
+    },
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    rarity = "entr_reverse_legendary",
+    cost = 20,
+    
+
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 2, y = 0 },
+    soul_pos = { x = 2, y = 1 },
+    atlas = "reverse_legendary",
+    demicoloncompat=true,
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                math.min(card.ability.hs, 1000),
+                card.ability.csl,
+                card.ability.echips_mod,
+                card.ability.neededd,
+                card.ability.currd,
+                card.ability.echips,
+            },
+        }
+    end,
+    entr_credits = {
+		idea = {
+			"cassknows",
+		},
+	},
+    demicoloncompat = true,
+    add_to_deck = function(self, card)
+        G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + card.ability.csl
+        G.hand.config.card_limit = G.hand.config.card_limit + math.min(card.ability.hs, 1000)
+    end,
+    remove_from_deck = function(self, card)
+        G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - card.ability.csl
+        G.hand.config.card_limit = G.hand.config.card_limit - math.min(card.ability.hs, 1000)
+    end,
+    calculate = function (self, card, context)
+        if (context.pre_discard and not context.retrigger_joker and not context.blueprint) or context.forcetrigger then
+            card.ability.currd = card.ability.currd + #G.hand.highlighted
+            while card.ability.currd >= card.ability.neededd do
+                card.ability.currd = card.ability.currd - card.ability.neededd
+                card.ability.echips = card.ability.echips + card.ability.echips_mod
+            end
+            if context.forcetrigger then
+                card.ability.echips = card.ability.echips + card.ability.echips_mod
+            end
+        end
+        if context.joker_main or context.forcetrigger then
+            return {
+				Echip_mod = card.ability.echips,
+				message = localize({
+					type = "variable",
+					key = "a_powchips",
+					vars = { card.ability.echips },
+				}),
+				colour = { 0.8, 0.45, 0.85, 1 }, --plasma colors
+			}
+        end
+    end
+}
 return {
     items = {
         oekrep,
         tocihc,
         teluobirt,
         oinac,
-        entropy_card
+        entropy_card,
+        kciroy
     }
 }

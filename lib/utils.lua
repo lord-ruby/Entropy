@@ -493,3 +493,9 @@ function Entropy.EditionTag(edition, key, ascendant, pos,order)
         end
     }
 end
+
+function Entropy.StackEvalReturns(orig, new, etype)
+    if etype == "Xmult" or etype == "x_mult" or etype == "Xmult_mod" or etype == "Xchips" or etype == "Xchip_mod" or etype == "asc" or etype == "Emult_mod" or etype == "Echip_mod" then return (orig or 1) * new else
+        return (orig or 0) + new
+    end
+end
