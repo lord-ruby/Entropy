@@ -21,7 +21,7 @@ local memoryleak = {
             G.GAME.USING_CODE = true
             G.ENTERED_ACE = ""
             G.CHOOSE_ACE = UIBox({
-                definition = create_UIBox_crash(card),
+                definition = create_UIBox_memleak(card),
                 config = {
                     align = "bmi",
                     offset = { x = 0, y = G.ROOM.T.y + 29 },
@@ -39,6 +39,7 @@ local memoryleak = {
             end
         end
     end
+    can_use = function() return true end
 }
 
 return {

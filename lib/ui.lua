@@ -180,13 +180,13 @@ function G.UIDEF.define_keys()
     local t = create_UIBox_generic_options({
         no_back = true,
         colour = HEX("04200c"),
-        outline_colour = G.C.SECONDARY_SET.Code,
+        outline_colour = G.C.Entropy.RCode,
         contents = {
             {
                 n = G.UIT.R,
                 nodes = {
                     create_text_input({
-                        colour = G.C.SET.Code,
+                        colour = G.C.Entropy.RCode,
                         hooked_colour = darken(copy_table(G.C.Entropy.RCode), 0.3),
                         w = 4.5,
                         h = 1,
