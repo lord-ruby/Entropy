@@ -21,6 +21,6 @@ target = "card.lua"
 pattern = '''(self.ability.set == 'Voucher' and {G.C.SECONDARY_SET.Voucher, G.C.CLEAR}) or'''
 position = "at"
 payload = '''
-(self.ability.set == 'Voucher' and {G.C.SECONDARY_SET.Voucher, G.C.CLEAR}) or {G.C.Entropy.Dissolve[self.ability.set]} or
+(self.ability.set == 'Voucher' and {G.C.SECONDARY_SET.Voucher, G.C.CLEAR}) or (G.C.Entropy.Dissolve[self.ability.set] and {G.C.Entropy.Dissolve[self.ability.set]}) or
 '''
 match_indent = true

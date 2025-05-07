@@ -89,3 +89,71 @@ function Entropy.FlipThen(cardlist, func, before, after)
         end
     end
 end
+
+function Entropy.SealSpectral(key, sprite_pos, seal,order, inversion)
+    return {
+        dependencies = {
+            items = {
+              "set_entr_inversions",
+              seal
+            }
+        },
+        object_type = "Consumable",
+        order = order,
+        key = key,
+        set = "RSpectral",
+        
+        atlas = "consumables",
+        config = {
+            highlighted = 1
+        },
+        pos = sprite_pos,
+        inversion = inversion,
+        --soul_pos = { x = 5, y = 0},
+        use = Entropy.ModifyHandCard({seal=seal}),
+        can_use = function(self, card)
+            local cards = Entropy.GetHighlightedCards({G.hand}, nil, card)
+            return #cards > 0 and #cards <= card.ability.highlighted
+        end,
+        loc_vars = function(self, q, card)
+            q[#q+1] = {key = seal.."_seal", set="Other"}
+            return {
+                vars = {
+                    card.ability.highlighted,
+                    colours = {
+                        SMODS.Seal.obj_table[seal].badge_colour or G.C.RED
+                    }
+                }
+            }
+        end,
+    }
+end
+
+function Entropy.ModifyHandCard(modifications, cards)
+    return function()
+        Entropy.FlipThen(cards or G.hand.highlighted, function(mcard)
+            if modifications.suit or modifications.rank then
+                SMODS.change_base(mcard, modifications.suit, modifications.rank)
+            end
+            if modifications.enhancement then
+                mcard:set_ability(G.P_CENTERS[modifications.enhancement])
+            end
+            if modifications.edition then
+                if type(modifications.edition) == "table" then
+                    mcard:set_edition(modifications.edition)
+                else
+                    mcard:set_edition(G.P_CENTERS[modifications.edition])
+                end
+            end
+            if modifications.seal then
+                mcard:set_seal(modifications.seal)
+            end
+            if modifications.sticker then
+                Entropy.ApplySticker(mcard, modifications.sticker)
+            end
+            if modifications.extra then
+                for i, v in pairs(modifications.extra) do mcard.ability[i] = v end
+            end
+        end)
+    end
+end

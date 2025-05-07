@@ -140,3 +140,22 @@ function end_round()
         SMODS.calculate_context({remove_playing_cards = true, removed=remove_temp})
     end
 end
+
+local set_debuffref = Card.set_debuff
+
+function Card:set_debuff(should_debuff)
+    if self.perma_debuff or self.ability.superego then should_debuff = true end
+    set_debuffref(self, should_debuff)
+end
+
+local ref = evaluate_play_final_scoring
+function evaluate_play_final_scoring(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
+    local text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta = ref(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
+    G.E_MANAGER:add_event(Event({
+      trigger = 'after',
+      	func = (function()
+            G.GAME.asc_power_hand = nil
+        return true end)
+    }))
+    return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
+end

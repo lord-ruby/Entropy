@@ -42,7 +42,7 @@ local changeling = {
 
 local rend = {
     object_type = "Consumable",
-    order = 2000,
+    order = 2000 + 1,
     key = "rend",
     inversion = "c_grim",
     pos = {x = 7, y = 4},
@@ -72,7 +72,44 @@ local rend = {
         }
     end
 }
-
+local inscribe = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 2,
+    key = "inscribe",
+    set = "RSpectral",
+    can_stack = true,
+	can_divide = true,
+    inversion = "c_incantation",
+    atlas = "consumables",
+    config = {
+        chipmult = 3
+    },
+	pos = {x=8,y=4},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        Entropy.FlipThen(Entropy.FilterTable(G.hand.cards, function(card) return not card:is_face() and card.base.value ~= "Ace" end), function(card, area)
+            card.base.nominal = card.base.nominal * card2.ability.chipmult
+            card.perma_debuff = true
+            card:set_debuff(true)
+        end)
+    end,
+    can_use = function(self, card)
+        return G.hand and #G.hand.cards > 0
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.chipmult
+            }
+        }
+    end,
+}
+local insignia = Entropy.SealSpectral("insignia", {x=9,y=4}, "entr_silver", 2000+3, "c_talisman")
 local beyond = {
     object_type = "Consumable",
     order = 2000 + 31,
@@ -129,6 +166,8 @@ return {
     items = {
         changeling,
         rend,
+        inscribe,
+        insignia,
         beyond
     }
 }

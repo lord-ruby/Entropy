@@ -1,5 +1,9 @@
 local i = {
     "lib/colours",
+    "lib/utils",
+    "lib/config",
+    "lib/hooks",
+    "lib/loader",
 
     "items/misc/atlases",
     "items/misc/rarities",
@@ -7,16 +11,12 @@ local i = {
     "items/misc/content_sets",
     "items/misc/consumable_types",
     "items/misc/enhancements",
+    "items/misc/seals",
 
     "items/jokers/entropic_jokers",
 
     "items/inversions/reverse_spectrals",
     "items/inversions/reverse_planets",
-
-    "lib/utils",
-    "lib/config",
-    "lib/hooks",
-    "lib/loader"
 }
 local items = {}
 for _, v in pairs(i) do
