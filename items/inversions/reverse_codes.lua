@@ -99,10 +99,45 @@ local bootstrap = {
     can_use = function() return true end,
 }
 
+local quickload = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+4,
+    key = "quickload",
+    set = "RCode",
+    
+    inversion = "c_cry_revert",
+
+    atlas = "miscc",
+    pos = {x=3,y=1},
+    use = function(self, card, area, copier)
+        G.STATE = 8
+        G.STATE_COMPLETE = false
+        if G.SHOP_SIGN then     
+            G.SHOP_SIGN:remove()
+        end
+    end,
+    can_use = function(self, card)
+        return G.STATE == 5
+	end,
+    loc_vars = function(self, q, card)
+    end,
+    entr_credits = {
+		idea = {
+			"cassknows",
+		},
+	},
+}
+
 return {
     items = {
         memoryleak,
         rootkit,
-        bootstrap
+        bootstrap,
+        quickload
     }
 }
