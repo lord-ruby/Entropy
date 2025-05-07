@@ -1443,3 +1443,22 @@ function ease_ante(mod)
     end
     ease_anteref(mod * mult)
 end
+
+local is_jollyref = Card.is_jolly
+function Card:is_jolly()
+	if HasJoker("j_entr_dekatria",true) then return true end
+    return is_jollyref(self)
+end
+
+
+local ref = Tag.init
+function Tag:init(_tag, for_collection, _blind_type)
+    if Entropy.HasJoker("j_entr_exousia",true) and Entropy.AscendedTags[_tag] and not for_collection then 
+        _tag = Entropy.AscendedTags[_tag]
+        local procs = 1
+        while pseudorandom("exousia") < 0.1 and procs < Entropy.HasJoker("j_entr_exousia",true) and Entropy.AscendedTags[_tag] and not for_collection do
+            _tag = Entropy.AscendedTags[_tag]
+        end
+    end
+    return ref(self,_tag, for_collection, _blind_type)
+end

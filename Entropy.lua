@@ -15,6 +15,8 @@ local i = {
     "items/misc/seals",
     "items/misc/editions",
     "items/misc/sounds",
+    "items/misc/blind_tokens",
+    "items/misc/tags",
 
     "items/jokers/misc_jokers",
     "items/jokers/epic_jokers",

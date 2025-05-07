@@ -48,6 +48,7 @@ Entropy.DefineBlacklist = {
 Entropy.ChaosBlacklist = {}
 Entropy.ParakmiBlacklist = {}
 Entropy.ChaosConversions = {}
+Entropy.AscendedTags = {}
 '''
 match_indent = true
 

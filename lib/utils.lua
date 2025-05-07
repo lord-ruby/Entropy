@@ -388,3 +388,108 @@ function Entropy.card_eval_status_text_eq(card, eval_type, amt, percent, dir, ex
         playing_card_joker_effects(extra.playing_cards_created)
     end
 end
+
+function Entropy.FormatArrowMult(arrows, mult)
+    mult = number_format(mult)
+    if to_big(arrows) < to_big(-1) then 
+        return "="..mult 
+    elseif to_big(arrows) < to_big(0) then 
+        return "+"..mult 
+    elseif to_big(arrows) < to_big(6) then 
+        if to_big(arrows) < to_big(1) then
+            return "X"..mult
+        end
+        local arr = ""
+        for i = 1, to_big(arrows):to_number() do
+            arr = arr.."^"
+        end
+        return arr..mult
+    else
+        return "{"..arrows.."}"..mult
+    end
+end
+
+function Entropy.RareTag(rarity, key, ascendant, colour, pos, fac, legendary,order)
+    return {
+        object_type = "Tag",
+        order = order,
+        dependencies = {
+          items = {
+            "set_entr_tags",
+            "j_entr_exousia"
+          }
+        },
+        shiny_atlas="entr_shiny_ascendant_tags",
+        key = (ascendant and "ascendant_" or "")..key,
+        atlas = (ascendant and "ascendant_tags" or "tags"),
+        pos = pos,
+        config = { type = "store_joker_create" },
+        in_pool = ascendant and function() return false end or nil,
+        apply = function(self, tag, context)
+            if context.type == "store_joker_create" then
+                local rares_in_posession = { 0 }
+                for k, v in ipairs(G.jokers.cards) do
+                    if v.config.center.rarity == rarity and not rares_in_posession[v.config.center.key] then
+                        rares_in_posession[1] = rares_in_posession[1] + 1
+                        rares_in_posession[v.config.center.key] = true
+                    end
+                end
+                local card
+                if #G.P_JOKER_RARITY_POOLS[rarity] > rares_in_posession[1] then
+                    card = create_card('Joker', context.area, legendary, rarity, nil, nil, nil, 'uta')
+                    create_shop_card_ui(card, "Joker", context.area)
+                    card.states.visible = false
+                    tag:yep("+", G.C.RARITY[colour], function()
+                        card:start_materialize()
+                        card.misprint_cost_fac = 0 or fac
+                        card:set_cost()
+                        return true
+                    end)
+                else
+                    tag:nope()
+                end
+                tag.triggered = true
+                return card
+            end
+        end,
+    }
+end
+
+function Entropy.EditionTag(edition, key, ascendant, pos,order)
+    return {
+        object_type = "Tag",
+        dependencies = {
+            items = {
+                "set_entr_tags",
+                "j_entr_exousia"
+            }
+        },
+        order = order,
+        shiny_atlas="entr_shiny_ascendant_tags",
+        key = (ascendant and "ascendant_" or "")..key,
+        atlas = (ascendant and "ascendant_tags" or "tags"),
+        pos = pos,
+        config = { type = "store_joker_modify" },
+        in_pool = ascendant and function() return false end or nil,
+        apply = function(self, tag, context)
+            if context.type == "store_joker_modify" then
+                tag:yep("+", G.C.RARITY[colour], function()
+                    for i, v in pairs(G.shop_jokers.cards) do
+                        v:set_edition(edition)
+                    end
+                    for i, v in pairs(G.shop_booster.cards) do
+                        v:set_edition(edition)
+                    end
+                    for i, v in pairs(G.shop_vouchers.cards) do
+                        v:set_edition(edition)
+                    end
+                    return true
+                end)
+                tag.triggered = true
+            end
+        end,
+        loc_vars = function(s,q,c)
+            q[#q+1] = edition and G.P_CENTERS[edition] or nil
+        end
+    }
+end
