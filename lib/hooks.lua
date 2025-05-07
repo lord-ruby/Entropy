@@ -1121,7 +1121,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         scie(effect, scored_card, "mult_mod", amount, from_edition)
         card_eval_status_text = e
         if not Talisman.config_file.disable_anims then
-            card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent)
+            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent)
         end
         return true
     end
@@ -1132,11 +1132,11 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         if G.GAME.current_round.current_hand.cry_asc_num == 0 then G.GAME.current_round.current_hand.cry_asc_num = 1 end
         G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (to_big(G.GAME.asc_power_hand)) .. ")"
         card_eval_status_text = function() end
-        scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
-        scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
+        scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
+        scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         card_eval_status_text = e
         if not Talisman.config_file.disable_anims then
-            card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "X"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
+            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "X"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
         end
         return true
     end
@@ -1146,11 +1146,11 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num) + to_big(amount)
         G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (to_big(G.GAME.asc_power_hand)) .. ")"
         card_eval_status_text = function() end
-        scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
-        scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
+        scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
+        scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         card_eval_status_text = e
         if not Talisman.config_file.disable_anims then
-            card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "+"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
+            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "+"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
         end
         return true
     end
@@ -1160,11 +1160,11 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num) ^ to_big(amount)
         if G.GAME.asc_power_hand ~= 0 then G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (to_big(G.GAME.asc_power_hand)) .. ")" end
         card_eval_status_text = function() end
-        scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
-        scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
+        scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
+        scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         card_eval_status_text = e
         if not Talisman.config_file.disable_anims then
-            card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "^"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
+            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "^"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
         end
         return true
     end
