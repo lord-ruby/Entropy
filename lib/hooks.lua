@@ -1513,3 +1513,32 @@ G.FUNCS.use_card = function(e, mute, nosave)
     end
     ref(e, mute, nosave)
 end
+
+local main_ref = evaluate_play_main
+function evaluate_play_main(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
+    local m = G.GAME.hands[text].mult
+    local c = G.GAME.hands[text].chips
+    if G.GAME.Bootstrap then
+        if poker_hands[text] then
+            poker_hands[text].mult = G.GAME.Bootstrap.Mult
+            poker_hands[text].chips = G.GAME.Bootstrap.Chips
+        end
+        G.GAME.hands[text].mult = G.GAME.Bootstrap.Mult
+        G.GAME.hands[text].chips = G.GAME.Bootstrap.Chips
+        G.GAME.Bootstrap = nil
+    end
+    main_ref(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
+    if G.GAME.UsingBootstrap then
+        G.GAME.Bootstrap = {
+            Mult = mult,
+            Chips = hand_chips
+        }
+        G.GAME.UsingBootstrap = nil
+    end
+    G.GAME.hands[text].mult = m
+    G.GAME.hands[text].chips = c
+    if poker_hands[text] then
+        poker_hands[text].mult = m
+        poker_hands[text].chips = c
+    end
+end

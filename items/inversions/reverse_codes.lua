@@ -78,9 +78,31 @@ local rootkit = {
     end
 }
 
+local bootstrap = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 3000 + 3,
+    key = "bootstrap",
+    set = "RCode",
+
+    inversion = "c_cry_payload",
+
+    atlas = "consumables",
+	pos = {x=2,y=1},
+    use = function(self, card, area, copier)
+        G.GAME.UsingBootstrap = true
+    end,
+    can_use = function() return true end,
+}
+
 return {
     items = {
         memoryleak,
-        rootkit
+        rootkit,
+        bootstrap
     }
 }
