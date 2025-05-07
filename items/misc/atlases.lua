@@ -51,3 +51,10 @@ SMODS.Atlas {
     px = 71, 
     py = 95
 }
+
+SMODS.Atlas { 
+    key = 'reverse_legendary', 
+    path = 'reverse_legendaries.png', 
+    px = 71, 
+    py = 95 
+}

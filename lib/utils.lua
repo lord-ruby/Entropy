@@ -222,7 +222,7 @@ end
 local gfcfbs = G.FUNCS.check_for_buy_space
 G.FUNCS.check_for_buy_space = function(card)
 	if
-		not card or card.ability.infinitesimal
+		not card or card.ability.infinitesimal or card.ability.set == "Back" or card.ability.set == "Sleeve"
 	then
 		return true
 	end

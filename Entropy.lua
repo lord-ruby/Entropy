@@ -16,6 +16,8 @@ local i = {
 
     "items/jokers/misc_jokers",
     "items/jokers/epic_jokers",
+    "items/jokers/exotic_jokers",
+    "items/jokers/rlegendary_jokers",
     "items/jokers/entropic_jokers",
 
     "items/inversions/reverse_spectrals",
