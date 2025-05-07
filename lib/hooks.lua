@@ -159,3 +159,17 @@ function evaluate_play_final_scoring(text, disp_text, poker_hands, scoring_hand,
     }))
     return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
 end
+
+create_UIBox_your_collection_seals = function()
+    return SMODS.card_collection_UIBox(G.P_CENTER_POOLS.Seal, {6,6}, {
+        snap_back = true,
+        infotip = localize('ml_edition_seal_enhancement_explanation'),
+        hide_single_page = true,
+        collapse_single_page = true,
+        center = 'c_base',
+        h_mod = 1.03,
+        modify_card = function(card, center)
+           card:set_seal(center.key, true)
+        end,
+    })
+end
