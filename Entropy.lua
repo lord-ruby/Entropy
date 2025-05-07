@@ -14,6 +14,7 @@ local i = {
     "items/misc/enhancements",
     "items/misc/seals",
     "items/misc/editions",
+    "items/misc/sounds",
 
     "items/jokers/misc_jokers",
     "items/jokers/epic_jokers",
