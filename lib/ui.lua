@@ -168,3 +168,51 @@ function G.UIDEF.define_keys()
     }}
     return t
   end
+
+  function create_UIBox_memleak(card)
+    G.E_MANAGER:add_event(Event({
+        blockable = false,
+        func = function()
+            G.REFRESH_ALERTS = true
+            return true
+        end,
+    }))
+    local t = create_UIBox_generic_options({
+        no_back = true,
+        colour = HEX("04200c"),
+        outline_colour = G.C.SECONDARY_SET.Code,
+        contents = {
+            {
+                n = G.UIT.R,
+                nodes = {
+                    create_text_input({
+                        colour = G.C.SET.Code,
+                        hooked_colour = darken(copy_table(G.C.Entropy.RCode), 0.3),
+                        w = 4.5,
+                        h = 1,
+                        max_length = 2500,
+                        extended_corpus = true,
+                        prompt_text = "???",
+                        ref_table = G,
+                        ref_value = "ENTERED_ACE",
+                        keyboard_offset = 1,
+                    }),
+                },
+            },
+            {
+                n = G.UIT.R,
+                config = { align = "cm" },
+                nodes = {
+                    UIBox_button({
+                        colour = G.C.Entropy.RCode,
+                        button = "ca",
+                        label = { localize("cry_code_execute") },
+                        minw = 4.5,
+                        focus_args = { snap_to = true },
+                    }),
+                },
+            },
+        },
+    })
+    return t
+end

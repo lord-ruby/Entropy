@@ -29,6 +29,7 @@ local i = {
     "items/inversions/reverse_tarots",
     "items/inversions/reverse_spectrals",
     "items/inversions/reverse_planets",
+    "items/inversions/reverse_codes",
 
     "items/misc/blind_tokens",
     "items/inversions/define"

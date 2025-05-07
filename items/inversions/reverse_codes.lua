@@ -1,20 +1,48 @@
-local pact = {
+local memoryleak = {
     dependencies = {
         items = {
           "set_entr_inversions",
-          "link"
         }
     },
     object_type = "Consumable",
-    order = 5000 + 7,
-    key = "pact",
-    set = "RSpectral",
+    order = 3000 + 1,
+    key = "memory_leak",
+    set = "RCode",
 
-    inversion = "c_ouija",
+    inversion = "c_cry_crash",
 
     atlas = "consumables",
-    config = {
-        selected = 3
-    },
-	pos = {x=6,y=5},
+	pos = {x=0,y=1},
+
+    use = function(self, card)
+        if pseudorandom("memoryleak") < (1/4) then
+            glitched_intensity = 100
+            G.SETTINGS.GRAPHICS.crt = 100
+            G.GAME.USING_CODE = true
+            G.ENTERED_ACE = ""
+            G.CHOOSE_ACE = UIBox({
+                definition = create_UIBox_crash(card),
+                config = {
+                    align = "bmi",
+                    offset = { x = 0, y = G.ROOM.T.y + 29 },
+                    major = G.jokers,
+                    bond = "Weak",
+                    instance_type = "POPUP",
+                },
+            })
+        else
+            for i, v in pairs(G.jokers.cards) do
+                v:start_dissolve()
+            end
+            for i, v in pairs(G.consumables.cards) do
+                v:start_dissolve()
+            end
+        end
+    end
+}
+
+return {
+    items = {
+        memoryleak
+    }
 }
