@@ -33,7 +33,7 @@ function Entropy.RegisterBlinds()
             },
             weight = 0,
             no_doe = true,
-            atlas="exotic_jokers",
+            atlas="consumables",
             --soul_pos = { x = 5, y = 0},
             in_pool = function()
                 return false
@@ -94,7 +94,7 @@ function Entropy.RegisterBlinds()
                 },
                 key = "entr_"..i,
                 set = "CBlind",
-                atlas="exotic_jokers",
+                atlas="consumables",
                 
                 pos = {x=9999,y=9999},
                 config = {

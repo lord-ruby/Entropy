@@ -1494,3 +1494,22 @@ function Card:set_ability(center, initial, delay_sprites)
         end
     end
 end
+
+G.FUNCS.has_inversion = function(e) 
+    if G.GAME.last_inversion then 
+        e.config.colour = mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8)
+    else
+        e.config.colour = mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8)
+    end
+ end
+local ref = G.FUNCS.use_card
+G.FUNCS.use_card = function(e, mute, nosave)
+    local card = e.config.ref_table
+    if Entropy.FlipsideInversions[card.config.center.key] and not Entropy.FlipsidePureInversions[card.config.center.key] and card.config.center.key ~= "c_entr_master" then
+        G.GAME.last_inversion = {
+            key = card.config.center.key,
+            set = card.config.center.set
+        }
+    end
+    ref(e, mute, nosave)
+end

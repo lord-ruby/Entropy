@@ -79,3 +79,10 @@ SMODS.Atlas {
     px = 71, 
     py = 95 
 }
+
+SMODS.Atlas { 
+    key = 'rtarot', 
+    path = 'reverse_tarots.png', 
+    px = 71, 
+    py = 95 
+}

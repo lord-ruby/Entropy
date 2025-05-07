@@ -16,7 +16,6 @@ local i = {
     "items/misc/seals",
     "items/misc/editions",
     "items/misc/sounds",
-    "items/misc/blind_tokens",
     "items/misc/tags",
     "items/misc/boosters",
     "items/misc/vouchers",
@@ -27,8 +26,11 @@ local i = {
     "items/jokers/rlegendary_jokers",
     "items/jokers/entropic_jokers",
 
+    "items/inversions/reverse_tarots",
     "items/inversions/reverse_spectrals",
     "items/inversions/reverse_planets",
+
+    "items/misc/blind_tokens",
     "items/inversions/define"
 }
 local items = {}
