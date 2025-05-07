@@ -8,7 +8,7 @@ priority = -1
 target = "functions/common_events.lua"
 pattern = 'if card and card.playing_card then SMODS.drawn_cards[#SMODS.drawn_cards+1] = card end'
 position = "after"
-payload = '''if card and card.playing_card and HasJoker("j_entr_jokerinyellow") then
+payload = '''if card and card.playing_card and Entropy.HasJoker("j_entr_jokerinyellow") then
                 for i, v in pairs(G.jokers.cards) do
                     if v.config.center.key == "j_entr_jokerinyellow" then
                         if pseudorandom("kiy") < cry_prob(v.ability.cry_prob, v.ability.extra.odds, v.ability.cry_rigged) / v.ability.extra.odds then

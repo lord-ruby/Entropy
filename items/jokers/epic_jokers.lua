@@ -265,7 +265,7 @@ local antireal = {
     calculate = function (self, card, context)
         if context.joker_main or context.forcetrigger then
             return {
-                exp_asc = (G.jokers.config.card_limit - #G.jokers.cards + HasJoker("j_entr_antireal") or 0) * card.ability.exp_per_slot
+                exp_asc = (G.jokers.config.card_limit - #G.jokers.cards + Entropy.HasJoker("j_entr_antireal") or 0) * card.ability.exp_per_slot
             }
         end
     end,

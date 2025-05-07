@@ -1741,10 +1741,7 @@ local decs = {
 			entr_crimson_seal = {
 				name = "Crimson Seal",
 				text = {
-					"Retrigger this",
-					"card {C:attention}2{} times",
-					"triggers at the {C:attention}end{}",
-					"of scoring instead"
+					"Effect TBD"
 				}
 			},
 			entr_sapphire_seal = {

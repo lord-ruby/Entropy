@@ -60,7 +60,7 @@ local rootkit = {
 
     config = {
         perhand = 10
-    }
+    },
 
     use = function(self, card, area, copier)
         G.GAME.RootKit = (G.GAME.RootKit or 0) + card.ability.perhand
@@ -68,7 +68,7 @@ local rootkit = {
     bulk_use = function(self, card, area, copier, number)
 		G.GAME.RootKit = (G.GAME.RootKit or 0) + card.ability.perhand * number
 	end,
-    can_use = function() return true end
+    can_use = function() return true end,
     loc_vars = function(self, q, card)
         return {
             vars = {
