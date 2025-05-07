@@ -9,6 +9,15 @@ Entropy.entropic_gradient = SMODS.Gradient {
     }
 }
 
+Entropy.reverse_legendary_gradient = SMODS.Gradient {
+    key = "reverse_legendary_gradient",
+    colours = {
+        HEX("ff00c4"),
+        HEX("FF00FF"),
+        HEX("FF0000"),
+    }
+}
+
 SMODS.Rarity {
     key = "entropic",
     badge_colour = Entropy.entropic_gradient
@@ -22,6 +31,7 @@ function loc_colour(_c, default)
         G.ARGS.LOC_COLOURS.entr_colours = true
         local new_colors = {
             entr_entropic = Entropy.entropic_gradient,
+            entr_reverse_legendary = Entropy.reverse_legendary_gradient
         }
 
         for k, v in pairs(new_colors) do

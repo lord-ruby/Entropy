@@ -73,7 +73,7 @@ function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
 					)
 				)
 		)
-	elseif HasJoker("j_entr_helios") then
+	elseif Entropy.HasJoker("j_entr_helios") then
         local curr = 1.5
         for i, v in pairs(G.jokers.cards) do
             if v.config.center.key == "j_entr_helios" and to_big(v.ability.extra):gt(curr) then curr = v.ability.extra+0.4 end

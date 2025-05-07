@@ -187,3 +187,9 @@ end
 function Entropy.Pseudorandom(seed, min, max)
     return math.floor(pseudorandom(seed)*(max-min)+0.5)+min
 end
+
+function Entropy.HasJoker(key)
+    for i, v in ipairs(G.jokers and G.jokers.cards or {}) do
+        if v.config.center.key == key then return true end
+    end
+end
