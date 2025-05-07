@@ -44,3 +44,10 @@ SMODS.Atlas {
     px = 71, 
     py = 95 
 }
+
+SMODS.Atlas { 
+    key = 'antireal_joker', 
+    path = 'antireal_joker.png', 
+    px = 71, 
+    py = 95
+}

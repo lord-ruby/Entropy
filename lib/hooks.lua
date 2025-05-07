@@ -1174,6 +1174,7 @@ for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'asc', 'asc_mod', 'plus_asc', 'plus
 end
 
 local entr_define_dt = 0
+local entr_antireal_dt = 0
 local update_ref = Game.update
 function Game:update(dt)
     update_ref(self, dt)
@@ -1191,6 +1192,20 @@ function Game:update(dt)
 		entr_define_dt = 0
 		local pointerobj = G.P_CENTERS.c_entr_define
 		pointerobj.pos.x = (pointerobj.pos.x == 4) and 5 or 4
+	end
+    entr_antireal_dt = entr_antireal_dt + dt
+    if G.P_CENTERS and G.P_CENTERS.j_entr_antireal and entr_antireal_dt > 0.05 then
+		entr_antireal_dt = 0
+		local obj = G.P_CENTERS.j_entr_antireal
+		obj.pos.x = obj.pos.x + 1 
+        if obj.pos.x > 11 then
+            obj.pos.x = 0
+            obj.pos.y = obj.pos.y + 1
+        end
+        if obj.pos.y > 9 then
+            obj.pos.y = 0
+            obj.pos.x = 0
+        end
 	end
 end
 
