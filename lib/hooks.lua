@@ -389,3 +389,704 @@ function SMODS.create_mod_badges(obj, badges)
 		end
 	end
 end
+
+local is_suitref = Card.is_suit
+function Card:is_suit(suit, bypass_debuff, flush_calc)
+    --unified usually never shows up, support for life and other mods
+    if self.base.suit == "entr_nilsuit" then
+        return false
+    else
+       return is_suitref(self, suit, bypass_debuff, flush_calc)
+    end
+end
+local ref = Card.get_id
+function Card:get_id()
+    if (self.ability.effect == 'Stone Card' and not self.vampired) or self.base.value == "entr_nilrank" then
+        return -math.random(100, 1000000)
+    end
+    return ref(self)
+end
+
+
+G.FUNCS.can_reserve_joker = function(e)
+    local c1 = e.config.ref_table
+    if
+        #G.jokers.cards
+        < G.jokers.config.card_limit + (Cryptid.safe_get(c1, "edition", "negative") and 1 or 0)
+    then
+        e.config.colour = G.C.GREEN
+        e.config.button = "reserve_joker"
+    else
+        e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+        e.config.button = nil
+    end
+end
+G.FUNCS.reserve_joker = function(e)
+    local c1 = e.config.ref_table
+    G.E_MANAGER:add_event(Event({
+        trigger = "after",
+        delay = 0.1,
+        func = function()
+            local c2 = copy_card(c1, nil, nil, true, false)
+            c1:remove()
+            c2:add_to_deck()
+            G.jokers:emplace(c2)
+            SMODS.calculate_context({ pull_card = true, card = c1 })
+            return true
+        end,
+    }))
+end
+
+G.FUNCS.can_open_booster = function(e)
+    if
+        G.STATE ~= G.STATES.SMODS_BOOSTER_OPENED
+    then
+        e.config.colour = G.C.GREEN
+        e.config.button = "open_booster"
+    else
+        e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+        e.config.button = nil
+    end
+end
+G.FUNCS.open_booster = function(e)
+    local c1 = e.config.ref_table
+    G.GAME.DefineBoosterState = G.STATE
+    delay(0.1)
+    if c1.ability.booster_pos then G.GAME.current_round.used_packs[c1.ability.booster_pos] = 'USED' end
+    --draw_card(G.hand, G.play, 1, 'up', true, card, nil, true) 
+    if not c1.from_tag then 
+      G.GAME.round_scores.cards_purchased.amt = G.GAME.round_scores.cards_purchased.amt + 1
+    end
+    if c1.RPerkeoPack then
+        G.RPerkeoPack = true
+    end
+    if G.blind_select then
+        G.blind_select:remove()
+        G.blind_prompt_box:remove()
+    end
+    if c1.edition and c1.edition.negative and c1.area == G.consumeables then
+        G.consumeables.config.card_limit = G.consumeables.config.card_limit - 1
+    end
+    e.config.ref_table.cost = 0
+    e.config.ref_table:open()
+    --c1:remove()
+end
+
+G.FUNCS.can_open_voucher = function(e)
+    local c1 = e.config.ref_table
+    e.config.colour = G.C.GREEN
+    e.config.button = "open_voucher"
+end
+G.FUNCS.open_voucher = function(e)
+    local c1 = e.config.ref_table
+    c1.cost = 0
+    c1:redeem()
+    c1:start_dissolve()
+    c1:remove()
+end
+
+G.FUNCS.can_reserve_booster = function(e)
+    local c1 = e.config.ref_table
+    if
+        #G.consumeables.cards
+        < G.consumeables.config.card_limit + (Cryptid.safe_get(c1, "edition", "negative") and 1 or 0)
+    then
+        e.config.colour = G.C.GREEN
+        e.config.button = "reserve_booster"
+    else
+        e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+        e.config.button = nil
+    end
+end
+G.FUNCS.reserve_booster = function(e)
+    local c1 = e.config.ref_table
+    --G.GAME.DefineBoosterState = G.STATE
+    --c1:open()
+    G.pack_cards:remove_card(c1)
+    G.consumeables.cards[#G.consumeables.cards + 1] = c1
+    c1.area = G.consumeables
+    c1.parent = G.consumeables
+    c1.layered_parallax = G.consumeables.layered_parallax
+    G.consumeables:set_ranks()
+    G.consumeables:align_cards()
+
+    SMODS.calculate_context({ pull_card = true, card = c1 })
+    G.GAME.pack_choices = G.GAME.pack_choices - 1
+    if G.GAME.pack_choices <= 0 then
+        G.FUNCS.end_consumeable(nil, delay_fac)
+    end
+    --c1:remove()
+end
+
+G.FUNCS.can_buy_deckorsleeve = function(e)
+    local c1 = e.config.ref_table
+    e.config.colour = G.C.GREEN
+    e.config.button = "buy_deckorsleeve"
+end
+G.FUNCS.can_buy_deckorsleeve_from_shop = function(e)
+    local c1 = e.config.ref_table
+    if to_big(G.GAME.dollars+G.GAME.bankrupt_at) > to_big(c1.cost) then
+        e.config.colour = G.C.GREEN
+        e.config.button = "buy_deckorsleeve_from_shop"
+    else
+        e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+        e.config.button = nil
+    end
+end
+G.FUNCS.buy_deckorsleeve_from_shop = function(e)
+    local c1 = e.config.ref_table
+    --G.GAME.DefineBoosterState = G.STATE
+    --c1:open()
+    ease_dollars(-c1.cost)
+    G.FUNCS.buy_deckorsleeve(e)
+end
+G.FUNCS.buy_deckorsleeve = function(e)
+    local c1 = e.config.ref_table
+    --G.GAME.DefineBoosterState = G.STATE
+    --c1:open()
+    if not c1.config then
+        c1.config = {}
+    end
+    if not c1.config.center then
+        c1.config.center = G.P_CENTERS[c1.center_key]
+    end
+    if c1.area then c1.area:remove_card(c1) end
+    if c1.config and c1.config.center and c1.config.center.apply then
+        if c1.config.center.set == "Sleeve" then
+            c1.config.center:apply(c1.config.center)
+        else    
+            c1.config.center:apply(false)
+        end
+    end
+    for i, v in pairs(c1.confi and c1.config.center and c1.config.center.config or {}) do
+        if i == "hands" then 
+            G.GAME.round_resets.hands = G.GAME.round_resets.hands + v 
+            ease_hands_played(v)
+        end
+        if i == "discards" then 
+            G.GAME.round_resets.discards = G.GAME.round_resets.discards + v 
+            ease_discard(v)
+        end
+        if i == "joker_slot" then G.jokers.config.card_limit = G.jokers.config.card_limit + v end
+        if i == "hand_size" then G.hand.config.card_limit = G.hand.config.card_limit + v end
+        if i == "dollars" then ease_dollars(v) end
+    end
+    if c1.config and c1.config.center and c1.config.center.config and c1.config.center.config and c1.config.center.config.cry_beta then
+        local count = G.consumeables.config.card_limit
+        local cards = {}
+        for i, v in pairs(G.jokers.cards) do
+            v:remove_from_deck()
+            G.jokers:remove_card(v)
+            cards[#cards+1]=v
+        end
+        for i, v in pairs(G.consumeables.cards) do
+            v:remove_from_deck()
+            G.consumeables:remove_card(v)
+            cards[#cards+1]=v
+        end
+        G.consumeables:remove()
+        count = count + G.jokers.config.card_limit
+        G.jokers:remove()
+        G.consumeables = nil
+        local CAI = {
+            discard_W = G.CARD_W,
+            discard_H = G.CARD_H,
+            deck_W = G.CARD_W*1.1,
+            deck_H = 0.95*G.CARD_H,
+            hand_W = 6*G.CARD_W,
+            hand_H = 0.95*G.CARD_H,
+            play_W = 5.3*G.CARD_W,
+            play_H = 0.95*G.CARD_H,
+            joker_W = 4.9*G.CARD_W,
+            joker_H = 0.95*G.CARD_H,
+            consumeable_W = 2.3*G.CARD_W,
+            consumeable_H = 0.95*G.CARD_H
+        }
+        G.jokers = CardArea(
+            CAI.consumeable_W, 0,
+            CAI.joker_W+CAI.consumeable_W,
+            CAI.joker_H,
+            {card_limit = count, type = 'joker', highlight_limit = 1e100}
+        )
+        G.consumeables = G.jokers
+        for i, v in pairs(cards) do
+            v:add_to_deck()
+            G.jokers:emplace(v)
+        end
+    end
+    G.GAME.entr_bought_decks = G.GAME.entr_bought_decks or {}
+    G.GAME.entr_bought_decks[#G.GAME.entr_bought_decks+1] = c1.config.center.key
+    c1:start_dissolve()
+    if c1.children.price then c1.children.price:remove() end
+    c1.children.price = nil
+    if c1.children.buy_button then c1.children.buy_button:remove() end
+    c1.children.buy_button = nil
+    remove_nils(c1.children)
+
+    SMODS.calculate_context({ pull_card = true, card = c1 })
+    --c1:remove()
+end
+
+G.FUNCS.can_reserve_card_to_deck = function(e)
+    local c1 = e.config.ref_table
+    e.config.colour = G.C.GREEN
+    e.config.button = "reserve_card_to_deck"
+end
+G.FUNCS.reserve_card_to_deck = function(e)
+    local c1 = e.config.ref_table
+    G.E_MANAGER:add_event(Event({
+        trigger = "after",
+        delay = 0.1,
+        func = function()
+            local c2 = copy_card(c1, nil, nil, true, false)
+            c1:remove()
+            c2:add_to_deck()
+			table.insert(G.playing_cards, c2)
+			G.deck:emplace(c2)
+			playing_card_joker_effects({ c2 })
+            SMODS.calculate_context({ pull_card = true, card = c1 })
+            return true
+        end,
+    }))
+end
+
+
+G.FUNCS.can_buy_slot = function(e)
+    if
+        to_big(G.GAME.dollars-G.GAME.bankrupt_at) > to_big(e.config.ref_table.ability.buycost)
+    then
+        e.config.colour = G.C.GREEN
+        e.config.button = "buy_slot"
+    else
+        e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+        e.config.button = nil
+    end
+end
+G.FUNCS.buy_slot = function(e)
+    local c1 = e.config.ref_table
+    ease_dollars(-e.config.ref_table.ability.buycost)
+    G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+end
+
+G.FUNCS.can_sell_slot = function(e)
+    if
+        G.jokers.config.card_limit > #G.jokers.cards
+    then
+        e.config.colour = G.C.GREEN
+        e.config.button = "sell_slot"
+    else
+        e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+        e.config.button = nil
+    end
+end
+G.FUNCS.sell_slot = function(e)
+    local c1 = e.config.ref_table
+    ease_dollars(e.config.ref_table.ability.sellcost)
+    G.jokers.config.card_limit = G.jokers.config.card_limit - 1
+end
+
+--som
+local G_UIDEF_use_and_sell_buttons_ref = G.UIDEF.use_and_sell_buttons
+function G.UIDEF.use_and_sell_buttons(card)
+	local abc = G_UIDEF_use_and_sell_buttons_ref(card)
+	-- Allow code cards to be reserved
+    if (card.ability.set == "Back" or card.ability.set == "Sleeve") then
+        if card.area == G.hand then
+        return  {
+            n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
+              {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'buy_deckorsleeve', func = 'can_buy_deckorsleeve'}, nodes={
+                {n=G.UIT.T, config={text = localize('b_redeem'),colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true}}
+              }},
+          }}
+        end
+        if card.area == G.consumeables or card.area == G.jokers then
+            sell = {n=G.UIT.C, config={align = "cr"}, nodes={
+                {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card'}, nodes={
+                  {n=G.UIT.B, config = {w=0.1,h=0.6}},
+                  {n=G.UIT.C, config={align = "tm"}, nodes={
+                    {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
+                      {n=G.UIT.T, config={text = localize('b_sell'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
+                    }},
+                    {n=G.UIT.R, config={align = "cm"}, nodes={
+                      {n=G.UIT.T, config={text = localize('$'),colour = G.C.WHITE, scale = 0.4, shadow = true}},
+                      {n=G.UIT.T, config={ref_table = card, ref_value = 'sell_cost_label',colour = G.C.WHITE, scale = 0.55, shadow = true}}
+                    }}
+                  }}
+                }},
+              }}
+            use = 
+            {n=G.UIT.C, config={align = "cr"}, nodes={
+              
+              {n=G.UIT.C, config={ref_table = card, align = "cr",maxw = 1.25, padding = 0.1, r=0.08, minw = 1.25, minh = (card.area and card.area.config.type == 'joker') and 0 or 1, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'buy_deckorsleeve', func = 'can_buy_deckorsleeve'}, nodes={
+                {n=G.UIT.B, config = {w=0.1,h=0.6}},
+                {n=G.UIT.T, config={text = localize('b_redeem'),colour = G.C.UI.TEXT_LIGHT, scale = 0.55, shadow = true}}
+              }}
+            }}
+            return {
+                n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
+                  {n=G.UIT.C, config={padding = 0.15, align = 'cl'}, nodes={
+                    {n=G.UIT.R, config={align = 'cl'}, nodes={
+                      sell
+                    }},
+                    {n=G.UIT.R, config={align = 'cl'}, nodes={
+                      use
+                    }},
+                  }},
+              }}
+        end
+    end
+	if (card.area == G.pack_cards and G.pack_cards) then --Add a use button
+        if (card.ability.set == "Back" or card.ability.set == "Sleeve") then
+			return {
+				n = G.UIT.ROOT,
+				config = { padding = -0.1, colour = G.C.CLEAR },
+				nodes = {
+					{
+						n = G.UIT.R,
+						config = {
+							ref_table = card,
+							r = 0.08,
+							padding = 0.1,
+							align = "bm",
+							minw = 0.5 * card.T.w - 0.15,
+							minh = 0.7 * card.T.h,
+							maxw = 0.7 * card.T.w - 0.15,
+							hover = true,
+							shadow = true,
+							colour = G.C.UI.BACKGROUND_INACTIVE,
+							one_press = true,
+							button = "buy_deckorsleeve",
+							func = "can_buy_deckorsleeve"
+						},
+						nodes = {
+							{
+								n = G.UIT.T,
+								config = {
+									text = localize("b_select"),
+									colour = G.C.UI.TEXT_LIGHT,
+									scale = 0.55,
+									shadow = true,
+								},
+							},
+						},
+					},
+                }
+            }
+        elseif ((card.ability.set == "RCode" or card.ability.set == "CBlind" or card.ability.set == "RTarot") or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front) and (card.ability.consumeable) then
+			return {
+				n = G.UIT.ROOT,
+				config = { padding = -0.1, colour = G.C.CLEAR },
+				nodes = {
+					{
+						n = G.UIT.R,
+						config = {
+							ref_table = card,
+							r = 0.08,
+							padding = 0.1,
+							align = "bm",
+							minw = 0.5 * card.T.w - 0.15,
+							minh = 0.7 * card.T.h,
+							maxw = 0.7 * card.T.w - 0.15,
+							hover = true,
+							shadow = true,
+							colour = G.C.UI.BACKGROUND_INACTIVE,
+							one_press = true,
+							button = "use_card",
+							func = (card.ability.set == "RCode" or card.ability.set == "CBlind" or card.ability.set == "RTarot") and "can_reserve_card" or "can_reserve_card_to_deck",
+						},
+						nodes = {
+							{
+								n = G.UIT.T,
+								config = {
+									text = card.ability.set == "RCode" and localize("b_pull")  or localize("b_select"),
+									colour = G.C.UI.TEXT_LIGHT,
+									scale = 0.55,
+									shadow = true,
+								},
+							},
+						},
+					},
+					{
+						n = G.UIT.R,
+						config = {
+							ref_table = card,
+							r = 0.08,
+							padding = 0.1,
+							align = "bm",
+							minw = 0.5 * card.T.w - 0.15,
+							maxw = 0.9 * card.T.w - 0.15,
+							minh = 0.1 * card.T.h,
+							hover = true,
+							shadow = true,
+							colour = G.C.UI.BACKGROUND_INACTIVE,
+							one_press = true,
+							button = "Do you know that this parameter does nothing?",
+							func = "can_use_consumeable",
+						},
+						nodes = {
+							{
+								n = G.UIT.T,
+								config = {
+									text = localize("b_use"),
+									colour = G.C.UI.TEXT_LIGHT,
+									scale = 0.45,
+									shadow = true,
+								},
+							},
+						},
+					},
+					{ n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
+					{ n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
+					{ n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
+					{ n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
+					-- Betmma can't explain it, neither can I
+				},
+			}
+		end
+		if card.ability.name == "entr-Flipside" or G.RPerkeoPack then
+			return {
+				n = G.UIT.ROOT,
+				config = { padding = -0.1, colour = G.C.CLEAR },
+				nodes = {
+					{
+						n = G.UIT.R,
+						config = {
+							ref_table = card,
+							r = 0.08,
+							padding = 0.1,
+							align = "bm",
+							minw = 0.5 * card.T.w - 0.15,
+							minh = 0.7 * card.T.h,
+							maxw = 0.7 * card.T.w - 0.15,
+							hover = true,
+							shadow = true,
+							colour = G.C.UI.BACKGROUND_INACTIVE,
+							one_press = true,
+							button = "use_card",
+							func = "can_reserve_card",
+						},
+						nodes = {
+							{
+								n = G.UIT.T,
+								config = {
+									text = localize("b_select"),
+									colour = G.C.UI.TEXT_LIGHT,
+									scale = 0.55,
+									shadow = true,
+								},
+							},
+						},
+					},
+					{
+						n = G.UIT.R,
+						config = {
+							ref_table = card,
+							r = 0.08,
+							padding = 0.1,
+							align = "bm",
+							minw = 0.5 * card.T.w - 0.15,
+							maxw = 0.9 * card.T.w - 0.15,
+							minh = 0.1 * card.T.h,
+							hover = true,
+							shadow = true,
+							colour = G.C.UI.BACKGROUND_INACTIVE,
+							one_press = true,
+							button = "Do you know that this parameter does nothing?",
+							func = "can_use_consumeable",
+						},
+						nodes = {
+							{
+								n = G.UIT.T,
+								config = {
+									text = localize("b_use"),
+									colour = G.C.UI.TEXT_LIGHT,
+									scale = 0.45,
+									shadow = true,
+								},
+							},
+						},
+					},
+					{ n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
+					{ n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
+					{ n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
+					{ n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
+					-- Betmma can't explain it, neither can I
+				},
+			}
+		end
+	end
+    if (card.area == G.consumeables and G.consumeables and card.config.center.set == "Booster") then
+        sell = {n=G.UIT.C, config={align = "cr"}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card'}, nodes={
+              {n=G.UIT.B, config = {w=0.1,h=0.6}},
+              {n=G.UIT.C, config={align = "tm"}, nodes={
+                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
+                  {n=G.UIT.T, config={text = localize('b_sell'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
+                }},
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                  {n=G.UIT.T, config={text = localize('$'),colour = G.C.WHITE, scale = 0.4, shadow = true}},
+                  {n=G.UIT.T, config={ref_table = card, ref_value = 'sell_cost_label',colour = G.C.WHITE, scale = 0.55, shadow = true}}
+                }}
+              }}
+            }},
+          }}
+        use = 
+        {n=G.UIT.C, config={align = "cr"}, nodes={
+          
+          {n=G.UIT.C, config={ref_table = card, align = "cr",maxw = 1.25, padding = 0.1, r=0.08, minw = 1.25, minh = (card.area and card.area.config.type == 'joker') and 0 or 1, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_booster', func = 'can_open_booster'}, nodes={
+            {n=G.UIT.B, config = {w=0.1,h=0.6}},
+            {n=G.UIT.T, config={text = localize('b_open'),colour = G.C.UI.TEXT_LIGHT, scale = 0.55, shadow = true}}
+          }}
+        }}
+        return {
+            n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
+              {n=G.UIT.C, config={padding = 0.15, align = 'cl'}, nodes={
+                {n=G.UIT.R, config={align = 'cl'}, nodes={
+                  sell
+                }},
+                {n=G.UIT.R, config={align = 'cl'}, nodes={
+                  use
+                }},
+              }},
+          }}
+    end
+
+    if (card.area == G.hand and G.hand) then --Add a use button
+		if card.config.center.set == "Joker" then
+			return  {
+                n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
+                  {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'reserve_joker', func = 'can_reserve_joker'}, nodes={
+                    {n=G.UIT.T, config={text = localize('b_select'),colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true}}
+                  }},
+              }}
+		end
+        if card.config.center.set == "Booster" then
+			return  {
+                n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
+                  {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_booster', func = 'can_open_booster'}, nodes={
+                    {n=G.UIT.T, config={text = localize('b_open'),colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true}}
+                  }},
+              }}
+		end
+        if card.config.center.set == "Voucher" then
+			return  {
+                n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
+                  {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_voucher', func = 'can_open_voucher'}, nodes={
+                    {n=G.UIT.T, config={text = localize('b_redeem'),colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true}}
+                  }},
+              }}
+		end
+	end
+    if (card.area == G.consumeables and G.consumeables) and card.config.center.set == "Voucher" then
+        sell = {n=G.UIT.C, config={align = "cr"}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card'}, nodes={
+              {n=G.UIT.B, config = {w=0.1,h=0.6}},
+              {n=G.UIT.C, config={align = "tm"}, nodes={
+                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
+                  {n=G.UIT.T, config={text = localize('b_sell'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
+                }},
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                  {n=G.UIT.T, config={text = localize('$'),colour = G.C.WHITE, scale = 0.4, shadow = true}},
+                  {n=G.UIT.T, config={ref_table = card, ref_value = 'sell_cost_label',colour = G.C.WHITE, scale = 0.55, shadow = true}}
+                }}
+              }}
+            }},
+          }}
+        use = 
+        {n=G.UIT.C, config={align = "cr"}, nodes={
+          
+          {n=G.UIT.C, config={ref_table = card, align = "cr",maxw = 1.25, padding = 0.1, r=0.08, minw = 1.25, minh = (card.area and card.area.config.type == 'joker') and 0 or 1, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_voucher', func = 'can_open_voucher'}, nodes={
+            {n=G.UIT.B, config = {w=0.1,h=0.6}},
+            {n=G.UIT.T, config={text = localize('b_redeem'),colour = G.C.UI.TEXT_LIGHT, scale = 0.55, shadow = true}}
+          }}
+        }}
+        return {
+            n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
+              {n=G.UIT.C, config={padding = 0.15, align = 'cl'}, nodes={
+                {n=G.UIT.R, config={align = 'cl'}, nodes={
+                  sell
+                }},
+                {n=G.UIT.R, config={align = 'cl'}, nodes={
+                  use
+                }},
+              }},
+          }}
+    end
+    --let boosters not be recursive
+    if (card.area == G.pack_cards and G.pack_cards) and card.config.center.set == "Booster" and not Entropy.ConsumablePackBlacklist[SMODS.OPENED_BOOSTER.config.center.key] then
+        return  {
+            n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
+              {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'reserve_booster', func = 'can_reserve_booster'}, nodes={
+                {n=G.UIT.T, config={text = localize('b_select'),colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true}}
+              }},
+          }}
+    end
+
+    if (card.area == G.jokers and G.jokers and card.config.center.key == "j_entr_akyros") then
+        sell = {n=G.UIT.C, config={align = "cr"}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card'}, nodes={
+              {n=G.UIT.B, config = {w=0.1,h=0.6}},
+              {n=G.UIT.C, config={align = "tm"}, nodes={
+                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
+                  {n=G.UIT.T, config={text = localize('b_sell'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
+                }},
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                  {n=G.UIT.T, config={text = localize('$'),colour = G.C.WHITE, scale = 0.4, shadow = true}},
+                  {n=G.UIT.T, config={ref_table = card, ref_value = 'sell_cost_label',colour = G.C.WHITE, scale = 0.55, shadow = true}}
+                }}
+              }}
+            }},
+          }}
+        buyslot = {n=G.UIT.C, config={align = "cr"}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, button = 'buy_slot', func = 'can_buy_slot'}, nodes={
+              {n=G.UIT.B, config = {w=0.1,h=0.6}},
+              {n=G.UIT.C, config={align = "tm"}, nodes={
+                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
+                  {n=G.UIT.T, config={text = localize('b_buy_slot'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
+                }},
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                  {n=G.UIT.T, config={text = localize('$'),colour = G.C.WHITE, scale = 0.4, shadow = true}},
+                  {n=G.UIT.T, config={ref_table = card.ability, ref_value = 'buycost',colour = G.C.WHITE, scale = 0.55, shadow = true}}
+                }}
+              }}
+            }},
+          }}
+          sellslot = {n=G.UIT.C, config={align = "cr"}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, button = 'sell_slot', func = 'can_sell_slot'}, nodes={
+              {n=G.UIT.B, config = {w=0.1,h=0.6}},
+              {n=G.UIT.C, config={align = "tm"}, nodes={
+                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
+                  {n=G.UIT.T, config={text = localize('b_sell_slot'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
+                }},
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                  {n=G.UIT.T, config={text = localize('$'),colour = G.C.WHITE, scale = 0.4, shadow = true}},
+                  {n=G.UIT.T, config={ref_table = card.ability, ref_value = 'sellcost',colour = G.C.WHITE, scale = 0.55, shadow = true}}
+                }}
+              }}
+            }},
+          }}
+        return {
+            n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
+              {n=G.UIT.C, config={padding = 0, align = 'cl'}, nodes={
+                {n=G.UIT.R, config={align = 'cl'}, nodes={
+                  sell
+                }},
+                {n=G.UIT.R, config={align = 'cl'}, nodes={
+                  buyslot
+                }},
+                {n=G.UIT.R, config={align = 'cl'}, nodes={
+                    sellslot
+                  }},
+              }},
+          }}
+    end
+
+
+    --remove sell button if beyond exists in pack
+    if
+       card and card.config and card.config.center and card.config.center.set == "Joker" and  (Entropy.HasConsumable("c_entr_beyond") or (Entropy.HasConsumable("c_cry_gateway") and Entropy.HasConsumable("c_entr_flipside")))
+    then
+        table.remove(abc.nodes[1].nodes, 1)
+    end
+	return abc
+end

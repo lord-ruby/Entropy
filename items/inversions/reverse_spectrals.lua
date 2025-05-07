@@ -662,7 +662,7 @@ local fervour = {
 			delay = 0.4,
 			func = function()
 				play_sound("timpani")
-				local card = create_card("Joker", G.jokers, nil, "entr_reverse_legendary", nil, nil, nil, "entr_beyond")
+				local card = create_card("Joker", G.jokers, nil, "entr_reverse_legendary", nil, nil, nil, "entr_fervour")
 				card:add_to_deck()
 				G.jokers:emplace(card)
 				card:juice_up(0.3, 0.5)
@@ -880,22 +880,6 @@ SMODS.Suit {
         return false
     end
 }
-local is_suitref = Card.is_suit
-function Card:is_suit(suit, bypass_debuff, flush_calc)
-    --unified usually never shows up, support for life and other mods
-    if self.base.suit == "entr_nilsuit" then
-        return false
-    else
-       return is_suitref(self, suit, bypass_debuff, flush_calc)
-    end
-end
-local ref = Card.get_id
-function Card:get_id()
-    if (self.ability.effect == 'Stone Card' and not self.vampired) or self.base.value == "entr_nilrank" then
-        return -math.random(100, 1000000)
-    end
-    return ref(self)
-end
 
 local cleanse = {
     dependencies = {
@@ -941,6 +925,60 @@ local cleanse = {
         return {
             vars = {
                 card.ability.dollarpc
+            }
+        }
+    end,
+}
+
+local fusion = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 19,
+    key = "fusion",
+    set = "RSpectral",
+    
+    inversion = "c_cry_hammerspace",
+
+    atlas = "consumables",
+    config = {
+        num = 3,
+    },
+	pos = {x=10,y=7},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        local cards = {}
+        for i, v in ipairs(G.hand.cards) do cards[#cards+1]=v end
+        pseudoshuffle(cards, pseudoseed("fusion"))
+        local actual = {}
+        for i = 1, card2.ability.num do
+            actual[#actual+1] = cards[i]
+        end
+        Entropy.FlipThen(actual, function(card,area)
+            local sel = Entropy.GetHighlightedCards({G.jokers, G.consumeables, G.hand}, card, {c_base=true})[1]
+            local enhancement_type = sel.ability and sel.ability.set or sel.config.center.set
+            if sel.area == G.hand then
+                SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("fusion")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("fusion")))
+                card:set_ability(G.P_CENTERS.c_base)
+            else
+                local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("fusion")).key
+                while G.P_CENTERS[enhancement].no_doe or (G.P_CENTERS[enhancement].soul_rate and pseudorandom("fusion") > 0.02) or G.GAME.banned_keys[enhancement] do
+                    enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("fusion")).key
+                end
+                card:set_ability(G.P_CENTERS[enhancement])
+            end
+        end)
+    end,
+    can_use = function(self, card)
+        return G.hand and #G.hand.cards > 0 and #Entropy.GetHighlightedCards({G.jokers, G.consumeables, G.hand}, card, {c_base=true}) == 1
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.num,
             }
         }
     end,
@@ -1023,6 +1061,7 @@ return {
         fervour,
         weld,
         cleanse,
+        fusion,
         beyond
     }
 }

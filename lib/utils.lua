@@ -1,9 +1,10 @@
-function Entropy.GetHighlightedCards(cardareas, ignorecard)
+function Entropy.GetHighlightedCards(cardareas, ignorecard, blacklist)
     local cards = {}
+    blacklist = blacklist or {}
     for i, area in ipairs(cardareas) do
         if area.highlighted then
             for i2, card in ipairs(area.highlighted) do
-                if card ~= ignorecard then
+                if card ~= ignorecard and not blacklist[card.config.center.key] then
                     cards[#cards + 1] = card
                 end
             end
@@ -192,4 +193,10 @@ function Entropy.HasJoker(key)
     for i, v in ipairs(G.jokers and G.jokers.cards or {}) do
         if v.config.center.key == key then return true end
     end
+end
+
+function Entropy.HasConsumable(key)
+    for i, v in pairs(G.consumeables.cards) do if v.config.center.key == key then return true end end
+    if G.pack_cards then for i, v in pairs(G.pack_cards.cards) do if v.config.center.key == key then return true end end end
+    for i, v in pairs(G.hand.cards) do if v.config.center.key == key then return true end end
 end
