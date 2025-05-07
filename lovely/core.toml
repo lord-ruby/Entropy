@@ -85,3 +85,20 @@ pattern = 'Cryptid.profile_prefix = Jen and "J" or "M"'
 position = "after"
 payload = 'Cryptid.profile_prefix = Cryptid.profile_prefix == "M" and "E" or Cryptid.profile_prefix.."E"'
 match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "          G.GAME.stake > 1 and {"
+position = "before"
+payload = '''
+        {
+          label = G.GAME.DefineKeys and localize('b_definitions'),
+          tab_definition_function = G.GAME.DefineKeys and G.UIDEF.define_keys or nil,
+        },
+        {
+          label = G.GAME.entr_bought_decks and #G.GAME.entr_bought_decks > 0 and localize('b_decks') or nil, 
+          tab_definition_function = G.GAME.entr_bought_decks and #G.GAME.entr_bought_decks > 0 and G.UIDEF.bought_decks or nil,
+        },'''
+match_indent = true

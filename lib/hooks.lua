@@ -1278,3 +1278,73 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
     end
     return ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
 end
+
+local ref = SMODS.calculate_context
+function SMODS.calculate_context(context, return_table)
+    local tbl = ref(context,return_table)
+    if G.GAME.entr_bought_decks then
+        for i, v in pairs(G.GAME.entr_bought_decks or {}) do
+            if G.P_CENTERS[v].calculate then
+                local ret = G.P_CENTERS[v].calculate(G.P_CENTERS[v], nil, context or {})
+                for k,v in pairs(ret or {}) do 
+                    tbl[k] = v 
+                end
+            end
+        end
+    end
+    if not return_table then
+        return tbl
+    end
+end
+
+local ref = create_shop_card_ui
+function create_shop_card_ui(card, type, area)
+    if card.config.center.set == "Back" or card.config.center.set == "Sleeve" then
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.43,
+            blocking = false,
+            blockable = false,
+            func = (function()
+              if card.opening then return true end
+              local t1 = {
+                  n=G.UIT.ROOT, config = {minw = 0.6, align = 'tm', colour = darken(G.C.BLACK, 0.2), shadow = true, r = 0.05, padding = 0.05, minh = 1}, nodes={
+                      {n=G.UIT.R, config={align = "cm", colour = lighten(G.C.BLACK, 0.1), r = 0.1, minw = 1, minh = 0.55, emboss = 0.05, padding = 0.03}, nodes={
+                        {n=G.UIT.O, config={object = DynaText({string = {{prefix = localize('$'), ref_table = card, ref_value = 'cost'}}, colours = {G.C.MONEY},shadow = true, silent = true, bump = true, pop_in = 0, scale = 0.5})}},
+                      }}
+                  }}
+              local t2 = {
+                n=G.UIT.ROOT, config = {ref_table = card, minw = 1.1, maxw = 1.3, padding = 0.1, align = 'bm', colour = G.C.GOLD, shadow = true, r = 0.08, minh = 0.94, func = 'can_buy_deckorsleeve_from_shop', one_press = true, button = 'buy_deckorsleeve', hover = true}, nodes={
+                    {n=G.UIT.T, config={text = localize('b_buy'),colour = G.C.WHITE, scale = 0.5}}
+                }}
+
+              card.children.price = UIBox{
+                definition = t1,
+                config = {
+                  align="tm",
+                  offset = {x=0,y=1.5},
+                  major = card,
+                  bond = 'Weak',
+                  parent = card
+                }
+              }
+    
+              card.children.buy_button = UIBox{
+                definition = t2,
+                config = {
+                  align="bm",
+                  offset = {x=0,y=-0.3},
+                  major = card,
+                  bond = 'Weak',
+                  parent = card
+                }
+              }
+              card.children.price.alignment.offset.y = card.ability.set == 'Booster' and 0.5 or 0.38
+    
+                return true
+            end)
+          }))
+    else
+        ref(card, type, area)
+    end
+end

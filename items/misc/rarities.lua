@@ -23,6 +23,11 @@ SMODS.Rarity {
     badge_colour = Entropy.entropic_gradient
 }
 
+SMODS.Rarity {
+    key = "reverse_legendary",
+    badge_colour = Entropy.reverse_legendary_gradient
+}
+
 local loc_colour_ref = loc_colour
 function loc_colour(_c, default)
     if not G.ARGS.LOC_COLOURS then

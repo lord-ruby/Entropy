@@ -4,6 +4,7 @@ local i = {
     "lib/config",
     "lib/hooks",
     "lib/loader",
+    "lib/ui",
 
     "items/misc/atlases",
     "items/misc/rarities",
