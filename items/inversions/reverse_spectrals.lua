@@ -620,7 +620,7 @@ local entropy = {
         end)
     end,
     can_use = function(self, card)
-        local num = Entropy.GetHighlightedCards({G.hand}, card)
+        local num = #Entropy.GetHighlightedCards({G.hand}, card)
         return num <= card.ability.select and num > 0
 	end,
     loc_vars = function(self, q, card)
