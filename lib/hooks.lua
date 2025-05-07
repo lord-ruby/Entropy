@@ -1348,3 +1348,98 @@ function create_shop_card_ui(card, type, area)
         ref(card, type, area)
     end
 end
+
+function Cryptid.ascend(num, curr2) -- edit this function at your leisure
+    curr2 =
+        curr2 or
+        ((G.GAME.current_round.current_hand.cry_asc_num or 0) + (G.GAME.asc_power_hand or 0)) *
+            (1 + (G.GAME.nemesisnumber or 0))
+    if Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled then
+        curr2 = curr2 * -1
+    end
+    if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true then
+        return num
+    end
+    if Cryptid.gameset() == "modest" then
+        -- x(1.1 + 0.05 per sol) base, each card gives + (0.1 + 0.05 per sol)
+        if not G.GAME.current_round.current_hand.cry_asc_num then
+            return num
+        end
+        return num *
+            (1 + 0.1 + to_big(0.05 * (G.GAME.sunnumber or 0)) +
+                to_big((0.1 + (0.05 * (G.GAME.sunnumber or 0))) * to_big(curr2)))
+    elseif Entropy.HasJoker("j_entr_helios", true) then
+        local curr = 1
+        for i, v in pairs(G.jokers.cards) do
+            if not v.debuff and v.config.center.key == "j_entr_helios" and to_big(v.ability.extra):gt(curr) then
+                curr = v.ability.extra + 0.4
+            end
+        end
+        return num * to_big((1.75 + (G.GAME.sunnumber or 0))):tetrate(to_big((curr2) * curr))
+    else
+        return num * (to_big((1.25 + (G.GAME.sunnumber or 0))) ^ to_big(curr2))
+    end
+end
+
+local pokerhandinforef = G.FUNCS.get_poker_hand_info
+function G.FUNCS.get_poker_hand_info(_cards)
+    if Entropy.HasJoker("j_entr_helios", true) or (Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled) then G.GAME.used_vouchers.v_cry_hyperspacetether = true end
+    local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
+    local all_flesh = true
+    for i, v in pairs(scoring_hand) do
+        if v.config.center.key ~= "m_entr_flesh" then all_flesh = false end
+    end
+    if all_flesh then
+        if text == "Flush" then 
+            disp_text = "entr-Flesh"
+			loc_disp_text = localize(disp_text, "poker_hands")
+        end
+        if text == "Flush House" then 
+            disp_text = "entr-Flesh_House"
+			loc_disp_text = localize(disp_text, "poker_hands")
+        end
+        if text == "Flush Five" then 
+            disp_text = "entr-Flesh_Five"
+			loc_disp_text = localize(disp_text, "poker_hands")
+        end
+        if text == "Straight Flush" then 
+            disp_text = "entr-Straight_Flesh"
+			loc_disp_text = localize(disp_text, "poker_hands")
+        end
+    end
+    return text, loc_disp_text, poker_hands, scoring_hand, disp_text
+end
+
+SMODS.Consumable:take_ownership('cry_sunplanet', -- object key (class prefix not required)
+    { -- table of properties to change from the existing object
+        loc_vars = function(self, q, card)
+            local levelone = (G.GAME.sunlevel and G.GAME.sunlevel or 0) + 1
+            local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
+            if levelone == 1 then
+                planetcolourone = G.C.UI.TEXT_DARK
+            end
+            return {
+                vars = {
+                    (G.GAME.sunlevel or 0) + 1,
+                    card.ability.extra or 0.05,
+                    ((G.GAME.sunnumber and G.GAME.sunnumber or 0) + ((G.jokers and HasJoker("j_entr_helios") and 1.75) or 1.25))..(G.jokers and HasJoker("j_entr_helios") and "^" or ""),
+                    colours = { planetcolourone },
+                },
+            }
+        end
+    },
+    true -- silent | suppresses mod badge
+)
+
+local ease_anteref = ease_ante
+function ease_ante(mod)
+    local mult = 1
+    if Entropy.HasJoker("j_entr_xekanos", true) then
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center.key == "j_entr_xekanos" and not v.debuff then
+                mult = -v.ability.ante_mod
+            end
+        end
+    end
+    ease_anteref(mod * mult)
+end

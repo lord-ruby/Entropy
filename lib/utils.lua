@@ -302,3 +302,7 @@ function Entropy.GetRandomSet(has_parakmi)
     end
     return set
 end
+
+function Entropy.BlindIs(blind)
+    if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == blind then return true end
+end
