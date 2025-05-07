@@ -26,6 +26,8 @@ local beyond = {
 					if v.config.center.rarity == "cry_exotic" then
 						check_for_unlock({ type = "what_have_you_done" })
 					end
+                    G.GAME.banned_keys[v.config.center.key] = true
+                    eval_card(v, {banishing_card = true, banisher = card, card = v, cardarea = v.area})
 					v:start_dissolve(nil, _first_dissolve)
 					_first_dissolve = true
 				end

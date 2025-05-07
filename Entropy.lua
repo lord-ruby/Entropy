@@ -8,6 +8,7 @@ local i = {
     "items/jokers/entropic_jokers",
 
     "items/inversions/reverse_spectrals",
+    "items/inversions/reverse_planets",
 
     "lib/utils",
     "lib/config"
