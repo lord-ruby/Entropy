@@ -24,3 +24,9 @@ SMODS.Atlas {
     px = 71, 
     py = 95 
 }
+Entropy.GamesetAtlas = SMODS.Atlas {
+	key = "gameset",
+	path = "entr_gameset.png",
+	px = 29,
+	py = 29,
+}

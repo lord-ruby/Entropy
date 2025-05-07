@@ -5,4 +5,5 @@ function SMODS.injectItems(...)
     for i, v in pairs(Entropy.FlipsideInversions) do
         Entropy.FlipsideInversions[v]=i
     end
+    G.ASSET_ATLAS["cry_gameset"] = Entropy.GamesetAtlas
 end
