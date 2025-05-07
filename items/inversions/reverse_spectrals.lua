@@ -984,6 +984,197 @@ local fusion = {
     end,
 }
 
+local substitute = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 20,
+    key = "substitute",
+    set = "RSpectral",
+    
+    inversion = "c_cry_trade",
+
+    atlas = "consumables",
+    config = {
+        num = 3,
+    },
+	pos = {x=6,y=7},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        local usable_vouchers = {}
+        local voucher = pseudorandom_element(G.vouchers.cards, pseudoseed("substitute"))
+        local tries = 100
+        while (voucher.ability.eternal or voucher.ability.cry_absolute or Entropy.GetHigherVoucherTier(voucher.config.center.key) == nil) and tries > 0 do
+            voucher = pseudorandom_element(G.vouchers.cards, pseudoseed("substitute"))
+            tries = tries - 1
+        end
+        voucher:unredeem()
+        voucher:start_dissolve()
+        for i, v in pairs(voucher.config.center.requires or {}) do
+            if Entropy.InTable(G.vouchers.cards, v) then
+                local voucher2 = G.vouchers.cards[Entropy.InTable(G.vouchers.cards, v)]
+                for i2, v2 in pairs(voucher2.config.center.requires or {}) do
+                    if Entropy.InTable(G.vouchers.cards, v2) then
+                        local voucher3 = G.vouchers.cards[Entropy.InTable(G.vouchers.cards, v2)]
+                        voucher3:unredeem()
+                        voucher3:start_dissolve()
+                    end
+                end
+                voucher2:unredeem()
+                voucher2:start_dissolve()
+            end
+        end
+        local card = create_card("Voucher", G.vouchers, nil, nil, nil, nil, nil, "entr_beyond")
+        card:set_ability(G.P_CENTERS[Entropy.GetHigherVoucherTier(voucher.config.center.key) or "v_blank"])
+        card:add_to_deck()
+        G.vouchers:emplace(card)
+        --Entropy.GetHigherVoucherTier(voucher.config.center.key) 
+    end,
+    can_use = function(self, card)
+        local usable_count = 0
+		for _, v in pairs(G.vouchers.cards) do
+			if not v.ability.eternal and Entropy.GetHigherVoucherTier(v.config.center.key) and not v.ability.cry_absolute then
+				usable_count = usable_count + 1
+			end
+		end
+		if usable_count > 0 then
+			return true
+		else
+			return false
+		end
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.num,
+            }
+        }
+    end,
+}
+
+local evocation = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 21,
+    key = "evocation",
+    set = "RSpectral",
+    
+    inversion = "c_cry_summoning",
+
+    atlas = "consumables",
+    config = {
+        num = 1,
+        hands = 1
+    },
+	pos = {x=7,y=8},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        for i, v in pairs(G.jokers.cards) do
+            if not v.highlighted and not v.ability.cry_absolute and not v.ability.eternal then
+                v:remove_from_deck()
+                v:start_dissolve()
+            end
+        end
+        for i, card in pairs(G.jokers.highlighted) do
+            card:remove_from_deck()
+            card:start_dissolve()
+            local rare = nil
+            if card.config.center.rarity ~= "j_entr_hyper_exotic" then
+                rare = Entropy.GetNextRarity(card.config.center.rarity or 1) or card.config.center.rarity
+            end
+            if rare == 1 then rare = "Common" end
+            if rare == 2 then rare = "Uncommon" end
+            if rare == 4 then
+                card = create_card("Joker", G.jokers, true, 4, nil, nil, nil, 'evocation')
+            else 
+                card = create_card("Joker", G.jokers, nil, rare, nil, nil, nil, 'evocation')
+            end
+            card:juice_up(0.3, 0.3)
+            card:add_to_deck()
+            G.jokers:emplace(card)
+        end
+        G.GAME.round_resets.hands = G.GAME.round_resets.hands - card2.ability.hands
+        ease_hands_played(-card2.ability.hands)
+    end,
+    can_use = function(self, card)
+        return G.jokers and #G.jokers.highlighted > 0 and #G.jokers.highlighted <= card.ability.num
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.num,
+                card.ability.hands
+            }
+        }
+    end,
+}
+
+local mimic = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 22,
+    key = "mimic",
+    set = "RSpectral",
+    
+    can_stack = true,
+	can_divide = true,
+    atlas = "consumables",
+
+    inversion="c_cry_replica",
+
+    config = {
+        num = 1,
+    },
+	pos = {x=12,y=6},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        local orig = Entropy.GetHighlightedCard({G.hand, G.consumeables, G.jokers, G.pack_cards, G.shop_booster, G.shop_jokers, G.shop_vouchers}, card2)
+        local newcard = copy_card(orig)
+        newcard:add_to_deck()
+        newcard.ability.perishable = true
+        newcard.ability.banana = true
+        newcard.area = orig.area
+        if newcard.ability.set == "Booster" and orig.area ~= G.hand then
+            newcard.area = G.consumeables
+            newcard:add_to_deck()
+            table.insert(newcard.area.cards, newcard)
+        elseif newcard.ability.set == "Voucher" and orig.area ~= G.hand then
+            newcard.area = G.consumeables
+            newcard:add_to_deck()
+            table.insert(newcard.area.cards, newcard)
+        else
+            orig.area:emplace(newcard)
+            if orig.area.config.type == "shop" then
+                local ref = G.FUNCS.check_for_buy_space(c1)
+                newcard.ability.infinitesimal = true
+                newcard.cost = 0
+                G.FUNCS.buy_from_shop({config={ref_table=newcard}})
+            end
+        end
+    end,
+    can_use = function(self, card)
+        return Entropy.GetHighlightedCards({G.hand, G.consumeables, G.jokers, G.pack_cards, G.shop_booster, G.shop_jokers, G.shop_vouchers}, card) == card.ability.num
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.num,
+            }
+        }
+    end,
+}
+
 local beyond = {
     object_type = "Consumable",
     order = 2000 + 31,
@@ -1062,6 +1253,9 @@ return {
         weld,
         cleanse,
         fusion,
+        substitute,
+        evocation,
+        mimic,
         beyond
     }
 }

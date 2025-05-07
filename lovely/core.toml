@@ -12,6 +12,16 @@ payload = '''
 Entropy = {}
 Entropy.FlipsideInversions = {}
 Entropy.EnhancementFuncs = {}
+Entropy.RarityChecks = {
+    [0]="cry_candy",
+    1,
+    2,
+    3,
+    "cry_epic",
+    4,
+    "cry_exotic",
+    "entr_entropic"
+}
 '''
 match_indent = true
 

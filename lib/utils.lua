@@ -200,3 +200,31 @@ function Entropy.HasConsumable(key)
     if G.pack_cards then for i, v in pairs(G.pack_cards.cards) do if v.config.center.key == key then return true end end end
     for i, v in pairs(G.hand.cards) do if v.config.center.key == key then return true end end
 end
+
+function Entropy.InTable(table, val)
+    for i, v in ipairs(table) do if v == val then return true end end
+end
+
+function Entropy.GetNextRarity(rarity)
+    if rarity == "entr_reverse_legendary" then return "cry_exotic" end
+    for i, v in pairs(Entropy.RarityChecks) do
+        if v == rarity then return Entropy.RarityChecks[i+1] or v end
+    end
+    return rarity
+end
+
+function Entropy.GetHigherVoucherTier(voucher_key)
+    for i, v in pairs(G.P_CENTER_POOLS.Voucher) do
+        if Entropy.InTable(v.requires or {}, voucher_key) then return v.key end
+    end
+end
+
+local gfcfbs = G.FUNCS.check_for_buy_space
+G.FUNCS.check_for_buy_space = function(card)
+	if
+		not card or card.ability.infinitesimal
+	then
+		return true
+	end
+	return gfcfbs(card)
+end
