@@ -63,6 +63,11 @@ AurinkoAddons.entr_solar = function(card, hand, instant, amount)
 	end
 end
 
+SMODS.Shader({
+    key="fractured",
+    path="fractured.fs"
+})
+
 local fractured ={
 	object_type = "Edition",
 	order = 2,
