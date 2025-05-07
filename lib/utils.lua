@@ -166,3 +166,13 @@ function Entropy.FindPreviousInPool(item, pool)
     end
     return nil
 end
+
+Entropy.charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890~#$^~#$^~#$^~#$^~#$^"
+function Entropy.StringRandom(length) 
+    local total = ""
+    for i = 0, length do
+        local val = math.random(1,#Entropy.charset)
+        total = total..(Entropy.charset:sub(val, val))
+    end
+    return total
+end

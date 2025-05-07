@@ -30,3 +30,10 @@ Entropy.GamesetAtlas = SMODS.Atlas {
 	px = 29,
 	py = 29,
 }
+
+SMODS.Atlas { 
+    key = 'entr_stickers', 
+    path = 'stickers.png', 
+    px = 71, 
+    py = 95 
+}

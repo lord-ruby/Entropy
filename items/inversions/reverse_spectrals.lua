@@ -285,6 +285,92 @@ local EnhancementFuncs = {
 }
 for i, v in pairs(EnhancementFuncs) do Entropy.EnhancementFuncs[i] = v end
 
+local pact = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "link"
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 7,
+    key = "pact",
+    set = "RSpectral",
+
+    inversion = "c_ouija",
+
+    atlas = "consumables",
+    config = {
+        selected = 3
+    },
+	pos = {x=6,y=5},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card, area, copier)
+        local linktxt
+        for i, v in pairs(G.hand.highlighted) do
+            if v.ability.link then linktxt = v.ability.link end
+        end
+        linktxt = linktxt or Entropy.StringRandom(8)
+        for i, v in pairs(G.hand.highlighted) do
+            for i, v2 in pairs(G.hand.cards) do
+                if v2 ~= v and v.ability.link and v.ability.link == v2.ability.link then
+                    v2.ability.link = linktxt
+                end
+            end
+            for i, v2 in pairs(G.deck.cards) do
+                if v2 ~= v and v.ability.link and v.ability.link == v2.ability.link then
+                    v2.ability.link = linktxt
+                end
+            end
+            v.ability.link = linktxt
+            v:juice_up()
+        end
+    end,
+    can_use = function(self, card)
+        local num = Entropy.GetHighlightedCards({G.hand}, card)
+        return #num <= card.ability.selected and #num > 0
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.selected
+            }
+        }
+    end,
+}
+
+local link = {
+    atlas = "entr_stickers",
+    pos = { x = 1, y = 1 },
+    key = "link",
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Sticker",
+    order = -100 + 0,
+    no_sticker_sheet = true,
+    prefix_config = { key = false },
+    badge_colour = HEX("FF00FF"),
+    loc_vars = function(self,q,card)
+        return {
+            vars = {
+                card.ability.link
+            }
+        }
+    end,
+    apply = function(self,card,val) 
+        if not G.GAME.link then
+            G.GAME.link = Entropy.StringRandom(8)
+        end
+        card.ability.link = G.GAME.link
+    end,
+    calculate = function(self, card, context)
+
+    end
+}
+
 local beyond = {
     object_type = "Consumable",
     order = 2000 + 31,
@@ -351,6 +437,8 @@ return {
         ward,
         siphon,
         disavow,
+        pact,
+        link,
         beyond
     }
 }
