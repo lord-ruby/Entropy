@@ -24,7 +24,7 @@ local flipside = {
             return Entropy.Inversion(card)
         end)
         Entropy.FlipThen(cards, function(card)
-            card:set_ability(Entropy.Inversion(card))
+            card:set_ability(G.P_CENTERS[Entropy.Inversion(card)])
         end)
     end,
     loc_vars = function(self, q, card)

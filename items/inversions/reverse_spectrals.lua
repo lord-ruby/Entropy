@@ -15,7 +15,7 @@ local changeling = {
     
     use = function(self, card)
         local cards = {}
-        for i, v in pairs(G.hand.cards) do cards[#cards+1]=v
+        for i, v in pairs(G.hand.cards) do cards[#cards+1]=v end
         table.sort(cards, function(a,b)
             return pseudorandom("changeling_cards") > pseudorandom("changeling_cards")
         end)
@@ -40,6 +40,38 @@ local changeling = {
     end
 }
 
+local rend = {
+    object_type = "Consumable",
+    order = 2000,
+    key = "rend",
+    inversion = "c_grim",
+    pos = {x = 7, y = 4},
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = { select = 3 },
+    atlas = "consumables",
+    set = "RSpectral",
+    
+    use = function(self, card)
+        Entropy.FlipThen(G.hand.highlighted, function(card)
+            card:set_ability(G.P_CENTERS.m_entr_flesh)
+        end)
+    end,
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card)
+        return #cards > 0 and #cards <= card.ability.select
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.select
+            }
+        }
+    end
+}
 
 local beyond = {
     object_type = "Consumable",
@@ -96,6 +128,7 @@ local beyond = {
 return {
     items = {
         changeling,
+        rend,
         beyond
     }
 }

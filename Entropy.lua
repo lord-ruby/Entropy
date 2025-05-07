@@ -6,6 +6,7 @@ local i = {
     "items/misc/spectrals",
     "items/misc/content_sets",
     "items/misc/consumable_types",
+    "items/misc/enhancements",
 
     "items/jokers/entropic_jokers",
 
@@ -14,7 +15,8 @@ local i = {
 
     "lib/utils",
     "lib/config",
-    "lib/hooks"
+    "lib/hooks",
+    "lib/loader"
 }
 local items = {}
 for _, v in pairs(i) do
