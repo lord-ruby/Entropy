@@ -1246,3 +1246,31 @@ function Card:start_dissolve(...)
         G.jokers:emplace(c)
     end
 end
+
+Entropy.ChaosBlacklist.Back = true
+Entropy.ChaosBlacklist.Sleeve = true
+Entropy.ChaosBlacklist.CBlind = true
+Entropy.ChaosBlacklist.Edition = true
+Entropy.ChaosBlacklist.Default = true
+Entropy.ChaosBlacklist["Content Set"] = true
+Entropy.ParakmiBlacklist["Content Set"] = true
+Entropy.ParakmiBlacklist.Edition = true
+Entropy.ParakmiBlacklist.Default = true
+Entropy.ParakmiBlacklist.sleeve_casl_none = true
+Entropy.ChaosConversions.RCode = "Twisted"
+Entropy.ChaosConversions.RPlanet = "Twisted"
+Entropy.ChaosConversions.RSpectral = "Twisted"
+local ref = create_card
+function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+    if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi"))) and not forced_key then
+        _type = Entropy.GetRandomSet(next(find_joker("j_entr_parakmi")))
+    end
+    if _type == "CBlind" then
+        _type = "BlindTokens"
+    end
+    if _type == "BlindTokens" then
+        local element = "c_"..pseudorandom_element(Entropy.BlindC, pseudoseed(key_append or "parakmi"))
+        forced_key = forced_key or element
+    end
+    return ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+end

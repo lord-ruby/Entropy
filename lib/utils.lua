@@ -292,3 +292,11 @@ function Entropy.RandomForcetrigger(card, num,context)
 			if res.p_dollars then ease_dollars(res.p_dollars) end
 			return res
 end
+
+function Entropy.GetRandomSet(has_parakmi)
+    local set = pseudorandom_element(G.P_CENTER_POOLS, pseudoseed(has_parakmi and "parakmi" or "chaos"))[1].set
+    while Entropy.ParakmiBlacklist[set] or (not has_parakmi and Entropy.ChaosBlacklist[set]) do
+        set = pseudorandom_element(G.P_CENTER_POOLS, pseudoseed(has_parakmi and "parakmi" or "chaos"))[1].set
+    end
+    return set
+end

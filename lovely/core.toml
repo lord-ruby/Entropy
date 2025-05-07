@@ -41,6 +41,10 @@ Entropy.DefineBlacklist = {
     c_entr_fervour = true,
     c_entr_define = true
 }
+
+Entropy.ChaosBlacklist = {}
+Entropy.ParakmiBlacklist = {}
+Entropy.ChaosConversions = {}
 '''
 match_indent = true
 
