@@ -16,9 +16,7 @@ local changeling = {
     use = function(self, card)
         local cards = {}
         for i, v in pairs(G.hand.cards) do cards[#cards+1]=v end
-        table.sort(cards, function(a,b)
-            return pseudorandom("changeling_cards") > pseudorandom("changeling_cards")
-        end)
+        pseudoshuffle(cards, pseudoseed('immolate'))
         local actual = {}
         for i = 1, card.ability.random do
             actual[i] = cards[i]
@@ -371,6 +369,114 @@ local link = {
     end
 }
 
+local ichor = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 8,
+    key = "ichor",
+    set = "RSpectral",
+    
+    inversion="c_ectoplasm",
+
+    atlas = "consumables",
+    config = {
+        num = 2
+    },
+	pos = {x=7,y=5},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card, area, copier)
+        local joker = pseudorandom_element(Entropy.FilterArea(G.jokers.cards, function(card)
+            return card.edition and card.edition.key == "e_negative"
+        end), pseudoseed("ichor"))
+        joker:start_dissolve()
+        G.GAME.banned_keys[joker.config.center.key] = true
+        G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.num
+        eval_card(v, {banishing_card = true, banisher = card, card = joker, cardarea = joker.area})
+    end,
+    can_use = function(self, card)
+        if not G.jokers then return false end
+        for i, v in pairs(G.jokers.cards) do
+            if v.edition and v.edition.key == "e_negative" then return true end
+        end
+        return false
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.e_negative
+        return {
+            vars = {
+                card.ability.num
+            }
+        }
+    end,
+    entr_credits = {
+        idea = {"cassknows"},
+        art = {"LFMoth"}
+    }
+}
+
+local rejuvenate = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 9,
+    key = "rejuvenate",
+    set = "RSpectral",
+    
+    inversion = "c_immolate",
+
+    atlas = "consumables",
+    config = {
+        dollars = -15,
+        num = 2
+    },
+	pos = {x=8,y=5},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        local cards = {}
+        for i, v in pairs(G.hand.cards) do if not v.highlighted then cards[#cards+1]=v end end
+        pseudoshuffle(cards, pseudoseed('immolate'))
+        local actual = {}
+        for i = 1, card2.ability.num do
+            actual[i] = cards[i]
+        end
+        local ed = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("rejuvenate")).key
+        local enh = G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("rejuvenate")).key]
+        local seal = pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("rejuvenate")).key
+        local card = Entropy.GetHighlightedCards({G.hand}, card2)[1]
+        card:set_edition(ed)
+        card:set_ability(enh)
+        card:set_seal(seal)
+        Entropy.FlipThen(actual, function(card3, area)
+                copy_card(card,card3)
+                card3:set_edition(ed)
+                card3:set_ability(enh)
+                card3:set_seal(seal)
+        end)
+        ease_dollars(card2.ability.dollars)
+    end,
+    can_use = function(self, card)
+        local num = #Entropy.GetHighlightedCards({G.hand}, card)
+        return num <= 1 and num > 0
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.num,
+                Entropy.FormatDollarValue(card.ability.dollars)
+            }
+        }
+    end,
+    entr_credits = {
+        idea = {"crabus"}
+    }
+}
 local beyond = {
     object_type = "Consumable",
     order = 2000 + 31,
@@ -439,6 +545,8 @@ return {
         disavow,
         pact,
         link,
+        ichor,
+        rejuvenate,
         beyond
     }
 }

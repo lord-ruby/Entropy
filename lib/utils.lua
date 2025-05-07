@@ -176,3 +176,14 @@ function Entropy.StringRandom(length)
     end
     return total
 end
+
+function Entropy.FormatDollarValue(val)
+    if to_big(val) >= to_big(0) then
+        return localize("$")..val
+    else
+        return "-"..localize("$")..(-val)
+    end
+end
+function Entropy.Pseudorandom(seed, min, max)
+    return math.floor(pseudorandom(seed)*(max-min)+0.5)+min
+end

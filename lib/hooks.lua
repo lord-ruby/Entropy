@@ -175,24 +175,29 @@ create_UIBox_your_collection_seals = function()
 end
 
 local set_abilityref = Card.set_ability
-function Card:set_ability(...)
+function Card:set_ability(center, initial, delay)
+    local link = self and self.ability and self.ability.link
     if self.config.center ~= "m_entr_disavowed" then
-        set_abilityref(self, ...)
+        set_abilityref(self, center, initial, delay)
     end
-    if self.ability.link then
+    self.ability.link = link
+    if link and not initial then
         for i, v in pairs(G.hand.cards) do
-            if v.ability.link == self.ability.link then
-                set_abilityref(v, ...) 
+            if v.ability.link == link then
+                set_abilityref(v, center, initial, delay)
+                v.ability.link = link 
             end
         end
         for i, v in pairs(G.discard.cards) do
-            if v.ability.link == self.ability.link then
-                set_abilityref(v, ...) 
+            if v.ability.link == link then
+                set_abilityref(v, center, initial, delay)
+                v.ability.link = link 
             end
         end
         for i, v in pairs(G.deck.cards) do
-            if v.ability.link == self.ability.link then
-                set_abilityref(v, ...) 
+            if v.ability.link == link then
+                set_abilityref(v, center, initial, delay) 
+                v.ability.link = link
             end
         end
     end
@@ -222,29 +227,24 @@ end
 
 local start_dissolveref = Card.start_dissolve
 function Card:start_dissolve(...)
-    local link = self.ability.link
     start_dissolveref(self, ...)
-    self.ability.link = link
     if self.ability.link then
         for i, v in pairs(G.hand.cards) do
             if v.ability.link == self.ability.link then
                 start_dissolveref(v, ...) 
                 v.ability.temporary2 = true
-                v.ability.link = link
             end
         end
         for i, v in pairs(G.discard.cards) do
             if v.ability.link == self.ability.link then
                 start_dissolveref(v, ...) 
                 v.ability.temporary2 = true
-                v.ability.link = link
             end
         end
         for i, v in pairs(G.deck.cards) do
             if v.ability.link == self.ability.link then
                 start_dissolveref(v, ...) 
                 v.ability.temporary2 = true
-                v.ability.link = link
             end
         end
     end
