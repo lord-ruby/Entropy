@@ -124,6 +124,12 @@ local containment = {
 				if context.other_card.edition and context.other_card.ability.set == "Enhanced" then ease_entropy(4) else ease_entropy(2) end
 			end
 		end
+    if context.final_scoring_step then
+      for i, v in pairs(G.jokers.cards) then
+        if v.edition and v.edition.key then ease_entropy(2) end
+        if i > G.jokers.config.card_limit then ease_entropy(1) end
+      end
+    end
 	end
 }
 local use_cardref = G.FUNCS.use_card
@@ -497,6 +503,12 @@ if CardSleeves then
       if context.individual and context.cardarea == G.play then
         if context.other_card and (context.other_card.edition or context.other_card.ability.set == "Enhanced") then
           if context.other_card.edition and context.other_card.ability.set == "Enhanced" then ease_entropy(4) else ease_entropy(2) end
+        end
+      end
+      if context.final_scoring_step then
+        for i, v in pairs(G.jokers.cards) then
+          if v.edition and v.edition.key then ease_entropy(2) end
+          if i > G.jokers.config.card_limit then ease_entropy(1) end
         end
       end
     end
