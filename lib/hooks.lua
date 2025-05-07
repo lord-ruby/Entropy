@@ -1090,3 +1090,85 @@ function G.UIDEF.use_and_sell_buttons(card)
     end
 	return abc
 end
+
+local sell_ref = G.FUNCS.sell_card
+G.FUNCS.sell_card = function(e)
+    if e.config.ref_table.ability.superego_copies then
+        for i = 1, e.config.ref_table.ability.superego_copies do
+            local card2 = copy_card(e.config.ref_table)
+            card2:add_to_deck()
+            card2.ability.superego = nil
+            card2.ability.superego_copies = nil
+            card2.debuff = false
+            card2.sell_cost = 0
+            e.config.ref_table.area:emplace(card2)
+        end
+    end
+    sell_ref(e)
+end
+
+local scie = SMODS.calculate_individual_effect
+function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
+    local ret
+    ret = scie(effect, scored_card, key, amount, from_edition)
+    if ret then
+        return ret
+    end
+    if (key == 'eq_mult' or key == 'Eqmult_mod') then 
+        local e = card_eval_status_text
+        card_eval_status_text = function() end
+        scie(effect, scored_card, "Xmult_mod", 0, from_edition)
+        scie(effect, scored_card, "mult_mod", amount, from_edition)
+        card_eval_status_text = e
+        if not Talisman.config_file.disable_anims then
+            card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent)
+        end
+        return true
+    end
+    if (key == 'asc') or (key == 'asc_mod') then
+        local e = card_eval_status_text
+        local orig = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num)
+        G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 1) + G.GAME.current_round.current_hand.cry_asc_num) * to_big(amount)
+        if G.GAME.current_round.current_hand.cry_asc_num == 0 then G.GAME.current_round.current_hand.cry_asc_num = 1 end
+        G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (to_big(G.GAME.asc_power_hand)) .. ")"
+        card_eval_status_text = function() end
+        scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
+        scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
+        card_eval_status_text = e
+        if not Talisman.config_file.disable_anims then
+            card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "X"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
+        end
+        return true
+    end
+    if (key == 'plus_asc') or (key == 'plusasc_mod') then
+        local e = card_eval_status_text
+        local orig = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num)
+        G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num) + to_big(amount)
+        G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (to_big(G.GAME.asc_power_hand)) .. ")"
+        card_eval_status_text = function() end
+        scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
+        scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
+        card_eval_status_text = e
+        if not Talisman.config_file.disable_anims then
+            card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "+"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
+        end
+        return true
+    end
+    if (key == 'exp_asc') or (key == 'exp_asc_mod') then
+        local e = card_eval_status_text
+        local orig = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num)
+        G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num) ^ to_big(amount)
+        if G.GAME.asc_power_hand ~= 0 then G.GAME.current_round.current_hand.cry_asc_num_text = " (+" .. (to_big(G.GAME.asc_power_hand)) .. ")" end
+        card_eval_status_text = function() end
+        scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
+        scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), from_edition)
+        card_eval_status_text = e
+        if not Talisman.config_file.disable_anims then
+            card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "^"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
+        end
+        return true
+    end
+end
+for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'asc', 'asc_mod', 'plus_asc', 'plusasc_mod', 'exp_asc', 'exp_asc_mod'}) do
+    table.insert(SMODS.calculation_keys, v)
+end

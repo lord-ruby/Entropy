@@ -12,6 +12,7 @@ local i = {
     "items/misc/consumable_types",
     "items/misc/enhancements",
     "items/misc/seals",
+    "items/misc/editions",
 
     "items/jokers/entropic_jokers",
 

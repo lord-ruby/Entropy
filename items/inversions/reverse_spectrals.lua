@@ -1175,6 +1175,112 @@ local mimic = {
     end,
 }
 
+local superego = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 23,
+    key = "superego",
+    set = "RSpectral",
+    
+    inversion = "c_cry_analog",
+
+    atlas = "consumables",
+    config = {
+        num = 1,
+    },
+	pos = {x=8,y=6},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        local cards = Entropy.GetHighlightedCards({G.jokers}, card2)
+        for i, card in ipairs(cards) do
+            card.ability.superego = true
+            card.ability.superego_copies = 0
+            card.debuff = true
+            card.sell_cost = 0
+        end
+    end,
+    can_use = function(self, card)
+        local num = #Entropy.GetHighlightedCards({G.jokers}, card)
+        return num <= card.ability.num and num > 0
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {key="superego", set="Other", vars = {0}}
+        return {
+            vars = {
+                card.ability.num,
+            }
+        }
+    end,
+    entr_credits = {
+        art = {"LFMoth"}
+    }
+}
+
+local superego_sticker = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Sticker",
+    order = 2000 + 2,
+    atlas = "entr_stickers",
+    pos = { x = 4, y = 1 },
+    key = "superego",
+    no_sticker_sheet = true,
+    prefix_config = { key = false },
+    badge_colour = HEX("FF00FF"),
+    apply = function(self,card,val)
+        card.ability.superego = true
+        card.ability.superego_copies = 0
+        card.debuff = true
+    end,
+    loc_vars = function(self, q, card) return {vars={card.ability and math.floor(card.ability.superego_copies or 0) or 0}} end
+}
+
+local engulf = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "e_entr_solar"
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 26,
+    key = "engulf",
+    set = "RSpectral",
+    
+    inversion = "c_cry_ritual",
+
+    atlas = "consumables",
+    config = {
+        num = 1,
+    },
+	pos = {x=8,y=7},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        Entropy.FlipThen(Entropy.GetHighlightedCards({G.hand}, card), function(card, area)
+            card:set_edition("e_entr_solar")
+        end)
+    end,
+    can_use = function(self, card)
+        local num = #Entropy.GetHighlightedCards({G.hand}, card) 
+        return num <= card.ability.num and num > 0
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] =  G.P_CENTERS.e_entr_solar
+        return {
+            vars = {
+                card.ability.num,
+            }
+        }
+    end,
+}
+
 local beyond = {
     object_type = "Consumable",
     order = 2000 + 31,
@@ -1256,6 +1362,9 @@ return {
         substitute,
         evocation,
         mimic,
+        superego,
+        superego_sticker,
+        engulf,
         beyond
     }
 }
