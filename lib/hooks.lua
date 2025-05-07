@@ -1462,3 +1462,35 @@ function Tag:init(_tag, for_collection, _blind_type)
     end
     return ref(self,_tag, for_collection, _blind_type)
 end
+
+local TrumpCardAllow = {
+    ["Planet"] = true,
+    ["Tarot"] = true,
+    ["Code"] = true
+}
+local matref = Card.set_ability
+function Card:set_ability(center, initial, delay_sprites)
+    G.GAME.entropy = G.GAME.entropy or 0
+    if G.SETTINGS.paused then
+        matref(self, center, initial, delay_sprites)
+    else
+        if self.config and self.config.center and Entropy.FlipsideInversions and Entropy.FlipsideInversions[self.config.center.key]
+        and pseudorandom("marked") < 0.10 and G.GAME.Marked and G.STATE == G.STATES.SHOP and (not self.area or not self.area.config.collection) then
+            matref(self, G.P_CENTERS[Entropy.FlipsideInversions[self.config.center.key]], initial, delay_sprites)
+        elseif self.config and self.config.center
+        and pseudorandom("trump_card") < 0.10 and G.GAME.TrumpCard and G.STATE == G.STATES.SMODS_BOOSTER_OPENED
+        and TrumpCardAllow[center.set] and (not self.area or not self.area.config.collection) then
+            matref(self, G.P_CENTERS["c_entr_flipside"], initial, delay_sprites)
+        elseif self.config and self.config.center and self.config.center.set == "Booster"
+        and pseudorandom("supersede") < 0.20 and G.GAME.Supersede and G.STATE == G.STATES.SHOP and (not self.area or not self.area.config.collection) then
+            local type = (center.cost == 6 and "jumbo") or (center.cost == 8 and "mega") or "normal"
+            matref(self, G.P_CENTERS["p_entr_twisted_pack_"..type], initial, delay_sprites)
+        elseif self.config and self.config.center and self.config.center.set == "Booster"
+        and to_big(pseudorandom("doc")) < to_big(1-(0.995^G.GAME.entropy)) and G.STATE == G.STATES.SHOP and (not self.area or not self.area.config.collection) and Entropy.DeckOrSleeve("doc") then
+            local type = (center.cost == 6 and "jumbo_1") or (center.cost == 8 and "mega_1") or "normal_"..pseudorandom_element({1,2},pseudoseed("doc"))
+            matref(self, G.P_CENTERS["p_spectral_"..type], initial, delay_sprites)
+        else
+            matref(self, center, initial, delay_sprites)
+        end
+    end
+end
