@@ -80,6 +80,12 @@ function CardArea:emplace(card, location, stay_flipped)
             add_ref(self, card, location, stay_flipped)
         end
     end
+    G.E_MANAGER:add_event(Event({
+        func = function()
+            if self.children and self.children.area_uibox and (self == G.hand or self == G.jokers or self == G.consumeables) and G.hand then self.children.area_uibox:remove(); self.children.area_uibox = nil end
+            return true
+        end
+    }))
 end
 local remove_ref = CardArea.remove_card
 function CardArea:remove_card(card, discarded_only)
@@ -87,6 +93,12 @@ function CardArea:remove_card(card, discarded_only)
     if self == G.hand and G.hand and G.GAME.h_side_mult and G.GAME.h_side_mult ~= 1 then
         G.hand.config.card_limit = G.hand.config.card_limit - (1 - 1/(G.GAME.h_side_mult))
     end
+    G.E_MANAGER:add_event(Event({
+        func = function()
+            if self.children and self.children.area_uibox and (self == G.hand or self == G.jokers or self == G.consumeables) and G.hand then self.children.area_uibox:remove(); self.children.area_uibox = nil end
+            return true
+        end
+    }))
     return c
 end
 local tocihc = {

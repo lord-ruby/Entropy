@@ -124,8 +124,10 @@ local containment = {
 				if context.other_card.edition and context.other_card.ability.set == "Enhanced" then ease_entropy(4) else ease_entropy(2) end
 			end
 		end
-    if context.final_scoring_step then
+    if context.after then
       for i, v in pairs(G.jokers.cards) do
+        print(i)
+        print(v.edition)
         if v.edition and v.edition.key then ease_entropy(2) end
         if i > G.jokers.config.card_limit then ease_entropy(1) end
       end
