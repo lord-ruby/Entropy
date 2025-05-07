@@ -43,7 +43,7 @@ local shatter = {
     order = 37,
     object_type = "Consumable",
     config = {limit = 2},
-    atlas = "miscc",
+    atlas = "consumables",
     pos = {x=5,y=8},
     dependencies = {
         items = {
