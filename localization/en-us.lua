@@ -1122,8 +1122,8 @@ local decs = {
 				name = "#1#define",
 				text = {
 					"Replace all future instances of",
-					"a {V:1}selected card{} with",
-					"a card of {V:1}your choice{}",
+					"a {C:entr_rspectral}selected card{} with",
+					"a card of {C:entr_rspectral}your choice{}",
 					"then {C:attention}destroy{} the selected card",
 					"{C:inactive}(Rare consumables and{}",
 					"{C:inactive}>=Exotic Jokers excluded){}"

@@ -31,7 +31,8 @@ function loc_colour(_c, default)
         G.ARGS.LOC_COLOURS.entr_colours = true
         local new_colors = {
             entr_entropic = Entropy.entropic_gradient,
-            entr_reverse_legendary = Entropy.reverse_legendary_gradient
+            entr_reverse_legendary = Entropy.reverse_legendary_gradient,
+            entr_rspectral = G.C.Entropy.RSpectral
         }
 
         for k, v in pairs(new_colors) do

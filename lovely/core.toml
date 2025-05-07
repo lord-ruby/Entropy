@@ -32,6 +32,7 @@ Entropy.BoosterSets = {
     ["RPlanet"] = "p_entr_twisted_pack_mega",
     ["RSpectral"] = "p_entr_twisted_pack_mega",
 }
+Entropy.DefineBlacklist = {}
 '''
 match_indent = true
 

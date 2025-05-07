@@ -1173,6 +1173,7 @@ for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'asc', 'asc_mod', 'plus_asc', 'plus
     table.insert(SMODS.calculation_keys, v)
 end
 
+local entr_define_dt = 0
 local update_ref = Game.update
 function Game:update(dt)
     update_ref(self, dt)
@@ -1185,4 +1186,10 @@ function Game:update(dt)
         G.STATE = 1
         G.STATE_COMPLETE = false
     end
+    entr_define_dt = entr_define_dt + dt
+    if G.P_CENTERS and G.P_CENTERS.c_entr_define and entr_define_dt > 0.5 then
+		entr_define_dt = 0
+		local pointerobj = G.P_CENTERS.c_entr_define
+		pointerobj.pos.x = (pointerobj.pos.x == 4) and 5 or 4
+	end
 end

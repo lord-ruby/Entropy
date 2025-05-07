@@ -18,6 +18,7 @@ local i = {
 
     "items/inversions/reverse_spectrals",
     "items/inversions/reverse_planets",
+    "items/inversions/define"
 }
 local items = {}
 for _, v in pairs(i) do
