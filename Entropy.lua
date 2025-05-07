@@ -18,6 +18,7 @@ local i = {
     "items/misc/sounds",
     "items/misc/blind_tokens",
     "items/misc/tags",
+    "items/misc/boosters",
 
     "items/jokers/misc_jokers",
     "items/jokers/epic_jokers",

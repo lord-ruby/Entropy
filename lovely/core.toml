@@ -49,6 +49,8 @@ Entropy.ChaosBlacklist = {}
 Entropy.ParakmiBlacklist = {}
 Entropy.ChaosConversions = {}
 Entropy.AscendedTags = {}
+Entropy.BlindTokenBlacklist = {}
+Entropy.References = {}
 '''
 match_indent = true
 
