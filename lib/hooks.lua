@@ -1193,3 +1193,41 @@ function Game:update(dt)
 		pointerobj.pos.x = (pointerobj.pos.x == 4) and 5 or 4
 	end
 end
+
+local create_ref = create_card
+function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+    local card = create_ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+    if card and card.ability and card.ability.name == "entr-solarflare" then
+		card:set_edition("e_entr_solar", true, nil, true)
+	end
+    if card and card.ability and card.ability.name == "entr-trapezium_cluster" then
+		card:set_edition("e_entr_fractured", true, nil, true)
+	end
+    return card
+end
+
+local ref = level_up_hand
+function level_up_hand(card, hand, instant, amount)
+    if Entropy.HasJoker("j_entr_strawberry_pie",true) and hand ~= "High Card" then
+        hand = "High Card"
+    end
+    ref(card,hand,instant,amount)
+end
+
+local start_dissolveref = Card.start_dissolve
+function Card:start_dissolve(...)
+    start_dissolveref(self, ...)
+    if self.config.center.key == "j_entr_chocolate_egg" and not self.ability.no_destroy and self.area == G.jokers and G.jokers then
+        card_eval_status_text(
+            self,
+            "extra",
+            nil,
+            nil,
+            nil,
+            { message = localize("entr_opened"), colour = G.C.GREEN }
+        )
+        local c = create_card("Joker", G.jokers, nil, "Rare")
+        c:add_to_deck()
+        G.jokers:emplace(c)
+    end
+end

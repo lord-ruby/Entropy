@@ -1,6 +1,6 @@
 local epitachyno = {
     object_type = "Joker",
-    order = "900",
+    order = 900,
     key = "epitachyno",
     atlas = "exotic_jokers",
     rarity = "entr_entropic",

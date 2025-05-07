@@ -307,8 +307,7 @@ local decs = {
 				name = "Strawberry Pie",
 				text = {
 					"Other hand level-ups are",
-					"redirected {X:dark_edition,C:white}#1#X{} to",
-					"{C:attention}High Card{}"
+					"redirected to {C:attention}High Card{}",
 				}
 			},
 			j_entr_recursive_joker = {

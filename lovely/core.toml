@@ -32,7 +32,15 @@ Entropy.BoosterSets = {
     ["RPlanet"] = "p_entr_twisted_pack_mega",
     ["RSpectral"] = "p_entr_twisted_pack_mega",
 }
-Entropy.DefineBlacklist = {}
+Entropy.DefineBlacklist = {
+    c_black_hole = true,
+    c_soul = true,
+    c_cry_gateway = true,
+    c_cry_white_hole = true,
+    c_cry_pointer = true,
+    c_entr_fervour = true,
+    c_entr_define = true
+}
 '''
 match_indent = true
 

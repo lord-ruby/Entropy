@@ -426,7 +426,7 @@ function Card:set_ability(center, initial, delay)
             set_abilityref(self, G.P_CENTERS[definekey._enh or "c_base"] or G.P_CENTERS["c_base"], initial, delay)
             SMODS.change_base(self, definekey._suit, definekey._rank)
             if definekey._ed ~= "" then self:set_edition(definekey._ed) end
-            if definekey._seal ~= "" thenself:set_seal(definekey._seal) end
+            if definekey._seal ~= "" then self:set_seal(definekey._seal) end
         else    
             set_abilityref(self, G.P_CENTERS[definekey], initial, delay)
         end

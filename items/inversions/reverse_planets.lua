@@ -10,7 +10,7 @@ function create_UIBox_current_hand_row(handname, simple)
           {n=G.UIT.R, config={align = "cm", padding = 0.05, r = 0.1, colour = darken(G.C.JOKER_GREY, 0.1), emboss = 0.05, hover = true, force_focus = true, on_demand_tooltip = {text = localize(handname, 'poker_hand_descriptions'), filler = {func = create_UIBox_hand_tip, args = handname}}}, nodes={
             {n=G.UIT.C, config={align = "cl", padding = 0, minw = 5}, nodes={
                 {n=G.UIT.C, config={align = "cm", padding = 0.05, colour = G.C.BLACK,r = 0.1}, nodes={
-                    {n=G.UIT.C, config={align = "cm", padding = 0.01, r = 0.1, colour = to_big(G.GAME.hands[handname].level) < to_big(2) and G.C.UI.TEXT_LIGHT or G.C.HAND_LEVELS[math.min(to_big(G.GAME.hands[handname].level):to_number(), 7)], minw = 1.1}, nodes={
+                    {n=G.UIT.C, config={align = "cm", padding = 0.01, r = 0.1, colour = to_big(G.GAME.hands[handname].level) < to_big(2) and G.C.UI.TEXT_LIGHT or G.C.HAND_LEVELS[math.min(math.floor(to_big(G.GAME.hands[handname].level):to_number()), 7)], minw = 1.1}, nodes={
                       {n=G.UIT.T, config={text = localize('k_level_prefix')..number_format(G.GAME.hands[handname].level, 1000000), scale = 0.45, colour = G.C.UI.TEXT_DARK}},
                     }},
                     {n=G.UIT.T, config={text = "+", scale = 0.45, colour = color}},
