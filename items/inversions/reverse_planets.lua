@@ -189,7 +189,7 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
         "set_entr_inversions"
       }
     },
-    atlas = "consumable",
+    atlas = "consumables",
     config = config or {
         level = level or 2,
         handname = handname
