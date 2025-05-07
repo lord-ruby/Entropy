@@ -165,3 +165,35 @@ function SMODS.injectItems(...)
     })
     SMODS.ObjectTypes.BlindTokens:inject()
 end
+
+if SMODS.Mods.DereJkr and SMODS.Mods.DereJkr.can_load then
+    local set_spritesref = Card.set_sprites
+    function Card:set_sprites(_center, _front)
+        set_spritesref(self, _center, _front)
+        if _center and ({
+            j_entr_oekrep = true,
+            j_entr_oinac = true,
+            j_entr_teluobirt = true,
+            j_entr_kciroy = true,
+            j_entr_tocihc = true
+        })[_center.key] then
+            self.children.floating_sprite = Sprite(
+                self.T.x,
+                self.T.y,
+                self.T.w * (self.no_ui and 1.1*1.2 or 1),
+                self.T.h * (self.no_ui and 1.1*1.2 or 1),
+                G.ASSET_ATLAS["Jokers-Legendere"],
+                ({
+                    j_entr_oekrep = {x=4,y=1},
+                    j_entr_oinac =  {x=0,y=1},
+                    j_entr_teluobirt = {x=1,y=1},
+                    j_entr_kciroy = {x=2,y=1},
+                    j_entr_tocihc = {x=3,y=1}
+                })[_center.key]
+            )
+            self.children.floating_sprite.role.draw_major = self
+            self.children.floating_sprite.states.hover.can = false
+            self.children.floating_sprite.states.click.can = false
+        end
+    end
+end
