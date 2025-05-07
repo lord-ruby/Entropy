@@ -125,7 +125,7 @@ local containment = {
 			end
 		end
     if context.final_scoring_step then
-      for i, v in pairs(G.jokers.cards) then
+      for i, v in pairs(G.jokers.cards) do
         if v.edition and v.edition.key then ease_entropy(2) end
         if i > G.jokers.config.card_limit then ease_entropy(1) end
       end
@@ -506,7 +506,7 @@ if CardSleeves then
         end
       end
       if context.final_scoring_step then
-        for i, v in pairs(G.jokers.cards) then
+        for i, v in pairs(G.jokers.cards) do
           if v.edition and v.edition.key then ease_entropy(2) end
           if i > G.jokers.config.card_limit then ease_entropy(1) end
         end
