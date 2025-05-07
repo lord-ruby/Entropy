@@ -39,7 +39,10 @@ Entropy.DefineBlacklist = {
     c_cry_white_hole = true,
     c_cry_pointer = true,
     c_entr_fervour = true,
-    c_entr_define = true
+    c_entr_define = true,
+    Back = true,
+    Sleeve = true,
+    Edition = true
 }
 
 Entropy.ChaosBlacklist = {}
