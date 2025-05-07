@@ -1172,3 +1172,17 @@ end
 for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'asc', 'asc_mod', 'plus_asc', 'plusasc_mod', 'exp_asc', 'exp_asc_mod'}) do
     table.insert(SMODS.calculation_keys, v)
 end
+
+local update_ref = Game.update
+function Game:update(dt)
+    update_ref(self, dt)
+    if G.STATE == nil and (G.pack_cards == nil or #G.pack_cards == 0) and G.GAME.DefineBoosterState then
+        G.STATE = G.GAME.DefineBoosterState
+        G.STATE_COMPLETE = false
+        G.GAME.DefineBoosterState = nil
+    end
+    if self.STATE == nil and not G.DefineBoosterState then
+        G.STATE = 1
+        G.STATE_COMPLETE = false
+    end
+end

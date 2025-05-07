@@ -1281,6 +1281,232 @@ local engulf = {
     end,
 }
 
+local offering = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 27,
+    key = "offering",
+    set = "RSpectral",
+
+    inversion = "c_cry_adversary",
+
+    atlas = "consumables",
+    config = {
+        sellmult = 0.75,
+    },
+	pos = {x=9,y=7},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        Entropy.FlipThen(G.jokers.cards, function(card, area)
+            card.ability.rental = true
+        end)
+        G.E_MANAGER:add_event(Event({
+			func = function()
+				G.GAME.entr_shop_price_modifier = (G.GAME.entr_shop_price_modifier or 1) * card2.ability.sellmult
+				for k, v in pairs(G.I.CARD) do
+					if v.set_cost then
+						v:set_cost()
+					end
+				end
+				return true
+			end,
+		}))
+    end,
+    can_use = function(self, card)
+        return G.jokers and #G.jokers.cards > 0
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] =  {key="rental",set="Other", vars = {3}}
+        return {
+            vars = {
+                card.ability.sellmult,
+            }
+        }
+    end,
+}
+
+local entomb = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 28,
+    key = "entomb",
+    set = "RSpectral",
+
+    inversion = "c_cry_chambered",
+
+    atlas = "consumables",
+    config = {
+        num = 1
+    },
+	pos = {x=9,y=6},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        for i, v in pairs(G.consumeables.highlighted) do
+            if v.config.center.key ~= "c_entr_entomb" and v.config.center.set ~= "Voucher" then
+                local c
+                if v.config.center.set == "Booster" then
+                    c = copy_card(v)
+                else
+                    c = create_card("Booster", G.consumeables, nil, nil, nil, nil, key) 
+                    c:set_ability(G.P_CENTERS[Entropy.BoosterSets[v.config.center.set] or "p_standard_normal_1"])
+                end
+                c:add_to_deck()
+                c.T.w = c.T.w *  2.0/2.6
+                c.T.h = c.T.h *  2.0/2.6
+                table.insert(G.consumeables.cards, c)
+                c.area = G.consumeables
+                G.consumeables:align_cards()
+            end
+        end
+    end,
+    can_use = function(self, card)
+        return G.consumeables and #Entropy.GetHighlightedCards({G.consumeables}, card) > 0 and #Entropy.GetHighlightedCards({G.consumeables}, card) <= card.ability.num
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.num,
+            }
+        }
+    end,
+}
+
+local conduct = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 29,
+    key = "conduct",
+    set = "RSpectral",
+
+    inversion = "c_cry_conduit",
+
+    atlas = "consumables",
+	pos = {x=10,y=6},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        local card = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables, G.pack_cards}, card2)[1]
+        local area = card.area
+        local edition = Entropy.FindPreviousInPool(card.edition.key, "Edition")
+        local cards = {}
+        for i, v in pairs(area.cards) do
+            if area.cards[i+1] == card or area.cards[i-1] == card then
+                cards[#cards+1]=v
+            end
+        end
+        Entropy.FlipThen(cards, function(card3, area, indx)
+            card3:set_edition(edition)
+            card3:add_to_deck()
+        end)
+    end,
+    can_use = function(self, card)
+        return #Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables, G.pack_cards}, card) == 1 and Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables, G.pack_cards}, card)[1].edition
+        and Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables, G.pack_cards}, card)[1].edition.key
+	end,
+    loc_vars = function(self,q,card)
+        local str = "none"
+        if #Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables, G.pack_cards}, card) == 1 and Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables, G.pack_cards}, card)[1].edition 
+            and Entropy.FindPreviousInPool(Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables, G.pack_cards}, card)[1].edition.key, "Edition") then
+            str = G.localization.descriptions.Edition[Entropy.FindPreviousInPool(Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables, G.pack_cards}, card)[1].edition.key, "Edition")].name
+        end
+        return {
+            vars = {
+                str
+            }
+        }
+    end
+}
+
+local pulsar = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 30,
+    key = "pulsar",
+    set = "RSpectral",
+    
+    inversion = "c_cry_white_hole",
+
+    atlas = "consumables",
+    config = {
+        level = 4
+    },
+    soul_rate = 0,
+    hidden = true, 
+	pos = {x=6,y=3},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card, area, copier,amt)
+        local amt = amt or 1
+        local used_consumable = copier or card
+        delay(0.4)
+        update_hand_text(
+          { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
+          { handname = localize('k_all_hands'), chips = "...", mult = "...", level = "" }
+        )
+        for i, v in pairs(G.GAME.hands) do
+            v.AscensionPower = (v.AscensionPower or 0) + card.ability.level*amt
+            v.visible = true
+        end
+        delay(1.0)
+        G.E_MANAGER:add_event(Event({
+          trigger = "after",
+          delay = 0.2,
+          func = function()
+            play_sound("tarot1")
+            ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
+            ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
+            Cryptid.pulse_flame(0.01, sunlevel)
+            used_consumable:juice_up(0.8, 0.5)
+            G.E_MANAGER:add_event(Event({
+              trigger = "after",
+              blockable = false,
+              blocking = false,
+              delay = 1.2,
+              func = function()
+                ease_colour(G.C.UI_CHIPS, G.C.BLUE, 1)
+                ease_colour(G.C.UI_MULT, G.C.RED, 1)
+                return true
+              end,
+            }))
+            return true
+          end,
+        }))
+        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+"..card.ability.level*amt })
+        delay(2.6)
+        update_hand_text(
+          { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+          { mult = 0, chips = 0, handname = "", level = "" }
+        )
+    end,
+    bulk_use = function(self,card,area,copier,amt)
+        self.use(self,card,area,copier,amt)
+    end,
+    can_use = function(self, card)
+        return true
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.level
+            }
+        }
+    end,
+}
+
 local beyond = {
     object_type = "Consumable",
     order = 2000 + 31,
@@ -1365,6 +1591,10 @@ return {
         superego,
         superego_sticker,
         engulf,
+        offering,
+        entomb,
+        conduct,
+        pulsar,
         beyond
     }
 }

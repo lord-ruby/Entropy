@@ -22,6 +22,16 @@ Entropy.RarityChecks = {
     "cry_exotic",
     "entr_entropic"
 }
+Entropy.BoosterSets = {
+    ["Spectral"] = "p_spectral_mega_1",
+    ["Tarot"] = "p_arcana_mega_1",
+    ["Planet"] = "p_celestial_mega_1",
+    ["Spectral"] = "p_spectral_mega_1",
+    ["Code"] = "p_cry_code_mega_1",
+    ["RCode"] = "p_entr_twisted_pack_mega",
+    ["RPlanet"] = "p_entr_twisted_pack_mega",
+    ["RSpectral"] = "p_entr_twisted_pack_mega",
+}
 '''
 match_indent = true
 
