@@ -34,16 +34,42 @@ local memoryleak = {
             for i, v in pairs(G.jokers.cards) do
                 v:start_dissolve()
             end
-            for i, v in pairs(G.consumables.cards) do
+            for i, v in pairs(G.consumeables.cards) do
                 v:start_dissolve()
             end
         end
-    end
+    end,
+    can_use = function() return true end
+}
+
+local rootkit = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 3000 + 2,
+    key = "root_kit",
+    set = "RCode",
+
+    inversion = "c_cry_payload",
+
+    atlas = "consumables",
+	pos = {x=1,y=1},
+
+    use = function(self, card, area, copier)
+        G.GAME.RootKit = (G.GAME.RootKit or 0) + card.ability.extra.selected
+    end,
+    bulk_use = function(self, card, area, copier, number)
+		G.GAME.RootKit = (G.GAME.RootKit or 0) + card.ability.extra.selected * number
+	end,
     can_use = function() return true end
 }
 
 return {
     items = {
-        memoryleak
+        memoryleak,
+        rootkit
     }
 }
