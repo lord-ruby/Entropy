@@ -1,7 +1,16 @@
 local i = {
     "items/misc/atlases",
     "items/misc/rarities",
-    "items/jokers/entropic_jokers"
+    "items/misc/spectrals",
+    "items/misc/content_sets",
+    "items/misc/consumable_types",
+
+    "items/jokers/entropic_jokers",
+
+    "items/inversions/reverse_spectrals",
+
+    "lib/utils",
+    "lib/config"
 }
 local items = {}
 for _, v in pairs(i) do

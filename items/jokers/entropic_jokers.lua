@@ -10,6 +10,9 @@ local epitachyno = {
         extra = 1.1,
         exp_mod = 0.05
     },
+    dependencies = {
+        items={"set_entr_entropics"}
+    },
     demicoloncompat = true,
     loc_vars = function(self, info_queue, card)
         return {

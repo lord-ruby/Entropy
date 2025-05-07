@@ -10,5 +10,6 @@ pattern = '''function love.load()'''
 position = "before"
 payload = '''
 Entropy = {}
+Entropy.FlipsideInversions = {}
 '''
 match_indent = true
