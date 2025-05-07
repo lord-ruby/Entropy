@@ -1,13 +1,3 @@
-SMODS.ConsumableType{
-	key = "CBlind",
-	primary_colour = HEX("ab3a3e"),
-	secondary_colour = HEX("ab3a3e"),
-	--collection_rows = { 4, 5 },
-	shop_rate = 0.0,
-	default = "c_entr_bl_small",
-    hidden=true,
-}
-
 Entropy.BlindC = {}
 local blinds = {}
 function Entropy.RegisterBlinds()
@@ -33,7 +23,7 @@ function Entropy.RegisterBlinds()
             },
             weight = 0,
             no_doe = true,
-            atlas="consumables",
+            atlas="entr_consumables",
             --soul_pos = { x = 5, y = 0},
             in_pool = function()
                 return false
@@ -94,7 +84,7 @@ function Entropy.RegisterBlinds()
                 },
                 key = "entr_"..i,
                 set = "CBlind",
-                atlas="consumables",
+                atlas="entr_consumables",
                 
                 pos = {x=9999,y=9999},
                 config = {
@@ -143,7 +133,7 @@ function Entropy.RegisterBlinds()
                         card.T.y+0.7,
                         1.4 * (card.no_ui and 1.1*1.2 or 1),
                         1.4 * (card.no_ui and 1.1*1.2 or 1),
-                        G.ANIMATION_ATLAS[self.config.atlas],
+                        G.ANIMATION_ATLAS[self.config.atlas or ""] or G.ANIMATION_ATLAS["blind_chips"],
                         self.config.pos
                     )
                     card.children.floating_sprite.role.draw_major = card
@@ -161,7 +151,6 @@ end
 
 local set_spritesref = Card.set_sprites
 function Card:set_sprites(_center, _front)
-
     set_spritesref(self,_center,_front)
     if _center and _center.set_sprites then
         _center:set_sprites(self, _front)
@@ -204,7 +193,3 @@ function Card:draw(layer)
         )
     end
 end
-
-return {
-    items = blinds
-}
