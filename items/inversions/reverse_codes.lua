@@ -58,13 +58,24 @@ local rootkit = {
     atlas = "consumables",
 	pos = {x=1,y=1},
 
+    config = {
+        perhand = 10
+    }
+
     use = function(self, card, area, copier)
-        G.GAME.RootKit = (G.GAME.RootKit or 0) + card.ability.extra.selected
+        G.GAME.RootKit = (G.GAME.RootKit or 0) + card.ability.perhand
     end,
     bulk_use = function(self, card, area, copier, number)
-		G.GAME.RootKit = (G.GAME.RootKit or 0) + card.ability.extra.selected * number
+		G.GAME.RootKit = (G.GAME.RootKit or 0) + card.ability.perhand * number
 	end,
     can_use = function() return true end
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.perhand
+            }
+        }
+    end
 }
 
 return {
