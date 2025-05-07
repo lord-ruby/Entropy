@@ -40,9 +40,25 @@ local flesh = {
 		end
 	end,
 }
-
+local disavowed = {
+	dependencies = {
+        items = {
+          "set_entr_misc"
+        }
+    },
+	order = 2,
+	object_type = "Enhancement",
+	key = "disavowed",
+	atlas = "enhancements",
+	pos = { x = 1, y = 0 },
+	weight = 0,
+	set_ability = function(self,card) 
+		card.ability.disavow = true
+	end
+}
 return {
     items = {
-        flesh
+        flesh,
+        disavowed
     }
 }

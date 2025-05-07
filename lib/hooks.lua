@@ -173,3 +173,10 @@ create_UIBox_your_collection_seals = function()
         end,
     })
 end
+
+local set_abilityref = Card.set_ability
+function Card:set_ability(...)
+    if self.config.center ~= "m_entr_disavowed" then
+        set_abilityref(self, ...)
+    end
+end

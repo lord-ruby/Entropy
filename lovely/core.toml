@@ -11,6 +11,7 @@ position = "before"
 payload = '''
 Entropy = {}
 Entropy.FlipsideInversions = {}
+Entropy.EnhancementFuncs = {}
 '''
 match_indent = true
 

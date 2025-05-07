@@ -215,6 +215,76 @@ local ward = {
     }
 }
 
+local disavow = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 6,
+    key = "disavow",
+    set = "RSpectral",
+    inversion = "c_sigil",
+    atlas = "consumables",
+    config = {
+        sellmult = 2
+    },
+	pos = {x=12,y=4},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card, area, copier)
+        Entropy.FlipThen(G.hand.cards, function(card, area, ind)
+            local func = Entropy.EnhancementFuncs[card.config.center.key] or function(card)
+                card:set_edition("e_cry_glitched")
+            end
+            if card.config.center.key ~= "c_base" then 
+                local ability = card.ability
+                card:set_ability(G.P_CENTERS.m_entr_disavowed)
+                card.ability = ability
+                card.ability.disavow = true
+                func(card)
+            end
+        end)
+    end,
+    can_use = function(self, card)
+        return G.hand and #G.hand.cards > 0
+	end,
+    loc_vars = function(self, q, card)
+    end,
+    entr_credits = {
+        idea = {"CapitalChirp"}
+    }
+}
+
+local EnhancementFuncs = {
+    m_bonus = function(card) card.ability.bonus = 100 end,
+    m_mult = function(card) card.ability.x_mult = card.ability.x_mult * 1.5 end,
+    m_glass = function(card) card.temporary2=true;card:shatter() end,
+    m_steel = function(card) card.ability.x_mult = (card.ability.x_mult+1)^2 end,
+    m_stone = function(card) card.ability.bonus = (card.base.nominal^2) end,
+    m_gold = function(card) ease_dollars(20) end,
+    m_lucky = function(card)
+        if pseudorandom("disavow") < 0.5 then
+            card.ability.x_mult = card.ability.x_mult * 1.5
+        else    
+            ease_dollars(20)
+        end
+    end,
+    m_cry_echo = function(card) 
+        local card2 = copy_card(card) 
+        card2:set_ability(G.P_CENTERS.c_base)
+        card2:add_to_deck()
+        G.hand:emplace(card2)
+    end,
+    m_cry_light = function(card)
+        card.ability.x_mult = card.ability.x_mult * 4
+    end,
+    m_entr_flesh = function(card)
+        card.temporary2=true;card:start_dissolve()
+    end
+}
+for i, v in pairs(EnhancementFuncs) do Entropy.EnhancementFuncs[i] = v end
+
 local beyond = {
     object_type = "Consumable",
     order = 2000 + 31,
@@ -280,6 +350,7 @@ return {
         script,
         ward,
         siphon,
+        disavow,
         beyond
     }
 }
