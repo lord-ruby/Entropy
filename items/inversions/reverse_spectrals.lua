@@ -116,6 +116,105 @@ local calamity = Entropy.SealSpectral("calamity", {x=6,y=6}, "entr_pink",2000+13
 local downpour = Entropy.SealSpectral("downpour", {x=12,y=7}, "entr_cerulean",2000+24, "c_cry_typhoon")
 local script = Entropy.SealSpectral("script", {x=6,y=8}, "entr_verdant",2000+25, "c_cry_source")
 
+local siphon = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 4,
+    key = "siphon",
+    set = "RSpectral",
+    
+    invesion = "c_aura",
+
+    atlas = "consumables",
+    config = {
+        chipmult = 3
+    },
+	pos = {x=10,y=4},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card2, area, copier)
+        local lower = Entropy.FindPreviousInPool(G.jokers.highlighted[1].edition.key, "Edition")
+        Entropy.FlipThen(G.hand.cards, function(card, area)
+            card:set_edition(lower)
+        end)
+        G.jokers.highlighted[1]:start_dissolve()
+    end,
+    can_use = function(self, card)
+        return G.jokers 
+        and #G.jokers.highlighted == 1 
+        and G.jokers.highlighted[1] 
+        and G.jokers.highlighted[1].edition 
+        and G.jokers.highlighted[1].ability and not G.jokers.highlighted[1].ability.cry_absolute
+	end,
+    loc_vars = function(self, q, card)
+        local str = "none"
+        if G.jokers and #G.jokers.highlighted > 0 and G.jokers.highlighted[1].edition and Entropy.FindPreviousInPool(G.jokers.highlighted[1].edition.key, "Edition") then
+            str = G.localization.descriptions.Edition[Entropy.FindPreviousInPool(G.jokers.highlighted[1].edition.key, "Edition")].name
+        end
+        return {
+            vars = {
+                str
+            }
+        }
+    end,
+    entr_credits = {
+        idea = {"crabus"}
+    }
+}
+
+local ward = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 5,
+    key = "ward",
+    set = "RSpectral",
+    inversion = "c_wraith",
+    atlas = "consumables",
+    config = {
+        sellmult = 2
+    },
+	pos = {x=11,y=4},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card, area, copier)
+        local total = 0
+        for i, v in pairs(G.jokers.cards) do
+            if not v.ability.eternal and not v.ability.cry_absolute then
+                local joker = G.jokers.cards[i]
+                total = total + joker.cost
+                G.E_MANAGER:add_event(Event({
+                    trigger = "after",
+                    delay = 0.1,
+                    func = function()
+                        joker:start_dissolve()
+                        return true
+                    end
+                }))
+            end
+        end
+        ease_dollars(total * card.ability.sellmult)
+    end,
+    can_use = function(self, card)
+        return G.jokers and #G.jokers.cards > 0
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.sellmult
+            }
+        }
+    end,
+    entr_credits = {
+        idea = {"CapitalChirp"}
+    }
+}
+
 local beyond = {
     object_type = "Consumable",
     order = 2000 + 31,
@@ -179,6 +278,8 @@ return {
         calamity,
         downpour,
         script,
+        ward,
+        siphon,
         beyond
     }
 }
