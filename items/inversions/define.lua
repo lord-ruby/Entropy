@@ -439,7 +439,7 @@ end
 
 local add_ref = CardArea.emplace
 function CardArea:emplace(card, location, stay_flipped)
-    if G.SETTINGS.paused or not G.GAME.DefineKeys then
+    if G.SETTINGS.paused or not G.GAME.DefineKeys or G.GAME.akyrs_any_drag then
         add_ref(self, card, location, stay_flipped)
     elseif self.fromdefine then
         local area = ({
