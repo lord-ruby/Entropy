@@ -294,9 +294,11 @@ function Entropy.RandomForcetrigger(card, num,context)
 end
 
 function Entropy.GetRandomSet(has_parakmi)
-    local set = pseudorandom_element(G.P_CENTER_POOLS, pseudoseed(has_parakmi and "parakmi" or "chaos"))[1].set
-    while Entropy.ParakmiBlacklist[set] or (not has_parakmi and Entropy.ChaosBlacklist[set]) do
-        set = pseudorandom_element(G.P_CENTER_POOLS, pseudoseed(has_parakmi and "parakmi" or "chaos"))[1].set
+    local pool = pseudorandom_element(G.P_CENTER_POOLS, pseudoseed(has_parakmi and "parakmi" or "chaos"))
+    local set = pool and pool[1] and pool[1].set
+    while not set or Entropy.ParakmiBlacklist[set] or (not has_parakmi and Entropy.ChaosBlacklist[set]) do
+        pool = pseudorandom_element(G.P_CENTER_POOLS, pseudoseed(has_parakmi and "parakmi" or "chaos"))
+        set = pool and pool[1] and pool[1].set
     end
     return set
 end

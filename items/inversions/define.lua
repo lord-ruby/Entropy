@@ -421,7 +421,7 @@ end
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, initial, delay)
     if center and G.GAME.DefineKeys and G.GAME.DefineKeys[center.key] and not G.SETTINGS.paused then
-        local definekey = G.GAME.DefineKeys[center.key]
+        local definekey = G.GAME.DefineKeys[center.key or self.base.name]
         if type(definekey) == "table" and definekey.playing_card then
             set_abilityref(self, G.P_CENTERS[definekey._enh or "c_base"] or G.P_CENTERS["c_base"], initial, delay)
             SMODS.change_base(self, definekey._suit, definekey._rank)
