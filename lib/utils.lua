@@ -587,3 +587,17 @@ Entropy.ReverseRarityChecks = {
 for i, v in ipairs(Entropy.RarityChecks) do
     Entropy.ReverseRarityChecks[v]=i
 end
+
+function Entropy.GetRandomRarityCard(rare)
+    if rare == 1 then rare = "Common" end
+    if rare == 2 then rare = "Uncommon" end
+    if rare == 3 then rare = "Rare" end
+    local _pool, _pool_key = get_current_pool("Joker", rare, rare == 4, "ieros")
+    local center = pseudorandom_element(_pool, pseudoseed(_pool_key))
+    local it = 1
+    while center == 'UNAVAILABLE' do
+        it = it + 1
+        center = pseudorandom_element(_pool, pseudoseed(_pool_key..'_resample'..it))
+    end
+    return center
+end

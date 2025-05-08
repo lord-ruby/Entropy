@@ -578,7 +578,7 @@ local ieros = {
     order = 403,
     object_type = "Joker",
     key = "ieros",
-    rarity = "entr_hyper_exotic",
+    rarity = "entr_entropic",
     cost = 150,
     
 
@@ -590,7 +590,7 @@ local ieros = {
     },
     dependencies = {
         items = {
-            "set_entr_entropic"
+            "set_entr_entropics"
         }
     },
     demicoloncompat = true,

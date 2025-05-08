@@ -1894,3 +1894,23 @@ function Game:update_round_eval(dt)
         end
     end
 end
+
+local create_cardref = create_card_for_shop
+function create_card_for_shop(area)
+    local card = create_cardref(area)
+    if card.ability.set == "Joker" and Entropy.HasJoker("j_entr_ieros", true) then
+        for i, v2 in pairs(G.jokers.cards) do
+            if v2.config.center.key == "j_entr_ieros" then
+                while pseudorandom("ieros") < 0.33 do
+                    local rare = nil
+                    if card.config.center.rarity ~= "j_entr_entropic" then
+                        rare = Entropy.GetNextRarity(card.config.center.rarity or 1) or card.config.center.rarity
+                    end
+                    local new_card = Entropy.GetRandomRarityCard(rare)
+                    card:set_ability(G.P_CENTERS[new_card])
+                end
+            end
+        end
+    end 
+    return card
+end
