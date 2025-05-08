@@ -258,7 +258,7 @@ local antireal = {
         return {
             vars = {
                 card.ability.exp_per_slot,
-                G.jokers and (G.jokers.config.card_limit - #G.jokers.cards + (HasJoker("j_entr_antireal") or 0)) * card.ability.exp_per_slot or 1
+                G.jokers and (G.jokers.config.card_limit - #G.jokers.cards + (Entropy.HasJoker("j_entr_antireal") or 0)) * card.ability.exp_per_slot or 1
             }
         }
     end,

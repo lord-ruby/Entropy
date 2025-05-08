@@ -80,3 +80,7 @@ G.FUNCS.flame_handler = function(e)
       end
     end
   end
+
+  SMODS.Joker:take_ownership("cry_oil_lamp", {
+    rarity = "cry_epic"
+  }, true)

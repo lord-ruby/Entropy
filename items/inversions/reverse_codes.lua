@@ -697,7 +697,7 @@ local decrement = {
         Entropy.FlipThen(G.jokers.highlighted, function(card)
             local ind = ReductionIndex(card, "Joker")-1
             if G.P_CENTER_POOLS.Joker[ind] then
-                card:set_ability(G.P_CENTERS[G.P_CENTER_POOLS.Joker[ind]])
+                card:set_ability(G.P_CENTERS[G.P_CENTER_POOLS.Joker[ind].key])
             end
             G.jokers:remove_from_highlighted(card)
         end)
