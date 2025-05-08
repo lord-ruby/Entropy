@@ -574,6 +574,57 @@ local katarraktis = {
     }
 }
 
+local ieros = {
+    order = 403,
+    object_type = "Joker",
+    key = "ieros",
+    rarity = "entr_hyper_exotic",
+    cost = 150,
+    
+
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 0, y = 4 },
+    config = {
+        e_chips = 1
+    },
+    dependencies = {
+        items = {
+            "set_entr_entropic"
+        }
+    },
+    demicoloncompat = true,
+    soul_pos = { x = 2, y = 4, extra = { x = 1, y = 4 } },
+    atlas = "exotic_jokers",
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                card.ability.e_chips
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.buying_card and not context.retrigger_joker then
+			if context.card.ability.set == "Joker" then
+                card.ability.e_chips = card.ability.e_chips + (Entropy.ReverseRarityChecks[context.card.config.center.rarity] or 0)/20.0
+                return {
+                    message = "Upgraded",
+                }
+            end
+        end
+        if context.forcetrigger then
+            card.ability.e_chips = card.ability.e_chips + (Entropy.ReverseRarityChecks[1] or 0)/20.0
+        end
+        if context.joker_main or context.forcetrigger then
+            return {
+				EEchip_mod = card.ability.e_chips,
+				message =  '^^' .. number_format(card.ability.e_chips) .. ' Chips',
+				colour = { 0.8, 0.45, 0.85, 1 },
+			}
+        end
+    end
+}
+
 return {
     items = {
         epitachyno,
@@ -585,5 +636,6 @@ return {
         exousia,
         akyros,
         katarraktis,
+        ieros
     }
 }

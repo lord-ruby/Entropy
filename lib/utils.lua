@@ -580,3 +580,10 @@ function Entropy.HigherCardRank(card)
 		King = "Ace",
 	})[tostring(rank_suffix)]
 end
+
+Entropy.ReverseRarityChecks = {
+
+}
+for i, v in ipairs(Entropy.RarityChecks) do
+    Entropy.ReverseRarityChecks[v]=i
+end
