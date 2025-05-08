@@ -20,13 +20,14 @@ local i = {
     "items/misc/boosters",
     "items/misc/vouchers",
     "items/misc/decks",
-    "items/misc/blinds"
+    "items/misc/blinds",
 
     "items/jokers/misc_jokers",
     "items/jokers/epic_jokers",
     "items/jokers/exotic_jokers",
     "items/jokers/rlegendary_jokers",
     "items/jokers/entropic_jokers",
+    "items/jokers/zenith_jokers",
 
     "items/inversions/reverse_tarots",
     "items/inversions/reverse_spectrals",

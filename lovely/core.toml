@@ -203,3 +203,79 @@ payload = '''
 self.exponent = blind and blind.exponent or {1,0}
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = '''self.chips = get_blind_amount(G.GAME.round_resets.ante)*self.mult*G.GAME.starting_params.ante_scaling'''
+position = "after"
+payload = '''
+elseif self.exponent[2] > 0 then
+    local initial = get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling
+    initial = initial:arrow(self.exponent[1], self.exponent[2])
+    self.chips = initial
+end
+'''
+match_indent = true
+
+### display exponential blind 2
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''        ability_text[1] and {n=G.UIT.R, config={align = "cm", padding = 0.08, colour = mix_colours(blind.boss_colour, G.C.GREY, 0.4), r = 0.1, emboss = 0.05, minw = 2.5, minh = 0.9}, nodes=ability_text} or nil
+      }}'''
+position = "after"
+payload = '''
+end
+'''
+match_indent = true
+
+### display exponential blind 3
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''local blind_amt = get_blind_amount(G.GAME.round_resets.blind_ante)*blind_choice.config.mult*G.GAME.starting_params.ante_scaling'''
+position = "after"
+payload = '''
+if blind_choice.config.exponent then
+      local initial = get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling
+      initial = initial:arrow(blind_choice.config.exponent[1], blind_choice.config.exponent[2])
+      blind_amt = initial
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''local stake_sprite = get_stake_sprite(G.GAME.stake or 1, 0.4)'''
+position = "after"
+payload = '''
+if blind.exponent then
+    local exponents = ""
+    local exponents2 = ""
+    for i = 1, blind.exponent[1] do
+      exponents = exponents .. "^"
+    end
+    if blind.exponent[1] > 5 then
+      exponents = ""
+      exponents2 = "{" .. blind.exponent[1] .. "}"
+    end
+    blind_text[#blind_text + 1] =
+      {n=G.UIT.R, config={align = "cm", emboss = 0.05, r = 0.1, minw = 2.5, padding = 0.07, colour = G.C.WHITE}, nodes={
+        {n=G.UIT.R, config={align = "cm", maxw = 2.4}, nodes={
+          {n=G.UIT.T, config={text = localize('ph_blind_score_at_least'), scale = 0.35, colour = G.C.UI.TEXT_DARK}},
+        }},
+        {n=G.UIT.R, config={align = "cm"}, nodes={
+          {n=G.UIT.O, config={object = stake_sprite}},
+          {n=G.UIT.T, config={text = exponents .. blind.exponent[2].. exponents2 .." "..localize('k_entr_base'), scale = 0.4, colour = G.C.RED}},
+        }},
+        {n=G.UIT.R, config={align = "cm"}, nodes={
+          {n=G.UIT.T, config={text = localize('ph_blind_reward'), scale = 0.35, colour = G.C.UI.TEXT_DARK}},
+          {n=G.UIT.O, config={object = DynaText({string = {_dollars and string.rep(localize('$'),_dollars) or '-'}, colours = {G.C.MONEY}, rotate = true, bump = true, silent = true, scale = 0.45})}},
+        }},
+        ability_text[1] and {n=G.UIT.R, config={align = "cm", padding = 0.08, colour = mix_colours(blind.boss_colour, G.C.GREY, 0.4), r = 0.1, emboss = 0.05, minw = 2.5, minh = 0.9}, nodes=ability_text} or nil
+      }}
+else
+'''
+match_indent = true

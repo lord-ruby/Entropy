@@ -111,14 +111,6 @@ local decs = {
 					"Reduce Blind sizes by {C:attention}30%{}"
 				}
 			},
-			j_entr_ruby = {
-				name = "Ruby",
-				text = {
-					"{C:entr_zenith,E:1}You may never lose.{}",
-					"{C:inactive}(#1#){}",
-					"{C:inactive}(Prevents losing unconditionally)"
-				}
-			},
 			j_entr_surreal_joker = {
 				name = "Surreal Joker",
 				text = {
@@ -327,16 +319,6 @@ local decs = {
 					"random cards"
 				},
 			},
-			j_entr_ruby_jens = {
-				name = "Ruby",
-				text = {
-					"Scored {C:attention}Light{} cards give",
-					"{X:black,C:red,s:3}^^^#1#{C:purple} Chips & Mult{}",
-					'{C:caption,s:0.7,E:1}Don\'t you know, Hope is the strongest aspect{}',
-					'{C:dark_edition,s:0.7,E:2}Floating sprite by : lord.ruby{}',
-					'{C:cry_exotic,s:0.7,E:2}Origin : UTOPIA{}'
-				}
-			},
 			j_entr_katarraktis = {
 				name = "Katarraktis",
 				text = {
@@ -449,6 +431,16 @@ local decs = {
 					"Lose {C:gold}$#4#{} at the end of round",
 					"{C:green}#1# in #2#{} Chance to earn {C:gold}$#5#{}",
 					"{C:green}#1# in #3#{} Chance to earn {C:gold}$#6#{} instead"
+				}
+			},
+			j_entr_ruby = {
+				name = "Ruby, Lord of Hope",
+				text = {
+					"{C:green}Fixed 50%{} chance to be revived",
+					"any time you would lose",
+					"{C:entr_zenith}+666{} Mult then,",
+					"{X:entr_zenith,C:white}#1#25000#2#666{} Mult",
+					"{s:0.8,C:entr_zenith}Dont you know, hope is the strongest aspect{}"
 				}
 			}
 		},
@@ -1930,14 +1922,6 @@ local decs = {
 
 			entr_code_sudo = "OVERRIDE",
 			entr_code_sudo_previous = "OVERRIDE AS PREVIOUS",
-			k_saved_ruby_1 = "The power of friendship saves you",
-			k_saved_ruby_2 = "You believe in yourself",
-			k_saved_ruby_3 = "All deaths retconned",
-			k_saved_ruby_4 = "Dont eat that apple",
-			k_saved_ruby_5 = "Is there poker in eden?",
-			k_saved_ruby_6 = "Deny your fate",
-			k_saved_ruby_7 = "Thanks for playing!",
-			k_saved_ruby_8 = "",
 
 			k_entr_faster_ante_scaling = "Scale Blind scores quicker if you have an Entropic Joker",
 			k_entr_entropic_music = "Entropic Jokers (Joker in Greek by gemstonez)",
@@ -1988,7 +1972,10 @@ local decs = {
 			b_reset_gameset_madness = "Reset Gameset Config (Exalted)",
 
 			entr_opened = "Opened!",
-			entr_kiy_banished = "Banished."
+			entr_kiy_banished = "Banished.",
+
+			k_saved_heoric = "Not Heroic!",
+			k_saved_just = "Not Just!"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

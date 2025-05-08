@@ -18,6 +18,25 @@ Entropy.reverse_legendary_gradient = SMODS.Gradient {
     }
 }
 
+Entropy.zenith_gradient = SMODS.Gradient{
+    key = "zenith_gradient",
+    colours = {
+        HEX("a20000"),
+        HEX("a15000"),
+        HEX("a3a101"),
+        HEX("626262"),
+        HEX("416600"),
+        HEX("028041"),
+        HEX("008284"),
+        HEX("005683"),
+        HEX("000056"),
+        HEX("2b0157"),
+        HEX("6a016a"),
+        HEX("77003c"),
+    }
+}
+
+
 SMODS.Rarity {
     key = "entropic",
     badge_colour = Entropy.entropic_gradient
@@ -28,6 +47,12 @@ SMODS.Rarity {
     badge_colour = Entropy.reverse_legendary_gradient
 }
 
+SMODS.Rarity {
+    key = "zenith",
+    badge_colour = Entropy.zenith_gradient
+}
+
+
 local loc_colour_ref = loc_colour
 function loc_colour(_c, default)
     if not G.ARGS.LOC_COLOURS then
@@ -37,7 +62,8 @@ function loc_colour(_c, default)
         local new_colors = {
             entr_entropic = Entropy.entropic_gradient,
             entr_reverse_legendary = Entropy.reverse_legendary_gradient,
-            entr_rspectral = G.C.Entropy.RSpectral
+            entr_rspectral = G.C.Entropy.RSpectral,
+            entr_zenith = Entropy.zenith_gradient
         }
 
         for k, v in pairs(new_colors) do

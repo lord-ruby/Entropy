@@ -1165,7 +1165,7 @@ local ctrl_x = {
                 key = card.config.center.key
             }
             for i, v in pairs(G) do
-                if v == card.area G.GAME.ControlXCardArea == i
+                if v == card.area then G.GAME.ControlXCardArea = i end
             end
             card:start_dissolve()
             orig.multiuse = true
