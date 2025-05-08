@@ -521,6 +521,8 @@ local akyros = {
     end
 }
 
+Cryptid.big_num_blacklist["j_entr_katarraktis"] = true
+
 local katarraktis = {
     order = 409,
     object_type = "Joker",
