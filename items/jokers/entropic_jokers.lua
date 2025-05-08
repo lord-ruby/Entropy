@@ -437,7 +437,8 @@ local exousia = {
     end,
     calculate = function(self, card, context)
         if (context.setting_blind and not context.getting_sliced) or context.forcetrigger then
-            for i = 1,  math.min(card.ability.tags or 1,30) or 1 do
+            if to_big(card.ability.tags) > to_big(30) or type(card.ability.tags) == "table" then card.ability.tags = 30 end
+            for i = 1, math.min(card.ability.tags or 1,30) or 1 do
                 tag = Tag(get_next_tag_key())
                 add_tag(tag)
             end
