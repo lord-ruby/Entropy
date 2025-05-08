@@ -573,7 +573,7 @@ local push = {
                     G.jokers.cards[i]:start_dissolve()
                 end
             end
-            local rarity = GetJokerSumRarity()
+            local rarity = Entropy.GetJokerSumRarity()
             G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() 
                 local rare = ({
                     [1] = "Common",
@@ -581,7 +581,7 @@ local push = {
                     [3] = "Rare",
                     [4] = "Legendary"
                 })[rarity] or rarity
-                local card = create_card("Joker", G.jokers, nil, rare, nil, nil, nil, "entr_beyond")
+                local card = create_card("Joker", G.jokers, rare == "Legendary", rare, nil, nil, nil, "entr_beyond")
                 --create_card("Joker", G.jokers, nil, 2, nil, nil, nil, "entr_beyond")
                 card:add_to_deck()
                 G.jokers:emplace(card)
