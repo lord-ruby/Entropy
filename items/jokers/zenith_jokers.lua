@@ -7,6 +7,8 @@ local ruby = {
     atlas = "ruby_atlas",
     pos = {x=0, y=0},
     soul_pos = {x = 1, y = 0},
+    no_doe = true,
+    no_collection = true,
     loc_vars = function()
         return {
             vars = {
