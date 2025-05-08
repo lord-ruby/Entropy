@@ -56,7 +56,7 @@ local shatter = {
         end)
     end,
     can_use = function(self, card)
-        local num = Entropy.GetHighlightedCards({G.hand}, nil, card)
+        local num = #Entropy.GetHighlightedCards({G.hand}, nil, card)
         return num > 0 and num <= card.ability.limit
 	end,
     loc_vars = function(self, q, card)
