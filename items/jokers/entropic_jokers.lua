@@ -562,7 +562,7 @@ local katarraktis = {
                 local triggers = 2 ^ (diff - 1)
                 return {
 					message = localize("k_again_ex"),
-					repetitions = math.floor(math.min(math.min(card.ability.basetriggers,32) * triggers, 65536)),
+					repetitions = to_big(math.floor(math.min(math.min(card.ability.basetriggers,32) * triggers, 65536))):to_number(),
 					card = card,
 				}
             end

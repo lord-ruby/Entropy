@@ -6,5 +6,7 @@ G.C.Entropy.RCode = HEX("ff0000")
 
 G.C.Entropy.Dissolve = {
     RPlanet = G.C.Entropy.RPlanet,
-    RSpectral = G.C.Entropy.RSpectral
+    RSpectral = G.C.Entropy.RSpectral,
+    RCode = G.C.Entropy.RCode,
+    RTarot = G.C.Entropy.RTarot
 }
