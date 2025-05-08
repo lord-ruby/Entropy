@@ -2097,10 +2097,5 @@ function create_UIBox_blind_popup(blind, discovered, vars)
 		}}
 		return orig(blind, discovered, vars)
 	end
-   return {n=G.UIT.ROOT, config={align = "cm", padding = 0.05, colour = lighten(G.C.JOKER_GREY, 0.5), r = 0.1, emboss = 0.05}, nodes={
-	{n=G.UIT.R, config={align = "cm", emboss = 0.05, r = 0.1, minw = 2.5, padding = 0.1, colour = not discovered and G.C.JOKER_GREY or blind.boss_colour or G.C.GREY}, nodes={
-	  {n=G.UIT.O, config={object = DynaText({string = discovered and loc_name or localize('k_not_discovered'), colours = {G.C.UI.TEXT_LIGHT}, shadow = true, rotate = not discovered, spacing = discovered and 2 or 0, bump = true, scale = 0.4})}},
-	}},
-	{n=G.UIT.R, config={align = "cm"}, nodes=blind_text},
-   }}
-  end 
+   return orig(blind, discovered, vars)
+end 

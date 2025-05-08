@@ -183,3 +183,23 @@ payload = '''
 
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = '''self.chips = get_blind_amount(G.GAME.round_resets.ante)*self.mult*G.GAME.starting_params.ante_scaling'''
+position = "before"
+payload = '''
+if (not self.exponent) or self.exponent[2] <= 0 then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = '''self.mult = blind and blind.mult or 0'''
+position = "after"
+payload = '''
+self.exponent = blind and blind.exponent or {1,0}
+'''
+match_indent = true
