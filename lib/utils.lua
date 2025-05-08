@@ -190,9 +190,9 @@ function Entropy.Pseudorandom(seed, min, max)
 end
 
 function Entropy.HasJoker(key)
-    local num = 0
+    local num = nil
     for i, v in ipairs(G.jokers and G.jokers.cards or {}) do
-        if v.config.center.key == key then num = num + 1 end
+        if v.config.center.key == key then num = (num or 0) + 1 end
     end
     return num
 end
