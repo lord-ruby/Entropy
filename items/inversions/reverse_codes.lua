@@ -1145,9 +1145,16 @@ local ctrl_x = {
     pos = {x=2,y=5},
     use = function(self, orig)
         if G.GAME.ControlXCard then
+            G.GAME.ControlXCardArea = G[G.GAME.ControlXCardArea]
+            if not G.GAME.ControlXCardArea or not G.GAME.ControlXCardArea.cards then
+                if G.GAME.ControlXCard.set == "Joker" then
+                    G.GAME.ControlXCardArea = G.jokers
+                else    
+                    G.GAME.ControlXCardArea = G.consumeables
+                end
+            end
             local card = SMODS.create_card({set = G.GAME.ControlXCard.set, area = G.GAME.ControlXCardArea, key = G.GAME.ControlXCard.key})
             card:add_to_deck()
-            G.GAME.ControlXCardArea = G[G.GAME.ControlXCardArea]
             G.GAME.ControlXCardArea:emplace(card)
             G.GAME.ControlXCardArea:align_cards()
             if G.GAME.ControlXCardArea == G.shop_jokers or G.GAME.ControlXCardArea == G.shop_booster or G.GAME.ControlXCardArea == G.shop_vouchers then
