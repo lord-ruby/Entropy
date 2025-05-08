@@ -738,7 +738,7 @@ local invariant = {
         Entropy.ApplySticker(Entropy.GetHighlightedCard({G.shop_jokers, G.shop_booster, G.shop_vouchers}, nil, card), "entr_pinned")
     end,
     can_use = function(self, card)
-        return Entropy.GetHighlightedCard({G.shop_jokers, G.shop_booster, G.shop_vouchers}, nil, card)
+        return #Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, nil, card) > 0
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "entr_pinned", set="Other"}
@@ -930,7 +930,7 @@ local sudo = {
     end,
     can_use = function(self, card)
         local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
-        G.FUNCS.get_poker_hand_info(G.hand.highlighted)
+        G.FUNCS.get_poker_hand_info(Entropy.GetHighlightedCards({G.hand}, card))
         return text and text ~= "NULL"
 	end,
     loc_vars = function(self, q, card)
@@ -1060,10 +1060,10 @@ local hotfix = {
     atlas = "consumables",
     pos = {x=1,y=5},
     use = function(self, card, area, copier)
-        Entropy.ApplySticker(Entropy.GetHighlightedCard({G.hand, G.jokers, G.consumeables}, nil, card), "entr_hotfix")
+        Entropy.ApplySticker(Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, nil, card)[1], "entr_hotfix")
     end,
     can_use = function(self, card)
-        return Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, nil, card) == 1
+        return #Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, nil, card) == 1
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "entr_hotfix", set="Other"}
@@ -1340,7 +1340,7 @@ local local_card = {
         Entropy.FlipThen(G.hand.highlighted, function(card) card.ability.temporary = true end)
     end,
     can_use = function(self, card)
-        return G.hand and Entropy.GetHighlightedCards({G.hand}, nil, card) > 0 and Entropy.GetHighlightedCards({G.hand}, nil, card) <= card.ability.select
+        return G.hand and #Entropy.GetHighlightedCards({G.hand}, nil, card) > 0 and #Entropy.GetHighlightedCards({G.hand}, nil, card) <= card.ability.select
 	end,
     loc_vars = function(self, q, card)
         q[#q+1]={set="Other",key="temporary"}
