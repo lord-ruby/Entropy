@@ -496,6 +496,31 @@ function Entropy.EditionTag(edition, key, ascendant, pos,order)
     }
 end
 
+function Entropy.GetEEBlinds()
+    local blinds = {}
+    for i, v in pairs(G.P_BLINDS) do
+        if v.boss and v.boss.showdown and not v.no_ee and not Entropy.EEBlacklist[i] then
+            blinds[i]=v
+        end
+    end
+    return blinds
+end
+
+function Entropy.GetRandomCards(areas, cardns, rpseudoseed, cond)
+    local cards = {}
+    for i, v in pairs(areas) do
+        for i2, v2 in pairs(v.cards) do
+            if not cond or cond(v2) then cards[#cards+1]=v2 end
+        end
+    end
+    pseudoshuffle(cards, pseudoseed(rpseudoseed or "fractured"))
+    local temp = {}
+    for i = 1, cardns do
+        temp[i] = cards[i]
+    end
+    return temp
+end
+
 function Entropy.StackEvalReturns(orig, new, etype)
     if etype == "Xmult" or etype == "x_mult" or etype == "Xmult_mod" or etype == "Xchips" or etype == "Xchip_mod" or etype == "asc" or etype == "Emult_mod" or etype == "Echip_mod" then return (orig or 1) * new else
         return (orig or 0) + new
