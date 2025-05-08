@@ -552,6 +552,7 @@ local katarraktis = {
     end,
     calculate = function(self, card, context)
         if context.retrigger_joker_check and not context.retrigger_joker then
+            if to_big(card.ability.basetriggers) > to_big(32) then card.ability.basetriggers = 32 end
             local ind = 0
             local this_ind = 0
             for i, v in pairs(G.jokers.cards) do
