@@ -553,3 +553,30 @@ function Entropy.ApplySticker(card, key)
         if SMODS.Stickers[key].apply then SMODS.Stickers[key].apply(SMODS.Stickers[key], card) end
     end
 end
+
+function Entropy.HigherCardRank(card)
+	if not card.base then return nil end
+	local rank_suffix = math.min(card.base.id, 14)
+	if rank_suffix < 10 then rank_suffix = tostring(rank_suffix)
+	elseif rank_suffix == 10 then rank_suffix = '10'
+	elseif rank_suffix == 11 then rank_suffix = 'Jack'
+	elseif rank_suffix == 12 then rank_suffix = 'Queen'
+	elseif rank_suffix == 13 then rank_suffix = 'King'
+	elseif rank_suffix == 14 then raFnk_suffix = 'Ace'
+	end
+	return ({
+		Queen = "King",
+		Jack = "Queen",
+		["10"] = "Jack",
+		["9"] = "10",
+		["8"] = "9",
+		["7"] = "8",
+		["6"] = "7",
+		["5"] = "6",
+		["4"] = "5",
+		["3"] = "4",
+		["2"] = "3",
+		Ace = "2",
+		King = "Ace",
+	})[tostring(rank_suffix)]
+end

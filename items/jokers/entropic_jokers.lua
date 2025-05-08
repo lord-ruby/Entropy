@@ -584,6 +584,6 @@ return {
         parakmi,
         exousia,
         akyros,
-        katarraktis
+        katarraktis,
     }
 }
