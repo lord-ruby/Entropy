@@ -296,7 +296,7 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
-target = "=[SMODS _ src/utils.lua]"
+target = '''=[SMODS _ "src/utils.lua"]'''
 pattern = '''card_eval_status_text(scored_card, 'jokers', nil, percent, nil, {message = localize{type='variable',key= amount > 0 and 'a_xmult' or 'a_xmult_minus',vars={amount}}, Xmult_mod =  amount, colour =  G.C.EDITION, edition = true})'''
 position = "at"
 payload = '''
