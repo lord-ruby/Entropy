@@ -1,23 +1,23 @@
--- local dog = {
--- 	object_type = "Tag",
--- 	order = -10,
--- 	dependencies = {
--- 	  items = {
--- 		"set_entr_tags"
--- 	  }
--- 	},
--- 	atlas = "tags",
--- 	pos = { x = 0, y = 0 },
--- 	config = { level = 1 },
--- 	key = "dog",
--- 	name = "entr-Dog Tag",
--- 	loc_vars = function(self, info_queue, tag)
--- 		return { vars = { tag and tag.ability and tag.ability.level or 1 } }
--- 	end,
--- 	set_ability = function(self, tag)
--- 		tag.hover_sound = function() return 'entr_woof'..math.random(3) end
--- 	end
--- }
+local dog = {
+	object_type = "Tag",
+	order = -10,
+	dependencies = {
+	  items = {
+		"set_entr_tags"
+	  }
+	},
+	atlas = "tags",
+	pos = { x = 0, y = 0 },
+	config = { level = 1 },
+	key = "dog",
+	name = "entr-Dog Tag",
+	loc_vars = function(self, info_queue, tag)
+		return { vars = { tag and tag.ability and tag.ability.level or 1 } }
+	end,
+	set_ability = function(self, tag)
+		tag.hover_sound = function() return 'entr_woof'..math.random(3) end
+	end
+}
 
 SMODS.Sound({
 	key = "woof1",
@@ -442,70 +442,70 @@ local infdiscard = {
 local oversat = Entropy.EditionTag("e_cry_oversat", "oversat", true, {x=0,y=3},18)
 local solar_asc = Entropy.EditionTag("e_entr_solar", "solar", true, {x=1,y=3},20)
 
--- local cat_asc = {
--- 	object_type = "Tag",
---     dependencies = {
---     	items = {
---         	"set_entr_tags",
---             "j_entr_exousia"
---         }
---     },
--- 	order = 21,
--- 	shiny_atlas="entr_shiny_ascendant_tags",
--- 	atlas = "ascendant_tags",
--- 	pos = { x = 2, y = 3 },
--- 	config = { level = 1 },
--- 	key = "ascendant_cat",
--- 	name = "entr-Ascendant-Cat Tag",
--- 	loc_vars = function(self, info_queue, tag)
--- 		return { vars = { tag.ability.level or 1 } }
--- 	end,
--- 	level_func = function(level,one,tag)
--- 		tag.ability.level2 = (tag.ability.level2 or 0) + 1
--- 		return level * 2
--- 	end,
--- 	set_ability = function(self, tag)
--- 		tag.ability.level2 = (tag.ability.level2 or 0) + 1
--- 		tag.level_func = self.level_func
--- 		tag.get_edition = function(tag)
--- 			return G.P_CENTER_POOLS.Edition[(tag.ability.level2%#G.P_CENTER_POOLS.Edition)+1]
--- 		end
--- 	end,
--- 	in_pool = function() return false end
--- }
+local cat_asc = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 21,
+	shiny_atlas="entr_shiny_ascendant_tags",
+	atlas = "ascendant_tags",
+	pos = { x = 2, y = 3 },
+	config = { level = 1 },
+	key = "ascendant_cat",
+	name = "entr-Ascendant-Cat Tag",
+	loc_vars = function(self, info_queue, tag)
+		return { vars = { tag.ability.level or 1 } }
+	end,
+	level_func = function(level,one,tag)
+		tag.ability.level2 = (tag.ability.level2 or 0) + 1
+		return level * 2
+	end,
+	set_ability = function(self, tag)
+		tag.ability.level2 = (tag.ability.level2 or 0) + 1
+		tag.level_func = self.level_func
+		tag.get_edition = function(tag)
+			return G.P_CENTER_POOLS.Edition[(tag.ability.level2%#G.P_CENTER_POOLS.Edition)+1]
+		end
+	end,
+	in_pool = function() return false end
+}
 
--- local dog_asc = {
--- 	object_type = "Tag",
---     dependencies = {
---     	items = {
---         	"set_entr_tags",
---             "j_entr_exousia"
---         }
---     },
--- 	order = 22,
--- 	shiny_atlas="entr_shiny_ascendant_tags",
--- 	atlas = "ascendant_tags",
--- 	pos = { x = 3, y = 3 },
--- 	config = { level = 1 },
--- 	key = "ascendant_dog",
--- 	name = "entr-Ascendant-Dog Tag",
--- 	loc_vars = function(self, info_queue, tag)
--- 		return { vars = { tag.ability.level or 1 } }
--- 	end,
--- 	level_func = function(level,one,tag)
--- 		tag.ability.level2 = (tag.ability.level2 or 0) + 1
--- 		return level * 2
--- 	end,
--- 	set_ability = function(self, tag)
--- 		tag.ability.level2 = (tag.ability.level2 or 0) + 1
--- 		tag.level_func = self.level_func
--- 		tag.get_edition = function(tag)
--- 			return G.P_CENTER_POOLS.Edition[(tag.ability.level2%#G.P_CENTER_POOLS.Edition)+1]
--- 		end
--- 		tag.hover_sound = function() return 'entr_woof'..math.random(3) end
--- 	end,
--- 	in_pool = function() return false end
--- }
+local dog_asc = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+            "j_entr_exousia"
+        }
+    },
+	order = 22,
+	shiny_atlas="entr_shiny_ascendant_tags",
+	atlas = "ascendant_tags",
+	pos = { x = 3, y = 3 },
+	config = { level = 1 },
+	key = "ascendant_dog",
+	name = "entr-Ascendant-Dog Tag",
+	loc_vars = function(self, info_queue, tag)
+		return { vars = { tag.ability.level or 1 } }
+	end,
+	level_func = function(level,one,tag)
+		tag.ability.level2 = (tag.ability.level2 or 0) + 1
+		return level * 2
+	end,
+	set_ability = function(self, tag)
+		tag.ability.level2 = (tag.ability.level2 or 0) + 1
+		tag.level_func = self.level_func
+		tag.get_edition = function(tag)
+			return G.P_CENTER_POOLS.Edition[(tag.ability.level2%#G.P_CENTER_POOLS.Edition)+1]
+		end
+		tag.hover_sound = function() return 'entr_woof'..math.random(3) end
+	end,
+	in_pool = function() return false end
+}
 
 local canvas = {
 	object_type = "Tag",
