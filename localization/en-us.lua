@@ -323,7 +323,7 @@ local decs = {
 				name = "Katarraktis",
 				text = {
 					"Retrigger the {C:attention}Joker{} to",
-					"the right {C:attention}#1#{} time then",
+					"the right {C:attention}#1#{} time#<s>1# then",
 					"retrigger each subsequent",
 					"{C:attention}Joker{} {X:dark_edition,C:white}Twice{} as",
 					"many times as the previous"
