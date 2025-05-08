@@ -11,7 +11,7 @@ SMODS.Sound({
 	select_music_track = function()
 		return Entropy.config
         and Entropy.config.entropic_music
-        and #Cryptid.advanced_find_joker(nil, "entr_hyper_exotic", nil, nil, true) ~= 0 and 10^200
+        and #Cryptid.advanced_find_joker(nil, "entr_entropic", nil, nil, true) ~= 0 and 10^200
 	end,
 })
 SMODS.Sound({

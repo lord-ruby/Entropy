@@ -1227,7 +1227,19 @@ function level_up_hand(card, hand, instant, amount)
     if Entropy.HasJoker("j_entr_strawberry_pie",true) and hand ~= "High Card" then
         hand = "High Card"
     end
+    local mult = G.GAME.hands[hand].mult
+    local chips = G.GAME.hands[hand].chips
     ref(card,hand,instant,amount)
+    G.E_MANAGER:add_event(Event({func = function()
+            if G.GAME.hands[hand].chips == chips and G.GAME.hands[hand].l_chips ~= 0 then
+                G.GAME.hands[hand].chips = G.GAME.hands[hand].chips + G.GAME.hands[hand].l_chips
+            end
+            if G.GAME.hands[hand].mult == mult and G.GAME.hands[hand].l_mult ~= 0 then
+                G.GAME.hands[hand].mult = G.GAME.hands[hand].mult + G.GAME.hands[hand].l_mult
+            end
+            return true
+        end
+    }))
 end
 
 local start_dissolveref = Card.start_dissolve

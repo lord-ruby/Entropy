@@ -59,7 +59,7 @@ Entropy.RarityPoints = {
     ["cry_epic"] = 60,
     [4] = 300, --legendary
     ["cry_exotic"] = 1000,
-    ["entr_hyper_exotic"] = 5000,
+    ["entr_entropic"] = 5000,
 }
 --higher rarities give less points so the diminisher is used in division
 Entropy.RarityDiminishers = {
@@ -69,7 +69,7 @@ Entropy.RarityDiminishers = {
     [4] = 5,
     ["cry_epic"] = 4,
     ["cry_exotic"] = 10,
-    ["entr_hyper_exotic"] = 15
+    ["entr_entropic"] = 15
 }
 Entropy.EditionFactors = {
     ["e_foil"] = 1.25,

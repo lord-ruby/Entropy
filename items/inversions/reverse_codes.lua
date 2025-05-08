@@ -344,7 +344,7 @@ local pseudorandom = {
             ["shop_vouchers"]=true
         }
         for i, v in pairs(allowed) do
-            for ind, card in pairs(G[i].cards) do
+            for ind, card in pairs(G[i] and G[i].cards or {}) do
                 Entropy.ApplySticker(card, "entr_pseudorandom")
             end
         end

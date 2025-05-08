@@ -78,7 +78,7 @@ Cryptid.mod_gameset_whitelist["entr"] = true
 Cryptid.mod_gameset_whitelist["Entropy"] = true
 
 
-Cryptid.pointerblistifytype("rarity", "entr_hyper_exotic")
+Cryptid.pointerblistifytype("rarity", "entr_entropic")
 Cryptid.pointerblistifytype("rarity", "entr_zenith")
 Cryptid.pointerblistify("c_entr_define")
 for i, v in pairs(G.P_BLINDS) do

@@ -1086,7 +1086,7 @@ local evocation = {
             card:remove_from_deck()
             card:start_dissolve()
             local rare = nil
-            if card.config.center.rarity ~= "j_entr_hyper_exotic" then
+            if card.config.center.rarity ~= "j_entr_entropic" then
                 rare = Entropy.GetNextRarity(card.config.center.rarity or 1) or card.config.center.rarity
             end
             if rare == 1 then rare = "Common" end
