@@ -147,7 +147,6 @@ G.FUNCS.define_apply_previous = function()
     end
     G.FUNCS.define_apply()
 end
-Cryptid.aliases["define"] = "#define"
 G.FUNCS.define_apply = function()
     local current_card
     local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables, G.jokers, G.shop_booster, G.pack_cards, G.shop_jokers, G.shop_vouchers})
