@@ -1,7 +1,7 @@
 {
     "name": "Entropy",
     "id": "entr",
-    "version": "0.5.0",
+    "version": "1.0.0~alpha",
     "website_url": "",
     "description": "An unbalanced cryptid addon, Built around the madness gameset.",
     "prefix": "entr",
