@@ -27,7 +27,7 @@ local ruby = {
                 mult = 666,
                 hypermult_mod = {
                     25000,
-                    666
+                    10^300
                 }
             }
         end
