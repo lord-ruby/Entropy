@@ -116,7 +116,8 @@ local servant = {
         end
     end,
     can_use = function(self, card)
-        local num, cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, nil, card)
+        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, nil, card)
+        local num = #cards
         return num > 0 and num <= card.ability.select and Entropy.TableAny(cards, function(value) return Entropy.FlipsideInversions[value.config.center.key] end)
 	end,
     loc_vars = function(self, q, card)
