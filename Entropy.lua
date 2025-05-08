@@ -76,3 +76,15 @@ Cryptid.mod_whitelist["Entropy"] = true
 if not Cryptid.mod_gameset_whitelist then Cryptid.mod_gameset_whitelist = {} end
 Cryptid.mod_gameset_whitelist["entr"] = true
 Cryptid.mod_gameset_whitelist["Entropy"] = true
+
+
+Cryptid.pointerblistifytype("rarity", "entr_hyper_exotic")
+Cryptid.pointerblistifytype("rarity", "entr_zenith")
+Cryptid.pointerblistify("c_entr_define")
+for i, v in pairs(G.P_BLINDS) do
+    Cryptid.pointerblistify(i)
+end
+
+for i, v in pairs(SMODS.Blind.obj_table) do
+    Cryptid.pointerblistify(i)
+end
