@@ -190,9 +190,11 @@ function Entropy.Pseudorandom(seed, min, max)
 end
 
 function Entropy.HasJoker(key)
+    local num = 0
     for i, v in ipairs(G.jokers and G.jokers.cards or {}) do
-        if v.config.center.key == key then return true end
+        if v.config.center.key == key then num = num + 1 end
     end
+    return num
 end
 
 function Entropy.HasConsumable(key)
