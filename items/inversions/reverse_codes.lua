@@ -89,7 +89,7 @@ local bootstrap = {
     key = "bootstrap",
     set = "RCode",
 
-    inversion = "c_cry_payload",
+    inversion = "c_cry_reboot",
 
     atlas = "consumables",
 	pos = {x=2,y=1},
@@ -814,7 +814,7 @@ local cookies = {
     key = "cookies",
     set = "RCode",
     
-    inversion = "c_cry_spaghetti"
+    inversion = "c_cry_spaghetti",
 
     atlas = "consumables",
     config = {
@@ -847,7 +847,7 @@ local segfault = {
     key = "segfault",
     set = "RCode",
 
-    inversion = "c_cry_machinecode"
+    inversion = "c_cry_machinecode",
 
     atlas = "consumables",
     config = {
@@ -990,7 +990,7 @@ local refactor = {
     key = "refactor",
     set = "RCode",
     
-    inverison = "c_cry_rework",
+    inversion = "c_cry_rework",
 
     atlas = "consumables",
     config = {
@@ -1126,6 +1126,64 @@ local hotfix_sticker = {
     end
 }
 
+local ctrl_x = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+22,
+    key = "ctrl_x",
+    set = "RCode",
+    
+    inversion = "c_cry_ctrl_v",
+
+    atlas = "consumables",
+    config = {
+    },
+    pos = {x=2,y=5},
+    use = function(self, orig)
+        if G.GAME.ControlXCard then
+            local card = SMODS.create_card({set = G.GAME.ControlXCard.set, area = G.GAME.ControlXCardArea, key = G.GAME.ControlXCard.key})
+            card:add_to_deck()
+            G.GAME.ControlXCardArea:emplace(card)
+            G.GAME.ControlXCardArea:align_cards()
+            if G.GAME.ControlXCardArea == G.shop_jokers or G.GAME.ControlXCardArea == G.shop_booster or G.GAME.ControlXCardArea == G.shop_vouchers then
+                create_shop_card_ui(card, G.GAME.ControlXCard.set, G.GAME.ControlXCardArea)
+            end
+            if G.GAME.ControlXCardArea == G.shop_jokers or G.GAME.ControlXCardArea == G.shop_vouchers then
+                G.GAME.ControlXCardArea.config.card_limit = G.GAME.ControlXCardArea.config.card_limit + 1
+            end
+            G.GAME.ControlXCard = nil
+            G.GAME.ControlXCardArea = nil
+        else
+            local card = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables, G.shop_booster, G.shop_vouchers, G.shop_jokers, G.pack_cards}, card)[1]
+            G.GAME.ControlXCard = {
+                set = card.ability.set,
+                key = card.config.center.key
+            }
+            G.GAME.ControlXCardArea = card.area
+            card:start_dissolve()
+            orig.multiuse = true
+            G.consumeables:emplace(copy_card(orig))
+        end
+    end,
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables, G.shop_booster, G.shop_vouchers, G.shop_jokers, G.pack_cards}, card)
+        return #cards == 1 or G.GAME.ControlXCard
+    end,
+    loc_vars = function()
+        return {
+            vars = {
+                G.GAME.ControlXCard and "Paste" or "Cut",
+                1,
+                G.GAME.ControlXCard and G.localization.descriptions[G.GAME.ControlXCard.set][G.GAME.ControlXCard.key].name or "None"
+            }
+        }
+    end
+}
+
 local multithread = {
     dependencies = {
         items = {
@@ -1138,7 +1196,7 @@ local multithread = {
     key = "multithread",
     set = "RCode",
     
-    inversion = "c_cry_instantiate"
+    inversion = "c_cry_inst",
 
     atlas = "consumables",
     config = {
@@ -1227,7 +1285,7 @@ local autostart = {
     key = "autostart",
     set = "RCode",
     
-    "c_cry_alttab",
+    inversion = "c_cry_alttab",
 
     atlas = "consumables",
     pos = {x=4,y=5},
@@ -1320,6 +1378,8 @@ return {
         hotfix_sticker,
         multithread,
         temporary,
-        autostart
+        autostart,
+        ctrl_x,
+        local_card
     }
 }

@@ -1546,7 +1546,7 @@ end
 
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, ...)
-    if Entropy.FlipsideInversions[center.key] and not G.SETTINGS.paused and G.GAME.modifiers.entr_twisted then
+    if Entropy.FlipsideInversions[center.key] and not G.SETTINGS.paused and G.GAME.modifiers.entr_twisted and not self.multiuse then
         set_abilityref(self, G.P_CENTERS[Entropy.FlipsideInversions[center.key]], ...)
     else    
         set_abilityref(self, center, ...)
