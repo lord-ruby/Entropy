@@ -1147,6 +1147,7 @@ local ctrl_x = {
         if G.GAME.ControlXCard then
             local card = SMODS.create_card({set = G.GAME.ControlXCard.set, area = G.GAME.ControlXCardArea, key = G.GAME.ControlXCard.key})
             card:add_to_deck()
+            G.GAME.ControlXCardArea = G[G.GAME.ControlXCardArea]
             G.GAME.ControlXCardArea:emplace(card)
             G.GAME.ControlXCardArea:align_cards()
             if G.GAME.ControlXCardArea == G.shop_jokers or G.GAME.ControlXCardArea == G.shop_booster or G.GAME.ControlXCardArea == G.shop_vouchers then
@@ -1163,7 +1164,9 @@ local ctrl_x = {
                 set = card.ability.set,
                 key = card.config.center.key
             }
-            G.GAME.ControlXCardArea = card.area
+            for i, v in pairs(G) do
+                if v == card.area G.GAME.ControlXCardArea == i
+            end
             card:start_dissolve()
             orig.multiuse = true
             G.consumeables:emplace(copy_card(orig))
@@ -1171,7 +1174,7 @@ local ctrl_x = {
     end,
     can_use = function(self, card)
         local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables, G.shop_booster, G.shop_vouchers, G.shop_jokers, G.pack_cards}, card)
-        return #cards == 1 or G.GAME.ControlXCard
+        return #cards == 1 or G[G.GAME.ControlXCardArea or ""]
     end,
     loc_vars = function()
         return {
