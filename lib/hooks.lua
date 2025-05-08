@@ -1745,3 +1745,23 @@ function Cryptid.antimatter_apply(skip)
     G.GAME.modifiers.entr_twisted = true
   end
 end
+
+local uibox_ref = create_UIBox_blind_select
+function create_UIBox_blind_select()
+    if G.GAME.USING_BREAK then
+        G.E_MANAGER:add_event(Event({
+			trigger = "after",
+            blocking = false,
+            delay = 3,
+			func = function()
+                G.STATE = 7
+                --G.blind_select:remove()
+                --G.blind_prompt_box:remove()
+                G.FUNCS.draw_from_hand_to_deck()
+				return true
+			end,
+		}))
+        G.GAME.USING_BREAK = nil
+    end
+    return uibox_ref()
+end

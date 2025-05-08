@@ -112,7 +112,7 @@ local quickload = {
     
     inversion = "c_cry_revert",
 
-    atlas = "miscc",
+    atlas = "consumables",
     pos = {x=3,y=1},
     use = function(self, card, area, copier)
         G.STATE = 8
@@ -133,11 +133,71 @@ local quickload = {
 	},
 }
 
+local break_card = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+5,
+    key = "break",
+    set = "RCode",
+    
+    inversion = "c_cry_run",
+
+    atlas = "consumables",
+    config = {
+        extra = {
+            selected = 10
+        }
+    },
+    pos = {x=5,y=1},
+    use = function(self, card, area, copier)
+        for i, v in pairs(G.GAME.round_resets.blind_states) do
+            if v == "Current" then v = "Upcoming" end
+        end
+        G.E_MANAGER:add_event(Event({
+			trigger = "immediate",
+			func = function()
+                G.STATE = 7
+				--G.GAME.USING_RUN = true
+				--G.GAME.RUN_STATE_COMPLETE = 0
+				G.STATE_COMPLETE = false
+                G.GAME.USING_BREAK = true
+                break_timer = 0
+                G.FUNCS.draw_from_hand_to_deck()
+				return true
+			end,
+		}))
+        if G.blind_select then        
+            G.blind_select:remove()
+            G.blind_prompt_box:remove()
+        end
+    end,
+    can_use = function(self, card)
+        for i, v in pairs(G.GAME.round_resets.blind_states) do
+            if v == "Current" then return true end
+        end
+        return false
+	end,
+    loc_vars = function(self, q, card)
+        return {
+        }
+    end,
+    entr_credits = {
+		idea = {
+			"cassknows",
+		},
+	},
+}
+
 return {
     items = {
         memoryleak,
         rootkit,
         bootstrap,
-        quickload
+        quickload,
+        break_card
     }
 }
