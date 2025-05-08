@@ -203,8 +203,8 @@ local new = {
     key = "new",
     set = "RCode",
     
-    can_stack = true,
-	can_divide = true,
+    inversion = "c_cry_semicolon",
+
     atlas = "consumables",
     config = {
         extra = {
@@ -260,8 +260,8 @@ local interference = {
     key = "interference",
     set = "RCode",
     
-    can_stack = true,
-	can_divide = true,
+    inversion = "c_cry_malware",
+
     atlas = "consumables",
     pos = {x=1,y=2},
     use = function(self, card, area, copier)
@@ -278,6 +278,276 @@ local interference = {
     end,
 }
 
+local constant = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Consumable",
+    order = 8,
+    key = "constant",
+    set = "RCode",
+    
+    inversion = "c_cry_variable",
+
+    atlas = "consumables",
+    pos = {x=2,y=2},
+    use = function(self, card, area, copier)
+        for i, v in pairs(G.discard.cards) do
+            if v.base.id == G.hand.highlighted[1].base.id then
+                copy_card(G.hand.highlighted[1],v)
+            end
+        end
+        for i, v in pairs(G.hand.cards) do
+            if v.base.id == G.hand.highlighted[1].base.id then
+                copy_card(G.hand.highlighted[1],v)
+            end
+        end
+        for i, v in pairs(G.deck.cards) do
+            if v.base.id == G.hand.highlighted[1].base.id then
+                copy_card(G.hand.highlighted[1],v)
+            end
+        end
+    end,
+    can_use = function(self, card)
+        return #Entropy.GetHighlightedCards({G.hand}, card) == 1
+	end,
+    loc_vars = function(self, q, card)
+        return {
+        }
+    end,
+}
+local pseudorandom = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "entr_pseudorandom"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+9,
+    key = "pseudorandom",
+    set = "RCode",
+    
+    inversion = "c_cry_seed",
+
+    atlas = "consumables",
+    pos = {x=3,y=2},
+    use = function(self, card, area, copier)
+        local allowed = {
+            ["hand"]=true,
+            ["jokers"]=true,
+            ["consumeables"]=true,
+            ["shop_jokers"]=true,
+            ["shop_booster"]=true,
+            ["shop_vouchers"]=true
+        }
+        for i, v in pairs(allowed) do
+            for ind, card in pairs(G[i].cards) do
+                Entropy.ApplySticker(card, "entr_pseudorandom")
+            end
+        end
+    end,
+    can_use = function(self, card)
+        return true
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {key = "entr_pseudorandom", set="Other"}
+    end,
+    entr_credits = {
+		idea = {
+			"cassknows",
+		},
+	},
+}
+
+local pseudorandom_sticker = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Sticker",
+    order = 3000+1,
+    atlas = "entr_stickers",
+    pos = { x = 5, y = 0 },
+    key = "entr_pseudorandom",
+    no_sticker_sheet = true,
+    prefix_config = { key = false },
+    badge_colour = HEX("FF0000"),
+    draw = function(self, card) --don't draw shine
+        local notilt = nil
+        if card.area and card.area.config.type == "deck" then
+            notilt = true
+        end
+        if not G.shared_stickers["entr_pseudorandom2"] then
+            G.shared_stickers["entr_pseudorandom2"] =
+                Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["entr_stickers"], { x = 4, y = 0 })
+        end -- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
+
+        G.shared_stickers[self.key].role.draw_major = card
+        G.shared_stickers["entr_pseudorandom2"].role.draw_major = card
+
+        G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+
+        card.hover_tilt = card.hover_tilt / 2 -- call it spaghetti, but it's what hologram does so...
+        G.shared_stickers["entr_pseudorandom2"]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+        G.shared_stickers["entr_pseudorandom2"]:draw_shader(
+            "hologram",
+            nil,
+            card.ARGS.send_to_shader,
+            notilt,
+            card.children.center
+        ) -- this doesn't really do much tbh, but the slight effect is nice
+        card.hover_tilt = card.hover_tilt * 2
+    end,
+    apply = function(self,card,val)
+        card.ability.entr_pseudorandom = true
+        if card.area then
+        card.ability.cry_rigged = true
+        end
+    end,
+}
+SMODS.Sticker:take_ownership("cry_rigged",{
+    draw = function(self, card)
+        if not card.ability.entr_pseudorandom then
+            local notilt = nil
+            if card.area and card.area.config.type == "deck" then
+                notilt = true
+            end
+            if not G.shared_stickers["cry_rigged2"] then
+                G.shared_stickers["cry_rigged2"] =
+                    Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], { x = 5, y = 1 })
+            end -- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
+
+            G.shared_stickers[self.key].role.draw_major = card
+            G.shared_stickers["cry_rigged2"].role.draw_major = card
+
+            G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+
+            card.hover_tilt = card.hover_tilt / 2 -- call it spaghetti, but it's what hologram does so...
+            G.shared_stickers["cry_rigged2"]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+            G.shared_stickers["cry_rigged2"]:draw_shader(
+                "hologram",
+                nil,
+                card.ARGS.send_to_shader,
+                notilt,
+                card.children.center
+            ) -- this doesn't really do much tbh, but the slight
+            card.hover_tilt = card.hover_tilt * 2
+        end
+    end
+},true)
+
+local inherit = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+10,
+    key = "inherit",
+    set = "RCode",
+    
+    inversion = "c_cry_class",
+
+    atlas = "consumables",
+    pos = {x=4,y=2},
+    use = function(self, card, area, copier)
+        G.GAME.USING_CODE = true
+		G.ENTERED_ENH = ""
+		G.CHOOSE_ENH = UIBox({
+			definition = create_UIBox_inherit(card),
+			config = {
+				align = "cm",
+				offset = { x = 0, y = 10 },
+				major = G.ROOM_ATTACH,
+				bond = "Weak",
+				instance_type = "POPUP",
+			},
+		})
+		G.CHOOSE_ENH.alignment.offset.y = 0
+		G.ROOM.jiggle = G.ROOM.jiggle + 1
+		G.CHOOSE_ENH:align_to_major()
+    end,
+    can_use = function(self, card)
+        return #Entropy.GetHighlightedCards({G.hand}, card, {c_base=true}) == 1
+	end,
+    loc_vars = function(self, q, card)
+        return {
+        }
+    end,
+    entr_credits = {
+		idea = {
+			"cassknows",
+		},
+	},
+}
+
+local fork = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+11,
+    key = "fork",
+    set = "RCode",
+    
+    inversion = "c_cry_merge",
+
+    atlas = "consumables",
+    config = {
+        extra = 1
+    },
+    pos = {x=0,y=3},
+    use = function(self, card, area, copier)
+        if area then
+			area:remove_from_highlighted(card)
+		end
+        local cards = Entropy.GetHighlightedCards({G.hand, G.pack_cards}, card)
+        local total = #cards
+        if total > 0 then
+            for i, orig in pairs(cards) do
+                local card = copy_card(orig)
+                G.E_MANAGER:add_event(Event({
+                    trigger="immediate",
+                    func = function()
+                        local ed = pseudorandom_element(G.P_CENTERS)
+                        while ed.set ~= "Enhanced" do
+                            ed = pseudorandom_element(G.P_CENTERS)
+                        end
+                        card:set_ability(ed)
+                        card:set_edition({
+                            cry_glitched = true,
+                        })
+                        card:add_to_deck()
+                        table.insert(G.playing_cards, card)
+                        orig.area:emplace(card)
+                        playing_card_joker_effects({ card })
+                        return true
+                    end,
+                }))
+            end
+        end
+    end,
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.hand, G.pack_cards}, card)
+        local num = #cards
+        for i, v in pairs(cards) do
+            if v.area == G.pack_cards and not v.base.suit then num = num - 1 end
+        end
+        return num <= card.ability.extra and num > 0
+    end,
+    loc_vars = function(self, q, card)
+        return {
+        }
+    end,
+}
+
 return {
     items = {
         memoryleak,
@@ -287,6 +557,11 @@ return {
         break_card,
         new,
         rr,
-        interference
+        interference,
+        constant,
+        pseudorandom,
+        pseudorandom_sticker,
+        inherit,
+        fork
     }
 }

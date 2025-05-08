@@ -520,3 +520,36 @@ function Entropy.srandom(length)
     end
     return total
 end
+
+function Entropy.ChangeEnhancements(areas, enh, required, uhl)
+    for i, v in pairs(areas) do
+        if not v.cards then 
+            areas[i] = {
+                cards = {v}
+            }
+        end
+    end
+    for i, v in pairs(areas) do
+        for i2, v2 in pairs(v.cards) do
+            if not required or (v2.config and v2.config.center.key == required) then
+                if enh == "null" then
+                    v2:start_dissolve()
+                elseif enh == "ccd" then
+
+                else
+                    v2:set_ability(G.P_CENTERS[enh])
+                    v2:juice_up()
+                end
+            end
+        end
+    end
+end
+
+function Entropy.ApplySticker(card, key)
+    if not card.ability then card.ability = {} end
+    if card.ability then
+        if not SMODS.Stickers[key] then return end
+        card.ability[key] = true
+        if SMODS.Stickers[key].apply then SMODS.Stickers[key].apply(SMODS.Stickers[key], card) end
+    end
+end

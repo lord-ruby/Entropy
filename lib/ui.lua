@@ -216,3 +216,121 @@ function G.UIDEF.define_keys()
     })
     return t
 end
+
+function create_UIBox_inherit(card)
+  G.E_MANAGER:add_event(Event({
+      blockable = false,
+      func = function()
+          G.REFRESH_ALERTS = true
+          return true
+      end,
+  }))
+  local t = create_UIBox_generic_options({
+      no_back = true,
+      colour = HEX("04200c"),
+      outline_colour = HEX("FF0000"),
+      contents = {
+          {
+              n = G.UIT.R,
+              nodes = {
+                  create_text_input({
+                      colour = HEX("FF0000"),
+                      hooked_colour = darken(copy_table(HEX("FF0000")), 0.3),
+                      w = 4.5,
+                      h = 1,
+                      max_length = 16,
+                      prompt_text = localize("cry_code_enh"),
+                      ref_table = G,
+                      ref_value = "ENTERED_ENH",
+                      keyboard_offset = 1,
+                  }),
+              },
+          },
+          {
+              n = G.UIT.R,
+              nodes = {
+                  UIBox_button({
+                      colour = HEX("FF0000"),
+                      button = "inherit_apply",
+                      label = { localize("cry_code_apply") },
+                      minw = 4.5,
+                      focus_args = { snap_to = true },
+                  }),
+              },
+          },
+          {
+              n = G.UIT.R,
+              nodes = {
+                  UIBox_button({
+                      colour = G.C.RED,
+                      button = "inherit_apply_previous",
+                      label = { localize("cry_code_apply_previous") },
+                      minw = 4.5,
+                      focus_args = { snap_to = true },
+                  }),
+              },
+          },
+          {
+              n = G.UIT.R,
+              nodes = {
+                  UIBox_button({
+                      colour = G.C.RED,
+                      button = "inherit_cancel",
+                      label = { localize("cry_code_cancel") },
+                      minw = 4.5,
+                      focus_args = { snap_to = true },
+                  }),
+              },
+          },
+      },
+  })
+  return t
+end
+
+G.FUNCS.inherit_apply_previous = function()
+  if G.PREVIOUS_ENTERED_ENH then
+      G.ENTERED_ENH = G.PREVIOUS_ENTERED_ENH or ""
+  end
+  G.FUNCS.inherit_apply()
+end
+--todo: mod support
+G.FUNCS.inherit_apply = function()
+  local base_enh = G.hand.highlighted[1].config.center.key
+  local enh_table = {
+      m_bonus = { "bonus" },
+      m_mult = { "mult", "red" },
+      m_wild = { "wild", "suit" },
+      m_glass = { "glass", "xmult" },
+      m_steel = { "steel", "metal", "grey" },
+      m_stone = { "stone", "chip", "chips" },
+      m_gold = { "gold", "money", "yellow" },
+      m_lucky = { "lucky", "rng" },
+      m_cry_echo = { "echo", "retrigger", "retriggers" },
+      m_cry_light = { "light" },
+      c_base = {"base", "default", "none"},
+      ccd = { "ccd" },
+      null = { "nil" },
+  }
+
+  local enh_suffix = nil
+
+  for i, v in pairs(enh_table) do
+      for j, k in pairs(v) do
+          if string.lower(G.ENTERED_ENH) == string.lower(k) then
+              enh_suffix = i
+          end
+      end
+  end
+
+  if enh_suffix and base_enh ~= "c_base" then
+      G.PREVIOUS_ENTERED_ENH = G.ENTERED_ENH
+      G.GAME.USING_CODE = false
+      Entropy.ChangeEnhancements({G.discard, G.deck, G.hand}, enh_suffix, base_enh, true)
+      G.CHOOSE_ENH:remove()
+  end
+end
+
+G.FUNCS.inherit_cancel = function()
+  G.GAME.USING_CODE = false
+  G.CHOOSE_ENH:remove()
+end
