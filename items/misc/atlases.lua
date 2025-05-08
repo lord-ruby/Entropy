@@ -66,6 +66,13 @@ SMODS.Atlas {
     py = 34
 }
 
+SMODS.Atlas {
+    key = 'ascendant_tags',
+    path = 'ascendant_tags.png',
+    px = 34,
+    py = 34
+}
+
 SMODS.Atlas { 
     key = 'vouchers', 
     path = 'vouchers.png', 
