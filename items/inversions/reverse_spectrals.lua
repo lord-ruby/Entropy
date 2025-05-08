@@ -1110,7 +1110,7 @@ local evocation = {
         return {
             vars = {
                 card.ability.num,
-                card.ability.hands
+                -card.ability.hands
             }
         }
     end,
