@@ -138,3 +138,13 @@ if G.GAME.modifiers.ccd2 then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "G.GAME.round_resets.ante = Big and (to_number(math.floor(to_big(G.GAME.round_resets.ante)))) or math.floor(G.GAME.round_resets.ante)"
+position = "at"
+payload = '''
+
+'''
+match_indent = true

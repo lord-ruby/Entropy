@@ -1914,3 +1914,25 @@ function create_card_for_shop(area)
     end 
     return card
 end
+
+
+local gba = get_blind_amount
+function get_blind_amount(ante)
+    if not ante then return 0 end
+    if math.abs(ante - math.floor(ante)) > 0.01 then
+
+        local p = (ante - math.floor(ante))
+        return get_blind_amount(math.floor(ante) + (ante < 0 and -1 or 0))*(1-p) + get_blind_amount(math.floor(ante)+1 + (ante < 0 and -1 or 0))*p
+    end
+    if ante < 0 then
+        return 100 * (0.95^(-ante))
+    end
+    if (Entropy.config.ante_scaling and ante > 8 and #Cryptid.advanced_find_joker(nil, "entr_entropic", nil, nil, true) ~= 0) or G.GAME.modifiers.entropic then
+        return to_big(gba(ante)):tetrate(1 + ante/32)
+    end
+    return gba(ante) or 100
+end
+function lerp(f1,f2,p)
+    p = p * p
+    return f1 * (1-p) + f2*p
+end
