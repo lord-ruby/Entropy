@@ -2099,3 +2099,9 @@ function create_UIBox_blind_popup(blind, discovered, vars)
 	end
    return orig(blind, discovered, vars)
 end 
+
+local dft = Blind.defeat
+function Blind:defeat(s)
+    if not self.config.blind.key then self.config.blind.key = "bl_small" end
+    dft(self, s)
+end

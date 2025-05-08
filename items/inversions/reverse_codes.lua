@@ -735,10 +735,10 @@ local invariant = {
     },
     pos = {x=4,y=3},
     use = function(self, card, area, copier)
-        Entropy.ApplySticker(Entropy.GetHighlightedCard({G.shop_jokers, G.shop_booster, G.shop_vouchers}, nil, card), "entr_pinned")
+        Entropy.ApplySticker(Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card)[1], "entr_pinned")
     end,
     can_use = function(self, card)
-        return #Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, nil, card) > 0
+        return #Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card) > 0
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "entr_pinned", set="Other"}

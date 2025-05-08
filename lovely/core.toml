@@ -279,3 +279,16 @@ if blind.exponent then
 else
 '''
 match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "engine/moveable.lua"
+pattern = '''if self.alignment.type_list.b then'''
+position = "before"
+payload = '''
+if not self.alignment then self.alignment = {} end
+if not self.alignment.offset then self.alignment.offset = {} end
+if not self.alignment.offset.y then self.alignment.offset.y = 0 end
+'''
+match_indent = true
