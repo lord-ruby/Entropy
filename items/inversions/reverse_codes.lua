@@ -548,6 +548,348 @@ local fork = {
     end,
 }
 
+local push = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+12,
+    key = "push",
+    set = "RCode",
+    
+    inversion = "c_cry_commit",
+
+    atlas = "consumables",
+    config = {
+        extra = 1
+    },
+    pos = {x=1,y=3},
+    use = function(self, card, area, copier)
+        if not Entropy.CanCreateZenith() then
+            for i, v in pairs(G.jokers.cards) do
+                if not v.ability or (not v.ability.eternal and not v.ability.cry_absolute) then
+                    G.jokers.cards[i]:start_dissolve()
+                end
+            end
+            local rarity = GetJokerSumRarity()
+            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() 
+                local rare = ({
+                    [1] = "Common",
+                    [2] = "Uncommon",
+                    [3] = "Rare",
+                    [4] = "Legendary"
+                })[rarity] or rarity
+                local card = create_card("Joker", G.jokers, nil, rare, nil, nil, nil, "entr_beyond")
+                --create_card("Joker", G.jokers, nil, 2, nil, nil, nil, "entr_beyond")
+                card:add_to_deck()
+                G.jokers:emplace(card)
+                card:juice_up(0.3, 0.5)
+                return true
+            end}))
+        else    
+            for i, v in pairs(G.jokers.cards) do v:start_dissolve() end
+            local key = pseudorandom_element(Entropy.Zeniths, pseudoseed("zenith"))
+            add_joker(key):add_to_deck()
+            G.jokers.config.card_limit = 1
+        end
+    end,
+    can_use = function(self, card)
+        if G.jokers and #G.jokers.cards > 0 then
+            for i, v in pairs(G.jokers.cards) do
+                if not v.ability or (not v.ability.eternal and not v.ability.cry_absolute) then
+                    return true
+                end
+            end
+        end
+	end,
+    loc_vars = function(self, q, card)
+        local mstart = {
+            Entropy.randomchar({"(Current rarity: "})
+        }
+        if Entropy.CanCreateZenith() then
+            for i = 0, 10 do
+                mstart[#mstart+1] = Entropy.randomchar(Entropy.stringsplit(Entropy.charset))
+            end
+        else
+            mstart[#mstart+1] = Entropy.randomchar({Entropy.GetJokerSumRarity(true) or "none"})
+        end
+        mstart[#mstart+1] = Entropy.randomchar({")"})
+        return {
+            main_end = mstart,
+            vars = {
+                Entropy.CanCreateZenith() and Entropy.srandom(10) or Entropy.GetJokerSumRarity(true),
+                colours = {
+                    {0.6969,0.6969,0.6969,1}
+                }
+            }
+        }
+    end,
+}
+
+local increment = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+13,
+    key = "increment",
+    set = "RCode",
+    
+    inversion = "c_cry_divide",
+
+    atlas = "consumables",
+    config = {
+        extra = 1
+    },
+    pos = {x=2,y=3},
+    use = function(self, card, area, copier)
+        local mod = math.floor(card and card.ability.extra or self.config.extra)
+        G.E_MANAGER:add_event(Event({
+			func = function() --card slot
+				-- why is this in an event?
+				change_shop_size(mod)
+				return true
+			end,
+		}))
+        G.GAME.Increment = (G.GAME.Increment or 0) + mod
+        G.GAME.IncrementAnte = G.GAME.round_resets.ante
+    end,
+    can_use = function(self, card)
+        return true
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                math.floor(card and card.ability.extra or self.config.extra)
+            }
+        }
+    end,
+    entr_credits = {
+		idea = {
+			"cassknows",
+		},
+	},
+}
+
+local decrement = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+14,
+    key = "decrement",
+    set = "RCode",
+
+    inversion = "c_cry_multiply",
+
+    atlas = "consumables",
+    config = {
+        extra = 1
+    },
+    pos = {x=3,y=3},
+    use = function(self, card, area, copier)
+        Entropy.FlipThen(G.jokers.highlighted, function(card)
+            local ind = ReductionIndex(card, "Joker")-1
+            if G.P_CENTER_POOLS.Joker[ind] then
+                card:set_ability(G.P_CENTERS[G.P_CENTER_POOLS.Joker[ind]])
+            end
+            G.jokers:remove_from_highlighted(card)
+        end)
+    end,
+    can_use = function(self, card)
+        local num = Entropy.GetHighlightedCards({G.jokers}, card)
+        return num > 0 and num <= card.ability.extra
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.extra,
+            }
+        }
+    end
+}
+
+local invariant = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "entr_pinned"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+15,
+    key = "invariant",
+    set = "RCode",
+    
+    inversion = "c_cry_delete",
+
+    atlas = "consumables",
+    config = {
+        extra = 1
+    },
+    pos = {x=4,y=3},
+    use = function(self, card, area, copier)
+        Entropy.ApplySticker(Entropy.GetHighlightedCard({G.shop_jokers, G.shop_booster, G.shop_vouchers}, nil, card), "entr_pinned")
+    end,
+    can_use = function(self, card)
+        return Entropy.GetHighlightedCard({G.shop_jokers, G.shop_booster, G.shop_vouchers}, nil, card)
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {key = "entr_pinned", set="Other"}
+    end,
+    entr_credits = {
+		idea = {
+			"cassknows",
+		},
+	},
+}
+
+local pinned = {
+    object_type="Sticker",
+    order=3000+2,
+    atlas = "entr_stickers",
+    pos = { x = 1, y = 0 },
+    key = "entr_pinned",
+    no_sticker_sheet = true,
+    prefix_config = { key = false },
+    badge_colour = HEX("FF0000"),
+    draw = function(self, card) --don't draw shine
+        local notilt = nil
+        if card.area and card.area.config.type == "deck" then
+            notilt = true
+        end
+        if not G.shared_stickers["entr_pinned2"] then
+            G.shared_stickers["entr_pinned2"] =
+                Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["entr_stickers"], { x = 0, y = 0 })
+        end -- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
+
+        G.shared_stickers[self.key].role.draw_major = card
+        G.shared_stickers["entr_pinned2"].role.draw_major = card
+
+        G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+
+        card.hover_tilt = card.hover_tilt / 2 -- call it spaghetti, but it's what hologram does so...
+        G.shared_stickers["entr_pinned2"]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+        G.shared_stickers["entr_pinned2"]:draw_shader(
+            "hologram",
+            nil,
+            card.ARGS.send_to_shader,
+            notilt,
+            card.children.center
+        ) -- this doesn't really do much tbh, but the slight effect is nice
+        card.hover_tilt = card.hover_tilt * 2
+    end,
+    apply = function(self,card,val) 
+        card.ability.entr_pinned_round = G.GAME.round
+        card.ability.entr_pinned = true
+        if not G.GAME.entr_pinned_cards then G.GAME.entr_pinned_cards = {} end
+        if card.area then
+            G.GAME.entr_pinned_cards[#G.GAME.entr_pinned_cards+1] = {
+                area = Entropy.GetAreaName(card.area),
+                card = card.config.center.key,
+                pos = Entropy.GetIdxInArea(card)
+            }
+        end
+    end,
+    calculate = function(self, card, context)
+
+    end
+}
+
+local cookies = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "set_cry_spooky"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+17,
+    key = "cookies",
+    set = "RCode",
+    
+    inversion = "c_cry_spaghetti"
+
+    atlas = "consumables",
+    config = {
+    },
+    pos = {x=5,y=3},
+    use = function(self, card, area, copier)
+        local card = create_card("Joker", G.jokers, nil, "cry_candy", nil, nil, nil, "entr_beyond")
+		card:set_edition({
+            negative = true,
+            key = "e_negative",
+            type = "negative",
+            card_limit = 1
+        })
+		card:add_to_deck()
+		G.jokers:emplace(card)
+    end,
+    can_use = function(self, card)
+        return true
+	end,
+}
+
+local segfault = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+18,
+    key = "segfault",
+    set = "RCode",
+
+    inversion = "c_cry_machinecode"
+
+    atlas = "consumables",
+    config = {
+        extra = 1
+    },
+    pos = {x=0,y=4},
+    use = function(self, card, area, copier)
+        local key = ""
+        local ptype = pseudorandom_element({
+            "Booster",
+            "Voucher",
+            "Tarot",
+            "Joker",
+            "Consumeable",
+        }, pseudoseed("segfault"))
+        if ptype == "Consumeable" then
+            key = Cryptid.random_consumable("entr_segfault", nil, "c_entr_segfault").key
+        else
+            key = pseudorandom_element(G.P_CENTERS, pseudoseed("segfault"))
+            while key.set ~= ptype do
+                key = pseudorandom_element(G.P_CENTERS, pseudoseed("segfault"))
+            end
+            key = key.key
+        end
+        G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+        local _card = create_card("Base", G.deck, nil, nil, nil, nil, nil, "segfault")
+        SMODS.change_base(_card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("entropy")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("segfault")))
+        if G.P_CENTERS[key] then _card:set_ability(G.P_CENTERS[key]) else print(key) end
+        _card:add_to_deck()
+        table.insert(G.playing_cards, _card)
+        G.deck:emplace(_card)
+    end,
+    can_use = function(self, card)
+        return true
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {card.ability.extra}
+        }
+    end,
+}
+
 return {
     items = {
         memoryleak,
@@ -562,6 +904,13 @@ return {
         pseudorandom,
         pseudorandom_sticker,
         inherit,
-        fork
+        fork,
+        push,
+        increment,
+        decrement,
+        invariant,
+        pinned,
+        cookies,
+        segfault
     }
 }

@@ -197,7 +197,7 @@ end
 
 function Entropy.HasConsumable(key)
     for i, v in pairs(G.consumeables.cards) do if v.config.center.key == key then return true end end
-    if G.pack_cards then for i, v in pairs(G.pack_cards.cards) do if v.config.center.key == key then return true end end end
+    if G.pack_cards then for i, v in pairs(G.pack_cards.cards or {}) do if v.config.center.key == key then return true end end end
     for i, v in pairs(G.hand.cards) do if v.config.center.key == key then return true end end
 end
 
@@ -600,4 +600,76 @@ function Entropy.GetRandomRarityCard(rare)
         center = pseudorandom_element(_pool, pseudoseed(_pool_key..'_resample'..it))
     end
     return center
+end
+
+function Entropy.CanCreateZenith()
+    return false
+end
+
+function Entropy.randomchar(arr)
+    return {
+        n = G.UIT.O,
+        config = {
+            object = DynaText({
+                string = arr,
+                colours = { HEX("b1b1b1") },
+                pop_in_rate = 9999999,
+                silent = true,
+                random_element = true,
+                pop_delay = 0.1,
+                scale = 0.3,
+                min_cycle_time = 0,
+            }),
+        },
+    }
+end
+
+function Entropy.GetJokerSumRarity(loc)
+    if not G.jokers or #G.jokers.cards <= 0 then return "none" end
+    local rarity = 1
+    local sum = Entropy.SumJokerPoints()
+    local last_sum = 0
+    for i, v in pairs(Entropy.RarityPoints) do
+        if type(sum) == "table" then
+            if v > 12 and sum:gte(v-1) or sum:gte(v) then  
+                if v > last_sum  then
+                    rarity = i 
+                    last_sum = v
+                end
+            end
+        elseif sum >= (v > 12 and v-1 or v-0.01) then                 
+            if v > last_sum  then
+                rarity = i 
+                last_sum = v
+            end 
+        end
+    end
+    if not loc then
+        return rarity
+    else
+        return localize(({
+            [1] = "k_common",
+            [2] = "k_uncommon",
+            [3] = "k_rare",
+            [4] = "k_legendary"
+        })[rarity] or "k_"..rarity)
+    end
+end
+function Entropy.SumJokerPoints()
+    local total = 0
+    for i, v in pairs(G.jokers.cards) do
+        total = total + Entropy.GetJokerPoints(v)
+    end
+    return total
+end
+function Entropy.GetJokerPoints(card)
+    local total = Entropy.RarityPoints[card.config.center.rarity] or 1
+    if card.edition then
+        local factor = to_big(Entropy.GetEditionFactor(card.edition)) ^ (1.7/(Entropy.RarityDiminishers[card.config.center.rarity] or 1))
+        total = total * factor
+    end
+    return total
+end 
+function Entropy.GetEditionFactor(edition)
+    return Entropy.EditionFactors[edition.key] or 1
 end

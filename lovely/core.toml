@@ -51,6 +51,41 @@ Entropy.ChaosConversions = {}
 Entropy.AscendedTags = {}
 Entropy.BlindTokenBlacklist = {}
 Entropy.References = {}
+Entropy.Zeniths = {}
+Entropy.RarityPoints = {
+    [1] = 1, --common
+    [2] = 4, --uncommon
+    [3] = 12, --rare
+    ["cry_epic"] = 60,
+    [4] = 300, --legendary
+    ["cry_exotic"] = 1000,
+    ["entr_hyper_exotic"] = 5000,
+}
+--higher rarities give less points so the diminisher is used in division
+Entropy.RarityDiminishers = {
+    [1] = 1,
+    [2] = 1.5,
+    [3] = 2.5,
+    [4] = 5,
+    ["cry_epic"] = 4,
+    ["cry_exotic"] = 10,
+    ["entr_hyper_exotic"] = 15
+}
+Entropy.EditionFactors = {
+    ["e_foil"] = 1.25,
+    ["e_holo"] = 1.45,
+    ["e_polychrome"] = 2,
+    ["e_negative"] = 2.1,
+    ["e_cry_glitched"] = 1.4,
+    ["e_cry_mosaic"] = 2.2,
+    ["e_cry_oversaturated"] = 1.5,
+    ["e_cry_fragile"] = 1.8,
+    ["e_cry_gold"] = 1.7,
+    ["e_cry_blurred"] = 1.5,
+    ["e_cry_noisy"] = 1.7,
+    ["e_cry_astral"] = 2.2,
+    ["e_cry_m"] = 1.45
+}
 '''
 match_indent = true
 

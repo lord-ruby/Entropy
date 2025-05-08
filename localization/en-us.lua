@@ -770,9 +770,9 @@ local decs = {
 			c_entr_decrement = {
 				name = "(~)$ decrement",
 				text = {
-					"Transform {C:red}#1#{} selected {C:attention}Joker#2#{}",
+					"Transform {C:red}#1#{} selected {C:attention}Joker#<s>1#{}",
 					"to the {C:red}Joker{} that appears",
-					"before #3# in the {C:red}collection{}"
+					"previously in the {C:red}collection{}"
 				}
 			},
 			c_entr_cookies = {

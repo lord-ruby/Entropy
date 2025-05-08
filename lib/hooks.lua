@@ -1936,3 +1936,17 @@ function lerp(f1,f2,p)
     p = p * p
     return f1 * (1-p) + f2*p
 end
+
+local use_cardref= G.FUNCS.use_card
+G.FUNCS.use_card = function(e, mute, nosave)
+    local val = use_cardref(e, mute, nosave)
+    if e.config.ref_table.ability.entr_pinned then
+        for i, v in pairs(G.GAME.entr_pinned_cards or {}) do
+            if v.card == e.config.ref_table.config.center.key then 
+                G.GAME.entr_pinned_cards[i] = nil
+                return val 
+            end
+        end
+    end
+    return val
+end
