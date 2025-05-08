@@ -146,6 +146,7 @@ local set_debuffref = Card.set_debuff
 
 function Card:set_debuff(should_debuff)
     if self.perma_debuff or self.ability.superego then should_debuff = true end
+    if self.ability.entr_hotfix then should_debuff = false end
     set_debuffref(self, should_debuff)
 end
 
@@ -1949,4 +1950,22 @@ G.FUNCS.use_card = function(e, mute, nosave)
         end
     end
     return val
+end
+
+local htuis = G.FUNCS.hand_text_UI_set
+G.FUNCS.hand_text_UI_set = function(e)
+    htuis(e)
+    if G.GAME.cry_exploit_override then
+        e.config.object.colours = { G.C.SET.RCode }
+    else
+        e.config.object.colours = { G.C.UI.TEXT_LIGHT }
+    end
+    e.config.object:update_text()
+end
+
+local add_tagref = add_tag
+function add_tag(_tag)
+    add_tagref(_tag)
+    if not G.GAME.autostart_tags then G.GAME.autostart_tags = {} end
+    if not G.GAME.autostart_tags[_tag.key] then G.GAME.autostart_tags[_tag.key] = _tag.key end
 end

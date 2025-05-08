@@ -890,6 +890,407 @@ local segfault = {
     end,
 }
 
+local sudo = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+19,
+    key = "sudo",
+    set = "RCode",
+    
+    inverison = "c_cry_exploit",
+
+    atlas = "consumables",
+    config = {
+        extra = {
+            selected = 10
+        }
+    },
+    pos = {x=1,y=4},
+    use = function(self, card, area, copier)
+        G.GAME.USING_CODE = true
+		G.ENTERED_HAND = ""
+		G.CHOOSE_HAND = UIBox({
+			definition = create_UIBox_sudo(card),
+			config = {
+				align = "cm",
+				offset = { x = 0, y = 10 },
+				major = G.ROOM_ATTACH,
+				bond = "Weak",
+				instance_type = "POPUP",
+			},
+		})
+        G.GAME.USINGSUDO = true
+		G.CHOOSE_HAND.alignment.offset.y = 0
+		G.ROOM.jiggle = G.ROOM.jiggle + 1
+		G.CHOOSE_HAND:align_to_major()
+    end,
+    can_use = function(self, card)
+        local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
+        G.FUNCS.get_poker_hand_info(G.hand.highlighted)
+        return text and text ~= "NULL"
+	end,
+    loc_vars = function(self, q, card)
+    end,
+    entr_credits = {
+		idea = {
+			"cassknows",
+		},
+	},
+}
+
+local overflow = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "set_cry_poker_hand_stuff"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+20,
+    key = "overflow",
+    set = "RCode",
+
+    inversion = "c_cry_oboe",
+
+    atlas = "consumables",
+    config = {
+        extra = {
+            selected = 10
+        }
+    },
+    pos = {x=2,y=4},
+    use = function(self, card, area, copier)
+        G.GAME.Overflow = G.hand.config.highlighted_limit
+        G.hand.config.highlighted_limit = 9999
+    end,
+    can_use = function(self, card)
+        return true
+	end,
+    loc_vars = function(self, q, card)
+    end,
+    entr_credits = {
+		idea = {
+			"cassknows",
+		},
+	},
+}
+
+local refactor = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+21,
+    key = "refactor",
+    set = "RCode",
+    
+    inverison = "c_cry_rework",
+
+    atlas = "consumables",
+    config = {
+    },
+    pos = {x=3,y=4},
+    use = function(self, card, area, copier)
+        local cards = Entropy.GetHighlightedCards({G.jokers}, card)
+        local edition = cards[1].edition
+        local card = pseudorandom_element(G.jokers.cards, pseudoseed("refactor"))
+        local tries = 0
+        while card.unique_val == cards[1].unique_val and tries < 50 do
+            card = pseudorandom_element(G.jokers.cards, pseudoseed("refactor"))
+            tries = tries + 1
+        end
+        G.E_MANAGER:add_event(Event({
+            trigger="after",
+            delay = 0.15,
+            func = function() 
+                card:flip()
+                return true
+            end,
+        }))
+        G.E_MANAGER:add_event(Event({
+            trigger="after",
+            delay = 1,
+            func = function() 
+                card:remove_from_deck()
+                card:set_edition(edition)
+                card:add_to_deck()
+                return true
+            end,
+        }))
+        G.E_MANAGER:add_event(Event({
+            trigger="after",
+            delay = 0.15,
+            func = function() 
+                card:flip()
+                return true
+            end,
+        }))
+    end,
+    can_use = function(self, card)
+        local num = Entropy.GetHighlightedCards({G.jokers}, card)
+        return #num == 1
+	end,
+    entr_credits = {
+		idea = {
+			"cassknows",
+		},
+	},
+}
+
+local hotfix = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "entr_hotfix"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+22,
+    key = "hotfix",
+    set = "RCode",
+    
+    inversion = "c_cry_patch",
+
+    atlas = "consumables",
+    pos = {x=1,y=5},
+    use = function(self, card, area, copier)
+        Entropy.ApplySticker(Entropy.GetHighlightedCard({G.hand, G.jokers, G.consumeables}, nil, card), "entr_hotfix")
+    end,
+    can_use = function(self, card)
+        return Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, nil, card) == 1
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {key = "entr_hotfix", set="Other"}
+    end,
+    entr_credits = {
+		idea = {
+			"cassknows",
+		},
+	},
+}
+local hotfix_sticker = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Sticker",
+    order=3000+3,
+    atlas = "entr_stickers",
+    pos = { x = 3, y = 0 },
+    key = "entr_hotfix",
+    no_sticker_sheet = true,
+    prefix_config = { key = false },
+    badge_colour = HEX("FF0000"),
+    draw = function(self, card) --don't draw shine
+        local notilt = nil
+        if card.area and card.area.config.type == "deck" then
+            notilt = true
+        end
+        if not G.shared_stickers["entr_hotfix2"] then
+            G.shared_stickers["entr_hotfix2"] =
+                Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["entr_stickers"], { x = 2, y = 0 })
+        end -- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
+
+        G.shared_stickers[self.key].role.draw_major = card
+        G.shared_stickers["entr_hotfix2"].role.draw_major = card
+
+        G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+
+        card.hover_tilt = card.hover_tilt / 2 -- call it spaghetti, but it's what hologram does so...
+        G.shared_stickers["entr_hotfix2"]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+        G.shared_stickers["entr_hotfix2"]:draw_shader(
+            "hologram",
+            nil,
+            card.ARGS.send_to_shader,
+            notilt,
+            card.children.center
+        ) -- this doesn't really do much tbh, but the slight effect is nice
+        card.hover_tilt = card.hover_tilt * 2
+    end,
+    apply = function(self,card,val) 
+        card.ability.entr_hotfix = true
+        if card.area then
+        if card.debuff then card.debuff = false end
+        card.ability.entr_hotfix_rounds = pseudorandom_element({5,6,7,8,9,10,11,12,13,14,15}, pseudoseed("hotfix"))
+        end
+    end,
+    calculate = function(self, card, context)
+        if card.debuff then card.debuff = false end
+    end
+}
+
+local multithread = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "temporary"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+24,
+    key = "multithread",
+    set = "RCode",
+    
+    inversion = "c_cry_instantiate"
+
+    atlas = "consumables",
+    config = {
+    },
+    pos = {x=3,y=5},
+    use = function(self, card, area, copier)
+        for i, v in pairs(G.hand.highlighted) do
+            local c = copy_card(v)
+            c:set_edition({
+                negative=true,
+                key="e_negative",
+                card_limit=1,
+                type="negative"
+            })
+            c:add_to_deck()
+            c.ability.temporary = true
+            G.hand:emplace(c)
+        end 
+    end,
+    can_use = function(self, card)
+        return Entropy.GetHighlightedCards({G.hand}, nil, card) > 0
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {key = "temporary", set="Other"}
+    end,
+    entr_credits = {
+		idea = {
+			"cassknows",
+		},
+	},
+}
+
+local temporary = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Sticker",
+    order = 3000+4,
+    atlas = "entr_stickers",
+    pos = { x = 3, y = 1 },
+    key = "temporary",
+    no_sticker_sheet = true,
+    prefix_config = { key = false },
+    badge_colour = HEX("FF0000"),
+    draw = function(self, card) --don't draw shine
+        local notilt = nil
+        if card.area and card.area.config.type == "deck" then
+            notilt = true
+        end
+        if not G.shared_stickers["entr_temporary2"] then
+            G.shared_stickers["entr_temporary2"] =
+                Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["entr_stickers"], { x = 2, y = 1 })
+        end -- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
+
+        G.shared_stickers[self.key].role.draw_major = card
+        G.shared_stickers["entr_temporary2"].role.draw_major = card
+
+        G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+
+        card.hover_tilt = card.hover_tilt / 2 -- call it spaghetti, but it's what hologram does so...
+        G.shared_stickers["entr_temporary2"]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+        G.shared_stickers["entr_temporary2"]:draw_shader(
+            "hologram",
+            nil,
+            card.ARGS.send_to_shader,
+            notilt,
+            card.children.center
+        ) -- this doesn't really do much tbh, but the slight effect is nice
+        card.hover_tilt = card.hover_tilt * 2
+    end,
+    apply = function(self,card,val)
+        card.ability.temporary = true
+    end,
+}
+
+local autostart = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+25,
+    key = "autostart",
+    set = "RCode",
+    
+    "c_cry_alttab",
+
+    atlas = "consumables",
+    pos = {x=4,y=5},
+    config = {
+        tags = 3
+    },
+    use = function(self, card, area, copier)
+        for i = 1, card.ability.tags do
+            add_tag(Tag(pseudorandom_element(G.GAME.autostart_tags, pseudoseed("autostart"))))
+        end
+    end,
+    can_use = function(self, card)
+        return G.GAME.autostart_tags
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.tags
+            }
+        }
+    end,
+    entr_credits = {
+		idea = {
+			"cassknows",
+		},
+	},
+}
+
+local local_card = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "temporary"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+26,
+    key = "local",
+    set = "RCode",
+    
+    inversion = "c_cry_global",
+
+    atlas = "consumables",
+    pos = {x=0,y=6},
+    config = {
+        select = 3
+    },
+    use = function(self, card, area, copier)
+        Entropy.FlipThen(G.hand.highlighted, function(card) card.ability.temporary = true end)
+    end,
+    can_use = function(self, card)
+        return G.hand and Entropy.GetHighlightedCards({G.hand}, nil, card) > 0 and Entropy.GetHighlightedCards({G.hand}, nil, card) <= card.ability.select
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1]={set="Other",key="temporary"}
+        return {
+            vars = {
+                card.ability.select
+            }
+        }
+    end,
+}
+
 return {
     items = {
         memoryleak,
@@ -911,6 +1312,14 @@ return {
         invariant,
         pinned,
         cookies,
-        segfault
+        segfault,
+        sudo,
+        overflow,
+        refactor,
+        hotfix,
+        hotfix_sticker,
+        multithread,
+        temporary,
+        autostart
     }
 }

@@ -334,3 +334,144 @@ G.FUNCS.inherit_cancel = function()
   G.GAME.USING_CODE = false
   G.CHOOSE_ENH:remove()
 end
+
+function create_UIBox_sudo(card)
+  G.E_MANAGER:add_event(Event({
+      blockable = false,
+      func = function()
+          G.REFRESH_ALERTS = true
+          return true
+      end,
+  }))
+  local t = create_UIBox_generic_options({
+      no_back = true,
+      colour = HEX("04200c"),
+      outline_colour = HEX("FF0000"),
+      contents = {
+          {
+              n = G.UIT.R,
+              nodes = {
+                  create_text_input({
+                      colour = HEX("FF0000"),
+                      hooked_colour = darken(copy_table(G.C.SET.RCode), 0.3),
+                      w = 4.5,
+                      h = 1,
+                      max_length = 24,
+                      extended_corpus = true,
+                      prompt_text = localize("cry_code_hand"),
+                      ref_table = G,
+                      ref_value = "ENTERED_HAND",
+                      keyboard_offset = 1,
+                  }),
+              },
+          },
+          {
+              n = G.UIT.R,
+              nodes = {
+                  UIBox_button({
+                      colour = HEX("FF0000"),
+                      button = "sudo_apply",
+                      label = { localize("entr_code_sudo") },
+                      minw = 4.5,
+                      focus_args = { snap_to = true },
+                  }),
+              },
+          },
+          {
+              n = G.UIT.R,
+              nodes = {
+                  UIBox_button({
+                      colour = HEX("FF0000"),
+                      button = "sudo_apply_previous",
+                      label = { localize("entr_code_sudo_previous") },
+                      minw = 4.5,
+                      focus_args = { snap_to = true },
+                  }),
+              },
+          },
+          {
+              n = G.UIT.R,
+              nodes = {
+                  UIBox_button({
+                      colour = G.C.RED,
+                      button = "sudo_cancel",
+                      label = { localize("cry_code_cancel") },
+                      minw = 4.5,
+                      focus_args = { snap_to = true },
+                  }),
+              },
+          },
+      },
+  })
+  return t
+end
+G.FUNCS.sudo_apply_previous = function()
+  if G.PREVIOUS_ENTERED_HAND then
+      G.ENTERED_HAND = G.PREVIOUS_ENTERED_HAND or ""
+  end
+  G.FUNCS.sudo_apply()
+end
+G.FUNCS.sudo_apply = function()
+  local hand_table = {
+      ["High Card"] = { "high card", "high", "1oak", "1 of a kind", "haha one" },
+      ["Pair"] = { "pair", "2oak", "2 of a kind", "m" },
+      ["Two Pair"] = { "two pair", "2 pair", "mm", "pairpair" },
+      ["Three of a Kind"] = { "three of a kind", "3 of a kind", "3oak", "trips", "triangle" },
+      ["Straight"] = { "straight", "lesbian", "gay", "bisexual", "asexual" },
+      ["Flush"] = { "flush", "skibidi", "toilet", "floosh" },
+      ["Full House"] = {
+          "full house",
+          "full",
+          "that 70s show",
+          "modern family",
+          "family matters",
+          "the middle",
+      },
+      ["Four of a Kind"] = {
+          "four of a kind",
+          "4 of a kind",
+          "4oak",
+          "22oakoak",
+          "quads",
+          "four to the floor",
+      },
+      ["Straight Flush"] = { "straight flush", "strush", "slush", "slushie", "slushy" },
+      ["Five of a Kind"] = { "five of a kind", "5 of a kind", "5oak", "quints" },
+      ["Flush House"] = { "flush house", "flouse", "outhouse" },
+      ["Flush Five"] = { "flush five", "fish", "you know what that means", "five of a flush" },
+      ["cry_Bulwark"] = { "bulwark", "flush rock", "stoned", "stone flush", "flush stone" },
+      ["cry_Clusterfuck"] = { "clusterfuck", "fuck", "wtf" },
+      ["cry_UltPair"] = { "ultimate pair", "ultpair", "ult pair", "pairpairpair" },
+      ["cry_WholeDeck"] = { "the entire fucking deck", "deck", "tefd", "fifty-two", "you are fuck deck" },
+  }
+  local current_hand = nil
+  for k, v in pairs(SMODS.PokerHands) do
+      local index = v.key
+      local current_name = G.localization.misc.poker_hands[index]
+      if not hand_table[v.key] then
+          hand_table[v.key] = { current_name }
+      end
+  end
+  for i, v in pairs(hand_table) do
+      for j, k in pairs(v) do
+          if string.lower(G.ENTERED_HAND) == string.lower(k) then
+              current_hand = i
+          end
+      end
+  end
+  if current_hand == "cry_WholeDeck" then current_hand = nil end
+  if current_hand then
+      G.PREVIOUS_ENTERED_HAND = G.ENTERED_HAND
+      local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
+      G.FUNCS.get_poker_hand_info(G.hand.highlighted)
+      if not G.GAME.SudoHand then G.GAME.SudoHand = {} end
+      G.GAME.SudoHand[text] = current_hand
+      G.FUNCS.sudo_cancel()
+      return
+  end
+end
+G.FUNCS.sudo_cancel = function()
+  G.CHOOSE_HAND:remove()
+  G.GAME.USING_CODE = false
+  G.GAME.USINGSUDO = nil
+end
