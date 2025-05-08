@@ -703,7 +703,7 @@ local decrement = {
         end)
     end,
     can_use = function(self, card)
-        local num = Entropy.GetHighlightedCards({G.jokers}, card)
+        local num = #Entropy.GetHighlightedCards({G.jokers}, card)
         return num > 0 and num <= card.ability.extra
 	end,
     loc_vars = function(self, q, card)
