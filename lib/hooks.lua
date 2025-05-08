@@ -277,7 +277,7 @@ local oldfunc = Game.main_menu
 			blocking = false,
 			func = function()
                 for i, v in pairs(G.title_top.cards) do
-                    --if v.base and v.base.value and v.base.value == "Ace" then v:set_edition("e_entr_solar") end
+                    if v.base and v.base.value and v.base.value == "Ace" then v:set_edition("e_entr_solar") end
                     if v.config.center_key == "c_cryptid" then 
                         v:set_ability(G.P_CENTERS.c_entr_entropy)
                         v.T.w = v.T.w * 1.1 * 1.2
@@ -2104,4 +2104,69 @@ local dft = Blind.defeat
 function Blind:defeat(s)
     if not self.config.blind.key then self.config.blind.key = "bl_small" end
     dft(self, s)
+end
+
+local pokerhandinforef = G.FUNCS.get_poker_hand_info
+function G.FUNCS.get_poker_hand_info(_cards)
+    local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
+    local hand_table = {
+		["High Card"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 1 or nil,
+		["Pair"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 2 or nil,
+		["Two Pair"] = 4,
+		["Three of a Kind"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 3 or nil,
+		["Straight"] = next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5,
+		["Flush"] = next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5,
+		["Full House"] = 5,
+		["Four of a Kind"] = G.GAME.used_vouchers.v_cry_hyperspacetether and 4 or nil,
+		["Straight Flush"] = next(SMODS.find_card("j_four_fingers")) and Cryptid.gameset() ~= "modest" and 4 or 5, --debatable
+		["cry_Bulwark"] = 5,
+		["Five of a Kind"] = 5,
+		["Flush House"] = 5,
+		["Flush Five"] = 5,
+		["cry_Clusterfuck"] = 8,
+		["cry_UltPair"] = 8,
+		["cry_WholeDeck"] = 52,
+	}
+    -- if Entropy.CheckTranscendence(_cards) ~= "None" or (G.GAME.hands[text] and G.GAME.hands[text].TranscensionPower) then
+    --     ease_colour(G.C.UI_CHIPS, copy_table(HEX("84e1ff")), 0.3)
+	-- 	ease_colour(G.C.UI_MULT, copy_table(HEX("84e1ff")), 0.3)
+    -- else
+    if hand_table[text] and next(scoring_hand) and #scoring_hand > hand_table[text] and G.GAME.Overflow then
+		ease_colour(G.C.UI_CHIPS, copy_table(HEX("FF0000")), 0.3)
+		ease_colour(G.C.UI_MULT, copy_table(HEX("FF0000")), 0.3)
+        if not G.C.UI_GOLD then G.C.UI_GOLD = G.C.GOLD end
+        ease_colour(G.C.GOLD, copy_table(HEX("FF0000")), 0.3)
+    elseif G.GAME.hands[text] and G.GAME.hands[text].AscensionPower then
+        ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.3)
+		ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.3)
+    else
+        ease_colour(G.C.GOLD, copy_table(HEX("EABA44")), 0.3)
+	end
+    if G.GAME.hands[text] and G.GAME.hands[text].AscensionPower then
+		G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num + G.GAME.hands[text].AscensionPower
+	end
+    G.GAME.current_round.current_hand.cry_asc_num = (G.GAME.current_round.current_hand.cry_asc_num or 0) * (1+(G.GAME.nemesisnumber or 0))
+    if Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled then 
+        G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num * -1
+    end
+    -- if Entropy.CheckTranscendence(_cards) ~= "None" then
+    --     G.GAME.current_round.current_hand.entr_trans_num_text = "Transcendant "
+    --     G.GAME.TRANSCENDENT = true
+    -- end
+	if to_big(G.GAME.current_round.current_hand.cry_asc_num) ~= to_big(0) then
+        if to_big(G.GAME.current_round.current_hand.cry_asc_num) > to_big(0) then
+            G.GAME.current_round.current_hand.cry_asc_num_text = " (+"..G.GAME.current_round.current_hand.cry_asc_num..")"
+        else    
+            G.GAME.current_round.current_hand.cry_asc_num_text = " ("..G.GAME.current_round.current_hand.cry_asc_num..")"
+        end
+    else
+        G.GAME.current_round.current_hand.cry_asc_num_text = ""
+    end
+    -- if Entropy.CheckTranscendence(_cards) == "None" then
+    --     G.GAME.current_round.current_hand.entr_trans_num_text = ""
+    -- end
+    if Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled then 
+        G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num * -1
+    end
+    return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
