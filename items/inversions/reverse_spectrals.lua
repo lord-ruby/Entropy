@@ -1559,7 +1559,8 @@ local beyond = {
 			end,
 		}))
 		delay(0.6)
-    end
+    end,
+    can_use = function() return true end
 }
 
 local regenerate = {
