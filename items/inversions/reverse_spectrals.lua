@@ -1522,10 +1522,13 @@ local beyond = {
     use = function(self, card)
         local deletable_jokers = {}
 		for k, v in pairs(G.jokers.cards) do
-			if not v.ability.eternal then
+			if not v.ability.eternal and not Entropy.DeckOrSleeve("doc") then
 				deletable_jokers[#deletable_jokers + 1] = v
 			end
 		end
+        if Entropy.DeckOrSleeve("doc") then
+            ease_entropy(-G.GAME.entropy)
+        end
 		local _first_dissolve = nil
 		G.E_MANAGER:add_event(Event({
 			trigger = "before",

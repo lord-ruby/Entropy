@@ -86,3 +86,24 @@ SMODS.Atlas {
     px = 71, 
     py = 95 
 }
+
+SMODS.Atlas { 
+    key = 'decks', 
+    path = 'decks.png', 
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas { 
+    key = 'crypt_deck', 
+    path = 'crypt_decks.png', 
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas { 
+    key = 'sleeves', 
+    path = 'sleeves.png', 
+    px = 73, 
+    py = 95 
+}

@@ -23,7 +23,7 @@ SMODS.ContentSet({
 
 SMODS.ContentSet({
 	key = "decks",
-	atlas = "consumables", --atlas = "decks",
+	atlas = "decks",
 	pos = { x = 4, y = 0 },
 	cry_order = 1,
 })

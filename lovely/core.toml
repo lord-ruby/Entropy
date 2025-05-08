@@ -105,3 +105,36 @@ payload = '''
           tab_definition_function = G.GAME.entr_bought_decks and #G.GAME.entr_bought_decks > 0 and G.UIDEF.bought_decks or nil,
         },'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "self.GAME.starting_deck_size = #G.playing_cards"
+position = "before"
+payload = '''
+if G.GAME.modifiers.ccd2 then
+    for k, v in pairs(G.playing_cards) do
+        local key = ""
+        local ptype = pseudorandom_element({
+            "Booster",
+            "Voucher",
+            "Tarot",
+            "Joker",
+            "Consumeable",
+        }, pseudoseed("segfault"))
+        if ptype == "Consumeable" then
+            key = Cryptid.random_consumable("entr_segfault", nil, "c_entr_segfault").key
+        else
+            key = pseudorandom_element(G.P_CENTERS, pseudoseed("segfault"))
+            local tries = 0
+            while key.set ~= ptype or key.no_doe or G.GAME.banned_keys[key.key] do --i love when my key has keys
+                key = pseudorandom_element(G.P_CENTERS, pseudoseed("segfault"))
+                tries = tries + 1
+            end
+            key = key.key
+        end
+        v:set_ability(G.P_CENTERS[key])
+    end
+end
+'''
+match_indent = true

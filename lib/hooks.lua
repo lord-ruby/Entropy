@@ -1542,3 +1542,206 @@ function evaluate_play_main(text, disp_text, poker_hands, scoring_hand, non_loc_
         poker_hands[text].chips = c
     end
 end
+
+local set_abilityref = Card.set_ability
+function Card:set_ability(center, ...)
+    if Entropy.FlipsideInversions[center.key] and not G.SETTINGS.paused and G.GAME.modifiers.entr_twisted then
+        set_abilityref(self, G.P_CENTERS[Entropy.FlipsideInversions[center.key]], ...)
+    else    
+        set_abilityref(self, center, ...)
+    end
+end
+
+local use_cardref = G.FUNCS.use_card
+G.FUNCS.use_card = function(e, mute, nosave)
+	local card = e.config.ref_table
+	if card.config.center.set ~= "Booster" and Entropy.DeckOrSleeve("doc") then
+    local num = 1
+    for i, v in pairs(G.GAME.entr_bought_decks or {}) do if v == "b_entr_doc" or v == "sleeve_entr_doc" then num = num + 1 end end
+		if Entropy.FlipsideInversions[card.config.center.key] and not Entropy.FlipsidePureInversions[card.config.center.key] then
+			ease_entropy(4*num)
+		else
+			ease_entropy(2*num)
+		end
+	end
+	use_cardref(e, mute, nosave)
+end
+SMODS.Booster:take_ownership_by_kind('Spectral', {
+	create_card = function(self, card, i)
+		G.GAME.entropy = G.GAME.entropy or 0
+		if to_big(pseudorandom("doc")) < to_big(1 - 0.997^G.GAME.entropy) and Entropy.DeckOrSleeve("doc") and Cryptid.enabled("c_entr_beyond") == true then
+			return create_card("RSpectral", G.pack_cards, nil, nil, true, true, "c_entr_beyond")
+		elseif to_big(pseudorandom("doc")) < to_big(1 - 0.996^G.GAME.entropy) and Entropy.DeckOrSleeve("doc") and Cryptid.enabled("c_cry_gateway") == true then
+			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
+		end
+		return create_card("Spectral", G.pack_cards, nil, nil, true, true, nil, "spe")
+	end
+},true)
+SMODS.Consumable:take_ownership("cry_gateway",{
+	use = function(self, card, area, copier)
+		if not Entropy.DeckOrSleeve("doc") then
+			local deletable_jokers = {}
+			for k, v in pairs(G.jokers.cards) do
+				if not v.ability.eternal then
+					deletable_jokers[#deletable_jokers + 1] = v
+				end
+			end
+			local _first_dissolve = nil
+			G.E_MANAGER:add_event(Event({
+				trigger = "before",
+				delay = 0.75,
+				func = function()
+					for k, v in pairs(deletable_jokers) do
+						if v.config.center.rarity == "cry_exotic" then
+							check_for_unlock({ type = "what_have_you_done" })
+						end
+						v:start_dissolve(nil, _first_dissolve)
+						_first_dissolve = true
+					end
+					return true
+				end,
+			}))
+		end
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.4,
+			func = function()
+				play_sound("timpani")
+				local card = create_card("Joker", G.jokers, nil, "cry_exotic", nil, nil, nil, "cry_gateway")
+				card:add_to_deck()
+				G.jokers:emplace(card)
+				card:juice_up(0.3, 0.5)
+				return true
+			end,
+		}))
+		delay(0.6)
+    if Entropy.DeckOrSleeve("doc") then
+      ease_entropy(-math.min(G.GAME.entropy, 4))
+    end
+	end
+},true)
+local uibox_ref = create_UIBox_HUD
+function create_UIBox_HUD()
+  local orig = uibox_ref()
+	if not Entropy.DeckOrSleeve("doc") then return orig end
+    local scale = 0.4
+    local stake_sprite = get_stake_sprite(G.GAME.stake or 1, 0.5)
+
+    local contents = {}
+
+    local spacing = 0.13
+    local temp_col = G.C.DYN_UI.BOSS_MAIN
+    local temp_col2 = G.C.DYN_UI.BOSS_DARK
+    
+    contents.buttons = {
+      {n=G.UIT.C, config={align = "cm", r=0.1, colour = G.C.CLEAR, shadow = true, id = 'button_area',padding=0.33}, nodes={
+        {n=G.UIT.R, config={id = 'run_info_button', align = "cm", minh = 1, minw = 1.5,padding = 0.05, r = 0.1, hover = true, colour = G.C.RED, button = "run_info", shadow = true}, nodes={
+        {n=G.UIT.R, config={align = "cm", padding = 0, maxw = 2}, nodes={
+          {n=G.UIT.T, config={text = localize('b_run_info_1'), scale = 1.2*scale, colour = G.C.UI.TEXT_LIGHT, shadow = true}}
+        }},
+        {n=G.UIT.R, config={align = "cm", padding = 0, maxw = 2}, nodes={
+          {n=G.UIT.T, config={text = localize('b_run_info_2'), scale = 1*scale, colour = G.C.UI.TEXT_LIGHT, shadow = true, focus_args = {button = G.F_GUIDE and 'guide' or 'back', orientation = 'bm'}, func = 'set_button_pip'}}
+        }}
+        }},
+        {n=G.UIT.R, config={align = "cm", minh = 1, minw = 2,padding = 0.05, r = 0.1, hover = true, colour = G.C.ORANGE, button = "options", shadow = true}, nodes={
+        {n=G.UIT.C, config={align = "cm", maxw = 1.4, focus_args = {button = 'start', orientation = 'bm'}, func = 'set_button_pip'}, nodes={
+          {n=G.UIT.T, config={text = localize('b_options'), scale = scale, colour = G.C.UI.TEXT_LIGHT, shadow = true}}
+        }},
+        }},
+        {n=G.UIT.R, config={align = "cm", minh = 1, minw = 2,padding = 0.05, r = 0.1, hover = true, colour=G.C.DYN_UI.BOSS_MAIN,emboss=0.05}, nodes={
+        {n=G.UIT.R, config={align = "cm", maxw = 1.35}, nodes={
+          {n=G.UIT.T, config={text = localize('k_entropy'), minh = 0.33, scale = 0.85*scale, colour = G.C.UI.TEXT_LIGHT, shadow = true}},
+        }},
+        {n=G.UIT.R, config={align = "cm", r = 0.1, minw = 1.8, colour = temp_col2, id = 'row_entropy_text'}, nodes={
+          {n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME, ref_value = 'entropy'}}, colours = {G.C.IMPORTANT},shadow = true, scale = 2*scale}),id = 'entropy_UI_count'}},
+        }},
+        }}
+      }}
+    }
+    --heres the one bit of compat ill do on my end
+    if SMODS.Mods.jen and SMODS.Mods.jen.can_load then
+      orig.nodes[1].nodes[1].nodes[5].nodes[1].nodes[6] = {n=G.UIT.R, config={align = "cm"}, nodes={
+        {n=G.UIT.C, config={id = 'hud_tension',align = "cm", padding = 0.05, minw = 1.45, minh = 1, colour = temp_col, emboss = 0.05, r = 0.1}, nodes={
+          {n=G.UIT.R, config={align = "cm", minh = 0.33, maxw = 1.35}, nodes={
+            {n=G.UIT.T, config={text = 'Tension', scale = 0.85*scale, colour = G.C.UI.TEXT_LIGHT, shadow = true}},
+          }},
+          {n=G.UIT.R, config={align = "cm", r = 0.1, minw = 1.2, colour = temp_col2}, nodes={
+            {n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME, ref_value = 'tension'}}, colours = {G.C.CRY_EMBER},shadow = true, font = G.LANGUAGES['en-us'].font, scale = scale_number(G.GAME.tension, 2*scale, 100)}),id = 'tension_UI_count'}},
+          }},
+        }},
+        {n=G.UIT.C, config={minw = spacing},nodes={}},
+        {n=G.UIT.C, config={id = 'hud_relief',align = "cm", padding = 0.05, minw = 1.45, minh = 1, colour = temp_col, emboss = 0.05, r = 0.1}, nodes={
+          {n=G.UIT.R, config={align = "cm", minh = 0.33, maxw = 1.35}, nodes={
+            {n=G.UIT.T, config={text = 'Relief', scale = 0.85*scale, colour = G.C.UI.TEXT_LIGHT, shadow = true}},
+          }},
+          {n=G.UIT.R, config={align = "cm", r = 0.1, minw = 1.2, colour = temp_col2}, nodes={
+            {n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME, ref_value = 'relief'}}, colours = {G.C.CRY_VERDANT},shadow = true, font = G.LANGUAGES['en-us'].font, scale = scale_number(G.GAME.relief, 2*scale, 100)}),id = 'relief_UI_count'}},
+          }},
+        }},
+        {n=G.UIT.C, config={minw = spacing},nodes={}},
+        {n=G.UIT.C, config={id = 'hud_entropy',align = "cm", padding = 0.05, minw = 1.45, minh = 1, colour = temp_col, emboss = 0.05, r = 0.1}, nodes={
+          {n=G.UIT.R, config={align = "cm", minh = 0.33, maxw = 1.35}, nodes={
+            {n=G.UIT.T, config={text = localize('k_entropy'), scale = 0.85*scale, colour = G.C.UI.TEXT_LIGHT, shadow = true}},
+          }},
+          {n=G.UIT.R, config={align = "cm", r = 0.1, minw = 1.2, colour = temp_col2}, nodes={
+            {n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME, ref_value = 'entropy'}}, colours = {G.C.IMPORTANT},shadow = true, font = G.LANGUAGES['en-us'].font, scale = 2*scale}),id = 'entropy_UI_count'}},
+          }},
+        }},
+      }}
+    else  
+      orig.nodes[1].nodes[1].nodes[5].nodes[1].nodes = contents.buttons
+    end
+    return orig
+end
+
+
+function ease_entropy(mod)
+    G.E_MANAGER:add_event(Event({
+      trigger = 'immediate',
+      func = function()
+          local round_UI = G.HUD:get_UIE_by_ID('entropy_UI_count')
+          mod = mod or 0
+          local text = '+'
+          local col = G.C.IMPORTANT
+          if to_big(mod) < to_big(0) then
+              text = ''
+              col = G.C.RED
+          end
+          G.GAME.entropy = (G.GAME.entropy or 0) + mod
+          if round_UI then
+            G.HUD:recalculate()
+            if not Talisman.config_file.disable_anims then
+              attention_text({
+                text = text..tostring(math.abs(mod)),
+                scale = 1, 
+                hold = 0.7,
+                cover = round_UI.parent,
+                cover_colour = col,
+                align = 'cm',
+              })
+            end
+          end
+          --Play a chip sound
+          if not Talisman.config_file.disable_anims then
+            play_sound('timpani', 0.8)
+            play_sound('generic1')
+          end
+          return true
+      end
+    }))
+end
+
+
+local apply_ref = Cryptid.antimatter_apply
+function Cryptid.antimatter_apply(skip)
+  apply_ref(skip)
+  if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_entr_ccd2", "wins", 8) or 0 ~= 0) or skip then
+    G.GAME.modifiers.ccd2 = true
+  end
+  if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_entr_doc", "wins", 8) or 0 ~= 0) or skip then
+    G.GAME.modifiers.doc_antimatter = true
+  end
+  if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_entr_twisted", "wins", 8) or 0 ~= 0) or skip then
+    G.GAME.modifiers.entr_twisted = true
+  end
+end
