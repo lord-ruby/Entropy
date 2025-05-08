@@ -576,14 +576,14 @@ G.FUNCS.buy_deckorsleeve = function(e)
         local count = G.consumeables.config.card_limit
         local cards = {}
         for i, v in pairs(G.jokers.cards) do
-            v:remove_from_deck()
-            G.jokers:remove_card(v)
             cards[#cards+1]=v
         end
         for i, v in pairs(G.consumeables.cards) do
-            v:remove_from_deck()
-            G.consumeables:remove_card(v)
             cards[#cards+1]=v
+        end
+        for i, v in pairs(cards) do
+            v.area:remove_card(v)
+            v:remove_from_deck()
         end
         G.consumeables:remove()
         count = count + G.jokers.config.card_limit

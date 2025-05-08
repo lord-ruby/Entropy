@@ -264,17 +264,17 @@ local statue = {
     pos = {x=3,y=1},
     use = function(self, card2)
         local cards = Entropy.GetHighlightedCards({G.hand}, card)
-        Entropy.FlipThen(cards, function(card)
-            card:set_ability(G.P_CENTERS.m_stone)
-            card:set_edition()
-            card.seal = nil
-        end)
         G.E_MANAGER:add_event(Event({
 			func = function()
                 for i = 1, card2.ability.convert_per do
                     local card3 = pseudorandom_element(G.deck.cards, pseudoseed("statue"))
                     copy_card(#cards == 1 and cards[1] or pseudorandom_element(cards, pseudoseed("statue")), card3)
                 end
+                Entropy.FlipThen(cards, function(card)
+                    card:set_ability(G.P_CENTERS.m_stone)
+                    card:set_edition()
+                    card.seal = nil
+                end)
                 return true
             end
         }))

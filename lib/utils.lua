@@ -714,3 +714,11 @@ function Entropy.CanEeSpawn()
     if MP and MP.LOBBY then return false end
     return true
 end
+
+function Entropy.stringsplit(s) 
+    local tbl = {}
+    for i = 1, #s do
+        tbl[#tbl+1]=s:sub(i,i)
+    end
+    return tbl
+end
