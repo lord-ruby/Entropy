@@ -1763,5 +1763,26 @@ function create_UIBox_blind_select()
 		}))
         G.GAME.USING_BREAK = nil
     end
-    return uibox_ref()
+    if G.GAME.round_resets.red_room then
+        G.GAME.blind_on_deck = "Red"
+        if not G.GAME.round_resets.blind_choices["Red"] then
+            G.GAME.round_resets.blind_choices["Red"] = "bl_entr_red"
+        end
+        if not G.GAME.round_resets.blind_states['Red'] then
+            G.GAME.round_resets.blind_states['Red'] = "Select"
+        end
+        G.GAME.RedBlindStates = {}
+        for i, v in pairs(G.GAME.round_resets.blind_states) do G.GAME.RedBlindStates[i] = v end
+        G.GAME.round_resets.loc_blind_states.Red = "Select"
+        G.blind_select_opts.red = G.GAME.round_resets.blind_states['Red'] ~= 'Hide' and UIBox{definition = {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={UIBox_dyn_container({create_UIBox_blind_choice('Red')},false,get_blind_main_colour('Red'))}}, config = {align="bmi", offset = {x=0,y=0}}} or nil
+        local t = {n=G.UIT.ROOT, config = {align = 'tm',minw = width, r = 0.15, colour = G.C.CLEAR}, nodes={
+            {n=G.UIT.R, config={align = "cm", padding = 0.5}, nodes={
+            G.GAME.round_resets.blind_states['Red'] ~= 'Hide' and {n=G.UIT.O, config={align = "cm", object = G.blind_select_opts.red}} or nil,
+            }}
+        }}
+        G.GAME.round_resets.red_room = nil
+        return t 
+    else
+        return uibox_ref()
+    end
 end

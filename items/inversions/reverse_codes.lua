@@ -192,12 +192,71 @@ local break_card = {
 	},
 }
 
+local new = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+6,
+    key = "new",
+    set = "RCode",
+    
+    can_stack = true,
+	can_divide = true,
+    atlas = "consumables",
+    config = {
+        extra = {
+            selected = 10
+        }
+    },
+    pos = {x=0,y=2},
+    use = function(self, card, area, copier)
+        G.GAME.round_resets.red_room = true
+        G.GAME.round_resets.blind_states['Red'] = "Select"
+        if G.blind_select then        
+            G.blind_select:remove()
+            G.blind_prompt_box:remove()
+            G.STATE_COMPLETE = false
+        end
+    end,
+    can_use = function(self, card)
+        return not G.GAME.round_resets.red_room and G.blind_select
+	end,
+    loc_vars = function(self, q, card)
+        return {
+        }
+    end,
+}
+
+local rr = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+	object_type = "Blind",
+    order = 999,
+	name = "entr-red",
+	key = "red",
+	pos = { x = 0, y = 0 },
+	atlas = "blinds",
+	boss_colour = HEX("FF0000"),
+    mult=1,
+    boss = {min=1,max=9999},
+    dollars = 3,
+    in_pool = function(self) return false end
+}
+
 return {
     items = {
         memoryleak,
         rootkit,
         bootstrap,
         quickload,
-        break_card
+        break_card,
+        new,
+        rr
     }
 }
