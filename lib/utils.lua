@@ -673,3 +673,8 @@ end
 function Entropy.GetEditionFactor(edition)
     return Entropy.EditionFactors[edition.key] or 1
 end
+
+function Entropy.CanEeSpawn()
+    if MP and MP.LOBBY then return false end
+    return true
+end

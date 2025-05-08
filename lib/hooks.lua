@@ -1784,6 +1784,12 @@ function create_UIBox_blind_select()
         G.GAME.round_resets.red_room = nil
         return t 
     else
+        if Entropy.CanEeSpawn() then
+            if G.GAME.EEBuildup or G.GAME.round_resets.ante_disp == "32" then
+                G.GAME.round_resets.blind_choices.Boss = "bl_entr_endless_entropy_phase_one"
+                G.GAME.EEBuildup = true
+            end
+        end
         return uibox_ref()
     end
 end
@@ -1969,3 +1975,132 @@ function add_tag(_tag)
     if not G.GAME.autostart_tags then G.GAME.autostart_tags = {} end
     if not G.GAME.autostart_tags[_tag.key] then G.GAME.autostart_tags[_tag.key] = _tag.key end
 end
+
+local disable_ref = Blind.disable
+function Blind:disable()
+	if not self.config.blind.no_disable then disable_ref(self) end
+end
+
+--for wiki editors these arent 4 seperate blinds but 4 phases of endless entropy
+
+local ref = G.FUNCS.reroll_boss
+G.FUNCS.reroll_boss = function(e) 
+	if G.GAME.EEBuildup then return end
+	ref(e)
+end
+
+local upd = Game.update
+local ee2dt = 0
+local cdt = 0
+function Game:update(dt)
+	upd(self, dt)
+	cdt = cdt + dt
+	if cdt > 0.01 then
+		if G.jokers and G.GAME.blind and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_two" then
+			local dtmod = math.min(G.SETTINGS.GAMESPEED, 4)/2+0.5
+			ee2dt = ee2dt + dt*dtmod
+			if ee2dt > 1 then
+				for i, v in pairs(G.jokers.cards) do
+					if not Card.no(G.jokers.cards[i], "immutable", true) then
+						Cryptid.misprintize(G.jokers.cards[i], { min=0.975,max=0.975 }, nil, true)
+					end
+				end
+				ee2dt = ee2dt - 1
+			end
+		end
+		if G.jokers and G.GAME.blind and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" then
+			G.HUD_blind:get_UIE_by_ID("score_at_least").config.text = localize("ph_blind_score_less_than")
+			for i, v in pairs(G.jokers.cards) do
+				v.debuff = false
+			end
+			if G.jokers.cards[1] then
+				G.jokers.cards[1].debuff = true
+			end
+		end
+		cdt = 0
+	end
+end
+
+local orig = create_UIBox_blind_popup
+function create_UIBox_blind_popup(blind, discovered, vars)
+	local blind_text = {}
+	
+	local _dollars = blind.dollars
+	local target = {type = 'raw_descriptions', key = blind.key, set = 'Blind', vars = vars or blind.vars}
+	if blind.collection_loc_vars and type(blind.collection_loc_vars) == 'function' then
+		local res = blind:collection_loc_vars() or {}
+		target.vars = res.vars or target.vars
+		target.key = res.key or target.key
+	end
+	local loc_target = localize(target)
+	local loc_name = localize{type = 'name_text', key = blind.key, set = 'Blind'}
+  
+	if discovered then 
+	  local ability_text = {}
+	  if loc_target then 
+		for k, v in ipairs(loc_target) do
+		  ability_text[#ability_text + 1] = {n=G.UIT.R, config={align = "cm"}, nodes={{n=G.UIT.T, config={text = v, scale = 0.35, shadow = true, colour = G.C.WHITE}}}}
+		end
+	  end
+	  local stake_sprite = get_stake_sprite(G.GAME.stake or 1, 0.4)
+	  if blind.exponent then
+		  local exponents = ""
+		  local exponents2 = ""
+		  for i = 1, blind.exponent[1] do
+			exponents = exponents .. "^"
+		  end
+		  if blind.exponent[1] > 5 then
+			exponents = ""
+			exponents2 = "{" .. blind.exponent[1] .. "}"
+		  end
+		  blind_text[#blind_text + 1] =
+			{n=G.UIT.R, config={align = "cm", emboss = 0.05, r = 0.1, minw = 2.5, padding = 0.07, colour = G.C.WHITE}, nodes={
+			  {n=G.UIT.R, config={align = "cm", maxw = 2.4}, nodes={
+				{n=G.UIT.T, config={text = localize('ph_blind_score_at_least'), scale = 0.35, colour = G.C.UI.TEXT_DARK}},
+			  }},
+			  {n=G.UIT.R, config={align = "cm"}, nodes={
+				{n=G.UIT.O, config={object = stake_sprite}},
+				{n=G.UIT.T, config={text = exponents .. blind.exponent[2].. exponents2 .." "..localize('k_entr_base'), scale = 0.4, colour = G.C.RED}},
+			  }},
+			  {n=G.UIT.R, config={align = "cm"}, nodes={
+				{n=G.UIT.T, config={text = localize('ph_blind_reward'), scale = 0.35, colour = G.C.UI.TEXT_DARK}},
+				{n=G.UIT.O, config={object = DynaText({string = {_dollars and string.rep(localize('$'),_dollars) or '-'}, colours = {G.C.MONEY}, rotate = true, bump = true, silent = true, scale = 0.45})}},
+			  }},
+			  ability_text[1] and {n=G.UIT.R, config={align = "cm", padding = 0.08, colour = mix_colours(blind.boss_colour, G.C.GREY, 0.4), r = 0.1, emboss = 0.05, minw = 2.5, minh = 0.9}, nodes=ability_text} or nil
+			}}
+	  else
+	  blind_text[#blind_text + 1] =
+		{n=G.UIT.R, config={align = "cm", emboss = 0.05, r = 0.1, minw = 2.5, padding = 0.07, colour = G.C.WHITE}, nodes={
+		  {n=G.UIT.R, config={align = "cm", maxw = 2.4}, nodes={
+			{n=G.UIT.T, config={text = localize(blind.key == "bl_entr_endless_entropy_phase_three" and 'ph_blind_score_less_than' or 'ph_blind_score_at_least'), scale = 0.35, colour = G.C.UI.TEXT_DARK}},
+		  }},
+		  {n=G.UIT.R, config={align = "cm"}, nodes={
+			{n=G.UIT.O, config={object = stake_sprite}},
+			{n=G.UIT.T, config={text = blind.mult..localize('k_x_base'), scale = 0.4, colour = G.C.RED}},
+		  }},
+		  {n=G.UIT.R, config={align = "cm"}, nodes={
+			{n=G.UIT.T, config={text = localize('ph_blind_reward'), scale = 0.35, colour = G.C.UI.TEXT_DARK}},
+			{n=G.UIT.O, config={object = DynaText({string = {_dollars and string.rep(localize('$'),_dollars) or '-'}, colours = {G.C.MONEY}, rotate = true, bump = true, silent = true, scale = 0.45})}},
+		  }},
+		  ability_text[1] and {n=G.UIT.R, config={align = "cm", padding = 0.08, colour = mix_colours(blind.boss_colour, G.C.GREY, 0.4), r = 0.1, emboss = 0.05, minw = 2.5, minh = 0.9}, nodes=ability_text} or nil
+		}}
+		  end
+	else
+	  blind_text[#blind_text + 1] =
+		{n=G.UIT.R, config={align = "cm", emboss = 0.05, r = 0.1, minw = 2.5, padding = 0.1, colour = G.C.WHITE}, nodes={
+		  {n=G.UIT.R, config={align = "cm"}, nodes={
+			{n=G.UIT.T, config={text = localize('ph_defeat_this_blind_1'), scale = 0.4, colour = G.C.UI.TEXT_DARK}},
+		  }},
+		  {n=G.UIT.R, config={align = "cm"}, nodes={
+			{n=G.UIT.T, config={text = localize('ph_defeat_this_blind_2'), scale = 0.4, colour = G.C.UI.TEXT_DARK}},
+		  }},
+		}}
+		return orig(blind, discovered, vars)
+	end
+   return {n=G.UIT.ROOT, config={align = "cm", padding = 0.05, colour = lighten(G.C.JOKER_GREY, 0.5), r = 0.1, emboss = 0.05}, nodes={
+	{n=G.UIT.R, config={align = "cm", emboss = 0.05, r = 0.1, minw = 2.5, padding = 0.1, colour = not discovered and G.C.JOKER_GREY or blind.boss_colour or G.C.GREY}, nodes={
+	  {n=G.UIT.O, config={object = DynaText({string = discovered and loc_name or localize('k_not_discovered'), colours = {G.C.UI.TEXT_LIGHT}, shadow = true, rotate = not discovered, spacing = discovered and 2 or 0, bump = true, scale = 0.4})}},
+	}},
+	{n=G.UIT.R, config={align = "cm"}, nodes=blind_text},
+   }}
+  end 

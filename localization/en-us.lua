@@ -512,7 +512,7 @@ local decs = {
 				text = {
 					"Void subsumes you,",
 					"(Debuff leftmost Joker slot,",
-					"Cant score more than #1#)"
+					"Must not score more than #1#)"
 				}
 			},
 			bl_entr_endless_entropy_phase_four = {
