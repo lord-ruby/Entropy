@@ -249,6 +249,35 @@ local rr = {
     in_pool = function(self) return false end
 }
 
+local interference = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+7,
+    key = "interference",
+    set = "RCode",
+    
+    can_stack = true,
+	can_divide = true,
+    atlas = "consumables",
+    pos = {x=1,y=2},
+    use = function(self, card, area, copier)
+        G.GAME.blind.chips = G.GAME.blind.chips * pseudorandom("interference")+0.22
+        G.GAME.InterferencePayoutMod = pseudorandom("interference")+0.85
+        G.GAME.Interfered = true
+    end,
+    can_use = function(self, card)
+        return true
+	end,
+    loc_vars = function(self, q, card)
+        return {
+        }
+    end,
+}
+
 return {
     items = {
         memoryleak,
@@ -257,6 +286,7 @@ return {
         quickload,
         break_card,
         new,
-        rr
+        rr,
+        interference
     }
 }

@@ -50,7 +50,6 @@ end
 '''
 match_indent = true
 
-
 [[patches]]
 [patches.pattern]
 target = "functions/button_callbacks.lua"
@@ -66,6 +65,19 @@ if G.blind_prompt_box and G.blind_prompt_box:get_UIE_by_ID('prompt_dynatext1') t
         G.blind_prompt_box:get_UIE_by_ID('prompt_dynatext1').config.object:pop_out(5)
         G.blind_prompt_box:get_UIE_by_ID('prompt_dynatext2').config.object.pop_delay = 0
         G.blind_prompt_box:get_UIE_by_ID('prompt_dynatext2').config.object:pop_out(5) 
+end
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.GAME.hands[text].played = G.GAME.hands[text].played + 1"
+position = "before"
+payload = '''
+if not G.GAME.hands[text] then
+        text = "High Card"
 end
 '''
 match_indent = true

@@ -510,3 +510,13 @@ function Entropy.DeckOrSleeve(key)
     end
     return G.GAME.selected_back and G.GAME.selected_back.effect.center.original_key == key
 end
+
+Entropy.charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890~#$^~#$^~#$^~#$^~#$^"
+function Entropy.srandom(length) 
+    local total = ""
+    for i = 0, length do
+        local val = math.random(1,#Entropy.charset)
+        total = total..(Entropy.charset:sub(val, val))
+    end
+    return total
+end

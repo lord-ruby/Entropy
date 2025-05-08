@@ -1786,3 +1786,111 @@ function create_UIBox_blind_select()
         return uibox_ref()
     end
 end
+
+local set_textref = Blind.draw
+function Blind:draw()
+    if G.GAME.Interfered then
+        G.GAME.blind.chip_text = G.GAME.InterferedText
+    end
+    set_textref(self)
+end
+local hand_dt = 0
+local hand_dt2 = 0
+local update_ref = Game.update
+function Game:update(dt)
+    update_ref(self, dt)
+    hand_dt = (hand_dt or 0) + dt
+    if G.hand_text_area and hand_dt > 0.05 and G.GAME.Interfered then
+        G.TAROT_INTERRUPT_PULSE = true
+        G.TAROT_INTERRUPT = true
+        update_hand_text_random(
+        { nopulse = true, immediate=true },
+        { handname = Entropy.srandom(math.random(5,15)), mult = Entropy.srandom(3), chips = Entropy.srandom(3)}
+        )
+        G.TAROT_INTERRUPT_PULSE = false
+        G.TAROT_INTERRUPT = false
+        G.GAME.InterferedText = Entropy.srandom(math.random(3,5))
+        hand_dt = 0
+    end
+end
+
+function update_hand_text_random(config, vals)
+    G.E_MANAGER:add_event(Event({--This is the Hand name text for the poker hand
+    trigger = 'before',
+    blockable = not config.immediate,
+    delay = config.delay or 0.8,
+    func = function()
+        local col = G.C.GREEN
+        if vals.chips and G.GAME.current_round.current_hand.chips ~= vals.chips then
+            local delta = (is_number(vals.chips) and is_number(G.GAME.current_round.current_hand.chips)) and (vals.chips - G.GAME.current_round.current_hand.chips) or 0
+            if to_big(delta) < to_big(0) then delta = number_format(delta); col = G.C.RED
+            elseif to_big(delta) > to_big(0) then delta = '+'..number_format(delta)
+            else delta = number_format(delta)
+            end
+            if type(vals.chips) == 'string' then delta = vals.chips end
+            G.GAME.current_round.current_hand.chips = vals.chips
+            G.hand_text_area.chips:update(0)
+        end
+        if vals.mult and G.GAME.current_round.current_hand.mult ~= vals.mult then
+            local delta = (is_number(vals.mult) and is_number(G.GAME.current_round.current_hand.mult))and (vals.mult - G.GAME.current_round.current_hand.mult) or 0
+            if to_big(delta) < to_big(0) then delta = number_format(delta); col = G.C.RED
+            elseif to_big(delta) > to_big(0) then delta = '+'..number_format(delta)
+            else delta = number_format(delta)
+            end
+            if type(vals.mult) == 'string' then delta = vals.mult end
+            G.GAME.current_round.current_hand.mult = vals.mult
+            G.hand_text_area.mult:update(0)
+        end
+        if vals.handname and G.GAME.current_round.current_hand.handname ~= vals.handname then
+            G.GAME.current_round.current_hand.handname = vals.handname
+        end
+        return true
+    end}))
+end
+
+local evaluate_poker_hand_ref = evaluate_poker_hand
+function evaluate_poker_hand(hand)
+    local results = evaluate_poker_hand_ref(hand)
+    for i, v in ipairs(G.handlist) do
+        if G.GAME.SudoHand and G.GAME.SudoHand[v] and not G.GAME.USINGSUDO then
+            results[G.GAME.SudoHand[v]] = results[v]
+        end
+        if G.GAME.Interfered then
+            results[v] = results[pseudorandom_element(G.handlist, pseudoseed("interfered"))]
+        end
+    end
+    return results
+end
+
+local update_round_evalref = Game.update_round_eval
+function Game:update_round_eval(dt)
+    update_round_evalref(self, dt)
+    if G.GAME.Overflow then
+        G.hand.config.highlighted_limit = G.GAME.Overflow
+        G.GAME.Overflow = nil
+    end
+    if G.GAME.Interfered then
+        G.TAROT_INTERRUPT_PULSE = true
+        G.TAROT_INTERRUPT = true
+        update_hand_text_random(
+        { nopulse = true, immediate=true },
+        { handname = "", mult = 0, chips=0}
+        )
+        G.TAROT_INTERRUPT_PULSE = false
+        G.TAROT_INTERRUPT = false
+        G.GAME.Interfered = nil
+    end
+    if G.GAME.IncrementAnte and G.GAME.IncrementAnte ~= G.GAME.round_resets.ante then
+        G.GAME.IncrementAnte = nil
+        if G.GAME.Increment then
+            G.E_MANAGER:add_event(Event({
+                func = function() --card slot
+                    -- why is this in an event?
+                    change_shop_size(-G.GAME.Increment)
+                    G.GAME.Increment = nil
+                    return true
+                end,
+            }))
+        end
+    end
+end
