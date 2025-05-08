@@ -1220,7 +1220,7 @@ local multithread = {
         end 
     end,
     can_use = function(self, card)
-        return Entropy.GetHighlightedCards({G.hand}, nil, card) > 0
+        return #Entropy.GetHighlightedCards({G.hand}, nil, card) > 0
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "temporary", set="Other"}
