@@ -727,3 +727,7 @@ function Entropy.stringsplit(s)
     end
     return tbl
 end
+
+function Entropy.TableAny(table, func)
+    for i, v in pairs(table) do if func(v) then return true end end
+end
