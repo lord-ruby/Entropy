@@ -435,6 +435,22 @@ function Card:set_ability(center, initial, delay)
     end
 end
 
+local set_baseref = Card.set_base
+function Card:set_base(card, initial)
+    set_baseref(self, card, initial)
+    local definekey = G.GAME.DefineKeys and G.GAME.DefineKeys[self.base.name] or nil
+    if definekey then
+        if type(definekey) == "table" and definekey.playing_card then
+            set_abilityref(self, G.P_CENTERS[definekey._enh or "c_base"] or G.P_CENTERS["c_base"], initial, delay)
+            SMODS.change_base(self, definekey._suit, definekey._rank)
+            if definekey._ed ~= "" then self:set_edition(definekey._ed) end
+            if definekey._seal ~= "" then self:set_seal(definekey._seal) end
+        else    
+            set_abilityref(self, G.P_CENTERS[definekey], initial, delay)
+        end
+        self.fromdefine = true
+    end
+end
 
 local add_ref = CardArea.emplace
 function CardArea:emplace(card, location, stay_flipped)
