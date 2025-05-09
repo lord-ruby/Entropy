@@ -1522,8 +1522,10 @@ local beyond = {
     use = function(self, card)
         local deletable_jokers = {}
 		for k, v in pairs(G.jokers.cards) do
-			if not v.ability.eternal and not Entropy.DeckOrSleeve("doc") then
-				deletable_jokers[#deletable_jokers + 1] = v
+			if not v.ability.eternal then
+                if not Entropy.DeckOrSleeve("doc") or (G.GAME.entropy or 0) < 200 then
+				    deletable_jokers[#deletable_jokers + 1] = v
+                end
 			end
 		end
         if Entropy.DeckOrSleeve("doc") then
