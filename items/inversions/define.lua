@@ -427,7 +427,7 @@ function Card:set_ability(center, initial, delay)
             if definekey._ed ~= "" then self:set_edition(definekey._ed) end
             if definekey._seal ~= "" then self:set_seal(definekey._seal) end
         else    
-            set_abilityref(self, G.P_CENTERS[definekey], initial, delay)
+            set_abilityref(self, G.P_CENTERS[definekey or ""] or center, initial, delay)
         end
         self.fromdefine = true
     else
