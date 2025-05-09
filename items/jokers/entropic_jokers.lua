@@ -87,7 +87,10 @@ local helios = {
     remove_from_deck = function()
         G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 308
         G.GAME.used_vouchers.v_cry_hyperspacetether = G.GAME.HyperspaceActuallyUsed
-    end
+    end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    }
 }
 
 local xekanos = {
@@ -626,7 +629,10 @@ local ieros = {
 				colour = { 0.8, 0.45, 0.85, 1 },
 			}
         end
-    end
+    end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    }
 }
 
 return {
