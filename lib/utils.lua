@@ -614,7 +614,12 @@ Entropy.ReverseRarityChecks = {
 for i, v in ipairs(Entropy.RarityChecks) do
     Entropy.ReverseRarityChecks[v]=i
 end
-
+function Entropy.RarityAbove(check, threshold, gte)
+    if not Entropy.ReverseRarityChecks[check] then Entropy.ReverseRarityChecks[check] = 1 end
+    if not Entropy.ReverseRarityChecks[threshold] then Entropy.ReverseRarityChecks[threshold] = 1 end
+    if gte then return Entropy.ReverseRarityChecks[check] < Entropy.ReverseRarityChecks[threshold] end
+    return Entropy.ReverseRarityChecks[check] <= Entropy.ReverseRarityChecks[threshold]
+end
 function Entropy.GetRandomRarityCard(rare)
     if rare == 1 then rare = "Common" end
     if rare == 2 then rare = "Uncommon" end
