@@ -389,7 +389,7 @@ local ichor = {
 	pos = {x=7,y=5},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card, area, copier)
-        local joker = pseudorandom_element(Entropy.FilterArea(G.jokers.cards, function(card)
+        local joker = pseudorandom_element(Entropy.FilterTable(G.jokers.cards, function(card)
             return card.edition and card.edition.key == "e_negative"
         end), pseudoseed("ichor"))
         joker:start_dissolve()
