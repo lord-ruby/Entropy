@@ -21,6 +21,7 @@ local i = {
     "items/misc/vouchers",
     "items/misc/decks",
     "items/misc/blinds",
+    "items/misc/stakes",
 
     "items/jokers/misc_jokers",
     "items/jokers/epic_jokers",

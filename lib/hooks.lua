@@ -1802,6 +1802,11 @@ function create_UIBox_blind_select()
                 G.GAME.EEBuildup = true
             end
         end
+        if G.GAME.modifiers.zenith then
+            for i, v in pairs(G.GAME.round_resets.blind_choices) do
+                G.GAME.round_resets.blind_choices[i] = "bl_entr_endless_entropy_phase_one"
+            end
+        end
         return uibox_ref()
     end
 end

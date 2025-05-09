@@ -137,3 +137,10 @@ SMODS.Atlas {
     px = 34,
     py = 34,
 }:register()
+
+SMODS.Atlas {
+    key = 'stakes', 
+    path = 'stakes.png', 
+    px = 29, 
+    py = 29
+}

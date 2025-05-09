@@ -15,7 +15,7 @@ SMODS.ContentSet({
 
 SMODS.ContentSet({
 	key = "blinds",
-	atlas = "consumables", --atlas = "blinds",
+	atlas = "blinds",
 	pos = { x = 1, y = 1 },
     cry_blind = true,
 	cry_order = 0,
