@@ -547,7 +547,7 @@ local chocolate_egg = {
     },
     blueprint_compat = true,
     eternal_compat = true,
-    pos = { x = 8, y = 0 },
+    pos = { x = 0, y = 2 },
     atlas = "jokers",
     demicoloncompat = true,
     pools = { ["Food"] = true, ["Candy"] = true },
