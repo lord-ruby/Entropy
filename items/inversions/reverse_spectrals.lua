@@ -959,16 +959,18 @@ local fusion = {
         end
         Entropy.FlipThen(actual, function(card,area)
             local sel = Entropy.GetHighlightedCards({G.jokers, G.consumeables, G.hand}, card, {c_base=true})[1]
-            local enhancement_type = sel.ability and sel.ability.set or sel.config.center.set
-            if sel.area == G.hand then
-                SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("fusion")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("fusion")))
-                card:set_ability(G.P_CENTERS.c_base)
-            else
-                local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("fusion")).key
-                while G.P_CENTERS[enhancement].no_doe or (G.P_CENTERS[enhancement].soul_rate and pseudorandom("fusion") > 0.02) or G.GAME.banned_keys[enhancement] do
-                    enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("fusion")).key
+            if sel then
+                local enhancement_type = sel.ability and sel.ability.set or sel.config.center.set
+                if sel.area == G.hand then
+                    SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("fusion")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("fusion")))
+                    card:set_ability(G.P_CENTERS.c_base)
+                else
+                    local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("fusion")).key
+                    while G.P_CENTERS[enhancement].no_doe or (G.P_CENTERS[enhancement].soul_rate and pseudorandom("fusion") > 0.02) or G.GAME.banned_keys[enhancement] do
+                        enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("fusion")).key
+                    end
+                    card:set_ability(G.P_CENTERS[enhancement])
                 end
-                card:set_ability(G.P_CENTERS[enhancement])
             end
         end)
     end,
