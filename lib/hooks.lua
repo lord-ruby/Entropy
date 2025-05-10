@@ -901,7 +901,7 @@ function G.UIDEF.use_and_sell_buttons(card)
               }},
           }}
     end
-    if ((card.ability.set == "RCode" or card.ability.set == "CBlind" or card.ability.set == "RTarot" or card.ability.set = "RSpectral") or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front) and (card.ability.consumeable) then
+    if ((card.ability.set == "RCode" or card.ability.set == "CBlind" or card.ability.set == "RTarot" or card.ability.set == "RSpectral") or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front) and (card.ability.consumeable) then
         return {
             n = G.UIT.ROOT,
             config = { padding = -0.1, colour = G.C.CLEAR },
