@@ -49,7 +49,7 @@ local epitachyno = {
         end
     end,
     entr_credits = {
-        art = {"dancm4ster"}
+        art = {"Grahkon"}
     }
 }
 
