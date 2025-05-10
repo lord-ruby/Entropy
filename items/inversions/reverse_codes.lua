@@ -1060,10 +1060,10 @@ local hotfix = {
     atlas = "consumables",
     pos = {x=1,y=5},
     use = function(self, card, area, copier)
-        Entropy.ApplySticker(Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, nil, card)[1], "entr_hotfix")
+        Entropy.ApplySticker(Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, card)[1], "entr_hotfix")
     end,
     can_use = function(self, card)
-        return #Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, nil, card) == 1
+        return #Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, card) == 1
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "entr_hotfix", set="Other"}
