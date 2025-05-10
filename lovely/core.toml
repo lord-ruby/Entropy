@@ -97,6 +97,13 @@ Entropy.ConsumablePackBlacklist = {
   p_mupack_multipack3=true,
   p_mupack_multipack4=true,
   p_mupack_multipack5=true,
+},
+Entropy.RareInversions = {
+  c_entr_fervour,
+  c_entr_define,
+  c_entr_quasar,
+  c_entr_pulsar,
+  c_entr_beyond
 }
 '''
 match_indent = true
