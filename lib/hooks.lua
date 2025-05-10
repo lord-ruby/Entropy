@@ -921,7 +921,7 @@ function G.UIDEF.use_and_sell_buttons(card)
                         colour = G.C.UI.BACKGROUND_INACTIVE,
                         one_press = true,
                         button = "use_card",
-                        func = (card.ability.set == "RCode" or card.ability.set == "CBlind" or card.ability.set == "RTarot") and "can_reserve_card" or "can_reserve_card_to_deck",
+                        func = (card.ability.set == "RCode" or card.ability.set == "CBlind" or card.ability.set == "RTarot" or card.ability.set == "RSpectral") and "can_reserve_card" or "can_reserve_card_to_deck",
                     },
                     nodes = {
                         {
