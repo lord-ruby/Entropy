@@ -915,6 +915,14 @@ local decs = {
 					"Apply {C:red}Temporary{} to",
 					"#1# selected playing cards"
 				}
+			},
+			c_entr_transpile = {
+				name = "(~)$ transpile",
+				text = {
+					"{C:dark_edition}#1#{} Joker Slots",
+					"{C:dark_edition}+#2#{} Consumable Slots",
+					"{C:dark_edition}+#3#{} Hand Size"
+				}
 			}
 		},
 		RPlanet = {

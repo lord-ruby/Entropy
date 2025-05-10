@@ -1332,7 +1332,7 @@ local local_card = {
         }
     },
     object_type = "Consumable",
-    order = 3000+26,
+    order = 3000+27,
     key = "local",
     set = "RCode",
     
@@ -1357,6 +1357,50 @@ local local_card = {
             }
         }
     end,
+}
+
+local transpile = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+30,
+    key = "transpile",
+    set = "RCode",
+    
+    inversion = "c_cry_assemble",
+
+    atlas = "consumables",
+    pos = {x=4,y=6},
+    config = {
+        jokerslots = -1,
+        handsize = 2,
+        consumableslots = 2
+    },
+    use = function(self, card, area, copier)
+        G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.jokerslots
+        G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.consumableslots
+        G.hand.config.card_limit = G.hand.config.card_limit + card.ability.handsize
+    end,
+    can_use = function(self, card)
+        return G.jokers and G.jokers.config.card_limit > 0
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1]={set="Other",key="temporary"}
+        return {
+            vars = {
+                card.ability.jokerslots,
+                card.ability.consumableslots,
+                card.ability.handsize,
+            }
+        }
+    end,
+    entr_credits = {
+        art = {"Grakhon"},
+        idea = {"Grakhon"}
+    }
 }
 
 return {
@@ -1390,6 +1434,7 @@ return {
         temporary,
         autostart,
         ctrl_x,
-        local_card
+        local_card,
+        transpile
     }
 }

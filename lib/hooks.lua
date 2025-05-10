@@ -901,7 +901,77 @@ function G.UIDEF.use_and_sell_buttons(card)
               }},
           }}
     end
-
+    if ((card.ability.set == "RCode" or card.ability.set == "CBlind" or card.ability.set == "RTarot" or card.ability.set = "RSpectral") or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front) and (card.ability.consumeable) then
+        return {
+            n = G.UIT.ROOT,
+            config = { padding = -0.1, colour = G.C.CLEAR },
+            nodes = {
+                {
+                    n = G.UIT.R,
+                    config = {
+                        ref_table = card,
+                        r = 0.08,
+                        padding = 0.1,
+                        align = "bm",
+                        minw = 0.5 * card.T.w - 0.15,
+                        minh = 0.7 * card.T.h,
+                        maxw = 0.7 * card.T.w - 0.15,
+                        hover = true,
+                        shadow = true,
+                        colour = G.C.UI.BACKGROUND_INACTIVE,
+                        one_press = true,
+                        button = "use_card",
+                        func = (card.ability.set == "RCode" or card.ability.set == "CBlind" or card.ability.set == "RTarot") and "can_reserve_card" or "can_reserve_card_to_deck",
+                    },
+                    nodes = {
+                        {
+                            n = G.UIT.T,
+                            config = {
+                                text = card.ability.set == "RCode" and localize("b_pull")  or localize("b_select"),
+                                colour = G.C.UI.TEXT_LIGHT,
+                                scale = 0.55,
+                                shadow = true,
+                            },
+                        },
+                    },
+                },
+                {
+                    n = G.UIT.R,
+                    config = {
+                        ref_table = card,
+                        r = 0.08,
+                        padding = 0.1,
+                        align = "bm",
+                        minw = 0.5 * card.T.w - 0.15,
+                        maxw = 0.9 * card.T.w - 0.15,
+                        minh = 0.1 * card.T.h,
+                        hover = true,
+                        shadow = true,
+                        colour = G.C.UI.BACKGROUND_INACTIVE,
+                        one_press = true,
+                        button = "Do you know that this parameter does nothing?",
+                        func = "can_use_consumeable",
+                    },
+                    nodes = {
+                        {
+                            n = G.UIT.T,
+                            config = {
+                                text = localize("b_use"),
+                                colour = G.C.UI.TEXT_LIGHT,
+                                scale = 0.45,
+                                shadow = true,
+                            },
+                        },
+                    },
+                },
+                { n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
+                { n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
+                { n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
+                { n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
+                -- Betmma can't explain it, neither can I
+            },
+        }
+    end
 
     --remove sell button if beyond exists in pack
     if

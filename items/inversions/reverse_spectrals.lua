@@ -395,7 +395,7 @@ local ichor = {
         joker:start_dissolve()
         G.GAME.banned_keys[joker.config.center.key] = true
         G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.num
-        eval_card(v, {banishing_card = true, banisher = card, card = joker, cardarea = joker.area})
+        eval_card(joker, {banishing_card = true, banisher = card, card = joker, cardarea = joker.area})
     end,
     can_use = function(self, card)
         if not G.jokers then return false end
