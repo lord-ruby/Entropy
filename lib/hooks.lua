@@ -1150,6 +1150,7 @@ function Card:start_dissolve(...)
         local c = create_card("Joker", G.jokers, nil, "Rare")
         c:add_to_deck()
         G.jokers:emplace(c)
+        c:set_edition("e_entr_sunny")
     end
 end
 
