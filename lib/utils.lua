@@ -731,3 +731,9 @@ end
 function Entropy.TableAny(table, func)
     for i, v in pairs(table) do if func(v) then return true end end
 end
+
+function Card:is_sunny()
+    if self.config.center.key == "j_entr_sunny_joker" then return true end
+    if self.edition and self.edition.key == "e_entr_sunny" then return true end
+    return nil
+end

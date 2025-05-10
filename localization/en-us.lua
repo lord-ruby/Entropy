@@ -442,6 +442,14 @@ local decs = {
 					"{X:entr_zenith,C:white}#1#25000#2#666{} Mult",
 					"{s:0.8,C:entr_zenith}Dont you know, hope is the strongest aspect{}"
 				}
+			},
+			j_entr_devilled_suns = {
+				name = "Devilled Suns",
+				text = {
+					"{C:gold}+#1#{} Ascension Power",
+					"{C:gold}+#2#{} more for every",
+					"{C:dark_edition}Sunny{} Joker owned"
+				}
 			}
 		},
 		Blind = {
@@ -530,6 +538,14 @@ local decs = {
 					"when scored"
 				},
 			},
+			e_entr_sunny = {
+				name = "Sunny",
+				text = {
+					"{C:gold}+#1#{} Ascension Power",
+					"Ever heard of {X:gold,C:white}ascendant{}",
+					"humor buddy?"
+				}
+			}
 		},
 		Back = {
 			b_entr_twisted = {

@@ -628,6 +628,50 @@ local lotteryticket = {
     end,
 }
 
+local devilled_suns = {
+    order = 14,
+    object_type = "Joker",
+    key = "devilled_suns",
+    rarity = 2,
+    cost = 3,
+    
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    blueprint_compat=true,
+    demicoloncompat=true,
+    eternal_compat = true,
+    pos = { x = 1, y = 2 },
+    atlas = "jokers",
+    config = { base = 1, per_sunny = 1},
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue+1] = G.P_CENTERS.e_entr_sunny
+        return {
+            vars = {
+                card.ability.base,
+                card.ability.per_sunny
+            },
+        }
+    end,
+    calculate = function (self, card, context)
+        if context.joker_main or context.forcetrigger then
+            local num = card.ability.base
+            for i, v in pairs(G.jokers.cards) do
+                if v:is_sunny() then num = num + card.ability.per_sunny end
+            end
+            return {
+                plus_asc = num
+            }
+        end
+    end,
+    entr_credits = {
+        art = {"Grahkon"},
+        idea = {"Grahkon"}
+    }
+}
+
 return {
     items = {
         surreal,
@@ -641,6 +685,7 @@ return {
         insatiable_dagger,
         rusty_shredder,
         chocolate_egg,
-        lotteryticket
+        lotteryticket,
+        devilled_suns
     }
 }
