@@ -47,7 +47,10 @@ local epitachyno = {
             end
             card.ability.extra = card.ability.extra + card.ability.exp_mod
         end
-    end
+    end,
+    entr_credits = {
+        art = {"dancm4ster"}
+    }
 }
 
 local helios = {
