@@ -458,12 +458,12 @@ local add_ref = CardArea.emplace
 function CardArea:emplace(card, location, stay_flipped)
     if G.SETTINGS.paused or not G.GAME.DefineKeys or G.GAME.akyrs_any_drag then
         add_ref(self, card, location, stay_flipped)
-    elseif self.fromdefine then
+    elseif card.fromdefine then
         local area = ({
             Default= G.hand,
             Enhanced = G.hand,
             Joker = G.jokers
-        })[self.config.center.set] or G.consumeables
+        })[card.config.center.set] or G.consumeables
         if area then add_ref(area, card, location, stay_flipped) end
         if area == G.hand and G.hand then
             add_ref(G.deck, card, location, stay_flipped)
