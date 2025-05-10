@@ -86,6 +86,18 @@ Entropy.EditionFactors = {
     ["e_cry_astral"] = 2.2,
     ["e_cry_m"] = 1.45
 }
+Entropy.SegFaultBlacklist = {
+  entr_entropic = true,
+  cry_exotic = true,
+  4 = true
+}
+Entropy.ConsumablePackBlacklist = {
+  p_mupack_multipack1=true,
+  p_mupack_multipack2=true,
+  p_mupack_multipack3=true,
+  p_mupack_multipack4=true,
+  p_mupack_multipack5=true,
+}
 '''
 match_indent = true
 

@@ -867,7 +867,7 @@ local segfault = {
             key = Cryptid.random_consumable("entr_segfault", nil, "c_entr_segfault").key
         else
             key = pseudorandom_element(G.P_CENTERS, pseudoseed("segfault"))
-            while key.set ~= ptype do
+            while key.set ~= ptype or Entropy.SegFaultBlacklist[key.key] or Entropy.SegFaultBlacklist[key.rarity] do
                 key = pseudorandom_element(G.P_CENTERS, pseudoseed("segfault"))
             end
             key = key.key
