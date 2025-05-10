@@ -1571,9 +1571,17 @@ local decs = {
 				name = "{C:gold}Oversaturated Tag{}",
 				text = { "{C:attention}All{} shop items are {C:dark_edition}Oversaturated{}" },
 			},
+			tag_entr_ascendant_sunny = {
+				name = "{C:gold}Sunny Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Sunny{}" },
+			},
 			tag_entr_ascendant_solar = {
 				name = "{C:gold}Solar Tag{}",
 				text = { "{C:attention}All{} shop items are {C:dark_edition}Solar{}" },
+			},
+			tag_entr_ascendant_fractured = {
+				name = "{C:gold}Fractured Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Fractured{}" },
 			},
 			tag_entr_ascendant_infdiscard = {
 				name = "{C:gold}Discard Tag{}",
