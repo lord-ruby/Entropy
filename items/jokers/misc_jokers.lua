@@ -498,6 +498,7 @@ local rusty_shredder = {
             "set_entr_misc_jokers"
         }
     },
+    blueprint_compat=true,
     immutable = true,
     eternal_compat = true,
     pos = { x = 7, y = 1 },
