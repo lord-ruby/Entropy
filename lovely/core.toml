@@ -89,7 +89,7 @@ Entropy.EditionFactors = {
 Entropy.SegFaultBlacklist = {
   entr_entropic = true,
   cry_exotic = true,
-  4 = true
+  [4] = true
 }
 Entropy.ConsumablePackBlacklist = {
   p_mupack_multipack1=true,

@@ -32,7 +32,7 @@ SMODS.Sound({
 	path = "woof3.ogg",
 })
 
-local solar = {
+local sunny = {
 	object_type = "Tag",
 	order = -9,
 	dependencies = {
@@ -42,6 +42,50 @@ local solar = {
 	},
 	atlas = "tags",
 	pos = { x = 1, y = 0 },
+	config = { level = 1 },
+	key = "sunny",
+	name = "entr-Sunny Tag",
+	min_ante = 3,
+	config = { type = "store_joker_modify", edition = "entr_sunny" },
+	loc_vars = function(self, info_queue, tag)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_sunny
+		return { vars = {} }
+	end,
+	apply = function(self, tag, context)
+		if context.type == "store_joker_modify" then
+			local _applied = nil
+			if Cryptid.forced_edition() then
+				tag:nope()
+			end
+			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
+				local lock = tag.ID
+				G.CONTROLLER.locks[lock] = true
+				context.card.temp_edition = true
+				tag:yep("+", G.C.DARK_EDITION, function()
+					context.card:set_edition("e_entr_sunny", true)
+					context.card.ability.couponed = true
+					context.card:set_cost()
+					context.card.temp_edition = nil
+					G.CONTROLLER.locks[lock] = nil
+					return true
+				end)
+				_applied = true
+				tag.triggered = true
+			end
+		end
+	end,
+}
+
+local solar = {
+	object_type = "Tag",
+	order = -8,
+	dependencies = {
+	  items = {
+		"set_entr_tags"
+	  }
+	},
+	atlas = "tags",
+	pos = { x = 2, y = 0 },
 	config = { level = 1 },
 	key = "solar",
 	name = "entr-Solar Tag",
@@ -75,6 +119,51 @@ local solar = {
 		end
 	end,
 }
+
+local fractured = {
+	object_type = "Tag",
+	order = -7,
+	dependencies = {
+	  items = {
+		"set_entr_tags"
+	  }
+	},
+	atlas = "tags",
+	pos = { x = 3, y = 0 },
+	config = { level = 1 },
+	key = "fractured",
+	name = "entr-fractured Tag",
+	min_ante = 9,
+	config = { type = "store_joker_modify", edition = "entr_fractued" },
+	loc_vars = function(self, info_queue, tag)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_fractured
+		return { vars = {} }
+	end,
+	apply = function(self, tag, context)
+		if context.type == "store_joker_modify" then
+			local _applied = nil
+			if Cryptid.forced_edition() then
+				tag:nope()
+			end
+			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
+				local lock = tag.ID
+				G.CONTROLLER.locks[lock] = true
+				context.card.temp_edition = true
+				tag:yep("+", G.C.DARK_EDITION, function()
+					context.card:set_edition("e_entr_fractured", true)
+					context.card.ability.couponed = true
+					context.card:set_cost()
+					context.card.temp_edition = nil
+					G.CONTROLLER.locks[lock] = nil
+					return true
+				end)
+				_applied = true
+				tag.triggered = true
+			end
+		end
+	end,
+}
+
 
 --ascendant tags
 
@@ -1326,7 +1415,9 @@ local effarcire = {
 return {
 	items = {
 		dog,
+		sunny,
 		solar,
+		fractured,
 		rare,
 		epic,
 		legendary,

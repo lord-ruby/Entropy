@@ -1463,12 +1463,28 @@ local decs = {
 				name = "Dog Tag",
 				text = { "Woof.", "{C:inactive}Level {C:dark_edition}#1#" },
 			},
+			tag_entr_sunny = {
+				name = "Sunny Tag",
+				text = { 
+					"Next base Edition shop",
+					"Joker is free and",
+					"becomes {C:dark_edition}Sunny{}"	
+				},
+			},
 			tag_entr_solar = {
 				name = "Solar Tag",
 				text = { 
 					"Next base Edition shop",
 					"Joker is free and",
 					"becomes {C:dark_edition}Solar{}"	
+				},
+			},
+			tag_entr_fractured = {
+				name = "Fractured Tag",
+				text = { 
+					"Next base Edition shop",
+					"Joker is free and",
+					"becomes {C:dark_edition}Fractured{}"	
 				},
 			},
 			tag_entr_ascendant_rare = {
