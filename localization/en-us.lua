@@ -450,7 +450,14 @@ local decs = {
 					"{C:gold}+#2#{} more for every",
 					"{C:dark_edition}Sunny{} Joker owned"
 				}
-			}
+			},
+			j_entr_eden = {
+				name = "The Garden of Eden",
+				text = {
+					"Other {C:dark_edition}Sunny{} cards",
+					"each give {C:gold}+#1#{} Ascension Power",
+				},
+			},
 		},
 		Blind = {
 			bl_entr_red = {

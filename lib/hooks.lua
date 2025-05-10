@@ -1219,6 +1219,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
     if card and card.ability and card.ability.name == "entr-trapezium_cluster" then
 		card:set_edition("e_entr_fractured", true, nil, true)
 	end
+    if card and card.ability and card.ability.name == "entr-eden" then
+		card:set_edition("e_entr_sunny", true, nil, true)
+	end
     return card
 end
 
