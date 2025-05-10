@@ -270,7 +270,7 @@ local entropy_card = {
     key = "entropy_card",
     config = {
         x_asc_mod = 1,
-        num = 290 --sun
+        num = 301 --sun
     },
     dependencies = {
         items = {
