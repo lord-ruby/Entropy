@@ -1388,7 +1388,6 @@ local transpile = {
         return G.jokers and G.jokers.config.card_limit > 0
 	end,
     loc_vars = function(self, q, card)
-        q[#q+1]={set="Other",key="temporary"}
         return {
             vars = {
                 card.ability.jokerslots,
