@@ -269,6 +269,7 @@ local anaptyxi = {
         end
     end,
 	cry_scale_mod = function(self, card, joker, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
+        if joker.config.center.key == "j_entr_anaptyxi" then return end
         local new_scale = lenient_bignum(
             to_big(true_base)
                 * (
