@@ -153,10 +153,10 @@ local whetstone = {
         < cry_prob(card2.ability.cry_prob, card2.ability.extra.odds, card2.ability.cry_rigged) / card2.ability.extra.odds then
             local cards = Entropy.GetHighlightedCards({G.hand}, card)
             Entropy.FlipThen(cards, function(card)
-                local enh = Entropy.UpgradeEnhancement(card)
+                local enh = Entropy.UpgradeEnhancement(card, false, {m_entr_disavowed = true})
                 card:set_ability(G.P_CENTERS[enh])
                 for i = 1, math.floor(pseudorandom("whetstone")*2+0.5) do
-                    enh = Entropy.UpgradeEnhancement(card)
+                    enh = Entropy.UpgradeEnhancement(card, false, {m_entr_disavowed = true})
                     card:set_ability(G.P_CENTERS[enh])
                 end
                 if enh ~= card.config.center.key then

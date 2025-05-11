@@ -673,8 +673,8 @@ local exelixi = {
             if pseudorandom("exelixi")
             < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
                 Entropy.FlipThen({context.other_card}, function(card)
-                    if Entropy.UpgradeEnhancement(card, true) then
-                        card:set_ability(Entropy.UpgradeEnhancement(card, true))
+                    if Entropy.UpgradeEnhancement(card, true, {m_entr_disavowed=true, m_entr_flesh=true}) then
+                        card:set_ability(Entropy.UpgradeEnhancement(card, true, {m_entr_disavowed=true, m_entr_flesh=true}))
                     end
                 end)
             end
