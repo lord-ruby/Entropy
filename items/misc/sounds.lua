@@ -32,7 +32,7 @@ SMODS.Sound({
 	key = "music_fall",
 	path = "music_fall.ogg",
 	select_music_track = function()
-		return ((G.GAME.round_resets.ante_disp == "32" and G.STATE == 1) or G.GAME.EEBuildup) and 10^302
+		return ((G.GAME.round_resets.ante_disp == "32" and G.STATE == 1) or G.GAME.EEBuildup) and Entropy.CanEeSpawn() and 10^302
 	end,
 })
 
