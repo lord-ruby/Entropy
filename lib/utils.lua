@@ -716,7 +716,7 @@ function Entropy.GetEditionFactor(edition)
 end
 
 function Entropy.CanEeSpawn()
-    if MP and MP.LOBBY then return false end
+    if MP and MP.LOBBY and MP.LOBBY.code then return false end
     return true
 end
 
