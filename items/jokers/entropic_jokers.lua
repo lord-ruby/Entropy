@@ -305,6 +305,9 @@ local anaptyxi = {
                     { message = "+ "..number_format(to_big(card.ability.extra.scale*new_scale)) }
                 )
             end
+            if v.ability.extra.odds and type(v.ability.extra.odds) == "table" then
+                v.ability.extra.odds = to_number(v.ability.extra.odds)
+            end
         end
         return new_scale
 	end,
