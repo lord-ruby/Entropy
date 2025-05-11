@@ -51,6 +51,9 @@ function Entropy.RegisterBlinds()
                 if G.GAME.round_resets.ante_disp == "32" or G.GAME.EEBuildup then return false end
                 return false
             end,
+            loc_vars = function(self,q,c)
+                q[#q+1]={set="Blind",key=self.config.blind}
+            end,
             set_sprites = function(self, card, front)
                 card.children.floating_sprite = AnimatedSprite(
                     card.T.x+0.7,
@@ -64,7 +67,6 @@ function Entropy.RegisterBlinds()
                 card.children.floating_sprite.states.hover.can = false
                 card.children.floating_sprite.states.click.can = false
             end,
-            in_pool = v.in_pool
         }
     end
     for i, v in pairs(SMODS.Blind.obj_table) do
@@ -118,7 +120,9 @@ function Entropy.RegisterBlinds()
                     if G.GAME.round_resets.ante_disp == "32" or G.GAME.EEBuildup then return false end
                     return false
                 end,
-                in_pool = v.in_pool,
+                loc_vars = function(self,q,c)
+                    q[#q+1]={set="Blind",key=self.config.blind}
+                end,
                 entr_credits = v.entr_credits,
                 cry_credits = v.cry_credits,
                 set_sprites = function(self, card, front)
