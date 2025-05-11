@@ -49,7 +49,12 @@ Entropy.ChaosBlacklist = {}
 Entropy.ParakmiBlacklist = {}
 Entropy.ChaosConversions = {}
 Entropy.AscendedTags = {}
-Entropy.BlindTokenBlacklist = {}
+Entropy.BlindTokenBlacklist = {
+  bl_entr_endless_entropy_phase_one = true,
+  bl_entr_endless_entropy_phase_two = true,
+  bl_entr_endless_entropy_phase_three = true,
+  bl_entr_endless_entropy_phase_four = true
+}
 Entropy.References = {}
 Entropy.Zeniths = {}
 Entropy.RarityPoints = {
