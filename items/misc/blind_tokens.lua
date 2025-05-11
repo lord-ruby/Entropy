@@ -68,7 +68,7 @@ function Entropy.RegisterBlinds()
         }
     end
     for i, v in pairs(SMODS.Blind.obj_table) do
-        if not Entropy.BlindTokenBlacklist[i] then
+        if not Entropy.BlindTokenBlacklist[i] and not v.no_collection then
             order = order + 1
             Entropy.BlindC[#Entropy.BlindC+1]="entr_"..i
             blinds[#blinds+1] = {
