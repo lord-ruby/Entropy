@@ -440,7 +440,7 @@ local insatiable_dagger = {
     blueprint_compat = true,
     eternal_compat = true,
     immutable = true,
-    pos = { x = 7, y = 0 },
+    pos = { x = 4, y = 2 },
     atlas = "jokers",
     calculate = function(self, card, context)
         if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
@@ -482,7 +482,8 @@ local insatiable_dagger = {
         end
     end,
     entr_credits = {
-        idea = {"cassknows"}
+        idea = {"cassknows"},
+	art = {"spikeberd"}
     }
 }
 
