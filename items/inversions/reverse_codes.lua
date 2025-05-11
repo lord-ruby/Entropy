@@ -516,9 +516,9 @@ local fork = {
                 G.E_MANAGER:add_event(Event({
                     trigger="immediate",
                     func = function()
-                        local ed = pseudorandom_element(G.P_CENTERS)
-                        while ed.set ~= "Enhanced" do
-                            ed = pseudorandom_element(G.P_CENTERS)
+                        local ed = pseudorandom_element(G.P_CENTERS_POOLS.Enhanced)
+                        while ed.no_doe do
+                            ed = pseudorandom_element(G.P_CENTERS_POOLS.Enhanced)
                         end
                         card:set_ability(ed)
                         card:set_edition({

@@ -14,6 +14,14 @@ local decs = {
 				text = {
 					"Cannot change Enhancements"
 				}
+			},
+			m_entr_prismatic = {
+				name = "Prismatic Card",
+				text = {
+					"{X:dark_edition,C:white}^^#1#{} Mult",
+					"increase by {X:dark_edition,C:white}+^^#2#{}",
+					"when card is scored."
+				}
 			}
 		},
 		["Content Set"] = {
@@ -458,6 +466,15 @@ local decs = {
 					"each give {C:gold}+#1#{} Ascension Power",
 				},
 			},
+			j_entr_exelixi = {
+				name = "Exelixi",
+				text = {
+					"{C:green}#1# in #2#{} chance to upgrade",
+					"the {C:attention}enhancement{} of scored cards",
+					"Spread {C:attention}enhancements{} to adjacent cards",
+					"when {C:attention}discarding{}"
+				}
+			}
 		},
 		Blind = {
 			bl_entr_red = {
@@ -2043,6 +2060,7 @@ local decs = {
 			entr_pseudorandom = "Pseudorandom",
 			link = "Linked",
 			superego = "Projected",
+			entr_sunny = "Sunny",
 			entr_solar = "Solar",
 			entr_fractured = "Fractured",
 			entr_yellow_sign = "Yellow Sign",

@@ -737,3 +737,16 @@ function Card:is_sunny()
     if self.edition and self.edition.key == "e_entr_sunny" then return true end
     return nil
 end
+
+function Entropy.UpgradeEnhancement(card, bypass)
+    local enh = card.config.center.key
+    if bypass and enh == "c_base" then return G.P_CENTERS["m_mult"] end
+    local cards = {}
+    for i, v in pairs(G.P_CENTER_POOLS.Enhanced) do
+        if (not v.no_doe or bypass) and v.key ~= "m_entr_disavowed" then cards[#cards+1]=v end
+    end
+    for i, v in pairs(cards) do
+        if v.key == enh then return cards[i+1] end
+    end
+    return nil
+end

@@ -52,13 +52,55 @@ local disavowed = {
 	atlas = "enhancements",
 	pos = { x = 1, y = 0 },
 	weight = 0,
+	no_doe = true,
 	set_ability = function(self,card) 
 		card.ability.disavow = true
 	end
 }
+
+local prismatic = {
+	dependencies = {
+        items = {
+          "set_entr_entropics"
+        }
+    },
+	order = 10000+3,
+	object_type = "Enhancement",
+	key = "prismatic",
+	atlas = "enhancements",
+	pos = { x = 0, y = 1 },
+    config = {
+		extra = {
+            eemult = 1,
+			eemult_mod = 0.01
+		},
+	},
+	no_doe = true,
+	in_pool = function()
+		return false
+	end,
+	loc_vars = function(self, info_queue, card)
+		return {
+            vars = {
+                card.ability.extra.eemult,
+				card.ability.extra.eemult_mod
+            }
+		}
+	end,
+	calculate = function(self, card, context)
+		if context.cardarea == G.play and context.main_scoring then
+			card.ability.extra.eemult = card.ability.extra.eemult + card.ability.extra.eemult_mod
+			return {
+				eemult = card.ability.extra.eemult
+			}
+		end
+	end
+}
+
 return {
     items = {
         flesh,
-        disavowed
+        disavowed,
+		prismatic
     }
 }
