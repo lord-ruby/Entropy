@@ -2092,3 +2092,34 @@ function G.FUNCS.get_poker_hand_info(_cards)
     end
     return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
+
+
+local ref = update_hand_text
+
+function update_hand_text(config, vals)
+    if type(vals.mult) == "number" or type(vals.mult) == "table" and Entropy.HasJoker("j_entr_tesseract",true) and math.abs(to_big(vals.mult)) > to_big(0.001) then
+        local total_angle = 0
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center.key == "j_entr_tesseract" then
+                total_angle = total_angle + v.ability.degrees
+            end
+        end
+        total_angle = (total_angle/360)*2*3.141592
+        local base = {r=math.cos(total_angle),c=math.sin(total_angle)}
+        local str = Entropy.WhatTheFuck(base, vals.mult)
+        vals.mult = str
+    end
+    if type(vals.chips) == "number" or type(vals.chips) == "table" and Entropy.HasJoker("j_entr_tesseract",true) and math.abs(to_big(vals.chips)) > to_big(0.001) then
+        local total_angle = 0
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center.key == "j_entr_tesseract" then
+                total_angle = total_angle + v.ability.degrees
+            end
+        end
+        total_angle = -(total_angle/360)*2*3.14159265
+        local base = {r=math.cos(total_angle),c=math.sin(total_angle)}
+        local str = Entropy.WhatTheFuck(base, vals.chips)
+        vals.chips = str
+    end
+    ref(config, vals)
+end

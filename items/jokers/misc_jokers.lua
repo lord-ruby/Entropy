@@ -37,29 +37,29 @@ local surreal = {
     end
 }
 
--- local tesseract = {
---     order = 2,
---     object_type = "Joker",
---     key = "tesseract",
---     config = {
---         degrees = 90
---     },
---     rarity = 1,
---     cost = 3,
+local tesseract = {
+    order = 2,
+    object_type = "Joker",
+    key = "tesseract",
+    config = {
+        degrees = 90
+    },
+    rarity = 1,
+    cost = 3,
     
---     pools = { ["Meme"] = true },
---     blueprint_compat = true,
---     eternal_compat = true,
---     pos = { x = 1, y = 0 },
---     atlas = "jokers",
---     loc_vars = function(self, info_queue, card)
---         return {
---             vars = {
---                 number_format(card.ability.degrees)
---             },
---         }
---     end,
--- }
+    pools = { ["Meme"] = true },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 1, y = 0 },
+    atlas = "jokers",
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                number_format(card.ability.degrees)
+            },
+        }
+    end,
+}
 
 local solarflare = {
     order = 3,
@@ -813,6 +813,7 @@ return {
         lotteryticket,
         devilled_suns,
         eden,
-        seventyseven
+        seventyseven,
+        tesseract
     }
 }
