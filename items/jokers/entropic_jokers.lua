@@ -660,24 +660,13 @@ local exelixi = {
     },
     soul_pos = { x = 5, y = 5, extra = { x = 4, y = 5 } },
     atlas = "exotic_jokers",
-    loc_vars = function(self, info_queue, card)
-        return {
-            vars = {
-                cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
-            }
-        }
-    end,
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play then
-            if pseudorandom("exelixi")
-            < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
-                Entropy.FlipThen({context.other_card}, function(card)
-                    if Entropy.UpgradeEnhancement(card, true, {m_entr_disavowed=true, m_entr_flesh=true}) then
-                        card:set_ability(Entropy.UpgradeEnhancement(card, true, {m_entr_disavowed=true, m_entr_flesh=true}))
-                    end
-                end)
-            end
+            Entropy.FlipThen({context.other_card}, function(card)
+                if Entropy.UpgradeEnhancement(card, true, {m_entr_disavowed=true, m_entr_flesh=true}) then
+                    card:set_ability(Entropy.UpgradeEnhancement(card, true, {m_entr_disavowed=true, m_entr_flesh=true}))
+                end
+            end)
         end
         if context.discard then
             if context.other_card.config.center.set == "Enhanced" then
