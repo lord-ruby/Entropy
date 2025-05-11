@@ -761,6 +761,42 @@ local eden = {
 	end
 }
 
+local seventyseven = {
+    order = 16,
+    object_type = "Joker",
+    key = "seventyseven",
+    config = {
+        chips=100
+    },
+    rarity = 1,
+    cost = 4,
+    
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 3, y = 2 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    loc_vars = function(self, info_queue, center)
+        return {
+            vars = {
+                number_format(center.ability.chips)
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+		if context.joker_main then
+            return {
+                eq_chips = card.ability.chips
+            }
+        end
+	end
+}
+
 return {
     items = {
         surreal,
@@ -776,6 +812,7 @@ return {
         chocolate_egg,
         lotteryticket,
         devilled_suns,
-        eden
+        eden,
+        seventyseven
     }
 }

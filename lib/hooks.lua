@@ -1016,6 +1016,17 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         end
         return true
     end
+    if (key == 'eq_chips' or key == 'Eqchips_mod') then 
+        local e = card_eval_status_text
+        card_eval_status_text = function() end
+        scie(effect, scored_card, "Xchip_mod", 0, from_edition)
+        scie(effect, scored_card, "chip_mod", amount, from_edition)
+        card_eval_status_text = e
+        if not Talisman.config_file.disable_anims then
+            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'chips', amount, percent, nil, nil, "="..amount.. " Chips", G.C.BLUE)
+        end
+        return true
+    end
     if (key == 'asc') or (key == 'asc_mod') then
         local e = card_eval_status_text
         local orig = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num)
@@ -1060,7 +1071,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         return true
     end
 end
-for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'asc', 'asc_mod', 'plus_asc', 'plusasc_mod', 'exp_asc', 'exp_asc_mod'}) do
+for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'asc', 'asc_mod', 'plus_asc', 'plusasc_mod', 'exp_asc', 'exp_asc_mod', 'eq_chips', 'Eqchips_mod'}) do
     table.insert(SMODS.calculation_keys, v)
 end
 

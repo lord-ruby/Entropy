@@ -474,6 +474,12 @@ local decs = {
 					"Spread {C:attention}enhancements{} to adjacent cards",
 					"when {C:attention}discarding{}"
 				}
+			},
+			j_entr_seventyseven = {
+				name = "77+33",
+				text = {
+					"{X:entr_eqchips,C:white}=#1#{} Chips"
+				}
 			}
 		},
 		Blind = {
