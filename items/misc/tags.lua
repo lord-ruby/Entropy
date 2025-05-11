@@ -1463,6 +1463,7 @@ return {
 		booster,
 		effarcire,
 		sunny_asc,
-		fractured_asc
+		fractured_asc,
+		oversat
 	}
 }
