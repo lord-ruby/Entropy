@@ -478,8 +478,8 @@ local decs = {
 			j_entr_exelixi = {
 				name = "Exelixi",
 				text = {
-					"upgrade the {C:attention}enhancement{} of",
-					"scored cards based on {C:attention}collection order{}",
+					"upgrade the {C:attention}enhancement{}",
+					"of playing cards when scored",
 					"{C:attention}enhancements{} are given to adjacent cards",
 					"when {C:attention}discarding{} cards"
 				}

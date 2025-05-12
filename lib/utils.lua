@@ -28,26 +28,32 @@ function Entropy.Inversion(card)
 end
 
 function Entropy.FlipThen(cardlist, func, before, after)
-    for i, v in ipairs(cardlist) do
-        local card = cardlist[i]
-        if card then
-            G.E_MANAGER:add_event(
-                Event(
-                    {
-                        trigger = "after",
-                        delay = 0.1,
-                        func = function()
-                            if before then
-                                before(card)
+    if not Talisman.config_file.disable_anims then
+        for i, v in ipairs(cardlist) do
+            local card = cardlist[i]
+            if card then
+                G.E_MANAGER:add_event(
+                    Event(
+                        {
+                            trigger = "after",
+                            delay = 0.1,
+                            func = function()
+                                if before then
+                                    before(card)
+                                end
+                                if card.flip then
+                                    card:flip()
+                                end
+                                return true
                             end
-                            if card.flip then
-                                card:flip()
-                            end
-                            return true
-                        end
-                    }
+                        }
+                    )
                 )
-            )
+            end
+        end
+    else
+        if before then
+            before(card)
         end
     end
     for i, v in ipairs(cardlist) do
@@ -67,26 +73,32 @@ function Entropy.FlipThen(cardlist, func, before, after)
             )
         end
     end
-    for i, v in ipairs(cardlist) do
-        local card = cardlist[i]
-        if card then
-            G.E_MANAGER:add_event(
-                Event(
-                    {
-                        trigger = "after",
-                        delay = 0.1,
-                        func = function()
-                            if card.flip then
-                                card:flip()
+    if not Talisman.config_file.disable_anims then
+        for i, v in ipairs(cardlist) do
+            local card = cardlist[i]
+            if card then
+                G.E_MANAGER:add_event(
+                    Event(
+                        {
+                            trigger = "after",
+                            delay = 0.1,
+                            func = function()
+                                if card.flip then
+                                    card:flip()
+                                end
+                                if after then
+                                    after(card)
+                                end
+                                return true
                             end
-                            if after then
-                                after(card)
-                            end
-                            return true
-                        end
-                    }
+                        }
+                    )
                 )
-            )
+            end
+        end
+    else    
+        if after then
+            after(card)
         end
     end
 end
@@ -740,11 +752,14 @@ end
 
 function Entropy.UpgradeEnhancement(card, bypass, blacklist)
     local enh = card.config.center.key
-    if bypass and enh == "c_base" then return G.P_CENTERS["m_mult"] end
+    if bypass and enh == "c_base" then return G.P_CENTERS["m_bonus"] end
     local cards = {}
     for i, v in pairs(G.P_CENTER_POOLS.Enhanced) do
         if (not v.no_doe or bypass) and not blacklist[v.key] then cards[#cards+1]=v end
     end
+    table.sort(cards, function(a, b)
+        return (a.upgrade_order or a.order) < (b.upgrade_order or b.order)
+    end)
     for i, v in pairs(cards) do
         if v.key == enh then return cards[i+1] end
     end
