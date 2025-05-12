@@ -1935,7 +1935,7 @@ function Game:update(dt)
 			for i, v in pairs(G.jokers.cards) do
 				v.debuff = false
 			end
-            for i = 1, math.floor(math.max(math.min(G.jokers.config.card_limit, #G.jokers.cards)/3, 1.666666)-0.6666) do
+            for i = 1, math.ceil(math.min(G.jokers.config.card_limit, #G.jokers.cards)/7) do
                 if G.jokers.cards[i] then
                     G.jokers.cards[i].debuff = true
                 end
