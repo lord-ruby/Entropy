@@ -550,7 +550,7 @@ local decs = {
 				name = "Nameless Nadir",
 				text = {
 					"Void subsumes you,",
-					"(Debuff leftmost Joker slot,",
+					"(Debuff leftmost Joker slot(s),",
 					"Must not score more than #1#)"
 				}
 			},
