@@ -69,6 +69,9 @@ G.FUNCS.flame_handler = function(e)
       else
         _F.intensity = 0
       end
+      if to_big(_F.intensity) > to_big(85) then
+        _F.intensity = 85
+      end
       _F.timer = _F.timer + G.real_dt*(1 + _F.intensity*0.2)
       if _F.intensity_vel < 0 then _F.intensity_vel = _F.intensity_vel*(1 - 10*G.real_dt) end
       _F.intensity_vel = (1-exptime)*(_F.intensity - _F.real_intensity)*G.real_dt*25 + exptime*_F.intensity_vel

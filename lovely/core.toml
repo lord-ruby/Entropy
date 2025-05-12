@@ -110,6 +110,10 @@ Entropy.RareInversions = {
   "c_entr_pulsar",
   "c_entr_beyond"
 }
+Entropy.FixedRecipes = {
+    c_basec_basec_basec_basec_base = "j_joker",
+    m_steelm_steelm_steelm_steelm_steel = "j_cry_clockwork"
+}
 '''
 match_indent = true
 

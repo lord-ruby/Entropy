@@ -5,7 +5,7 @@ local epitachyno = {
     atlas = "exotic_jokers",
     rarity = "entr_entropic",
     pos = {x=0,y=1},
-    soul_pos = { x = 1, y = 1, extra = { x = 2, y = 1 } },
+    soul_pos = { x = 2, y = 1, extra = { x = 1, y = 1 } },
     config = {
         extra = 1.1,
         exp_mod = 0.05

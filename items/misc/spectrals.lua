@@ -70,9 +70,61 @@ local shatter = {
     }
 }
 
+local destiny = {
+    key = "destiny",
+    set = "Spectral",
+    
+    order = 36,
+    object_type = "Consumable",
+    atlas = "miscc",
+    immutable = true,
+    pos = {x=5,y=7},
+    dependencies = {
+        items = {
+          "set_entr_spectrals"
+        }
+    },
+    use = function(self, card, area, copier)
+        local remove = {}
+        for i, v in pairs(G.hand.highlighted) do
+            if v.config.center.key ~= "c_base" or pseudorandom("crafting") < 0.4 then
+                v:start_dissolve()
+                v.ability.temporary2 = true
+                remove[#remove+1]=v
+            else
+                Entropy.DiscardSpecific({v})
+            end
+        end
+        if #remove > 0 then SMODS.calculate_context({remove_playing_cards = true, removed=remove}) end
+        add_joker(Entropy.GetRecipe(G.hand.highlighted))
+        if Entropy.DeckOrSleeve("crafting") then
+            local card2 = copy_card(card)
+            card2.ability.cry_absolute = true
+            card2:set_edition("e_negative")
+            card2:add_to_deck()
+            G.consumeables:emplace(card2)
+        end
+    end,
+    can_use = function(self, card)
+        return G.hand and #G.hand.highlighted == 5
+	end,
+    loc_vars = function(self, q, card)
+        return {vars={
+            G.hand and #G.hand.highlighted == 5 and localize({type = "name_text", set = "Joker", key = Entropy.GetRecipe(G.hand.highlighted)}) or "none"
+        }}
+    end,
+    no_doe = true,
+    in_pool = function()
+        return false
+    end,
+    weight = 0
+}
+
+
 return {
     items = {
         flipside,
-        shatter
+        shatter,
+        destiny
     }
 }

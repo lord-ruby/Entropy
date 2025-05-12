@@ -97,6 +97,42 @@ local containment = {
     end
   }
 
+  local destiny = {
+    order = 3,
+    dependencies = {
+      items = {
+        "set_entr_decks"
+      }
+    },
+    object_type = "Back",
+    name = "Deck of Destiny",
+    key = "crafting",
+    pos = { x = 3, y = 0 },
+    atlas = "decks",
+    apply = function(self)
+      G.GAME.modifiers.crafting = true
+      if not G.GAME.JokerRecipes then G.GAME.JokerRecipes = {} end
+      --G.hand.config.highlighted_limit = 
+      G.GAME.joker_rate = 0
+      if not G.GAME.banned_keys then G.GAME.banned_keys = {} end
+      G.GAME.banned_keys["p_bufoon_normal_1"] = true
+      G.GAME.banned_keys["p_bufoon_normal_2"] = true
+      G.GAME.banned_keys["p_bufoon_jubmo_1"] = true
+      G.GAME.banned_keys["p_bufoon_mega_1"] = true
+      G.E_MANAGER:add_event(Event({
+        trigger = 'after',
+        func = function()
+          local c = create_card("Spectral", G.consumeables, nil, nil, nil, nil, "c_entr_destiny") 
+          c:set_edition("e_negative")
+          c.ability.cry_absolute = true
+          c:add_to_deck()
+          G.consumeables:emplace(c)
+          return true
+        end}))
+    end,
+    config = { vouchers = { "v_magic_trick", "v_illusion" } },
+  }
+
 Cryptid.edeck_sprites.seal.entr_cerulean = {atlas="entr_crypt_deck", pos = {x=0,y=0}}
 Cryptid.edeck_sprites.seal.entr_sapphire = {atlas="entr_crypt_deck", pos = {x=1,y=0}}
 Cryptid.edeck_sprites.seal.entr_verdant = {atlas="entr_crypt_deck", pos = {x=3,y=0}}
@@ -185,5 +221,6 @@ return {
       twisted,
       redefined,
       containment,
+      destiny
     }
   }

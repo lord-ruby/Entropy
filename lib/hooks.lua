@@ -2125,3 +2125,72 @@ function update_hand_text(config, vals)
     end
     ref(config, vals)
 end
+
+local create_ref = create_card
+function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+    local card = create_ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+    if card and card.config and card.config.center and card.config.center.key == "c_base" and Entropy.DeckOrSleeve("crafting") then
+      if pseudorandom("crafting") < 0.5 then
+        card:set_ability(pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("crafting")))
+      end
+	  end
+    return card
+end
+
+function Entropy.GetRecipeResult(val,jokerrares,seed)
+    local rare = 1
+    local cost=0
+    for i, v in pairs({
+        [1]=0,
+        [2]=6,
+        [3]=12,
+        cry_epic=20,
+        [4]=30,
+        cry_exotic=45
+    }) do
+        if v > cost and val >= v then
+            rare = i;cost=v
+        end
+    end
+    return pseudorandom_element(jokerrares[rare], pseudoseed(seed))
+end
+function Entropy.ConcatStrings(tbl)
+    local result = ""
+    for i, v in pairs(tbl) do result = result..v end
+    return result
+end
+
+
+
+function Entropy.GetRecipe(cards)
+    local enhancements = Entropy.EnhancementPoints
+    local rares = {}
+    for i, v in pairs(G.P_CENTER_POOLS.Joker) do
+        if not rares[v.rarity] then rares[v.rarity] = {} end
+        rares[v.rarity][#rares[v.rarity]+1] = v.key
+    end
+    local enh = {}
+    for i = 1, 5 do
+        local card = cards[i]
+        enh[#enh+1]=card.config.center.key
+    end
+    local sum = 0
+    for i, v in pairs(enh) do
+        if not enhancements[v] then
+            enhancements[v] = 4.5 + math.random()*0.1-0.05
+        end
+        sum = sum + (enhancements[v] or 4.5) 
+    end
+    table.sort(enh, function(a,b)return (enhancements[a])>(enhancements[b]) end)
+    G.GAME.JokerRecipes = G.GAME.JokerRecipes or {}
+    if not G.GAME.JokerRecipes[Entropy.ConcatStrings(enh)] then
+        G.GAME.JokerRecipes[Entropy.ConcatStrings(enh)]=Entropy.GetRecipeResult(sum, rares,Entropy.ConcatStrings(enh))
+    end
+    return Entropy.FixedRecipes[Entropy.ConcatStrings(enh)] or G.GAME.JokerRecipes[Entropy.ConcatStrings(enh)]
+end
+
+Entropy.DiscardSpecific = function(cards)
+    for i, v in pairs(cards) do
+        draw_card(G.hand, G.discard, i*100/#cards, 'down', false, v)
+    end
+end
