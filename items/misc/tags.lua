@@ -134,7 +134,7 @@ local fractured = {
 	key = "fractured",
 	name = "entr-fractured Tag",
 	min_ante = 9,
-	config = { type = "store_joker_modify", edition = "entr_fractued" },
+	config = { type = "store_joker_modify", edition = "entr_fractured" },
 	loc_vars = function(self, info_queue, tag)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_fractured
 		return { vars = {} }
@@ -164,6 +164,49 @@ local fractured = {
 	end,
 }
 
+local freaky = {
+	object_type = "Tag",
+	order = -6,
+	dependencies = {
+	  items = {
+		"set_entr_tags"
+	  }
+	},
+	atlas = "tags",
+	pos = { x = 4, y = 0 },
+	config = { level = 1 },
+	key = "freaky",
+	name = "entr-freaky Tag",
+	min_ante = 4,
+	config = { type = "store_joker_modify", edition = "entr_freaky" },
+	loc_vars = function(self, info_queue, tag)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_freaky
+		return { vars = {} }
+	end,
+	apply = function(self, tag, context)
+		if context.type == "store_joker_modify" then
+			local _applied = nil
+			if Cryptid.forced_edition() then
+				tag:nope()
+			end
+			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
+				local lock = tag.ID
+				G.CONTROLLER.locks[lock] = true
+				context.card.temp_edition = true
+				tag:yep("+", G.C.DARK_EDITION, function()
+					context.card:set_edition("e_entr_freaky", true)
+					context.card.ability.couponed = true
+					context.card:set_cost()
+					context.card.temp_edition = nil
+					G.CONTROLLER.locks[lock] = nil
+					return true
+				end)
+				_applied = true
+				tag.triggered = true
+			end
+		end
+	end,
+}
 
 --ascendant tags
 
@@ -532,6 +575,7 @@ local oversat = Entropy.EditionTag("e_cry_oversat", "oversat", true, {x=0,y=3},1
 local sunny_asc = Entropy.EditionTag("e_entr_sunny", "sunny", true, {x=6,y=4},19)
 local solar_asc = Entropy.EditionTag("e_entr_solar", "solar", true, {x=1,y=3},20)
 local fractured_asc = Entropy.EditionTag("e_entr_fractured", "fractured", true, {x=6,y=5},20.5)
+local freaky_asc = Entropy.EditionTag("e_entr_freaky", "freaky", true, {x=7,y=5},20.75)
 
 local cat_asc = {
 	object_type = "Tag",
@@ -1464,6 +1508,8 @@ return {
 		effarcire,
 		sunny_asc,
 		fractured_asc,
-		oversat
+		oversat,
+		freaky,
+		freaky_asc
 	}
 }

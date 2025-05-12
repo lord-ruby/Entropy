@@ -52,12 +52,6 @@ local solar = {
 	}
 }
 
-AurinkoAddons.entr_solar = function(card, hand, instant, amount)
-	if to_big(G.GAME.hands[hand].AscensionPower or 0) > to_big(0) then
-		local num = G.GAME.hands[hand].AscensionPower * (card.edition.sol-1)
-		Entropy.ReversePlanetUse(hand, card, num)
-	end
-end
 
 SMODS.Shader({
     key="fractured",
@@ -169,10 +163,115 @@ local sunny = {
 	}
 }
 
+SMODS.Shader({
+    key="freaky",
+    path="freaky.fs"
+})
+
+local sunny = {
+	object_type = "Edition",
+	order = 9000+3,
+    key="freaky",
+    shader="freaky",
+	sound = {
+		sound = "entr_e_rizz",
+		per = 1,
+		vol = 0.4,
+	},
+	config = {
+		log_base = 69
+	},
+	dependencies = {
+        items = {
+          "set_entr_misc"
+        }
+    },
+    badge_color = HEX("fca849"),
+	disable_base_shader=true,
+    loc_vars = function(self,q,card)
+		return {vars={card and card.edition and card.edition.log_base or 69}}
+    end,
+    calculate = function(self, card, context)
+		if
+			(
+				context.edition
+				and context.cardarea == G.jokers
+				and card.config.trigger
+			) or (
+				context.main_scoring
+				and context.cardarea == G.play
+			)
+		then
+			return { xlog_chips = card and card.edition and card.edition.log_base or 69}
+		end
+		if context.joker_main then
+			card.config.trigger = true
+		end
+
+		if context.after then
+			card.config.trigger = nil
+		end
+	end,
+	entr_credits = {
+		custom={key="shader",text="cassknows"}
+	}
+}
+
+if AurinkoAddons then
+	AurinkoAddons.entr_solar = function(card, hand, instant, amount)
+		if to_big(G.GAME.hands[hand].AscensionPower or 0) > to_big(0) then
+			local num = G.GAME.hands[hand].AscensionPower * (card.edition.sol-1)
+			Entropy.ReversePlanetUse(hand, card, num)
+		end
+	end
+	AurinkoAddons.entr_freaky = function(card, hand, instant, amount)
+		local hand_chips = G.GAME.hands[hand].chips
+		local mult = math.max(math.log(to_big(hand_chips) < to_big(0) and 1 or hand_chips, 69), 1)
+		hand_chips = hand_chips * mult
+		G.GAME.hands[hand].chips = hand_chips
+		if not instant then
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.3,
+				func = function()
+					play_sound("entr_e_rizz")
+					card:juice_up(0.8, 0.5)
+					return true
+				end,
+			}))
+			update_hand_text({ delay = 1.3 }, { chips = "X"..number_format(mult), StatusText = true })
+		elseif Aurinko.VerboseMode then
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.2,
+				func = function()
+					play_sound("entr_e_rizz")
+					card:juice_up(0.8, 0.5)
+					return true
+				end,
+			}))
+			update_hand_text(
+				{ delay = 1.3 },
+				{ chips = "X"..number_format(mult), StatusText = true }
+			)
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0.2,
+				func = function()
+					play_sound("multhit1")
+					card:juice_up(0.8, 0.5)
+					return true
+				end,
+			}))
+		end
+	end
+end
+
 return {
     items = {
         solar,
         fractured,
-		sunny
+		sunny,
+		freaky
     }
 }

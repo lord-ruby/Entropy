@@ -593,7 +593,13 @@ local decs = {
 					"Ever heard of {X:gold,C:white}ascendant{}",
 					"humor buddy?"
 				}
-			}
+			},
+			e_entr_freaky = {
+				name = "Freaky",
+				text = {
+					"Chips {X:entr_freaky,C:white}Xlog_#1#(Chips){}"
+				},
+			},
 		},
 		Back = {
 			b_entr_twisted = {
@@ -1536,6 +1542,14 @@ local decs = {
 					"becomes {C:dark_edition}Fractured{}"	
 				},
 			},
+			tag_entr_freaky = {
+				name = "Freaky Tag",
+				text = { 
+					"Next base Edition shop",
+					"Joker is free and",
+					"becomes {C:dark_edition}Freaky{}"	
+				},
+			},
 			tag_entr_ascendant_rare = {
 				name = "{C:gold}Rare Tag{}",
 				text = { "Shop has a free", "{C:rare}Rare Joker{}" },
@@ -1631,6 +1645,10 @@ local decs = {
 			tag_entr_ascendant_fractured = {
 				name = "{C:gold}Fractured Tag{}",
 				text = { "{C:attention}All{} shop items are {C:dark_edition}Fractured{}" },
+			},
+			tag_entr_ascendant_freaky = {
+				name = "{C:gold}Freaky Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Freaky{}" },
 			},
 			tag_entr_ascendant_infdiscard = {
 				name = "{C:gold}Discard Tag{}",
@@ -2087,6 +2105,7 @@ local decs = {
 			entr_sunny = "Sunny",
 			entr_solar = "Solar",
 			entr_fractured = "Fractured",
+			entr_freaky = "Freaky",
 			entr_yellow_sign = "Yellow Sign",
 
 			entr_crimson_seal = "Crimson Seal",

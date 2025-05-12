@@ -277,7 +277,13 @@ local oldfunc = Game.main_menu
 			blocking = false,
 			func = function()
                 for i, v in pairs(G.title_top.cards) do
-                    if v.base and v.base.value and v.base.value == "Ace" then v:set_edition("e_entr_solar") end
+                    if v.base and v.base.value and v.base.value == "Ace" then
+                        if math.random() < 0.01 then
+                            v:set_edition("e_entr_freaky") 
+                        else
+                            v:set_edition("e_entr_solar") 
+                        end
+                    end
                     if v.config.center_key == "c_cryptid" then 
                         v:set_ability(G.P_CENTERS.c_entr_entropy)
                         v.T.w = v.T.w * 1.1 * 1.2
@@ -1070,8 +1076,16 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         end
         return true
     end
+    if key == 'xlog_chips' then
+        hand_chips = mod_chips(hand_chips * math.max(math.log(to_big(hand_chips) < to_big(0) and 1 or hand_chips, amount), 1))
+        update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
+        if not Talisman.config_file.disable_anims then
+            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'chips', 1, percent, nil, nil, "Chips Xlog(Chips)", G.C.BLUE, "entr_e_rizz", 0.6)
+        end
+        return true
+    end
 end
-for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'asc', 'asc_mod', 'plus_asc', 'plusasc_mod', 'exp_asc', 'exp_asc_mod', 'eq_chips', 'Eqchips_mod'}) do
+for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'asc', 'asc_mod', 'plus_asc', 'plusasc_mod', 'exp_asc', 'exp_asc_mod', 'eq_chips', 'Eqchips_mod', 'xlog_chips'}) do
     table.insert(SMODS.calculation_keys, v)
 end
 

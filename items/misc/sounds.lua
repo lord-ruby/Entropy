@@ -54,3 +54,8 @@ SMODS.Sound({
 	key = "e_solar",
 	path = "e_solar.ogg",
 })
+
+SMODS.Sound({
+	key = "e_rizz",
+	path = "e_rizz.ogg",
+})

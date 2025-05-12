@@ -65,7 +65,8 @@ function loc_colour(_c, default)
             entr_rspectral = G.C.Entropy.RSpectral,
             entr_zenith = Entropy.zenith_gradient,
             entr_eqmult = HEX("cb7f7f"),
-            entr_eqchips = HEX("5b89a6")
+            entr_eqchips = HEX("5b89a6"),
+            entr_freaky = HEX("ff00ea")
         }
 
         for k, v in pairs(new_colors) do
