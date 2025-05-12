@@ -168,7 +168,7 @@ SMODS.Shader({
     path="freaky.fs"
 })
 
-local sunny = {
+local freaky = {
 	object_type = "Edition",
 	order = 9000+3,
     key="freaky",
