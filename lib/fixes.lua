@@ -56,7 +56,7 @@ G.FUNCS.flame_handler = function(e)
       local _F = G.ARGS[v.arg_tab]
       local exptime = math.exp(-0.4*G.real_dt)
       if to_big(G.ARGS.score_intensity.earned_score) >= to_big(G.ARGS.score_intensity.required_score) and to_big(G.ARGS.score_intensity.required_score) > to_big(0) then
-        _F.intensity = ((G.pack_cards and not G.pack_cards.REMOVED) or (G.TAROT_INTERRUPT)) and 0 or math.max(0., math.log(G.ARGS.score_intensity.earned_score, 5)-2)
+        _F.intensity = ((G.pack_cards and not G.pack_cards.REMOVED) or (G.TAROT_INTERRUPT)) and 0 or math.max(0., math.log(G.ARGS.score_intensity.earned_score+1, 5)-2)
           if type(_F.intensity) == "table" then
               if _F.intensity > to_big(85) then
                   _F.intensity = 85
@@ -68,9 +68,6 @@ G.FUNCS.flame_handler = function(e)
           end
       else
         _F.intensity = 0
-      end
-      if to_big(_F.intensity) > to_big(85) then
-        _F.intensity = 85
       end
       _F.timer = _F.timer + G.real_dt*(1 + _F.intensity*0.2)
       if _F.intensity_vel < 0 then _F.intensity_vel = _F.intensity_vel*(1 - 10*G.real_dt) end
@@ -153,3 +150,45 @@ SMODS.Joker:take_ownership('cry_circus',
 	end,
 },
 true)
+
+SMODS.Joker:take_ownership("j_cry_redeo", {
+  loc_vars = function(self, q, center)
+    local ante_mod = center.ability.extra.ante_reduction
+    if ante_mod > 0 then
+      ante_mod = "-"..number_format(ante_mod)
+    else
+      ante_mod = "+"..number_format(-ante_mod)
+    end
+    if G.GAME.ReverseRedeo then
+      ante_mod = "+1"
+    end
+    return {
+      vars = {
+        ante_mod,
+				number_format(center.ability.extra.money_req),
+				number_format(center.ability.extra.money_remaining),
+				number_format(center.ability.extra.money_mod),
+			},
+    }
+  end,
+  calculate = function(self, card, context)
+		if context.cry_ease_dollars and to_big(context.cry_ease_dollars) < to_big(0) and not context.blueprint then
+			card.ability.extra.money_remaining =
+				lenient_bignum(to_big(card.ability.extra.money_remaining) - context.cry_ease_dollars)
+			local ante_mod = 0
+			while to_big(card.ability.extra.money_remaining) >= to_big(card.ability.extra.money_req) do
+				card.ability.extra.money_remaining =
+					lenient_bignum(to_big(card.ability.extra.money_remaining) - card.ability.extra.money_req)
+				card.ability.extra.money_req =
+					lenient_bignum(to_big(card.ability.extra.money_req) + card.ability.extra.money_mod)
+				card.ability.extra.money_mod = lenient_bignum(math.ceil(to_big(card.ability.extra.money_mod) * 1.06))
+				ante_mod = lenient_bignum(ante_mod - to_big(card.ability.extra.ante_reduction))
+			end
+			ease_ante(ante_mod)
+			return nil, true
+		end
+		if context.forcetrigger then
+			ease_ante(card.ability.extra.ante_reduction)
+		end
+	end,
+},true)

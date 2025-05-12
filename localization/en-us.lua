@@ -92,7 +92,16 @@ local decs = {
 			},
 		},
 		Joker = {
-
+			j_cry_redeo = {
+				name = "Redeo",
+				text = {
+					"{C:attention}#1#{} Ante when",
+					"{C:money}$#2#{} {C:inactive}($#3#){} spent",
+					"{s:0.8}Requirements increase",
+					"{C:attention,s:0.8}exponentially{s:0.8} per use",
+					"{C:money,s:0.8}Next increase: {s:1,c:money}$#4#",
+				},
+			},
 			j_cry_circus = {
 				name = "Circus",
 				text = {
@@ -2102,6 +2111,13 @@ local decs = {
 				"and Nils, plus one Nil rank of each suit",
 				Cryptid_config.family_mode and "God is Dead" or "Fuck You, God is Dead",
 			}
+		},
+		challenge_names = {
+			c_entr_hyperbolic_chamber = "Hyperbolic Hell-Tier Chamber"
+		},
+		v_text = {
+			ch_c_entr_starting_ante_mten = { "Start on Ante -10" },
+			ch_c_entr_reverse_redeo = { "Invert Redeo's ante change" },
 		}
 	},
 }
