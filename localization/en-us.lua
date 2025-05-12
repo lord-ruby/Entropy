@@ -480,6 +480,15 @@ local decs = {
 				text = {
 					"{X:entr_eqchips,C:white}=#1#{} Chips"
 				}
+			},
+			j_entr_jokezmann_brain = {
+				name = "Jokezmann Brain",
+				text = {
+					"When exiting the shop there is a",
+					"{C:green}#1# in #2#{} chance for each",
+					"empty joker slot to be filled with",
+					"a random {C:dark_edition}Perishable, Oversaturated{} Joker"
+				}
 			}
 		},
 		Blind = {

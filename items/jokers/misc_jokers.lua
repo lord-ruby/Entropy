@@ -483,7 +483,7 @@ local insatiable_dagger = {
     end,
     entr_credits = {
         idea = {"cassknows"},
-	art = {"spikeberd"}
+	    art = {"Lyman"}
     }
 }
 

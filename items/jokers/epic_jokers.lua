@@ -275,12 +275,71 @@ local antireal = {
     }
 }
 
+local jokezmann_brain = {
+    order = 106,
+    object_type = "Joker",
+    key = "jokezmann_brain",
+    rarity = "cry_epic",
+    cost = 15,
+    
+    dependencies = {
+        items = {
+            "set_cry_epic"
+        }
+    },
+    eternal_compat = true,
+    demicoloncompat = true,
+    pos = { x = 5, y = 2 },
+    atlas = "jokers",
+    config = {
+        extra = {
+            odds = 3
+        }
+    },
+    pos = { x = 5, y = 2 },
+    atlas = "jokers",
+    loc_vars = function(self, info_queue, card)
+        if not card.edition or card.edition.key ~= "e_cry_oversat" then
+            info_queue[#info_queue+1]=G.P_CENTERS.e_cry_oversat
+        end
+        return {
+            vars = {
+                cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
+            }
+        }
+    end,
+    calculate = function (self, card, context)
+        if context.ending_shop or context.forcetrigger then
+            if G.jokers.config.card_limit - #G.jokers.cards > 0 then
+                for i = 1, G.jokers.config.card_limit - #G.jokers.cards do
+                    if pseudorandom("jokezmann")
+                    < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
+                        local card = create_card("Joker", G.jokers)
+                        card:set_edition("e_cry_oversat")
+                        card:add_to_deck()
+                        card.ability.perishable = true
+                        card.ability.perish_tally = 5
+                        G.jokers:emplace(card)
+                    end
+                end
+            end
+        end
+    end,
+    entr_credits = {
+        idea = {"Lyman"},
+        art = {"Lyman"}
+    }
+}
+
 return {
     items = {
         burnt_m,
         chaos,
         dni,
         trapezium,
-        antireal
+        antireal,
+        jokezmann_brain,
+        metanoia
     }
 }
