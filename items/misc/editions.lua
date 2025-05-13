@@ -21,6 +21,8 @@ local solar = {
           "set_entr_misc"
         }
     },
+	in_shop = true,
+	weight = 0.4,
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
@@ -76,6 +78,8 @@ local fractured ={
           "set_entr_misc"
         }
     },
+	in_shop = true,
+	weight = 0.2,
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
@@ -132,6 +136,8 @@ local sunny = {
           "set_entr_misc"
         }
     },
+	in_shop = true,
+	weight = 0.8,
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
@@ -186,6 +192,8 @@ local freaky = {
           "set_entr_misc"
         }
     },
+	in_shop = true,
+	weight = 0.5,
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
