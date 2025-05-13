@@ -213,17 +213,13 @@ local phase1 = {
 		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) then
 			G.GAME.chips = 0
 			G.GAME.round_resets.lost = true
-			G.E_MANAGER:add_event(Event({
-				func = function()
-					G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
-					G.GAME.blind:juice_up()
-					ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
-					ease_discard(
-						math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
-					)
-					G.FUNCS.draw_from_discard_to_deck()
-				end
-			}))
+			G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
+			G.GAME.blind:juice_up()
+			ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
+			ease_discard(
+				math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
+			)
+			G.FUNCS.draw_from_discard_to_deck()
 		end
 	end,
 }
@@ -258,18 +254,24 @@ local phase2 = {
 			end
 			G.GAME.round_resets.lost = true
 		end
-		if G.GAME.current_round.hands_left == 0 and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) and not G.GAME.EE3 then
-			G.GAME.chips = 0
-			ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
-			ease_discard(
-				math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
-			)
-			G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
-			G.GAME.blind.chips = to_big(G.GAME.blind.chips) ^ 2
-			G.GAME.blind:juice_up()
-			G.GAME.EE3 = true
-			G.HUD_blind:get_UIE_by_ID("score_at_least").config.text = localize("ph_blind_score_at_least")
-			G.FUNCS.draw_from_discard_to_deck()
+		if G.GAME.current_round.hands_left == 0 and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) and not G.GAME.EE3 and context.after then
+			ease_hands_played(1)
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 1,
+				func = function()
+					G.GAME.chips = 0
+					G.GAME.round_resets.lost = true
+					G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
+					G.GAME.blind:juice_up()
+					ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
+					ease_discard(
+						math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
+					)
+					G.FUNCS.draw_from_discard_to_deck()
+					return true
+				end
+			}))
 		end
 	end,
 	defeat = function(self)
