@@ -213,13 +213,17 @@ local phase1 = {
 		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) then
 			G.GAME.chips = 0
 			G.GAME.round_resets.lost = true
-			G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
-			G.GAME.blind:juice_up()
-			ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
-			ease_discard(
-				math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
-			)
-			G.FUNCS.draw_from_discard_to_deck()
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
+					G.GAME.blind:juice_up()
+					ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
+					ease_discard(
+						math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
+					)
+					G.FUNCS.draw_from_discard_to_deck()
+				end
+			}))
 		end
 	end,
 }

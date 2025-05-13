@@ -37,7 +37,9 @@ local i = {
     "items/inversions/reverse_codes",
 
     "items/misc/blind_tokens",
-    "items/inversions/define"
+    "items/inversions/define",
+
+    "compat/partners"
 }
 local items = {}
 for _, v in pairs(i) do

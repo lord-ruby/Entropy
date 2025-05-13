@@ -1928,6 +1928,17 @@ local decs = {
                     "{C:red}Run.{}"
                 },
             },
+		},
+		Partner = {
+			pnr_entr_parakmi = {
+				name = "Tyhaois",
+				text = {
+					"Booster packs may",
+					"may be randomised",
+					"to another random",
+					"booster pack"
+				}
+			}
 		}
 	},
 	misc = {
