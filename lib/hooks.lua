@@ -1444,16 +1444,16 @@ SMODS.Consumable:take_ownership('cry_sunplanet', -- object key (class prefix not
 )
 
 local ease_anteref = ease_ante
-function ease_ante(mod, bypass)
+function ease_ante(mod)
     local mult = 1
     if Entropy.HasJoker("j_entr_xekanos", true) then
         for i, v in pairs(G.jokers.cards) do
-            if v.config.center.key == "j_entr_xekanos" and not v.debuff and not bypass then
+            if v.config.center.key == "j_entr_xekanos" and not v.debuff and not G.GAME.modifiers.ReverseRedeo then
                 mult = -v.ability.ante_mod
             end
         end
     end
-    ease_anteref(mod * mult)
+    ease_anteref(mod * mult, a)
 end
 
 local is_jollyref = Card.is_jolly

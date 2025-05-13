@@ -29,7 +29,7 @@ local gsr = Game.start_run
 function Game:start_run(args)
 	gsr(self, args)
 	if G.GAME.modifiers.entr_starting_ante_mten and not args.savetext then
-        ease_ante(-11, true)
+        ease_ante(-11, nil, true)
 	end
 end
 

@@ -116,7 +116,6 @@ local xekanos = {
             "set_entr_entropics"
         }
     },
-    immutable = true,
     demicoloncompat = true,
     soul_pos = { x = 1, y = 3, extra = { x = 0, y = 0 } },
     atlas = "xekanos_atlas",
