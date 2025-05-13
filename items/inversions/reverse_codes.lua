@@ -133,6 +133,43 @@ local quickload = {
 	},
 }
 
+local detour = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+4.5,
+    key = "detour",
+    set = "RCode",
+    
+    inversion = "c_cry_function",
+
+    atlas = "consumables",
+    pos = {x=4,y=1},
+    use = function(self, card, area, copier)
+        local area = ({
+            ["Joker"] = G.jokers
+        })[G.GAME.detour_set] or G.consumeables
+        print(G.GAME.detour_set)
+        local card = create_card(G.GAME.detour_set, area)
+        card:add_to_deck()
+        area:emplace(card)
+    end,
+    can_use = function(self, card)
+        return G.GAME.detour_set
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                G.GAME.detour_set and localize("k_"..string.lower(G.GAME.detour_set)) or "None"
+            }
+        }
+    end,
+}
+
+
 local break_card = {
     dependencies = {
         items = {
@@ -1434,6 +1471,7 @@ return {
         autostart,
         ctrl_x,
         local_card,
-        transpile
+        transpile,
+        detour
     }
 }

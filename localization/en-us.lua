@@ -970,6 +970,15 @@ local decs = {
 					"{C:dark_edition}+#2#{} Consumable Slots",
 					"{C:dark_edition}+#3#{} Hand Size"
 				}
+			},
+			c_entr_detour = {
+				name = "(~)$ detour",
+				text = {
+					"Create a {C:attention}card, booster, or voucher{}",
+					"with a type {C:attention}corresponding{} to the",
+					"{C:attention}last obtained{} card, booster of voucher",
+					"{C:inactive}(Currently: #1#){}"
+				}
 			}
 		},
 		RPlanet = {

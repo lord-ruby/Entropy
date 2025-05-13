@@ -2289,3 +2289,23 @@ Entropy.DiscardSpecific = function(cards)
         draw_card(G.hand, G.discard, i*100/#cards, 'down', false, v)
     end
 end 
+
+local card_addref = Card.add_to_deck
+function Card:add_to_deck(...)
+    card_addref(self, ...)
+    if self.ability.set == "Joker" or self.ability.consumeable and self.config.center.key ~= "c_entr_detour" then
+        G.GAME.detour_set = self.ability.set
+    end
+end
+
+local card_redeem = Card.redeem
+function Card:redeem(...)
+    card_redeem(self, ...)
+    G.GAME.detour_set = self.ability.set
+end
+
+local card_open = Card.open
+function Card:open(...)
+    card_open(self, ...)
+    G.GAME.detour_set = self.ability.set
+end

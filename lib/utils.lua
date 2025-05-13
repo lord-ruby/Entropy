@@ -765,7 +765,19 @@ function Entropy.UpgradeEnhancement(card, bypass, blacklist)
     end
     return nil
 end
-
+function Entropy.GetAreaName(area) 
+    if not area then return nil end
+    for i, v in pairs(G) do
+        if v == area then return i end
+    end
+end
+function Entropy.GetIdxInArea(card)
+    if card and card.area then
+        for i, v in pairs(card.area.cards) do
+            if v.unique_val == card.unique_val then return i end
+        end
+    end
+end
 function Entropy.FormatTesseract(base)
     if math.abs(to_big(base.c)) < to_big(0.001) then base.c = 0;base.minusc=false end
     if math.abs(to_big(base.r)) < to_big(0.001) then base.r = 0;base.minusr=false end
