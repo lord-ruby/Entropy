@@ -144,3 +144,10 @@ SMODS.Atlas {
     px = 29, 
     py = 29
 }
+
+SMODS.Atlas { 
+    key = 'xekanos_atlas', 
+    path = 'xekanos.png', 
+    px = 71, 
+    py = 95 
+}

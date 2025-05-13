@@ -118,8 +118,8 @@ local xekanos = {
     },
     immutable = true,
     demicoloncompat = true,
-    soul_pos = { x = 2, y = 3, extra = { x = 1, y = 3 } },
-    atlas = "exotic_jokers",
+    soul_pos = { x = 1, y = 3, extra = { x = 0, y = 0 } },
+    atlas = "xekanos_atlas",
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
@@ -136,7 +136,10 @@ local xekanos = {
                 card.ability.ante_mod_mod = card.ability.ante_mod_mod * 0.5
             end
         end
-    end
+    end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    }
 }
 
 local dekatria = {
@@ -222,7 +225,7 @@ local dekatria = {
 				colour = { 0.8, 0.45, 0.85, 1 },
 			}
         end
-    end
+    end,
 }
 
 local anaptyxi = {
