@@ -1038,13 +1038,6 @@ function G.UIDEF.use_and_sell_buttons(card)
             },
         }
     end
-
-    --remove sell button if beyond exists in pack
-    if
-       card and card.config and card.config.center and card.config.center.set == "Joker" and  (Entropy.HasConsumable("c_entr_beyond") or (Entropy.HasConsumable("c_cry_gateway") and Entropy.HasConsumable("c_entr_flipside")))
-    then
-        table.remove(abc.nodes[1].nodes, 1)
-    end
 	return abc
 end
 
