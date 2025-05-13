@@ -151,10 +151,58 @@ function create_inverted_card(area, seed)
     return create_card("Twisted", area or G.pack_cards, nil, nil, true, true, nil, "twisted")
 end
 
+local voucher = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+	object_type = "Booster",
+    order = -1000,
+    key = "voucher_pack",
+    set = "Booster",
+    config = { extra = 5, choose = 2 },
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                card.ability.choose,
+                card.ability.extra,
+                colours = {
+                    HEX("ff00cd")
+                }
+            },
+        }
+    end,
+    atlas = 'booster', pos = { x = 6, y = 0 },
+    group_key = "k_voucher_pack",
+    cost = 10,
+    draw_hand = false,
+    weight = 0,
+    kind = "Voucher",
+    create_card = function (self, card, i) 
+        return create_card("Voucher", G.pack_cards)
+    end,
+    ease_background_colour = function(self)
+		ease_colour(G.C.DYN_UI.MAIN, HEX("ff00cd"))
+		ease_background_colour({ new_colour = HEX("ff00cd"), special_colour = HEX("ff00cd"), contrast = 2 })
+	end,
+    cry_digital_hallucinations = {
+		colour = HEX("ff00cd"),
+		loc_key = "k_voucher_pack",
+		create = function()
+			local ccard = create_card("Voucher", G.pack_cards)
+			ccard:set_edition({ negative = true }, true)
+			ccard:add_to_deck()
+			G.consumeables:emplace(ccard)
+		end,
+	},
+}
+
 return {
     items = {
         pack,
         jumbo,
-        mega
+        mega,
+        voucher
     }
 }

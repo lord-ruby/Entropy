@@ -1439,6 +1439,40 @@ local transpile = {
     }
 }
 
+local mbr = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+31,
+    key = "mbr",
+    set = "RCode",
+    
+    inversion = "c_cry_keygen",
+
+    atlas = "consumables",
+    pos = {x=5,y=6},
+    use = function(self, card, area, copier)
+        local card = SMODS.create_card({
+            key = "p_entr_voucher_pack",
+            set = "Booster",
+            area = G.shop_booster
+        })
+        card:add_to_deck()
+        card.ability.banana = true
+        G.shop_booster:emplace(card)
+        create_shop_card_ui(card, "Booster", G.shop_booster)
+    end,
+    can_use = function(self, card)
+        return G.STATE == G.STATES.SHOP
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {set = "Other", key = "banana", vars = {"1", "10"}}
+    end,
+}
+
 return {
     items = {
         memoryleak,
@@ -1472,6 +1506,7 @@ return {
         ctrl_x,
         local_card,
         transpile,
-        detour
+        detour,
+        mbr
     }
 }

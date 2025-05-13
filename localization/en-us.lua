@@ -979,7 +979,14 @@ local decs = {
 					"{C:attention}last obtained{} card, booster of voucher",
 					"{C:inactive}(Currently: #1#){}"
 				}
-			}
+			},
+			c_entr_mbr = {
+				name = "(~)$ mbr",
+				text = {
+					"Add a {C:dark_edition}Banana Voucher Pack{}",
+					"to the booster packs of the current shop"
+				}
+			},
 		},
 		RPlanet = {
 			c_entr_regulus = {
@@ -1808,6 +1815,14 @@ local decs = {
 					"{C:attention}#2#{} {C:attention}Reference Jokers{}",
 				}
 			},
+			p_entr_voucher_pack = {
+				name = "Voucher Pack",
+				group_name = "Voucher",
+				text={
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{} {C:attention}Vouchers{}",
+				}
+			},
 			entr_pinned = {
 				name = "Invariant",
 				text = {
@@ -2052,6 +2067,7 @@ local decs = {
 
 			k_inverted = "Inverted",
 			k_inverted_pack = "Twisted Pack",
+			k_voucher_pack = "Voucher Pack",
 			b_inverted_cards = "Inverted Cards",
 
 			entr_code_sudo = "OVERRIDE",
