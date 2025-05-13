@@ -1449,7 +1449,7 @@ function ease_ante(mod)
     if Entropy.HasJoker("j_entr_xekanos", true) then
         for i, v in pairs(G.jokers.cards) do
             if v.config.center.key == "j_entr_xekanos" and not v.debuff and not v.ability.turned_off and not G.GAME.modifiers.ReverseRedeo then
-                mult = mult * -v.ability.ante_mod
+                mult = mult * to_number(-v.ability.ante_mod)
             end
         end
     end
