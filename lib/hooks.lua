@@ -657,6 +657,29 @@ G.FUNCS.reserve_card_to_deck = function(e)
     }))
 end
 
+G.FUNCS.can_toggle_xekanos = function(e)
+    if
+        e.config.ref_table.ability.turned_off
+    then
+        e.config.colour = G.C.GREEN
+        e.config.button = "toggle_xekanos"
+    else
+        e.config.colour = G.C.RED
+        e.config.button = "toggle_xekanos"
+    end
+end
+G.FUNCS.toggle_xekanos = function(e)
+    local c1 = e.config.ref_table
+    c1.ability.turned_off = not (c1.ability.turned_off or false)
+    local text = ({
+        [true] = localize("b_on"),
+        [false] = localize("b_off")
+    })[c1.ability.turned_off]
+    e.parent.UIBox:get_UIE_by_ID("on_offswitch").config.text = text
+    e.parent.UIBox:get_UIE_by_ID("on_offswitch").config.text_drawable:set(text)
+    e.parent.UIBox:get_UIE_by_ID("on_offswitch").UIBox:recalculate()
+end
+
 
 G.FUNCS.can_buy_slot = function(e)
     if
@@ -904,6 +927,43 @@ function G.UIDEF.use_and_sell_buttons(card)
                 {n=G.UIT.R, config={align = 'cl'}, nodes={
                     sellslot
                   }},
+              }},
+          }}
+    end
+    if (card.area == G.jokers and G.jokers and card.config.center.key == "j_entr_xekanos") then
+        sell = {n=G.UIT.C, config={align = "cr"}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card'}, nodes={
+              {n=G.UIT.B, config = {w=0.1,h=0.6}},
+              {n=G.UIT.C, config={align = "tm"}, nodes={
+                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
+                  {n=G.UIT.T, config={text = localize('b_sell'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
+                }},
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                  {n=G.UIT.T, config={text = localize('$'),colour = G.C.WHITE, scale = 0.4, shadow = true}},
+                  {n=G.UIT.T, config={ref_table = card, ref_value = 'sell_cost_label',colour = G.C.WHITE, scale = 0.55, shadow = true}}
+                }}
+              }}
+            }},
+          }}
+        onoff = {n=G.UIT.C, config={align = "cr"}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, button = 'toggle_xekanos', func = 'can_toggle_xekanos'}, nodes={
+              {n=G.UIT.B, config = {w=0.1,h=0.3}},
+              {n=G.UIT.C, config={align = "tm"}, nodes={
+                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
+                  {n=G.UIT.T, config={text = card.ability.turned_off and localize('b_on') or localize('b_off'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true, id ="on_offswitch"}}
+                }},
+              }}
+            }},
+          }}
+        return {
+            n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
+              {n=G.UIT.C, config={padding = 0, align = 'cl'}, nodes={
+                {n=G.UIT.R, config={align = 'cl'}, nodes={
+                  sell
+                }},
+                {n=G.UIT.R, config={align = 'cl'}, nodes={
+                  onoff
+                }},
               }},
           }}
     end
@@ -2234,4 +2294,4 @@ Entropy.DiscardSpecific = function(cards)
     for i, v in pairs(cards) do
         draw_card(G.hand, G.discard, i*100/#cards, 'down', false, v)
     end
-end
+end 

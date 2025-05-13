@@ -2089,7 +2089,9 @@ local decs = {
 			entr_kiy_banished = "Banished.",
 
 			k_saved_heoric = "Not Heroic!",
-			k_saved_just = "Not Just!"
+			k_saved_just = "Not Just!",
+			b_on = "Enable",
+			b_off = "Disable",
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

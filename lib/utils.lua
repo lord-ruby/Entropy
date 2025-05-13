@@ -204,7 +204,7 @@ end
 function Entropy.HasJoker(key, checkdebuff)
     local num = nil
     for i, v in ipairs(G.jokers and G.jokers.cards or {}) do
-        if v.config.center.key == key and (not checkdebuff or not v.debuff) then num = (num or 0) + 1 end
+        if v.config.center.key == key and (not checkdebuff or not v.debuff) and not v.ability.turned_off then num = (num or 0) + 1 end
     end
     return num
 end

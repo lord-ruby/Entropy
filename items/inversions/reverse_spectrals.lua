@@ -1167,7 +1167,7 @@ local mimic = {
         end
     end,
     can_use = function(self, card)
-        return Entropy.GetHighlightedCards({G.hand, G.consumeables, G.jokers, G.pack_cards, G.shop_booster, G.shop_jokers, G.shop_vouchers}, card) == card.ability.num
+        return #Entropy.GetHighlightedCards({G.hand, G.consumeables, G.jokers, G.pack_cards, G.shop_booster, G.shop_jokers, G.shop_vouchers}, card) == card.ability.num
 	end,
     loc_vars = function(self, q, card)
         return {
