@@ -195,6 +195,7 @@ SMODS.Joker:take_ownership("j_cry_redeo", {
 
 function get_highest(hand)
   local highest = nil
+  if type(hand) ~= "table" then return {} end
   for k, v in ipairs(hand or {}) do
     if not highest or v:get_nominal() > highest:get_nominal() then
       highest = v
