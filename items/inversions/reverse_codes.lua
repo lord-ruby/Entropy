@@ -1470,6 +1470,7 @@ local mbr = {
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = {set = "Other", key = "banana", vars = {"1", "10"}}
+        q[#q+1] = G.P_CENTERS.p_entr_voucher_pack
     end,
 }
 
