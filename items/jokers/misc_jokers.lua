@@ -393,7 +393,7 @@ local solar_dagger = {
         }
     end,
     calculate = function(self, card, context)
-        if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
+        if (context.setting_blind and not (context.blueprint_card or self).getting_sliced) or context.forcetrigger then
             local check
             for i, v in pairs(G.jokers.cards) do
                 if v == card and G.jokers.cards[i+1] then check = i+1 end
