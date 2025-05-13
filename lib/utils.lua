@@ -201,10 +201,10 @@ function Entropy.Pseudorandom(seed, min, max)
     return math.floor(pseudorandom(seed)*(max-min)+0.5)+min
 end
 
-function Entropy.HasJoker(key)
+function Entropy.HasJoker(key, checkdebuff)
     local num = nil
     for i, v in ipairs(G.jokers and G.jokers.cards or {}) do
-        if v.config.center.key == key then num = (num or 0) + 1 end
+        if v.config.center.key == key and (not checkdebuff or not v.debuff) then num = (num or 0) + 1 end
     end
     return num
 end
