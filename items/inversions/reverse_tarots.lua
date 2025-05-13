@@ -100,7 +100,7 @@ local servant = {
     },
     pos = {x=4, y = 0},
     use = function(self, card, area, copier)
-        local num, cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, nil, card)
+        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card)
         for i, v in pairs(cards) do
             if Entropy.FlipsideInversions[v.config.center.key] then
                 local set = G.P_CENTERS[Entropy.FlipsideInversions[v.config.center.key]].set
