@@ -930,7 +930,7 @@ function G.UIDEF.use_and_sell_buttons(card)
               }},
           }}
     end
-    if (card.area == G.jokers and G.jokers and card.config.center.key == "j_entr_xekanos") then
+    if (card.area == G.jokers and G.jokers and card.config.center.key == "j_entr_xekanos") and not G.GAME.modifiers.entr_reverse_redeo then
         sell = {n=G.UIT.C, config={align = "cr"}, nodes={
             {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card'}, nodes={
               {n=G.UIT.B, config = {w=0.1,h=0.6}},
