@@ -459,6 +459,7 @@ local phase4 = {
 			end
 		end
 		G.GAME.EEBuildup = false
+		G.GAME.EEBeaten = true
 	end,
 	press_play = function(self)
 		for k, _ in pairs(Entropy.GetEEBlinds()) do

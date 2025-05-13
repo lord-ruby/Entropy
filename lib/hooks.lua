@@ -1796,7 +1796,7 @@ function create_UIBox_blind_select()
         return t 
     else
         if Entropy.CanEeSpawn() then
-            if G.GAME.EEBuildup or G.GAME.round_resets.ante_disp == "32" then
+            if G.GAME.EEBuildup or (G.GAME.round_resets.ante >= 32 and not G.GAME.EEBeaten) then
                 G.GAME.round_resets.blind_choices.Boss = "bl_entr_endless_entropy_phase_one"
                 G.GAME.EEBuildup = true
             end
