@@ -76,7 +76,7 @@ local destiny = {
     
     order = 36,
     object_type = "Consumable",
-    atlas = "miscc",
+    atlas = "consumables",
     immutable = true,
     pos = {x=5,y=7},
     dependencies = {
