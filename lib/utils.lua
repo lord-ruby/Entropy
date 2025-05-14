@@ -820,7 +820,6 @@ function Entropy.RandomContext(seed)
         "individual",
         "pre_discard",
         "discard",
-        "after",
         "destroy_card",
         "setting_blind",
         "ending_shop",
@@ -838,7 +837,6 @@ function Entropy.ContextChecks(self, card, context, currc)
     if currc == "individual" and context.individual and context.cardarea == G.play then return true end
     if currc == "pre_discard" and context.pre_discard and context.cardarea == G.hand then return true end
     if currc == "discard" and context.discard then return true end
-    if currc == "after" and context.after and not context.repetition and not context.blueprint then return true end
     if currc == "destroy_card" and context.destroy_card then return true end
     if currc == "setting_blind" and context.setting_blind then return true end
     if currc == "ending_shop" and context.ending_shop then return true end
