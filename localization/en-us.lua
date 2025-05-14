@@ -284,7 +284,7 @@ local decs = {
 				text = {
 					"{C:attention}Anything{} can appear",
 					"in the place of any card",
-					"{C:dark_edition}#1#{} Shop Slots"
+					"{C:dark_edition}+#1#{} Shop Slots"
 				}
 			},
 			j_entr_exousia = {
