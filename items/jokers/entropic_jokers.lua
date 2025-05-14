@@ -356,7 +356,7 @@ local parakmi = {
 				return true
 			end,
 		}))
-    end
+    end,
     remove_from_deck = function(self, card)
         G.E_MANAGER:add_event(Event({
 			func = function() --card slot
