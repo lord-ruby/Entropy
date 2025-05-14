@@ -540,14 +540,16 @@ function Entropy.StackEvalReturns(orig, new, etype)
 end
 
 function Entropy.DeckOrSleeve(key)
-    if key == "doc" and G.GAME.modifiers.doc_antimatter then return true end
+    local num = 0
+    if key == "doc" and G.GAME.modifiers.doc_antimatter then num = num + 1 end
     if CardSleeves then
-        if G.GAME.selected_sleeve == ("sleeve_entr_"..key) then return true end
+        if G.GAME.selected_sleeve == ("sleeve_entr_"..key) then num = num + 1 end
     end
     for i, v in pairs(G.GAME.entr_bought_decks or {}) do
-        if v == "b_entr_"..key then return true end
+        if v == "b_entr_"..key then num = num + 1 end
     end
-    return G.GAME.selected_back and G.GAME.selected_back.effect.center.original_key == key
+    if  G.GAME.selected_back and G.GAME.selected_back.effect.center.original_key == key then num = num + 1 end
+    return num > 0 and num or nil
 end
 
 Entropy.charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890~#$^~#$^~#$^~#$^~#$^"

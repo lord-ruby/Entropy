@@ -168,6 +168,21 @@ if CardSleeves then
       key = "doc",
       atlas = "sleeves",
       pos = { x = 2, y = 0 },
+      apply = function()
+        if G.GAME.selected_back and G.GAME.selected_back.effect.center.original_key == "doc" then
+          G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            func = function()
+              SMODS.add_card({
+                rarity = "entr_entropic",
+                area = G.jokers,
+                set = "Joker"
+              })
+              return true
+            end
+          }))
+        end
+      end,
       calculate = function(self,back,context)
         if context.final_scoring_step and to_big(G.GAME.entropy) > to_big(1) then
           if not ({
