@@ -349,3 +349,23 @@ pattern = "self.ability.bonus = self.ability.bonus - old_center.config.bonus"
 position = "at"
 payload = "self.ability.bonus = (self.ability.bonus or 0) - (old_center.config.bonus or 0)"
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_joker'])"
+position = "after"
+payload = '''
+if ((Cryptid_config and Cryptid_config.menu) or false) then
+	SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_entr_surreal_joker'],{bypass_discovery_center = true, bypass_discovery_ui = true})
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card_character.lua"
+pattern = 'self.children.card = Card(self.T.x, self.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, args.center or G.P_CENTERS.j_jolly, {bypass_discovery_center = true})'
+position = "at"
+payload = 'self.children.card = Card(self.T.x, self.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, args.center or G.P_CENTERS.j_entr_surreal_joker, {bypass_discovery_center = true})'
+match_indent = true
