@@ -369,3 +369,50 @@ pattern = 'self.children.card = Card(self.T.x, self.T.y, G.CARD_W, G.CARD_H, G.P
 position = "at"
 payload = 'self.children.card = Card(self.T.x, self.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, args.center or G.P_CENTERS.j_entr_surreal_joker, {bypass_discovery_center = true})'
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = 'G.hand.highlighted[i].ability.discarded = true'
+position = "at"
+payload = '''
+if not G.hand.highlighted[i].ability.scarred then 
+  G.hand.highlighted[i].ability.discarded = true 
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "draw_card(G.hand, G.discard, i*100/highlighted_count, 'down', false, G.hand.highlighted[i])"
+position = "at"
+payload = '''
+if not G.hand.highlighted[i].ability.scarred then 
+  draw_card(G.hand, G.discard, i*100/highlighted_count, 'down', false, G.hand.highlighted[i]) 
+else 
+  num = (num or 0) + 1
+end 
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "SMODS.calculate_context({pre_discard = true, full_hand = G.hand.highlighted, hook = hook})"
+position = "before"
+payload = '''
+local num
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.GAME.round_scores.cards_discarded.amt = G.GAME.round_scores.cards_discarded.amt + #cards"
+position = "before"
+payload = '''
+print(num)
+if num and num > 0 then G.FUNCS.draw_from_deck_to_hand(num) end
+'''
+match_indent = true

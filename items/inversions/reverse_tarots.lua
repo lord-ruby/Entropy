@@ -36,6 +36,7 @@ local master = {
             "set_entr_inversions"
         }
     },
+    inversion = "c_fool",
     use = function(self, card, area, copier)
         local c = create_card(G.GAME.last_inversion.set, G.consumeables, nil, nil, nil, nil, G.GAME.last_inversion.key)
         G.GAME.last_inversion = nil
@@ -98,6 +99,7 @@ local servant = {
         select = 1,
         create = 1
     },
+    inversion = "c_emperor",
     pos = {x=4, y = 0},
     use = function(self, card, area, copier)
         local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card)
@@ -132,6 +134,65 @@ local servant = {
 	can_divide = true,
 }
 
+local scar = {
+    key = "scar",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -900 + 7,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        select = 2,
+    },
+    inversion = "c_chariot",
+    pos = {x=7, y = 0},
+    use = function(self, card, area, copier)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card)
+        Entropy.FlipThen(cards, function(card)
+            Entropy.ApplySticker(card, "scarred")
+        end)
+    end,
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, nil, card)
+        local num = #cards
+        return num > 0 and num <= card.ability.select
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {set = "Other", key = "scarred"}
+        return {
+            vars = {
+                card.ability.select,
+            }
+        }
+    end,
+    can_stack = true,
+	can_divide = true,
+}
+
+
+local scarred = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Sticker",
+    order = -900 + 7,
+    atlas = "entr_stickers",
+    pos = { x = 6, y = 1 },
+    key = "scarred",
+    no_sticker_sheet = true,
+    prefix_config = { key = false },
+    badge_colour = HEX("973737"),
+    apply = function(self,card,val)
+        card.ability.scarred = true
+    end,
+}
+
 local whetstone = {
     key = "whetstone",
     set = "RTarot",
@@ -147,6 +208,7 @@ local whetstone = {
         select = 2,
         extra = {odds = 2}
     },
+    inversion = "c_wheel_of_fortune",
     pos = {x=0,y=1},
     use = function(self, card2)
         if pseudorandom("whetstone")
@@ -217,6 +279,7 @@ local endurance = {
         factor = 1.5
     },
     pos = {x=1,y=1},
+    inversion = "c_strength",
     use = function(self, card2)
         local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card)
         Entropy.FlipThen(cards, function(card)
@@ -261,6 +324,7 @@ local statue = {
         convert_per = 3,
         select = 1
     },
+    inversion = "c_death",
     pos = {x=3,y=1},
     use = function(self, card2)
         local cards = Entropy.GetHighlightedCards({G.hand}, card)
@@ -311,6 +375,7 @@ local feast = {
         select = 2
     },
     pos = {x=4,y=1},
+    inversion = "c_temperance",
     use = function(self, card2)
         local cards = Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card)
         for i, v in pairs(cards) do
@@ -346,6 +411,8 @@ return {
         whetstone,
         feast,
         servant,
-        endurance
+        endurance,
+        scarred,
+        scar
     }
 }

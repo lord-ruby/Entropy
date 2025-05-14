@@ -751,6 +751,14 @@ local decs = {
 					"values by {C:attention}#2#{} then",
 					"apply perishable"
 				}
+			},
+			c_entr_scar = {
+				name = "The Scar",
+				text = {
+					"Apply a {C:dark_edition}Scarred{} sticker",
+					"to up to {C:attention}#1#{} selected card#<s>1#",
+					"selected in hand"
+				}
 			}
 		},
 		Voucher = {
@@ -1960,6 +1968,14 @@ local decs = {
 					"as {C:diamonds}Diamonds{}"
 				}
 			},
+			scarred = {
+				name = "Scarred",
+				text = {
+					"{C:attention}Not{} removed from",
+					"hand when discarding",
+					"extra cards are {C:attention}still{} drawn"
+				}
+			},
 		},
 		DescriptionDummy = {
 			dd_entr_zenith_blind  = {
@@ -2161,6 +2177,7 @@ local decs = {
 			entr_fractured = "Fractured",
 			entr_freaky = "Freaky",
 			entr_yellow_sign = "Yellow Sign",
+			scarred = "Scarred",
 			desync = "Desynced",
 
 			entr_crimson_seal = "Crimson Seal",
