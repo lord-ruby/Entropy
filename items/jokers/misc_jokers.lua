@@ -6,7 +6,7 @@ local surreal = {
         qmult = 4
     },
     rarity = 1,
-    cost = 7,
+    cost = 3,
     
     dependencies = {
         items = {
