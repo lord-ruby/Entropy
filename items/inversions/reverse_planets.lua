@@ -176,7 +176,7 @@ end
 local planets = {}
 local order = 0
 
-function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,level, name,set_badges,loc_vars,config, new_key, calc)
+function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,level, name,set_badges,loc_vars,config, new_key, calc, art)
   order = order + 1
   planets[#planets+1]={
     object_type="Consumable",
@@ -240,21 +240,24 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
         }
       end
     end,
+    entr_credits = art and {
+      art = {art}
+    } or nil
   }
   return planets[#planets]
 end
 Entropy.ReversePlanets = {
-  {name="Pair",key="mercury",sprite_pos={x=7,y=0}, new_key="hydrae"},
-  {name="Three of a Kind",key="venus",sprite_pos={x=8,y=0},new_key="vega"},
-  {name="Full House",key="earth",sprite_pos={x=9,y=0},new_key="polaris"},
-  {name="Four of a Kind",key="mars",sprite_pos={x=10,y=0},new_key="cassiopeiae"},
-  {name="Flush",key="jupiter",sprite_pos={x=11,y=0},new_key="pegasi"},
-  {name="Straight",key="saturn",sprite_pos={x=12,y=0},new_key="persei"},
-  {name="Two Pair",key="uranus",sprite_pos={x=6,y=1},new_key="ophiuchi"},
-  {name="Straight Flush",key="neptune",sprite_pos={x=7,y=1},new_key="carinae"},
-  {name="High Card",key="pluto",sprite_pos={x=6,y=0},new_key="regulus"},
+  {name="Pair",key="mercury",sprite_pos={x=7,y=0}, new_key="hydrae", art="Binary"},
+  {name="Three of a Kind",key="venus",sprite_pos={x=8,y=0},new_key="vega", art="Binary"},
+  {name="Full House",key="earth",sprite_pos={x=9,y=0},new_key="polaris", art="Binary"},
+  {name="Four of a Kind",key="mars",sprite_pos={x=10,y=0},new_key="cassiopeiae", art="Binary"},
+  {name="Flush",key="jupiter",sprite_pos={x=11,y=0},new_key="pegasi", art="Binary"},
+  {name="Straight",key="saturn",sprite_pos={x=12,y=0},new_key="persei", art="Binary"},
+  {name="Two Pair",key="uranus",sprite_pos={x=6,y=1},new_key="ophiuchi", art="Binary"},
+  {name="Straight Flush",key="neptune",sprite_pos={x=7,y=1},new_key="carinae", art="Binary"},
+  {name="High Card",key="pluto",sprite_pos={x=6,y=0},new_key="regulus", art="Binary"},
   {name="Five of a Kind",key="planet_x",sprite_pos={x=9,y=1},new_key="tauri"},
-  {name="Flush House",key="ceres",sprite_pos={x=8,y=1},new_key="procyon"},
+  {name="Flush House",key="ceres",sprite_pos={x=8,y=1},new_key="procyon", art="Binary"},
   {name="Flush Five",key="eris",sprite_pos={x=10,y=1},new_key="sirius"},
   {name="", key="planetlua",sprite_pos={x=8,y=2}, new_key="starlua", prefix = "c_cry_",config = {
     level = 2,
@@ -398,7 +401,7 @@ Entropy.ReversePlanets = {
 function Entropy.RegisterReversePlanets()
   Entropy.RPlanetLocs = {}
     for i, v in pairs(Entropy.ReversePlanets) do
-		Entropy.RegisterReversePlanet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name,v.set_badges,v.loc_vars,v.config,v.new_key, v.calc)
+		Entropy.RegisterReversePlanet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name,v.set_badges,v.loc_vars,v.config,v.new_key, v.calc, v.art)
         planets[#planets].inversion = (v.prefix or "c_")..v.key
 	end
 end

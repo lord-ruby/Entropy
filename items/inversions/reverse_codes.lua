@@ -1566,6 +1566,7 @@ local desync = {
             end
         end
         if Entropy.ContextChecks(self, card, context, card.ability.context) then
+            print(card.ability.context)
             if Cryptid.demicolonGetTriggerable(card) then
                 local results = Cryptid.forcetrigger(card, context)
                 if results and results.jokers then

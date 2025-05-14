@@ -997,7 +997,7 @@ local decs = {
 		},
 		RPlanet = {
 			c_entr_regulus = {
-				name = "Regulus",
+				name = "Proxima Centauri",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
 					"{C:attention}#3#",
@@ -1005,7 +1005,7 @@ local decs = {
 				}
 			},
 			c_entr_hydrae = {
-				name = "CZ Hydrae",
+				name = "Alpha Centauri",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
 					"{C:attention}#3#",
@@ -1013,14 +1013,6 @@ local decs = {
 				}
 			},
 			c_entr_vega = {
-				name = "Vega",
-				text = {
-					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
-					"{C:attention}#3#",
-					"{C:gold}+#4#{} Ascension Power"
-				}
-			},
-			c_entr_polaris = {
 				name = "Polaris",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
@@ -1028,8 +1020,16 @@ local decs = {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
+			c_entr_polaris = {
+				name = "Dabih",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
 			c_entr_cassiopeiae = {
-				name = "Rho Cassiopeiae",
+				name = "Capella",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
 					"{C:attention}#3#",
@@ -1037,7 +1037,7 @@ local decs = {
 				}
 			},
 			c_entr_pegasi = {
-				name = "UU Pegasi",
+				name = "Trappist-1",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
 					"{C:attention}#3#",
@@ -1045,7 +1045,7 @@ local decs = {
 				}
 			},
 			c_entr_persei = {
-				name = "RS Persei",
+				name = "Kepler-90",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
 					"{C:attention}#3#",
@@ -1053,7 +1053,7 @@ local decs = {
 				}
 			},
 			c_entr_ophiuchi = {
-				name = "RT Ophiuchi",
+				name = "55 Cancri",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
 					"{C:attention}#3#",
@@ -1061,7 +1061,7 @@ local decs = {
 				}
 			},
 			c_entr_carinae = {
-				name = "V349 Carinae",
+				name = "Betelgeuse",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
 					"{C:attention}#3#",
