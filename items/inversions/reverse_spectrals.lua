@@ -684,6 +684,7 @@ local fervour = {
             }
         }
     end,
+    no_select = true,
     entr_credits = {
         custom = {key="card_art", text="gudusername_53951"}
     }
@@ -765,6 +766,7 @@ local quasar = {
     can_use = function(self, card)
         return true
 	end,
+    no_select = true,
     loc_vars = function(self, q, card)
         local max=0
         local ind="High Card"
@@ -1495,6 +1497,7 @@ local pulsar = {
           { mult = 0, chips = 0, handname = "", level = "" }
         )
     end,
+    no_select = true,
     bulk_use = function(self,card,area,copier,amt)
         self.use(self,card,area,copier,amt)
     end,
@@ -1522,6 +1525,7 @@ local beyond = {
     },
     atlas = "consumables",
     set = "RSpectral",
+    no_select = true,
     use = function(self, card)
         local deletable_jokers = {}
 		for k, v in pairs(G.jokers.cards) do

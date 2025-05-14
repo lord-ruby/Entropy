@@ -1227,7 +1227,7 @@ local decs = {
 				text = {
 					"Create a random",
 					"{C:entr_entropic,E:1}Entropic{} Joker",
-					"Banish all other held Jokers"
+					"Destroy all other held Jokers"
 				}
 			},
 			c_entr_fervour={
