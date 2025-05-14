@@ -114,7 +114,6 @@ function G.UIDEF.define_keys()
                 for v in string.gmatch(k, "[^%s]+") do
                     t[#t+1]=v
                 end
-                print(t)
                 local card = Card(voucher_areas[#voucher_areas].T.x + voucher_areas[#voucher_areas].T.w/2, voucher_areas[#voucher_areas].T.y, G.CARD_W, G.CARD_H, nil, G.P_CENTERS["c_base"], {bypass_discovery_center=true,bypass_discovery_ui=true,bypass_lock=true})
                 SMODS.change_base(card, t[3], t[1])
                 card.ability.order = 1
