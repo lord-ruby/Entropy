@@ -1086,7 +1086,7 @@ local decs = {
 				}
 			},
 			c_entr_tauri = {
-				name = "Tauri",
+				name = "W33A",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
 					"{C:attention}#3#",
@@ -1110,7 +1110,7 @@ local decs = {
 				}
 			},
 			c_entr_binarystars = {
-				name = "Mizar & Alcor",
+				name = "Mizar",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
 					"{C:attention}#3#",
@@ -2209,6 +2209,53 @@ local decs = {
 		v_text = {
 			ch_c_entr_starting_ante_mten = { "Start on Ante -10" },
 			ch_c_entr_reverse_redeo = { "Invert Redeo's ante change" },
+		},
+		quips={
+			lq_ee_1={
+                "Skill Issue"
+            },
+            lq_ee_2={
+                "If you wish",
+				"to defeat me",
+				"You must train",
+				"for 1000 years"
+            },
+            lq_ee_3={
+                "Should have",
+				"held R"
+            },
+            lq_ee_4={
+                "And in the end",
+				"everything succumbs",
+				"to entropy"
+            },
+            lq_ee_5={
+                "Looks like you",
+				"werent entropic",
+				"enough"
+            },
+            lq_ee_6={
+                "Maybe you should",
+				"have gotten a",
+				"few more retriggers"
+            },
+            lq_ee_7={
+                "Maybe try adding",
+				"a few other mods"
+            },
+            lq_ee_8={
+                "Dont cry its",
+				"just a game",
+            },
+            lq_ee_9={
+                "Were you even",
+				"trying?"
+            },
+			lq_ee_10={
+                "Maybe you should",
+				"stop trying to",
+				"beat me"
+            },
 		}
 	},
 }

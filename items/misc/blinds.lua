@@ -743,7 +743,19 @@ local phase4 = {
 	end,
 }
 
-  
+local endless_entropy = {
+    object_type = "Joker",
+    key = "eecc",
+    order = 10^300,
+    rarity = "entr_zenith",
+    cost = 10,
+    atlas = "ee_atlas",
+    pos = {x=0, y=0},
+    soul_pos = {x = 2, y = 0, extra = {x=1,y=0}},
+    no_doe = true,
+    no_collection = true,
+}
+
 return {
 	items = {
 		sun,
@@ -754,6 +766,7 @@ return {
 		phase1,
 		phase2,
 		phase3,
-		phase4
+		phase4,
+		endless_entropy
 	}
 }

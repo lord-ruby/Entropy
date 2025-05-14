@@ -256,9 +256,9 @@ Entropy.ReversePlanets = {
   {name="Two Pair",key="uranus",sprite_pos={x=6,y=1},new_key="ophiuchi", art="Binary"},
   {name="Straight Flush",key="neptune",sprite_pos={x=7,y=1},new_key="carinae", art="Binary"},
   {name="High Card",key="pluto",sprite_pos={x=6,y=0},new_key="regulus", art="Binary"},
-  {name="Five of a Kind",key="planet_x",sprite_pos={x=9,y=1},new_key="tauri"},
+  {name="Five of a Kind",key="planet_x",sprite_pos={x=9,y=1},new_key="tauri", art="Binary"},
   {name="Flush House",key="ceres",sprite_pos={x=8,y=1},new_key="procyon", art="Binary"},
-  {name="Flush Five",key="eris",sprite_pos={x=10,y=1},new_key="sirius"},
+  {name="Flush Five",key="eris",sprite_pos={x=10,y=1},new_key="sirius", art="Binary"},
   {name="", key="planetlua",sprite_pos={x=8,y=2}, new_key="starlua", prefix = "c_cry_",config = {
     level = 2,
     odds = 5
@@ -297,13 +297,13 @@ Entropy.ReversePlanets = {
   },
   {name="cry_Bulwark", new_key = "dyson_swarm", key="asteroidbelt",sprite_pos={x=12,y=1},prefix = "c_cry_",set_badges = function(self, card, badges)
     badges[1] = create_badge(localize("k_planet_dyson_swarm"), get_type_colour(self or card.config, card), nil, 1.2)
-  end},
+  end, art="Binary"},
   {name="cry_Clusterfuck", new_key = "dark_matter", key="void",sprite_pos={x=11,y=1},prefix = "c_cry_",set_badges = function(self, card, badges)
     badges[1] = create_badge("", get_type_colour(self or card.config, card), nil, 1.2)
-  end},
+  end, art="Binary"},
   {name="cry_UltPair", key="marsmoons", new_key = "binarystars", sprite_pos={x=6,y=2},prefix = "c_cry_",set_badges = function(self, card, badges)
     badges[1] = create_badge(localize("k_planet_binary_star"), get_type_colour(self or card.config, card), nil, 1.2)
-  end},
+  end, art="Binary"},
   {name="cry_WholeDeck", key="universe", new_key = "multiverse", sprite_pos={x=7,y=2},prefix = "c_cry_",set_badges = function(self, card, badges)
     badges[1] = create_badge(localize("k_planet_multiverse"), get_type_colour(self or card.config, card), nil, 1.2)
   end},
@@ -319,7 +319,7 @@ Entropy.ReversePlanets = {
   func = function(self,card,area,copier,number)
     Entropy.StrangeSingle(self,card,area,copier,number)
   end,
-  calc = function() end
+  calc = function() end, art="Binary"
   },
   {name="", key="sunplanet", new_key = "nemesis", sprite_pos={x=10,y=2},prefix = "c_cry_", config = {extra = 0.1},
     loc_vars = function(self,q,card) 

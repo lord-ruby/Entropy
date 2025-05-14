@@ -357,7 +357,7 @@ pattern = "SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC
 position = "after"
 payload = '''
 if ((Cryptid_config and Cryptid_config.menu) or false) then
-	SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, G.P_CENTERS['j_entr_surreal_joker'],{bypass_discovery_center = true, bypass_discovery_ui = true})
+	SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, (G.GAME.EECardCharacter and G.P_CENTERS.j_entr_eecc or G.P_CENTERS.j_entr_surreal_joker),{bypass_discovery_center = true, bypass_discovery_ui = true})
 end
 '''
 match_indent = true
@@ -367,7 +367,7 @@ match_indent = true
 target = "card_character.lua"
 pattern = 'self.children.card = Card(self.T.x, self.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, args.center or G.P_CENTERS.j_jolly, {bypass_discovery_center = true})'
 position = "at"
-payload = 'self.children.card = Card(self.T.x, self.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, args.center or G.P_CENTERS.j_entr_surreal_joker, {bypass_discovery_center = true})'
+payload = 'self.children.card = Card(self.T.x, self.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, args.center or (G.GAME.EECardCharacter and G.P_CENTERS.j_entr_eecc or G.P_CENTERS.j_entr_surreal_joker), {bypass_discovery_center = true})'
 match_indent = true
 
 [[patches]]
@@ -413,5 +413,44 @@ pattern = "G.GAME.round_scores.cards_discarded.amt = G.GAME.round_scores.cards_d
 position = "before"
 payload = '''
 if num and num > 0 then G.FUNCS.draw_from_deck_to_hand(num) end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''                        if eval.saved then
+                        game_over = false
+                    end'''
+position = "at"
+payload = '''
+if eval.saved then
+  if not G.GAME.EEBuildup then
+    game_over = false
+  else
+    G.GAME.EECardCharacter = true
+  end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''Jimbo:add_speech_bubble('lq_'..math.random(1,10), nil, {quip = true})'''
+position = "at"
+payload = '''
+Jimbo:add_speech_bubble((G.GAME.EECardCharacter and 'lq_ee_' or 'lq_')..math.random(1,10), nil, {quip = true})
+G.GAME.EECardCharacter = nil
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if G.GAME.round_resets.ante <= G.GAME.win_ante then --Only add Jimbo to say a quip if the game over happens when the run is lost'''
+position = "at"
+payload = '''
+if G.GAME.round_resets.ante <= G.GAME.win_ante or G.GAME.EECardCharacter then --Only add Jimbo to say a quip if the game over happens when the run is lost
 '''
 match_indent = true
