@@ -987,6 +987,13 @@ local decs = {
 					"to the booster packs of the current shop"
 				}
 			},
+			c_entr_desync = {
+				name = "(~)$ desync",
+				text = {
+					"Apply a {C:red}Desync{} sticker to",
+					"1 selected Joker or Consumable",
+				}
+			},
 		},
 		RPlanet = {
 			c_entr_regulus = {
@@ -1860,6 +1867,14 @@ local decs = {
 					"Increase every 2 rounds"
 				}
 			},
+			desync = {
+				name = "Desync",
+				text = {
+					"{C:dark_edition}Forcetrigger{}",
+					"during {C:attention}#1#{}",
+					"Randomises when hand played"
+				}
+			},
 			entr_entropic_sticker = {
                 ['name'] = 'Entropic Sticker',
                 ['text'] = {
@@ -2145,6 +2160,7 @@ local decs = {
 			entr_fractured = "Fractured",
 			entr_freaky = "Freaky",
 			entr_yellow_sign = "Yellow Sign",
+			desync = "Desynced",
 
 			entr_crimson_seal = "Crimson Seal",
 			entr_sapphire_seal = "Sapphire Seal",

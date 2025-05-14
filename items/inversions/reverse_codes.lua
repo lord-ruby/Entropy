@@ -1163,6 +1163,33 @@ local hotfix_sticker = {
     end
 }
 
+local desync_card = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "desync"
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+22,
+    key = "desync",
+    set = "RCode",
+    
+    inversion = "c_cry_hook",
+
+    atlas = "consumables",
+    pos = {x=0,y=5},
+    use = function(self, card, area, copier)
+        Entropy.ApplySticker(Entropy.GetHighlightedCards({G.jokers, G.consumeables}, card)[1], "desync")
+    end,
+    can_use = function(self, card)
+        return #Entropy.GetHighlightedCards({G.jokers, G.consumeables}, card) == 1
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {key = "desync", set="Other", vars = {"context.none"}}
+    end,
+}
+
 local ctrl_x = {
     dependencies = {
         items = {
@@ -1474,6 +1501,99 @@ local mbr = {
     end,
 }
 
+local desync = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Sticker",
+    order = 3000+32,
+    atlas = "entr_stickers",
+    pos = { x = 7, y = 0 },
+    key = "desync",
+    no_sticker_sheet = true,
+    prefix_config = { key = false },
+    badge_colour = HEX("FF0000"),
+    draw = function(self, card) --don't draw shine
+        local notilt = nil
+        if card.area and card.area.config.type == "deck" then
+            notilt = true
+        end
+        if not G.shared_stickers["entr_desync"] then
+            G.shared_stickers["entr_desync"] =
+                Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["entr_stickers"], { x = 6, y = 0 })
+        end -- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
+
+        G.shared_stickers[self.key].role.draw_major = card
+        G.shared_stickers["entr_desync"].role.draw_major = card
+
+        G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+
+        card.hover_tilt = card.hover_tilt / 2 -- call it spaghetti, but it's what hologram does so...
+        G.shared_stickers["entr_desync"]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+        G.shared_stickers["entr_desync"]:draw_shader(
+            "hologram",
+            nil,
+            card.ARGS.send_to_shader,
+            notilt,
+            card.children.center
+        ) -- this doesn't really do much tbh, but the slight effect is nice
+        card.hover_tilt = card.hover_tilt * 2
+    end,
+    calculate = function(self, card, context)
+        if context.after then
+            if card.ability.context == "after" then
+                if Entropy.ContextChecks(self, card, context, card.ability.context) then
+                    card.ability.context = Entropy.RandomContext()
+                    if Cryptid.demicolonGetTriggerable(card) then
+                        local results = Cryptid.forcetrigger(card, context)
+                        if results and results.jokers then
+                            results.jokers.message = localize("cry_demicolon")
+                            results.jokers.colour = G.C.RARITY.cry_epic
+                            results.jokers.sound = "cry_demitrigger"
+                            return results.jokers
+                        end
+                        return {
+                            message = localize("cry_demicolon"),
+                            colour = G.C.RARITY.cry_epic,
+                            sound = "cry_demitrigger",
+                        }
+                    end
+                end
+            else
+                card.ability.context = Entropy.RandomContext()
+            end
+        end
+        if Entropy.ContextChecks(self, card, context, card.ability.context) then
+            if Cryptid.demicolonGetTriggerable(card) then
+                local results = Cryptid.forcetrigger(card, context)
+                if results and results.jokers then
+                    results.jokers.message = localize("cry_demicolon")
+                    results.jokers.colour = G.C.RARITY.cry_epic
+                    results.jokers.sound = "cry_demitrigger"
+                    return results.jokers
+                end
+                return {
+                    message = localize("cry_demicolon"),
+                    colour = G.C.RARITY.cry_epic,
+                    sound = "cry_demitrigger",
+                }
+            end
+        end
+    end,
+    apply = function(self,card,val)
+        card.ability.context = Entropy.RandomContext()
+        card.ability.desync = true
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {"context."..(card.ability.context or "none")}
+        }
+    end
+}
+
+
 return {
     items = {
         memoryleak,
@@ -1508,6 +1628,8 @@ return {
         local_card,
         transpile,
         detour,
-        mbr
+        mbr,
+        desync,
+        desync_card
     }
 }

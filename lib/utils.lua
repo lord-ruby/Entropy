@@ -811,3 +811,39 @@ function Entropy.WhatTheFuck(base, val)
     base.r = to_big(base.r) * to_big(val)
     return Entropy.FormatTesseract(base)
 end
+
+function Entropy.RandomContext(seed)
+    return pseudorandom_element({
+        "before",
+        "pre_joker",
+        "joker_main",
+        "individual",
+        "pre_discard",
+        "discard",
+        "after",
+        "destroy_card",
+        "setting_blind",
+        "ending_shop",
+        "reroll_shop",
+        "selling_card",
+        "using_consumeable",
+        "playing_card_added"
+    }, pseudoseed(seed or "desync"))
+end
+
+function Entropy.ContextChecks(self, card, context, currc)
+    if currc == "before" and context.before then return true end
+    if currc == "pre_joker" and context.pre_joker then return true end
+    if currc == "joker_main" and context.joker_main then return true end
+    if currc == "individual" and context.individual and context.cardarea == G.play then return true end
+    if currc == "pre_discard" and context.pre_discard and context.cardarea == G.hand then return true end
+    if currc == "discard" and context.discard then return true end
+    if currc == "after" and context.after and not context.repetition and not context.blueprint then return true end
+    if currc == "destroy_card" and context.destroy_card then return true end
+    if currc == "setting_blind" and context.setting_blind then return true end
+    if currc == "ending_shop" and context.ending_shop then return true end
+    if currc == "reroll_shop" and context.reroll_shop then return true end
+    if currc == "selling_card" and context.selling_card then return true end
+    if currc == "using_consumeable" and context.using_consumeable then return true end
+    if currc == "playing_card_added" and context.playing_card_added then return true end
+end
