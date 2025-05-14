@@ -56,7 +56,9 @@ Entropy.BlindTokenBlacklist = {
   bl_entr_endless_entropy_phase_four = true
 }
 Entropy.References = {}
-Entropy.Zeniths = {}
+Entropy.Zeniths = {
+  "j_entr_ruby"
+}
 Entropy.RarityPoints = {
     [1] = 1, --common
     [2] = 4, --uncommon
