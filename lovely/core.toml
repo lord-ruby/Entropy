@@ -412,7 +412,6 @@ target = "functions/state_events.lua"
 pattern = "G.GAME.round_scores.cards_discarded.amt = G.GAME.round_scores.cards_discarded.amt + #cards"
 position = "before"
 payload = '''
-print(num)
 if num and num > 0 then G.FUNCS.draw_from_deck_to_hand(num) end
 '''
 match_indent = true
