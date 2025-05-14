@@ -328,7 +328,7 @@ local parakmi = {
     eternal_compat = true,
     pos = { x = 3, y = 0 },
     config = {
-        --decadence = 0
+        shop_slots = 2
     },
     dependencies = {
         items = {
@@ -339,11 +339,32 @@ local parakmi = {
     soul_pos = { x = 5, y = 0, extra = { x = 4, y = 0 } },
     atlas = "exotic_jokers",
     loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.shop_slots
+            }
+        }
     end,
     calculate = function(self, card, context)
     end,
-    add_to_deck = function()
+    add_to_deck = function(self, card)
         G.GAME.banned_keys["sleeve_casl_none"] = true
+        G.E_MANAGER:add_event(Event({
+			func = function() --card slot
+				-- why is this in an event?
+				change_shop_size(card.ability.shop_slots)
+				return true
+			end,
+		}))
+    end
+    remove_from_deck = function(self, card)
+        G.E_MANAGER:add_event(Event({
+			func = function() --card slot
+				-- why is this in an event?
+				change_shop_size(-card.ability.shop_slots)
+				return true
+			end,
+		}))
     end
 }
 

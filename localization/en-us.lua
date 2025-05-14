@@ -283,7 +283,8 @@ local decs = {
 				name = "Parakmi",
 				text = {
 					"{C:attention}Anything{} can appear",
-					"in the place of any card"
+					"in the place of any card",
+					"{C:dark_edition}#1#{} Shop Slots"
 				}
 			},
 			j_entr_exousia = {
