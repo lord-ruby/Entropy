@@ -226,8 +226,7 @@ local oinac = {
     demicoloncompat = true,
     calculate = function (self, card2, context)
         if context.destroy_card and context.cardarea == G.play and context.destroying_card then
-                local card = Card(context.destroying_card.T.x, context.destroying_card.T.y, G.CARD_W*(card_scale or 1), G.CARD_H*(card_scale or 1), G.P_CARDS.empty, G.P_CENTERS.c_base, {playing_card = playing_card})
-                card:set_base(context.destroying_card.config.card)
+                local card = copy_card(context.destroying_card)
                 SMODS.change_base(card, card.base.suit, Entropy.HigherCardRank(card))
                 card:add_to_deck()
                 table.insert(G.playing_cards, card)
