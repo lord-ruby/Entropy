@@ -775,6 +775,14 @@ local decs = {
 					"selected card#<s>1# in hand",
 					"then {C:attention}destroy{} the selected card#<s>1#"
 				}
+			},
+			c_entr_integrity = {
+				name = "Integrity",
+				text = {
+					"Remove the {C:attention}enhancement#<s>1#{} of",
+					"{C:attention}#1#{} selected card#<s>1# then",
+					"add a random {C:dark_edition}seal and edition{}"
+				}
 			}
 		},
 		Voucher = {

@@ -511,6 +511,48 @@ local penumbra = {
 	can_divide = true,
 }
 
+local integrity = {
+    key = "integrity",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -901+25,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        select = 2
+    },
+    pos = {x=5,y=2},
+    inversion = "c_cry_instability",
+    use = function(self, card2)
+        local cards = Entropy.FilterTable(Entropy.GetHighlightedCards({G.hand}, card), function(card) return card.config.center.key ~= "c_base" end)
+        Entropy.FlipThen(cards, function(card)
+            local edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy")).key
+            local seal = pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("entropy")).key
+            card:set_edition(edition)
+            card:set_seal(seal)
+            card:set_ability(G.P_CENTERS.c_base)
+        end)
+            
+    end,
+    can_use = function(self, card)
+        local num = #Entropy.FilterTable(Entropy.GetHighlightedCards({G.hand}, card), function(card) return card.config.center.key ~= "c_base" end)
+        return num > 0 and num <= card.ability.select
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.select
+            }
+        }
+    end,
+    can_stack = true,
+	can_divide = true,
+}
+
 return {
     items = {
         master,
@@ -522,6 +564,7 @@ return {
         scarred,
         scar,
         dagger,
-        penumbra
+        penumbra,
+        integrity
     }
 }
