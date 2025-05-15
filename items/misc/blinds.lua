@@ -185,7 +185,22 @@ Entropy.EEBlacklist = {
 	bl_entr_endless_entropy_phase_four=true,
 	bl_cry_lavender_loop=true,
 	bl_cry_vermillion_virus=true,
-	bl_cry_turquoise_tornado=true
+	bl_cry_turquoise_tornado=true,
+	bl_mf_violet_vessel_dx = true,
+	bl_mf_cerulean_bell_dx = true,
+	bl_mf_needle_dx = true,
+	bl_mf_manacle_dx = true,
+	bl_mf_pillar_dx = true,
+	bl_mf_serpent_dx = true,
+	bl_mf_club_dx = true,
+	bl_mf_goad_dx = true,
+	bl_mf_window_dx = true,
+	bl_mf_head_dx = true,
+	bl_mf_arm_dx = true,
+	bl_mf_wheel_dx = true,
+	bl_mf_house_dx = true,
+	bl_mf_psychic_dx = true,
+	bl_mf_hook_dx = true,
 }
 local phase1 = {
 	dependencies = {
@@ -466,6 +481,7 @@ local phase4 = {
 		end
 		G.GAME.EEBuildup = false
 		G.GAME.EEBeaten = true
+		Entropy.WinEE()
 	end,
 	press_play = function(self)
 		for k, _ in pairs(Entropy.GetEEBlinds()) do

@@ -854,3 +854,67 @@ function Entropy.IsEE()
     or G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three"
     or G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_four"
 end
+
+function Entropy.WinEE()
+    G.E_MANAGER:add_event(Event({
+        trigger = 'immediate',
+        func = (function()
+            for k, v in pairs(G.I.CARD) do
+                v.sticker_run = nil
+            end
+            
+            play_sound('win')
+            G.SETTINGS.paused = true
+            G.GAME.TrueEndless = true
+            G.FUNCS.overlay_menu{
+                definition = create_UIBox_win(),
+                config = {no_esc = true}
+            }
+            local Jimbo = nil
+
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                delay = 2.5,
+                blocking = false,
+                func = (function()
+                    if G.OVERLAY_MENU and G.OVERLAY_MENU:get_UIE_by_ID('jimbo_spot') then 
+                        G.GAME.EECardCharacter = true
+                        Jimbo = Card_Character({x = 0, y = 5, center = G.P_CENTERS.eecc})
+                        local spot = G.OVERLAY_MENU:get_UIE_by_ID('jimbo_spot')
+                        spot.config.object:remove()
+                        spot.config.object = Jimbo
+                        Jimbo.ui_object_updated = true
+                        G.GAME.EECardCharacter =  nil
+                        Jimbo:add_speech_bubble('wq_ee_'..math.random(1,5), nil, {quip = true})
+                        Jimbo:say_stuff(5)
+                        if G.F_JAN_CTA then 
+                            G.E_MANAGER:add_event(Event({
+                                func = function()
+                                    Jimbo:add_button(localize('b_wishlist'), 'wishlist_steam', G.C.DARK_EDITION, nil, true, 1.6)
+                                    return true
+                                end}))
+                        end
+                        end
+                    return true
+                end)
+            }))
+            
+            return true
+        end)
+    }))
+
+    if (not G.GAME.seeded and not G.GAME.challenge) or SMODS.config.seeded_unlocks then
+        G.PROFILES[G.SETTINGS.profile].stake = math.max(G.PROFILES[G.SETTINGS.profile].stake or 1, (G.GAME.stake or 1)+1)
+    end
+    G:save_progress()
+    G.FILE_HANDLER.force = true
+    G.E_MANAGER:add_event(Event({
+        trigger = 'immediate',
+        func = (function()
+            if not G.SETTINGS.paused then
+                G.GAME.current_round.round_text = 'Endless Round '
+                return true
+            end
+        end)
+    }))
+end

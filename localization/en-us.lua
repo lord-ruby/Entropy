@@ -2160,6 +2160,7 @@ local decs = {
 			k_saved_just = "Not Just!",
 			b_on = "Enable",
 			b_off = "Disable",
+			b_true_endless = "True Endless Mode"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",
@@ -2255,6 +2256,28 @@ local decs = {
                 "Maybe you should",
 				"stop trying to",
 				"beat me"
+            },
+			lq_ee_revived = {
+				"Did you really",
+				"think that would",
+				"work?"
+			},
+			wq_ee_1={
+                "Huh",
+            },
+            wq_ee_2={
+                "What!?"
+            },
+            wq_ee_3={
+                "How..."
+            },
+            wq_ee_4={
+                "Reveal your",
+				"secrets"
+            },
+            wq_ee_5={
+                "Well that was",
+				"entropious"
             },
 		}
 	},

@@ -241,7 +241,7 @@ pattern = '''self.chips = get_blind_amount(G.GAME.round_resets.ante)*self.mult*G
 position = "after"
 payload = '''
 elseif self.exponent[2] > 0 then
-    local initial = get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling
+    local initial = to_big(get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling)
     initial = initial:arrow(self.exponent[1], self.exponent[2])
     self.chips = initial
 end
@@ -419,12 +419,20 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
-pattern = "if eval.saved then"
+pattern = "if SMODS.saved then game_over = false end"
 position = "at"
 payload = '''
-if Entropy.IsEE() and eval.saved then
+if Entropy.IsEE() and SMODS.saved then
     G.GAME.EECardCharacter = true
-elseif eval.saved then
+    G.GAME.EERevived = true
+    G.STATE = G.STATES.GAME_OVER
+    if not G.GAME.won and not G.GAME.seeded and not G.GAME.challenge then 
+        G.PROFILES[G.SETTINGS.profile].high_scores.current_streak.amt = 0
+    end
+    G:save_settings()
+    G.FILE_HANDLER.force = true
+    G.STATE_COMPLETE = false
+elseif SMODS.saved then game_over = false end
 '''
 match_indent = true
 
@@ -446,8 +454,11 @@ target = "game.lua"
 pattern = '''Jimbo:add_speech_bubble('lq_'..math.random(1,10), nil, {quip = true})'''
 position = "at"
 payload = '''
-Jimbo:add_speech_bubble((G.GAME.EECardCharacter and 'lq_ee_' or 'lq_')..math.random(1,10), nil, {quip = true})
+local text = (G.GAME.EECardCharacter and 'lq_ee_' or 'lq_')..math.random(1,10)
+if G.GAME.EERevived then text = "lq_ee_revived" end
+Jimbo:add_speech_bubble(text, nil, {quip = true})
 G.GAME.EECardCharacter = nil
+G.GAME.EERevived = nil
 '''
 match_indent = true
 
@@ -458,5 +469,17 @@ pattern = '''if G.GAME.round_resets.ante <= G.GAME.win_ante then --Only add Jimb
 position = "at"
 payload = '''
 if G.GAME.round_resets.ante <= G.GAME.win_ante or G.GAME.EECardCharacter then --Only add Jimbo to say a quip if the game over happens when the run is lost
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''    {n=G.UIT.R, config={align = "cm", padding = 0.08}, nodes={
+      UIBox_button({button = 'exit_overlay_menu', label = {localize('b_endless')}, minw = 6.5, maxw = 5, minh = 1.2, scale = 0.7, shadow = true, colour = G.C.BLUE, focus_args = {nav = 'wide', button = 'x',set_button_pip = true}}),'''
+position = "at"
+payload = '''
+    {n=G.UIT.R, config={align = "cm", padding = 0.08}, nodes={
+      UIBox_button({button = 'exit_overlay_menu', label = {localize(G.GAME.TrueEndless and 'b_true_endless' or 'b_endless')}, minw = 6.5, maxw = 5, minh = 1.2, scale = 0.7, shadow = true, colour = G.C.BLUE, focus_args = {nav = 'wide', button = 'x',set_button_pip = true}}),
 '''
 match_indent = true
