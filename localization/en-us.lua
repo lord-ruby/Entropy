@@ -499,6 +499,22 @@ local decs = {
 					"empty joker slot to be filled with",
 					"a random {C:dark_edition}Perishable, Oversaturated{} Joker"
 				}
+			},
+			j_entr_libra = {
+				name = "Libra",
+				text = {
+					"Scored {C:dark_edition}Wild{} and {C:attention}Face{} cards",
+					"balance their values with {C:attention}this{} Joker",
+					"{C:inactive}(Currently: {X:dark_edition,C:white}^#1#{} {C:inactive}Chips){}"
+				}
+			},
+			j_entr_scorpio = {
+				name = "Scorpio",
+				text = {
+					"Scored {C:attention}8s{} temporarily boost probabilities",
+					"Grant {X:dark_edition,C:white}^Chips{} based on {C:attention}8 d8s{}",
+					"Rolling {C:attention}Eight{} 8s instead grants {X:dark_edition,C:white}^#1#{} Chips"
+				}
 			}
 		},
 		Blind = {
@@ -2191,7 +2207,7 @@ local decs = {
 			k_saved_just = "Not Just!",
 			b_on = "Enable",
 			b_off = "Disable",
-			b_true_endless = "True Endless Mode"
+			b_true_endless = "True Endless Mode",
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

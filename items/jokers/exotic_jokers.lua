@@ -139,8 +139,172 @@ function GetAreaIndex(cards, card)
     return -1
 end
 
+local libra = {
+    order = 300 + 1,
+    object_type = "Joker",
+    key = "libra",
+    rarity = "cry_exotic",
+    cost = 50,
+    atlas = "exotic_jokers",
+
+    pos = { x = 6, y = 0 },
+    soul_pos = { x = 8, y = 0, extra = { x = 7, y = 0 } },
+    
+    dependencies = {
+        items = {
+            "set_cry_exotic"
+        }
+    },
+
+    config = {
+        echips = 1
+    },
+
+    blueprint_compat = true,
+    eternal_compat = true,
+    demicoloncompat = true,
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue+1] = G.P_CENTERS.m_wild
+        return {
+            vars = {
+                card.ability.echips
+            }
+        }
+    end,
+    calculate = function (self, card, context)
+        if context.individual and context.cardarea == G.play and context.other_card and (context.other_card:is_face() or context.other_card.config.center.key == "m_wild") then
+            local total = card.ability.echips
+            local values = 1
+            for i, v in pairs(context.other_card.ability) do
+                if type(v) == "number" and v ~= 1 and v~= 0 then
+                    total = total + v
+                    values = values + 1
+                end
+                if type(v) == "table" and v.arrow and v ~= to_big(1) and v ~= to_big(0) then
+                    total = total + v
+                    values = values + 1
+                end
+            end
+            if type(context.other_card.ability.extra) == "table" and not context.other_card.ability.extra.arrow then
+                for i, v in pairs(context.other_card.ability.extra or {}) do
+                    if type(v) == "number" and v ~= 1 and v~= 0 then
+                        total = total + v
+                        values = values + 1
+                    end
+                    if type(v) == "table" and v.arrow and v ~= to_big(1) and v ~= to_big(0) then
+                        total = total + v
+                        values = values + 1
+                    end
+                end
+            end
+            total = total + context.other_card.base.nominal
+            values = values + 1
+            print(total)
+            print(values)
+            for i, v in pairs(context.other_card.ability) do
+                if type(v) == "number" and v ~= 1 and v~= 0 then
+                    context.other_card.ability[i] = total / values
+                end
+                if type(v) == "table" and v.arrow and v ~= to_big(1) and v ~= to_big(0) then
+                    context.other_card.ability[i] = to_big(total / values)
+                end
+            end
+            if type(context.other_card.ability.extra) == "table" and not context.other_card.ability.extra.arrow then
+                for i, v in pairs(context.other_card.ability.extra or {}) do
+                    if type(v) == "number" and v ~= 1 and v~= 0 then
+                        context.other_card.ability.extra[i] = total / values
+                    end
+                    if type(v) == "table" and v.arrow and v ~= to_big(1) and v ~= to_big(0) then
+                        context.other_card.ability.extra[i] = to_big(total / values)
+                    end
+                end
+            end
+            context.other_card.base.nominal = total / values
+            card.ability.echips = total / values
+        end
+        if context.joker_main then
+            return {
+                echips = card.ability.echips
+            }
+        end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
+}
+
+local scorpio = {
+    order = 300 + 2,
+    object_type = "Joker",
+    key = "scorpio",
+    rarity = "cry_exotic",
+    cost = 50,
+    atlas = "exotic_jokers",
+
+    pos = { x = 6, y = 1 },
+    soul_pos = { x = 8, y = 1, extra = { x = 7, y = 1 } },
+    
+    dependencies = {
+        items = {
+            "set_cry_exotic"
+        }
+    },
+    config = {
+        all8s = 16
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    demicoloncompat = true,
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                card.ability.all8s
+            }
+        }
+    end,
+    calculate = function (self, card, context)
+        if context.individual and context.cardarea == G.play and context.other_card and context.other_card:get_id() == 8 then
+            G.GAME.probabilities.normal = G.GAME.probabilities.normal * 1.16
+            card.ability.temp_fac = (card.ability.temp_fac or 1) * 1.16
+            card_eval_status_text(
+                card,
+                "extra",
+                nil,
+                nil,
+                nil,
+                { message = localize("k_upgrade_ex"), colour = G.C.BLUE }
+            )
+        end
+        if context.joker_main then
+            local d8s = {}
+            for i = 1, 8 do
+                d8s[#d8s+1] = math.floor(pseudorandom("scorpio")*7+1.5)
+            end
+            local all8s = true
+            local sum = 0
+            for i, v in ipairs(d8s) do
+                if v ~= 8 then all8s = false end
+                sum = sum + v/8
+            end
+            if all8s then
+                sum = card.ability.all8s
+            end
+            return {
+                Echip_mod = sum,
+                message = "Sum = ^"..sum.." Chips"
+            }
+        end
+        if context.after then
+            G.GAME.probabilities.normal = G.GAME.probabilities.normal / (card.ability.temp_fac or 1)
+            card.ability.temp_fac = 1
+        end
+    end,
+}
+
 return {
     items = {
-        stillicidium
+        stillicidium,
+        libra,
+        scorpio
     }
 }
