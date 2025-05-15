@@ -266,7 +266,7 @@ SMODS.Atlas {
 				if context.tag.ability and context.tag.ability.orbital_hand then
 					G.orbital_hand = context.tag.ability.orbital_hand
 				end
-				for i = 1, tag.ability.num do
+				for i = 1, to_number(tag.ability.num) do
 					local tag = Tag(context.tag.key)
 					if context.tag.key == "tag_cry_rework" then
 						tag.ability.rework_edition = context.tag.ability.rework_edition
