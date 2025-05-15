@@ -765,7 +765,15 @@ local decs = {
 				text = {
 					"Destroy {C:attention}#1#{} selected Joker#<s>1#",
 					"and add {X:dark_edition,C:white}X#2#{} the sell value",
-					"to your {C:attention}most played{} hand's mult"
+					"to your {C:attention}most played{} hand'is mult"
+				}
+			},
+			c_entr_penumbra = {
+				name = "Penumbra",
+				text = {
+					"Banish the enhancement of {C:attention}#1#{}",
+					"selected card#<s>1# in hand",
+					"then {C:attention}destroy{} the selected card#<s>1#"
 				}
 			}
 		},

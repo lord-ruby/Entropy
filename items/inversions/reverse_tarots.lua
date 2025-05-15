@@ -465,6 +465,52 @@ local feast = {
     can_stack = true,
 	can_divide = true,
 }
+
+local penumbra = {
+    key = "penumbra",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -901+22,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        select = 1
+    },
+    pos = {x=2,y=2},
+    inversion = "c_cry_eclipse",
+    use = function(self, card2)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card)
+        for i, v in pairs(cards) do
+            local card = cards[i]
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    card:start_dissolve()
+                    if card.config.center.key ~= "c_base" then G.GAME.banned_keys[card.config.center.key] = true end
+                    return true
+                end
+            }))
+        end
+            
+    end,
+    can_use = function(self, card)
+        local num = #Entropy.GetHighlightedCards({G.hand}, card)
+        return num > 0 and num <= card.ability.select
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.select
+            }
+        }
+    end,
+    can_stack = true,
+	can_divide = true,
+}
+
 return {
     items = {
         master,
@@ -475,6 +521,7 @@ return {
         endurance,
         scarred,
         scar,
-        dagger
+        dagger,
+        penumbra
     }
 }
