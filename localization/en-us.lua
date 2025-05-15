@@ -759,6 +759,14 @@ local decs = {
 					"to up to {C:attention}#1#{} selected card#<s>1#",
 					"selected in hand"
 				}
+			},
+			c_entr_dagger = {
+				name = "The Dagger",
+				text = {
+					"Destroy {C:attention}#1#{} selected Joker#<s>1#",
+					"and add {X:dark_edition,C:white}X#2#{} the sell value",
+					"to your {C:attention}most played{} hand's mult"
+				}
 			}
 		},
 		Voucher = {

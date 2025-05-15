@@ -118,7 +118,7 @@ local servant = {
         end
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, nil, card)
+        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card)
         local num = #cards
         return num > 0 and num <= card.ability.select and Entropy.TableAny(cards, function(value) return Entropy.FlipsideInversions[value.config.center.key] end)
 	end,
@@ -157,7 +157,7 @@ local scar = {
         end)
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, nil, card)
+        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card)
         local num = #cards
         return num > 0 and num <= card.ability.select
 	end,
@@ -191,6 +191,67 @@ local scarred = {
     apply = function(self,card,val)
         card.ability.scarred = true
     end,
+}
+
+local dagger = {
+    key = "dagger",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -900 + 8,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        select = 1,
+        sellmult = 2
+    },
+    inversion = "c_justice",
+    pos = {x=8, y = 0},
+    use = function(self, card2, area, copier)
+        local cards = Entropy.GetHighlightedCards({G.jokers}, card2)
+        local total = 0
+        local _hand, _tally = nil, -1
+		for k, v in ipairs(G.handlist) do
+			if G.GAME.hands[v].visible and G.GAME.hands[v].played > _tally then
+				_hand = v
+				_tally = G.GAME.hands[v].played
+			end
+		end
+        for i, card in ipairs(cards) do
+            total = total + card.sell_cost * card2.ability.sellmult
+        end
+        Entropy.FlipThen(cards, function(card)
+            if not card.ability.eternal then
+                card:start_dissolve()
+            end
+        end)
+        delay(0.6)
+        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { mult = "+"..total, handname = localize(_hand, "poker_hands") })
+        delay(2.6)
+        update_hand_text(
+          { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+          { mult = 0, chips = 0, handname = "", level = "" }
+        )
+        G.GAME.hands[_hand].mult = G.GAME.hands[_hand].mult + total
+    end,
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.jokers}, card)
+        local num = #cards
+        return num > 0 and num <= card.ability.select
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.select,
+                card.ability.sellmult
+            }
+        }
+    end,
+    can_stack = true,
+	can_divide = true,
 }
 
 local whetstone = {
@@ -413,6 +474,7 @@ return {
         servant,
         endurance,
         scarred,
-        scar
+        scar,
+        dagger
     }
 }
