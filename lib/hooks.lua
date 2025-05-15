@@ -2242,7 +2242,8 @@ function Entropy.GetRecipeResult(val,jokerrares,seed)
         [3]=12,
         cry_epic=20,
         [4]=30,
-        cry_exotic=45
+        cry_exotic=45,
+        entr_entropic = 70
     }) do
         if v > cost and val >= v then
             rare = i;cost=v

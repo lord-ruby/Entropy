@@ -1515,7 +1515,7 @@ local decs = {
 			c_entr_destiny = {
 				name = "Destiny",
 				text = {
-					"Sacrifice 5 playing cards to craft",
+					"Sacrifice {C:attention}5{} playing cards to craft",
 					"one Joker based on their Enhancements",
 					"{C:inactive}(Currently: #1#){}"
 				}

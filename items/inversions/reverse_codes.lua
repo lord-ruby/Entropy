@@ -152,7 +152,6 @@ local detour = {
         local area = ({
             ["Joker"] = G.jokers
         })[G.GAME.detour_set] or G.consumeables
-        print(G.GAME.detour_set)
         local card = create_card(G.GAME.detour_set, area)
         card:add_to_deck()
         area:emplace(card)
@@ -1566,7 +1565,6 @@ local desync = {
             end
         end
         if Entropy.ContextChecks(self, card, context, card.ability.context) then
-            print(card.ability.context)
             if Cryptid.demicolonGetTriggerable(card) then
                 local results = Cryptid.forcetrigger(card, context)
                 if results and results.jokers then
