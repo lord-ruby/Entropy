@@ -1450,6 +1450,7 @@ function ease_ante(mod)
         for i, v in pairs(G.jokers.cards) do
             if v.config.center.key == "j_entr_xekanos" and not v.debuff and not v.ability.turned_off and not G.GAME.modifiers.ReverseRedeo then
                 mult = mult * to_number(-v.ability.ante_mod)
+                v.ability.ante_mod = v.ability.ante_mod - v.ability.ante_mod_mod
             end
         end
     end
