@@ -466,6 +466,44 @@ local feast = {
 	can_divide = true,
 }
 
+local forgiveness = {
+    key = "forgiveness",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -901+20,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    pos = {x=0,y=2},
+    inversion = "c_judgement",
+    use = function(self, card2)
+        local new_card = create_card(
+            "Joker",
+            G.jokers,
+            nil,
+            nil,
+            nil,
+            nil,
+            G.GAME.jokers_sold[pseudorandom("entr_forgiveness", 1, #G.GAME.jokers_sold)]
+        )
+        new_card:add_to_deck()
+        G.jokers:emplace(new_card)
+        new_card:start_materialize()
+    end,
+    can_use = function(self, card)
+        local num = G.GAME.jokers_sold and #G.GAME.jokers_sold or 0
+        return num > 0
+    end,
+    can_stack = true,
+	can_divide = true,
+    entr_credits = {
+        idea = "cassknows"
+    }
+}
+
 local penumbra = {
     key = "penumbra",
     set = "RTarot",
@@ -565,6 +603,7 @@ return {
         scar,
         dagger,
         penumbra,
-        integrity
+        integrity,
+        forgiveness
     }
 }

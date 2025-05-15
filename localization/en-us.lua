@@ -783,6 +783,13 @@ local decs = {
 					"{C:attention}#1#{} selected card#<s>1# then",
 					"add a random {C:dark_edition}seal and edition{}"
 				}
+			},
+			c_entr_forgiveness = {
+				name = "Forgiveness",
+				text = {
+					"Create a random {C:attention}previously sold{} Joker",
+					"{C:inactive}(May overflow){}"
+				}
 			}
 		},
 		Voucher = {
