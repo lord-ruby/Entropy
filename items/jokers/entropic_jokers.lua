@@ -314,6 +314,9 @@ local anaptyxi = {
         end
         return new_scale
 	end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    }
 }
 
 local parakmi = {
