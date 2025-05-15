@@ -847,3 +847,10 @@ function Entropy.ContextChecks(self, card, context, currc)
         if currc == "playing_card_added" and context.playing_card_added then return true end
     end
 end
+
+function Entropy.IsEE()
+    return G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_one"
+    or G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_two"
+    or G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three"
+    or G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_four"
+end

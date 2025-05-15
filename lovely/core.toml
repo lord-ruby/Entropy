@@ -419,20 +419,26 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
-pattern = '''                        if eval.saved then
-                        game_over = false
-                    end'''
+pattern = "if eval.saved then"
 position = "at"
 payload = '''
-if eval.saved then
-  if not G.GAME.EEBuildup then
-    game_over = false
-  else
+if Entropy.IsEE() and eval.saved then
     G.GAME.EECardCharacter = true
-  end
-end
+elseif eval.saved then
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if not G.GAME.won and not G.GAME.seeded and not G.GAME.challenge then "
+position = "before"
+payload = '''
+if Entropy.IsEE() then
+    G.GAME.EECardCharacter = true
+end
+'''
+match_indent = true       
 
 [[patches]]
 [patches.pattern]
