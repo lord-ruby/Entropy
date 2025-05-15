@@ -176,7 +176,7 @@ local decs = {
  					"{X:dark_edition,C:white}33%{} chance to upgrade",
 					"Joker {C:attention}rarities{} in the shop recursively",
 					"Gain {X:dark_edition,C:white}^^Chips{} when buying a Joker",
-					"Based on the Joker's {C:attention}rarity{}",
+					"based on the Joker's {C:attention}rarity{}",
 					"{C:inactive}(Currently: {}{X:dark_edition,C:white}^^#1#{}{C:inactive}){}",
 				}
 			},
@@ -268,7 +268,7 @@ local decs = {
 					"Scaling Jokers scale all other Jokers by",
 					"{X:dark_edition,C:white}X#1#{} the same amount, then increase",
 					"this by {X:dark_edition,C:white}X#2#{} at the end of round",
-					"{C:inactive}(Anaptyxi exlcuded){}",
+					"{C:inactive}(Anaptyxi excluded){}",
 				},
 			},
 			j_entr_chaos= {
@@ -343,7 +343,7 @@ local decs = {
 					"Retrigger the {C:attention}Joker{} to",
 					"the right {C:attention}#1#{} time#<s>1# then",
 					"retrigger each subsequent",
-					"{C:attention}Joker{} {X:dark_edition,C:white}Twice{} as",
+					"{C:attention}Joker{} {X:dark_edition,C:white}twice{} as",
 					"many times as the previous"
 				}
 			},
@@ -366,7 +366,7 @@ local decs = {
 				name = "Metanoia",
 				text = {
 					"Discarded cards become",
-					"{C:attention}flesh{} cards"
+					"{C:attention}Flesh{} cards"
 				}
 			},
 			j_entr_antidagger = {
@@ -410,7 +410,7 @@ local decs = {
 				text = {
 					"Create a random {C:dark_edition}Sunny{} {C:red}Rare{} Joker",
 					"when this joker is destroyed",
-					"create a random {C:dark_edition}Sunny{} {C:cry_epic}Epic{} Joker instead",
+					"Create a random {C:dark_edition}Sunny{} {C:cry_epic}Epic{} Joker instead",
 					"when this Joker is {C:red}banished{}"
 				}
 			},
@@ -479,9 +479,9 @@ local decs = {
 			j_entr_exelixi = {
 				name = "Exelixi",
 				text = {
-					"upgrade the {C:attention}enhancement{}",
+					"Upgrade the {C:attention}enhancement{}",
 					"of playing cards when scored",
-					"{C:attention}enhancements{} are given to adjacent cards",
+					"{C:attention}Enhancements{} are given to adjacent cards",
 					"when {C:attention}discarding{} cards"
 				}
 			},
@@ -532,7 +532,7 @@ local decs = {
 				}
 			},
 			bl_entr_burgundy_baracuda = {
-				name = "Burgundy Baracuda",
+				name = "Burgundy Barracuda",
 				text = {
 					"1 in 2 played cards are destroyed",
 				}
@@ -547,7 +547,7 @@ local decs = {
 			bl_entr_olive_orchard = {
 				name = "Olive Orchard",
 				text = {
-					"Cards in hand become disavowed",
+					"Cards in hand become Disavowed",
 					"when playing or discarding"
 				}
 			},
@@ -659,7 +659,7 @@ local decs = {
 					"All {c:attention}Random{} outcomes",
 					"can affect eachother",
 					"Gain a {C:dark_edition}Negative{} {C:attention}Revert{}",
-					"when a Boss-Blind is selected"
+					"when a Boss Blind is selected"
 				}
 			},
 			b_entr_ambisinister = {
@@ -704,7 +704,7 @@ local decs = {
 					"All {c:attention}Random{} outcomes",
 					"can affect eachother",
 					"Gain a {C:dark_edition}Negative{} {C:attention}Revert{}",
-					"when a Boss-Blind is selected"
+					"when a Boss Blind is selected"
 				},
 			},
 			sleeve_entr_ambisinister = {
@@ -765,7 +765,7 @@ local decs = {
 				text = {
 					"Multiply #1# selected card#<s>1#",
 					"values by {C:attention}#2#{} then",
-					"apply perishable"
+					"apply Perishable"
 				}
 			},
 			c_entr_scar = {
@@ -781,7 +781,7 @@ local decs = {
 				text = {
 					"Destroy {C:attention}#1#{} selected Joker#<s>1#",
 					"and add {X:dark_edition,C:white}X#2#{} the sell value",
-					"to your {C:attention}most played{} hand'is mult"
+					"to your {C:attention}most played{} hand's mult"
 				}
 			},
 			c_entr_penumbra = {
@@ -865,7 +865,7 @@ local decs = {
 			c_entr_fork = {
 				name = "(~)$ fork",
 				text = {
-					"create a {C:red}Glitched{} copy of",
+					"Create a {C:red}Glitched{} copy of",
 					"a selected {C:attention}playing card{} with",
 					"a new {C:red}random Enhancement{}"
 				}
@@ -1288,7 +1288,7 @@ local decs = {
 			c_entr_fervour={
                 name="Fervour",
                 text={
-                    "Creates a",
+                    "Create a",
                     "{C:entr_reverse_legendary,E:1}Legendary? {}Joker",
                     "{C:inactive}(Must have room)",
                 },
@@ -1331,42 +1331,42 @@ local decs = {
 			c_entr_insignia = {
 				name = "Insignia",
 				text = {
-					"Adds a {V:1}Silver Seal{}",
+					"Add a {V:1}Silver Seal{}",
 					"to #1# selected card",
 				}
 			},
 			c_entr_rendezvous = {
 				name = "Rendezvous",
 				text = {
-					"Adds a {V:1}Crimson Seal{}",
+					"Add a {V:1}Crimson Seal{}",
 					"to #1# selected card",
 				}
 			},
 			c_entr_eclipse = {
 				name = "Veil",
 				text = {
-					"Adds a {V:1}Sapphire Seal{}",
+					"Add a {V:1}Sapphire Seal{}",
 					"to #1# selected card",
 				}
 			},
 			c_entr_calamity = {
 				name = "Calamity",
 				text = {
-					"Adds a {V:1}Pink Seal{}",
+					"Add a {V:1}Pink Seal{}",
 					"to #1# selected card",
 				}
 			},
 			c_entr_downpour = {
 				name = "Downpour",
 				text = {
-					"Adds a {V:1}Cerulean Seal{}",
+					"Add a {V:1}Cerulean Seal{}",
 					"to #1# selected card",
 				}
 			},
 			c_entr_script = {
 				name = "Script",
 				text = {
-					"Adds a {V:1}Verdant Seal{}",
+					"Add a {V:1}Verdant Seal{}",
 					"to #1# selected card",
 				}
 			},
@@ -1467,7 +1467,7 @@ local decs = {
 				text = {
 					"{C:attention}#1#{} random cards in hand",
 					"become random cards of 1",
-					"selected cards type"
+					"selected card's type"
 				}
 			},
 			c_entr_substitute = {
@@ -1547,7 +1547,7 @@ local decs = {
 					"Completely reset up to",
 					"{C:attention}#1#{} selected cards",
 					"or Jokers",
-					"{C:inactive}(Doesn't remove absolute){}"
+					"{C:inactive}(Doesn't remove Absolute){}"
 				}
 			},
 		},
@@ -1555,7 +1555,7 @@ local decs = {
 			c_entr_flipside = {
 				name = "Flipside",
 				text = {
-					"Converts {C:attention}#1#{} selected consumable#<s>1#",
+					"Convert {C:attention}#1#{} selected consumable#<s>1#",
 					"Into an {C:red}Inverted{} variant",
 				}
 			},
@@ -1699,7 +1699,7 @@ local decs = {
 			},
 			tag_entr_ascendant_m = {
 				name = "{C:gold}M Tag{}",
-				text = { "{C:attention}All{} shop items are {C:dark_edition}JolLy{}", "{C:inactive}M{}" },
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Jolly{}", "{C:inactive}M{}" },
 			},
 			tag_entr_ascendant_mosaic = {
 				name = "{C:gold}Mosaic Tag{}",
@@ -1760,7 +1760,7 @@ local decs = {
 			},
 			tag_entr_ascendant_ebundle = {
 				name = "{C:gold}Bundle Tag{}",
-				text = {"Create a {C:attention}Console Tag{}, {C:attention}Ethereal Tag{},",
+				text = {"Creates a {C:attention}Console Tag{}, {C:attention}Ethereal Tag{},",
 				"{C:attention}Twisted Tag{}, and {C:attention}Bundle Tag{}", },
 			},
 			tag_entr_ascendant_twisted = {
@@ -2264,36 +2264,36 @@ local decs = {
             },
             lq_ee_2={
                 "If you wish",
-				"to defeat me",
-				"You must train",
-				"for 1000 years"
+				"to defeat me,",
+				"you must train",
+				"for 1000 years!"
             },
             lq_ee_3={
                 "Should have",
-				"held R"
+				"held R!"
             },
             lq_ee_4={
                 "And in the end",
 				"everything succumbs",
-				"to entropy"
+				"to entropy..."
             },
             lq_ee_5={
                 "Looks like you",
 				"werent entropic",
-				"enough"
+				"enough!"
             },
             lq_ee_6={
                 "Maybe you should",
 				"have gotten a",
-				"few more retriggers"
+				"few more retriggers!"
             },
             lq_ee_7={
                 "Maybe try adding",
-				"a few other mods"
+				"a few other mods!"
             },
             lq_ee_8={
-                "Dont cry its",
-				"just a game",
+                "Dont cry, its",
+				"just a game...",
             },
             lq_ee_9={
                 "Were you even",
@@ -2302,7 +2302,7 @@ local decs = {
 			lq_ee_10={
                 "Maybe you should",
 				"stop trying to",
-				"beat me"
+				"beat me!"
             },
 			lq_ee_revived = {
 				"Did you really",
@@ -2310,7 +2310,7 @@ local decs = {
 				"work?"
 			},
 			wq_ee_1={
-                "Huh",
+                "Huh?",
             },
             wq_ee_2={
                 "What!?"
@@ -2320,11 +2320,11 @@ local decs = {
             },
             wq_ee_4={
                 "Reveal your",
-				"secrets"
+				"secrets!"
             },
             wq_ee_5={
                 "Well that was",
-				"entropious"
+				"entropious!"
             },
 		}
 	},
