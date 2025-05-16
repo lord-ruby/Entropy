@@ -806,6 +806,15 @@ local decs = {
 					"Create a random {C:attention}previously sold{} Joker",
 					"{C:inactive}(May overflow){}"
 				}
+			},
+			c_entr_feud = {
+				name = "The Feud",
+				text = {
+					"Select {C:attentiom}#1#{} card#<s>1#",
+					"Add the {C:attention}right{} cards {C:blue}chips{}",
+					"to the {C:attention}left{} card then",
+					"{C:attention}destroy{} the right card#<s>2#"
+				}
 			}
 		},
 		Voucher = {

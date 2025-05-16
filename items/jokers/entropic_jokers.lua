@@ -96,6 +96,7 @@ local helios = {
     }
 }
 
+Cryptid.big_num_blacklist["j_entr_xekanos"] = true
 local xekanos = {
     order = 402,
     object_type = "Joker",
@@ -122,8 +123,8 @@ local xekanos = {
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                to_big(card.ability.ante_mod) > to_big(0) and "-"..card.ability.ante_mod or 1,
-                to_big(card.ability.ante_mod) > to_big(0) and card.ability.ante_mod_mod or 0
+                to_big(card.ability.ante_mod or 0) > to_big(0) and "-"..card.ability.ante_mod or 1,
+                to_big(card.ability.ante_mod or 0) > to_big(0) and card.ability.ante_mod_mod or 0
             },
         }
     end,

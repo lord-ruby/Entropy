@@ -134,6 +134,59 @@ local servant = {
 	can_divide = true,
 }
 
+local feud = {
+    key = "feud",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -900 + 6,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        select = 2,
+    },
+    inversion = "c_lovers",
+    pos = {x=6, y = 0},
+    use = function(self, card, area, copier)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card)
+        local chips = 0
+        local bonus_chips = 0
+        for i = 2, to_number(card.ability.select) do
+            local new_card = cards[i]
+            if new_card then
+                chips = chips + new_card.base.nominal
+                bonus_chips = bonus_chips + (new_card.ability and new_card.ability.bonus or 0)
+                new_card:start_dissolve()
+            end
+        end
+        Entropy.FlipThen(cards, function(card)
+            card.base.nominal = card.base.nominal + chips
+            if to_big(bonus_chips) > to_big(0) then
+                card.ability.bonus = bonus_chips
+            end
+        end)
+    end,
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card)
+        local num = #cards
+        return num >= 2 and num <= card.ability.select
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.select,
+                to_big(card.ability.select) > to_big(2) and 2 or 1,
+            }
+        }
+    end,
+    can_stack = true,
+	can_divide = true,
+}
+
+
 local scar = {
     key = "scar",
     set = "RTarot",
@@ -604,6 +657,7 @@ return {
         dagger,
         penumbra,
         integrity,
-        forgiveness
+        forgiveness,
+        feud
     }
 }

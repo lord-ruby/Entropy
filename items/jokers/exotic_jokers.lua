@@ -199,8 +199,6 @@ local libra = {
             end
             total = total + context.other_card.base.nominal
             values = values + 1
-            print(total)
-            print(values)
             for i, v in pairs(context.other_card.ability) do
                 if type(v) == "number" and v ~= 1 and v~= 0 then
                     context.other_card.ability[i] = total / values
@@ -222,7 +220,7 @@ local libra = {
             context.other_card.base.nominal = total / values
             card.ability.echips = total / values
         end
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             return {
                 echips = card.ability.echips
             }
@@ -275,7 +273,7 @@ local scorpio = {
                 { message = localize("k_upgrade_ex"), colour = G.C.BLUE }
             )
         end
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             local d8s = {}
             for i = 1, 8 do
                 d8s[#d8s+1] = math.floor(pseudorandom("scorpio")*7+1.5)

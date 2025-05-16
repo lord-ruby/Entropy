@@ -554,7 +554,7 @@ local chocolate_egg = {
     demicoloncompat = true,
     pools = { ["Food"] = true, ["Candy"] = true },
     calculate = function(self, card, context)
-        if context.banishing_card and context.cardarea == G.jokers and G.jokers then
+        if (context.banishing_card and context.cardarea == G.jokers) or context.forcetrigger then
             card_eval_status_text(
                 card,
                 "extra",
