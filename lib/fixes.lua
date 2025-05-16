@@ -209,8 +209,8 @@ function UIElement:update_text()
       self.config.lang = self.config.lang or G.LANG
 	  if self.config.font then
         self.config.text_drawable = love.graphics.newText(self.config.font.FONT, {G.C.WHITE,self.config.text})
-      else
-		self.config.text_drawable = love.graphics.newText(self.config.lang.font.FONT, {G.C.WHITE,self.config.text})
+	  else
+	    self.config.text_drawable = love.graphics.newText(self.config.lang.font.FONT, {G.C.WHITE,self.config.text})
 	  end
   end
 
