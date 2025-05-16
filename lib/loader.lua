@@ -23,9 +23,6 @@ function SMODS.injectItems(...)
 
     loadmodsref(...)
     Entropy.FlipsidePureInversions = copy_table(Entropy.FlipsideInversions)
-    for i, v in pairs(Entropy.FlipsideInversions) do
-        Entropy.FlipsideInversions[v]=i
-    end
     SMODS.ObjectType({
         key = "Twisted",
         default = "j_entr_memory_leak",
@@ -134,7 +131,15 @@ function SMODS.injectItems(...)
         "j_entr_surreal_joker",
         "j_entr_burnt_m",
         "j_entr_chaos",
-        "j_entr_strawberry_pie"
+        "j_entr_strawberry_pie",
+        "j_entr_dr_sunshine",
+        "j_entr_sunny_joker",
+        "j_entr_rusty_shredder",
+        "j_entr_chocolate_egg",
+        "j_entr_devilled_suns",
+        "j_entr_eden",
+        "j_entr_seventyseven",
+
     }
     SMODS.ObjectType({
         key = "Reference",
@@ -164,6 +169,9 @@ function SMODS.injectItems(...)
         end,
     })
     SMODS.ObjectTypes.BlindTokens:inject()
+    for i, v in pairs(Entropy.FlipsideInversions) do
+        Entropy.FlipsideInversions[v]=i
+    end
 end
 
 if SMODS.Mods.DereJkr and SMODS.Mods.DereJkr.can_load then
