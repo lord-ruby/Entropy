@@ -201,7 +201,7 @@ local recursive_joker = {
         if context.end_of_round then
             card.ability.used_this_round = false
         end
-        if context.selling_card and context.card == card and not card.ability.used_this_round then
+        if (context.selling_card and context.card == card and not card.ability.used_this_round) or context.forcetrigger then
             card.ability.used_this_round = true
             local card = copy_card(card)
             card:add_to_deck()
@@ -328,7 +328,7 @@ local antidagger = {
         }
     end,
     calculate = function(self, card, context)
-        if context.setting_blind then
+        if context.setting_blind or context.forcetrigger then
             local keys = {}
             for i, v in pairs(G.GAME.banned_keys) do
                 keys[#keys+1]=i
@@ -442,8 +442,9 @@ local insatiable_dagger = {
     immutable = true,
     pos = { x = 4, y = 2 },
     atlas = "jokers",
+    demicoloncompat = true,
     calculate = function(self, card, context)
-        if context.setting_blind and not (context.blueprint_card or self).getting_sliced then
+        if (context.setting_blind and not (context.blueprint_card or self).getting_sliced) or context.forcetrigger then
             local check
             for i, v in pairs(G.jokers.cards) do
                 if v == card and G.jokers.cards[i-1] then check = i-1 end
@@ -790,7 +791,7 @@ local seventyseven = {
         }
     end,
     calculate = function(self, card, context)
-		if context.joker_main then
+		if context.joker_main or context.forcetrigger then
             return {
                 eq_chips = card.ability.chips
             }

@@ -772,6 +772,7 @@ local endless_entropy = {
     no_collection = true,
 }
 
+
 return {
 	items = {
 		sun,
