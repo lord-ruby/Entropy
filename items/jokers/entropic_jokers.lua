@@ -122,8 +122,8 @@ local xekanos = {
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.ante_mod > 0 and "-"..card.ability.ante_mod or 1,
-                card.ability.ante_mod > 0 and card.ability.ante_mod_mod or 0
+                to_big(card.ability.ante_mod) > to_big(0) and "-"..card.ability.ante_mod or 1,
+                to_big(card.ability.ante_mod) > to_big(0) and card.ability.ante_mod_mod or 0
             },
         }
     end,
