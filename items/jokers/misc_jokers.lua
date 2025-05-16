@@ -204,6 +204,9 @@ local recursive_joker = {
         if (context.selling_card and context.card == card and not card.ability.used_this_round) or context.forcetrigger then
             card.ability.used_this_round = true
             local card = copy_card(card)
+            if context.forcetrigger and card.ability.desync then
+                card.ability.context = Entropy.RandomContext()
+            end
             card:add_to_deck()
             G.jokers:emplace(card)
         end
