@@ -232,6 +232,12 @@ if AurinkoAddons then
 			Entropy.ReversePlanetUse(hand, card, num)
 		end
 	end
+	AurinkoAddons.entr_sunny = function(card, hand, instant, amount)
+		if to_big(G.GAME.hands[hand].AscensionPower or 0) > to_big(0) then
+			local num = 4
+			Entropy.ReversePlanetUse(hand, card, num)
+		end
+	end
 	AurinkoAddons.entr_freaky = function(card, hand, instant, amount)
 		local hand_chips = G.GAME.hands[hand].chips
 		local mult = math.max(math.log(to_big(hand_chips) < to_big(0) and 1 or hand_chips, 69), 1)
