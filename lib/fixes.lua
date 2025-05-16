@@ -207,11 +207,11 @@ end
 function UIElement:update_text()
   if self.config and self.config.text and not self.config.text_drawable then
       self.config.lang = self.config.lang or G.LANG
-	  if self.config.font then
+      if self.config.font then
         self.config.text_drawable = love.graphics.newText(self.config.font.FONT, {G.C.WHITE,self.config.text})
-	  else
-	    self.config.text_drawable = love.graphics.newText(self.config.lang.font.FONT, {G.C.WHITE,self.config.text})
-	  end
+      else
+        self.config.text_drawable = love.graphics.newText(self.config.lang.font.FONT, {G.C.WHITE,self.config.text})
+      end
   end
 
   if self.config.ref_table and self.config.ref_table[self.config.ref_value] ~= self.config.prev_value then
