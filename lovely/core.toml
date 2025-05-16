@@ -133,6 +133,8 @@ Entropy.EnhancementPoints ={
     m_cry_abstract=9.1,
     m_entr_prismatic = 20
 }
+Entropy.TMTrainerEffects = {}
+Entropy.TMTrainerScoring = {}
 '''
 match_indent = true
 
@@ -505,5 +507,15 @@ position = "at"
 payload = '''
     {n=G.UIT.R, config={align = "cm", padding = 0.08}, nodes={
       UIBox_button({button = 'exit_overlay_menu', label = {localize(G.GAME.TrueEndless and 'b_true_endless' or 'b_endless')}, minw = 6.5, maxw = 5, minh = 1.2, scale = 0.7, shadow = true, colour = G.C.BLUE, focus_args = {nav = 'wide', button = 'x',set_button_pip = true}}),
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''nominal_chips = self.base.nominal > 0 and self.base.nominal or nil,'''
+position = "at"
+payload = '''
+nominal_chips = to_big(self.base.nominal) > to_big(0) and self.base.nominal or nil,
 '''
 match_indent = true

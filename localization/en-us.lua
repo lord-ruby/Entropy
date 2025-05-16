@@ -515,6 +515,14 @@ local decs = {
 					"Grant {X:dark_edition,C:white}^Chips{} based on {C:attention}8 d8s{}",
 					"Rolling {C:attention}Eight{} 8s instead grants {X:dark_edition,C:white}^#1#{} Chips"
 				}
+			},
+			j_entr_ridiculus_absens = {
+				name = "Ridiculus Absens",
+				text = {
+					"{C:green}#1# in #2#{} Scored non {C:dark_edition}Glitched{} cards",
+					"become {C:dark_edition}Glitched{} and gain an extra effect",
+					"{C:attention}Randomise{} this probability when hand is {c:attention}played{}"
+				}
 			}
 		},
 		Blind = {
@@ -2032,6 +2040,13 @@ local decs = {
 					"extra cards are {C:attention}still{} drawn"
 				}
 			},
+			tmtrainer_dummy = {
+				name = "Glitched Effect",
+				text = {
+					"#1#",
+					"#2#"
+				}
+			}
 		},
 		DescriptionDummy = {
 			dd_entr_zenith_blind  = {
@@ -2136,6 +2151,38 @@ local decs = {
 			entr_nilrank = "Nil"
 		},
 		dictionary = {
+
+			k_before = "Before Scoring:",
+			k_pre_joker = "Before Joker Scoring:",
+			k_joker_main = "During Main Scoring:",
+			k_individual = "When a this card triggers:",
+			k_pre_discard = "When discarding cards:",
+			k_remove_playing_cards = "When playing cards are destroyed:",
+			k_setting_blind = "When entering a blind:",
+			k_ending_shop = "When leaving the shop:",
+			k_reroll_shop = "When rerolling:",
+			k_selling_card = "When a card is sold:",
+			k_using_consumeable = "When a consumable is used:",
+			k_playing_card_added = "When a playing card is added:",
+
+			k_tmtmult = "+??? Mult",
+			k_tmtchips = "+??? Chips",
+
+			k_tmtxmult = "X??? Mult",
+			k_tmtxchips = "X??? Chips",
+
+			k_tmtemult = "^??? Mult",
+			k_tmtechips = "^??? Chips",
+
+			k_tmtdollars = "+??? Dollars",
+			k_tmtjoker_random = "Create a random joker",
+			k_tmtjoker_choose_rarity = "Create a joker of a random rarity",
+			k_tmtedition = "Apply a random edition to a random joker",
+			k_tmtante = "-??? Ante",
+			k_tmtconsumable = "Create a random consumable",
+			k_tmtenhancement_play = "One played card gets a new enhancement",
+			k_tmtenhancement_hand = "One card held in hand gets a new enhancement",
+
 			k_entr_entropic = "Entropic",
 			k_entr_reverse_legendary = "Legendary?",
 			k_entr_zenith = "Zenith",

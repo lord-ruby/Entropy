@@ -831,12 +831,12 @@ function Entropy.RandomContext(seed)
     }, pseudoseed(seed or "desync"))
 end
 
-function Entropy.ContextChecks(self, card, context, currc)
+function Entropy.ContextChecks(self, card, context, currc, edition)
     if not context.retrigger_joker and not context.blueprint and not context.forcetrigger and not context.post_trigger then
         if currc == "before" and context.before then return true end
-        if currc == "pre_joker" and context.pre_joker then return true end
-        if currc == "joker_main" and context.joker_main then return true end
-        if currc == "individual" and context.individual and context.cardarea == G.play and not context.blueprint then return true end
+        if (currc == "pre_joker" and context.pre_joker) or (edition and context.main_scoring and context.cardarea == G.play) then return true end
+        if (currc == "joker_main" and context.joker_main) or (edition and context.main_scoring and context.cardarea == G.play) then return true end
+        if currc == "individual" and ((context.individual and context.cardarea == G.play and not context.blueprint) or (edition and context.main_scoring and context.cardarea == G.play)) then return true end
         if currc == "pre_discard" and context.pre_discard and context.cardarea == G.hand and not context.retrigger_joker and not context.blueprint then return true end
         if currc == "remove_playing_cards" and context.remove_playing_cards and not context.blueprint then return true end
         if currc == "setting_blind" and context.setting_blind then return true end
@@ -918,3 +918,88 @@ function Entropy.WinEE()
         end)
     }))
 end
+
+Entropy.TMTrainerEffects["mult"] = function(key) return { mult = pseudorandom(key) * 100 } end
+Entropy.TMTrainerEffects["chips"] = function(key) return { chips = pseudorandom(key) * 1000 } end
+Entropy.TMTrainerEffects["xmult"] = function(key) return { xmult = pseudorandom(key) * 10 } end
+Entropy.TMTrainerEffects["xchips"] = function(key) return { xchips = pseudorandom(key) * 10 } end
+Entropy.TMTrainerEffects["emult"] = function(key) return { emult = pseudorandom(key) * 4 } end
+Entropy.TMTrainerEffects["echips"] = function(key) return { echips = pseudorandom(key) * 4 } end
+Entropy.TMTrainerEffects["dollars"] = function(key) ease_dollars(pseudorandom(key) * 20) end
+Entropy.TMTrainerEffects["joker_random"] = function(key) SMODS.add_card({set = "Joker"}) end
+Entropy.TMTrainerEffects["joker_choose_rarity"] = function(key) SMODS.add_card({set = "Joker", rarity = pseudorandom_element({1, 2, 3, "cry_epic"}, pseudoseed(key))}) end
+Entropy.TMTrainerEffects["edition"] = function(key) 
+    local element = pseudorandom_element(G.jokers.cards, pseudoseed(key))
+    Entropy.FlipThen({element}, function(card)
+        card:set_edition(pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy")).key)
+    end)
+end
+Entropy.TMTrainerEffects["ante"] = function(key) ease_ante(-pseudorandom(key)*0.1) end
+Entropy.TMTrainerEffects["consumable"] = function(key) SMODS.add_card({key = Cryptid.random_consumable("entr_segfault", nil, "c_entr_segfault").key, area = G.consumeables}) end
+Entropy.TMTrainerEffects["enhancement_play"] = function(key) 
+    local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("entropy")).key
+    while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
+        enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("entropy")).key
+    end
+    local element = pseudorandom_element(G.play.cards, pseudoseed(key))
+    Entropy.FlipThen({element}, function(card)
+        card:set_ability(G.P_CENTERS[enhancement])
+    end)
+end
+Entropy.TMTrainerEffects["enhancement_hand"] = function(key) 
+    local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("entropy")).key
+    while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
+        enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("entropy")).key
+    end
+    local element = pseudorandom_element(G.hand.cards, pseudoseed(key))
+    Entropy.FlipThen({element}, function(card)
+        card:set_ability(G.P_CENTERS[enhancement])
+    end)
+end
+Entropy.TMTrainerScoring["mult"]=true
+Entropy.TMTrainerScoring["xmult"]=true
+Entropy.TMTrainerScoring["emult"]=true
+Entropy.TMTrainerScoring["chips"]=true
+Entropy.TMTrainerScoring["xchips"]=true
+Entropy.TMTrainerScoring["echips"]=true
+Entropy.TMTrainerScoring["enhancement_play"]=true
+
+function Entropy.RandomEffect(context)
+    local keys = {}
+    for i, v in pairs(Entropy.TMTrainerEffects) do
+        keys[#keys+1] = i
+    end
+    local scoring = {
+        before=true,
+        pre_joker=true,
+        joker_main=true,
+        individual=true,
+    }
+    local element = pseudorandom_element(keys, pseudoseed("tmtrainer_effect"))
+    print(element)
+    while not scoring[context] and Entropy.TMTrainerScoring[element] do
+        element = pseudorandom_element(keys, pseudoseed("tmtrainer_effect"))
+    end
+    return element
+end
+function Entropy.TMTTrainize(card)
+    local context = Entropy.RandomContext()
+    local effect = Entropy.RandomEffect(context)
+    card.ability.tm_effect = effect
+    card.ability.tm_context = context
+end
+
+SMODS.Edition:take_ownership("e_cry_glitched", {
+    calculate = function(self, card, context)
+        if card.ability.tm_effect then
+            if Entropy.ContextChecks(self, card, context, card.ability.tm_context, true) then
+                return Entropy.TMTrainerEffects[card.ability.tm_effect]("tmtrainer_actual_effect") or nil
+            end
+        end
+    end,
+    loc_vars = function(self, q, card) 
+        if card and card.ability and card.ability.tm_effect then
+            q[#q+1] = {set = "Other", key = "tmtrainer_dummy", vars = {localize("k_"..card.ability.tm_context), localize("k_tmt"..card.ability.tm_effect)}}
+        end
+    end
+}, true)
