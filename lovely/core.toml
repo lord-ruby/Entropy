@@ -407,8 +407,10 @@ position = "at"
 payload = '''
 if not G.hand.highlighted[i].ability.scarred then 
   draw_card(G.hand, G.discard, i*100/highlighted_count, 'down', false, G.hand.highlighted[i]) 
+  num = (num or 0) + 1
 else 
   num = (num or 0) + 1
+  overdraw = true
 end 
 '''
 match_indent = true
@@ -420,6 +422,7 @@ pattern = "SMODS.calculate_context({pre_discard = true, full_hand = G.hand.highl
 position = "before"
 payload = '''
 local num
+local overdraw
 '''
 match_indent = true
 
@@ -429,7 +432,7 @@ target = "functions/state_events.lua"
 pattern = "G.GAME.round_scores.cards_discarded.amt = G.GAME.round_scores.cards_discarded.amt + #cards"
 position = "before"
 payload = '''
-if num and num > 0 then G.FUNCS.draw_from_deck_to_hand(num) end
+if overdraw and num and num > 0 then G.FUNCS.draw_from_deck_to_hand(num) end
 '''
 match_indent = true
 
