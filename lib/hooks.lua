@@ -2358,33 +2358,3 @@ function Card:calculate_banana()
 	end
 	return false
 end
-
-local sr = save_run
-function save_run()
-    local ante = G.GAME and G.GAME.round_resets and G.GAME.round_resets.ante
-    if type(ante) == "table" then
-        G.GAME.round_resets.ante = 2
-    end
-    sr()
-    if ante then
-        G.GAME.round_resets.ante = ante
-    end
-end
-
-SMODS.Blind:take_ownership("cry_scorch", {
-	in_pool = function(self) -- only appears in endless
-		if to_big(G.GAME.round_resets.blind_ante) > to_big(G.GAME.win_ante) then
-			return true
-		else
-			return false
-		end
-	end,
-}, true)
-
-local start_ref = Game.start_run
-function Game:start_run(args)
-    start_ref(self, args)
-    if G.GAME.ante_table then
-        G.GAME.round_resets.ante = G.GAME.ante_table
-    end
-end
