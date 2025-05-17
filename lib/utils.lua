@@ -927,7 +927,7 @@ Entropy.TMTrainerEffects["emult"] = function(key) return { emult = pseudorandom(
 Entropy.TMTrainerEffects["echips"] = function(key) return { echips = pseudorandom(key) * 4 } end
 Entropy.TMTrainerEffects["dollars"] = function(key) ease_dollars(pseudorandom(key) * 20) end
 Entropy.TMTrainerEffects["joker_random"] = function(key) SMODS.add_card({set = "Joker"}) end
-Entropy.TMTrainerEffects["joker_choose_rarity"] = function(key) SMODS.add_card({set = "Joker", rarity = pseudorandom_element({1, 2, 3, "cry_epic"}, pseudoseed(key))}) end
+Entropy.TMTrainerEffects["joker_choose_rarity"] = function(key) SMODS.add_card({set = "Joker", rarity = pseudorandom_element({1, 1, 1, 2, 2, 3, 3, "cry_epic"}, pseudoseed(key))}) end
 Entropy.TMTrainerEffects["edition"] = function(key) 
     local element = pseudorandom_element(G.jokers.cards, pseudoseed(key))
     Entropy.FlipThen({element}, function(card)
