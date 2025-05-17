@@ -937,9 +937,9 @@ end
 Entropy.TMTrainerEffects["ante"] = function(key) ease_ante(-pseudorandom(key)*0.1) end
 Entropy.TMTrainerEffects["consumable"] = function(key) SMODS.add_card({key = Cryptid.random_consumable("entr_segfault", nil, "c_entr_segfault").key, area = G.consumeables}) end
 Entropy.TMTrainerEffects["enhancement_play"] = function(key) 
-    local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("entropy")).key
+    local enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("entropy")).key
     while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
-        enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("entropy")).key
+        enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("entropy")).key
     end
     local element = pseudorandom_element(G.play.cards, pseudoseed(key))
     Entropy.FlipThen({element}, function(card)
@@ -947,9 +947,9 @@ Entropy.TMTrainerEffects["enhancement_play"] = function(key)
     end)
 end
 Entropy.TMTrainerEffects["enhancement_hand"] = function(key) 
-    local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("entropy")).key
+    local enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("entropy")).key
     while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
-        enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("entropy")).key
+        enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("entropy")).key
     end
     local element = pseudorandom_element(G.hand.cards, pseudoseed(key))
     Entropy.FlipThen({element}, function(card)
