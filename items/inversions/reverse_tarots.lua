@@ -159,7 +159,7 @@ local heretic = {
                 card:set_seal(seal)
             end
             if modification == "Edition" then
-                local edition = pseudorandom_element(SMODS.Edition.obj_table, pseudoseed("heretic_edition")).key
+                local edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("heretic_edition")).key
                 card:set_edition(edition)
             end
             if modification == "Enhancement" then
