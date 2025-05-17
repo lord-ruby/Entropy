@@ -162,10 +162,10 @@ G.FUNCS.define_apply = function()
         if v.name and string.lower(entered_card) == string.lower(v.name) then
             current_card = i
         end
-        if string.lower(entered_card) == string.lower(i) then
+        if string.lower(entered_card or "") == string.lower(i) then
             current_card = i
         end
-        if string.lower(entered_card) == string.lower(localize({ type = "name_text", set = v.set, key = i })) then
+        if string.lower(entered_card or "") == string.lower(localize({ type = "name_text", set = v.set, key = i })) then
             current_card = i
         end
     end
