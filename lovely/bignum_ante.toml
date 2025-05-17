@@ -224,3 +224,62 @@ G.GAME.round_resets.ante = to_big(G.GAME.round_resets.ante) + to_big(mod)
 '''
 match_indent = true
           
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+if current_ante > 8 then
+'''
+position = "at"
+payload = '''
+if to_big(current_ante) > to_big(8) then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+for i = min_ante, max_ante do
+    if i > 1 then
+        ante_amounts[#ante_amounts + 1] = { n = G.UIT.R, config = { minh = spacing }, nodes = {} }
+    end
+'''
+position = "at"
+payload = '''
+for j = -8+1, 8 do
+local i = to_big(G.GAME.round_resets.ante) > to_big(8) and G.GAME.round_resets.ante + j or 8 + j
+    if to_big(i) > to_big(1) then
+        ante_amounts[#ante_amounts + 1] = { n = G.UIT.R, config = { minh = spacing }, nodes = {} }
+    end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+{ n = G.UIT.T, config = { text = number_format(get_blind_amount(i)), scale = 0.4, colour = i <= G.PROFILES[G.SETTINGS.profile].high_scores.furthest_ante.amt and G.C.RED or G.C.JOKER_GREY, shadow = true } },
+'''
+position = "at"
+payload = '''
+{ n = G.UIT.T, config = { text = number_format(get_blind_amount(i)), scale = 0.4, colour = to_big(i) <= to_big(G.PROFILES[G.SETTINGS.profile].high_scores.furthest_ante.amt) and G.C.RED or G.C.JOKER_GREY, shadow = true } },
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''engine/ui.lua'''
+pattern = '''
+            local tx = node.config.lang.font.FONT:getWidth(node.config.text)*node.config.lang.font.squish*scale*G.TILESCALE*node.config.lang.font.FONTSCALE
+            local ty = node.config.lang.font.FONT:getHeight()*scale*G.TILESCALE*node.config.lang.font.FONTSCALE*node.config.lang.font.TEXT_HEIGHT_SCALE
+'''
+position = "at"
+payload = '''
+            if type(node.config.text) == "table" then
+                node.config.text = ""..number_format(node.config.text)
+            end
+            local tx = node.config.lang.font.FONT:getWidth(node.config.text)*node.config.lang.font.squish*scale*G.TILESCALE*node.config.lang.font.FONTSCALE
+            local ty = node.config.lang.font.FONT:getHeight()*scale*G.TILESCALE*node.config.lang.font.FONTSCALE*node.config.lang.font.TEXT_HEIGHT_SCALE
+'''
+match_indent = true
