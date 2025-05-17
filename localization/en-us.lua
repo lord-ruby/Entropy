@@ -823,6 +823,14 @@ local decs = {
 					"to the {C:attention}left{} card then",
 					"{C:attention}destroy{} the right card#<s>2#"
 				}
+			},
+			c_entr_advisor = {
+				name = "The Advisor",
+				text = {
+					"Create a {C:attention}temporary{} copy",
+					"of your most played hands {C:attention}example{}",
+					"and {C:attention}draw{} it to hand"
+				}
 			}
 		},
 		Voucher = {

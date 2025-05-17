@@ -423,6 +423,53 @@ local endurance = {
 	can_divide = true,
 }
 
+local advisor = {
+    key = "advisor",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -901+12,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    pos = {x=2,y=1},
+    inversion = "c_hanged_man",
+    use = function(self, card2)
+        num = 0
+        hand = "High Card"
+        for i, v in pairs(G.GAME.hands) do
+            if v.played > num and v.played > 0 then
+                num = v.played
+                hand = i
+            end
+        end 
+        for i, v in pairs(SMODS.PokerHands) do
+            if v.played > num and v.played > 0 then
+                num = v.played
+                hand = i
+            end
+        end 
+        local example = (G.GAME.hands[hand] or SMODS.PokerHands[hand]).example
+        for k, v in ipairs(example) do
+            if v[2] == true then
+                local card = Card(0,0, G.CARD_W, G.CARD_H, G.P_CARDS[v[1]], G.P_CENTERS.c_base)
+                if v[3] then
+                    card:set_ability(G.P_CENTERS[v[3]])
+                end
+                G.hand:emplace(card)
+                card.ability.temporary = true
+            end
+        end
+    end,
+    can_use = function(self, card)
+        return G.STATE == G.STATES.SELECTING_HAND
+	end,
+    can_stack = true,
+	can_divide = true,
+}
+
 local statue = {
     key = "statue",
     set = "RTarot",
@@ -658,6 +705,7 @@ return {
         penumbra,
         integrity,
         forgiveness,
-        feud
+        feud,
+        advisor
     }
 }
