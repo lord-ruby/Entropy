@@ -1220,7 +1220,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
     if card and card.ability and card.ability.name == "entr-ridiculus_absens" then
 		card:set_edition("e_cry_glitched", true, nil, true)
         card.ability.cry_prob = 1
-        card.ability.extra.odds = 2
+        card.ability.extra.odds = 2 
 	end
     return card
 end
@@ -2319,4 +2319,41 @@ local card_open = Card.open
 function Card:open(...)
     card_open(self, ...)
     G.GAME.detour_set = self.ability.set
+end
+
+function Card:calculate_banana()
+	if not self.ability.extinct then
+		if self.ability.banana and (pseudorandom("banana") < G.GAME.probabilities.normal / 10) and not self.ability.cry_absolute then
+			self.ability.extinct = true
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					play_sound("tarot1")
+					self.T.r = -0.2
+					self:juice_up(0.3, 0.4)
+					self.states.drag.is = true
+					self.children.center.pinch.x = true
+					G.E_MANAGER:add_event(Event({
+						trigger = "after",
+						delay = 0.3,
+						blockable = false,
+						func = function()
+							if self.area then
+								self.area:remove_card(self)
+							end
+							self:remove()
+							self = nil
+							return true
+						end,
+					}))
+					return true
+				end,
+			}))
+			card_eval_status_text(self, "jokers", nil, nil, nil, { message = localize("k_extinct_ex"), delay = 0.1 })
+			return true
+		elseif self.ability.banana then
+			card_eval_status_text(self, "jokers", nil, nil, nil, { message = localize("k_safe_ex"), delay = 0.1 })
+			return false
+		end
+	end
+	return false
 end
