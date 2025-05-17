@@ -221,6 +221,7 @@ G.GAME.round_resets.ante = G.GAME.round_resets.ante + mod
 position = "at"
 payload = '''
 G.GAME.round_resets.ante = to_big(G.GAME.round_resets.ante) + to_big(mod)
+G.GAME.round_resets.ante_disp = number_format(to_big(G.GAME.round_resets.ante) + to_big(mod))
 '''
 match_indent = true
           
