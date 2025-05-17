@@ -956,10 +956,10 @@ Entropy.TMTrainerEffects["enhancement_hand"] = function(key)
         card:set_ability(G.P_CENTERS[enhancement])
     end)
 end
-Entropy.TMTrainerEffects["random"] = function(key) 
+Entropy.TMTrainerEffects["random"] = function(key), context 
     local res = {}
     for i = 1, 3 do
-        local results = Entropy.TMTrainerEffects[Entropy.RandomEffect()]("tmtrainer_actual_effect", card.ability.tm_context) or nil
+        local results = Entropy.TMTrainerEffects[Entropy.RandomEffect()]("tmtrainer_actual_effect", context) or nil
         if results then
             for i, v in pairs(results) do
                 for i2, result in pairs(v) do

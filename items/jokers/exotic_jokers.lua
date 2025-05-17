@@ -248,7 +248,10 @@ local scorpio = {
         }
     },
     config = {
-        all8s = 16
+        all8s = 16,
+        immutable = {
+            temp_fac = 1
+        }
     },
     blueprint_compat = true,
     eternal_compat = true,
@@ -262,8 +265,11 @@ local scorpio = {
     end,
     calculate = function (self, card, context)
         if context.individual and context.cardarea == G.play and context.other_card and context.other_card:get_id() == 8 then
-            G.GAME.probabilities.normal = G.GAME.probabilities.normal * 1.16
-            card.ability.temp_fac = (card.ability.temp_fac or 1) * 1.16
+            if card.ability.immutable_temp_fac < 1e69 then
+                G.GAME.probabilities.normal = G.GAME.probabilities.normal * 1.16
+                card.ability.immutable_temp_fac = (card.ability.immutable_temp_fac or 1) * 1.16
+            end
+            --just lie whatever idc
             card_eval_status_text(
                 card,
                 "extra",
@@ -293,8 +299,8 @@ local scorpio = {
             }
         end
         if context.after then
-            G.GAME.probabilities.normal = G.GAME.probabilities.normal / (card.ability.temp_fac or 1)
-            card.ability.temp_fac = 1
+            G.GAME.probabilities.normal = G.GAME.probabilities.normal / (card.ability.immutable_temp_fac or 1)
+            card.ability.immutable_temp_fac = 1
         end
     end,
 	entr_credits = {
