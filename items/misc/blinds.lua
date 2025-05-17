@@ -261,39 +261,6 @@ local phase2 = {
 	no_disable=true,
 	in_pool = function() return false end,
 	next_phase = "bl_entr_endless_entropy_phase_two",
-	calculate = function(self, blind, context)
-		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) then
-			G.STATE = G.STATES.GAME_OVER
-			if not G.GAME.round_resets.lost then
-				G.STATE_COMPLETE = false
-			end
-			G.GAME.round_resets.lost = true
-		end
-		if G.GAME.current_round.hands_left == 0 and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) and not G.GAME.EE3 and context.after then
-			ease_hands_played(1)
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = 1,
-				func = function()
-					G.GAME.chips = 0
-					G.GAME.round_resets.lost = true
-					G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
-					G.GAME.blind:juice_up()
-					ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
-					ease_discard(
-						math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
-					)
-					G.FUNCS.draw_from_discard_to_deck()
-					return true
-				end
-			}))
-		end
-	end,
-	defeat = function(self)
-		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) and not G.GAME.round_resets.lost then
-			G.STATE = G.STATES.GAME_OVER; G.STATE_COMPLETE = false
-		end
-	end,
 	loc_vars = function(self, info_queue, card)
 		return { vars = { get_blind_amount(G.GAME.round_resets.ante) * 3 * G.GAME.starting_params.ante_scaling } } -- no bignum?
 	end,

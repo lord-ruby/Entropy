@@ -448,19 +448,125 @@ target = "functions/state_events.lua"
 pattern = "if SMODS.saved then game_over = false end"
 position = "at"
 payload = '''
-if Entropy.IsEE() and SMODS.saved then
-    G.GAME.EECardCharacter = true
-    G.GAME.EERevived = true
-    G.STATE = G.STATES.GAME_OVER
-    if not G.GAME.won and not G.GAME.seeded and not G.GAME.challenge then 
-        G.PROFILES[G.SETTINGS.profile].high_scores.current_streak.amt = 0
+if Entropy.IsEE() then
+    if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" and not game_over then
+      game_over = true
     end
-    G:save_settings()
-    G.FILE_HANDLER.force = true
-    G.STATE_COMPLETE = false
+    if SMODS.saved then
+      G.GAME.EECardCharacter = true
+      G.GAME.EERevived = true
+      G.STATE = G.STATES.GAME_OVER
+      if not G.GAME.won and not G.GAME.seeded and not G.GAME.challenge then 
+          G.PROFILES[G.SETTINGS.profile].high_scores.current_streak.amt = 0
+      end
+      G:save_settings()
+      G.FILE_HANDLER.force = true
+      G.STATE_COMPLETE = false
+    end
 elseif SMODS.saved then game_over = false end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''
+    if #G.hand.cards < 1 and #G.deck.cards < 1 and #G.play.cards < 1 then
+        end_round()
+    end
+'''
+position = "at"
+payload = '''
+    if #G.hand.cards < 1 and #G.deck.cards < 1 and #G.play.cards < 1 then
+        if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" then
+          G.GAME.chips = 0
+          G.GAME.round_resets.lost = false
+          G.GAME.blind:set_blind(G.P_BLINDS["bl_entr_endless_entropy_phase_two"])
+          G.GAME.blind:juice_up()
+          G.GAME.current_round.hands_left = G.GAME.round_resets.hands
+          ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
+          ease_discard(
+            math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
+          )
+          G.FUNCS.draw_from_discard_to_deck()
+          G.STATE = 1
+          G.STATE_COMPLETE = false
+        else
+          end_round()
+        end
+    end
+'''
+match_indent = true    
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''
+        if #G.hand.cards < 1 and #G.deck.cards < 1 then
+            end_round()
+        else
+            save_run()
+            G.CONTROLLER:recall_cardarea_focus('hand')
+        end
+'''
+position = "at"
+payload = '''
+    if #G.hand.cards < 1 and #G.deck.cards < 1 then
+        if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" then
+          G.GAME.chips = 0
+          G.GAME.round_resets.lost = false
+          G.GAME.blind:set_blind(G.P_BLINDS["bl_entr_endless_entropy_phase_two"])
+          G.GAME.blind:juice_up()
+          G.GAME.current_round.hands_left = G.GAME.round_resets.hands
+          ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
+          ease_discard(
+            math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
+          )
+          G.FUNCS.draw_from_discard_to_deck()
+          G.STATE = 1
+          G.STATE_COMPLETE = false
+        else
+          end_round()
+        end
+    else
+        save_run()
+        G.CONTROLLER:recall_cardarea_focus('hand')
+    end
+'''
+match_indent = true    
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''
+    if not G.STATE_COMPLETE then
+        G.STATE_COMPLETE = true
+        end_round()
+    end
+'''
+position = "at"
+payload = '''
+    if not G.STATE_COMPLETE then
+        if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then
+          G.GAME.chips = 0
+          G.GAME.round_resets.lost = false
+          G.GAME.blind:set_blind(G.P_BLINDS["bl_entr_endless_entropy_phase_two"])
+          G.GAME.blind:juice_up()
+          G.GAME.current_round.hands_left = G.GAME.round_resets.hands
+          ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
+          ease_discard(
+            math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
+          )
+          G.FUNCS.draw_from_discard_to_deck()
+          G.STATE = 1
+          G.STATE_COMPLETE = false
+        else
+            G.STATE_COMPLETE = true
+            end_round()
+        end
+    end
+'''
+match_indent = true  
 
 [[patches]]
 [patches.pattern]
@@ -529,3 +635,4 @@ payload = '''
 table.sort(G.playing_cards, function (a, b) return (type(a.playing_card) == "number" and a.playing_card or 0) > (type(b.playing_card) == "number" and b.playing_card or -1) )
 '''
 match_indent = true
+
