@@ -351,6 +351,9 @@ local ridiculus_absens = {
             end)
         end
     end,
+	entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    },
 }
 
 return {
