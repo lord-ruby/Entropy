@@ -834,8 +834,8 @@ end
 function Entropy.ContextChecks(self, card, context, currc, edition)
     if not context.retrigger_joker and not context.blueprint and not context.forcetrigger and not context.post_trigger then
         if currc == "before" and context.before then return true end
-        if (currc == "pre_joker" and context.pre_joker) or (edition and context.main_scoring and context.cardarea == G.play) then return true end
-        if (currc == "joker_main" and context.joker_main) or (edition and context.main_scoring and context.cardarea == G.play) then return true end
+        if currc == "pre_joker" and ((context.pre_joker) or (edition and context.main_scoring and context.cardarea == G.play)) then return true end
+        if currc == "joker_main" and ((context.joker_main) or (edition and context.main_scoring and context.cardarea == G.play)) then return true end
         if currc == "individual" and ((context.individual and context.cardarea == G.play and not context.blueprint) or (edition and context.main_scoring and context.cardarea == G.play)) then return true end
         if currc == "pre_discard" and context.pre_discard and context.cardarea == G.hand and not context.retrigger_joker and not context.blueprint then return true end
         if currc == "remove_playing_cards" and context.remove_playing_cards and not context.blueprint then return true end
@@ -995,7 +995,6 @@ function Entropy.RandomEffect(context)
         individual=true,
     }
     local element = pseudorandom_element(keys, pseudoseed("tmtrainer_effect"))
-    print(element)
     while not scoring[context] and Entropy.TMTrainerScoring[element] do
         element = pseudorandom_element(keys, pseudoseed("tmtrainer_effect"))
     end
