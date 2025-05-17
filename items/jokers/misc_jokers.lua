@@ -794,16 +794,6 @@ local seventyseven = {
         }
     end,
     calculate = function(self, card, context)
-        if context.final_scoring_step then
-            local chips = hand_chips
-            local text = G.FUNCS.get_poker_hand_info(G.play.cards)
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    G.GAME.hands[text].chips = chips
-                    print(text)
-                end
-            }))
-        end
 		if context.joker_main or context.forcetrigger then
             return {
                 eq_chips = card.ability.chips

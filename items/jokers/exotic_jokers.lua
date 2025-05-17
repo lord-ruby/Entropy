@@ -265,7 +265,7 @@ local scorpio = {
     end,
     calculate = function (self, card, context)
         if context.individual and context.cardarea == G.play and context.other_card and context.other_card:get_id() == 8 then
-            if card.ability.immutable_temp_fac < 1e69 then
+            if card.ability.immutable_temp_fac and card.ability.immutable_temp_fac < 1e69 then
                 G.GAME.probabilities.normal = G.GAME.probabilities.normal * 1.16
                 card.ability.immutable_temp_fac = (card.ability.immutable_temp_fac or 1) * 1.16
             end
