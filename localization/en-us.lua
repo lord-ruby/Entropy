@@ -831,6 +831,14 @@ local decs = {
 					"of your most played hands {C:attention}example{}",
 					"and {C:attention}draw{} it to hand"
 				}
+			},
+			c_entr_heretic = {
+				name = "The Heretic",
+				text = {
+					"Randomize one {C:attention}modification{}",
+					"of up to {C:attention}#1#{} selected card#<s>1#",
+					"held in hand"
+				}
 			}
 		},
 		Voucher = {

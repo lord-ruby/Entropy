@@ -134,6 +134,64 @@ local servant = {
 	can_divide = true,
 }
 
+local heretic = {
+    key = "heretic",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -900 + 6,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        select = 2,
+    },
+    inversion = "c_hierophant",
+    pos = {x=5, y = 0},
+    use = function(self, card, area, copier)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card)
+        Entropy.FlipThen(cards, function(card)
+            local modification = pseudorandom_element({"Seal", "Enhancement", "Edition", "Suit", "Rank"}, pseudoseed("heretic_modification"))
+            if modification == "Seal" then
+                local seal = pseudorandom_element(SMODS.Seal.obj_table, pseudoseed("heretic_seal")).key
+                card:set_seal(seal)
+            end
+            if modification == "Edition" then
+                local edition = pseudorandom_element(SMODS.Edition.obj_table, pseudoseed("heretic_edition")).key
+                card:set_edition(edition)
+            end
+            if modification == "Enhancement" then
+                local enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("heretic_enhancement")).key
+                while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys.Enhanced[enhancement] do
+                    enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("heretic_enhancement")).key
+                end
+                card:set_ability(enhancement)
+            end
+            if modification == "Suit" or modification == "Rank" then
+                local suit = modification == "Suit" and pseudorandom_element({"Spades", "Hearts", "Clubs", "Diamonds"}, pseudoseed("heretic_suit"))
+                local rank = modification == "Rank" and pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("heretic_rank"))
+                SMODS.change_base(card, suit, rank)
+            end
+        end)
+    end,
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card)
+        local num = #cards
+        return num > 0 and num <= card.ability.select
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.select,
+            }
+        }
+    end,
+    can_stack = true,
+	can_divide = true,
+}
+
 local feud = {
     key = "feud",
     set = "RTarot",
@@ -706,6 +764,7 @@ return {
         integrity,
         forgiveness,
         feud,
-        advisor
+        advisor,
+        heretic
     }
 }
