@@ -164,7 +164,7 @@ local heretic = {
             end
             if modification == "Enhancement" then
                 local enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("heretic_enhancement")).key
-                while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys.Enhanced[enhancement] do
+                while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
                     enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("heretic_enhancement")).key
                 end
                 card:set_ability(enhancement)
