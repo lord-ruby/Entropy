@@ -919,10 +919,10 @@ function Entropy.WinEE()
     }))
 end
 
-Entropy.TMTrainerEffects["mult"] = function(key) return { mult = pseudorandom(key) * 100 } end
-Entropy.TMTrainerEffects["chips"] = function(key) return { chips = pseudorandom(key) * 1000 } end
-Entropy.TMTrainerEffects["xmult"] = function(key) return { xmult = pseudorandom(key) * 10 } end
-Entropy.TMTrainerEffects["xchips"] = function(key) return { xchips = pseudorandom(key) * 10 } end
+Entropy.TMTrainerEffects["mult"] = function(key) return { mult = pseudorandom(key) * 400 } end
+Entropy.TMTrainerEffects["chips"] = function(key) return { chips = pseudorandom(key) * 4000 } end
+Entropy.TMTrainerEffects["xmult"] = function(key) return { xmult = pseudorandom(key) * 40 } end
+Entropy.TMTrainerEffects["xchips"] = function(key) return { xchips = pseudorandom(key) * 40 } end
 Entropy.TMTrainerEffects["emult"] = function(key) return { emult = pseudorandom(key) * 4 } end
 Entropy.TMTrainerEffects["echips"] = function(key) return { echips = pseudorandom(key) * 4 } end
 Entropy.TMTrainerEffects["dollars"] = function(key) ease_dollars(pseudorandom(key) * 20) end
