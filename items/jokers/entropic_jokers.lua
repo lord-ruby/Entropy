@@ -557,6 +557,9 @@ local akyros = {
             ease_dollars(actual)
         end
     end,
+	entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    },
     remove_from_deck = function()
         if G.jokers.config.card_limit <= 1 then G.jokers.config.card_limit = 1 end
     end
