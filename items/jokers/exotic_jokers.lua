@@ -297,6 +297,9 @@ local scorpio = {
             card.ability.temp_fac = 1
         end
     end,
+	entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    },
 }
 
 local ridiculus_absens = {
@@ -307,8 +310,8 @@ local ridiculus_absens = {
     cost = 50,
     atlas = "exotic_jokers",
 
-    pos = { x = 6, y = 1 },
-    soul_pos = { x = 8, y = 1, extra = { x = 7, y = 1 } },
+    pos = { x = 6, y = 2 },
+    soul_pos = { x = 8, y = 2, extra = { x = 7, y = 2 } },
     
     dependencies = {
         items = {
@@ -351,6 +354,9 @@ local ridiculus_absens = {
             end)
         end
     end,
+	entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    },
 }
 
 return {
