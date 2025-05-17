@@ -58,4 +58,5 @@ SMODS.Sound({
 SMODS.Sound({
 	key = "e_rizz",
 	path = "e_rizz.ogg",
+	volume = 0.7
 })

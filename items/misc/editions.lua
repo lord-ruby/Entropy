@@ -246,7 +246,7 @@ if AurinkoAddons then
 				trigger = "after",
 				delay = 0.3,
 				func = function()
-					play_sound("entr_e_rizz")
+					play_sound("entr_e_rizz", 0.7)
 					card:juice_up(0.8, 0.5)
 					return true
 				end,
@@ -257,7 +257,7 @@ if AurinkoAddons then
 				trigger = "after",
 				delay = 0.2,
 				func = function()
-					play_sound("entr_e_rizz")
+					play_sound("entr_e_rizz", 0.7)
 					card:juice_up(0.8, 0.5)
 					return true
 				end,
