@@ -39,6 +39,9 @@ local flesh = {
 			SMODS.calculate_context({remove_playing_cards = true, removed={card}})
 		end
 	end,
+	entr_credits = {
+		art = {"Lil. Mr. Slipstream"}
+	}
 }
 local disavowed = {
 	dependencies = {
@@ -95,7 +98,10 @@ local prismatic = {
 				eemult = card.ability.extra.eemult
 			}
 		end
-	end
+	end,
+	entr_credits = {
+		art = {"Lil. Mr. Slipstream"}
+	}
 }
 
 return {
