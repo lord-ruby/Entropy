@@ -519,3 +519,13 @@ payload = '''
 nominal_chips = to_big(self.base.nominal) > to_big(0) and self.base.nominal or nil,
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''table.sort(G.playing_cards, function (a, b) return a.playing_card > b.playing_card end )'''
+position = "at"
+payload = '''
+table.sort(G.playing_cards, function (a, b) return (type(a.playing_card) == "number" and a.playing_card or 0) > (type(b.playing_card) == "number" and b.playing_card or -1) )
+'''
+match_indent = true

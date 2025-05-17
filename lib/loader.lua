@@ -172,6 +172,38 @@ function SMODS.injectItems(...)
     for i, v in pairs(Entropy.FlipsideInversions) do
         Entropy.FlipsideInversions[v]=i
     end
+
+    local oldfunc = Game.main_menu
+	Game.main_menu = function(change_context)
+		local ret = oldfunc(change_context)
+		G.SPLASH_BACK:define_draw_steps({
+			{
+				shader = "splash",
+				send = {
+					{ name = "time", ref_table = G.TIMERS, ref_value = "REAL_SHADER" },
+					{ name = "vort_speed", val = 0.4 },
+					{ name = "colour_1", ref_table = Entropy, ref_value = "entropic_gradient" },
+					{ name = "colour_2", ref_table = G.C, ref_value = "CRY_EXOTIC" },
+				},
+			},
+		})
+        G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0,
+			blockable = false,
+			blocking = false,
+			func = function()
+                local ind1
+                for i, v in pairs(G.title_top.cards) do
+                    if v.config.center.key == "c_entr_entropy" then
+                        G.title_top:remove_card(v)
+                        G.title_top:emplace(v)
+                    end
+                end
+            end
+        }))
+		return ret
+	end
 end
 
 if SMODS.Mods.DereJkr and SMODS.Mods.DereJkr.can_load then
