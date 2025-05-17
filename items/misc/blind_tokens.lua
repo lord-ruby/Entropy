@@ -48,7 +48,7 @@ function Entropy.RegisterBlinds()
                 for i, v in pairs(G.GAME.round_resets.blind_states or {}) do
                     if v == "Select" or (not SMODS.Mods.NotJustYet or (not SMODS.Mods.NotJustYet.can_load and v == "Current")) then return true end
                 end
-                if (G.GAME.round_resets.ante >= 32 and not G.GAME.EEBeaten) or G.GAME.EEBuildup then return false end
+                if (to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) or G.GAME.EEBuildup then return false end
                 return false
             end,
             loc_vars = function(self,q,c)
@@ -117,7 +117,7 @@ function Entropy.RegisterBlinds()
                     for i, v in pairs(G.GAME.round_resets.blind_states or {}) do
                         if v == "Select" or (not SMODS.Mods.NotJustYet or (not SMODS.Mods.NotJustYet.can_load and v == "Current")) then return true end
                     end
-                    if (G.GAME.round_resets.ante >= 32 and not G.GAME.EEBeaten) or G.GAME.EEBuildup then return false end
+                    if (to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) or G.GAME.EEBuildup then return false end
                     return false
                 end,
                 loc_vars = function(self,q,c)

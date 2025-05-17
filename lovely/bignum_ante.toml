@@ -1,0 +1,226 @@
+
+
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = "main.lua"
+pattern = '''
+        if ante < 1 then return to_big(100) end
+        if ante <= 8 then return amounts[ante] end
+        local a, b, c, d = amounts[8],1.6,ante-8, 1 + 0.2*(ante-8)
+        local amount = a*(b+(k*c)^d)^c
+        if (amount:lt(R.E_MAX_SAFE_INTEGER)) then
+          local exponent = to_big(10)^(math.floor(amount:log10() - to_big(1))):to_number()
+          amount = math.floor(amount / exponent):to_number() * exponent
+        end
+        amount:normalize()
+        return amount
+'''
+position = "at"
+payload = '''
+        if to_big(ante) < to_big(1) then return to_big(100) end
+        if to_big(ante) <= to_big(8) then return amounts[ante] end
+        local a, b, c, d = amounts[8],1.6,ante-8, 1 + 0.2*(ante-8)
+        local amount = a*(b+(k*c)^d)^c
+        if (amount:lt(R.E_MAX_SAFE_INTEGER)) then
+          local exponent = to_big(10)^(math.floor(amount:log10() - to_big(1))):to_number()
+          amount = math.floor(amount / exponent):to_number() * exponent
+        end
+        amount:normalize()
+        return amount
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "main.lua"
+pattern = '''
+        local amounts = {
+          to_big(300),  to_big(900), to_big(2600),  to_big(8000), to_big(20000),  to_big(36000),  to_big(60000),  to_big(100000)
+          --300,  900, 2400,  7000,  18000,  32000,  56000,  90000
+        }
+        if ante < 1 then return to_big(100) end
+        if ante <= 8 then return amounts[ante] end
+        local a, b, c, d = amounts[8],1.6,ante-8, 1 + 0.2*(ante-8)
+        local amount = a*(b+(k*c)^d)^c
+        if (amount:lt(R.E_MAX_SAFE_INTEGER)) then
+          local exponent = to_big(10)^(math.floor(amount:log10() - to_big(1))):to_number()
+          amount = math.floor(amount / exponent):to_number() * exponent
+        end
+        amount:normalize()
+        return amount
+'''
+position = "at"
+payload = '''
+        local amounts = {
+          to_big(300),  to_big(900), to_big(2600),  to_big(8000), to_big(20000),  to_big(36000),  to_big(60000),  to_big(100000)
+          --300,  900, 2400,  7000,  18000,  32000,  56000,  90000
+        }
+        if to_big(ante) < to_big(1) then return to_big(100) end
+        if to_big(ante) <= to_big(8) then return amounts[ante] end
+        local a, b, c, d = amounts[8],1.6,ante-8, 1 + 0.2*(ante-8)
+        local amount = a*(b+(k*c)^d)^c
+        if (amount:lt(R.E_MAX_SAFE_INTEGER)) then
+          local exponent = to_big(10)^(math.floor(amount:log10() - to_big(1))):to_number()
+          amount = math.floor(amount / exponent):to_number() * exponent
+        end
+        amount:normalize()
+        return amount
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "main.lua"
+pattern = '''
+        local amounts = {
+          to_big(300),  to_big(1000), to_big(3200),  to_big(9000),  to_big(25000),  to_big(60000),  to_big(110000),  to_big(200000)
+          --300,  1000, 3000,  8000,  22000,  50000,  90000,  180000
+        }
+        if ante < 1 then return to_big(100) end
+        if ante <= 8 then return amounts[ante] end
+        local a, b, c, d = amounts[8],1.6,ante-8, 1 + 0.2*(ante-8)
+        local amount = a*(b+(k*c)^d)^c
+        if (amount:lt(R.E_MAX_SAFE_INTEGER)) then
+          local exponent = to_big(10)^(math.floor(amount:log10() - to_big(1))):to_number()
+          amount = math.floor(amount / exponent):to_number() * exponent
+        end
+        amount:normalize()
+        return amount
+'''
+position = "at"
+payload = '''
+        local amounts = {
+          to_big(300),  to_big(1000), to_big(3200),  to_big(9000),  to_big(25000),  to_big(60000),  to_big(110000),  to_big(200000)
+          --300,  1000, 3000,  8000,  22000,  50000,  90000,  180000
+        }
+        if to_big(ante) < to_big(1) then return to_big(100) end
+        if to_big(ante) <= to_big(8) then return amounts[ante] end
+        local a, b, c, d = amounts[8],1.6,ante-8, 1 + 0.2*(ante-8)
+        local amount = a*(b+(k*c)^d)^c
+        if (amount:lt(R.E_MAX_SAFE_INTEGER)) then
+          local exponent = to_big(10)^(math.floor(amount:log10() - to_big(1))):to_number()
+          amount = math.floor(amount / exponent):to_number() * exponent
+        end
+        amount:normalize()
+        return amount
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if G.GAME.round_resets.ante >= G.GAME.win_ante and G.GAME.blind_on_deck == 'Boss' then"
+position = "at"
+payload = '''
+if to_big(G.GAME.round_resets.ante) >= to_big(G.GAME.win_ante) and G.GAME.blind_on_deck == 'Boss' then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''
+        if args.ante >= 4 then
+            unlock_achievement('ante_up')
+        end
+        if args.ante >= 8 then
+            unlock_achievement('ante_upper')
+        end
+'''
+position = "at"
+payload = '''
+        if to_big(args.ante) >= to_big(4) then
+            unlock_achievement('ante_up')
+        end
+        if to_big(args.ante) >= to_big(8) then
+            unlock_achievement('ante_upper')
+        end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "engine/string_packer.lua"
+pattern = '''
+        assert((type_i ~= "table"), "Data table cannot have an table as a key reference")
+'''
+position = "at"
+payload = '''
+if type_i == "table" then
+    i = #i
+    type_i = type(i)
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''
+                if (not v.requires or (G.P_CENTERS[v.requires] and G.P_CENTERS[v.requires].discovered)) and 
+                (not v.min_ante or v.min_ante <= G.GAME.round_resets.ante) then
+                    add = true
+                end
+'''
+position = "at"
+payload = '''
+                if (not v.requires or (G.P_CENTERS[v.requires] and G.P_CENTERS[v.requires].discovered)) and 
+                (not v.min_ante or to_big(v.min_ante) <= to_big(G.GAME.round_resets.ante)) then
+                    add = true
+                end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''
+        elseif not v.boss.showdown and (v.boss.min <= math.max(1, G.GAME.round_resets.ante) and ((math.max(1, G.GAME.round_resets.ante))%G.GAME.win_ante ~= 0 or G.GAME.round_resets.ante < 2)) then
+            eligible_bosses[k] = true
+        elseif v.boss.showdown and (((G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2) or G.GAME.modifiers.cry_big_showdown ) then
+            eligible_bosses[k] = true
+        end
+'''
+position = "at"
+payload = '''
+        elseif not v.boss.showdown and (to_big(v.boss.min) <= to_big(math.max(1, G.GAME.round_resets.ante)) and ((math.max(1, G.GAME.round_resets.ante))%G.GAME.win_ante ~= 0 or to_big(G.GAME.round_resets.ante < 2))) then
+            eligible_bosses[k] = true
+        elseif v.boss.showdown and (((G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and to_big(G.GAME.round_resets.ante >= 2)) or G.GAME.modifiers.cry_big_showdown ) then
+            eligible_bosses[k] = true
+        end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''
+    --Save every 10 seconds, unless forced or paused/unpaused
+    if not Cryptid.member_count_delay then Cryptid.member_count_delay = 0 end
+'''
+position = "at"
+payload = '''
+    G.GAME.ante_table = to_big(G.GAME.round_resets.ante)
+    --Save every 10 seconds, unless forced or paused/unpaused
+    if not Cryptid.member_count_delay then Cryptid.member_count_delay = 0 end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''
+G.GAME.round_resets.ante = G.GAME.round_resets.ante + mod
+'''
+position = "at"
+payload = '''
+G.GAME.round_resets.ante = to_big(G.GAME.round_resets.ante) + to_big(mod)
+'''
+match_indent = true
+          

@@ -1806,8 +1806,8 @@ function create_UIBox_blind_select()
         return t 
     else
         if Entropy.CanEeSpawn() then
-            if G.GAME.round_resets.ante < 32 then G.GAME.EEBeaten = false end
-            if G.GAME.EEBuildup or (G.GAME.round_resets.ante >= 32 and not G.GAME.EEBeaten) then
+            if to_big(G.GAME.round_resets.ante) < to_big(32) then G.GAME.EEBeaten = false end
+            if G.GAME.EEBuildup or (to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) then
                 G.GAME.round_resets.blind_choices.Boss = "bl_entr_endless_entropy_phase_one"
                 G.GAME.EEBuildup = true
             end
@@ -1953,18 +1953,19 @@ end
 local gba = get_blind_amount
 function get_blind_amount(ante)
     if not ante then return 0 end
-    if math.abs(ante - math.floor(ante)) > 0.01 then
+    local actual = to_big(ante) <= to_big(8) and to_number(ante) or to_big(ante)
+    if to_big(math.abs(ante - math.floor(ante))) > to_big(0.01) then
 
         local p = (ante - math.floor(ante))
-        return get_blind_amount(math.floor(ante) + (ante < 0 and -1 or 0))*(1-p) + get_blind_amount(math.floor(ante)+1 + (ante < 0 and -1 or 0))*p
+        return get_blind_amount(math.floor(ante) + (to_big(ante) < to_big(0) and -1 or 0))*(1-p) + get_blind_amount(math.floor(ante)+1 + (to_big(ante) < to_big(0) and -1 or 0))*p
     end
-    if ante < 0 then
+    if to_big(ante) < to_big(0) then
         return 100 * (0.95^(-ante))
     end
-    if (Entropy.config.ante_scaling and ante > 8 and #Cryptid.advanced_find_joker(nil, "entr_entropic", nil, nil, true) ~= 0) or G.GAME.modifiers.entropic then
-        return to_big(gba(ante)):tetrate(1 + ante/32)
+    if (Entropy.config.ante_scaling and to_big(ante) > to_big(8) and #Cryptid.advanced_find_joker(nil, "entr_entropic", nil, nil, true) ~= 0) or G.GAME.modifiers.entropic then
+        return to_big(gba(actual)):tetrate(1 + ante/32)
     end
-    return gba(ante) or 100
+    return gba(actual) or 100
 end
 function lerp(f1,f2,p)
     p = p * p
@@ -2356,4 +2357,37 @@ function Card:calculate_banana()
 		end
 	end
 	return false
+end
+
+local sr = save_run
+function save_run()
+    local ante = G.GAME and G.GAME.round_resets and G.GAME.round_resets.ante
+    if type(ante) == "table" then
+        G.GAME.round_resets.ante = 2
+    end
+    sr()
+    if ante then
+        G.GAME.round_resets.ante = ante
+    end
+end
+
+SMODS.Blind:take_ownership("cry_scorch", {
+	in_pool = function(self) -- only appears in endless
+		if to_big(G.GAME.round_resets.blind_ante) > to_big(G.GAME.win_ante) then
+			return true
+		else
+			return false
+		end
+	end,
+}, true)
+
+local start_ref = Game.start_run
+function Game:start_run(args)
+    start_ref(self, args)
+    if G.GAME.ante_table then
+        G.GAME.round_resets.ante = G.GAME.ante_table
+        if to_big(G.GAME.round_resets.ante) < to_big(1e250) then
+            G.GAME.round_resets.ante = 1e250
+        end
+    end
 end
