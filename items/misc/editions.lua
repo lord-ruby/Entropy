@@ -279,6 +279,19 @@ if AurinkoAddons then
 	end
 end
 
+if Entropy.config.override_glitched then
+
+	SMODS.Shader({
+		key="entr_glitched",
+		path="entr_glitched.fs"
+	})
+
+	SMODS.Edition:take_ownership("cry_glitched", {
+		shader = "entr_glitched"
+	}, true)
+
+end
+
 return {
     items = {
         solar,
