@@ -2182,6 +2182,7 @@ local decs = {
 			k_tmtconsumable = "Create a random consumable",
 			k_tmtenhancement_play = "One played card gets a new enhancement",
 			k_tmtenhancement_hand = "One card held in hand gets a new enhancement",
+			k_tmtrandom = "Trigger 3 random effects",
 
 			k_entr_entropic = "Entropic",
 			k_entr_reverse_legendary = "Legendary?",

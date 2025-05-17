@@ -651,12 +651,12 @@ end
 function Entropy.CanCreateZenith()
     local _pool, _pool_key = get_current_pool("Joker", "cry_exotic", nil, "zenith")
     for i, v in ipairs(_pool) do
-        if v ~= "UNAVAILABLE" and not Entropy.HasJoker(v) then return false end
+        if v ~= "UNAVAILABLE" and not Entropy.HasJoker(v) and v ~= "j_joker" then return false end
     end
 
     local _pool, _pool_key = get_current_pool("Joker", "entr_entropic", nil, "zenith")
     for i, v in ipairs(_pool) do
-        if v ~= "UNAVAILABLE" and not Entropy.HasJoker(v) then return false end
+        if v ~= "UNAVAILABLE" and not Entropy.HasJoker(v) and v ~= "j_joker" then return false end
     end
     return true
 end
@@ -956,6 +956,25 @@ Entropy.TMTrainerEffects["enhancement_hand"] = function(key)
         card:set_ability(G.P_CENTERS[enhancement])
     end)
 end
+Entropy.TMTrainerEffects["random"] = function(key) 
+    local res = {}
+    for i = 1, 3 do
+        local results = Entropy.TMTrainerEffects[Entropy.RandomEffect()]("tmtrainer_actual_effect", card.ability.tm_context) or nil
+        if results then
+            for i, v in pairs(results) do
+                for i2, result in pairs(v) do
+                    if type(result) == "number" or (type(result) == "table" and result.tetrate) then
+                        res[i2] = Entropy.StackEvalReturns(res[i2], result, i2)
+                    else
+                        res[i2] = result
+                    end
+                end
+            end
+        end
+    end
+    return res
+end
+
 Entropy.TMTrainerScoring["mult"]=true
 Entropy.TMTrainerScoring["xmult"]=true
 Entropy.TMTrainerScoring["emult"]=true
@@ -993,7 +1012,7 @@ SMODS.Edition:take_ownership("e_cry_glitched", {
     calculate = function(self, card, context)
         if card.ability.tm_effect then
             if Entropy.ContextChecks(self, card, context, card.ability.tm_context, true) then
-                return Entropy.TMTrainerEffects[card.ability.tm_effect]("tmtrainer_actual_effect") or nil
+                return Entropy.TMTrainerEffects[card.ability.tm_effect]("tmtrainer_actual_effect", card.ability.tm_context) or nil
             end
         end
     end,
