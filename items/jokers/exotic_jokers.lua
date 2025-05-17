@@ -297,6 +297,9 @@ local scorpio = {
             card.ability.temp_fac = 1
         end
     end,
+	entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    },
 }
 
 local ridiculus_absens = {
