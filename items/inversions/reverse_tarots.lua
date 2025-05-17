@@ -190,6 +190,9 @@ local heretic = {
     end,
     can_stack = true,
 	can_divide = true,
+    entr_credits = {
+        idea = {"notmario"}
+    }
 }
 
 local feud = {
