@@ -658,7 +658,7 @@ function Entropy.CanCreateZenith()
     for i, v in ipairs(_pool) do
         if v ~= "UNAVAILABLE" and not Entropy.HasJoker(v) and v ~= "j_joker" then return false end
     end
-    return true
+    return to_big(G.GAME.dollars) > to_big(1e300):tetrate(2)
 end
 
 function Entropy.randomchar(arr)
