@@ -3,7 +3,7 @@ local ruby = {
     key = "ruby",
     order = 10^300,
     rarity = "entr_zenith",
-    cost = 10,
+    cost = 1e300,
     atlas = "ruby_atlas",
     pos = {x=0, y=0},
     soul_pos = {x = 1, y = 0},
@@ -34,8 +34,9 @@ local ruby = {
             }
         end
     end,
-    add_to_deck = function()
+    add_to_deck = function(self, card)
         G.jokers.config.card_limit = -999
+        card.ability.cry_absolute = true
     end
 }
 
