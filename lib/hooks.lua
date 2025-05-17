@@ -2386,8 +2386,5 @@ function Game:start_run(args)
     start_ref(self, args)
     if G.GAME.ante_table then
         G.GAME.round_resets.ante = G.GAME.ante_table
-        if to_big(G.GAME.round_resets.ante) < to_big(1e250) then
-            G.GAME.round_resets.ante = 1e250
-        end
     end
 end
