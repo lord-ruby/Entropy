@@ -1420,6 +1420,9 @@ local local_card = {
             }
         }
     end,
+    entr_credits = {
+        art = {"Grahkon"}
+    }
 }
 
 local transpile = {
