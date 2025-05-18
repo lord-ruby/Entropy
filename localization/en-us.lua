@@ -847,6 +847,13 @@ local decs = {
 					"between {C:blue}Hands{} and {C:red}Discards{}",
 					"{C:inactive}(Max of{} {C:gold}$#1#{}{C:inactive})"
 				}
+			},
+			c_entr_mason = {
+				name = "The Mason",
+				text = {
+					"Create {C:attention}#1# Stone{} card#<s>1#",
+					"with a random {C:attention}edition{}"
+				}
 			}
 		},
 		Voucher = {

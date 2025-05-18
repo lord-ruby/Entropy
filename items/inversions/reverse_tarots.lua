@@ -1,5 +1,5 @@
 -- 0 - The Fool -     The Master (Coded)
--- 1 - The Magician -    The Carpenter
+-- 1 - The Magician -    The Mason
 -- 2 - The High Priestess -    The Oracle
 -- 3 - The Empress -    The Princess
 -- 4 - The Emperor -    The Servant (Coded)
@@ -47,7 +47,7 @@ local master = {
         return G.GAME.last_inversion
 	end,
     loc_vars = function(self, q, card)
-        card.ability.last_inversion = G.GAME.last_inversion and G.localization.descriptions[G.GAME.last_inversion.set][G.GAME.last_inversion.key].name or "None"
+        card.ability.last_inversion = G.GAME.last_inversion and G.GAME.last_inversion.set and G.localization.descriptions[G.GAME.last_inversion.set][G.GAME.last_inversion.key].name or "None"
         return {
             main_end = (card.area and (card.area == G.consumeables or card.area == G.pack_cards or card.area == G.hand)) and {
 				{
@@ -84,6 +84,49 @@ local master = {
     can_stack = true,
 	can_divide = true,
 }
+
+local mason = {
+    key = "mason",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -900 + 1,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        create = 2
+    },
+    inversion = "c_magician",
+    pos = {x=1, y = 0},
+    use = function(self, card, area, copier)
+        for i = 1, to_number(math.min(card.ability.create, 100)) do
+            local card = SMODS.create_card({
+                key = "m_stone",
+                area = G.hand
+            })
+            SMODS.change_base(card, "entr_nilsuit", "entr_nilrank")
+            card:set_edition(pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("mason")).key)
+            G.hand:emplace(card)
+            table.insert(G.playing_cards, card)
+        end
+    end,
+    can_use = function(self, card)
+        return G.STATE == G.STATES.SELECTING_HAND
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                math.min(card.ability.create, 100)
+            }
+        }
+    end,
+    can_stack = true,
+	can_divide = true,
+}
+
 local servant = {
     key = "servant",
     set = "RTarot",
@@ -808,6 +851,7 @@ return {
         feud,
         advisor,
         heretic,
-        earl
+        earl,
+        mason
     }
 }

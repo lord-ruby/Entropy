@@ -204,6 +204,9 @@ function Card:set_ability(center, initial, delay)
             end
         end
     end
+    if center and center.key == "m_stone" then
+        self.ability.bonus = 50
+    end
 end
 
 local set_editionref = Card.set_edition
