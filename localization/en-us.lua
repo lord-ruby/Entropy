@@ -839,6 +839,14 @@ local decs = {
 					"of up to {C:attention}#1#{} selected card#<s>1#",
 					"held in hand"
 				}
+			},
+			c_entr_earl = {
+				name = "The Earl",
+				text = {
+					"Distribute your money equally",
+					"between {C:blue}Hands{} and {C:red}Discards{}",
+					"{C:inactive}(Max of{} {C:gold}$#1#{}{C:inactive})"
+				}
 			}
 		},
 		Voucher = {

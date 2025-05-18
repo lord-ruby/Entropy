@@ -368,6 +368,43 @@ local dagger = {
 	can_divide = true,
 }
 
+local earl = {
+    key = "earl",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -900 + 8,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        max = 20,
+    },
+    inversion = "c_hermit",
+    pos = {x=9, y = 0},
+    use = function(self, card2, area, copier)
+        local half = to_number(math.min(G.GAME.dollars, 20)) / 2
+        ease_hands_played(half)
+        ease_discard(half)
+        G.GAME.earl_amount = (G.GAME.earl_amount or 0) + half
+        ease_dollars(-(half*2))
+    end,
+    can_use = function(self, card)
+        return to_big(G.GAME.dollars) > to_big(0) and G.STATE == G.STATES.SELECTING_HAND
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.max
+            }
+        }
+    end,
+    can_stack = true,
+	can_divide = true,
+}
+
 local whetstone = {
     key = "whetstone",
     set = "RTarot",
@@ -770,6 +807,7 @@ return {
         forgiveness,
         feud,
         advisor,
-        heretic
+        heretic,
+        earl
     }
 }
