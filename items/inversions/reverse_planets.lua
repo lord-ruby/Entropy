@@ -139,7 +139,7 @@ function Entropy.ReversePlanetUse(handname, card, amt)
     { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
     { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = number_format(G.GAME.hands[handname].AscensionPower or 0 + G.GAME.hands[handname].level or 0, 1000000) }
   )
-  G.GAME.hands[handname].AscensionPower = (G.GAME.hands[handname].AscensionPower or 0) + card.ability.level*amt
+  G.GAME.hands[handname].AscensionPower = to_big((G.GAME.hands[handname].AscensionPower or 0)) + to_big(card.ability.level*amt)
   G.GAME.hands[handname].visible = true
   delay(1.0)
   G.E_MANAGER:add_event(Event({

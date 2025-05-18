@@ -728,7 +728,7 @@ local quasar = {
           { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
           { handname = localize(ind,'poker_hands'), chips = "...", mult = "...", level = "" }
         )
-        G.GAME.hands[ind].AscensionPower = (G.GAME.hands[ind].AscensionPower or 0) + G.GAME.hands[ind].level * amt * card.ability.level
+        G.GAME.hands[ind].AscensionPower = to_big(G.GAME.hands[ind].AscensionPower or 0) + to_big(G.GAME.hands[ind].level) * to_big(amt) * to_big(card.ability.level)
         delay(1.0)
         G.E_MANAGER:add_event(Event({
           trigger = "after",
@@ -1463,7 +1463,7 @@ local pulsar = {
           { handname = localize('k_all_hands'), chips = "...", mult = "...", level = "" }
         )
         for i, v in pairs(G.GAME.hands) do
-            v.AscensionPower = (v.AscensionPower or 0) + card.ability.level*amt
+            v.AscensionPower = to_big(v.AscensionPower or 0) + to_big(card.ability.level*amt)
             v.visible = true
         end
         delay(1.0)
