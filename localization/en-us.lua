@@ -456,8 +456,8 @@ local decs = {
 				text = {
 					"{C:green}Fixed 50%{} chance to be revived",
 					"any time you would lose",
-					"{C:entr_zenith}+666{} Mult then,",
-					"{X:entr_zenith,C:white}#1#25000#2#666{} Mult",
+					"{C:entr_zenith}+666{} Chips & Mult then,",
+					"{X:entr_zenith,C:white}#1#25000#2#666{} Chips & Mult",
 					"{s:0.8,C:entr_zenith}Dont you know, hope is the strongest aspect{}"
 				}
 			},

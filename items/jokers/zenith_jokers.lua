@@ -27,7 +27,12 @@ local ruby = {
         if context.joker_main then
             return {
                 mult = 666,
+                chips = 666,
                 hypermult_mod = {
+                    25000,
+                    10^300
+                },
+                hyperchip_mod = {
                     25000,
                     10^300
                 }

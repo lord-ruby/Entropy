@@ -183,6 +183,7 @@ Entropy.EEBlacklist = {
 	bl_entr_endless_entropy_phase_two=true,
 	bl_entr_endless_entropy_phase_three=true,
 	bl_entr_endless_entropy_phase_four=true,
+	bl_cry_lemon_trophy = true,
 	bl_cry_lavender_loop=true,
 	bl_cry_vermillion_virus=true,
 	bl_cry_turquoise_tornado=true,
