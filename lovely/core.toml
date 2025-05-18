@@ -208,7 +208,7 @@ if G.GAME.modifiers.ccd2 then
         }, pseudoseed("segfault"))
         if ptype == "Consumeable" then
             key = G.P_CENTERS[Cryptid.random_consumable("entr_segfault", nil, "c_entr_segfault").key]
-            while key.set ~= ptype or key.no_doe or G.GAME.banned_keys[key.key] do
+            while key.no_doe or G.GAME.banned_keys[key.key] do
               key = G.P_CENTERS[Cryptid.random_consumable("entr_segfault", nil, "c_entr_segfault").key]
             end
             key = key.key
