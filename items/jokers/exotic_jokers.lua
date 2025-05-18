@@ -32,7 +32,12 @@ local stillicidium = {
                             --G.jokers:emplace(c)
                             --v:start_dissolve()#
                             local v2 = G.jokers.cards[i]
-                            if G.P_CENTER_POOLS["Joker"][ReductionIndex(v2, "Joker")-1] then
+                            local index = ReductionIndex(v2, "Joker")-1
+                            while G.P_CENTER_POOLS["Joker"][index].no_doe or G.P_CENTER_POOLS["Joker"].no_collection do
+                                index = index - 1
+                            end
+                            if index < 1 then index = 1 end
+                            if G.P_CENTER_POOLS["Joker"][index] then
                                 key = G.P_CENTER_POOLS["Joker"][ReductionIndex(v2, "Joker")-1].key
                                 --local c = create_card("Joker", G.jokers, nil, nil, nil, nil, key) 
                                 --c:add_to_deck()    
