@@ -652,7 +652,7 @@ local devilled_suns = {
     eternal_compat = true,
     pos = { x = 1, y = 2 },
     atlas = "jokers",
-    config = { base = 1, per_sunny = 1},
+    config = { base = 2, per_sunny = 2},
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue+1] = G.P_CENTERS.e_entr_sunny
         return {
