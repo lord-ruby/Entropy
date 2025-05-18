@@ -128,6 +128,9 @@ function Entropy.ReverseSuitLocVars(self, q, card)
   }
 end
 function Entropy.ReversePlanetUse(handname, card, amt)
+  if Entropy.HasJoker("j_entr_strawberry_pie",true) and handname ~= "High Card" then
+    handname = "High Card"
+  end
   if not card then card = {ability={1}} end
   amt = amt or 1
   local used_consumable = copier or card
