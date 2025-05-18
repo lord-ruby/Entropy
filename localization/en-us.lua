@@ -201,7 +201,7 @@ local decs = {
 			j_entr_kciroy = {
 				name = "Kciroy",
 				text = {
-					"{C:dark_edition}X#1#{} Hand size, {C:dark_edition}+#2#{} card selection limit",
+					"{C:dark_edition}+#1#{} Hand size, {C:dark_edition}+#2#{} card selection limit",
 					"This joker gains {X:dark_edition,C:white}^#3#{} Chips every",
 					"{C:attention}#4#{} {C:inactive}[#5#]{} cards discarded",
 					"{C:inactive}(Currently{} {X:dark_edition,C:white}^#6#{} {C:inactive}Chips){}"
