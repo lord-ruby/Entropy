@@ -32,10 +32,14 @@ local memoryleak = {
             })
         else
             for i, v in pairs(G.jokers.cards) do
-                v:start_dissolve()
+                if not v.ability.cry_absolute then
+                    v:start_dissolve()
+                end
             end
             for i, v in pairs(G.consumeables.cards) do
-                v:start_dissolve()
+                if not v.ability.cry_absolute then
+                    v:start_dissolve()
+                end
             end
         end
     end,
