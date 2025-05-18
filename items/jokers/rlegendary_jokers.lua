@@ -351,11 +351,11 @@ local kciroy = {
     demicoloncompat = true,
     add_to_deck = function(self, card)
         G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + card.ability.csl
-        G.hand.config.card_limit = G.hand.config.card_limit + math.min(card.ability.hs, 1000)
+        G.hand:change_size(math.min(card.ability.hs, 1000))
     end,
     remove_from_deck = function(self, card)
         G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - card.ability.csl
-        G.hand.config.card_limit = G.hand.config.card_limit - math.min(card.ability.hs, 1000)
+        G.hand:change_size(-math.min(card.ability.hs, 1000))
     end,
     calculate = function (self, card, context)
         if (context.pre_discard and not context.retrigger_joker and not context.blueprint) or context.forcetrigger then
