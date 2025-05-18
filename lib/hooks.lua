@@ -1,6 +1,6 @@
 local card_drawref = Card.draw
 function Card:draw(layer)
-    card_drawref(self, layer)
+    local ref = card_drawref(self, layer)
     if self.config and self.config.center then
         if self.config.center.set == "RSpectral" and self.sprite_facing == "front" then
             self.children.center:draw_shader('booster', nil, self.ARGS.send_to_shader)
@@ -67,6 +67,7 @@ function Card:draw(layer)
             )
         end
     end
+    return ref
 end
 
 local set_spritesref = Card.set_sprites
@@ -1185,9 +1186,9 @@ end
 
 local card_drawref = Card.draw
 function Card:draw(layer)
-    if entr_xekanos_dt > 0.05 then
-        local v = self
-        if v.config.center.key == "j_entr_xekanos" then
+    if self.config.center.key == "j_entr_xekanos" then
+        if entr_xekanos_dt > 0.05 then
+            local v = self
             local obj = {pos = v.children.floating_sprite2.sprite_pos}
             obj.pos.x = obj.pos.x + 1 
             if obj.pos.x > 4 then
