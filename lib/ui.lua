@@ -474,3 +474,24 @@ G.FUNCS.sudo_cancel = function()
   G.GAME.USING_CODE = false
   G.GAME.USINGSUDO = nil
 end
+
+
+G.FUNCS.cant_reroll_button = function(e)
+    if (G.GAME.used_vouchers["v_retcon"] or
+    (G.GAME.used_vouchers["v_directors_cut"] and not G.GAME.round_resets.boss_rerolled)) then 
+        e.config.colour = G.C.RED
+        e.config.button = 'dont_reroll_boss'
+        e.children[1].children[1].config.shadow = true
+    end
+end
+
+G.FUNCS.dont_reroll_boss = function(e) 
+    stop_use()
+    G.E_MANAGER:add_event(Event({
+		trigger = "before",
+		func = function()
+			play_sound("cry_forcetrigger", 1, 0.6)
+			return true
+		end,
+	}))
+end

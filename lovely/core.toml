@@ -846,7 +846,7 @@ pattern = '''
 '''
 payload = '''
         (G.GAME.used_vouchers["v_retcon"] or G.GAME.used_vouchers["v_directors_cut"]) and
-        UIBox_button({label = {G.GAME.EEBuildup and localize('b_cant_reroll') or localize('b_reroll_boss'), G.GAME.EEBuildup and localize('$').."Infinity" or localize('$')..Cryptid.cheapest_boss_reroll()}, button = "reroll_boss", func = 'reroll_boss_button'}) or nil
+        UIBox_button({label = {G.GAME.EEBuildup and localize('b_cant_reroll') or localize('b_reroll_boss'), G.GAME.EEBuildup and localize('$').."Infinity" or localize('$')..Cryptid.cheapest_boss_reroll()}, button = "reroll_boss", func = G.GAME.EEBuildup and 'cant_reroll_button' or 'reroll_boss_button'}) or nil
 '''
 position = "at"
 match_indent = true
