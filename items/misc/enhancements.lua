@@ -104,10 +104,63 @@ local prismatic = {
 	}
 }
 
+local dark = {
+	dependencies = {
+        items = {
+          "set_entr_entropics"
+        }
+    },
+	order = 10000+4,
+	object_type = "Enhancement",
+	key = "dark",
+	atlas = "enhancements",
+	pos = { x = 1, y = 1 },
+    config = {
+		xchips = 1,
+		xchip_mod = 0.05
+	},
+	loc_vars = function(self, info_queue, card)
+		return {
+            vars = {
+                card.ability.xchip_mod,
+				card.ability.xchips
+            }
+		}
+	end,
+	calculate = function(self, card, context)
+		if context.cardarea == G.hand and context.main_scoring then
+			local cards = {}
+			local suits = {}
+			for i, v in ipairs(G.play.cards) do
+				if not suits[v.base.suit] then
+					suits[v.base.suit] = true
+					cards[#cards+1]=true
+				end
+			end
+			for i, v in ipairs(cards) do
+				card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_upgrade_ex"), colour = G.C.GREEN }
+				)
+				card.ability.xchips = card.ability.xchips + card.ability.xchip_mod
+				delay(0.3)
+			end
+			return {
+				xchips = card.ability.xchips
+			}
+		end
+	end,
+}
+
 return {
     items = {
         flesh,
         disavowed,
-		prismatic
+		prismatic,
+		dark
     }
 }

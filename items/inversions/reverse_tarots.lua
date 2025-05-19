@@ -830,6 +830,48 @@ local penumbra = {
 	can_divide = true,
 }
 
+local imp = {
+    key = "imp",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -901+24,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        select = 2
+    },
+    pos = {x=4,y=2},
+    inversion = "c_cry_seraph",
+    use = function(self, card2)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card)
+        Entropy.FlipThen(cards, function(card)
+            card:set_ability(G.P_CENTERS.m_entr_dark)
+        end)
+            
+    end,
+    can_use = function(self, card)
+        local num = #Entropy.GetHighlightedCards({G.hand}, card)
+        return num > 0 and num <= card.ability.select
+    end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.m_entr_dark
+        return {
+            vars = {
+                card.ability.select
+            }
+        }
+    end,
+    can_stack = true,
+	can_divide = true,
+    entr_credits = {
+        art = {"lfmoth"}
+    }
+}
+
 local integrity = {
     key = "integrity",
     set = "RTarot",
@@ -891,6 +933,7 @@ return {
         heretic,
         earl,
         mason,
-        princess
+        princess,
+        imp
     }
 }

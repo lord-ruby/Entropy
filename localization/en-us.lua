@@ -22,6 +22,14 @@ local decs = {
 					"increase by {X:dark_edition,C:white}+^^#2#{}",
 					"when card is scored."
 				}
+			},
+			m_entr_dark = {
+				name = "Dark Card",
+				text = {
+					"{X:blue,C:white}X#2#{} Chips when held in hand",
+					"Increase by {X:blue,C:white}+X#1#{} for each",
+					"{C:attention}unique{} suit in played poker hand"
+				}
 			}
 		},
 		["Content Set"] = {
@@ -860,6 +868,13 @@ local decs = {
 				text = {
 					"For the {C:attention}remainder{} of the {C:attention}current{} ante",
 					"{C:planet}Planet{} cards are replaced by {C:purple}Star{} cards"
+				}
+			},
+			c_entr_imp = {
+				name = "The Imp",
+				text = {
+					"Enhanced {C:attention}#1#{} Selected card#<s>1#",
+					"into {C:attention}Dark{} Cards"
 				}
 			}
 		},
