@@ -117,7 +117,7 @@ local dark = {
 	pos = { x = 1, y = 1 },
     config = {
 		xchips = 1,
-		xchip_mod = 0.05
+		xchip_mod = 0.025
 	},
 	loc_vars = function(self, info_queue, card)
 		return {
