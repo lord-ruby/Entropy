@@ -820,7 +820,7 @@ payload = '''
 if type(rarity) == "string" then
   return localize("k_"..rarity:lower())
 else
-  return rarity
+  return rarity or "ERROR"
 end
 '''
 match_indent = true
