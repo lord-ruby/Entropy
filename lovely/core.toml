@@ -831,6 +831,8 @@ target = '''engine/text.lua'''
 pattern = '''
 for _, c in utf8.chars(v) do
 '''
+payload = '''
 for _, c in utf8.chars(type(v) == "string" and v or "") do
 '''
+position = "at"
 match_indent = true
