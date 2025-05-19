@@ -1289,6 +1289,7 @@ local ref = create_card
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
     if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi"))) and not forced_key then
         _type = Entropy.GetRandomSet(next(find_joker("j_entr_parakmi")))
+
     end
     if _type == "CBlind" then
         _type = "BlindTokens"
@@ -1297,7 +1298,13 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
         local element = "c_"..pseudorandom_element(Entropy.BlindC, pseudoseed(key_append or "parakmi"))
         forced_key = forced_key or element
     end
-    return ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+    local card = ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
+    if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi"))) and not forced_key then 
+        if not G.SETTINGS.paused and not G.GAME.akyrs_any_drag then
+            card.fromdefine = true
+        end
+    end
+    return card
 end
 
 local ref = SMODS.calculate_context
