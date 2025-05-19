@@ -127,6 +127,44 @@ local mason = {
 	can_divide = true,
 }
 
+
+local princess = {
+    key = "princess",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -900 + 3,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        select = 1,
+        create = 1
+    },
+    inversion = "c_empress",
+    pos = {x=3, y = 0},
+    use = function(self, card, area, copier)
+        G.GAME.entr_princess = true
+        for i, v in ipairs(G.I.CARD) do
+            if v.config and v.config.center and v.config.center.set == "Planet" and Entropy.FlipsideInversions[v.config.center.key] then
+                v:set_ability(G.P_CENTERS[Entropy.FlipsideInversions[v.config.center.key]])
+            end
+        end
+    end,
+    can_use = function(self, card)
+        return not G.GAME.entr_princess
+	end,
+    loc_vars = function(self, q, card)
+    end,
+    can_stack = true,
+	can_divide = true,
+    entr_credits = {
+        idea = {"crabus"}
+    }
+}
+
 local servant = {
     key = "servant",
     set = "RTarot",
@@ -852,6 +890,7 @@ return {
         advisor,
         heretic,
         earl,
-        mason
+        mason,
+        princess
     }
 }

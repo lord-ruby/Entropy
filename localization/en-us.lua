@@ -854,6 +854,13 @@ local decs = {
 					"Create {C:attention}#1# Stone{} card#<s>1#",
 					"with a random {C:attention}edition{}"
 				}
+			},
+			c_entr_princess = {
+				name = "The Princess",
+				text = {
+					"For the {C:attention}remainder{} of the {C:attention}current{} ante",
+					"{C:planet}Planet{} cards are replaced by {C:purple}Star{} cards"
+				}
 			}
 		},
 		Voucher = {

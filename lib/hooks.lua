@@ -141,6 +141,9 @@ function end_round()
     if #remove_temp > 0 then
         SMODS.calculate_context({remove_playing_cards = true, removed=remove_temp})
     end
+    if G.GAME.blind_on_deck == "Boss" then
+        G.GAME.entr_princess = nil
+    end
 end
 
 local set_debuffref = Card.set_debuff
@@ -1575,7 +1578,7 @@ end
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, ...)
     if self.config and self.config.center and self.config.center.key ~= "m_entr_disavowed" then
-        if Entropy.FlipsideInversions[center.key] and not G.SETTINGS.paused and G.GAME.modifiers.entr_twisted and not self.multiuse and not self.ability.fromflipside then
+        if Entropy.FlipsideInversions[center.key] and not G.SETTINGS.paused and (G.GAME.modifiers.entr_twisted or center.set == "Planet" and G.GAME.entr_princess) and not self.multiuse and not self.ability.fromflipside then
             set_abilityref(self, G.P_CENTERS[Entropy.FlipsideInversions[center.key]], ...)
         else    
             set_abilityref(self, center, ...)
