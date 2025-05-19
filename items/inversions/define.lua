@@ -9,7 +9,8 @@ local define = {
     },
     atlas = "consumables",
     set = "RSpectral",
-
+    hidden=true,
+    soul_rate = 0,
     can_use = function(self, card)
         local num = #Entropy.GetHighlightedCards({G.hand, G.consumeables, G.jokers, G.shop_booster, G.pack_cards, G.shop_jokers, G.shop_vouchers}, card)
         return num > 0 and num <= 1

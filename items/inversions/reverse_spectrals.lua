@@ -1526,6 +1526,8 @@ local beyond = {
     atlas = "consumables",
     set = "RSpectral",
     no_select = true,
+    hidden=true,
+    soul_rate = 0,
     use = function(self, card)
         local deletable_jokers = {}
 		for k, v in pairs(G.jokers.cards) do
