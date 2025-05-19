@@ -448,7 +448,7 @@ function Card:set_base(card, initial)
             SMODS.change_base(self, definekey._suit, definekey._rank)
             if definekey._ed ~= "" then self:set_edition(definekey._ed) end
             if definekey._seal ~= "" then self:set_seal(definekey._seal) end
-        else    
+        else  
             set_abilityref(self, G.P_CENTERS[definekey], initial, delay)
         end
         self.fromdefine = true
@@ -457,7 +457,7 @@ end
 
 local add_ref = CardArea.emplace
 function CardArea:emplace(card, location, stay_flipped)
-    if G.SETTINGS.paused or not G.GAME.DefineKeys or G.GAME.akyrs_any_drag or (self == G.shop_jokers or self == G.shop_booster or self == G.shop_vouchers or self == G.pack_cards) then
+    if G.SETTINGS.paused or (not G.GAME.DefineKeys and not ((next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi"))))) or G.GAME.akyrs_any_drag or (self == G.shop_jokers or self == G.shop_booster or self == G.shop_vouchers or self == G.pack_cards) then
         add_ref(self, card, location, stay_flipped)
     elseif card.fromdefine then
         local area = ({
@@ -467,7 +467,6 @@ function CardArea:emplace(card, location, stay_flipped)
         })[card.config.center.set] or G.consumeables
         if area then add_ref(area, card, location, stay_flipped) end
         if area == G.hand and G.hand then
-            add_ref(G.deck, card, location, stay_flipped)
             table.insert(G.playing_cards, card)
         end
     else
