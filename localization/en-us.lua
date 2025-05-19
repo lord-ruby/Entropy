@@ -28,7 +28,7 @@ local decs = {
 				text = {
 					"{X:blue,C:white}X#2#{} Chips when held in hand",
 					"Increase by {X:blue,C:white}+X#1#{} for each",
-					"{C:attention}unique{} suit in played poker hand"
+					"{C:attention}unique{} suit in scoring hand"
 				}
 			}
 		},
