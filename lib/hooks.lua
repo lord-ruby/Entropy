@@ -147,7 +147,7 @@ local set_debuffref = Card.set_debuff
 
 function Card:set_debuff(should_debuff)
     if self.perma_debuff or self.ability.superego then should_debuff = true end
-    if self.ability.entr_hotfix or self.config.center.rarity == "entr_zenith" then should_debuff = false end
+    if self.ability.entr_hotfix or (self.config.center.rarity == "entr_zenith" and not (G.GAME.blind and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three")) then should_debuff = false end
     set_debuffref(self, should_debuff)
 end
 

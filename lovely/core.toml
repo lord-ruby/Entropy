@@ -836,3 +836,17 @@ for _, c in utf8.chars(type(v) == "string" and v or "") do
 '''
 position = "at"
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/UI_definitions.lua'''
+pattern = '''
+        (G.GAME.used_vouchers["v_retcon"] or G.GAME.used_vouchers["v_directors_cut"]) and
+        UIBox_button({label = {localize('b_reroll_boss'), localize('$')..Cryptid.cheapest_boss_reroll()}, button = "reroll_boss", func = 'reroll_boss_button'}) or nil
+'''
+payload = '''
+        (G.GAME.used_vouchers["v_retcon"] or G.GAME.used_vouchers["v_directors_cut"]) and
+        UIBox_button({label = {G.GAME.EEBuildup and localize('b_cant_reroll') or localize('b_reroll_boss'), G.GAME.EEBuildup and localize('$').."Infinity" or localize('$')..Cryptid.cheapest_boss_reroll()}, button = "reroll_boss", func = 'reroll_boss_button'}) or nil
+'''
+position = "at"
+match_indent = true

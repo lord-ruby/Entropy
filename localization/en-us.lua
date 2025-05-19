@@ -2296,7 +2296,7 @@ local decs = {
 			b_on = "Enable",
 			b_off = "Disable",
 			b_true_endless = "True Endless Mode",
-			k_entr_glitched = "Use new glitched shader"
+			k_entr_glitched = "Use new glitched shader",
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",
