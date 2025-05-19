@@ -19,7 +19,7 @@ local decs = {
 				name = "Prismatic Card",
 				text = {
 					"{X:dark_edition,C:white}^^#1#{} Mult",
-					"increase by {X:dark_edition,C:white}+^^#2#{}",
+					"increase by {X:dark_edition,C:white}^^#2#{}",
 					"when card is scored."
 				}
 			},
@@ -27,7 +27,7 @@ local decs = {
 				name = "Dark Card",
 				text = {
 					"{X:blue,C:white}X#2#{} Chips when held in hand",
-					"Increase by {X:blue,C:white}+X#1#{} for each",
+					"Increase by {X:blue,C:white}X#1#{} for each",
 					"{C:attention}unique{} suit in scoring hand"
 				}
 			}
