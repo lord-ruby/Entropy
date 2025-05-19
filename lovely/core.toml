@@ -824,3 +824,13 @@ else
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''engine/text.lua'''
+pattern = '''
+for _, c in utf8.chars(v) do
+'''
+for _, c in utf8.chars(type(v) == "string" and v or "") do
+'''
+match_indent = true
