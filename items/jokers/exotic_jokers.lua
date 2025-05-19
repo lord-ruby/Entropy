@@ -38,7 +38,7 @@ local stillicidium = {
                             end
                             if index < 1 then index = 1 end
                             if G.P_CENTER_POOLS["Joker"][index] then
-                                key = G.P_CENTER_POOLS["Joker"][ReductionIndex(v2, "Joker")-1].key
+                                key = G.P_CENTER_POOLS["Joker"][index].key
                                 --local c = create_card("Joker", G.jokers, nil, nil, nil, nil, key) 
                                 --c:add_to_deck()    
                                 v2:start_dissolve()

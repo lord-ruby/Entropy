@@ -736,6 +736,10 @@ local decrement = {
     use = function(self, card, area, copier)
         Entropy.FlipThen(G.jokers.highlighted, function(card)
             local ind = ReductionIndex(card, "Joker")-1
+            while G.P_CENTER_POOLS["Joker"][ind].no_doe or G.P_CENTER_POOLS["Joker"].no_collection do
+                ind = ind - 1
+            end
+            if ind < 1 then ind = 1 end
             if G.P_CENTER_POOLS.Joker[ind] then
                 card:set_ability(G.P_CENTERS[G.P_CENTER_POOLS.Joker[ind].key])
             end
