@@ -808,3 +808,19 @@ payload = '''
         return amount
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/game_object.lua"]'''
+pattern = '''
+return localize("k_"..rarity:lower())
+'''
+position = "at"
+payload = '''
+if type(rarity) == "string" then
+  return localize("k_"..rarity:lower())
+else
+  return rarity
+end
+'''
+match_indent = true
