@@ -37,7 +37,7 @@ local zenith = {
     applied_stakes = { "entr_entropic" },
     prefix_config = { applied_stakes = { mod = false } },
     sticker_atlas = "stickers",
-    sticker_pos = {x=0,y=1},
+    sticker_pos = {x=7,y=1},
     modifiers = function()
         G.GAME.modifiers.zenith = true
     end,

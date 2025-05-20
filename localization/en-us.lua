@@ -2016,6 +2016,14 @@ local decs = {
                     [3] = '{C:attention}Stake{} difficulty'
                 }
             },
+			entr_zenith_sticker = {
+                ['name'] = 'Zenith Sticker',
+                ['text'] = {
+                    [1] = 'Used this Joker',
+                    [2] = 'to win on {C:entr_zenith}Zenith',
+                    [3] = '{C:attention}Stake{} difficulty'
+                }
+            },
 			entr_crimson_seal = {
 				name = "Crimson Seal",
 				text = {
