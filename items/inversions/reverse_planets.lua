@@ -240,7 +240,7 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
         local value = G.P_CENTERS.v_observatory.config.extra
         if not card.ability.immutable then card.ability.immutable = {} end
         return {
-          asc = value ^ (card.ability.immutable.overflow_amount or 1),
+          asc = to_big(value) ^ (card.ability.immutable.overflow_amount or 1),
         }
       end
     end,
@@ -295,7 +295,7 @@ Entropy.ReversePlanets = {
     if not card.ability.immutable then card.ability.immutable = {} end
       local value = G.P_CENTERS.v_observatory.config.extra
       return {
-        asc = value ^ (card.ability.immutable.overflow_amount or 1),
+        asc = to_big(value) ^ (card.ability.immutable.overflow_amount or 1),
       }
     end
   end
@@ -393,7 +393,7 @@ Entropy.ReversePlanets = {
         local value = G.P_CENTERS.v_observatory.config.extra
         if not card.ability.immutable then card.ability.immutable = {} end
         return {
-          exp_asc = value ^ (card.ability.immutable.overflow_amount or 1),
+          exp_asc = to_big(value) ^ (card.ability.immutable.overflow_amount or 1),
         }
       end
     end,
@@ -664,7 +664,7 @@ function Entropy.ReverseSuitCalc(self, card, context)
       if not card.ability.immutable then card.ability.immutable = {} end
       local value = G.P_CENTERS.v_observatory.config.extra
       return {
-        asc = value ^ (card.ability.immutable.overflow_amount or 1),
+        asc = to_big(value) ^ (card.ability.immutable.overflow_amount or 1),
       }
     end
   end
