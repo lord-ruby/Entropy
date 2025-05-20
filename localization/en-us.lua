@@ -843,7 +843,7 @@ local decs = {
 			c_entr_heretic = {
 				name = "The Heretic",
 				text = {
-					"Randomize one {C:attention}modification{}",
+					"Randomize one {C:attention}aspect{} or {C:attention}modification{}",
 					"of up to {C:attention}#1#{} selected card#<s>1#",
 					"held in hand"
 				}
