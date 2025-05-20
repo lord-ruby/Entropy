@@ -294,7 +294,13 @@ G.FUNCS.inherit_apply_previous = function()
 end
 --todo: mod support
 G.FUNCS.inherit_apply = function()
-  local base_enh = G.hand.highlighted[1].config.center.key
+  local base_enh = G.hand and G.hand.highlighted[1] and G.hand.highlighted[1].config.center.key or ""
+  if base_enh = "" then
+      G.PREVIOUS_ENTERED_ENH = G.ENTERED_ENH
+      G.GAME.USING_CODE = false
+      Entropy.ChangeEnhancements({G.discard, G.deck, G.hand}, enh_suffix, base_enh, true)
+      G.CHOOSE_ENH:remove()
+  end
   local enh_table = {
       m_bonus = { "bonus" },
       m_mult = { "mult", "red" },
