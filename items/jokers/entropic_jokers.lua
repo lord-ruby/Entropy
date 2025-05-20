@@ -701,7 +701,7 @@ local exelixi = {
         if context.individual and context.cardarea == G.play then
             Entropy.FlipThen({context.other_card}, function(card)
                 if Entropy.UpgradeEnhancement(card, true, {m_entr_disavowed=true, m_entr_flesh=true}) then
-                    card:set_ability(Entropy.UpgradeEnhancement(card, true, {m_entr_disavowed=true, m_entr_flesh=true}))
+                    card:set_ability(G.P_CENTERS[Entropy.UpgradeEnhancement(card, true, {m_entr_disavowed=true, m_entr_flesh=true})])
                 end
             end)
         end

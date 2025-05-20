@@ -552,7 +552,7 @@ local whetstone = {
                 local enh = Entropy.UpgradeEnhancement(card, false, {m_entr_disavowed = true})
                 if G.P_CENTERS[enh] then
                     card:set_ability(G.P_CENTERS[enh])
-                    for i = 1, math.floor(pseudorandom("whetstone")*2+0.5) do
+                    for i = 1, math.floor(pseudorandom("whetstone")*3+0.5) do
                         enh = Entropy.UpgradeEnhancement(card, false, {m_entr_disavowed = true})
                         card:set_ability(G.P_CENTERS[enh])
                     end
