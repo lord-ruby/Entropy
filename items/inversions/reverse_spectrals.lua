@@ -80,8 +80,8 @@ local inscribe = {
     order = 2000 + 2,
     key = "inscribe",
     set = "RSpectral",
-    can_stack = true,
-	can_divide = true,
+    
+	
     inversion = "c_incantation",
     atlas = "consumables",
     config = {
@@ -534,8 +534,8 @@ local charm = {
     order = 2000 + 11,
     key = "charm",
     set = "RSpectral",
-    can_stack = true,
-	can_divide = true,
+    
+	
 
     atlas = "consumables",
     config = {
@@ -1132,8 +1132,8 @@ local mimic = {
     key = "mimic",
     set = "RSpectral",
     
-    can_stack = true,
-	can_divide = true,
+    
+	
     atlas = "consumables",
 
     inversion="c_cry_replica",
@@ -1583,8 +1583,8 @@ local regenerate = {
     key = "regenerate",
     set = "RSpectral",
     
-    can_stack = true,
-	can_divide = true,
+    
+	
     atlas = "consumables",
     config = {
         limit = 2

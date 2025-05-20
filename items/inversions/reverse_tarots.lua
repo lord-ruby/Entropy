@@ -81,8 +81,8 @@ local master = {
 			} or nil,
         }
     end,
-    can_stack = true,
-	can_divide = true,
+    
+	
 }
 
 local mason = {
@@ -114,7 +114,7 @@ local mason = {
         end
     end,
     can_use = function(self, card)
-        return G.STATE == G.STATES.SELECTING_HAND
+        return G.hand and #G.hand.cards > 0
 	end,
     loc_vars = function(self, q, card)
         return {
@@ -123,8 +123,49 @@ local mason = {
             }
         }
     end,
-    can_stack = true,
-	can_divide = true,
+    
+	
+}
+
+local oracle = {
+    key = "oracle",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -900 + 2,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        change = 1
+    },
+    inversion = "c_oracle",
+    pos = {x=2, y = 0},
+    use = function(self, card, area, copier)
+        local cards = {}
+        for i, v in pairs(G.hand.cards) do cards[#cards+1]=v end
+        pseudoshuffle(cards, pseudoseed('oracle_cards'))
+        local actual = {}
+        for i = 1, card.ability.change do
+            actual[i] = cards[i]
+        end
+        Entropy.FlipThen(actual, function(card)
+            card:set_ability(pseudorandom_element(G.P_CENTER_POOLS.RPlanet, pseudoseed("oracle_ccd")))
+            card:set_edition(pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("oracle_edition")).key)
+        end)
+    end,
+    can_use = function(self, card)
+        return G.hand and #G.hand.cards > 0
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.change
+            }
+        }
+    end,
 }
 
 
@@ -158,8 +199,8 @@ local princess = {
 	end,
     loc_vars = function(self, q, card)
     end,
-    can_stack = true,
-	can_divide = true,
+    
+	
     entr_credits = {
         idea = {"crabus"}
     }
@@ -211,8 +252,8 @@ local servant = {
             }
         }
     end,
-    can_stack = true,
-	can_divide = true,
+    
+	
 }
 
 local heretic = {
@@ -269,8 +310,8 @@ local heretic = {
             }
         }
     end,
-    can_stack = true,
-	can_divide = true,
+    
+	
     entr_credits = {
         idea = {"notmario"}
     }
@@ -324,8 +365,8 @@ local feud = {
             }
         }
     end,
-    can_stack = true,
-	can_divide = true,
+    
+	
 }
 
 
@@ -364,8 +405,8 @@ local scar = {
             }
         }
     end,
-    can_stack = true,
-	can_divide = true,
+    
+	
 }
 
 
@@ -445,8 +486,8 @@ local dagger = {
             }
         }
     end,
-    can_stack = true,
-	can_divide = true,
+    
+	
 }
 
 local earl = {
@@ -482,8 +523,8 @@ local earl = {
             }
         }
     end,
-    can_stack = true,
-	can_divide = true,
+    
+	
 }
 
 local whetstone = {
@@ -554,8 +595,8 @@ local whetstone = {
             }
         }
     end,
-    can_stack = true,
-	can_divide = true,
+    
+	
 }
 
 local endurance = {
@@ -600,8 +641,8 @@ local endurance = {
             }
         }
     end,
-    can_stack = true,
-	can_divide = true,
+    
+	
 }
 
 local advisor = {
@@ -647,8 +688,8 @@ local advisor = {
     can_use = function(self, card)
         return G.STATE == G.STATES.SELECTING_HAND
 	end,
-    can_stack = true,
-	can_divide = true,
+    
+	
 }
 
 local statue = {
@@ -698,8 +739,8 @@ local statue = {
             }
         }
     end,
-    can_stack = true,
-	can_divide = true,
+    
+	
 }
 
 local feast = {
@@ -743,8 +784,8 @@ local feast = {
             }
         }
     end,
-    can_stack = true,
-	can_divide = true,
+    
+	
 }
 
 local forgiveness = {
@@ -778,8 +819,8 @@ local forgiveness = {
         local num = G.GAME.jokers_sold and #G.GAME.jokers_sold or 0
         return num > 0
     end,
-    can_stack = true,
-	can_divide = true,
+    
+	
     entr_credits = {
         idea = "cassknows"
     }
@@ -826,8 +867,8 @@ local penumbra = {
             }
         }
     end,
-    can_stack = true,
-	can_divide = true,
+    
+	
 }
 
 local imp = {
@@ -865,8 +906,8 @@ local imp = {
             }
         }
     end,
-    can_stack = true,
-	can_divide = true,
+    
+	
     entr_credits = {
         art = {"lfmoth"}
     }
@@ -910,8 +951,8 @@ local integrity = {
             }
         }
     end,
-    can_stack = true,
-	can_divide = true,
+    
+	
 }
 
 return {
@@ -934,6 +975,7 @@ return {
         earl,
         mason,
         princess,
-        imp
+        imp,
+        oracle
     }
 }

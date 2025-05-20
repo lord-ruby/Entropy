@@ -53,10 +53,6 @@ for _, v in pairs(i) do
                 for i, result in pairs(results.items) do
                     if not items[result.object_type] then items[result.object_type] = {} end
                     result.cry_order = result.order
-                    if result.object_type == "Consumable" then
-                        result.can_stack = true
-                        result.can_divide = true
-                    end
                     items[result.object_type][#items[result.object_type]+1]=result
                 end
             end

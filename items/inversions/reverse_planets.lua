@@ -200,8 +200,8 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
     cost = cost,
     pos = sprite_pos,
     set_card_type_badge = set_badges,
-    can_stack = true,
-    can_divide = true,
+    
+    
     can_bulk_use = true,
     use = function(self, card, area, copier)
         if func then func(self, card,area,copier) else Entropy.ReversePlanetUse(card.ability.handname, card) end

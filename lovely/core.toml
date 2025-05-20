@@ -850,3 +850,17 @@ payload = '''
 '''
 position = "at"
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''main.lua'''
+pattern = '''
+      if ante < 1 then return to_big(100) end
+      if ante <= 8 then 
+'''
+payload = '''
+if to_big(ante) < to_big(1) then return to_big(100) end
+if to_big(ante) <= to_big(8) then 
+'''
+position = "at"
+match_indent = true
