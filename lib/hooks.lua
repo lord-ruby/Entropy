@@ -2373,7 +2373,7 @@ end
 
 local get_bossref = get_new_boss
 function get_new_boss()
-    if (G.GAME.EEBuildup or (to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten)) and Entropy.CanEeSpawn() then
+    if (G.GAME.EEBuildup or (to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) or G.GAME.modifiers.zenith) and Entropy.CanEeSpawn() then
         return "bl_entr_endless_entropy_phase_one"
     end
     return get_bossref()
