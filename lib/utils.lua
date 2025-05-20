@@ -511,7 +511,7 @@ end
 function Entropy.GetEEBlinds()
     local blinds = {}
     for i, v in pairs(G.P_BLINDS) do
-        if v.boss and v.boss.showdown and not v.no_ee and not Entropy.EEBlacklist[i] then
+        if v.boss and v.boss.showdown and not v.no_ee and not Entropy.EEBlacklist[i] and not v.original_mod then
             blinds[i]=v
         end
     end

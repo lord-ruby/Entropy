@@ -601,7 +601,7 @@ local decs = {
 				text = {
 					"You are but a speck of dust",
 					"in the face of the universe.",
-					"(Applies all showdown effects)"
+					"(Applies all vanilla showdown effects)"
 				}
 			},
 		},
