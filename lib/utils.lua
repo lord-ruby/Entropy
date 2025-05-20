@@ -508,10 +508,16 @@ function Entropy.EditionTag(edition, key, ascendant, pos,order)
     }
 end
 
+Entropy.EEWhitelist["bl_final_heart"]=true
+Entropy.EEWhitelist["bl_final_leaf"]=true
+Entropy.EEWhitelist["bl_final_vessel"]=true
+Entropy.EEWhitelist["bl_final_acorn"]=true
+Entropy.EEWhitelist["bl_final_bell"]=true
+
 function Entropy.GetEEBlinds()
     local blinds = {}
     for i, v in pairs(G.P_BLINDS) do
-        if v.boss and v.boss.showdown and not v.no_ee and not Entropy.EEBlacklist[i] and not v.original_mod then
+        if Entropy.EEWhitelist[i] then
             blinds[i]=v
         end
     end

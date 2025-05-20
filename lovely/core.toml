@@ -141,6 +141,7 @@ Entropy.EnhancementPoints ={
 }
 Entropy.TMTrainerEffects = {}
 Entropy.TMTrainerScoring = {}
+Entropy.EEWhitelist = {}
 '''
 match_indent = true
 
