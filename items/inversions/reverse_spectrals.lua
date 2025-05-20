@@ -1144,7 +1144,7 @@ local mimic = {
 	pos = {x=12,y=6},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
-        local orig = Entropy.GetHighlightedCards({G.hand, G.consumeables, G.jokers, G.pack_cards, G.shop_booster, G.shop_jokers, G.shop_vouchers}, card2)[1]
+        local orig = #Entropy.GetHighlightedCards({G.shop_booster, G.shop_jokers, G.shop_vouchers, G.hand, G.consumeables, G.jokers, G.pack_cards}, card2))[1]
         local newcard = copy_card(orig)
         newcard:add_to_deck()
         newcard.ability.perishable = true
@@ -1169,7 +1169,7 @@ local mimic = {
         end
     end,
     can_use = function(self, card)
-        return #Entropy.GetHighlightedCards({G.hand, G.consumeables, G.jokers, G.pack_cards, G.shop_booster, G.shop_jokers, G.shop_vouchers}, card) == card.ability.num
+        return #Entropy.GetHighlightedCards({G.shop_booster, G.shop_jokers, G.shop_vouchers, G.hand, G.consumeables, G.jokers, G.pack_cards}, card) == card.ability.num
 	end,
     loc_vars = function(self, q, card)
         return {
