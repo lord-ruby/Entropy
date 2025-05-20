@@ -293,7 +293,7 @@ local feud = {
     inversion = "c_lovers",
     pos = {x=6, y = 0},
     use = function(self, card, area, copier)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card)
+        local cards = Entropy.GetHighlightedCards({{highlighted = Entropy.FilterTable(G.hand.cards, function(card) return card.highlighted end)}}, card)
         local chips = 0
         local bonus_chips = 0
         for i = 2, to_number(card.ability.select) do
