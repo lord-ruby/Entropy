@@ -132,9 +132,16 @@ local dark = {
 			local cards = {}
 			local suits = {}
 			for i, v in ipairs(G.play.cards) do
-				if not suits[v.base.suit] then
-					suits[v.base.suit] = true
-					cards[#cards+1]=true
+				if v.config.center.key == "m_cry_abstract" then
+					if not suits["abstract"] then
+						suits["abstract"] = true
+						cards[#cards+1]=true
+					end
+				else
+					if not suits[v.base.suit] then
+						suits[v.base.suit] = true
+						cards[#cards+1]=true
+					end
 				end
 			end
 			for i, v in ipairs(cards) do
