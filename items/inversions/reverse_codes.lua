@@ -1162,7 +1162,7 @@ local hotfix_sticker = {
         card.ability.entr_hotfix = true
         if card.area then
         if card.debuff then card.debuff = false end
-        card.ability.entr_hotfix_rounds = pseudorandom_element({5,6,7,8,9,10,11,12,13,14,15}, pseudoseed("hotfix"))
+        card.ability.entr_hotfix_rounds = pseudorandom("hotfix", 15, 20)
         end
     end,
     calculate = function(self, card, context)

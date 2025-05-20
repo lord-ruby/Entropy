@@ -35,7 +35,7 @@ local sapphire = {
                 if v.name == text then pkey = v.new_key end
             end
             local key = "c_entr_"..pkey
-            if #G.consumeables.cards < G.consumeables.config.card_limit then
+            if G.consumeables.config.card_count < G.consumeables.config.card_limit then
                 local c = create_card("Consumables", G.consumeables, nil, nil, nil, nil, key) 
                 c:add_to_deck()
                 G.consumeables:emplace(c)
@@ -93,7 +93,7 @@ local pink = {
             card.ability.temporary2 = true
             card:remove_from_deck()
             card:start_dissolve()
-            if #G.consumeables.cards < G.consumeables.config.card_limit then
+            if G.consumeables.config.card_count < G.consumeables.config.card_limit then
                 local c = create_card("Twisted", G.consumeables, nil, nil, true, true, nil, "twisted") 
                 c:add_to_deck()
                 G.consumeables:emplace(c)
@@ -125,7 +125,7 @@ local verdant = {
             local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
             G.FUNCS.get_poker_hand_info(G.play.cards)
             if #scoring_hand == 1 then
-                if #G.consumeables.cards < G.consumeables.config.card_limit then
+                if G.consumeables.config.card_count < G.consumeables.config.card_limit then
                     local c = create_card("RCode", G.consumeables, nil, nil, nil, nil, nil) 
                     c:add_to_deck()
                     G.consumeables:emplace(c)
