@@ -112,7 +112,7 @@ function end_round()
                 if card.ability then
                     if card.ability.entr_hotfix then
                         card.ability.entr_hotfix_rounds = (card.ability.entr_hotfix_rounds or 5) - 1
-                        if card.ability.entr_hotfix_rounds <= 0 then
+                        if to_big(card.ability.entr_hotfix_rounds) <= to_big(0) then
                             card.ability.entr_hotfix = false
                             
                             Cryptid.misprintize(card, nil, nil, true)
