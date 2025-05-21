@@ -1072,6 +1072,7 @@ function Entropy.LevelSuit(suit, card, amt)
     for i, v in ipairs(G.I.CARD) do
         if v.base and v.base.suit == suit then
             v.ability.bonus = (v.ability.bonus or 0) + amt
+            v.ability.bonus_from_suit = (v.ability.bonus_from_suit or 0) + amt
         end
     end
     G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
