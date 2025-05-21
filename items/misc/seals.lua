@@ -93,7 +93,7 @@ local pink = {
             card.ability.temporary2 = true
             card:remove_from_deck()
             card:start_dissolve()
-            if G.consumeables.config.card_count < G.consumeables.config.card_limit then
+            if math.max(G.consumeables.config.card_count, #G.consumable.cards) < G.consumeables.config.card_limit then
                 local c = create_card("Twisted", G.consumeables, nil, nil, true, true, nil, "twisted") 
                 c:add_to_deck()
                 G.consumeables:emplace(c)
