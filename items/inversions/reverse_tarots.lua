@@ -143,7 +143,7 @@ local oracle = {
     config = {
         change = 1
     },
-    inversion = "c_oracle",
+    inversion = "c_high_priestess",
     pos = {x=2, y = 0},
     use = function(self, card, area, copier)
         local cards = {}

@@ -148,7 +148,7 @@ local detour = {
     key = "detour",
     set = "RCode",
     
-    inversion = "c_cry_function",
+    inversion = "c_cry_cryfunction",
 
     atlas = "consumables",
     pos = {x=4,y=1},
