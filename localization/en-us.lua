@@ -531,6 +531,16 @@ local decs = {
 					"become {C:dark_edition}Glitched{} and gain an extra effect",
 					"{C:attention}Randomise{} this probability when hand is {c:attention}played{}"
 				}
+			},
+
+			j_entr_endlessentropy = {
+				name = "Endless Entropy",
+				text = {
+					"Cycles through the {C:attention}following{} effects",
+					"when {C:blue}Hand{} is played and when {C:red}Discarding{} respectively",
+					"#1#",
+					"#2#"
+				}
 			}
 		},
 		Blind = {
@@ -2219,6 +2229,17 @@ local decs = {
 			entr_nilrank = "Nil"
 		},
 		dictionary = {
+
+			k_ee_hand_1 = "When hand is played, a random card becomes sunny",
+			k_ee_hand_2 = "Cards cannot be debuffed",
+			k_ee_hand_3 = "X1.666 All Joker values when hand played",
+			k_ee_hand_4 = "Forcetrigger a random Joker",
+
+			k_ee_discard_1 = "Spread discarded card edition if 1 card discarded",
+			k_ee_discard_2 = "Create negatve banana copies of played cards",
+			k_ee_discard_3 = "Gain an Ascended Tag for each discarded card",
+			k_ee_discard_4 = "^^3 Mult",
+
 
 			k_before = "Before Scoring:",
 			k_pre_joker = "Before Joker Scoring:",

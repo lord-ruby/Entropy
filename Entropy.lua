@@ -40,7 +40,8 @@ local i = {
     "items/misc/blind_tokens",
     "items/inversions/define",
 
-    "compat/partners"
+    "compat/partners",
+    "compat/finity"
 }
 local items = {}
 for _, v in pairs(i) do

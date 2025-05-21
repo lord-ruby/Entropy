@@ -449,9 +449,11 @@ local phase4 = {
 				G.hand:change_size(1)
 			end
 		end
-		G.GAME.EEBuildup = false
 		G.GAME.EEBeaten = true
-		Entropy.WinEE()
+		if G.GAME.EEBuildup then
+			Entropy.WinEE()
+		end
+		G.GAME.EEBuildup = false
 	end,
 	press_play = function(self)
 		for k, _ in pairs(Entropy.GetEEBlinds()) do
@@ -739,7 +741,7 @@ local endless_entropy = {
     cost = 10,
     atlas = "ee_atlas",
     pos = {x=0, y=0},
-    soul_pos = {x = 2, y = 0, extra = {x=1,y=0}},
+    soul_pos = {x = 4, y = 3, extra = {x=0,y=1}},
     no_doe = true,
     no_collection = true,
 }
