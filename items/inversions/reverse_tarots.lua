@@ -124,7 +124,9 @@ local mason = {
         }
     end,
     
-	
+	entr_credits = {
+        art = {"Lyman"}
+    }
 }
 
 local oracle = {
@@ -487,7 +489,9 @@ local dagger = {
         }
     end,
     
-	
+	entr_credits = {
+        art = {"Lyman"}
+    }
 }
 
 local earl = {
@@ -785,7 +789,9 @@ local feast = {
         }
     end,
     
-	
+	entr_credits = {
+        art = {"Lyman"}
+    }
 }
 
 local forgiveness = {

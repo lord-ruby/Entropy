@@ -279,6 +279,15 @@ local EnhancementFuncs = {
     end,
     m_entr_flesh = function(card)
         card.temporary2=true;card:start_dissolve()
+    end,
+    m_entr_dark = function(card)
+        card.ability.h_x_chips = card.ability.xchips ^ 2
+    end,
+    m_entr_prismatic = function(card)
+        card.ability.x_mult = card.ability.extra.eemult ^^ 1.05
+    end,
+    m_cry_abstract = function(card)
+        card.ability.x_mult = card.ability.extra.Emult ^ 3
     end
 }
 for i, v in pairs(EnhancementFuncs) do Entropy.EnhancementFuncs[i] = v end

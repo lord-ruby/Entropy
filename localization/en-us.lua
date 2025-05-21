@@ -601,7 +601,7 @@ local decs = {
 				text = {
 					"You are but a speck of dust",
 					"in the face of the universe.",
-					"(Applies all vanilla showdown effects)"
+					"(Entropy is endless)"
 				}
 			},
 		},
@@ -2060,7 +2060,7 @@ local decs = {
 			entr_verdant_seal = {
 				name = "Verdant Seal",
 				text = {
-					"Creates a {C:red}Code?{}",
+					"Creates a {C:red}Command{}",
 					"card when played {C:attention}if{}",
 					"this is the {C:attention}only{}",
 					"scored card"
@@ -2255,17 +2255,17 @@ local decs = {
 			k_entr_entropic = "Entropic",
 			k_entr_reverse_legendary = "Legendary?",
 			k_entr_zenith = "Zenith",
-			k_rtarot = "Tarot?",
-			k_rtarot_pack = "Arcana Pack?",
-			b_rtarot_cards = "Tarot Cards?",
+			k_rtarot = "Fraud",
+			k_rtarot_pack = "Fraud Pack",
+			b_rtarot_cards = "Fraud Cards",
 
-			k_rcode = "Code?",
-			k_rcode_pack = "Program Pack?",
-			b_rcode_cards = "Code Cards?",
+			k_rcode = "Command",
+			k_rcode_pack = "Command Pack",
+			b_rcode_cards = "Command Cards",
 
-			k_rspectral = "Spectral?",
-			k_rspectral_pack = "Spectral Pack?",
-			b_rspectral_cards = "Spectral Cards?",
+			k_rspectral = "Omen",
+			k_rspectral_pack = "Omen Pack",
+			b_rspectral_cards = "Omen Cards",
 
 			a_eqmult = { "Mult = #1#" },
 
@@ -2282,7 +2282,7 @@ local decs = {
 			k_entr_blind_tokens = "Enable Blind Tokens",
 
 			k_rplanet = "Star",
-			b_rplanet_cards = "Star Cards?",	
+			b_rplanet_cards = "Star Cards",	
 			k_planet_multiverse = Cryptid_config.family_mode and "Multiverse" or "The Actual Fucking Multiverse",
 			k_planet_binary_star = "Binary Star System",
 			k_planet_dyson_swarm = "Stellar Megastructure",
