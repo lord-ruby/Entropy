@@ -255,3 +255,31 @@ G.FUNCS.hand_mult_UI_set = function(e)
     if not G.TAROT_INTERRUPT_PULSE then G.FUNCS.text_super_juice(e, math.max(0,math.floor(math.log10(type(G.GAME.current_round.current_hand.mult) == 'number' and G.GAME.current_round.current_hand.mult or 1)))) end
   end
 end
+
+local ref = SMODS.get_blind_amount
+function SMODS.get_blind_amount(ante)
+  if to_big(ante) <= to_big(8) then 
+    return ref(to_number(ante))
+  else --disgusting hook because the patches sometimes fail
+    local k = to_big(0.75)
+    local scale = G.GAME.modifiers.scaling
+    local amounts = {
+        to_big(300),
+        to_big(700 + 100*scale),
+        to_big(1400 + 600*scale),
+        to_big(2100 + 2900*scale),
+        to_big(15000 + 5000*scale*math.log(scale)),
+        to_big(12000 + 8000*(scale+1)*(0.4*scale)),
+        to_big(10000 + 25000*(scale+1)*((scale/4)^2)),
+        to_big(50000 * (scale+1)^2 * (scale/7)^2)
+    }
+    local a, b, c, d = amounts[8], amounts[8]/amounts[7], ante-8, 1 + 0.2*(ante-8)
+    local amount = math.floor(a*(b + (b*k*c)^d)^c)
+    if (amount:lt(R.E_MAX_SAFE_INTEGER)) then
+      local exponent = to_big(10)^(math.floor(amount:log10() - to_big(1))):to_number()
+      amount = math.floor(amount / exponent):to_number() * exponent
+    end
+    amount:normalize()
+    return amount
+  end
+end
