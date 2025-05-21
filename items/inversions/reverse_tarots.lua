@@ -231,12 +231,16 @@ local servant = {
             if Entropy.FlipsideInversions[v.config.center.key] then
                 local set = G.P_CENTERS[Entropy.FlipsideInversions[v.config.center.key]].set
                 for i = 1, card.ability.create do
-                    if G.consumeables.config.card_count < G.consumeables.config.card_limit then
-                        local c = create_card(set, G.consumeables, nil, nil, nil, nil, nil)
-                        G.GAME.last_inversion = nil
-                        c:add_to_deck()
-                        G.consumeables:emplace(c)
-                    end
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            if G.consumeables.config.card_count < G.consumeables.config.card_limit then
+                                local c = create_card(set, G.consumeables, nil, nil, nil, nil, nil)
+                                G.GAME.last_inversion = nil
+                                c:add_to_deck()
+                                G.consumeables:emplace(c)
+                            end
+                        end
+                    }))
                 end
             end
         end
