@@ -67,7 +67,7 @@ local prismatic = {
           "set_entr_entropics"
         }
     },
-	order = 10000+3,
+	order = 10000+4,
 	object_type = "Enhancement",
 	key = "prismatic",
 	atlas = "enhancements",
@@ -110,7 +110,7 @@ local dark = {
           "set_entr_entropics"
         }
     },
-	order = 10000+4,
+	order = 10000+3,
 	object_type = "Enhancement",
 	key = "dark",
 	atlas = "enhancements",
