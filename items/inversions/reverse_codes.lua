@@ -8,7 +8,7 @@ local memoryleak = {
     order = 3000 + 1,
     key = "memory_leak",
     set = "RCode",
-
+    no_collection = true,
     inversion = "c_cry_crash",
 
     atlas = "consumables",
