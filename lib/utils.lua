@@ -1052,6 +1052,7 @@ function Entropy.ChangePhase()
     if #remove_temp > 0 then
         SMODS.calculate_context({remove_playing_cards = true, removed=remove_temp})
     end
+    G.deck:shuffle()
 end
 
 function Entropy.LevelSuit(suit, card, amt)
