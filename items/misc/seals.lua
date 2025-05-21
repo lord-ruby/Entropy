@@ -97,7 +97,6 @@ local pink = {
                 local c = create_card("Twisted", G.consumeables, nil, nil, true, true, nil, "twisted") 
                 c:add_to_deck()
                 G.consumeables:emplace(c)
-                G.consumeables.config.card_count = G.consumeables.config.card_count + 1
             end
             SMODS.calculate_context({remove_playing_cards = true, removed={card}})
         end
