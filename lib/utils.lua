@@ -319,6 +319,7 @@ end
 
 function Entropy.BlindIs(blind)
     if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == blind then return true end
+    if Entropy.IsEE() and Entropy.EEWhitelist[blind] then return true end
 end
 
 function Entropy.card_eval_status_text_eq(card, eval_type, amt, percent, dir, extra, pref, col, sound, vol)
@@ -513,6 +514,12 @@ Entropy.EEWhitelist["bl_final_leaf"]=true
 Entropy.EEWhitelist["bl_final_vessel"]=true
 Entropy.EEWhitelist["bl_final_acorn"]=true
 Entropy.EEWhitelist["bl_final_bell"]=true
+Entropy.EEWhitelist["bl_cry_sapphire_stamp"]=true
+Entropy.EEWhitelist["bl_entr_burgundy_baracuda"]=true
+Entropy.EEWhitelist["bl_entr_diamond_dawn"]=true
+Entropy.EEWhitelist["bl_entr_olive_orchard"]=true
+Entropy.EEWhitelist["bl_entr_scarlet_sun"]=true
+Entropy.EEWhitelist["bl_entr_citrine_comet"]=true
 
 function Entropy.GetEEBlinds()
     local blinds = {}

@@ -1384,7 +1384,7 @@ function Cryptid.ascend(num, curr2) -- edit this function at your leisure
         ((G.GAME.current_round.current_hand.cry_asc_num or 0) + (G.GAME.asc_power_hand or 0)) *
             (1 + (G.GAME.nemesisnumber or 0))
     if Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled then
-        curr2 = curr2 * -1
+        curr2 = curr2 * (Entropy.IsEE() and -0.25 or -1)
     end
     if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true then
         return num
@@ -2189,7 +2189,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 	end
     G.GAME.current_round.current_hand.cry_asc_num = (G.GAME.current_round.current_hand.cry_asc_num or 0) * (1+(G.GAME.nemesisnumber or 0))
     if Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled then 
-        G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num * -1
+        G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num * (Entropy.IsEE() and -0.25 or -1)
     end
     -- if Entropy.CheckTranscendence(_cards) ~= "None" then
     --     G.GAME.current_round.current_hand.entr_trans_num_text = "Transcendant "
@@ -2208,7 +2208,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
     --     G.GAME.current_round.current_hand.entr_trans_num_text = ""
     -- end
     if Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled then 
-        G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num * -1
+        G.GAME.current_round.current_hand.cry_asc_num = G.GAME.current_round.current_hand.cry_asc_num * (Entropy.IsEE() and -0.25 or -1)
     end
     return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
