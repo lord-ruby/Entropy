@@ -489,6 +489,7 @@ payload = '''
           G.GAME.chips = 0
           G.GAME.round_resets.lost = false
           G.GAME.blind:set_blind(G.P_BLINDS["bl_entr_endless_entropy_phase_two"])
+          Entropy.ChangePhase()
           G.GAME.blind:juice_up()
           G.GAME.current_round.hands_left = G.GAME.round_resets.hands
           ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
@@ -523,6 +524,7 @@ payload = '''
           G.GAME.chips = 0
           G.GAME.round_resets.lost = false
           G.GAME.blind:set_blind(G.P_BLINDS["bl_entr_endless_entropy_phase_two"])
+          Entropy.ChangePhase()
           G.GAME.blind:juice_up()
           G.GAME.current_round.hands_left = G.GAME.round_resets.hands
           ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
@@ -558,6 +560,7 @@ payload = '''
           G.GAME.chips = 0
           G.GAME.round_resets.lost = false
           G.GAME.blind:set_blind(G.P_BLINDS["bl_entr_endless_entropy_phase_two"])
+          Entropy.ChangePhase()
           G.GAME.blind:juice_up()
           G.GAME.current_round.hands_left = G.GAME.round_resets.hands
           ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)

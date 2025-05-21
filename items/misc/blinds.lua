@@ -230,6 +230,7 @@ local phase1 = {
 			G.GAME.chips = 0
 			G.GAME.round_resets.lost = true
 			G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
+			Entropy.ChangePhase()
 			G.GAME.blind:juice_up()
 			ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
 			ease_discard(
@@ -302,6 +303,7 @@ local phase3 = {
 		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) then
 			G.GAME.chips = 0
 			G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
+			Entropy.ChangePhase()
 			G.GAME.blind:juice_up()
 			ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
 			ease_discard(
