@@ -1,10 +1,10 @@
 function Entropy.GetHighlightedCards(cardareas, ignorecard, blacklist)
     local cards = {}
     blacklist = blacklist or {}
-    for i, area in ipairs(cardareas) do
-        if area.highlighted then
+    for i, area in pairs(cardareas) do
+        if area.cards then
             for i2, card in ipairs(area.highlighted) do
-                if card ~= ignorecard and not blacklist[card.config.center.key] then
+                if card ~= ignorecard and not blacklist[card.config.center.key] and card.highlighted then
                     cards[#cards + 1] = card
                 end
             end
