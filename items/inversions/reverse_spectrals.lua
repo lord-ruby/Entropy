@@ -284,7 +284,7 @@ local EnhancementFuncs = {
         card.ability.h_x_chips = card.ability.xchips ^ 2
     end,
     m_entr_prismatic = function(card)
-        card.ability.x_mult = card.ability.extra.eemult ^^ 1.05
+        card.ability.x_mult = card.ability.extra.eemult ^ 1.5
     end,
     m_cry_abstract = function(card)
         card.ability.x_mult = card.ability.extra.Emult ^ 3
