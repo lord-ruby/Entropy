@@ -33,6 +33,7 @@ Entropy.BoosterSets = {
     ["RSpectral"] = "p_entr_twisted_pack_mega",
     ["RTarot"] = "p_entr_twisted_pack_mega",
     ["Voucher"] = "p_entr_voucher_pack",
+    ["Joker"] = "p_entr_buffoon_mega_1"
 }
 Entropy.DefineBlacklist = {
     c_black_hole = true,
