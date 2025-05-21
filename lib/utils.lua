@@ -1053,3 +1053,53 @@ function Entropy.ChangePhase()
         SMODS.calculate_context({remove_playing_cards = true, removed=remove_temp})
     end
 end
+
+function Entropy.LevelSuit(suit, card, amt)
+    amt = amt or 1
+    local used_consumable = copier or card
+    if not G.GAME.SuitBuffs then G.GAME.SuitBuffs = {} end
+    if not G.GAME.SuitBuffs[suit] then
+        G.GAME.SuitBuffs[suit] = {level = 1, chips = 0}
+    end
+    if not G.GAME.SuitBuffs[suit].chips then G.GAME.SuitBuffs[suit].chips = 0 end
+    if not G.GAME.SuitBuffs[suit].level then G.GAME.SuitBuffs[suit].level = 1 end
+    update_hand_text(
+    { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
+    { handname = localize(suit,'suits_plural'), chips = number_format(G.GAME.SuitBuffs[suit].chips), mult = "...", level = number_format(G.GAME.SuitBuffs[suit].level) }
+    )
+    G.GAME.SuitBuffs[suit].chips = G.GAME.SuitBuffs[suit].chips + amt
+    G.GAME.SuitBuffs[suit].level = G.GAME.SuitBuffs[suit].level + 1
+    for i, v in ipairs(G.I.CARD) do
+        if v.base and v.base.suit == suit then
+            v.ability.bonus = (v.ability.bonus or 0) + amt
+        end
+    end
+    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
+            play_sound('tarot1')
+            if card then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = nil
+            return true 
+        end 
+    }))
+    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
+            play_sound('tarot1')
+            if card then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = nil
+            return true 
+        end 
+    }))
+    update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { chips="+"..number_format(amt), StatusText = true })
+    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
+            play_sound('tarot1')
+            if card then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = nil
+            return true 
+        end 
+    }))
+    update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = number_format(G.GAME.SuitBuffs[suit].level+1), chips=number_format(G.GAME.SuitBuffs[suit].chips) })
+    delay(1.3)
+    update_hand_text(
+    { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+    { mult = 0, chips = 0, handname = "", level = "" }
+    )
+end

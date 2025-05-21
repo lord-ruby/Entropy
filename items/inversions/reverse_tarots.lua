@@ -239,6 +239,7 @@ local servant = {
                                 c:add_to_deck()
                                 G.consumeables:emplace(c)
                             end
+                            return true
                         end
                     }))
                 end
@@ -798,6 +799,135 @@ local feast = {
     }
 }
 
+local ocean = {
+    key = "ocean",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -901+17,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        per_level=25
+    },
+    pos = {x=7,y=1},
+    inversion = "c_star",
+    use = function(self, card2)
+        Entropy.LevelSuit("Diamonds", card2, card2.ability.per_level)
+    end,
+    bulk_use = function(self, card2, _, _, amount)
+        Entropy.LevelSuit("Diamonds", card2, card2.ability.per_level*amount)
+    end,
+    can_use = function(self, card)
+        return true
+    end,
+    loc_vars = function(self, q, card)
+        if not G.GAME.SuitBuffs then G.GAME.SuitBuffs = {} end
+        if not G.GAME.SuitBuffs["Diamonds"] then G.GAME.SuitBuffs["Diamonds"] = {} end
+        return {
+            vars = {
+                G.GAME.SuitBuffs["Diamonds"].level or 1,
+                "",
+                localize("Diamonds",'suits_plural'),
+                card.ability.per_level,
+                colours = {
+                    to_big(G.GAME.SuitBuffs["Diamonds"].level or 1) < to_big(2) and G.C.BLACK or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.SuitBuffs["Diamonds"].level or 1)):to_number()]
+                }
+            }
+        }
+    end,
+}
+
+local forest = {
+    key = "forest",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -901+18,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        per_level=25
+    },
+    pos = {x=8,y=1},
+    inversion = "c_moon",
+    use = function(self, card2)
+        Entropy.LevelSuit("Clubs", card2, card2.ability.per_level)
+    end,
+    bulk_use = function(self, card2, _, _, amount)
+        Entropy.LevelSuit("Clubs", card2, card2.ability.per_level*amount)
+    end,
+    can_use = function(self, card)
+        return true
+    end,
+    loc_vars = function(self, q, card)
+        if not G.GAME.SuitBuffs then G.GAME.SuitBuffs = {} end
+        if not G.GAME.SuitBuffs["Clubs"] then G.GAME.SuitBuffs["Clubs"] = {} end
+        return {
+            vars = {
+                G.GAME.SuitBuffs["Clubs"].level or 1,
+                "",
+                localize("Clubs",'suits_plural'),
+                card.ability.per_level,
+                colours = {
+                    to_big(G.GAME.SuitBuffs["Clubs"].level or 1) < to_big(2) and G.C.BLACK or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.SuitBuffs["Clubs"].level or 1)):to_number()]
+                }
+            }
+        }
+    end,
+}
+
+local mountain = {
+    key = "mountain",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -901+19,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        per_level=25
+    },
+    pos = {x=9,y=1},
+    inversion = "c_sun",
+    use = function(self, card2)
+        Entropy.LevelSuit("Hearts", card2, card2.ability.per_level)
+    end,
+    bulk_use = function(self, card2, _, _, amount)
+        Entropy.LevelSuit("Hearts", card2, card2.ability.per_level*amount)
+    end,
+    can_use = function(self, card)
+        return true
+    end,
+    loc_vars = function(self, q, card)
+        if not G.GAME.SuitBuffs then G.GAME.SuitBuffs = {} end
+        if not G.GAME.SuitBuffs["Hearts"] then G.GAME.SuitBuffs["Hearts"] = {} end
+        return {
+            vars = {
+                G.GAME.SuitBuffs["Hearts"].level or 1,
+                "",
+                localize("Hearts",'suits_plural'),
+                card.ability.per_level,
+                colours = {
+                    to_big(G.GAME.SuitBuffs["Hearts"].level or 1) < to_big(2) and G.C.BLACK or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.SuitBuffs["Hearts"].level or 1)):to_number()]
+                }
+            }
+        }
+    end,
+    entr_credits = {
+        art = {"lfmoth"}
+    }
+}
+
 local forgiveness = {
     key = "forgiveness",
     set = "RTarot",
@@ -834,6 +964,48 @@ local forgiveness = {
     entr_credits = {
         idea = "cassknows"
     }
+}
+
+local tent = {
+    key = "tent",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -901+21,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        per_level=25
+    },
+    pos = {x=1,y=2},
+    inversion = "c_world",
+    use = function(self, card2)
+        Entropy.LevelSuit("Spades", card2, card2.ability.per_level)
+    end,
+    bulk_use = function(self, card2, _, _, amount)
+        Entropy.LevelSuit("Spades", card2, card2.ability.per_level*amount)
+    end,
+    can_use = function(self, card)
+        return true
+    end,
+    loc_vars = function(self, q, card)
+        if not G.GAME.SuitBuffs then G.GAME.SuitBuffs = {} end
+        if not G.GAME.SuitBuffs["Spades"] then G.GAME.SuitBuffs["Spades"] = {} end
+        return {
+            vars = {
+                G.GAME.SuitBuffs["Spades"].level or 1,
+                "",
+                localize("Spades",'suits_plural'),
+                card.ability.per_level,
+                colours = {
+                  to_big(G.GAME.SuitBuffs["Spades"].level or 1) < to_big(2) and G.C.BLACK or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.SuitBuffs["Spades"].level or 1)):to_number()]
+                }
+            }
+        }
+    end,
 }
 
 local penumbra = {
@@ -986,6 +1158,10 @@ return {
         mason,
         princess,
         imp,
-        oracle
+        oracle,
+        ocean,
+        forest,
+        mountain,
+        tent
     }
 }

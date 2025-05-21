@@ -2378,3 +2378,12 @@ function get_new_boss()
     end
     return get_bossref()
 end
+
+local change_suitref = Card.change_suit 
+function Card:change_suit(new_suit)
+    change_suitref(self, new_suit)
+    if not G.GAME.SuitBuffs then G.GAME.SuitBuffs = {} end
+    if G.GAME.SuitBuffs[new_suit] then
+        self.ability.bonus = (self.ability.bonus or 0) + G.GAME.SuitBuffs[new_suit].chips
+    end
+end

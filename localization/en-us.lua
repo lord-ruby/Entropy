@@ -893,6 +893,38 @@ local decs = {
 					"Enhanced {C:attention}#1#{} random card#<s>1# held in",
 					"hand into {C:attention}Editioned{} {C:purple}CCD Star{} Cards"
 				}
+			},
+			c_entr_ocean = {
+				name = "The Ocean",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}Diamonds",
+					"{C:blue}+#4#{} Chips"
+				}
+			},
+			c_entr_forest = {
+				name = "The Forest",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}Clubs",
+					"{C:blue}+#4#{} Chips"
+				}
+			},
+			c_entr_mountain = {
+				name = "The Mountain",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}Hearts",
+					"{C:blue}+#4#{} Chips"
+				}
+			},
+			c_entr_tent = {
+				name = "The Tent",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}Spades",
+					"{C:blue}+#4#{} Chips"
+				}
 			}
 		},
 		Voucher = {
