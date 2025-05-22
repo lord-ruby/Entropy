@@ -1583,7 +1583,6 @@ function evaluate_play_main(text, disp_text, poker_hands, scoring_hand, non_loc_
         poker_hands[text].chips = c
     end
 end
-
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, ...)
     if self.config and self.config.center and self.config.center.key ~= "m_entr_disavowed" then
@@ -2407,4 +2406,17 @@ function Blind:debuff_hand(cards, hand, handname, check)
     else
         return debuff_handref(self, cards, hand, handname, check)
     end
+end
+
+local ref = G.FUNCS.evaluate_play
+G.FUNCS.evaluate_play = function(e)
+    local refe = ref(e)
+    G.E_MANAGER:add_event(Event({
+        trigger="after",
+        func = function()
+            update_hand_text_random({delay = 0}, {chips=0, mult=0, handname = "", level=""})
+            return true
+        end
+    }))
+    return refe
 end
