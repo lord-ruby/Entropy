@@ -11,6 +11,7 @@ position = "before"
 payload = '''
 Entropy = {}
 Entropy.FlipsideInversions = {}
+Entropy.FlipsidePureInversions = {}
 Entropy.EnhancementFuncs = {}
 Entropy.RarityChecks = {
     [0]="cry_candy",
