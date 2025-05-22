@@ -101,6 +101,11 @@ local bootstrap = {
         G.GAME.UsingBootstrap = true
     end,
     can_use = function() return true end,
+	entr_credits = {
+		idea = {
+			"cassknows",
+		},
+	},
 }
 
 local quickload = {
@@ -666,6 +671,11 @@ local push = {
             }
         }
     end,
+	entr_credits = {
+		idea = {
+			"cassknows",
+		},
+	},
 }
 
 local increment = {
