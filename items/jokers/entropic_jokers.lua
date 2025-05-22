@@ -345,7 +345,7 @@ local parakmi = {
     loc_vars = function(self, q, card)
         return {
             vars = {
-                card.ability.shop_slots
+                math.min(card.ability.shop_slots, 10)
             }
         }
     end,
@@ -356,7 +356,7 @@ local parakmi = {
         G.E_MANAGER:add_event(Event({
 			func = function() --card slot
 				-- why is this in an event?
-				change_shop_size(card.ability.shop_slots)
+				change_shop_size(to_number(math.min(card.ability.shop_slots, 10)))
 				return true
 			end,
 		}))
@@ -365,7 +365,7 @@ local parakmi = {
         G.E_MANAGER:add_event(Event({
 			func = function() --card slot
 				-- why is this in an event?
-				change_shop_size(-card.ability.shop_slots)
+				change_shop_size(-to_number(math.min(card.ability.shop_slots, 10)))
 				return true
 			end,
 		}))
