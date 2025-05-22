@@ -1561,6 +1561,7 @@ G.FUNCS.use_card = function(e, mute, nosave)
         }
     end
     ref(e, mute, nosave)
+    card.ability.bypass_aleph = true
 end
 
 local main_ref = evaluate_play_main
@@ -2430,4 +2431,11 @@ G.FUNCS.evaluate_play = function(e)
         end
     }))
     return refe
+end
+
+local ref = copy_card
+function copy_card(...)
+    local card = ref(...)
+    card.ability.bypass_aleph = nil
+    return card
 end
