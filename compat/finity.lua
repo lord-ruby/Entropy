@@ -34,7 +34,7 @@ if FinisherBossBlindStringMap then
         end,
         function(self, card, context)
             if context.joker_main then
-                local res2 = {}
+                local res = {}
                 if #G.jokers.cards > 1 then
                     local v = pseudorandom_element(G.jokers.cards, pseudoseed("ee_hand4"))
                     while v == card do
