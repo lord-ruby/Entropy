@@ -35,31 +35,33 @@ if FinisherBossBlindStringMap then
         function(self, card, context)
             if context.joker_main then
                 local res2 = {}
-                local v = pseudorandom_element(G.jokers.cards, pseudoseed("ee_hand4"))
-                while v == card do
-                    v = pseudorandom_element(G.jokers.cards, pseudoseed("ee_hand4"))
-                end
-                if Cryptid.demicolonGetTriggerable(v)then
-                    local results = Cryptid.forcetrigger(v, context)
-                    if results then
-                        for i, v in pairs(results) do
-                            for i2, result in pairs(v) do
-                                if type(result) == "number" or (type(result) == "table" and result.tetrate) then
-                                    res[i2] = Entropy.StackEvalReturns(res[i2], result, i2)
-                                else
-                                    res[i2] = result
+                if #G.jokers.cards > 1 then
+                    local v = pseudorandom_element(G.jokers.cards, pseudoseed("ee_hand4"))
+                    while v == card do
+                        v = pseudorandom_element(G.jokers.cards, pseudoseed("ee_hand4"))
+                    end
+                    if Cryptid.demicolonGetTriggerable(v)then
+                        local results = Cryptid.forcetrigger(v, context)
+                        if results then
+                            for i, v in pairs(results) do
+                                for i2, result in pairs(v) do
+                                    if type(result) == "number" or (type(result) == "table" and result.tetrate) then
+                                        res[i2] = Entropy.StackEvalReturns(res[i2], result, i2)
+                                    else
+                                        res[i2] = result
+                                    end
                                 end
                             end
                         end
+                        card_eval_status_text(
+                            v,
+                            "extra",
+                            nil,
+                            nil,
+                            nil,
+                            { message = localize("cry_demicolon"), colour = G.C.GREEN }
+                        )
                     end
-                    card_eval_status_text(
-                        v,
-                        "extra",
-                        nil,
-                        nil,
-                        nil,
-                        { message = localize("cry_demicolon"), colour = G.C.GREEN }
-                    )
                 end
             end
         end
@@ -138,7 +140,7 @@ if FinisherBossBlindStringMap then
         },
         calculate = function(self, card, context)
             local ret = {}
-            local ret1 = ee_hand_funcs[card.ability.immutable.ee_discardeffect or 1](self, card, context)
+            local ret1 = ee_hand_funcs[card.ability.immutable.ee_handeffect or 1](self, card, context)
             local ret2 = ee_discard_funcs[card.ability.immutable.ee_discardeffect or 1](self, card, context)
             for i, v in pairs(ret1 or {}) do ret[i]=v end
             for i, v in pairs(ret2 or {}) do ret[i]=v end
