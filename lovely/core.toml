@@ -943,3 +943,29 @@ table.sort(G.playing_cards, function (a, b) return (type(a.playing_card) == "num
 '''
 position = "at"
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability[v] and not SMODS.Stickers[v].hide_badge then"
+position = "at"
+payload = '''
+if self.ability[v] and not SMODS.Stickers[v].hide_badge and (v ~= "cry_rigged" or not self.ability.entr_pseudorandom) then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+    if not self.ability.cry_absolute then
+    	if self.ability.eternal then badges[#badges + 1] = 'eternal' end
+    end
+'''
+position = "at"
+payload = '''
+    if not self.ability.entr_aleph and not self.ability.cry_absolute then
+    	if self.ability.eternal then badges[#badges + 1] = 'eternal' end
+    end
+'''
+match_indent = true

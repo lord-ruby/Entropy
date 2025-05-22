@@ -27,7 +27,7 @@ local aleph = {
 			notilt,
 			card.children.center
 		)
-		G.shared_stickers["entr_alephe"]:draw_shader(
+		G.shared_stickers["entr_aleph"]:draw_shader(
 			"voucher",
 			nil,
 			card.ARGS.send_to_shader,
@@ -58,6 +58,19 @@ function Card:update(dt)
 		self.ability.eternal = true
 	end
 end
+
+SMODS.Sticker:take_ownership("eternal", {
+	draw = function(self, card)
+		local notilt = nil
+		if card.area and card.area.config.type == "deck" then
+			notilt = true
+		end
+		if not card.ability.cry_absolute and not card.ability.entr_aleph then
+			G.shared_stickers[self.key].role.draw_major = card
+			G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+		end
+	end,
+})
 
 return {
     items = {

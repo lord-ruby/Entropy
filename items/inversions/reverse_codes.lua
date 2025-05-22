@@ -450,7 +450,7 @@ local pseudorandom_sticker = {
     apply = function(self,card,val)
         card.ability.entr_pseudorandom = true
         if card.area then
-        card.ability.cry_rigged = true
+            card.ability.cry_rigged = true
         end
     end,
 }
