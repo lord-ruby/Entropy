@@ -81,7 +81,8 @@ SMODS.Sticker:take_ownership("eternal", {
 })
 
 SMODS.Sticker:take_ownership("cry_absolute", {
-    no_collection = true
+    no_collection = true,
+	no_edeck = true
 }, true)
 
 return {

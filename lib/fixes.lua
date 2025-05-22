@@ -338,3 +338,4 @@ SMODS.Consumable:take_ownership("cry_white_hole",
     end
   }
 ,true)
+

@@ -154,6 +154,7 @@ Cryptid.edeck_sprites.sticker.entr_pseudorandom = {atlas="entr_crypt_deck", pos 
 Cryptid.edeck_sprites.sticker.link = {atlas="entr_crypt_deck", pos = {x=4,y=2}}
 Cryptid.edeck_sprites.sticker.desync = {atlas="entr_crypt_deck", pos = {x=5,y=2}}
 Cryptid.edeck_sprites.sticker.temporary = {atlas="entr_crypt_deck", pos = {x=6,y=2}}
+Cryptid.edeck_sprites.sticker.entr_aleph = {atlas="entr_crypt_deck", pos = {x=4,y=3}}
 
 
 
