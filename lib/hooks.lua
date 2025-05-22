@@ -1414,9 +1414,9 @@ local pokerhandinforef = G.FUNCS.get_poker_hand_info
 function G.FUNCS.get_poker_hand_info(_cards)
     if Entropy.HasJoker("j_entr_helios", true) or (Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled) then G.GAME.used_vouchers.v_cry_hyperspacetether = true end
     local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
-    if text and G.GAME.badarg and G.GAME.badarg[text] and G.bad_arg ~= text and text ~= "NULL" then
+    if text and G.GAME.badarg and G.GAME.badarg[text] and text ~= "NULL" then
         G.boss_throw_hand = true
-        G.bad_arg = text
+        G.bad_arg = true
         G.E_MANAGER:add_event(Event({
         func = function()
             update_hand_text_random({delay = 0}, {chips="bad", mult="arg", handname = ""})
