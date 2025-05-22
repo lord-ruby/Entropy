@@ -42,7 +42,7 @@ local aleph = {
 
 local start_dissolveref = Card.start_dissolve
 function Card:start_dissolve(...)
-    if not self.ability.entr_aleph or card.ability.bypass_aleph then
+    if not self.ability.entr_aleph or self.ability.bypass_aleph then
         return start_dissolveref(self, ...)
     end
 end
