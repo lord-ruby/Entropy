@@ -79,7 +79,7 @@ if FinisherBossBlindStringMap then
                         actual[i] = cards[i]
                     end
                     Entropy.FlipThen(actual, function(card)
-                        card:set_edition(G.hand.highlighted[1].edition and G.hand.highlighted[1].edition.key)
+                        card:set_edition(G.hand.highlighted[1] and G.hand.highlighted[1].edition and G.hand.highlighted[1].edition.key)
                     end)
                 end
             end
