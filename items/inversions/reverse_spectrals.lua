@@ -880,7 +880,7 @@ SMODS.Rank {
     shorthand = "nil",
     hc_atlas = 'hc_nilr',
     lc_atlas = 'lc_nilr',
-    suit_map = { Hearts = 0, Clubs = 1, Diamonds = 2, Spades = 3 },
+    suit_map = { Hearts = 0, Clubs = 1, Diamonds = 2, Spades = 3, entr_nilsuit = 9999 },
     in_pool = function(self, args)
         return false
     end
