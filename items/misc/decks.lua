@@ -205,7 +205,7 @@ if CardSleeves then
             ["Straight"]=true,
             ["Straight Flush"]=true,
             ["Full House"]=true
-          })[context.scoring_name] or (G.GAME.hands[context.scoring_name].AscensionPower or 0) > 0 then
+          })[context.scoring_name] or to_big(G.GAME.hands[context.scoring_name].AscensionPower or 0) > to_big(0) then
             ease_entropy(G.GAME.hands[context.scoring_name].level + (G.GAME.hands[context.scoring_name].AscensionPower or 0) or 1)
           end
           G.E_MANAGER:add_event(Event({

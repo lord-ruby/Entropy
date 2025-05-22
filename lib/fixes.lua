@@ -283,3 +283,58 @@ function SMODS.get_blind_amount(ante)
     return amount
   end
 end
+
+local level_up_handref = level_up_hand
+function level_up_hand(card, hand, instant, amount, ...)
+	amount = to_big(amount)
+  level_up_handref(card, hand, instant, amount, ...)
+end
+
+SMODS.Consumable:take_ownership("cry_white_hole",
+  {
+    use = function(self, card, area, copier)
+      local used_consumable = copier or card
+      local modest = Card.get_gameset(used_consumable) == "modest"
+      --Get most played hand type (logic yoinked from Telescope)
+      local _hand, _tally = nil, -1
+      for k, v in ipairs(G.handlist) do
+        if G.GAME.hands[v].visible and G.GAME.hands[v].played > _tally then
+          _hand = v
+          _tally = G.GAME.hands[v].played
+        end
+      end
+      local removed_levels = 0
+      for k, v in ipairs(G.handlist) do
+        if to_big(G.GAME.hands[v].level) > to_big(1) then
+          local this_removed_levels = G.GAME.hands[v].level - 1
+          if
+            -- Due to how these poker hands are loaded they still techically exist even if Poker Hand Stuff is disabled
+            -- Because they still exist, While Hole needs to ignore levels from these if disabled (via Black Hole, Planet.lua, etc...)
+            (v ~= "cry_Bulwark" and v ~= "cry_Clusterfuck" and v ~= "cry_UltPair" and v ~= "cry_WholeDeck")
+            or Cryptid.enabled("set_cry_poker_hand_stuff") == true
+          then
+            if v ~= _hand or not modest then
+              removed_levels = removed_levels + this_removed_levels
+              level_up_hand(used_consumable, v, true, -this_removed_levels)
+            end
+          end
+        end
+      end
+      update_hand_text({ sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 }, {
+        handname = localize(_hand, "poker_hands"),
+        chips = G.GAME.hands[_hand].chips,
+        mult = G.GAME.hands[_hand].mult,
+        level = G.GAME.hands[_hand].level,
+      })
+      if modest then
+        level_up_hand(used_consumable, _hand, false, 4)
+      else
+        level_up_hand(used_consumable, _hand, false, (3 * to_big(removed_levels)))
+      end
+      update_hand_text(
+        { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+        { mult = 0, chips = 0, handname = "", level = "" }
+      )
+    end
+  }
+,true)

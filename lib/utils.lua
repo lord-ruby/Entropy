@@ -1036,6 +1036,8 @@ SMODS.Edition:take_ownership("e_cry_glitched", {
 }, true)
 
 function Entropy.ChangePhase()
+    G.STATE = 1
+    G.STATE_COMPLETE = false
     local remove_temp = {}
     for i, v in pairs({G.jokers, G.hand, G.consumeables, G.discard, G.deck}) do
         for ind, card in pairs(v.cards) do
@@ -1053,6 +1055,10 @@ function Entropy.ChangePhase()
         SMODS.calculate_context({remove_playing_cards = true, removed=remove_temp})
     end
     G.deck:shuffle()
+    G.E_MANAGER:add_event(Event({func = function()
+        G.GAME.ChangingPhase = nil
+        return true
+    end}))
 end
 
 function Entropy.LevelSuit(suit, card, amt)
