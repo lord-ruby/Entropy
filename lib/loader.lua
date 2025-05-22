@@ -22,7 +22,6 @@ function SMODS.injectItems(...)
     end
 
     loadmodsref(...)
-    Entropy.FlipsidePureInversions = copy_table(Entropy.FlipsideInversions)
     SMODS.ObjectType({
         key = "Twisted",
         default = "j_entr_memory_leak",
@@ -169,9 +168,6 @@ function SMODS.injectItems(...)
         end,
     })
     SMODS.ObjectTypes.BlindTokens:inject()
-    for i, v in pairs(Entropy.FlipsideInversions) do
-        Entropy.FlipsideInversions[v]=i
-    end
 
     local oldfunc = Game.main_menu
 	Game.main_menu = function(change_context)

@@ -69,7 +69,11 @@ for i, category in pairs(items) do
     end
     category = nil
     for i, v in pairs(SMODS[i].obj_table) do
-        if v.inversion then Entropy.FlipsideInversions[v.inversion]=i end
+        if v.inversion then 
+            Entropy.FlipsidePureInversions[v.inversion]=i 
+            Entropy.FlipsideInversions[v.inversion]=i 
+            Entropy.FlipsideInversions[i]=v.inversion
+        end
     end
 end
 items = nil
