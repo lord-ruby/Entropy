@@ -13,6 +13,9 @@ local twisted = {
     atlas = "decks",
     apply = function()
         G.GAME.modifiers.entr_twisted = true
+        for i, v in pairs(Entropy.FlipsideInversions) do
+          Entropy.FlipsideInversions[v]=i
+        end
     end
 }
 
@@ -164,7 +167,10 @@ if CardSleeves then
       pos = { x = 0, y = 0 },
       apply = function()
         G.GAME.modifiers.entr_twisted = true
+        for i, v in pairs(Entropy.FlipsideInversions) do
+          Entropy.FlipsideInversions[v]=i
         end
+      end
     }
     CardSleeves.Sleeve {
       key = "ccd2",
