@@ -925,7 +925,14 @@ local decs = {
 					"{C:attention}Spades",
 					"{C:blue}+#4#{} Chips"
 				}
-			}
+			},
+			c_entr_companion = {
+				name = "The Companion",
+				text = {
+					"Raise the {C:attention}interest{} cap by {C:gold}#1##2#{}",
+					"then gain {C:gold}money{} based on the interest cap"
+				}
+			},
 		},
 		Voucher = {
 			v_entr_marked = {

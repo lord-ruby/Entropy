@@ -200,6 +200,7 @@ function SMODS.injectItems(...)
                         G.title_top:emplace(v)
                     end
                 end
+                return true
             end
         }))
 		return ret

@@ -799,6 +799,48 @@ local feast = {
     }
 }
 
+local companion = {
+    key = "companion",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -901+15,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        extra = 2
+    },
+    pos = {x=5,y=1},
+    inversion = "c_temperance",
+    use = function(self, card)
+        G.E_MANAGER:add_event(Event({
+			func = function()
+				G.GAME.interest_cap = G.GAME.interest_cap + (card.ability.extra)
+                ease_dollars(math.min(G.GAME.interest_cap, 50))
+				return true
+			end,
+		}))
+    end,
+    can_use = function(self, card)
+        return true
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                localize("$"),
+                card.ability.extra
+            }
+        }
+    end,
+    
+	entr_credits = {
+        idea = {"Lyman"}
+    }
+}
+
 local ocean = {
     key = "ocean",
     set = "RTarot",
@@ -1162,6 +1204,7 @@ return {
         ocean,
         forest,
         mountain,
-        tent
+        tent,
+        companion
     }
 }
