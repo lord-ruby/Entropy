@@ -138,8 +138,9 @@ Entropy.EnhancementPoints ={
     m_cry_echo=6.3,
     m_glass=7.1,
     m_cry_light=7.2,
+    m_entr_dark = 8,
     m_cry_abstract=9.1,
-    m_entr_prismatic = 20
+    m_entr_prismatic = 20,
 }
 Entropy.TMTrainerEffects = {}
 Entropy.TMTrainerScoring = {}
