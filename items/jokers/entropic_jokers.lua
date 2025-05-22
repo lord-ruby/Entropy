@@ -197,6 +197,9 @@ local dekatria = {
                 card.ability.pairs_needed = card.ability.pairs_needed * 2
                 card.ability.immutable.arrows = card.ability.immutable.arrows + 1
             end
+            if card.ability.immutable.arrows > 50000 then
+                check_for_unlock({ type = "dekatria_50k" })
+            end
         end
         if context.joker_main or context.forcetrigger then
             if to_big(card.ability.immutable.arrows) < to_big(-1) then

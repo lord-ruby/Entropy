@@ -163,3 +163,11 @@ SMODS.Atlas { key = 'hc_nilr', path = 'entr_nilrank_hc.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'lc_nilr', path = 'entr_nilrank_lc.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'hc_nils', path = 'entr_nilsuit_hc.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'lc_nils', path = 'entr_nilsuit_lc.png', px = 71, py = 95 }
+
+SMODS.Atlas{
+	object_type = "Atlas",
+	key = "entr_achievements",
+	path = "achievements.png",
+	px = 66,
+	py = 66,
+}

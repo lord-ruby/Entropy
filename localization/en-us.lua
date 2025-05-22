@@ -2261,10 +2261,14 @@ local decs = {
 			},
 		},
 		achievement_names = {
-			ach_entr_unstable_concoction = "Unstable Concoction"
+			ach_entr_event_horizon = "Event Horizon",
+			ach_entr_here_comes_the_sun = "Here comes The Sun",
+			ach_entr_megalyteri = "Megalyteri",
 		},
 		achievement_descriptions = {
-			ach_entr_unstable_concoction = "Use define to turn Obelisk into Sob"
+			ach_entr_event_horizon = "Use define to turn Obelisk into Sob",
+			ach_entr_here_comes_the_sun = "Obtain a Sunny Joker",
+			ach_entr_megalyteri = "Reach {50000} on Dekatria",
 		},
 		suits_plural = {
 			entr_nilsuit = "Nil",

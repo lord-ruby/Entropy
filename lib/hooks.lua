@@ -230,6 +230,9 @@ function Card:set_edition(...)
             end
         end
     end
+    if self:is_sunny() then 
+        check_for_unlock({ type = "sunny_joker" })
+    end
 end
 
 local start_dissolveref = Card.start_dissolve
@@ -1493,7 +1496,7 @@ end
 
 
 local ref = Tag.init
-function Tag:init(_tag, for_collection, _blind_type)
+function Tag:init(_tag, for_collection, _blind_type, ...)
     if Entropy.HasJoker("j_entr_exousia",true) and Entropy.AscendedTags[_tag] and not for_collection then 
         _tag = Entropy.AscendedTags[_tag]
         local procs = 1
@@ -1501,7 +1504,7 @@ function Tag:init(_tag, for_collection, _blind_type)
             _tag = Entropy.AscendedTags[_tag]
         end
     end
-    ref(self,_tag, for_collection, _blind_type)
+    ref(self, _tag, for_collection, _blind_type, ...)
     local tag = self
     if G.P_TAGS[tag.key].set_ability then
         G.P_TAGS[tag.key]:set_ability(tag)
@@ -2334,6 +2337,9 @@ function Card:add_to_deck(...)
     card_addref(self, ...)
     if self.ability.set == "Joker" or self.ability.consumeable and self.config.center.key ~= "c_entr_detour" then
         G.GAME.detour_set = self.ability.set
+    end
+    if self:is_sunny() then 
+        check_for_unlock({ type = "sunny_joker" })
     end
 end
 
