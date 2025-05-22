@@ -1448,7 +1448,7 @@ local decs = {
 			c_entr_weld = {
 				name = "Weld",
 				text = {
-					"Apply {C:legendary,E:1}Absolute{}",
+					"Apply {C:legendary,E:1}Aleph{}",
 					"to {C:attention}#1#{} selected Joker",
 					"{C:red}#2#{} discard"
 				}
@@ -2065,6 +2065,12 @@ local decs = {
 					"Randomises when hand played"
 				}
 			},
+			entr_aleph = {
+				name = "Aleph",
+				text = {
+					"Cannot be {C:attention}removed{} {C:red}ever{}"
+				}
+			},
 			entr_entropic_sticker = {
                 ['name'] = 'Entropic Sticker',
                 ['text'] = {
@@ -2430,6 +2436,7 @@ local decs = {
 			entr_yellow_sign = "Yellow Sign",
 			scarred = "Scarred",
 			desync = "Desynced",
+			entr_aleph = "Aleph",
 
 			entr_crimson_seal = "Crimson Seal",
 			entr_sapphire_seal = "Sapphire Seal",

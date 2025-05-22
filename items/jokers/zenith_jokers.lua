@@ -41,7 +41,7 @@ local ruby = {
     end,
     add_to_deck = function(self, card)
         G.jokers.config.card_limit = -999
-        card.ability.cry_absolute = true
+        card.ability.entr_aleph = true
     end
 }
 

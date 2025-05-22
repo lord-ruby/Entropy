@@ -834,7 +834,7 @@ local weld = {
                     trigger = "after",
                     delay = 0.2,
                     func = function()
-                        card.cry_absolute = true
+                        card.ability.entr_aleph = true
                         return true
                     end
                 }))
@@ -861,7 +861,7 @@ local weld = {
         return #cards > 0 and #cards <= card.ability.select
 	end,
     loc_vars = function(self, q, card)
-        q[#q+1] = {key = "cry_absolute", set="Other"}
+        q[#q+1] = {key = "entr_aleph", set="Other"}
         return {
             vars = {
                 card.ability.select,

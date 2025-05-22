@@ -17,8 +17,8 @@ local hyperbolic_chamber = {
         },
 	},
     jokers = {
-		{ id = "j_cry_redeo", stickers = { "cry_absolute" } },
-        { id = "j_entr_xekanos", stickers = { "cry_absolute" } },
+		{ id = "j_cry_redeo", stickers = { "entr_aleph" } },
+        { id = "j_entr_xekanos", stickers = { "entr_aleph" } },
 	},
 	deck = {
 		type = "Challenge Deck",

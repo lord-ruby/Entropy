@@ -24,6 +24,7 @@ local i = {
     "items/misc/stakes",
     "items/misc/challenges",
     "items/misc/achievements",
+    "items/misc/other",
 
     "items/jokers/cursed_jokers",
     "items/jokers/misc_jokers",
