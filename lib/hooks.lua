@@ -230,7 +230,7 @@ function Card:set_edition(...)
             end
         end
     end
-    if self:is_sunny() then 
+    if self:is_sunny() and self.area == G.jokers then 
         check_for_unlock({ type = "sunny_joker" })
     end
 end

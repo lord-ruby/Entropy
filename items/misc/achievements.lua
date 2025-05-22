@@ -42,10 +42,45 @@ local megalyteri = {
 	end,
 }
 
+local acheros = {
+	object_type = "Achievement",
+	key = "acheros",
+	order = 999,
+	bypass_all_unlocked = true,
+	atlas = "entr_achievements",
+	--reset_on_startup = true,
+    pos = {x=1,y=1},
+    hidden_text = true,
+	unlock_condition = function(self, args)
+        if args.type == "beat_ee" then
+		    return true
+        end
+	end,
+}
+
+
+local outopia = {
+	object_type = "Achievement",
+	key = "outopia",
+	order = 1000,
+	bypass_all_unlocked = true,
+	atlas = "entr_achievements",
+	--reset_on_startup = true,
+    pos = {x=1,y=1},
+    hidden_text = true,
+	unlock_condition = function(self, args)
+        if args.type == "zenith_ascension" then
+		    return true
+        end
+	end,
+}
+
 return {
     items = {
         here_comes_the_sun,
         event_horizon,
-        megalyteri
+        megalyteri,
+        outopia,
+        acheros
     }
 }

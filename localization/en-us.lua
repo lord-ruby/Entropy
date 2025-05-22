@@ -2264,11 +2264,15 @@ local decs = {
 			ach_entr_event_horizon = "Event Horizon",
 			ach_entr_here_comes_the_sun = "Here comes The Sun",
 			ach_entr_megalyteri = "Megalyteri",
+			ach_entr_outopia = "Outopia",
+			ach_entr_acheros = "Acheros",
 		},
 		achievement_descriptions = {
 			ach_entr_event_horizon = "Use define to turn Obelisk into Sob",
 			ach_entr_here_comes_the_sun = "Obtain a Sunny Joker",
 			ach_entr_megalyteri = "Reach {50000} on Dekatria",
+			ach_entr_outopia = "Obtain a zenith rarity Joker",
+			ach_entr_acheros = "Beat Ante 32s boss blind, Endless Entropy",
 		},
 		suits_plural = {
 			entr_nilsuit = "Nil",

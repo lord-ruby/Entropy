@@ -638,6 +638,7 @@ local push = {
             local key = pseudorandom_element(Entropy.Zeniths, pseudoseed("zenith"))
             add_joker(key):add_to_deck()
             G.jokers.config.card_limit = 1
+            check_for_unlock({ type = "zenith_ascension" })
         end
     end,
     can_use = function(self, card)
@@ -1112,7 +1113,7 @@ local hotfix = {
     atlas = "consumables",
     pos = {x=1,y=5},
     use = function(self, card, area, copier)
-        Entropy.ApplySticker(Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, card)[1], "entr_hotfix")
+        Entropy.ApplySticker(Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card)[1], "entr_hotfix")
     end,
     can_use = function(self, card)
         return #Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, card) == 1
@@ -1168,10 +1169,8 @@ local hotfix_sticker = {
     end,
     apply = function(self,card,val) 
         card.ability.entr_hotfix = true
-        if card.area then
+        card.ability.entr_hotfix_rounds = 15
         if card.debuff then card.debuff = false end
-        card.ability.entr_hotfix_rounds = pseudorandom("hotfix", 15, 20)
-        end
     end,
     calculate = function(self, card, context)
         if card.debuff then card.debuff = false end

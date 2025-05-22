@@ -454,6 +454,7 @@ local phase4 = {
 			Entropy.WinEE()
 		end
 		G.GAME.EEBuildup = false
+		check_for_unlock({ type = "beat_ee" })
 	end,
 	press_play = function(self)
 		for k, _ in pairs(Entropy.GetEEBlinds()) do

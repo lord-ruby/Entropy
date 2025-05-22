@@ -12,9 +12,6 @@ local flipside = {
     },
     set = "Spectral",
     can_use = function(self, card)
-        for i, v in pairs(Entropy.FlipsideInversions) do
-            Entropy.FlipsideInversions[v]=i
-        end
         local cards = Entropy.GetHighlightedCards({G.consumeables, G.hand, G.pack_cards, G.shop_jokers, G.shop_vouchers, G.shop_booster}, card)
         cards = Entropy.FilterTable(cards, function(card)
             return Entropy.Inversion(card)
