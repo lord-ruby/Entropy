@@ -1169,6 +1169,14 @@ local decs = {
 					"1 selected Joker or Consumable",
 				}
 			},
+			c_entr_badarg = {
+				name = "(~)$ bad arg*",
+				text = {
+					"{C:red}Stop{} a {C:attention}selected{} poker hand from {C:red}scoring{}",
+					"or using up hands for the",
+					"{C:attention}remainder{} of the run"
+				}
+			},
 		},
 		RPlanet = {
 			c_entr_regulus = {
@@ -2387,6 +2395,7 @@ local decs = {
 			b_off = "Disable",
 			b_true_endless = "True Endless Mode",
 			k_entr_glitched = "Use new glitched shader",
+			ph_hand_notreal = "Bad argument to function pokerhand"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

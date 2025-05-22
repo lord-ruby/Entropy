@@ -973,9 +973,7 @@ local sudo = {
 		G.CHOOSE_HAND:align_to_major()
     end,
     can_use = function(self, card)
-        local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
-        G.FUNCS.get_poker_hand_info(Entropy.GetHighlightedCards({G.hand}, card))
-        return text and text ~= "NULL"
+        return #Entropy.GetHighlightedCards({G.hand}, card) > 0 
 	end,
     loc_vars = function(self, q, card)
     end,
@@ -1433,6 +1431,49 @@ local local_card = {
     }
 }
 
+local badarg = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 3000+29,
+    key = "badarg",
+    set = "RCode",
+    
+    inversion = "c_cry_nperror",
+
+    atlas = "consumables",
+    pos = {x=3,y=6},
+    config = {
+    },
+    use = function(self, card, area, copier)
+        local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
+        G.FUNCS.get_poker_hand_info(Entropy.GetHighlightedCards({G.hand}, card))
+        if text and G.GAME.hands[text] then
+            if not G.GAME.badarg then G.GAME.badarg = {} end
+            G.GAME.badarg[text] = true
+        end
+    end,
+    can_use = function(self, card)
+        return #Entropy.GetHighlightedCards({G.hand}, card) > 0 
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.jokerslots,
+                card.ability.consumableslots,
+                card.ability.handsize,
+            }
+        }
+    end,
+    entr_credits = {
+        art = {"Grakhon"},
+        idea = {"Grakhon"}
+    }
+}
+
 local transpile = {
     dependencies = {
         items = {
@@ -1640,6 +1681,7 @@ return {
         detour,
         mbr,
         desync,
-        desync_card
+        desync_card,
+        badarg
     }
 }

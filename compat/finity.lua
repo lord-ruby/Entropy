@@ -125,29 +125,35 @@ if FinisherBossBlindStringMap then
         loc_vars = function(self, q, card)
             return {
                 vars = {
-                    localize("k_ee_hand_"..(card.ability.ee_handeffect or 1)),
-                    localize("k_ee_discard_"..(card.ability.ee_discardeffect or 1))
+                    localize("k_ee_hand_"..(card.ability.immutable.ee_handeffect or 1)),
+                    localize("k_ee_discard_"..(card.ability.immutable.ee_discardeffect or 1))
                 }
             }
         end,
+        config = {
+            immutable = {
+                ee_discardeffect = 1,
+                ee_handeffect = 1
+            }
+        },
         calculate = function(self, card, context)
             local ret = {}
-            local ret1 = ee_hand_funcs[card.ability.ee_discardeffect or 1](self, card, context)
-            local ret2 = ee_discard_funcs[card.ability.ee_discardeffect or 1](self, card, context)
+            local ret1 = ee_hand_funcs[card.ability.immutable.ee_discardeffect or 1](self, card, context)
+            local ret2 = ee_discard_funcs[card.ability.immutable.ee_discardeffect or 1](self, card, context)
             for i, v in pairs(ret1 or {}) do ret[i]=v end
             for i, v in pairs(ret2 or {}) do ret[i]=v end
             if context.joker_main then
                 G.GAME.nodebuff = false
-                card.ability.ee_handeffect = (card.ability.ee_handeffect or 1) + 1
-                if card.ability.ee_handeffect > 4 then card.ability.ee_handeffect = 1 end
-                if card.ability.ee_handeffect == 2 then G.GAME.nodebuff = true end
-                card.children.floating_sprite:set_sprite_pos({x=pseudorandom_element({2,3,4}, pseudoseed("ee_X")), y= card.ability.ee_discardeffect-1})
+                card.ability.immutable.ee_handeffect = (card.ability.immutable.ee_handeffect or 1) + 1
+                if card.ability.immutable.ee_handeffect > 4 then card.ability.immutable.ee_handeffect = 1 end
+                if card.ability.immutable.ee_handeffect == 2 then G.GAME.nodebuff = true end
+                card.children.floating_sprite:set_sprite_pos({x=pseudorandom_element({2,3,4}, pseudoseed("ee_X")), y= (card.ability.immutable.ee_discardeffect or 1)-1})
             end
             if context.pre_discard then
-                card.ability.ee_discardeffect = (card.ability.ee_discardeffect or 1) + 1
-                if card.ability.ee_discardeffect > 4 then card.ability.ee_discardeffect = 1 end
-                card.children.floating_sprite2:set_sprite_pos({x=1, y=card.ability.ee_discardeffect-1})
-                card.children.floating_sprite:set_sprite_pos({x=pseudorandom_element({2,3,4}, pseudoseed("ee_X")), y= card.ability.ee_discardeffect-1})
+                card.ability.immutable.ee_discardeffect = (card.ability.immutable.ee_discardeffect or 1) + 1
+                if card.ability.immutable.ee_discardeffect > 4 then card.ability.immutable.ee_discardeffect = 1 end
+                card.children.floating_sprite2:set_sprite_pos({x=1, y=(card.ability.immutable.ee_discardeffect or 1)-1})
+                card.children.floating_sprite:set_sprite_pos({x=pseudorandom_element({2,3,4}, pseudoseed("ee_X")), y= (card.ability.immutable.ee_discardeffect or 1)-1})
             end
             if #ret > 0 then return ret end
         end,

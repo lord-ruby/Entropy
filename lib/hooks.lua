@@ -1414,6 +1414,17 @@ local pokerhandinforef = G.FUNCS.get_poker_hand_info
 function G.FUNCS.get_poker_hand_info(_cards)
     if Entropy.HasJoker("j_entr_helios", true) or (Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled) then G.GAME.used_vouchers.v_cry_hyperspacetether = true end
     local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
+    if text and G.GAME.badarg and G.GAME.badarg[text] and G.bad_arg ~= text and text ~= "NULL" then
+        G.boss_throw_hand = true
+        G.bad_arg = text
+        G.E_MANAGER:add_event(Event({
+        func = function()
+            update_hand_text_random({delay = 0}, {chips="bad", mult="arg", handname = ""})
+            return true
+        end}))
+    else
+        G.bad_arg = nil
+    end
     local all_flesh = true
     for i, v in pairs(scoring_hand) do
         if v.config.center.key ~= "m_entr_flesh" then all_flesh = false end
@@ -2386,5 +2397,14 @@ function Card:change_suit(new_suit)
     if G.GAME.SuitBuffs[new_suit] then
         self.ability.bonus = (self.ability.bonus or 0) + (G.GAME.SuitBuffs[new_suit] and G.GAME.SuitBuffs[new_suit].chips or 0) - (self.ability.bonus_from_suit or 0)
         self.ability.bonus_from_suit = G.GAME.SuitBuffs[new_suit] and G.GAME.SuitBuffs[new_suit].chips or 0
+    end
+end
+
+local debuff_handref = Blind.debuff_hand
+function Blind:debuff_hand(cards, hand, handname, check)
+    if G.GAME.badarg and G.GAME.badarg[handname] then 
+        return true
+    else
+        return debuff_handref(self, cards, hand, handname, check)
     end
 end
