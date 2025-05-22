@@ -35,7 +35,6 @@ local oekrep = {
                     set = e.config.center.set
                 end 
                 if Entropy.BoosterSets[set] then
-                    e:start_dissolve()
                     local c = create_card("Booster", G.consumeables, nil, nil, nil, nil, key) 
                     c:set_ability(G.P_CENTERS[Entropy.BoosterSets[set] or "p_standard_normal_1"])
                     c:add_to_deck()
