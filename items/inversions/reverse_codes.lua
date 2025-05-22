@@ -1469,8 +1469,8 @@ local badarg = {
         }
     end,
     entr_credits = {
-        art = {"Grakhon"},
-        idea = {"Grakhon"}
+        art = {"cassknows"},
+        idea = {"cassknows"}
     }
 }
 
