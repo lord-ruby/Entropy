@@ -1,3 +1,13 @@
+SMODS.ConsumableType{
+	key = "CBlind",
+	primary_colour = HEX("ab3a3e"),
+	secondary_colour = HEX("ab3a3e"),
+	--collection_rows = { 4, 5 },
+	shop_rate = 0.0,
+	default = "c_entr_bl_small",
+    hidden=true,
+}
+
 SMODS.ConsumableType({
 	object_type = "ConsumableType",
 	key = "RTarot",
@@ -30,17 +40,6 @@ SMODS.ConsumableType({
 	loc_txt = {},
 	default = "c_entr_changeling"
 })
-
-
-SMODS.ConsumableType{
-	key = "CBlind",
-	primary_colour = HEX("ab3a3e"),
-	secondary_colour = HEX("ab3a3e"),
-	--collection_rows = { 4, 5 },
-	shop_rate = 0.0,
-	default = "c_entr_bl_small",
-    hidden=true,
-}
 
 SMODS.ConsumableType({
 	object_type = "ConsumableType",
