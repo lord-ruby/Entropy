@@ -811,7 +811,7 @@ local ocean = {
         }
     },
     config = {
-        per_level=25
+        per_level=10
     },
     pos = {x=7,y=1},
     inversion = "c_star",
@@ -853,7 +853,7 @@ local forest = {
         }
     },
     config = {
-        per_level=25
+        per_level=10
     },
     pos = {x=8,y=1},
     inversion = "c_moon",
@@ -895,7 +895,7 @@ local mountain = {
         }
     },
     config = {
-        per_level=25
+        per_level=10
     },
     pos = {x=9,y=1},
     inversion = "c_sun",
@@ -978,7 +978,7 @@ local tent = {
         }
     },
     config = {
-        per_level=25
+        per_level=10
     },
     pos = {x=1,y=2},
     inversion = "c_world",
