@@ -767,7 +767,7 @@ local decs = {
 				text = {
 					"{C:green}#1# in #2#{} chance to",
 					"randomly {C:attention}upgrade{} the enhancement",
-					"of up to #3# selected card#<s>1#"
+					"of up to #3# selected card#<s>3#"
 				}
 			},
 			c_entr_feast = {
