@@ -150,6 +150,7 @@ if FinisherBossBlindStringMap then
                 if card.ability.immutable.ee_handeffect > 4 then card.ability.immutable.ee_handeffect = 1 end
                 if card.ability.immutable.ee_handeffect == 2 then G.GAME.nodebuff = true end
                 card.children.floating_sprite:set_sprite_pos({x=pseudorandom_element({2,3,4}, pseudoseed("ee_X")), y= (card.ability.immutable.ee_discardeffect or 1)-1})
+                print(card.ability.immutable.ee_discardeffect)
             end
             if context.pre_discard then
                 card.ability.immutable.ee_discardeffect = (card.ability.immutable.ee_discardeffect or 1) + 1
@@ -157,7 +158,7 @@ if FinisherBossBlindStringMap then
                 card.children.floating_sprite2:set_sprite_pos({x=1, y=(card.ability.immutable.ee_discardeffect or 1)-1})
                 card.children.floating_sprite:set_sprite_pos({x=pseudorandom_element({2,3,4}, pseudoseed("ee_X")), y= (card.ability.immutable.ee_discardeffect or 1)-1})
             end
-            if #ret > 0 then return ret end
+            if ret1 or ret2 then return ret end
         end,
         in_pool = function()
             return false
