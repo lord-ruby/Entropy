@@ -874,10 +874,13 @@ local weld = {
 SMODS.Rank {
     key = 'nilrank',
     card_key = 'nilrank',
-    pos = {x = 99},
+    pos = {x = 0},
     nominal = 1,
     face_nominal = 1,
     shorthand = "nil",
+    hc_atlas = 'hc_nilr',
+    lc_atlas = 'lc_nilr',
+    suit_map = { Hearts = 0, Clubs = 1, Diamonds = 2, Spades = 3 },
     in_pool = function(self, args)
         return false
     end
@@ -886,7 +889,9 @@ SMODS.Suit {
     key = 'nilsuit',
     card_key = 'nilsuit',
     shorthand="nil",
-    pos = { y = 99 },
+    hc_atlas = 'hc_nils',
+    lc_atlas = 'lc_nils',
+    pos = { y = 0 },
     ui_pos = {x=99,y=99},
     in_pool = function(self, args)
         return false
