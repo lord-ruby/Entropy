@@ -573,9 +573,10 @@ payload = '''
           G.FUNCS.draw_from_discard_to_deck()
           G.STATE = 1
           G.STATE_COMPLETE = false
-        else
-            G.STATE_COMPLETE = true
-            end_round()
+          G.GAME.ChangingPhase = true
+        elseif not G.GAME.ChangingPhase then
+          G.STATE_COMPLETE = false
+          end_round()
         end
     end
 '''
