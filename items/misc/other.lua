@@ -42,7 +42,7 @@ local aleph = {
 
 local start_dissolveref = Card.start_dissolve
 function Card:start_dissolve(...)
-    if not self.ability.entr_aleph then
+    if not self.ability.entr_aleph or card.ability.bypass_aleph then
         return start_dissolveref(self, ...)
     end
 end
@@ -57,6 +57,14 @@ function Card:update(dt)
 		self.ability.entr_aleph = true
 		self.ability.eternal = true
 	end
+    if self.cry_absolute then
+        self.cry_absolute = nil
+        self.ability.cry_absolute = nil
+
+        self.entr_aleph = true
+        self.ability.entr_aleph = true
+		self.ability.eternal = true
+    end
 end
 
 SMODS.Sticker:take_ownership("eternal", {
@@ -71,6 +79,10 @@ SMODS.Sticker:take_ownership("eternal", {
 		end
 	end,
 })
+
+SMODS.Sticker:take_ownership("cry_absolute", {
+    no_collection = true
+}, true)
 
 return {
     items = {
