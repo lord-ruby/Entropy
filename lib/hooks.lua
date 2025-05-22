@@ -2384,7 +2384,7 @@ function Card:change_suit(new_suit)
     change_suitref(self, new_suit)
     if not G.GAME.SuitBuffs then G.GAME.SuitBuffs = {} end
     if G.GAME.SuitBuffs[new_suit] then
-        self.ability.bonus = (self.ability.bonus or 0) + G.GAME.SuitBuffs[new_suit].chips - (self.ability.bonus_from_suit or 0)
-        self.ability.bonus_from_suit = G.GAME.SuitBuffs[new_suit].chips
+        self.ability.bonus = (self.ability.bonus or 0) + (G.GAME.SuitBuffs[new_suit] and G.GAME.SuitBuffs[new_suit].chips or 0) - (self.ability.bonus_from_suit or 0)
+        self.ability.bonus_from_suit = G.GAME.SuitBuffs[new_suit] and G.GAME.SuitBuffs[new_suit].chips or 0
     end
 end
