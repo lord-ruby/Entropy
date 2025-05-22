@@ -22,7 +22,7 @@ pattern = '''tag_sprite.stop_hover = function(_self) _self.hovering = false; Nod
 position = "after"
 payload = '''
 tag_sprite.click = function(_self)
-        if (self.key == 'tag_entr_dog' or self.level_func or self.key=='tag_cry_cat') and self.HUD_tag then
+        if (self.key == 'tag_entr_dog' or G.P_TAGS[self.key].level_func or self.key=='tag_cry_cat') and self.HUD_tag then
 		for i = 1, #G.GAME.tags do
 			local other_cat = G.GAME.tags[i]
 			if other_cat.key == self.key then
@@ -39,7 +39,7 @@ tag_sprite.click = function(_self)
 						for i = 2, #G.P_CENTER_POOLS.Edition do
 							j = j + 1
 							if j >= other_cat.ability.level + 1 then
-								edition = other_cat.get_edition and other_cat:get_edition() or G.P_CENTER_POOLS.Edition[i]
+								edition = G.P_TAGS[other_cat.key].get_edition and G.P_TAGS[other_cat.key].get_edition(other_cat) or G.P_CENTER_POOLS.Edition[i]
 								break
 							end
 						end
@@ -89,8 +89,8 @@ tag_sprite.click = function(_self)
 						func = func
 					}))
 
-					if other_cat.level_func then
-						other_cat.ability.level = other_cat.level_func(other_cat.ability.level, 1,other_cat)
+					if G.P_TAGS[other_cat.key].level_func then
+						other_cat.ability.level = G.P_TAGS[other_cat.key].level_func(other_cat.ability.level, 1,other_cat)
 					else
 						other_cat.ability.level = other_cat.ability.level + 1
 					end
