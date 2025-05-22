@@ -1501,7 +1501,11 @@ function Tag:init(_tag, for_collection, _blind_type)
             _tag = Entropy.AscendedTags[_tag]
         end
     end
-    return ref(self,_tag, for_collection, _blind_type)
+    local tag = ref(self,_tag, for_collection, _blind_type)
+    if G.P_TAGS[tag.key].set_ability then
+        G.P_TAGS[tag.key]:set_ability(tag)
+    end
+    return tag
 end
 
 local TrumpCardAllow = {

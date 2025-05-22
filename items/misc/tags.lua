@@ -250,6 +250,9 @@ SMODS.Atlas {
 	loc_vars = function(self, info_queue, tag)
 		return { vars = { tag.ability.num or "?" } }
 	end,
+	config = {
+		num = 4
+	}
 	apply = function(self, tag, context)
 		if
 			context.type == "tag_add"
