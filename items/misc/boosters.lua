@@ -143,9 +143,6 @@ local mega = {
 
 
 function create_inverted_card(area, seed)
-    for i, v in pairs(Entropy.FlipsideInversions) do
-        Entropy.FlipsideInversions[v]=i
-    end
     local num = pseudorandom("twisted_rare")
     if num - 0.003 <= 0 then
         local c = pseudorandom_element(Entropy.RareInversions, pseudoseed(seed or "twisted"))
