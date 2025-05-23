@@ -149,7 +149,7 @@ local comet = {
 		showdown = true,
 	},
 	calculate = function(self, blind, context)
-		if context.check then 
+		if context.check and not G.GAME.blind.disabled then 
 			for i, v in pairs(G.hand.cards) do if not v.highlighted then v.destroy_adjacent = false;v.destroyed_adjacent = false end end
 			for i, v in pairs(G.hand.highlighted) do
 				v.destroy_adjacent = true
