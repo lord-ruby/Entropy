@@ -155,6 +155,9 @@ Cryptid.edeck_sprites.sticker.link = {atlas="entr_crypt_deck", pos = {x=4,y=2}}
 Cryptid.edeck_sprites.sticker.desync = {atlas="entr_crypt_deck", pos = {x=5,y=2}}
 Cryptid.edeck_sprites.sticker.temporary = {atlas="entr_crypt_deck", pos = {x=6,y=2}}
 Cryptid.edeck_sprites.sticker.entr_aleph = {atlas="entr_crypt_deck", pos = {x=4,y=3}}
+Cryptid.edeck_sprites.sticker.scarred = {atlas="entr_crypt_deck", pos = {x=5,y=3}}
+Cryptid.edeck_sprites.sticker.entr_yellow_sign = {atlas="entr_crypt_deck", pos = {x=3,y=3}}
+Cryptid.edeck_sprites.sticker.superego = {atlas="entr_crypt_deck", pos = {x=2,y=3}}
 
 
 
