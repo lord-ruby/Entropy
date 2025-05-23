@@ -1111,3 +1111,14 @@ function Entropy.LevelSuit(suit, card, amt)
     { mult = 0, chips = 0, handname = "", level = "" }
     )
 end
+
+function Entropy.GetRepetitions(card)
+    local res2 = {}
+    for i, v in ipairs(G.jokers.cards) do
+        local res = eval_card(v, {repetition=true, other_card=card,cardarea=card.area,card_effects={{},{}}})
+        if res.jokers and res.jokers.repetitions then
+            res2.repetitions = (res2.repetitions or 0) + res.jokers.repetitions
+        end
+    end
+    return res2
+end

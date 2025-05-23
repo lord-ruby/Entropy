@@ -99,7 +99,32 @@ local silver = {
             return {
                 func = function()
                     for i, v in ipairs(G.hand.cards) do
-                        SMODS.calculate_individual_effect({dollars = 1}, v, 'dollars', 1, false)
+                        local res = Entropy.GetRepetitions(v)
+                        if v.debuff then res.repetitions = nil end
+                        for i = 1, (res.repetitions or 0) + 1 do
+                            if i > 1 then
+                                card_eval_status_text(
+                                    v,
+                                    "extra",
+                                    nil,
+                                    nil,
+                                    nil,
+                                    { message = localize("k_again_ex"), colour = G.C.RED }
+                                )
+                            end
+                            if v.debuff then
+                                card_eval_status_text(
+                                    v,
+                                    "extra",
+                                    nil,
+                                    nil,
+                                    nil,
+                                    { message = localize("k_debuffed"), colour = G.C.RED }
+                                )
+                            else
+                                SMODS.calculate_individual_effect({dollars = 1}, v, 'dollars', 1, false)
+                            end
+                        end
                     end
                 end
             }
@@ -108,7 +133,32 @@ local silver = {
             return {
                 func = function()
                     for i, v in ipairs(G.hand.cards) do
-                        SMODS.calculate_individual_effect({dollars = 1}, v, 'dollars', 1, false)
+                        local res = Entropy.GetRepetitions(v)
+                        if v.debuff then res.repetitions = nil end
+                        for i = 1, (res.repetitions or 0) + 1 do
+                            if v.debuff then
+                                card_eval_status_text(
+                                    v,
+                                    "extra",
+                                    nil,
+                                    nil,
+                                    nil,
+                                    { message = localize("k_debuffed"), colour = G.C.RED }
+                                )
+                            else
+                                SMODS.calculate_individual_effect({dollars = 1}, v, 'dollars', 1, false)
+                            end
+                            if i > 1 then
+                                card_eval_status_text(
+                                    v,
+                                    "extra",
+                                    nil,
+                                    nil,
+                                    nil,
+                                    { message = localize("k_again_ex"), colour = G.C.RED }
+                                )
+                            end
+                        end
                     end
                 end
             }
