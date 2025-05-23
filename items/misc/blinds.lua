@@ -747,6 +747,50 @@ local endless_entropy = {
     no_collection = true,
 }
 
+local alabaster = {
+	dependencies = {
+        items = {
+          "set_entr_blinds"
+        }
+    },
+	object_type = "Blind",
+    order = 0,
+	name = "entr-alabaster_anchor",
+	key = "alabaster_anchor",
+	pos = { x = 0, y = 10 },
+	atlas = "blinds",
+	boss_colour = HEX("cebea8"),
+    mult=2,
+    dollars = 8,
+	boss = {
+		min = 3,
+		max = 10,
+		showdown = true,
+	},
+	calculate = function(self, blind, context)
+		if context.after or context.pre_discard then
+			for i = 1, #G.jokers.cards do
+				Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
+					Cryptid.misprintize(card, { min = 0.95, max = 0.95 }, nil, true)
+				end)
+				G.jokers.cards[i].config.cry_multiply = (G.jokers.cards[i].config.cry_multiply or 1) * 0.95
+			end
+		end
+	end
+}
+
+local highlight_ref = Card.highlight
+function Card:highlight(is_highlighted)
+	if Entropy.BlindIs("bl_entr_alabaster_anchor") and self.area == G.hand and G.hand then
+		for i = 1, #G.jokers.cards do
+			Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
+				Cryptid.misprintize(card, { min = 0.95, max = 0.95 }, nil, true)
+			end)
+			G.jokers.cards[i].config.cry_multiply = (G.jokers.cards[i].config.cry_multiply or 1) * 0.95
+		end
+	end
+	highlight_ref(self, is_highlighted)
+end
 
 return {
 	items = {
@@ -759,6 +803,7 @@ return {
 		phase2,
 		phase3,
 		phase4,
-		endless_entropy
+		endless_entropy,
+		alabaster
 	}
 }

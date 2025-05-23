@@ -614,6 +614,13 @@ local decs = {
 					"(Entropy is endless)"
 				}
 			},
+			bl_entr_alabaster_anchor = {
+				name = "Alabaster Anchor",
+				text = {
+					"Playing Hands, Discarding, and Select/Unselecting playing cards",
+					"Temporarily decreases joker values by 5%"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {
