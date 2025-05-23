@@ -837,7 +837,8 @@ local companion = {
     end,
     
 	entr_credits = {
-        idea = {"Lyman"}
+        idea = {"Lyman"},
+        art = {"Lyman"}
     }
 }
 
