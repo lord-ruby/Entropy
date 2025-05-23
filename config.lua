@@ -3,5 +3,6 @@ return {
 	["entropic_music"] = true,
 	["blind_tokens"] = true,
 	["freebird"] = true,
-	["override_glitched"] = true
+	["override_glitched"] = true,
+	["omega_aleph"] = false
 }

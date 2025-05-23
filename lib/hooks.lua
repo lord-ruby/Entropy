@@ -181,7 +181,7 @@ end
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, initial, delay)
     local link = self and self.ability and self.ability.link
-    if self.config.center ~= "m_entr_disavowed" then
+    if self.config.center ~= "m_entr_disavowed" and (not self.entr_aleph or self.ability.bypass_aleph) then
         set_abilityref(self, center, initial, delay)
     end
     self.ability.link = link
@@ -1560,8 +1560,8 @@ G.FUNCS.use_card = function(e, mute, nosave)
             set = card.config.center.set
         }
     end
-    ref(e, mute, nosave)
     card.ability.bypass_aleph = true
+    ref(e, mute, nosave)
 end
 
 local main_ref = evaluate_play_main
@@ -1594,14 +1594,18 @@ function evaluate_play_main(text, disp_text, poker_hands, scoring_hand, non_loc_
 end
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, ...)
-    if self.config and self.config.center and self.config.center.key ~= "m_entr_disavowed" then
+    if self.config and self.config.center and self.config.center.key ~= "m_entr_disavowed" and (not self.entr_aleph or self.ability.bypass_aleph)  then
         if center and Entropy.FlipsideInversions[center.key] and not G.SETTINGS.paused and (G.GAME.modifiers.entr_twisted or center.set == "Planet" and G.GAME.entr_princess) and not self.multiuse and not self.ability.fromflipside then
             set_abilityref(self, G.P_CENTERS[Entropy.FlipsideInversions[center.key]] or center, ...)
         else    
             set_abilityref(self, center, ...)
         end
     else
-        set_abilityref(self, G.P_CENTERS.m_entr_disavowed, ...)
+        if not self.entr_aleph then
+            set_abilityref(self, G.P_CENTERS.m_entr_disavowed, ...)
+        else
+            set_abilityref(self, self.config.center, ...)
+        end
     end
 end
 
@@ -2434,8 +2438,68 @@ G.FUNCS.evaluate_play = function(e)
 end
 
 local ref = copy_card
-function copy_card(...)
-    local card = ref(...)
-    card.ability.bypass_aleph = nil
-    return card
+function copy_card(old, new, ...)
+    if not new or (not new.entr_aleph) then
+        local card = ref(old, new, ...)
+        card.ability.bypass_aleph = nil
+        return card
+    end
+    return new
+end
+
+if Entropy.config.omega_aleph then
+    local card_removeref = Card.remove
+    function Card:remove(...)
+        if G.SETTINGS.paused or not self.entr_aleph or self.ability.bypass_aleph then
+            return card_removeref(self, ...)
+        else
+            if self.entr_aleph then
+                local card2 = copy_card(self)
+                card2:add_to_deck()
+                if self.area then 
+                    local ind = #self.area.cards
+                    for i, v in ipairs(self.area.cards) do
+                        if v == self then ind = i end
+                    end
+                    self.area.cards[ind] = card2
+                    card2.area = self.area
+                end
+                local ref = card_removeref(self, ...)
+                self = nil
+
+                if card2.ability.name == "Popcorn" then
+                    card2.ability.mult = card2.ability.mult - card2.ability.extra
+                end
+
+                if card2.ability.name == "Turtle Bean" then
+                    card2.ability.extra.h_size = card2.ability.extra.h_size - card2.ability.extra.h_mod
+                end
+                if card2.ability.name == "Ramen" then
+                    card2.ability.x_mult = card2.ability.x_mult - card2.ability.extra
+                end
+                if card2.ability.name == "Seltzer" then
+                    card2.ability.extra = card2.ability.extra - 1
+                end
+                if card2.ability.name == "Ice Cream" then
+                    card2.ability.extra.chips = card2.ability.extra.chips - card2.ability.extra.chip_mod
+                end
+                return ref
+            end
+        end
+    end
+
+    local cardarea_removeref = CardArea.remove_card
+    function CardArea:remove_card(card, ...)
+        if not card or not card.entr_aleph or G.SETTINGS.paused or card.ability.bypass_aleph then
+            return cardarea_removeref(self, card, ...)
+        end
+    end
+
+    local keyef = Controller.key_press_update
+    function Controller:key_press_update(key, dt)
+        if not _RELEASE_MODE and key == "r" then
+            if self.hovering.target and self.hovering.target.ability then self.hovering.target.ability.bypass_aleph = true end
+        end
+        keyef(self, key, dt)
+    end
 end

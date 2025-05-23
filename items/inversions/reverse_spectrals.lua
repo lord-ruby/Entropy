@@ -1608,6 +1608,7 @@ local regenerate = {
     use = function(self, card, area, copier)
         local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeable}, card)
         Entropy.FlipThen(cards, function(card)
+            card.ability.bypass_aleph = true
             if card.config.center.set == "Enhanced" then
                 if card.config.center.key == "m_entr_disavowed" then
                     card.ability.disavow = false
