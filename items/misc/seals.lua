@@ -16,19 +16,22 @@ local crimson = {
                 if G.play.cards[i+1] == card or G.play.cards[i-1] == card then
                     context.crimson_trigger = true
                     local eval, post = eval_card(v, context)
+                    eval.chips = v.base.nominal + v.ability.bonus or 0
                     local effects = {eval}
-                    for _,v in ipairs(post) do effects[#effects+1] = v end
+                    for _,v in ipairs(post or {}) do effects[#effects+1] = v end
                     if eval.retriggers then
                         for rt = 1, #eval.retriggers do
                             local rt_eval, rt_post = eval_card(v, context)
                             table.insert(effects, {eval.retriggers[rt]})
                             table.insert(effects, rt_eval)
                             for _, v in ipairs(rt_post) do effects[#effects+1] = v end
+                            table.insert(effects, {chips = v.base.nominal + v.ability.bonus or 0})
                         end
                     end
                     SMODS.trigger_effects(effects, v)
                 end
             end
+            context.crimson_trigger = nil
         end
     end,
 }
