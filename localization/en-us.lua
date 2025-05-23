@@ -1708,6 +1708,13 @@ local decs = {
 					"{C:attention}#1#{} selected cards in hand",
 				}
 			},
+			c_entr_lust = {
+				name = "Lust",
+				text = {
+					"Apply {C:dark_edition}Freaky{} to",
+					"{C:attention}#1#{} selected cards in hand",
+				}
+			},
 		},
 		Stake = {
 			stake_entr_entropic = {
@@ -2416,7 +2423,14 @@ local decs = {
 			b_off = "Disable",
 			b_true_endless = "True Endless Mode",
 			k_entr_glitched = "Use new glitched shader",
-			ph_hand_notreal = "Bad argument to function pokerhand"
+			ph_hand_notreal = "Bad argument to function pokerhand",
+
+
+			cry_notif_antireal_1 = "Antireal Joker",
+			cry_notif_antireal_2 = "Copyright Notice",
+			cry_notif_antireal_d1 = 'Antireal Joker plays the song "Freebird",',
+			cry_notif_antireal_d2 = "which is copyrighted and can't be",
+			cry_notif_antireal_d3 = "used for streams and videos.",
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

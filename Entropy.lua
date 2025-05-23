@@ -1,3 +1,6 @@
+local mod_path = "" .. SMODS.current_mod.path
+Entropy.path = mod_path
+
 local i = {
     "lib/colours",
     "lib/utils",

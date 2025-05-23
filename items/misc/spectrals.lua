@@ -58,7 +58,7 @@ local shatter = {
         end)
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand}, nil, card)
+        local num = #Entropy.GetHighlightedCards({G.hand}, card)
         return num > 0 and num <= card.ability.limit
 	end,
     loc_vars = function(self, q, card)
@@ -124,11 +124,57 @@ local destiny = {
     weight = 0
 }
 
+local lust = {
+    key = "lust",
+    set = "Spectral",
+    
+    order = 38,
+    object_type = "Consumable",
+    config = {limit = 2},
+    atlas = "consumables",
+    pos = {x=4,y=Cryptid_config.family_mode and 8 or 7},
+    dependencies = {
+        items = {
+          "set_entr_spectrals"
+        }
+    },
+    use = function(self, card, area, copier)
+        Entropy.FlipThen(G.hand.highlighted, function(card)
+            card:set_edition("e_entr_freaky")
+        end)
+    end,
+    can_use = function(self, card)
+        local num = #Entropy.GetHighlightedCards({G.hand}, card)
+        return num > 0 and num <= card.ability.limit
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.e_entr_freaky
+        return {vars={
+            card.ability.limit
+        }}
+    end,
+    entr_credits = {
+        art = {"missingnumber"}
+    }
+}
+local ref = Cryptid.reload_localization
+function Cryptid.reload_localization()
+    SMODS.handle_loc_file(Entropy.path)
+    G.P_CENTERS.c_entr_lust.pos = {x=4,y=Cryptid_config.family_mode and 8 or 7}
+    for i, v in ipairs(G.I.CARD) do
+        if v.config.center_key == "c_entr_lust" then
+            v.children.center:set_sprite_pos({x=4,y=Cryptid_config.family_mode and 8 or 7})
+        end
+    end
+    return ref()
+end
+
 
 return {
     items = {
         flipside,
         shatter,
-        destiny
+        destiny,
+        lust
     }
 }

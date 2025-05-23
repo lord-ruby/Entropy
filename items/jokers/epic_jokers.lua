@@ -272,6 +272,11 @@ local antireal = {
             end
         end
     end,
+    add_to_deck = function(self, card, from_debuff)
+		if not from_debuff then
+			Cryptid.notification_overlay("antireal")
+		end
+	end,
     entr_credits = {
 	idea = {"cassknows"},
 	art = {"notmario", "cassknows"}

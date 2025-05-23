@@ -34,6 +34,13 @@ local entrConfigTab = function()
 	config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }
 	entr_nodes[#entr_nodes + 1] = config
 	entr_nodes[#entr_nodes + 1] = create_toggle({
+		label = localize("cry_family"),
+		active_colour = HEX("40c76d"),
+		ref_table = Cryptid_config,
+		ref_value = "family_mode",
+		callback = Cryptid.reload_localization,
+	})
+	entr_nodes[#entr_nodes + 1] = create_toggle({
 		label = localize("k_entr_faster_ante_scaling"),
 		active_colour = HEX("40c76d"),
 		ref_table = Entropy.config,
