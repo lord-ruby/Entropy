@@ -958,6 +958,12 @@ local decs = {
 					"any other Booster Pack in the shop"
 				},
 			},
+			v_entr_alt_path = {
+				name = "Other-Side",
+				text = {
+					"Change the Ante 1 Boss to ???"
+				},
+			},
 		},
 		RCode = {
 			c_entr_memory_leak = {

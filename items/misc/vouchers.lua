@@ -63,10 +63,32 @@ local supersede = {
     end
 }
 
+local alt_path = {
+    dependencies = {
+        items = {
+          "set_entr_vouchers",
+          "set_entr_inversions",
+        }
+    },
+	object_type = "Voucher",
+    order = 10000,
+    key = "alt_path",
+    atlas = "vouchers",
+    pos = {x=3, y=0},
+    cost = 0,
+    redeem = function(self, card)
+        G.GAME.alt_path = true
+    end,
+    in_pool = function()
+        return false
+    end
+}
+
 return {
     items = {
         marked,
         trump_card,
-        supersede
+        supersede,
+        alt_path
     }
 }
