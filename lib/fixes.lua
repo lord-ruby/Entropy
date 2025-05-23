@@ -339,3 +339,13 @@ SMODS.Consumable:take_ownership("cry_white_hole",
   }
 ,true)
 
+local updateht_ref= update_hand_text
+function update_hand_text( args1, args2)
+    if args2.handname == localize("cry_None", "poker_hands") and G.GAME.badarg and G.GAME.badarg["cry_None"] then
+      args2.handname = ""
+      args2.chips = "bad"
+      args2.mult = "arg"
+    else
+      updateht_ref(args1, args2)
+    end
+end

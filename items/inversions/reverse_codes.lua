@@ -984,7 +984,8 @@ local sudo = {
 		G.CHOOSE_HAND:align_to_major()
     end,
     can_use = function(self, card)
-        return #Entropy.GetHighlightedCards({G.hand}, card) > 0 
+        local num = G.PROFILES[G.SETTINGS.profile].cry_none and -1 or 0
+        return #Entropy.GetHighlightedCards({G.hand}, card) > num 
 	end,
     loc_vars = function(self, q, card)
     end,
@@ -1464,9 +1465,13 @@ local badarg = {
             if not G.GAME.badarg then G.GAME.badarg = {} end
             G.GAME.badarg[text] = true
         end
+        update_hand_text({delay=0}, {handname = "", chips="bad", mult="arg"})
+        G.boss_throw_hand = true
+        G.bad_arg = true
     end,
     can_use = function(self, card)
-        return #Entropy.GetHighlightedCards({G.hand}, card) > 0 
+        local num = G.PROFILES[G.SETTINGS.profile].cry_none and -1 or 0
+        return #Entropy.GetHighlightedCards({G.hand}, card) > num
 	end,
     loc_vars = function(self, q, card)
         return {
