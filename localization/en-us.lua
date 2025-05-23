@@ -2113,9 +2113,8 @@ local decs = {
 			entr_silver_seal = {
 				name = "Silver Seal",
 				text = {
-					"Gives {C:gold}$4{} if",
-					"card is {C:attention}played{}",
-					"and {C:attention}unscoring{}",
+					"Gives {C:gold}$1{} for each",
+					"card held in {C:attention}hand{} when scored",
         		}
 			},
 			entr_pink_seal = {

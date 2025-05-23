@@ -11,13 +11,16 @@ local crimson = {
     pos = {x=0,y=0},
     badge_colour = HEX("8a0050"),
     calculate = function(self, card, context)
-        if context.cardarea == G.play and not context.crimson_trigger then
+        if (context.cardarea == G.play or context.cardarea == G.hand) and not context.crimson_trigger then
             for i, v in ipairs(G.play.cards) do
                 if G.play.cards[i+1] == card or G.play.cards[i-1] == card then
                     context.crimson_trigger = true
                     local eval, post = eval_card(v, context)
-                    eval.chips = v.base.nominal + v.ability.bonus or 0
                     local effects = {eval}
+                    if context.main_scoring then 
+                        eval.chips = v.base.nominal + v.ability.bonus or 0
+                        SMODS.calculate_context({individual = true, other_card=v, cardarea = v.area})
+                    end
                     for _,v in ipairs(post or {}) do effects[#effects+1] = v end
                     if eval.retriggers then
                         for rt = 1, #eval.retriggers do
@@ -25,7 +28,10 @@ local crimson = {
                             table.insert(effects, {eval.retriggers[rt]})
                             table.insert(effects, rt_eval)
                             for _, v in ipairs(rt_post) do effects[#effects+1] = v end
-                            table.insert(effects, {chips = v.base.nominal + v.ability.bonus or 0})
+                            if context.main_scoring then 
+                                table.insert(effects, {chips = v.base.nominal + v.ability.bonus or 0}) 
+                                SMODS.calculate_context({individual = true, other_card=v, cardarea = v.area})
+                            end
                         end
                     end
                     SMODS.trigger_effects(effects, v)
@@ -89,11 +95,23 @@ local silver = {
     pos = {x=2,y=0},
     badge_colour = HEX("84a5b7"),
     calculate = function(self, card, context)
-		if context.cardarea == "unscored" and context.main_scoring then
-            ease_dollars(4)
+		if context.cardarea == G.play and context.main_scoring then
+            return {
+                func = function()
+                    for i, v in ipairs(G.hand.cards) do
+                        SMODS.calculate_individual_effect({dollars = 1}, v, 'dollars', 1, false)
+                    end
+                end
+            }
         end
         if context.forcetrigger then
-            ease_dollars(4)
+            return {
+                func = function()
+                    for i, v in ipairs(G.hand.cards) do
+                        SMODS.calculate_individual_effect({dollars = 1}, v, 'dollars', 1, false)
+                    end
+                end
+            }
         end
     end,
     draw = function(self, card, layer)
