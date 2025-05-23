@@ -2090,7 +2090,7 @@ local decs = {
 			entr_crimson_seal = {
 				name = "Crimson Seal",
 				text = {
-					"Effect TBD"
+					"Retrigger {C:attention}adjacent{} cards"
 				}
 			},
 			entr_sapphire_seal = {

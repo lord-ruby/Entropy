@@ -11,6 +11,25 @@ local crimson = {
     pos = {x=0,y=0},
     badge_colour = HEX("8a0050"),
     calculate = function(self, card, context)
+        if context.cardarea == G.play and not context.crimson_trigger then
+            for i, v in ipairs(G.play.cards) do
+                if G.play.cards[i+1] == card or G.play.cards[i-1] == card then
+                    context.crimson_trigger = true
+                    local eval, post = eval_card(v, context)
+                    local effects = {eval}
+                    for _,v in ipairs(post) do effects[#effects+1] = v end
+                    if eval.retriggers then
+                        for rt = 1, #eval.retriggers do
+                            local rt_eval, rt_post = eval_card(v, context)
+                            table.insert(effects, {eval.retriggers[rt]})
+                            table.insert(effects, rt_eval)
+                            for _, v in ipairs(rt_post) do effects[#effects+1] = v end
+                        end
+                    end
+                    SMODS.trigger_effects(effects, v)
+                end
+            end
+        end
     end,
 }
 
