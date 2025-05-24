@@ -1498,7 +1498,7 @@ local decs = {
 			c_entr_weld = {
 				name = "Weld",
 				text = {
-					"Apply {C:legendary,E:1}Aleph{}",
+					"Apply {C:legendary,E:1}Eternal{}",
 					"to {C:attention}#1#{} selected Joker",
 					"{C:red}#2#{} discard"
 				}
