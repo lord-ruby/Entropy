@@ -541,6 +541,15 @@ local decs = {
 					"#1#",
 					"#2#"
 				}
+			},
+			j_entr_skullcry = {
+				name = ":skullcry:",
+				text = {
+					"Prevents death if chips scored are",
+					"greater than {C:attention}log_#1#(Blind Requirement){}",
+					"{C:red}self destructs{} if chips are not",
+					"within {C:attention}#2#%{} of {C:attention}log_#1#(Blind Requirement){}"
+				}
 			}
 		},
 		Blind = {
@@ -2466,11 +2475,14 @@ local decs = {
 			cry_notif_antireal_d2 = "which is copyrighted and can't be",
 			cry_notif_antireal_d3 = "used for streams and videos.",
 
-			k_entr_omega_aleph = "Aleph sticker stops Self Destruction (Unstable, Must Restart Game)"
+			k_entr_omega_aleph = "Aleph sticker stops Self Destruction (Unstable, Must Restart Game)",
+
+			k_saved_skullcry = "The power of Zenith Stake saves you"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",
-			shader = "Shader: #1#"
+			shader = "Shader: #1#",
+			wish = "Wish: #1#"
 		},
 		labels = {
 			entr_pinned = "Invariant",

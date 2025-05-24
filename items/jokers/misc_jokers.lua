@@ -802,6 +802,58 @@ local seventyseven = {
 	end
 }
 
+local skullcry = {
+    order = 17,
+    object_type = "Joker",
+    key = "skullcry",
+    config = {
+        base=10,
+        percent = 5
+    },
+    rarity = 3,
+    cost = 10,
+    
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 8, y = 2 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    loc_vars = function(self, info_queue, center)
+        return {
+            vars = {
+                number_format(center.ability.base),
+                number_format(center.ability.percent)
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+		if context.game_over and to_big(G.GAME.chips) > to_big(math.log(G.GAME.blind.chips, card.ability.base)) then
+            G.GAME.saved_message = localize("k_saved_skullcry")
+            if to_big(math.abs(G.GAME.chips - math.log(G.GAME.blind.chips, card.ability.base))) > to_big(math.log(G.GAME.blind.chips, card.ability.base) * card.ability.percent/100) then
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        card:start_dissolve()
+                        return true
+                    end
+                }))
+            end
+            return {
+                message = localize('k_saved_ex'),
+                saved = "k_saved_skullcry",
+                colour = G.C.RED
+            }
+        end
+	end,
+    entr_credits = {
+        custom = {key="wish", text="denserver10"}
+    }
+}
+
 return {
     items = {
         surreal,
@@ -819,6 +871,7 @@ return {
         devilled_suns,
         eden,
         seventyseven,
-        tesseract
+        tesseract,
+        skullcry
     }
 }
