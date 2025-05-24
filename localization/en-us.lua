@@ -947,6 +947,14 @@ local decs = {
 					"become the last used {C:red}Fraud{} card"
 				}
 			},
+			c_entr_mallet = {
+				name = "The Mallet",
+				text = {
+					"Destroy {C:attention}#1#{} random card#<s>1# in hand",
+					"and create {C:attention}#1#{} random {C:red}Command{} card#<s>1#",
+					"{C:inactive}(Must have room){}"
+				}
+			},
 		},
 		Voucher = {
 			v_entr_marked = {

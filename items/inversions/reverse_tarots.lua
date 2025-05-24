@@ -1248,6 +1248,57 @@ local integrity = {
 	
 }
 
+local mallet = {
+    key = "mallet",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -901+32,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        create = 1
+    },
+    pos = {x=6,y=2},
+    inversion = "c_cry_automaton",
+    use = function(self, card2)
+        local cards = {}
+        for i, v in pairs(G.hand.cards) do cards[#cards+1]=v end
+        pseudoshuffle(cards, pseudoseed('immolate'))
+        local actual = {}
+        for i = 1, card2.ability.create do
+            actual[i] = cards[i]
+        end
+        for i, v in ipairs(actual) do
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    if G.consumeables.config.card_count < G.consumeables.config.card_limit then
+                        SMODS.add_card({
+                            set = "RCode",
+                            area = G.consumeables
+                        })
+                    end
+                    return true
+                end
+            }))
+            v:start_dissolve()
+        end
+    end,
+    can_use = function(self, card)
+        return G.STATE == G.STATES.SELECTING_HAND
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.create
+            }
+        }
+    end,
+}
+
 return {
     items = {
         master,
@@ -1275,6 +1326,7 @@ return {
         mountain,
         tent,
         companion,
-        prophecy
+        prophecy,
+        mallet
     }
 }
