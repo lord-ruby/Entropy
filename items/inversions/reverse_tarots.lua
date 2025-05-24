@@ -842,6 +842,44 @@ local companion = {
     }
 }
 
+local village = {
+    key = "village",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -901+16,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        chips=10
+    },
+    pos = {x=6,y=1},
+    inversion = "c_star",
+    use = function(self, card2)
+        Entropy.FlipThen(G.hand.cards, function(card)
+            card.ability.bonus = (card.ability.bonus or 0) + card2.ability.chips
+        end)
+    end,
+    bulk_use = function(self, card2, _, _, amount)
+        Entropy.FlipThen(G.hand.cards, function(card)
+            card.ability.bonus = (card.ability.bonus or 0) + card2.ability.chips * amount
+        end)
+    end,
+    can_use = function(self, card)
+        return true
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.chips
+            }
+        }
+    end,
+}
+
 local ocean = {
     key = "ocean",
     set = "RTarot",
@@ -1327,6 +1365,7 @@ return {
         tent,
         companion,
         prophecy,
-        mallet
+        mallet,
+        village
     }
 }

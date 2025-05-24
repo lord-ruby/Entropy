@@ -955,6 +955,13 @@ local decs = {
 					"{C:inactive}(Must have room){}"
 				}
 			},
+			c_entr_village = {
+				name = "The Village",
+				text = {
+					"Give cards {C:attention}held{} in hand",
+					"{C:blue}+#1#{} bonus chips"
+				}
+			},
 		},
 		Voucher = {
 			v_entr_marked = {
