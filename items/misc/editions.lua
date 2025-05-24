@@ -281,11 +281,59 @@ if Entropy.config.override_glitched then
 
 end
 
+SMODS.Shader({
+    key="neon",
+    path="neon.fs"
+})
+
+local neon = {
+	object_type = "Edition",
+	order = 9000-2,
+    key="neon",
+    shader="neon",
+	sound = {
+		sound = "multihit1",
+		per = 1,
+		vol = 0.4,
+	},
+	config = {
+		cost_fac = 0.5
+	},
+	dependencies = {
+        items = {
+          "set_entr_misc"
+        }
+    },
+	in_shop = true,
+	weight = 0.5,
+    badge_color = HEX("fca849"),
+	disable_base_shader=true,
+    loc_vars = function(self,q,card)
+		return {vars={card and card.edition and card.edition.cost_fac or 0.5}}
+    end,
+    calculate = function(self, card, context)
+
+	end,
+	entr_credits = {
+		custom={key="shader",text="cassknows"}
+	}
+}
+
+local set_cost_ref = Card.set_cost
+function Card:set_cost()
+	set_cost_ref(self)
+	if self.edition and self.edition.key == "e_entr_neon" then
+		self.sell_cost = self.sell_cost * self.edition.cost_fac
+		self.sell_cost_label = self.facing == 'back' and '?' or number_format(self.sell_cost)
+	end
+end
+
 return {
     items = {
         solar,
         fractured,
 		sunny,
-		freaky
+		freaky,
+		neon
     }
 }

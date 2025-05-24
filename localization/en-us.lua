@@ -659,6 +659,12 @@ local decs = {
 					"Chips {X:entr_freaky,C:white}Xlog_#1#(Chips){}"
 				},
 			},
+			e_entr_neon = {
+				name = "Neon",
+				text = {
+					"{C:attention}X#1#{} Shop Costs"
+				},
+			},
 		},
 		Back = {
 			b_entr_twisted = {
@@ -2493,6 +2499,7 @@ local decs = {
 			superego = "Projected",
 			entr_sunny = "Sunny",
 			entr_solar = "Solar",
+			entr_neon = "Neon",
 			entr_fractured = "Fractured",
 			entr_freaky = "Freaky",
 			entr_yellow_sign = "Yellow Sign",
