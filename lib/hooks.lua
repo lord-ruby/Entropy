@@ -1238,19 +1238,7 @@ function level_up_hand(card, hand, instant, amount)
     if Entropy.HasJoker("j_entr_strawberry_pie",true) and hand ~= "High Card" then
         hand = "High Card"
     end
-    local mult = G.GAME.hands[hand].mult
-    local chips = G.GAME.hands[hand].chips
     ref(card,hand,instant,amount)
-    G.E_MANAGER:add_event(Event({func = function()
-            if G.GAME.hands[hand].chips == chips and G.GAME.hands[hand].l_chips ~= 0 then
-                G.GAME.hands[hand].chips = G.GAME.hands[hand].chips + G.GAME.hands[hand].l_chips
-            end
-            if G.GAME.hands[hand].mult == mult and G.GAME.hands[hand].l_mult ~= 0 then
-                G.GAME.hands[hand].mult = G.GAME.hands[hand].mult + G.GAME.hands[hand].l_mult
-            end
-            return true
-        end
-    }))
 end
 
 local start_dissolveref = Card.start_dissolve
@@ -1477,15 +1465,17 @@ SMODS.Consumable:take_ownership('cry_sunplanet', -- object key (class prefix not
 local ease_anteref = ease_ante
 function ease_ante(mod)
     local mult = 1
-    if Entropy.HasJoker("j_entr_xekanos", true) then
-        for i, v in pairs(G.jokers.cards) do
-            if v.config.center.key == "j_entr_xekanos" and not v.debuff and not v.ability.turned_off and not G.GAME.modifiers.ReverseRedeo then
-                mult = mult * to_number(-v.ability.ante_mod)
-                v.ability.ante_mod = v.ability.ante_mod - v.ability.ante_mod_mod
+    if to_big(mod) ~= to_big(0) then
+        if Entropy.HasJoker("j_entr_xekanos", true) then
+            for i, v in pairs(G.jokers.cards) do
+                if v.config.center.key == "j_entr_xekanos" and not v.debuff and not v.ability.turned_off and not G.GAME.modifiers.ReverseRedeo then
+                    mult = mult * to_number(-v.ability.ante_mod)
+                    v.ability.ante_mod = v.ability.ante_mod - v.ability.ante_mod_mod
+                end
             end
         end
+        ease_anteref(mod * mult, a)
     end
-    ease_anteref(mod * mult, a)
 end
 
 local is_jollyref = Card.is_jolly

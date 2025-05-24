@@ -284,11 +284,6 @@ function SMODS.get_blind_amount(ante)
   end
 end
 
-local level_up_handref = level_up_hand
-function level_up_hand(card, hand, instant, amount, ...)
-	amount = to_big(amount)
-  level_up_handref(card, hand, instant, amount, ...)
-end
 
 SMODS.Consumable:take_ownership("cry_white_hole",
   {

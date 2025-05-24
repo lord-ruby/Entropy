@@ -174,7 +174,7 @@ G.FUNCS.define_apply = function()
     --eval local current_card = "e_entr_shatter"
     if not Entropy.DefineBlacklist[current_card] and not Cryptid.pointergetblist(current_card)[1] and G.P_CENTERS[current_card] and not Entropy.DefineBlacklist[G.P_CENTERS[current_card].set] then
 
-        if card.config.center.key == "j_obelisk" and entered_card == "j_cry_sob" then
+        if cards[1].config.center.key == "j_obelisk" and entered_card == "j_cry_sob" then
             check_for_unlock({ type = "event_horizon" })
         end
         for i, card in ipairs(cards) do
