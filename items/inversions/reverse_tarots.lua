@@ -259,7 +259,9 @@ local servant = {
             }
         }
     end,
-    
+    entr_credits = {
+        art = {"Lyman"}
+    }
 	
 }
 
