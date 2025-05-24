@@ -732,14 +732,14 @@ function G.UIDEF.use_and_sell_buttons(card)
         if card.area == G.hand or card.area == G.pack_cards then
         return  {
             n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
-              {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'buy_deckorsleeve', func = 'can_buy_deckorsleeve'}, nodes={
+              {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'buy_deckorsleeve', func = 'can_buy_deckorsleeve', handy_insta_action = 'buy_or_sell'}, nodes={
                 {n=G.UIT.T, config={text = localize('b_redeem'),colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true}}
               }},
           }}
         end
         if card.area == G.consumeables or card.area == G.jokers then
             sell = {n=G.UIT.C, config={align = "cr"}, nodes={
-                {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card'}, nodes={
+                {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = "sell"}, nodes={
                   {n=G.UIT.B, config = {w=0.1,h=0.6}},
                   {n=G.UIT.C, config={align = "tm"}, nodes={
                     {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
@@ -755,7 +755,7 @@ function G.UIDEF.use_and_sell_buttons(card)
             use = 
             {n=G.UIT.C, config={align = "cr"}, nodes={
               
-              {n=G.UIT.C, config={ref_table = card, align = "cr",maxw = 1.25, padding = 0.1, r=0.08, minw = 1.25, minh = (card.area and card.area.config.type == 'joker') and 0 or 1, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'buy_deckorsleeve', func = 'can_buy_deckorsleeve'}, nodes={
+              {n=G.UIT.C, config={ref_table = card, align = "cr",maxw = 1.25, padding = 0.1, r=0.08, minw = 1.25, minh = (card.area and card.area.config.type == 'joker') and 0 or 1, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'buy_deckorsleeve', func = 'can_buy_deckorsleeve', handy_insta_action = 'use'}, nodes={
                 {n=G.UIT.B, config = {w=0.1,h=0.6}},
                 {n=G.UIT.T, config={text = localize('b_redeem'),colour = G.C.UI.TEXT_LIGHT, scale = 0.55, shadow = true}}
               }}
@@ -775,7 +775,7 @@ function G.UIDEF.use_and_sell_buttons(card)
     end
     if (card.area == G.consumeables and G.consumeables and card.config.center.set == "Booster") then
         sell = {n=G.UIT.C, config={align = "cr"}, nodes={
-            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card'}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = 'sell'}, nodes={
               {n=G.UIT.B, config = {w=0.1,h=0.6}},
               {n=G.UIT.C, config={align = "tm"}, nodes={
                 {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
@@ -791,7 +791,7 @@ function G.UIDEF.use_and_sell_buttons(card)
         use = 
         {n=G.UIT.C, config={align = "cr"}, nodes={
           
-          {n=G.UIT.C, config={ref_table = card, align = "cr",maxw = 1.25, padding = 0.1, r=0.08, minw = 1.25, minh = (card.area and card.area.config.type == 'joker') and 0 or 1, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_booster', func = 'can_open_booster'}, nodes={
+          {n=G.UIT.C, config={ref_table = card, align = "cr",maxw = 1.25, padding = 0.1, r=0.08, minw = 1.25, minh = (card.area and card.area.config.type == 'joker') and 0 or 1, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_booster', func = 'can_open_booster', handy_insta_action = 'use'}, nodes={
             {n=G.UIT.B, config = {w=0.1,h=0.6}},
             {n=G.UIT.T, config={text = localize('b_open'),colour = G.C.UI.TEXT_LIGHT, scale = 0.55, shadow = true}}
           }}
@@ -813,7 +813,7 @@ function G.UIDEF.use_and_sell_buttons(card)
 		if card.config.center.set == "Joker" then
 			return  {
                 n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
-                  {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'reserve_joker', func = 'can_reserve_joker'}, nodes={
+                  {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'reserve_joker', func = 'can_reserve_joker', handy_insta_action = 'buy_or_sell'}, nodes={
                     {n=G.UIT.T, config={text = localize('b_select'),colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true}}
                   }},
               }}
@@ -821,7 +821,7 @@ function G.UIDEF.use_and_sell_buttons(card)
         if card.config.center.set == "Booster" then
 			return  {
                 n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
-                  {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_booster', func = 'can_open_booster'}, nodes={
+                  {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_booster', func = 'can_open_booster', handy_insta_action = 'buy_or_sell'}, nodes={
                     {n=G.UIT.T, config={text = localize('b_open'),colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true}}
                   }},
               }}
@@ -829,7 +829,7 @@ function G.UIDEF.use_and_sell_buttons(card)
         if card.config.center.set == "Voucher" then
 			return  {
                 n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
-                  {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_voucher', func = 'can_open_voucher'}, nodes={
+                  {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_voucher', func = 'can_open_voucher', handy_insta_action = 'buy_or_sell'}, nodes={
                     {n=G.UIT.T, config={text = localize('b_redeem'),colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true}}
                   }},
               }}
@@ -837,7 +837,7 @@ function G.UIDEF.use_and_sell_buttons(card)
 	end
     if (card.area == G.consumeables and G.consumeables) and card.config.center.set == "Voucher" then
         sell = {n=G.UIT.C, config={align = "cr"}, nodes={
-            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card'}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = 'sell'}, nodes={
               {n=G.UIT.B, config = {w=0.1,h=0.6}},
               {n=G.UIT.C, config={align = "tm"}, nodes={
                 {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
@@ -853,7 +853,7 @@ function G.UIDEF.use_and_sell_buttons(card)
         use = 
         {n=G.UIT.C, config={align = "cr"}, nodes={
           
-          {n=G.UIT.C, config={ref_table = card, align = "cr",maxw = 1.25, padding = 0.1, r=0.08, minw = 1.25, minh = (card.area and card.area.config.type == 'joker') and 0 or 1, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_voucher', func = 'can_open_voucher'}, nodes={
+          {n=G.UIT.C, config={ref_table = card, align = "cr",maxw = 1.25, padding = 0.1, r=0.08, minw = 1.25, minh = (card.area and card.area.config.type == 'joker') and 0 or 1, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_voucher', func = 'can_open_voucher', handy_insta_action = 'use'}, nodes={
             {n=G.UIT.B, config = {w=0.1,h=0.6}},
             {n=G.UIT.T, config={text = localize('b_redeem'),colour = G.C.UI.TEXT_LIGHT, scale = 0.55, shadow = true}}
           }}
@@ -874,7 +874,7 @@ function G.UIDEF.use_and_sell_buttons(card)
     if (card.area == G.pack_cards and G.pack_cards) and card.config.center.set == "Booster" and not Entropy.ConsumablePackBlacklist[SMODS.OPENED_BOOSTER.config.center.key] then
         return  {
             n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
-              {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'reserve_booster', func = 'can_reserve_booster'}, nodes={
+              {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'reserve_booster', func = 'can_reserve_booster', handy_insta_action = 'buy_or_sell'}, nodes={
                 {n=G.UIT.T, config={text = localize('b_select'),colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true}}
               }},
           }}
@@ -882,7 +882,7 @@ function G.UIDEF.use_and_sell_buttons(card)
 
     if (card.area == G.jokers and G.jokers and card.config.center.key == "j_entr_akyros") then
         sell = {n=G.UIT.C, config={align = "cr"}, nodes={
-            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card'}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = 'sell'}, nodes={
               {n=G.UIT.B, config = {w=0.1,h=0.6}},
               {n=G.UIT.C, config={align = "tm"}, nodes={
                 {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
@@ -940,7 +940,7 @@ function G.UIDEF.use_and_sell_buttons(card)
     end
     if (card.area == G.jokers and G.jokers and card.config.center.key == "j_entr_xekanos") and not G.GAME.modifiers.entr_reverse_redeo then
         sell = {n=G.UIT.C, config={align = "cr"}, nodes={
-            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card'}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = 'sell'}, nodes={
               {n=G.UIT.B, config = {w=0.1,h=0.6}},
               {n=G.UIT.C, config={align = "tm"}, nodes={
                 {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
@@ -954,7 +954,7 @@ function G.UIDEF.use_and_sell_buttons(card)
             }},
           }}
         onoff = {n=G.UIT.C, config={align = "cr"}, nodes={
-            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, button = 'toggle_xekanos', func = 'can_toggle_xekanos'}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, button = 'toggle_xekanos', func = 'can_toggle_xekanos', handy_insta_action = 'use'}, nodes={
               {n=G.UIT.B, config = {w=0.1,h=0.3}},
               {n=G.UIT.C, config={align = "tm"}, nodes={
                 {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
@@ -996,6 +996,7 @@ function G.UIDEF.use_and_sell_buttons(card)
                         one_press = true,
                         button = "use_card",
                         func = (card.ability.set == "RCode" or card.ability.set == "CBlind" or card.ability.set == "RTarot" or card.ability.set == "RSpectral" or card.config.center.key == "c_entr_flipside") and "can_reserve_card" or "can_reserve_card_to_deck",
+                        handy_insta_action = 'use'
                     },
                     nodes = {
                         {
@@ -1025,6 +1026,7 @@ function G.UIDEF.use_and_sell_buttons(card)
                         one_press = true,
                         button = "Do you know that this parameter does nothing?",
                         func = "can_use_consumeable",
+                        handy_insta_action = 'use'
                     },
                     nodes = {
                         {
