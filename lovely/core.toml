@@ -512,7 +512,7 @@ payload = '''
           G.STATE = 1
           G.STATE_COMPLETE = false
           G.GAME.ChangingPhase = true
-        elseif not G.GAME.ChangingPhase then
+        elseif not G.GAME.ChangingPhase and not G.PROFILES[G.SETTINGS.profile].cry_none then
           end_round()
         end
     end
@@ -548,7 +548,7 @@ payload = '''
           G.STATE = 1
           G.STATE_COMPLETE = false
           G.GAME.ChangingPhase = true
-        elseif not G.GAME.ChangingPhase then
+        elseif not G.GAME.ChangingPhase and not G.PROFILES[G.SETTINGS.profile].cry_none then
           end_round()
         end
     else
