@@ -1369,21 +1369,19 @@ local entomb = {
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
         for i, v in pairs(G.consumeables.highlighted) do
-            if v.config.center.key ~= "c_entr_entomb" and v.config.center.set ~= "Voucher" then
-                local c
-                if v.config.center.set == "Booster" then
-                    c = copy_card(v)
-                else
-                    c = create_card("Booster", G.consumeables, nil, nil, nil, nil, key) 
-                    c:set_ability(G.P_CENTERS[Entropy.BoosterSets[v.config.center.set] or "p_standard_normal_1"])
-                end
-                c:add_to_deck()
-                c.T.w = c.T.w *  2.0/2.6
-                c.T.h = c.T.h *  2.0/2.6
-                table.insert(G.consumeables.cards, c)
-                c.area = G.consumeables
-                G.consumeables:align_cards()
+            local c
+            if v.config.center.set == "Booster" then
+                c = copy_card(v)
+            else
+                c = create_card("Booster", G.consumeables, nil, nil, nil, nil, key) 
+                c:set_ability(G.P_CENTERS[Entropy.BoosterSets[v.config.center.set] or "p_standard_normal_1"])
             end
+            c:add_to_deck()
+            c.T.w = c.T.w *  2.0/2.6
+            c.T.h = c.T.h *  2.0/2.6
+            table.insert(G.consumeables.cards, c)
+            c.area = G.consumeables
+            G.consumeables:align_cards()
         end
     end,
     can_use = function(self, card)
