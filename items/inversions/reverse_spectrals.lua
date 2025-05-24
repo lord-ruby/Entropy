@@ -834,7 +834,7 @@ local weld = {
                     trigger = "after",
                     delay = 0.2,
                     func = function()
-                        card.ability.entr_aleph = true
+                        card.ability.eternal = true
                         return true
                     end
                 }))

@@ -228,12 +228,12 @@ local freaky = {
 if AurinkoAddons then
 	AurinkoAddons.entr_solar = function(card, hand, instant, amount)
 		if to_big(G.GAME.hands[hand].AscensionPower or 0) > to_big(0) then
-			local num = G.GAME.hands[hand].AscensionPower * (card.edition.sol-1)
+			local num = G.GAME.hands[hand].AscensionPower * (card.edition.sol-1) *(amount or 1)
 			Entropy.ReversePlanetUse(hand, card, num)
 		end
 	end
 	AurinkoAddons.entr_sunny = function(card, hand, instant, amount)
-		local num = 4
+		local num = 4*(amount or 1)
 		Entropy.ReversePlanetUse(hand, card, num)
 	end
 	AurinkoAddons.entr_freaky = function(card, hand, instant, amount)
@@ -242,17 +242,6 @@ if AurinkoAddons then
 		hand_chips = hand_chips * mult
 		G.GAME.hands[hand].chips = hand_chips
 		if not instant then
-			G.E_MANAGER:add_event(Event({
-				trigger = "after",
-				delay = 0.3,
-				func = function()
-					play_sound("entr_e_rizz", 0.7)
-					card:juice_up(0.8, 0.5)
-					return true
-				end,
-			}))
-			update_hand_text({ delay = 1.3 }, { chips = "X"..number_format(mult), StatusText = true })
-		elseif Aurinko.VerboseMode then
 			G.E_MANAGER:add_event(Event({
 				trigger = "after",
 				delay = 0.2,
