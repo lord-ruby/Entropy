@@ -940,6 +940,13 @@ local decs = {
 					"then gain {C:gold}money{} based on the interest cap"
 				}
 			},
+			c_entr_prophecy = {
+				name = "The Prophecy",
+				text = {
+					"The next {C:attention}#1#{} {C:red}Inverted{} card#<s>1#",
+					"become the last used {C:red}Fraud{} card"
+				}
+			},
 		},
 		Voucher = {
 			v_entr_marked = {

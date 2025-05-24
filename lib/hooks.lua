@@ -1537,7 +1537,15 @@ function Card:set_ability(center, initial, delay_sprites)
 end
 
 G.FUNCS.has_inversion = function(e) 
-    if G.GAME.last_inversion then 
+    if G.GAME.last_inversion and G.GAME.last_inversion.key ~= "c_entr_master" then 
+        e.config.colour = mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8)
+    else
+        e.config.colour = mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8)
+    end
+ end
+
+ G.FUNCS.has_rtarot = function(e) 
+    if G.GAME.last_rtarot and G.GAME.last_rtarot ~= "c_entr_prophecy" then 
         e.config.colour = mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8)
     else
         e.config.colour = mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8)
@@ -1546,8 +1554,14 @@ G.FUNCS.has_inversion = function(e)
 local ref = G.FUNCS.use_card
 G.FUNCS.use_card = function(e, mute, nosave)
     local card = e.config.ref_table
-    if Entropy.FlipsideInversions[card.config.center.key] and not Entropy.FlipsidePureInversions[card.config.center.key] and card.config.center.key ~= "c_entr_master" and not card.config.center.hidden then
+    if Entropy.FlipsideInversions[card.config.center.key] and not Entropy.FlipsidePureInversions[card.config.center.key] and not card.config.center.hidden then
         G.GAME.last_inversion = {
+            key = card.config.center.key,
+            set = card.config.center.set
+        }
+    end
+    if card.config.center.set == "RTarot" and (card.config.center.key ~= "c_entr_prophecy" or not G.GAME.last_rtarot) then
+        G.GAME.last_rtarot = {
             key = card.config.center.key,
             set = card.config.center.set
         }
@@ -1598,6 +1612,20 @@ function Card:set_ability(center, ...)
         else
             set_abilityref(self, self.config.center, ...)
         end
+    end
+end
+
+local set_abilityref = Card.set_ability
+function Card:set_ability(center, ...)
+    if center and Entropy.FlipsideInversions[center.key] and not Entropy.FlipsidePureInversions[center.key] and G.GAME.next_inversions_prophecy and not G.SETTINGS.paused then
+        set_abilityref(self, G.P_CENTERS[G.GAME.next_inversions_prophecy], ...)
+        G.GAME.inversions_prophecy_counter = (G.GAME.inversions_prophecy_counter or 2) - 1
+    else
+        set_abilityref(self, center, ...)
+    end
+    if G.GAME.inversions_prophecy_counter and to_big(G.GAME.inversions_prophecy_counter) <= to_big(0) then
+        G.GAME.next_inversions_prophecy = nil
+        G.GAME.inversions_prophecy_counter = nil
     end
 end
 

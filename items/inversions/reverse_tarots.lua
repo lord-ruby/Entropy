@@ -1096,6 +1096,74 @@ local penumbra = {
 	
 }
 
+local prophecy = {
+    key = "prophecy",
+    set = "RTarot",
+    atlas = "rtarot",
+    object_type = "Consumable",
+    order = -900+23,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    inversion = "c_cry_blessing",
+    pos = {x=3,y=2},
+    config = {
+        counter = 2
+    },
+    use = function(self, card, area, copier)
+        G.GAME.next_inversions_prophecy = G.GAME.last_rtarot.key
+        G.GAME.last_rtarot = nil
+        G.GAME.inversions_prophecy_counter = card.ability.counter
+    end,
+    can_use = function(self, card)
+        return G.GAME.last_rtarot
+	end,
+    loc_vars = function(self, q, card)
+        card.ability.last_rtarot = G.GAME.last_rtarot and G.GAME.last_rtarot.set and G.localization.descriptions[G.GAME.last_rtarot.set][G.GAME.last_rtarot.key].name or "None"
+        return {
+            vars = {
+                card.ability.counter
+            },
+            main_end = (card.area and (card.area == G.consumeables or card.area == G.pack_cards or card.area == G.hand)) and {
+				{
+					n = G.UIT.C,
+					config = { align = "bm", minh = 0.4 },
+					nodes = {
+						{
+							n = G.UIT.C,
+							config = {
+								ref_table = card,
+								align = "m",
+								colour = G.C.JOKER_GREY,
+								r = 0.05,
+								padding = 0.1,
+								func = "has_rtarot",
+							},
+							nodes = {
+								{
+									n = G.UIT.T,
+									config = {
+										ref_table = card.ability,
+										ref_value = "last_rtarot",
+										colour = G.C.UI.TEXT_LIGHT,
+										scale = 0.32*0.8,
+									},
+								},
+							},
+						},
+					},
+				},
+			} or nil,
+        }
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
+	
+}
+
 local imp = {
     key = "imp",
     set = "RTarot",
@@ -1206,6 +1274,7 @@ return {
         forest,
         mountain,
         tent,
-        companion
+        companion,
+        prophecy
     }
 }
