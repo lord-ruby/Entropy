@@ -323,8 +323,7 @@ local set_cost_ref = Card.set_cost
 function Card:set_cost()
 	set_cost_ref(self)
 	if self.edition and self.edition.key == "e_entr_neon" then
-		self.sell_cost = self.sell_cost * self.edition.cost_fac
-		self.sell_cost_label = self.facing == 'back' and '?' or number_format(self.sell_cost)
+		self.cost = self.cost * self.edition.cost_fac
 	end
 end
 
