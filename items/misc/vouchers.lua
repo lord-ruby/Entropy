@@ -76,6 +76,7 @@ local alt_path = {
     atlas = "vouchers",
     pos = {x=3, y=0},
     cost = 0,
+    no_doe = true,
     redeem = function(self, card)
         G.GAME.alt_path = true
     end,
