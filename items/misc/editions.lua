@@ -292,7 +292,7 @@ local neon = {
     key="neon",
     shader="neon",
 	sound = {
-		sound = "multihit1",
+		sound = "multhit1",
 		per = 1,
 		vol = 0.4,
 	},
