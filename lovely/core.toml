@@ -969,3 +969,20 @@ payload = '''
     end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = '''
+  elseif args.type == 'name' then
+    local temp_target = args and G.localization.descriptions[(args.set or (args.node and args.node.config and args.node.config.center and args.node.config.center.set))]
+    loc_target = temp_target and temp_target[args.key or (args.node and args.node.config and args.node.config.center and args.node.config.center.key)] or "ERROR"
+  end
+'''
+position = "at"
+payload = '''
+    if not self.ability.entr_aleph and not self.ability.cry_absolute then
+    	if self.ability.eternal then badges[#badges + 1] = 'eternal' end
+    end
+'''
+match_indent = true
