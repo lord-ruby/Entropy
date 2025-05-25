@@ -2567,3 +2567,38 @@ function end_round()
         end_roundref()
     end
 end
+
+local generate_uiref = generate_card_ui
+function generate_card_ui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
+    if card_type == "Back" then 
+        if card.config and card.config.center and card.config.center.collection_loc_vars then
+            specific_vars = (card.config.center:collection_loc_vars({}, card) or {}).vars
+        elseif card.config and card.config.center and card.config.center.loc_vars then
+            specific_vars = (card.config.center:loc_vars({}, card) or {}).vars
+        elseif card.config and card.config.center then
+            local loc_args = {}
+            local effect_config = card.config.center.config
+            local name_to_check = card.config.center.name
+            if name_to_check == 'Blue Deck' then loc_args = {effect_config.hands}
+            elseif name_to_check == 'Red Deck' then loc_args = {effect_config.discards}
+            elseif name_to_check == 'Yellow Deck' then loc_args = {effect_config.dollars}
+            elseif name_to_check == 'Green Deck' then loc_args = {effect_config.extra_hand_bonus, effect_config.extra_discard_bonus}
+            elseif name_to_check == 'Black Deck' then loc_args = {effect_config.joker_slot, -effect_config.hands}
+            elseif name_to_check == 'Magic Deck' then loc_args = {localize{type = 'name_text', key = 'v_crystal_ball', set = 'Voucher'}, localize{type = 'name_text', key = 'c_fool', set = 'Tarot'}}
+            elseif name_to_check == 'Nebula Deck' then loc_args = {localize{type = 'name_text', key = 'v_telescope', set = 'Voucher'}, -1}
+            elseif name_to_check == 'Ghost Deck' then
+            elseif name_to_check == 'Abandoned Deck' then 
+            elseif name_to_check == 'Checkered Deck' then
+            elseif name_to_check == 'Zodiac Deck' then loc_args = {localize{type = 'name_text', key = 'v_tarot_merchant', set = 'Voucher'}, 
+                                localize{type = 'name_text', key = 'v_planet_merchant', set = 'Voucher'},
+                                localize{type = 'name_text', key = 'v_overstock_norm', set = 'Voucher'}}
+            elseif name_to_check == 'Painted Deck' then loc_args = {effect_config.hand_size,effect_config.joker_slot}
+            elseif name_to_check == 'Anaglyph Deck' then loc_args = {localize{type = 'name_text', key = 'tag_double', set = 'Tag'}}
+            elseif name_to_check == 'Plasma Deck' then loc_args = {effect_config.ante_scaling}
+            elseif name_to_check == 'Erratic Deck' then
+            end
+            specific_vars = loc_args
+        end
+    end
+    return generate_uiref(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
+end
