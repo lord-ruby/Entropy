@@ -2470,7 +2470,7 @@ end
 if Entropy.config.omega_aleph then
     local card_removeref = Card.remove
     function Card:remove(...)
-        if G.SETTINGS.paused or not self.entr_aleph or self.ability.bypass_aleph then
+        if G.SETTINGS.paused or not self.entr_aleph or self.ability.bypass_aleph or self.bypass_selfdestruct then
             return card_removeref(self, ...)
         else
             if self.entr_aleph then
@@ -2510,7 +2510,7 @@ if Entropy.config.omega_aleph then
 
     local cardarea_removeref = CardArea.remove_card
     function CardArea:remove_card(card, ...)
-        if not card or not card.entr_aleph or G.SETTINGS.paused or card.ability.bypass_aleph then
+        if not card or not card.entr_aleph or G.SETTINGS.paused or card.ability.bypass_aleph or card.bypass_selfdestruct or card.area == G.shop_jokers then
             return cardarea_removeref(self, card, ...)
         end
     end
@@ -2522,4 +2522,17 @@ if Entropy.config.omega_aleph then
         end
         keyef(self, key, dt)
     end
+end
+
+local add_ref = CardArea.emplace
+function CardArea:emplace(card, location, stay_flipped)
+    if card and not card.set_card_area then
+        card.set_card_area = function(card, self)
+            card.area = self
+        end
+    end
+    if card and (card.area == G.shop_jokers or card.area == G.shop_vouchers or card.area == G.shop_booster or card.area == G.discard or card.area == G.deck or card.area == G.hand) then
+        card.bypass_selfdestruct = true
+    end
+    if card then add_ref(self, card, location, stay_flipped) end
 end
