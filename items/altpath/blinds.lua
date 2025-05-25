@@ -13,11 +13,12 @@ local alpha = {
 	boss_colour = HEX("907c7c"),
     mult=2,
     dollars = 6,
+    altpath=true,
 	boss = {
 		min = 1,
 	},
     in_pool = function()
-        return false
+        return G.GAME.entr_alt
     end,
     calculate = function(self, blind, context)
 		if

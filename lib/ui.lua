@@ -596,4 +596,5 @@ end
 G.FUNCS.toggle_path = function(e)
     G.GAME.round_resets.path_toggled = true
     G.GAME.entr_alt = not G.GAME.entr_alt
+    G.GAME.round_resets.blind_choices.Boss = get_new_boss()
 end

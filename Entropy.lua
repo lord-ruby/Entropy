@@ -81,6 +81,9 @@ for i, category in pairs(items) do
             Entropy.FlipsideInversions[v.inversion]=i 
             Entropy.FlipsideInversions[i]=v.inversion
         end
+        if v.altpath then
+            Entropy.AltBlinds[#Entropy.AltBlinds+1] = v
+        end
     end
 end
 items = nil

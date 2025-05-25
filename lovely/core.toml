@@ -10,6 +10,7 @@ pattern = '''function love.load()'''
 position = "before"
 payload = '''
 Entropy = {}
+Entropy.AltBlinds = {}
 Entropy.FlipsideInversions = {}
 Entropy.FlipsidePureInversions = {}
 Entropy.EnhancementFuncs = {}
