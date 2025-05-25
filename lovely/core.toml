@@ -468,7 +468,8 @@ pattern = "if SMODS.saved then game_over = false end"
 position = "at"
 payload = '''
 if Entropy.IsEE() then
-    if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" and not game_over then
+    if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" then
+      if to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then return end
       game_over = true
     end
     if SMODS.saved then
@@ -484,79 +485,7 @@ if Entropy.IsEE() then
     end
 elseif SMODS.saved then game_over = false end
 '''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = "game.lua"
-pattern = '''
-    if #G.hand.cards < 1 and #G.deck.cards < 1 and #G.play.cards < 1 then
-        end_round()
-    end
-'''
-position = "at"
-payload = '''
-    if #G.hand.cards < 1 and #G.deck.cards < 1 and #G.play.cards < 1 then
-        if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" then
-          G.GAME.chips = 0
-          G.GAME.round_resets.lost = false
-          G.GAME.blind:set_blind(G.P_BLINDS["bl_entr_endless_entropy_phase_two"])
-          Entropy.ChangePhase()
-          G.GAME.blind:juice_up()
-          G.GAME.current_round.hands_left = G.GAME.round_resets.hands
-          ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
-          ease_discard(
-            math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
-          )
-          G.FUNCS.draw_from_discard_to_deck()
-          G.STATE = 1
-          G.STATE_COMPLETE = false
-          G.GAME.ChangingPhase = true
-        elseif not G.GAME.ChangingPhase and not G.PROFILES[G.SETTINGS.profile].cry_none then
-          end_round()
-        end
-    end
-'''
-match_indent = true    
-
-[[patches]]
-[patches.pattern]
-target = "game.lua"
-pattern = '''
-        if #G.hand.cards < 1 and #G.deck.cards < 1 then
-            end_round()
-        else
-            save_run()
-            G.CONTROLLER:recall_cardarea_focus('hand')
-        end
-'''
-position = "at"
-payload = '''
-    if #G.hand.cards < 1 and #G.deck.cards < 1 then
-        if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" then
-          G.GAME.chips = 0
-          G.GAME.round_resets.lost = false
-          G.GAME.blind:set_blind(G.P_BLINDS["bl_entr_endless_entropy_phase_two"])
-          Entropy.ChangePhase()
-          G.GAME.blind:juice_up()
-          G.GAME.current_round.hands_left = G.GAME.round_resets.hands
-          ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
-          ease_discard(
-            math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
-          )
-          G.FUNCS.draw_from_discard_to_deck()
-          G.STATE = 1
-          G.STATE_COMPLETE = false
-          G.GAME.ChangingPhase = true
-        elseif not G.GAME.ChangingPhase and not G.PROFILES[G.SETTINGS.profile].cry_none then
-          end_round()
-        end
-    else
-        save_run()
-        G.CONTROLLER:recall_cardarea_focus('hand')
-    end
-'''
-match_indent = true    
+match_indent = true   
 
 [[patches]]
 [patches.pattern]
@@ -984,5 +913,68 @@ payload = '''
     if not self.ability.entr_aleph and not self.ability.cry_absolute then
     	if self.ability.eternal then badges[#badges + 1] = 'eternal' end
     end
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+                        {n=G.UIT.R,config={id = 'next_round_button', align = "cm", minw = 2.8, minh = 1.5, r=0.15,colour = G.C.RED, one_press = true, button = 'toggle_shop', hover = true,shadow = true}, nodes = {
+                          {n=G.UIT.R, config={align = "cm", padding = 0.07, focus_args = {button = 'y', orientation = 'cr'}, func = 'set_button_pip'}, nodes={
+                            {n=G.UIT.R, config={align = "cm", maxw = 1.3}, nodes={
+                              {n=G.UIT.T, config={text = localize('b_next_round_1'), scale = 0.4, colour = G.C.WHITE, shadow = true}}
+                            }},
+                            {n=G.UIT.R, config={align = "cm", maxw = 1.3}, nodes={
+                              {n=G.UIT.T, config={text = localize('b_next_round_2'), scale = 0.4, colour = G.C.WHITE, shadow = true}}
+                            }}   
+                          }},              
+                        }},
+                        {n=G.UIT.R, config={align = "cm", minw = 2.8, minh = 1.6, r=0.15,colour = G.C.GREEN, button = 'reroll_shop', func = 'can_reroll', hover = true,shadow = true}, nodes = {
+                          {n=G.UIT.R, config={align = "cm", padding = 0.07, focus_args = {button = 'x', orientation = 'cr'}, func = 'set_button_pip'}, nodes={
+                            {n=G.UIT.R, config={align = "cm", maxw = 1.3}, nodes={
+                              {n=G.UIT.T, config={text = localize('k_reroll'), scale = 0.4, colour = G.C.WHITE, shadow = true}},
+                            }},
+                            {n=G.UIT.R, config={align = "cm", maxw = 1.3, minw = 1}, nodes={
+                              {n=G.UIT.T, config={text = localize('$'), scale = 0.7, colour = G.C.WHITE, shadow = true}},
+                              {n=G.UIT.T, config={ref_table = G.GAME.current_round, ref_value = 'reroll_cost', scale = 0.75, colour = G.C.WHITE, shadow = true}},
+                            }}
+                          }}
+                        }},
+'''
+position = "at"
+payload = '''
+                        {n=G.UIT.R,config={id = 'next_round_button', align = "cm", minw = 2.8, minh = Entropy.CanSwitchAltPath() and 1 or 1.5, r=0.15,colour = G.C.RED, one_press = true, button = 'toggle_shop', hover = true,shadow = true}, nodes = {
+                          {n=G.UIT.R, config={align = "cm", padding = 0.07, focus_args = {button = 'y', orientation = 'cr'}, func = 'set_button_pip'}, nodes={
+                            {n=G.UIT.R, config={align = "cm", maxw = 1.3}, nodes={
+                              {n=G.UIT.T, config={text = localize('b_next_round_1'), scale = 0.4, colour = G.C.WHITE, shadow = true}}
+                            }},
+                            {n=G.UIT.R, config={align = "cm", maxw = 1.3}, nodes={
+                              {n=G.UIT.T, config={text = localize('b_next_round_2'), scale = 0.4, colour = G.C.WHITE, shadow = true}}
+                            }}   
+                          }},              
+                        }},
+                        (Entropy.CanSwitchAltPath() and {n=G.UIT.R,config={id = 'change_path_button', align = "cm", minw = 2.8, minh = 1, r=0.15,colour = G.C.PURPLE, button = 'toggle_path', hover = true,shadow = true, func='can_toggle_path'}, nodes = {
+                          {n=G.UIT.R, config={align = "cm", padding = 0.07, focus_args = {button = 'y', orientation = 'cr'}, func = 'set_button_pip'}, nodes={
+                            {n=G.UIT.R, config={align = "cm", maxw = 1.3}, nodes={
+                              {n=G.UIT.T, config={text = localize(G.GAME.entr_alt and 'b_change_path_3' or 'b_change_path_1'), scale = 0.4, colour = G.C.WHITE, shadow = true}}
+                            }},
+                            {n=G.UIT.R, config={align = "cm", maxw = 1.3}, nodes={
+                              not G.GAME.entr_alt and {n=G.UIT.T, config={text = localize('b_change_path_2'), scale = 0.4, colour = G.C.WHITE, shadow = true}} or nil
+                            }}
+                          }},              
+                        }} or nil),
+                        {n=G.UIT.R, config={align = "cm", minw = 2.8, minh = Entropy.CanSwitchAltPath() and 1 or 1.6, r=0.15,colour = G.C.GREEN, button = 'reroll_shop', func = 'can_reroll', hover = true,shadow = true}, nodes = {
+                          {n=G.UIT.R, config={align = "cm", padding = 0.07, focus_args = {button = 'x', orientation = 'cr'}, func = 'set_button_pip'}, nodes={
+                            {n=G.UIT.R, config={align = "cm", maxw = 1.3}, nodes={
+                              {n=G.UIT.T, config={text = localize('k_reroll'), scale = 0.4, colour = G.C.WHITE, shadow = true}},
+                            }},
+                            {n=G.UIT.R, config={align = "cm", maxw = 1.3, minw = 1}, nodes={
+                              {n=G.UIT.T, config={text = localize('$'), scale = 0.7, colour = G.C.WHITE, shadow = true}},
+                              {n=G.UIT.T, config={ref_table = G.GAME.current_round, ref_value = 'reroll_cost', scale = 0.75, colour = G.C.WHITE, shadow = true}},
+                            }}
+                          }}
+                        }},
 '''
 match_indent = true

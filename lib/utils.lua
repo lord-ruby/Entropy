@@ -1122,3 +1122,7 @@ function Entropy.GetRepetitions(card)
     end
     return res2
 end
+
+function Entropy.CanSwitchAltPath()
+    return G.GAME.round_resets.blind_states.Small == "Upcoming"
+end

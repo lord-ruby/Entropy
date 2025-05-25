@@ -579,3 +579,21 @@ G.FUNCS.notif_antireal = function()
     G.FUNCS:exit_overlay_menu()
     -- todo: autosave settings (Not sure if this autosaves it)
 end
+
+G.FUNCS.can_toggle_path = function(e)
+    local c1 = e.config.ref_table
+    if
+        not G.GAME.round_resets.path_toggled
+    then
+        e.config.colour = G.C.PURPLE
+        e.config.button = "toggle_path"
+    else
+        e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+        e.config.button = nil
+    end
+end
+
+G.FUNCS.toggle_path = function(e)
+    G.GAME.round_resets.path_toggled = true
+    G.GAME.entr_alt = not G.GAME.entr_alt
+end

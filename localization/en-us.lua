@@ -2483,7 +2483,11 @@ local decs = {
 
 			k_entr_omega_aleph = "Aleph sticker stops Self Destruction (Unstable, Must Restart Game)",
 
-			k_saved_skullcry = "The power of Zenith Stake saves you"
+			k_saved_skullcry = "The power of Zenith Stake saves you",
+
+			b_change_path_1 = "Enter The",
+			b_change_path_2 = "Flip-Side",
+			b_change_path_3 = "Return",
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",
