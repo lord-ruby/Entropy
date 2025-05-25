@@ -161,4 +161,4 @@ return {
         jokerinyellow,
         yellow_sign
     }
-}
+} --yellow
