@@ -965,6 +965,9 @@ local forest = {
             }
         }
     end,
+    entr_credits = {
+        art = {"notmario"}
+    }
 }
 
 local mountain = {
