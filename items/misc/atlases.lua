@@ -171,3 +171,13 @@ SMODS.Atlas {
 	px = 66,
 	py = 66,
 }
+
+
+SMODS.Atlas {
+    key = 'altblinds', 
+    path = 'alt_blinds.png', 
+    px = 34, 
+    py = 34, 
+    frames = 1, 
+    atlas_table = 'ANIMATION_ATLAS'
+}

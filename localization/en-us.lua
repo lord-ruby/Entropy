@@ -98,6 +98,14 @@ local decs = {
 					"{C:cry_ascendant}Thematic Set",
 				},
 			},
+			set_entr_altpath = {
+				name = "Alternate Path",
+				text = {
+					"{C:attention}Content{} related to",
+					"an {C:entr_entropic}alternative path{} of",
+					"progression during runs",
+				},
+			},
 		},
 		Joker = {
 			j_cry_redeo = {
@@ -628,6 +636,14 @@ local decs = {
 				text = {
 					"Playing Hands, Discarding, and Select/Unselecting playing cards",
 					"Temporarily decreases joker values by 5%"
+				}
+			},
+			--alt blinds
+			bl_entr_alpha = {
+				name = "Alpha",
+				text = {
+					"First scored card each hand",
+					"is destroyed"
 				}
 			},
 		},

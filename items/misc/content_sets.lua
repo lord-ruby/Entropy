@@ -63,3 +63,11 @@ SMODS.ContentSet({
 	pos = { x = 0, y = 0 },
 	cry_order = 6,
 })
+
+SMODS.ContentSet({
+	key = "altpath",
+	atlas = "altblinds",
+	pos = { x = 0, y = 0 },
+	cry_order = 7,
+	cry_blind = true,
+})
