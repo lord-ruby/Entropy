@@ -1126,3 +1126,21 @@ end
 function Entropy.CanSwitchAltPath()
     return G.GAME.round_resets.blind_states.Small == "Upcoming"
 end
+
+function Entropy.ApproximateLogRecursion(orig, base, iter)
+    if to_big(iter) < to_big(1000) then
+        if to_big(orig) < to_big(base) then return orig end
+        local result = orig
+        for i = 1, to_number(iter) do
+            result = to_big(result) * to_big(math.log(to_big(result), to_big(base)))
+        end
+        return result
+    else
+        local m = iter/math.log(base)
+        local l1 = math.log(m)
+        local l2 = math.log(l1)
+        local E = iter * (l1 + l2 - 1 + ((l2-2)/l1))
+        local result = to_big(2.718281846) ^ to_big(E)
+        return result
+    end
+end

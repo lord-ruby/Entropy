@@ -228,7 +228,7 @@ local freaky = {
 if AurinkoAddons then
 	AurinkoAddons.entr_solar = function(card, hand, instant, amount)
 		if to_big(G.GAME.hands[hand].AscensionPower or 0) > to_big(0) then
-			local num = G.GAME.hands[hand].AscensionPower * (card.edition.sol-1) *(amount or 1)
+			local num = G.GAME.hands[hand].AscensionPower * ((card.edition.sol-1) ^ (amount or 1))
 			Entropy.ReversePlanetUse(hand, card, num)
 		end
 	end
@@ -238,8 +238,8 @@ if AurinkoAddons then
 	end
 	AurinkoAddons.entr_freaky = function(card, hand, instant, amount)
 		local hand_chips = G.GAME.hands[hand].chips
-		local mult = math.max(math.log(to_big(hand_chips) < to_big(0) and 1 or hand_chips, 69), 1)
-		hand_chips = hand_chips * mult
+		local mult = math.max(Entropy.ApproximateLogRecursion(hand_chips, card.edition.log_base, amount), hand_chips)/hand_chips
+		hand_chips = math.max(Entropy.ApproximateLogRecursion(hand_chips, card.edition.log_base, amount), hand_chips)
 		G.GAME.hands[hand].chips = hand_chips
 		if not instant then
 			G.E_MANAGER:add_event(Event({
