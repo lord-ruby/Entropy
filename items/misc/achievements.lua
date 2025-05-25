@@ -26,6 +26,20 @@ local event_horizon = {
 	end,
 }
 
+local rift = {
+	object_type = "Achievement",
+	key = "rift",
+	order = 3,
+	bypass_all_unlocked = true,
+	atlas = "entr_achievements",
+	--reset_on_startup = true,
+	unlock_condition = function(self, args)
+        if args.type == "rift" then
+		    return true
+        end
+	end,
+}
+
 local megalyteri = {
 	object_type = "Achievement",
 	key = "megalyteri",
@@ -81,6 +95,7 @@ return {
         event_horizon,
         megalyteri,
         outopia,
-        acheros
+        acheros,
+		rift
     }
 }

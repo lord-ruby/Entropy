@@ -2344,6 +2344,7 @@ local decs = {
 			ach_entr_megalyteri = "Megalyteri",
 			ach_entr_outopia = "Outopia",
 			ach_entr_acheros = "Acheros",
+			ach_entr_rift = "Rift"
 		},
 		achievement_descriptions = {
 			ach_entr_event_horizon = "Use define to turn Obelisk into Sob",
@@ -2351,6 +2352,7 @@ local decs = {
 			ach_entr_megalyteri = "Reach {50000} on Dekatria",
 			ach_entr_outopia = "Obtain a zenith rarity Joker",
 			ach_entr_acheros = "Beat Ante 32s boss blind, Endless Entropy",
+			ach_entr_rift = "Beat Ante 8 on The Alternate Path"
 		},
 		suits_plural = {
 			entr_nilsuit = "Nil",

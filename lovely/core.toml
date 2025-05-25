@@ -554,6 +554,9 @@ target = "game.lua"
 pattern = '''if G.GAME.round_resets.ante <= G.GAME.win_ante then --Only add Jimbo to say a quip if the game over happens when the run is lost'''
 position = "at"
 payload = '''
+if G.GAME.round_resets.ante <= G.GAME.win_ante and G.GAME.entr_alt then
+  check_for_unlock({type="rift"})
+end
 if G.GAME.round_resets.ante <= G.GAME.win_ante or G.GAME.EECardCharacter then --Only add Jimbo to say a quip if the game over happens when the run is lost
 '''
 match_indent = true
