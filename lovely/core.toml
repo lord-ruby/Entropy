@@ -979,3 +979,20 @@ payload = '''
                         }},
 '''
 match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''
+    elseif blindname == 'Small Blind' or blindname == 'Big Blind' or blindname == '' then
+        ease_background_colour{new_colour = G.C.BLIND['Small'], contrast = 1}
+    else
+'''
+position = "at"
+payload = '''
+    elseif blindname == 'Small Blind' or blindname == 'Big Blind' or blindname == '' then
+        ease_background_colour{new_colour = G.GAME.entr_alt and G.C.ALTBG or G.C.BLIND['Small'], contrast = 1}
+    else
+'''
+match_indent = true

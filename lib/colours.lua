@@ -10,3 +10,5 @@ G.C.Entropy.Dissolve = {
     RCode = G.C.Entropy.RCode,
     RTarot = G.C.Entropy.RTarot
 }
+
+G.C.ALTBG = HEX("41566f")
