@@ -193,7 +193,7 @@ local epsilon = {
     order = 1000+5,
 	name = "entr-epsilon",
 	key = "epsilon",
-	pos = { x = 0, y = 3 },
+	pos = { x = 0, y = 4 },
 	atlas = "altblinds",
 	boss_colour = HEX("907c7c"),
     mult=2,
