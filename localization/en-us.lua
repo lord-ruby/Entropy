@@ -646,6 +646,13 @@ local decs = {
 					"is destroyed"
 				}
 			},
+			bl_entr_beta = {
+				name = "Beta",
+				text = {
+					"-1 Hand Size",
+					"-1 more Hand Size per hand played"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {

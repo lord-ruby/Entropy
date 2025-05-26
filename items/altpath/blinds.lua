@@ -11,7 +11,7 @@ local alpha = {
 	pos = { x = 0, y = 0 },
 	atlas = "altblinds",
 	boss_colour = HEX("907c7c"),
-    mult=2,
+    mult=3,
     dollars = 6,
     altpath=true,
 	boss = {
@@ -35,8 +35,58 @@ local alpha = {
 		end
     end
 }
+
+local beta = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+2,
+	name = "entr-beta",
+	key = "beta",
+	pos = { x = 0, y = 1 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=2,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+    calculate = function(self, blind, context)
+		if
+			context.after
+			and not G.GAME.blind.disabled
+		then
+            G.hand.config.card_limit = G.hand.config.card_limit - 1
+            G.GAME.beta_modifer = (G.GAME.beta_modifer or 0) + 1
+		end
+    end,
+    defeat = function()
+        if not G.GAME.blind.disabled then
+            G.hand.config.card_limit = G.hand.config.card_limit + G.GAME.beta_modifer
+            G.GAME.beta_modifer = nil
+        end
+    end,
+    disable = function()
+        if not G.GAME.blind.disabled then
+            G.hand.config.card_limit = G.hand.config.card_limit + G.GAME.beta_modifer
+            G.GAME.beta_modifer = nil
+        end
+    end,
+    set_blind = function()
+        G.hand.config.card_limit = G.hand.config.card_limit - 1
+        G.GAME.beta_modifer = (G.GAME.beta_modifer or 0) + 1
+    end
+}
 return {
     items = {
-        alpha
+        alpha,
+        beta
     }
 }
