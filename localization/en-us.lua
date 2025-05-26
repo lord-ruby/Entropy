@@ -671,7 +671,7 @@ local decs = {
 				name = "Epsilon",
 				text = {
 					"Divide final mult based on the",
-					"number of played cards	"
+					"number of played cards"
 				}
 			},
 		},
