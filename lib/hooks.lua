@@ -2456,7 +2456,7 @@ function get_new_boss()
             end
         end
         for k, v in pairs(G.GAME.banned_keys) do
-            if eligible_bosses[v.key] then eligible_bosses[v.key] = nil end
+            if eligible_bosses[k] then eligible_bosses[k] = nil end
         end
     
         -- local min_use = 100
