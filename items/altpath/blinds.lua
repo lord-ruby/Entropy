@@ -78,10 +78,8 @@ local beta = {
         end
     end,
     disable = function()
-        if not G.GAME.blind.disabled then
-            G.hand.config.card_limit = G.hand.config.card_limit + G.GAME.beta_modifer
-            G.GAME.beta_modifer = nil
-        end
+        G.hand.config.card_limit = G.hand.config.card_limit + G.GAME.beta_modifer
+        G.GAME.beta_modifer = nil
     end,
     set_blind = function()
         G.hand.config.card_limit = G.hand.config.card_limit - 1
