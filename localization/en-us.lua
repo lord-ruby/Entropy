@@ -675,6 +675,13 @@ local decs = {
 					"number of played cards"
 				}
 			},
+			bl_entr_zeta = {
+				name = "Zeta",
+				text = {
+					"Hand must not contain",
+					"3 of 5 cards"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {

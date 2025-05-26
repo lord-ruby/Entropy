@@ -209,12 +209,41 @@ local epsilon = {
     end
 }
 
+local zeta = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+6,
+	name = "entr-zeta",
+	key = "zeta",
+	pos = { x = 0, y = 5 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=3,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+    debuff_hand = function(self, cards, hand, handname, check)
+        if #cards == 3 or #cards == 5 then return true end
+        return false
+    end
+}
+
 return {
     items = {
         alpha,
         beta,
         gamma,
         delta,
-        epsilon
+        epsilon,
+        zeta
     }
 }
