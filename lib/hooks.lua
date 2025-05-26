@@ -2481,7 +2481,7 @@ function get_new_boss()
         else
             _, boss = pseudorandom_element(eligible_bosses, pseudoseed('boss'))
         end
-        if not boss then return get_bossref()
+        if not boss then return get_bossref() end
         G.GAME.bosses_used[boss] = (G.GAME.bosses_used[boss] or 0) + 1
         return boss
     end
