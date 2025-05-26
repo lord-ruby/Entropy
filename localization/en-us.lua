@@ -664,7 +664,8 @@ local decs = {
 				name = "Delta",
 				text = {
 					"Divide final mult based on the",
-					"number of played hands"
+					"number of played hands",
+					"in this blind"
 				}
 			},
 			bl_entr_epsilon = {
