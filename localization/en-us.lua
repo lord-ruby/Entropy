@@ -653,6 +653,13 @@ local decs = {
 					"-1 more Hand Size per hand played"
 				}
 			},
+			bl_entr_gamma = {
+				name = "Gamma",
+				text = {
+					"Divide base mult based on the",
+					"number of unplayed suits"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {

@@ -84,9 +84,58 @@ local beta = {
         G.GAME.beta_modifer = (G.GAME.beta_modifer or 0) + 1
     end
 }
+
+local gamma = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+3,
+	name = "entr-gamma",
+	key = "gamma",
+	pos = { x = 0, y = 2 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=2,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+	modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
+		if G.GAME.current_round.discards_left > 1 then
+			G.GAME.blind.triggered = true
+            local suits = {}
+            local discovered = 0
+			for i, v in ipairs(G.play.cards) do
+				if v.config.center.key == "m_cry_abstract" then
+					if not suits["abstract"] then
+						suits["abstract"] = true
+						discovered = discovered + 1
+					end
+				else
+					if not suits[v.base.suit] then
+						suits[v.base.suit] = true
+						discovered = discovered + 1
+					end
+				end
+			end
+            discovered = math.max(discovered, 2)
+			return mult * (1-1/discovered), hand_chips, true
+		end
+		return mult, hand_chips, false
+	end,
+}
+
 return {
     items = {
         alpha,
-        beta
+        beta,
+        gamma
     }
 }
