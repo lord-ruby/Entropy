@@ -1070,6 +1070,10 @@ end
 
 local scie = SMODS.calculate_individual_effect
 function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
+    if Entropy.BlindIs("bl_entr_theta") then
+        key = key:gsub("mult_mod", "chip_mod")
+        key = key:gsub("mult", "chips")
+    end
     local ret
     ret = scie(effect, scored_card, key, amount, from_edition)
     if ret then

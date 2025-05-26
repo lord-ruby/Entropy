@@ -682,6 +682,20 @@ local decs = {
 					"3 or 5 cards"
 				}
 			},
+			bl_entr_eta = {
+				name = "Eta",
+				text = {
+					"#1# cards are debuffed",
+					"changes when hand played"
+				}
+			},
+			bl_entr_theta = {
+				name = "Theta",
+				text = {
+					"Mult operations now",
+					"affect chips instead"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {

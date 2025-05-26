@@ -235,6 +235,86 @@ local zeta = {
     end
 }
 
+local eta = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+7,
+	name = "entr-eta",
+	key = "eta",
+	pos = { x = 0, y = 6 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=3,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+    calculate = function(self, blind, context)
+        if context.after then
+            G.GAME.blind.suit_debuffed = pseudorandom_element({"Spades", "Hearts", "Diamonds", "Clubs"}, pseudoseed("eta_suit"))
+            for i, v in ipairs(G.hand.cards) do
+                SMODS.recalc_debuff(v)
+            end
+            for i, v in ipairs(G.deck.cards) do
+                SMODS.recalc_debuff(v)
+            end
+            G.GAME.blind:set_text()
+        end
+    end,
+    recalc_debuff = function(self, card, from_blind)
+        if card.base.suit == G.GAME.blind.suit_debuffed then
+            return true
+        end
+        return false
+    end,
+    set_blind = function()
+        G.GAME.blind.suit_debuffed = pseudorandom_element({"Spades", "Hearts", "Diamonds", "Clubs"}, pseudoseed("eta_suit"))
+    end,
+    loc_vars = function()
+        if not G.GAME.blind.suit_debuffed then G.GAME.blind.suit_debuffed = pseudorandom_element({"Spades", "Hearts", "Diamonds", "Clubs"}, pseudoseed("eta_suit")) end
+        return {
+            vars = {localize(G.GAME.blind.suit_debuffed, "suits_singular")}
+        }
+    end,
+    collection_loc_vars = function()
+        return {
+            vars = {"[suit]"}
+        }
+    end
+}
+
+local theta = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+8,
+	name = "entr-theta",
+	key = "theta",
+	pos = { x = 0, y = 7 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=1,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+}
+
 return {
     items = {
         alpha,
@@ -242,6 +322,8 @@ return {
         gamma,
         delta,
         epsilon,
-        zeta
+        zeta,
+        eta,
+        theta
     }
 }
