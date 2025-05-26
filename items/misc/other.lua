@@ -1,11 +1,11 @@
 local aleph = {
     dependencies = {
         items = {
-          "set_entr_inversions"
+          "set_entr_misc"
         }
     },
     object_type = "Sticker",
-    order = 3000+4,
+    order = 3200,
     atlas = "entr_stickers",
     pos = { x = 8, y = 0 },
     key = "entr_aleph",

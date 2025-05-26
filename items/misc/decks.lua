@@ -1,6 +1,6 @@
 local twisted = {
     object_type = "Back",
-    order = 0,
+    order = 7000,
     dependencies = {
       items = {
         "set_entr_inversions",
@@ -18,7 +18,7 @@ local twisted = {
 
 local redefined = {
     object_type = "Back",
-    order = 1,
+    order = 7001,
     dependencies = {
       items = {
         "set_entr_decks"
@@ -35,7 +35,7 @@ local redefined = {
 
 local containment = {
     object_type = "Back",
-    order = 2,
+    order = 7002,
     dependencies = {
       items = {
         "set_entr_decks"
@@ -98,7 +98,7 @@ local containment = {
   }
 
   local destiny = {
-    order = 3,
+    order = 7003,
     dependencies = {
       items = {
         "set_entr_decks"

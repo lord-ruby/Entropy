@@ -107,10 +107,10 @@ local prismatic = {
 local dark = {
 	dependencies = {
         items = {
-          "set_entr_entropics"
+          "set_entr_inversions"
         }
     },
-	order = 10000+3,
+	order = 6999,
 	object_type = "Enhancement",
 	key = "dark",
 	atlas = "enhancements",

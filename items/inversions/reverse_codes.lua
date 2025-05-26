@@ -5,7 +5,7 @@ local memoryleak = {
         }
     },
     object_type = "Consumable",
-    order = 3000 + 1,
+    order = 4000 + 1,
     key = "memory_leak",
     set = "RCode",
     no_collection = true,
@@ -53,7 +53,7 @@ local rootkit = {
         }
     },
     object_type = "Consumable",
-    order = 3000 + 2,
+    order = 4000 + 2,
     key = "root_kit",
     set = "RCode",
 
@@ -89,7 +89,7 @@ local bootstrap = {
         }
     },
     object_type = "Consumable",
-    order = 3000 + 3,
+    order = 4000 + 3,
     key = "bootstrap",
     set = "RCode",
 
@@ -115,7 +115,7 @@ local quickload = {
         }
     },
     object_type = "Consumable",
-    order = 3000+4,
+    order = 4000+4,
     key = "quickload",
     set = "RCode",
     
@@ -149,7 +149,7 @@ local detour = {
         }
     },
     object_type = "Consumable",
-    order = 3000+4.5,
+    order = 4000+4.5,
     key = "detour",
     set = "RCode",
     
@@ -185,7 +185,7 @@ local break_card = {
         }
     },
     object_type = "Consumable",
-    order = 3000+5,
+    order = 4000+5,
     key = "break",
     set = "RCode",
     
@@ -244,7 +244,7 @@ local new = {
         }
     },
     object_type = "Consumable",
-    order = 3000+6,
+    order = 4000+6,
     key = "new",
     set = "RCode",
     
@@ -282,7 +282,7 @@ local rr = {
         }
     },
 	object_type = "Blind",
-    order = 999,
+    order = 4200,
 	name = "entr-red",
 	key = "red",
 	pos = { x = 0, y = 0 },
@@ -301,7 +301,7 @@ local interference = {
         }
     },
     object_type = "Consumable",
-    order = 3000+7,
+    order = 4000+7,
     key = "interference",
     set = "RCode",
     
@@ -330,7 +330,7 @@ local constant = {
         }
     },
     object_type = "Consumable",
-    order = 8,
+    order = 4000+8,
     key = "constant",
     set = "RCode",
     
@@ -371,7 +371,7 @@ local pseudorandom = {
         }
     },
     object_type = "Consumable",
-    order = 3000+9,
+    order = 4000+9,
     key = "pseudorandom",
     set = "RCode",
     
@@ -414,7 +414,7 @@ local pseudorandom_sticker = {
         }
     },
     object_type = "Sticker",
-    order = 3000+1,
+    order = 4500+1,
     atlas = "entr_stickers",
     pos = { x = 5, y = 0 },
     key = "entr_pseudorandom",
@@ -492,7 +492,7 @@ local inherit = {
         }
     },
     object_type = "Consumable",
-    order = 3000+10,
+    order = 4000+10,
     key = "inherit",
     set = "RCode",
     
@@ -538,7 +538,7 @@ local fork = {
         }
     },
     object_type = "Consumable",
-    order = 3000+11,
+    order = 4000+11,
     key = "fork",
     set = "RCode",
     
@@ -600,7 +600,7 @@ local push = {
         }
     },
     object_type = "Consumable",
-    order = 3000+12,
+    order = 4000+12,
     key = "push",
     set = "RCode",
     
@@ -686,7 +686,7 @@ local increment = {
         }
     },
     object_type = "Consumable",
-    order = 3000+13,
+    order = 4000+13,
     key = "increment",
     set = "RCode",
     
@@ -733,7 +733,7 @@ local decrement = {
         }
     },
     object_type = "Consumable",
-    order = 3000+14,
+    order = 4000+14,
     key = "decrement",
     set = "RCode",
 
@@ -778,7 +778,7 @@ local invariant = {
         }
     },
     object_type = "Consumable",
-    order = 3000+15,
+    order = 4000+15,
     key = "invariant",
     set = "RCode",
     
@@ -807,7 +807,7 @@ local invariant = {
 
 local pinned = {
     object_type="Sticker",
-    order=3000+2,
+    order=4500+2,
     atlas = "entr_stickers",
     pos = { x = 1, y = 0 },
     key = "entr_pinned",
@@ -865,7 +865,7 @@ local cookies = {
         }
     },
     object_type = "Consumable",
-    order = 3000+17,
+    order = 4000+17,
     key = "cookies",
     set = "RCode",
     
@@ -898,7 +898,7 @@ local segfault = {
         }
     },
     object_type = "Consumable",
-    order = 3000+18,
+    order = 4000+18,
     key = "segfault",
     set = "RCode",
 
@@ -952,7 +952,7 @@ local sudo = {
         }
     },
     object_type = "Consumable",
-    order = 3000+19,
+    order = 4000+19,
     key = "sudo",
     set = "RCode",
     
@@ -1004,7 +1004,7 @@ local overflow = {
         }
     },
     object_type = "Consumable",
-    order = 3000+20,
+    order = 4000+20,
     key = "overflow",
     set = "RCode",
 
@@ -1040,7 +1040,7 @@ local refactor = {
         }
     },
     object_type = "Consumable",
-    order = 3000+21,
+    order = 4000+21,
     key = "refactor",
     set = "RCode",
     
@@ -1105,7 +1105,7 @@ local hotfix = {
         }
     },
     object_type = "Consumable",
-    order = 3000+22,
+    order = 4000+22,
     key = "hotfix",
     set = "RCode",
     
@@ -1135,7 +1135,7 @@ local hotfix_sticker = {
         }
     },
     object_type = "Sticker",
-    order=3000+3,
+    order=4500+3,
     atlas = "entr_stickers",
     pos = { x = 3, y = 0 },
     key = "entr_hotfix",
@@ -1186,7 +1186,7 @@ local desync_card = {
         }
     },
     object_type = "Consumable",
-    order = 3000+22,
+    order = 4000+22,
     key = "desync",
     set = "RCode",
     
@@ -1212,7 +1212,7 @@ local ctrl_x = {
         }
     },
     object_type = "Consumable",
-    order = 3000+22,
+    order = 4000+22,
     key = "ctrl_x",
     set = "RCode",
     
@@ -1281,7 +1281,7 @@ local multithread = {
         }
     },
     object_type = "Consumable",
-    order = 3000+24,
+    order = 4000+24,
     key = "multithread",
     set = "RCode",
     
@@ -1325,7 +1325,7 @@ local temporary = {
         }
     },
     object_type = "Sticker",
-    order = 3000+4,
+    order = 4500+4,
     atlas = "entr_stickers",
     pos = { x = 3, y = 1 },
     key = "temporary",
@@ -1370,7 +1370,7 @@ local autostart = {
         }
     },
     object_type = "Consumable",
-    order = 3000+25,
+    order = 4000+25,
     key = "autostart",
     set = "RCode",
     
@@ -1411,7 +1411,7 @@ local local_card = {
         }
     },
     object_type = "Consumable",
-    order = 3000+27,
+    order = 4000+27,
     key = "local",
     set = "RCode",
     
@@ -1448,7 +1448,7 @@ local badarg = {
         }
     },
     object_type = "Consumable",
-    order = 3000+29,
+    order = 4000+29,
     key = "badarg",
     set = "RCode",
     
@@ -1495,7 +1495,7 @@ local transpile = {
         }
     },
     object_type = "Consumable",
-    order = 3000+30,
+    order = 4000+30,
     key = "transpile",
     set = "RCode",
     
@@ -1538,7 +1538,7 @@ local mbr = {
         }
     },
     object_type = "Consumable",
-    order = 3000+31,
+    order = 4000+31,
     key = "mbr",
     set = "RCode",
     
@@ -1573,7 +1573,7 @@ local desync = {
         }
     },
     object_type = "Sticker",
-    order = 3000+32,
+    order = 4500+32,
     atlas = "entr_stickers",
     pos = { x = 7, y = 0 },
     key = "desync",

@@ -1,6 +1,6 @@
 local jokerinyellow = {
     object_type = "Joker",
-    order = -666,
+    order = 2500+6,
     dependencies = {
 		items = {
 			"set_cry_cursed",
@@ -134,7 +134,7 @@ local yellow_sign = {
     key = "entr_yellow_sign",
     dependencies = {
         items = {
-          "set_entr_inversions",
+          "set_cry_cursed",
         }
     },
     object_type = "Sticker",

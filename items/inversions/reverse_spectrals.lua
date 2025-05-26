@@ -1046,7 +1046,7 @@ local substitute = {
                 voucher2:start_dissolve()
             end
         end
-        local card = create_card("Voucher", G.vouchers, nil, nil, nil, nil, nil, "entr_beyond")
+        local card = create_card("Voucher", G.vouchers, nil, nil, nil, nil, nil, "entr_subby")
         card:set_ability(G.P_CENTERS[Entropy.GetHigherVoucherTier(voucher.config.center.key) or "v_blank"])
         card:add_to_deck()
         G.vouchers:emplace(card)
@@ -1533,7 +1533,7 @@ local beyond = {
     pos = {x = 0, y = 0},
     tsoul_pos = {x=2, y=0, extra = {x=1,y=0}},
     dependencies = {
-        items = {"set_entr_entropics"}
+        items = {"set_entr_entropics", "set_entr_inversions"}
     },
     atlas = "consumables",
     set = "RSpectral",

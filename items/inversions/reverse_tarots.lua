@@ -427,7 +427,7 @@ local scarred = {
         }
     },
     object_type = "Sticker",
-    order = -900 + 7,
+    order = -901,
     atlas = "entr_stickers",
     pos = { x = 6, y = 1 },
     key = "scarred",
