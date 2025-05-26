@@ -222,7 +222,7 @@ local zeta = {
 	pos = { x = 0, y = 5 },
 	atlas = "altblinds",
 	boss_colour = HEX("907c7c"),
-    mult=3,
+    mult=2,
     dollars = 6,
     altpath=true,
 	boss = {
