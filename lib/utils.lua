@@ -1124,7 +1124,7 @@ function Entropy.GetRepetitions(card)
 end
 
 function Entropy.CanSwitchAltPath()
-    return G.GAME.round_resets.blind_states.Small == "Upcoming"
+    return G.GAME.round_resets.blind_states[G.GAME.modifiers.cry_no_small_blind and "Big" or "Small"] == "Upcoming"
 end
 
 function Entropy.ApproximateLogRecursion(orig, base, iter)
