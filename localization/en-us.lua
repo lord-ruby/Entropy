@@ -660,6 +660,13 @@ local decs = {
 					"number of unplayed suits"
 				}
 			},
+			bl_entr_delta = {
+				name = "Delta",
+				text = {
+					"Divide final mult based on the",
+					"number of played hands"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {

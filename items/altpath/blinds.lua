@@ -33,6 +33,7 @@ local alpha = {
             for i, v in ipairs(scoring_hand) do
                 if i == 1 and v == context.destroy_card then check = true end
             end
+            G.GAME.blind.triggered = true
 			return { remove = check and not context.destroy_card.ability.eternal }
 		end
     end
@@ -67,6 +68,7 @@ local beta = {
 		then
             G.hand.config.card_limit = G.hand.config.card_limit - 1
             G.GAME.beta_modifer = (G.GAME.beta_modifer or 0) + 1
+            G.GAME.blind.triggered = true
 		end
     end,
     defeat = function()
@@ -109,9 +111,8 @@ local gamma = {
     in_pool = function()
         return G.GAME.entr_alt
     end,
-	modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
-		if G.GAME.current_round.discards_left > 1 then
-			G.GAME.blind.triggered = true
+	calculate = function(self, blind, context)
+		if context.after and not G.GAME.blind.disabled then
             local suits = {}
             local discovered = 0
 			for i, v in ipairs(G.play.cards) do
@@ -128,16 +129,57 @@ local gamma = {
 				end
 			end
             discovered = math.max(discovered, 2)
-			return mult * (1-1/discovered), hand_chips, true
+            G.GAME.current_round.current_hand.mult = G.GAME.current_round.current_hand.mult * (1-1/discovered)
+            update_hand_text({delay = 0}, {mult = G.GAME.current_round.current_hand.mult})
+            G.GAME.blind.triggered = true
 		end
-		return mult, hand_chips, false
 	end,
 }
+
+local delta = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+4,
+	name = "entr-delta",
+	key = "delta",
+	pos = { x = 0, y = 3 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=2,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+	calculate = function(self, blind, context)
+    end
+}
+local eval_ref = evaluate_play_main
+function evaluate_play_main (text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
+    local text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta = eval_ref(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
+    if Entropy.BlindIs("bl_entr_delta") and G.GAME.round_resets.hands > G.GAME.current_round.hands_left then
+        local used = G.GAME.round_resets.hands - G.GAME.current_round.hands_left
+        used = math.max(used,2)
+        mult = mult / used
+        G.GAME.blind.triggered = true
+        update_hand_text({delay=0}, {mult=mult})
+        delay(0.4)
+    end
+    return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
+end
 
 return {
     items = {
         alpha,
         beta,
-        gamma
+        gamma,
+        delta
     }
 }
