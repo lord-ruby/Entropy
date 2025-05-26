@@ -667,6 +667,13 @@ local decs = {
 					"number of played hands"
 				}
 			},
+			bl_entr_epsilon = {
+				name = "Epsilon",
+				text = {
+					"Divide final mult based on the",
+					"number of played cards	"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {

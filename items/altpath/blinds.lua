@@ -172,14 +172,49 @@ function evaluate_play_main (text, disp_text, poker_hands, scoring_hand, non_loc
         update_hand_text({delay=0}, {mult=mult})
         delay(0.4)
     end
+    if Entropy.BlindIs("bl_entr_epsilon") and #G.play.cards > 1 then
+        local used = #G.play.cards
+        used = math.max(used,1)
+        mult = mult / used
+        G.GAME.blind.triggered = true
+        update_hand_text({delay=0}, {mult=mult})
+        delay(0.4)
+    end
     return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
 end
+
+local epsilon = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+5,
+	name = "entr-epsilon",
+	key = "epsilon",
+	pos = { x = 0, y = 3 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=2,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+	calculate = function(self, blind, context)
+    end
+}
 
 return {
     items = {
         alpha,
         beta,
         gamma,
-        delta
+        delta,
+        epsilon
     }
 }
