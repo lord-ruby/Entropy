@@ -1071,6 +1071,9 @@ end
 local scie = SMODS.calculate_individual_effect
 function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
     if Entropy.BlindIs("bl_entr_theta") then
+        --hacky solution
+        --probably want a whitelist of effects in the future
+        --but should work fine if everyone uses standard capitalisation
         key = key:gsub("mult_mod", "chip_mod")
         key = key:gsub("mult", "chips")
     end
