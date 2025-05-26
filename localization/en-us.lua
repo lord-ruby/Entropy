@@ -679,7 +679,7 @@ local decs = {
 				name = "Zeta",
 				text = {
 					"Hand must not contain",
-					"3 of 5 cards"
+					"3 or 5 cards"
 				}
 			},
 		},
