@@ -145,10 +145,10 @@ local mega = {
 function create_inverted_card(area, seed)
     local num = pseudorandom("twisted_rare")
     if num - 0.003 <= 0 then
-        local c = pseudorandom_element(Entropy.RareInversions, pseudoseed(seed or "twisted"))
+        local c = pseudorandom_element(Entropy.RareInversions, pseudoseed(seed or "twisted_card_rare"))
         return create_card(G.P_CENTERS[c].set, area or G.pack_cards, nil, nil, true, true, c)
     end
-    return create_card("Twisted", area or G.pack_cards, nil, nil, true, true, nil, "twisted")
+    return create_card("Twisted", area or G.pack_cards, nil, nil, true, true, nil, "twisted_card")
 end
 
 local voucher = {

@@ -544,7 +544,7 @@ local charm = {
     key = "charm",
     set = "RSpectral",
     
-	
+	inversion = "c_hex",
 
     atlas = "consumables",
     config = {
