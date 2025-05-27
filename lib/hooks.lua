@@ -1607,24 +1607,24 @@ function evaluate_play_main(text, disp_text, poker_hands, scoring_hand, non_loc_
     end
 end
 local set_abilityref = Card.set_ability
-function Card:set_ability(center, ...)
+function Card:set_ability(center, f, s)
     if self.config and self.config.center and self.config.center.key ~= "m_entr_disavowed" and (not self.entr_aleph or self.ability.bypass_aleph)  then
         if center and Entropy.FlipsideInversions[center.key] and not G.SETTINGS.paused and (G.GAME.modifiers.entr_twisted or center.set == "Planet" and G.GAME.entr_princess) and not self.multiuse and not self.ability.fromflipside then
             G.E_MANAGER:add_event(Event({
                 trigger = "after",
                 func = function()
-                    set_abilityref(self, G.P_CENTERS[Entropy.FlipsideInversions[center.key]] or center, ...)
+                    set_abilityref(self, G.P_CENTERS[Entropy.FlipsideInversions[center.key]] or center, f, s)
                     return true
                 end
             }))
         else    
-            set_abilityref(self, center, ...)
+            set_abilityref(self, center, f, s)
         end
     else
         if not self.entr_aleph then
-            set_abilityref(self, G.P_CENTERS.m_entr_disavowed, ...)
+            set_abilityref(self, G.P_CENTERS.m_entr_disavowed, f, s)
         else
-            set_abilityref(self, self.config.center, ...)
+            set_abilityref(self, self.config.center, f, s)
         end
     end
 end
