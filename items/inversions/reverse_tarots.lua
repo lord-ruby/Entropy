@@ -280,7 +280,7 @@ local heretic = {
     config = {
         select = 2,
     },
-    inversion = "c_hierophant",
+    inversion = "c_heirophant",
     pos = {x=5, y = 0},
     use = function(self, card, area, copier)
         local cards = Entropy.GetHighlightedCards({G.hand}, card)
@@ -817,7 +817,7 @@ local companion = {
         extra = 2
     },
     pos = {x=5,y=1},
-    inversion = "c_temperance",
+    inversion = "c_devil",
     use = function(self, card)
         G.E_MANAGER:add_event(Event({
 			func = function()
