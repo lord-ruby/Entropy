@@ -853,8 +853,8 @@ local weld = {
                 }))
             end
         end
-        G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.discard
-        ease_discard(-card.ability.discard)
+        --G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.discard
+        --ease_discard(-card.ability.discard)
     end,
     can_use = function(self, card)
         local cards = Entropy.GetHighlightedCards({G.jokers}, card)

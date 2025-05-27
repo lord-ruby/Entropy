@@ -1566,7 +1566,7 @@ local decs = {
 				text = {
 					"Apply {C:legendary,E:1}Eternal{}",
 					"to {C:attention}#1#{} selected Joker",
-					"{C:red}#2#{} discard"
+					--"{C:red}#2#{} discard"
 				}
 			},
 			c_entr_cleanse = {
