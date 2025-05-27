@@ -860,7 +860,7 @@ local village = {
         chips=10
     },
     pos = {x=6,y=1},
-    inversion = "c_star",
+    inversion = "c_tower",
     use = function(self, card2)
         Entropy.FlipThen(G.hand.cards, function(card)
             card.ability.bonus = (card.ability.bonus or 0) + card2.ability.chips
