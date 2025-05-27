@@ -398,7 +398,7 @@ Entropy.ReversePlanets = {
       end
     end,
   },
-  {name="", key="Timantti", new_key = "jatka", sprite_pos={x=8,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"High Card", "Pair", "Two Pair"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc},
+  {name="", key="Timantii", new_key = "jatka", sprite_pos={x=8,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"High Card", "Pair", "Two Pair"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc},
   {name="", key="Klubi", new_key = "rouva", sprite_pos={x=9,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Three of a Kind", "Straight", "Flush"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc},
   {name="", key="Sydan", new_key = "paras", sprite_pos={x=10,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Full House", "Four of a Kind", "Straight Flush"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc},
   {name="", key="Lapio", new_key = "assa", sprite_pos={x=11,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Five of a Kind", "Flush House", "Flush Five"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc},
