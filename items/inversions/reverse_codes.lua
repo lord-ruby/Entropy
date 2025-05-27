@@ -1255,6 +1255,7 @@ local ctrl_x = {
             end
             card:start_dissolve()
             orig.multiuse = true
+            orig.ability.fromflipside = true
             G.consumeables:emplace(copy_card(orig))
         end
     end,
