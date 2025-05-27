@@ -27,6 +27,10 @@ local hyperbolic_chamber = {
 
 local gsr = Game.start_run
 function Game:start_run(args)
+    if not args.savetext then
+        G.GAME.starting_params.play_limit = 5
+        G.GAME.starting_params.discard_limit = 5
+    end
 	gsr(self, args)
 	if G.GAME.modifiers.entr_starting_ante_mten and not args.savetext then
         ease_ante(-11, nil, true)
