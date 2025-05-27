@@ -571,12 +571,12 @@ local charm = {
     can_use = function(self, card)
         local cards = Entropy.GetHighlightedCards({G.jokers}, card)
         local any_can_banish = false
-        for i, joker in pairs(cards) do
+        for i, joker in pairs(G.jokers.cards) do
             if not joker.ability.eternal and not joker.ability.cry_absolute and not joker.highlighted then
                 any_can_banish = true
             end
         end
-        return #cards <= card.ability.select and #cards > 0 and any_can_banish
+        return #cards <= card.ability.select and #cards > 0 and (any_can_banish)
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = G.P_CENTERS.e_cry_astral

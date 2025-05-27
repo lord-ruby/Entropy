@@ -1610,18 +1610,7 @@ local set_abilityref = Card.set_ability
 function Card:set_ability(center, f, s)
     if self.config and self.config.center and self.config.center.key ~= "m_entr_disavowed" and (not self.entr_aleph or self.ability.bypass_aleph)  then
         if center and Entropy.FlipsideInversions[center.key] and not G.SETTINGS.paused and (G.GAME.modifiers.entr_twisted or center.set == "Planet" and G.GAME.entr_princess) and not self.multiuse and not self.ability.fromflipside then
-            if G.STATE == 999 then
-                set_abilityref(self, center, f, s)
-                G.E_MANAGER:add_event(Event({
-                    trigger = "before",
-                    func = function()
-                        set_abilityref(self, G.P_CENTERS[Entropy.FlipsideInversions[center.key]] or center, f, s)
-                        return true
-                    end
-                }))
-            else
-                set_abilityref(self, G.P_CENTERS[Entropy.FlipsideInversions[center.key]] or center, f, s)
-            end
+            set_abilityref(self, G.P_CENTERS[Entropy.FlipsideInversions[center.key]] or center, f, s)
         else    
             set_abilityref(self, center, f, s)
         end
