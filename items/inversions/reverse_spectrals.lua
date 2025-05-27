@@ -125,7 +125,7 @@ local siphon = {
     key = "siphon",
     set = "RSpectral",
     
-    invesion = "c_aura",
+    inversion = "c_aura",
 
     atlas = "consumables",
     config = {
