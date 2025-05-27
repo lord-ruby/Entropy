@@ -861,7 +861,7 @@ local weld = {
         return #cards > 0 and #cards <= card.ability.select
 	end,
     loc_vars = function(self, q, card)
-        q[#q+1] = {key = "entr_aleph", set="Other"}
+        q[#q+1] = {key = "eternal", set="Other"}
         return {
             vars = {
                 card.ability.select,

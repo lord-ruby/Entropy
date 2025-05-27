@@ -1160,6 +1160,7 @@ function Entropy.change_discard_limit_no_bs(mod,stroverride)
 end
 
 function Entropy.ChangeFullCSL(mod,stroverride)
+    if not SMODS.hand_limit_strings then SMODS.hand_limit_strings = {} end
     Entropy.change_play_limit_no_bs(mod,stroverride)
     Entropy.change_discard_limit_no_bs(mod,stroverride)
 end

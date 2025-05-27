@@ -763,7 +763,7 @@ local decs = {
 				name = "Deck of Destiny",
 				text =  {
 					"Jokers may no longer appear naturally",
-					"Start with an {C:dark_edition}Absolute, Negative{} Destiny",
+					"Start with an {C:dark_edition}Aleph, Negative{} Destiny",
 					"Cards have a higher chance to be Enhanced"
 				}
 			},
@@ -1797,7 +1797,7 @@ local decs = {
 					"Completely reset up to",
 					"{C:attention}#1#{} selected cards",
 					"or Jokers",
-					"{C:inactive}(Doesn't remove Absolute){}"
+					"{C:inactive}(Doesn't remove Aleph){}"
 				}
 			},
 		},
