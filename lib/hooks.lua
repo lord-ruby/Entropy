@@ -2596,12 +2596,23 @@ if Entropy.config.omega_aleph then
         keyef(self, key, dt)
     end
 end
-
+--SMODS.add_card{key="j_joker", area=G.hand}
 local add_ref = CardArea.emplace
 function CardArea:emplace(card, location, stay_flipped)
     if card and not card.set_card_area then
         card.set_card_area = function(card, self)
             card.area = self
+        end
+    end
+    if self == G.hand or self == G.deck then
+        if not card.base.suit or not card.base.id then
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    SMODS.change_base(card, card.base.suit or "entr_nilsuit", card.base.id or "entr_nilrank")
+                    print(card.base)
+                    return true
+                end
+            }))
         end
     end
     if card and card.area and (card.area.config.type == "shop" or card.base.suit) then
