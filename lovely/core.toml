@@ -998,15 +998,3 @@ payload = '''
     else
 '''
 match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = "card.lua"
-pattern = '''
-self.children.back.VT.w = 0
-'''
-position = "at"
-payload = '''
-if self.children.back then self.children.back.VT.w = 0 end
-'''
-match_indent = true
