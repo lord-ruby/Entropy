@@ -463,12 +463,6 @@ local iota = {
 				G.hand:change_size(1)
 			end
 		end
-		G.GAME.EEBeaten = true
-		if G.GAME.EEBuildup then
-			Entropy.WinEE()
-		end
-		G.GAME.EEBuildup = false
-		check_for_unlock({ type = "beat_ee" })
 	end,
 	press_play = function(self)
 		for k, _ in pairs(Entropy.GetIota()) do
