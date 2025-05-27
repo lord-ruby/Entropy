@@ -696,6 +696,13 @@ local decs = {
 					"affect chips instead"
 				}
 			},
+			bl_entr_iota = {
+				name = "Iota",
+				text = {
+					"Applies the effects of #1#",
+					"changes every hand played"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {

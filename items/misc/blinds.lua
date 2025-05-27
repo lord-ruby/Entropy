@@ -350,7 +350,7 @@ local phase4 = {
 		for k, _ in pairs(Entropy.GetEEBlinds()) do
 			s = G.P_BLINDS[k]
 			if s.calculate then
-				s:calculate(lind, context)
+				s:calculate(blind, context)
 			end
 		end
 	end,

@@ -1164,3 +1164,7 @@ function Entropy.ChangeFullCSL(mod,stroverride)
     Entropy.change_play_limit_no_bs(mod,stroverride)
     Entropy.change_discard_limit_no_bs(mod,stroverride)
 end
+
+function Entropy.GetIota()
+    return {[G.GAME.iotablind.key] = G.GAME.iotablind}
+end
