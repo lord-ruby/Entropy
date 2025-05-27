@@ -1144,3 +1144,22 @@ function Entropy.ApproximateLogRecursion(orig, base, iter)
         return result
     end
 end
+
+function Entropy.change_play_limit_no_bs(mod,stroverride)
+    G.GAME.starting_params.play_limit = G.GAME.starting_params.play_limit + mod
+    --G.hand.config.highlighted_limit = math.max(G.GAME.starting_params.discard_limit, G.GAME.starting_params.play_limit, 5)
+    local str = stroverride or G.GAME.starting_params.play_limit
+    SMODS.hand_limit_strings.play = G.GAME.starting_params.play_limit ~= 5 and localize('b_limit') .. str  or ''
+end
+
+function Entropy.change_discard_limit_no_bs(mod,stroverride)
+    G.GAME.starting_params.discard_limit = G.GAME.starting_params.discard_limit + mod
+    --G.hand.config.highlighted_limit = math.max(G.GAME.starting_params.discard_limit, G.GAME.starting_params.play_limit, 5)
+    local str = stroverride or G.GAME.starting_params.discard_limit
+    SMODS.hand_limit_strings.discard = G.GAME.starting_params.discard_limit ~= 5 and localize('b_limit') .. str or ''
+end
+
+function Entropy.ChangeFullCSL(mod,stroverride)
+    Entropy.change_play_limit_no_bs(mod,stroverride)
+    Entropy.change_discard_limit_no_bs(mod,stroverride)
+end

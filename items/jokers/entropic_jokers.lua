@@ -83,12 +83,12 @@ local helios = {
         }
     end,
     add_to_deck = function()
-        G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + 308
+        Entropy.ChangeFullCSL(10000, "Infinity")
         G.GAME.HyperspaceActuallyUsed = G.GAME.used_vouchers.v_cry_hyperspacetether
         G.GAME.used_vouchers.v_cry_hyperspacetether = true
     end,
     remove_from_deck = function()
-        G.hand.config.highlighted_limit = G.hand.config.highlighted_limit - 308
+        Entropy.ChangeFullCSL(-10000)
         G.GAME.used_vouchers.v_cry_hyperspacetether = G.GAME.HyperspaceActuallyUsed
     end,
     entr_credits = {

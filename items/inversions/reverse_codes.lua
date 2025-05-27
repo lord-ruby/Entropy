@@ -1018,8 +1018,8 @@ local overflow = {
     },
     pos = {x=2,y=4},
     use = function(self, card, area, copier)
-        G.GAME.Overflow = G.hand.config.highlighted_limit
-        G.hand.config.highlighted_limit = 9999
+        G.GAME.Overflow = 9999
+        Entropy.ChangeFullCSL(9999, "Infinity")
     end,
     can_use = function(self, card)
         return true

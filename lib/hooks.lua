@@ -1562,6 +1562,8 @@ G.FUNCS.has_inversion = function(e)
 local ref = G.FUNCS.use_card
 G.FUNCS.use_card = function(e, mute, nosave)
     local card = e.config.ref_table
+    card.ability.bypass_aleph = true
+    ref(e, mute, nosave)
     if Entropy.FlipsideInversions[card.config.center.key] and not Entropy.FlipsidePureInversions[card.config.center.key] and not card.config.center.hidden then
         G.GAME.last_inversion = {
             key = card.config.center.key,
@@ -1574,8 +1576,6 @@ G.FUNCS.use_card = function(e, mute, nosave)
             set = card.config.center.set
         }
     end
-    card.ability.bypass_aleph = true
-    ref(e, mute, nosave)
 end
 
 local main_ref = evaluate_play_main
@@ -1963,7 +1963,7 @@ local update_round_evalref = Game.update_round_eval
 function Game:update_round_eval(dt)
     update_round_evalref(self, dt)
     if G.GAME.Overflow then
-        G.hand.config.highlighted_limit = G.GAME.Overflow
+        Entropy.ChangeFullCSL(-G.GAME.Overflow)
         G.GAME.Overflow = nil
     end
     if G.GAME.Interfered then

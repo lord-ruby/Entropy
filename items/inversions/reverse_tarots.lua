@@ -1151,7 +1151,7 @@ local prophecy = {
             "set_entr_inversions"
         }
     },
-    inversion = "c_cry_blessing",
+    inversion = "c_cry_theblessing",
     pos = {x=3,y=2},
     config = {
         counter = 2
