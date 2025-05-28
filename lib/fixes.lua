@@ -381,3 +381,22 @@ function update_hand_text( args1, args2)
       updateht_ref(args1, args2)
     end
 end
+
+SMODS.Blind:take_ownership("cry_pin", {
+  recalc_debuff = function(self, card, from_blind)
+		if
+			(card.area == G.jokers)
+			and not G.GAME.blind.disabled
+			and (
+				card.config.center.rarity == 4
+				or card.config.center.rarity == "cry_epic"
+				or card.config.center.rarity == "cry_exotic"
+        or card.config.center.rarity == "entr_reverse_legendary",
+        or card.config.center.rarity == "entr_entropic"
+			)
+		then
+			return true
+		end
+		return false
+	end,
+},true)

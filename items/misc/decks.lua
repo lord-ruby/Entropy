@@ -198,51 +198,51 @@ if CardSleeves then
         end
       end,
       calculate = function(self,back,context)
-        if context.final_scoring_step and to_big(G.GAME.entropy) > to_big(1) then
-          if not ({
-            ["High Card"]=true,
-            ["Pair"]=true,
-            ["Three of a Kind"]=true,
-            ["Two Pair"]=true,
-            ["Four of a Kind"]=true,
-            ["Flush"]=true,
-            ["Straight"]=true,
-            ["Straight Flush"]=true,
-            ["Full House"]=true
-          })[context.scoring_name] or to_big(G.GAME.hands[context.scoring_name].AscensionPower or 0) > to_big(0) then
-            ease_entropy(G.GAME.hands[context.scoring_name].level + (G.GAME.hands[context.scoring_name].AscensionPower or 0) or 1)
-          end
-          G.E_MANAGER:add_event(Event({
-            func = function()
-              play_sound("talisman_echip", 1)
-              attention_text({
-                scale = 1.4,
-                text = "^"..tostring(number_format(0.002 + (0.998^G.GAME.entropy))).." Chips",
-                hold = 2,
-                align = "cm",
-                offset = { x = 0, y = -2.7 },
-                major = G.play,
-              })
-              return true
-            end,
-          }))
-          return {
-            Echip_mod = 0.01 + (0.99^G.GAME.entropy),
-            colour = G.C.DARK_EDITION,
-          }
+        if context.final_scoring_step and number_format(0.002 + (0.998^(G.GAME.entropy/2))) ~= "1" then
+            if not ({
+                ["High Card"]=true,
+                ["Pair"]=true,
+                ["Three of a Kind"]=true,
+                ["Two Pair"]=true,
+                ["Four of a Kind"]=true,
+                ["Flush"]=true,
+                ["Straight"]=true,
+                ["Straight Flush"]=true,
+                ["Full House"]=true
+            })[context.scoring_name] or to_big(G.GAME.hands[context.scoring_name].AscensionPower or 0) > to_big(0) then
+                ease_entropy(G.GAME.hands[context.scoring_name].level + (G.GAME.hands[context.scoring_name].AscensionPower or 0) or 1)
+            end
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    play_sound("talisman_echip", 1)
+                    attention_text({
+                        scale = 1.4,
+                        text = "^"..tostring(number_format(0.002 + (0.998^(G.GAME.entropy/2)))).." Chips",
+                        hold = 2,
+                        align = "cm",
+                        offset = { x = 0, y = -2.7 },
+                        major = G.play,
+                    })
+                    return true
+                end,
+            }))
+            return {
+                Echip_mod = 0.01 + (0.998^(G.GAME.entropy/2)),
+                colour = G.C.DARK_EDITION,
+            }
         end
         if context.individual and context.cardarea == G.play then
-          if context.other_card and (context.other_card.edition or context.other_card.ability.set == "Enhanced") then
-            if context.other_card.edition and context.other_card.ability.set == "Enhanced" then ease_entropy(4) else ease_entropy(2) end
-          end
+            if context.other_card and (context.other_card.edition or context.other_card.ability.set == "Enhanced") then
+                if context.other_card.edition and context.other_card.ability.set == "Enhanced" then ease_entropy(2) else ease_entropy(1) end
+            end
         end
-        if context.final_scoring_step then
-          for i, v in pairs(G.jokers.cards) do
-            if v.edition and v.edition.key then ease_entropy(2) end
-            if i > G.jokers.config.card_limit then ease_entropy(1) end
-          end
+        if context.after then
+            for i, v in pairs(G.jokers.cards) do
+                if v.edition and v.edition.key then ease_entropy(2) end
+                if i > G.jokers.config.card_limit then ease_entropy(1) end
+            end
         end
-      end
+    end
     }
 end
 
