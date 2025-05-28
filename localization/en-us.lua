@@ -744,6 +744,13 @@ local decs = {
 					"becomes eternal"
 				}
 			},
+			bl_entr_pi = {
+				name = "Pi",
+				text = {
+					"Discarded cards",
+					"become perishable"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {

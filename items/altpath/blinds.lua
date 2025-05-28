@@ -277,9 +277,11 @@ local eta = {
     end,
     set_blind = function()
         G.GAME.blind.suit_debuffed = pseudorandom_element({"Spades", "Hearts", "Diamonds", "Clubs"}, pseudoseed("eta_suit"))
+		G.GAME.blind:set_text()
     end,
     loc_vars = function()
         if not G.GAME.blind.suit_debuffed then G.GAME.blind.suit_debuffed = pseudorandom_element({"Spades", "Hearts", "Diamonds", "Clubs"}, pseudoseed("eta_suit")) end
+		G.GAME.blind:set_text()
         return {
             vars = {localize(G.GAME.blind.suit_debuffed, "suits_singular")}
         }
