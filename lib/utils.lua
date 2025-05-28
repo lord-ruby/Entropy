@@ -4,12 +4,14 @@ function Entropy.GetHighlightedCards(cardareas, ignorecard, blacklist)
     for i, area in pairs(cardareas) do
         if area.cards then
             for i2, card in ipairs(area.highlighted) do
-                if card ~= ignorecard and not blacklist[card.config.center.key] and card.highlighted then
+                if card ~= ignorecard and not blacklist[card.config.center.key] and card.highlighted and not card.checked then
                     cards[#cards + 1] = card
+                    card.checked = true
                 end
             end
         end
     end
+    for i, v in ipairs(cards) do v.checked = nil end
     return cards
 end
 
