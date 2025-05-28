@@ -1146,10 +1146,14 @@ function Entropy.ApproximateLogRecursion(orig, base, iter)
 end
 
 function Entropy.change_play_limit_no_bs(mod,stroverride)
-    G.GAME.starting_params.play_limit = G.GAME.starting_params.play_limit + mod
-    --G.hand.config.highlighted_limit = math.max(G.GAME.starting_params.discard_limit, G.GAME.starting_params.play_limit, 5)
-    local str = stroverride or G.GAME.starting_params.play_limit
-    SMODS.hand_limit_strings.play = G.GAME.starting_params.play_limit ~= 5 and localize('b_limit') .. str  or ''
+    if SMODS.hand_limit_strings then
+        G.GAME.starting_params.play_limit = G.GAME.starting_params.play_limit + mod
+        --G.hand.config.highlighted_limit = math.max(G.GAME.starting_params.discard_limit, G.GAME.starting_params.play_limit, 5)
+        local str = stroverride or G.GAME.starting_params.play_limit
+        SMODS.hand_limit_strings.play = G.GAME.starting_params.play_limit ~= 5 and localize('b_limit') .. str  or ''
+    else
+        G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + mod
+    end
 end
 
 function Entropy.change_discard_limit_no_bs(mod,stroverride)
@@ -1162,7 +1166,9 @@ end
 function Entropy.ChangeFullCSL(mod,stroverride)
     if not SMODS.hand_limit_strings then SMODS.hand_limit_strings = {} end
     Entropy.change_play_limit_no_bs(mod,stroverride)
-    Entropy.change_discard_limit_no_bs(mod,stroverride)
+    if SMODS.hand_limit_strings then
+        Entropy.change_discard_limit_no_bs(mod,stroverride)
+    end
 end
 
 function Entropy.GetIota()
