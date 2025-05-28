@@ -585,16 +585,6 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
-target = "game.lua"
-pattern = '''table.sort(G.playing_cards, function (a, b) return a.playing_card > b.playing_card end )'''
-position = "at"
-payload = '''
-table.sort(G.playing_cards, function (a, b) return (type(a.playing_card) == "number" and a.playing_card or 0) > (type(b.playing_card) == "number" and b.playing_card or -1) end)
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
 target = '''=[SMODS _ "src/overrides.lua"]'''
 pattern = '''
 if current_ante > 8 then
@@ -866,12 +856,18 @@ match_indent = true
 [patches.pattern]
 target = '''game.lua'''
 pattern = '''
-match_indent = true
 table.sort(G.playing_cards, function (a, b) return a.playing_card > b.playing_card end )
 '''
 payload = '''
 match_indent = true
-table.sort(G.playing_cards, function (a, b) return (type(a.playing_card) == "number" and a.playing_card or 0) > (type(b.playing_card) == "number" and b.playing_card or -1) end )
+local next = -100
+table.sort(G.playing_cards, function (a, b) 
+if type(a.playing_card) ~= "number" then a.playing_card = next
+next = next - 1 end
+if type(b.playing_card) ~= "number" then b.playing_card = next
+next = next - 1 end
+return a.playing_card > b.playing_card
+end )
 '''
 position = "at"
 match_indent = true
