@@ -773,7 +773,6 @@ G.FUNCS.get_poker_hand_info = function(_cards)
 		scoring_hand2 = {}
 		for i, v in ipairs(_cards) do
 			if not SMODS.in_scoring(v, scoring_hand or {}) then
-				print(i)
 				scoring_hand2[#scoring_hand2+1]=v
 			end
 			print(#scoring_hand2)
@@ -782,6 +781,40 @@ G.FUNCS.get_poker_hand_info = function(_cards)
 	end
 	return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
 end
+
+local lambda = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+11,
+	name = "entr-lambda",
+	key = "lambda",
+	pos = { x = 0, y = 10 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=2,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+	calculate = function(self, blind, context)
+		local _, _, _, hand = G.FUNCS.get_poker_hand_info(G.play.cards)
+		if context.after then
+			Entropy.FlipThen(hand, function(card)
+				card.ability.perishable = true
+				card.ability.perish_tally = 5
+			end)
+			delay(0.5)
+		end
+	end
+}
 
 return {
     items = {
@@ -794,6 +827,7 @@ return {
         eta,
         theta,
         iota,
-		kappa
+		kappa,
+		lambda
     }
 }

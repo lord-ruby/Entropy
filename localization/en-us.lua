@@ -710,6 +710,12 @@ local decs = {
 					"Unscored cards score instead"
 				}
 			},
+			bl_entr_lambda = {
+				name = "Lambda",
+				text = {
+					"Scored cards become perishable"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {
