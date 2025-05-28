@@ -742,6 +742,47 @@ local iota = {
 	end,
 }
 
+local kappa = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+10,
+	name = "entr-kappa",
+	key = "kappa",
+	pos = { x = 0, y = 9 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=2,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+}
+
+local hand_info = G.FUNCS.get_poker_hand_info
+G.FUNCS.get_poker_hand_info = function(_cards)
+	local text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta = hand_info(_cards)
+	if Entropy.BlindIs("bl_entr_kappa") then 
+		scoring_hand2 = {}
+		for i, v in ipairs(_cards) do
+			if not SMODS.in_scoring(v, scoring_hand or {}) then
+				print(i)
+				scoring_hand2[#scoring_hand2+1]=v
+			end
+			print(#scoring_hand2)
+		end
+		return text, disp_text, poker_hands, scoring_hand2 or {}, non_loc_disp_text, percent, percent_delta
+	end
+	return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
+end
+
 return {
     items = {
         alpha,
@@ -752,6 +793,7 @@ return {
         zeta,
         eta,
         theta,
-        iota
+        iota,
+		kappa
     }
 }

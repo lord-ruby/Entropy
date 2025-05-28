@@ -703,6 +703,13 @@ local decs = {
 					"changes every hand played"
 				}
 			},
+			bl_entr_kappa = {
+				name = "Kappa",
+				text = {
+					"Scoring cards dont score",
+					"Unscored cards score instead"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {
