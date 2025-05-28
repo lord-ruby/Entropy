@@ -730,6 +730,13 @@ local decs = {
 					"card trigger"
 				}
 			},
+			bl_entr_xi = {
+				name = "Xi",
+				text = {
+					"First discarded hand",
+					"becomes eternal"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {

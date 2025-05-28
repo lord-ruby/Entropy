@@ -876,6 +876,38 @@ local nu = {
 	end
 }
 
+local xi = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+14,
+	name = "entr-xi",
+	key = "xi",
+	pos = { x = 0, y = 13 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=2,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+	calculate = function(self, blind, context)
+		if context.pre_discard and not G.GAME.blind.discarded then
+			Entropy.FlipThen(G.hand.highlighted, function(card)
+				card.ability.eternal = true
+			end)
+			G.GAME.blind.discarded = true
+		end
+	end
+}
+
 return {
     items = {
         alpha,
@@ -890,6 +922,7 @@ return {
 		kappa,
 		lambda,
 		mu,
-		nu
+		nu,
+		xi
     }
 }
