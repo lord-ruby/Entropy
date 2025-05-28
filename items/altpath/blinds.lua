@@ -162,7 +162,7 @@ local delta = {
 local eval_ref = evaluate_play_main
 function evaluate_play_main (text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
     local text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta = eval_ref(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
-    if Entropy.BlindIs("bl_entr_delta") and G.GAME.round_resets.hands > G.GAME.current_round.hands_left then
+    if Entropy.BlindIs("bl_entr_delta") and G.GAME.round_resets.hands > G.GAME.current_round.hands_left and not G.GAME.blind.disabled then
         local used = G.GAME.round_resets.hands - G.GAME.current_round.hands_left
         used = math.max(used,2)
         mult = mult / used
@@ -170,7 +170,7 @@ function evaluate_play_main (text, disp_text, poker_hands, scoring_hand, non_loc
         update_hand_text({delay=0}, {mult=mult})
         delay(0.4)
     end
-    if Entropy.BlindIs("bl_entr_epsilon") and #G.play.cards > 1 then
+    if Entropy.BlindIs("bl_entr_epsilon") and #G.play.cards > 1 and not G.GAME.blind.disabled then
         local used = #G.play.cards
         used = math.max(used,1)
         mult = mult / used
@@ -769,7 +769,7 @@ local kappa = {
 local hand_info = G.FUNCS.get_poker_hand_info
 G.FUNCS.get_poker_hand_info = function(_cards)
 	local text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta = hand_info(_cards)
-	if Entropy.BlindIs("bl_entr_kappa") then 
+	if Entropy.BlindIs("bl_entr_kappa") and not G.GAME.blind.disabled then 
 		scoring_hand2 = {}
 		for i, v in ipairs(_cards) do
 			if not SMODS.in_scoring(v, scoring_hand or {}) then
