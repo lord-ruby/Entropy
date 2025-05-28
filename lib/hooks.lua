@@ -1535,7 +1535,7 @@ function Card:set_ability(center, initial, delay_sprites)
             local type = (center.cost == 6 and "jumbo") or (center.cost == 8 and "mega") or "normal"
             matref(self, G.P_CENTERS["p_entr_twisted_pack_"..type], initial, delay_sprites)
         elseif self.config and self.config.center and self.config.center.set == "Booster"
-        and to_big(pseudorandom("doc")) < to_big(1-(0.995^G.GAME.entropy)) and G.STATE == G.STATES.SHOP and (not self.area or not self.area.config.collection) and Entropy.DeckOrSleeve("doc") then
+        and to_big(pseudorandom("doc")) < to_big(1-(0.995^(G.GAME.entropy/2))) and G.STATE == G.STATES.SHOP and (not self.area or not self.area.config.collection) and Entropy.DeckOrSleeve("doc") then
             local type = (center.cost == 6 and "jumbo_1") or (center.cost == 8 and "mega_1") or "normal_"..pseudorandom_element({1,2},pseudoseed("doc"))
             matref(self, G.P_CENTERS["p_spectral_"..type], initial, delay_sprites)
         else
@@ -1644,9 +1644,9 @@ G.FUNCS.use_card = function(e, mute, nosave)
     local num = 1
     for i, v in pairs(G.GAME.entr_bought_decks or {}) do if v == "b_entr_doc" or v == "sleeve_entr_doc" then num = num + 1 end end
 		if Entropy.FlipsideInversions[card.config.center.key] and not Entropy.FlipsidePureInversions[card.config.center.key] then
-			ease_entropy(4*num*Entropy.DeckOrSleeve("doc"))
-		else
 			ease_entropy(2*num*Entropy.DeckOrSleeve("doc"))
+		else
+			ease_entropy(1*num*Entropy.DeckOrSleeve("doc"))
 		end
 	end
 	use_cardref(e, mute, nosave)
@@ -1654,9 +1654,9 @@ end
 SMODS.Booster:take_ownership_by_kind('Spectral', {
 	create_card = function(self, card, i)
 		G.GAME.entropy = G.GAME.entropy or 0
-		if to_big(pseudorandom("doc")) < to_big(1 - 0.997^G.GAME.entropy) and Entropy.DeckOrSleeve("doc") and Cryptid.enabled("c_entr_beyond") == true then
+		if to_big(pseudorandom("doc")) < to_big(1 - 0.997^(G.GAME.entropy/2)) and Entropy.DeckOrSleeve("doc") and Cryptid.enabled("c_entr_beyond") == true then
 			return create_card("RSpectral", G.pack_cards, nil, nil, true, true, "c_entr_beyond")
-		elseif to_big(pseudorandom("doc")) < to_big(1 - 0.996^G.GAME.entropy) and Entropy.DeckOrSleeve("doc") and Cryptid.enabled("c_cry_gateway") == true then
+		elseif to_big(pseudorandom("doc")) < to_big(1 - 0.996^(G.GAME.entropy/2)) and Entropy.DeckOrSleeve("doc") and Cryptid.enabled("c_cry_gateway") == true then
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
 		end
 		return create_card("Spectral", G.pack_cards, nil, nil, true, true, nil, "spe")
@@ -1701,7 +1701,7 @@ SMODS.Consumable:take_ownership("cry_gateway",{
 		}))
 		delay(0.6)
     if Entropy.DeckOrSleeve("doc") then
-      ease_entropy(-math.min(G.GAME.entropy, 4))
+      ease_entropy(-math.min(G.GAME.entropy, 5))
     end
 	end
 },true)
