@@ -998,3 +998,14 @@ payload = '''
     else
 '''
 match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = 'for _, v in ipairs(info_queue) do'
+position = "before"
+payload = '''
+if (Entropy.FlipsideInversions[_c.key] or (_c.ability and Entropy.FlipsideInversions[_c.ability.name])) and HasFlipside() then info_queue[#info_queue+1] = {key = "inversion_allowed", set = "Other"} end
+'''
+match_indent = true

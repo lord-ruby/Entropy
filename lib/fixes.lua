@@ -391,7 +391,7 @@ SMODS.Blind:take_ownership("cry_pin", {
 				card.config.center.rarity == 4
 				or card.config.center.rarity == "cry_epic"
 				or card.config.center.rarity == "cry_exotic"
-        or card.config.center.rarity == "entr_reverse_legendary",
+        or card.config.center.rarity == "entr_reverse_legendary"
         or card.config.center.rarity == "entr_entropic"
 			)
 		then
