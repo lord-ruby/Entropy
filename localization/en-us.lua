@@ -737,6 +737,13 @@ local decs = {
 					"becomes eternal"
 				}
 			},
+			bl_entr_omicron = {
+				name = "Omicron",
+				text = {
+					"First played hand",
+					"becomes eternal"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {

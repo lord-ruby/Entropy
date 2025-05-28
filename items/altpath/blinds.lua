@@ -908,6 +908,70 @@ local xi = {
 	end
 }
 
+local omicron = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+15,
+	name = "entr-xi",
+	key = "xi",
+	pos = { x = 0, y = 14 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=2,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+	calculate = function(self, blind, context)
+		if context.after and not G.GAME.blind.played then
+			Entropy.FlipThen(G.play.cards, function(card)
+				card.ability.eternal = true
+			end)
+			G.GAME.blind.played = true
+		end
+	end
+}
+
+local pi = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+16,
+	name = "entr-pi",
+	key = "pi",
+	pos = { x = 0, y = 15 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=2,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+	calculate = function(self, blind, context)
+		if context.pre_discard then
+			Entropy.FlipThen(G.hand.highlighted, function(card)
+				card.ability.perishable = true
+				card.ability.perish_tally = 5
+			end)
+		end
+	end
+}
+
 return {
     items = {
         alpha,
@@ -923,6 +987,8 @@ return {
 		lambda,
 		mu,
 		nu,
-		xi
+		xi,
+		omicron,
+		pi
     }
 }
