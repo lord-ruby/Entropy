@@ -277,11 +277,18 @@ local eta = {
     end,
     set_blind = function()
         G.GAME.blind.suit_debuffed = pseudorandom_element({"Spades", "Hearts", "Diamonds", "Clubs"}, pseudoseed("eta_suit"))
-		G.GAME.blind:set_text()
+		G.E_MANAGER:add_event(Event({
+			trigger = "after",
+			delay = 0.2,
+			func = function()
+			G.GAME.blind:set_text()
+			return true
+		end}))
     end,
     loc_vars = function()
-        if not G.GAME.blind.suit_debuffed then G.GAME.blind.suit_debuffed = pseudorandom_element({"Spades", "Hearts", "Diamonds", "Clubs"}, pseudoseed("eta_suit")) end
-		G.GAME.blind:set_text()
+        if not G.GAME.blind.suit_debuffed then  return {
+            vars = {"[suit]"}
+        } end
         return {
             vars = {localize(G.GAME.blind.suit_debuffed, "suits_singular")}
         }
@@ -777,7 +784,6 @@ G.FUNCS.get_poker_hand_info = function(_cards)
 			if not SMODS.in_scoring(v, scoring_hand or {}) then
 				scoring_hand2[#scoring_hand2+1]=v
 			end
-			print(#scoring_hand2)
 		end
 		return text, disp_text, poker_hands, scoring_hand2 or {}, non_loc_disp_text, percent, percent_delta
 	end

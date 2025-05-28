@@ -150,7 +150,6 @@ if FinisherBossBlindStringMap then
                 if card.ability.immutable.ee_handeffect > 4 then card.ability.immutable.ee_handeffect = 1 end
                 if card.ability.immutable.ee_handeffect == 2 then G.GAME.nodebuff = true end
                 card.children.floating_sprite:set_sprite_pos({x=pseudorandom_element({2,3,4}, pseudoseed("ee_X")), y= (card.ability.immutable.ee_discardeffect or 1)-1})
-                print(card.ability.immutable.ee_discardeffect)
             end
             if context.pre_discard then
                 card.ability.immutable.ee_discardeffect = (card.ability.immutable.ee_discardeffect or 1) + 1

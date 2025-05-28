@@ -2609,7 +2609,6 @@ function CardArea:emplace(card, location, stay_flipped)
             G.E_MANAGER:add_event(Event({
                 func = function()
                     SMODS.change_base(card, card.base.suit or "entr_nilsuit", card.base.value or "entr_nilrank")
-                    print(card.base)
                     return true
                 end
             }))
