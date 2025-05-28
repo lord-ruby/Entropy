@@ -816,6 +816,66 @@ local lambda = {
 	end
 }
 
+local mu = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+12,
+	name = "entr-mu",
+	key = "mu",
+	pos = { x = 0, y = 11 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=2,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+	debuff_hand = function(self, cards, hand, handname, check)
+		local total = 0
+		for i, v in ipairs(cards) do
+			total = total + v.base.nominal
+		end
+		if total > 30 then return true end
+	end
+}
+
+local nu = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+13,
+	name = "entr-nu",
+	key = "nu",
+	pos = { x = 0, y = 12 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=2,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+	calculate = function(self, blind, context)
+		if context.individual and context.cardarea == G.play then
+			G.GAME.cry_payload = to_big((G.GAME.cry_payload or 1)) * to_big(0.8)
+		end
+	end
+}
+
 return {
     items = {
         alpha,
@@ -828,6 +888,8 @@ return {
         theta,
         iota,
 		kappa,
-		lambda
+		lambda,
+		mu,
+		nu
     }
 }

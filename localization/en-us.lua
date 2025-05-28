@@ -716,6 +716,20 @@ local decs = {
 					"Scored cards become perishable"
 				}
 			},
+			bl_entr_mu = {
+				name = "Mu",
+				text = {
+					"Sum of selected ranks",
+					"must not exceed 30"
+				}
+			},
+			bl_entr_nu = {
+				name = "Nu",
+				text = {
+					"0.8x interest per",
+					"card trigger"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {
