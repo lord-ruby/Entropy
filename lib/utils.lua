@@ -1148,7 +1148,7 @@ end
 function Entropy.change_play_limit_no_bs(mod,stroverride)
     if SMODS.hand_limit_strings then
         G.GAME.starting_params.play_limit = G.GAME.starting_params.play_limit + mod
-        --G.hand.config.highlighted_limit = math.max(G.GAME.starting_params.discard_limit, G.GAME.starting_params.play_limit, 5)
+        G.hand.config.highlighted_limit = math.max(G.GAME.starting_params.discard_limit, G.GAME.starting_params.play_limit)
         local str = stroverride or G.GAME.starting_params.play_limit
         SMODS.hand_limit_strings.play = G.GAME.starting_params.play_limit ~= 5 and localize('b_limit') .. str  or ''
     else
@@ -1158,7 +1158,7 @@ end
 
 function Entropy.change_discard_limit_no_bs(mod,stroverride)
     G.GAME.starting_params.discard_limit = G.GAME.starting_params.discard_limit + mod
-    --G.hand.config.highlighted_limit = math.max(G.GAME.starting_params.discard_limit, G.GAME.starting_params.play_limit, 5)
+    G.hand.config.highlighted_limit = math.max(G.GAME.starting_params.discard_limit, G.GAME.starting_params.play_limit)
     local str = stroverride or G.GAME.starting_params.discard_limit
     SMODS.hand_limit_strings.discard = G.GAME.starting_params.discard_limit ~= 5 and localize('b_limit') .. str or ''
 end
