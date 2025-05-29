@@ -38,10 +38,12 @@ local master = {
     },
     inversion = "c_fool",
     use = function(self, card, area, copier)
-        local c = create_card(G.GAME.last_inversion.set, G.consumeables, nil, nil, nil, nil, G.GAME.last_inversion.key)
-        G.GAME.last_inversion = nil
-        c:add_to_deck()
-        G.consumeables:emplace(c)
+        if G.GAME.last_inversion then
+            local c = create_card(G.GAME.last_inversion.set, G.consumeables, nil, nil, nil, nil, G.GAME.last_inversion.key)
+            G.GAME.last_inversion = nil
+            c:add_to_deck()
+            G.consumeables:emplace(c)
+        end
     end,
     can_use = function(self, card)
         return G.GAME.last_inversion
