@@ -109,6 +109,9 @@ local inscribe = {
             }
         }
     end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    }
 }
 local insignia = Entropy.SealSpectral("insignia", {x=9,y=4}, "entr_silver", 2000+3, "c_talisman")
 local rendezvous = Entropy.SealSpectral("rendezvous", {x=10,y=5}, "entr_crimson",2000+10.5, "c_deja_vu")
