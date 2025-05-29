@@ -105,7 +105,7 @@ function Entropy.FlipThen(cardlist, func, before, after)
     end
 end
 
-function Entropy.SealSpectral(key, sprite_pos, seal,order, inversion)
+function Entropy.SealSpectral(key, sprite_pos, seal,order, inversion, entr_credits)
     return {
         dependencies = {
             items = {
@@ -141,6 +141,7 @@ function Entropy.SealSpectral(key, sprite_pos, seal,order, inversion)
                 }
             }
         end,
+        entr_credits = entr_credits
     }
 end
 

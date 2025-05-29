@@ -68,7 +68,10 @@ local rend = {
                 card.ability.select
             }
         }
-    end
+    end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    }
 }
 local inscribe = {
     dependencies = {
@@ -110,7 +113,7 @@ local inscribe = {
 local insignia = Entropy.SealSpectral("insignia", {x=9,y=4}, "entr_silver", 2000+3, "c_talisman")
 local rendezvous = Entropy.SealSpectral("rendezvous", {x=10,y=5}, "entr_crimson",2000+10.5, "c_deja_vu")
 local eclipse = Entropy.SealSpectral("eclipse", {x=12,y=5}, "entr_sapphire",2000+12, "c_trance")
-local calamity = Entropy.SealSpectral("calamity", {x=6,y=6}, "entr_pink",2000+13, "c_medium")
+local calamity = Entropy.SealSpectral("calamity", {x=6,y=6}, "entr_pink",2000+13, "c_medium",{art = {"Lil. Mr. Slipstream"}})
 local downpour = Entropy.SealSpectral("downpour", {x=12,y=7}, "entr_cerulean",2000+24, "c_cry_typhoon")
 local script = Entropy.SealSpectral("script", {x=6,y=8}, "entr_verdant",2000+25, "c_cry_source")
 
@@ -344,6 +347,9 @@ local pact = {
             }
         }
     end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    }
 }
 
 local link = {
@@ -791,6 +797,9 @@ local quasar = {
             }
         }
     end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    }
 }
 
 local weld = {
@@ -1133,6 +1142,9 @@ local evocation = {
             }
         }
     end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    }
 }
 
 local mimic = {
@@ -1192,6 +1204,9 @@ local mimic = {
             }
         }
     end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    }
 }
 
 local superego = {
@@ -1523,6 +1538,9 @@ local pulsar = {
             }
         }
     end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    }
 }
 
 local beyond = {
@@ -1638,6 +1656,9 @@ local regenerate = {
             }
         }
     end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    }
 }
 
 return {

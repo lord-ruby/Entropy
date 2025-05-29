@@ -721,6 +721,9 @@ local exelixi = {
             end
         end
     end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    }
 }
 
 
