@@ -1019,7 +1019,7 @@ local overflow = {
     pos = {x=2,y=4},
     use = function(self, card, area, copier)
         G.GAME.Overflow = 9999
-        Entropy.ChangeFullCSL(9999, "Infinity")
+        Entropy.ChangeFullCSL(9999, localize("b_infinity"))
     end,
     can_use = function(self, card)
         return true

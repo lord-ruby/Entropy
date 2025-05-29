@@ -83,7 +83,7 @@ local helios = {
         }
     end,
     add_to_deck = function()
-        Entropy.ChangeFullCSL(10000, "Infinity")
+        Entropy.ChangeFullCSL(10000, localize("b_infinity"))
         G.GAME.HyperspaceActuallyUsed = G.GAME.used_vouchers.v_cry_hyperspacetether
         G.GAME.used_vouchers.v_cry_hyperspacetether = true
     end,
