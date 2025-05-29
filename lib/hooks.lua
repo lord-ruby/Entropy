@@ -468,6 +468,7 @@ G.FUNCS.open_booster = function(e)
     local c1 = e.config.ref_table
     G.GAME.DefineBoosterState = G.STATE
     delay(0.1)
+    local area = c1.area
     if c1.ability.booster_pos then G.GAME.current_round.used_packs[c1.ability.booster_pos] = 'USED' end
     --draw_card(G.hand, G.play, 1, 'up', true, card, nil, true) 
     if not c1.from_tag then 
@@ -485,6 +486,31 @@ G.FUNCS.open_booster = function(e)
     end
     e.config.ref_table.cost = 0
     e.config.ref_table:open()
+    if c1.ability.cry_multiuse and to_big(c1.ability.cry_multiuse) > to_big(1) then
+        local card = c1
+        card.ability.cry_multiuse = card.ability.cry_multiuse - 1
+        card.ability.extra_value = -1 * math.max(1, math.floor(card.cost/2))
+        card:set_cost()
+        delay(0.4)
+    
+        -- i make my own card eval status text :D
+    
+        card:juice_up()
+        play_sound('generic1')
+        attention_text({
+            text = format_ui_value(card.ability.cry_multiuse),
+            scale = 1.1,
+            hold = 0.6,
+            major = card,
+            backdrop_colour = G.C.SET[card.config.center.set],
+            align = 'bm',
+            offset = {x = 0, y = 0.2}
+        })
+        local c2 = copy_card(c1)
+        c2:add_to_deck()
+        area:emplace(c2)
+
+    end
     --c1:remove()
 end
 
@@ -496,9 +522,35 @@ end
 G.FUNCS.open_voucher = function(e)
     local c1 = e.config.ref_table
     c1.cost = 0
+    local area = c1.area
     c1:redeem()
     c1:start_dissolve()
     c1:remove()
+    if c1.ability.cry_multiuse and to_big(c1.ability.cry_multiuse) > to_big(1) then
+        local card = c1
+        card.ability.cry_multiuse = card.ability.cry_multiuse - 1
+        card.ability.extra_value = -1 * math.max(1, math.floor(card.cost/2))
+        card:set_cost()
+        delay(0.4)
+    
+        -- i make my own card eval status text :D
+    
+        card:juice_up()
+        play_sound('generic1')
+        attention_text({
+            text = format_ui_value(card.ability.cry_multiuse),
+            scale = 1.1,
+            hold = 0.6,
+            major = card,
+            backdrop_colour = G.C.SET[card.config.center.set],
+            align = 'bm',
+            offset = {x = 0, y = 0.2}
+        })
+        local c2 = copy_card(c1)
+        c2:add_to_deck()
+        area:emplace(c2)
+
+    end
 end
 
 G.FUNCS.can_reserve_booster = function(e)
