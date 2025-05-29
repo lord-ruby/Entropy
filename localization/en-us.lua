@@ -2611,6 +2611,7 @@ local decs = {
 			b_change_path_1 = "Enter The",
 			b_change_path_2 = "Flip-Side",
 			b_change_path_3 = "Return",
+			b_infinity = "Infinity"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",
