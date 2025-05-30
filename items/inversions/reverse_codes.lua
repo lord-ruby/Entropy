@@ -1234,6 +1234,7 @@ local ctrl_x = {
             end
             local card = SMODS.create_card({set = G.GAME.ControlXCard.set, area = G.GAME.ControlXCardArea, key = G.GAME.ControlXCard.key})
             card:add_to_deck()
+            SMODS.change_base(card, G.GAME.ControlXCard.base.suit, G.GAME.ControlXCard.id)
             G.GAME.ControlXCardArea:emplace(card)
             G.GAME.ControlXCardArea:align_cards()
             if G.GAME.ControlXCardArea == G.shop_jokers or G.GAME.ControlXCardArea == G.shop_booster or G.GAME.ControlXCardArea == G.shop_vouchers then
@@ -1245,10 +1246,13 @@ local ctrl_x = {
             G.GAME.ControlXCard = nil
             G.GAME.ControlXCardArea = nil
         else
-            local card = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables, G.shop_booster, G.shop_vouchers, G.shop_jokers, G.pack_cards}, card)[1]
+            local card = Entropy.GetHighlightedCards({G.jokers, G.consumeables, G.shop_booster, G.shop_vouchers, G.shop_jokers, G.pack_cards}, card)[1]
             G.GAME.ControlXCard = {
                 set = card.ability.set,
-                key = card.config.center.key
+                key = card.config.center.key,
+                name =  G.GAME.ControlXCard and G.localization.descriptions[G.GAME.ControlXCard.set] and G.GAME.ControlXCard and G.localization.descriptions[G.GAME.ControlXCard.set][G.GAME.ControlXCard.key].name
+                or card.base.name,
+                base = card.base
             }
             for i, v in pairs(G) do
                 if v == card.area then G.GAME.ControlXCardArea = i end
@@ -1260,7 +1264,7 @@ local ctrl_x = {
         end
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables, G.shop_booster, G.shop_vouchers, G.shop_jokers, G.pack_cards}, card)
+        local cards = Entropy.GetHighlightedCards({G.jokers, G.consumeables, G.shop_booster, G.shop_vouchers, G.shop_jokers, G.pack_cards}, card)
         return #cards == 1 or G[G.GAME.ControlXCardArea or ""]
     end,
     loc_vars = function()
@@ -1268,7 +1272,7 @@ local ctrl_x = {
             vars = {
                 G.GAME.ControlXCard and "Paste" or "Cut",
                 1,
-                G.GAME.ControlXCard and G.localization.descriptions[G.GAME.ControlXCard.set][G.GAME.ControlXCard.key].name or "None"
+                G.GAME.ControlXCard and G.GAME.ControlXCard.name or "None"
             }
         }
     end
