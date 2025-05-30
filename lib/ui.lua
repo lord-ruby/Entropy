@@ -600,3 +600,14 @@ G.FUNCS.toggle_path = function(e)
     ease_background_colour{new_colour = G.GAME.entr_alt and G.C.ALTBG or G.C.BLIND['Small'], contrast = 1}
     G.ARGS.spin.real = (G.SETTINGS.reduced_motion and 0 or 1)*(G.GAME.entr_alt and 0.3 or -0.3)
 end
+
+local ref = G.UIDEF.challenge_description
+function G.UIDEF.challenge_description(id, ...)
+    if id == "daily" then Entropy.GetDailyChallenge() end
+    return ref(id, ...)    
+end
+local idref = get_challenge_int_from_id
+function get_challenge_int_from_id(_id)
+    if _id == "daily" then return "daily" end
+    return idref(_id)
+end

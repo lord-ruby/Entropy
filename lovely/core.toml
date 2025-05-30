@@ -49,7 +49,7 @@ Entropy.DefineBlacklist = {
     Sleeve = true,
     Edition = true
 }
-
+Entropy.SpecialDailies = {}
 Entropy.ChaosBlacklist = {}
 Entropy.ParakmiBlacklist = {}
 Entropy.ChaosConversions = {}
@@ -992,5 +992,52 @@ payload = '''
     elseif blindname == 'Small Blind' or blindname == 'Big Blind' or blindname == '' then
         ease_background_colour{new_colour = G.GAME.entr_alt and G.C.ALTBG or G.C.BLIND['Small'], contrast = 1}
     else
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+            G.STAGE == G.STAGES.MAIN_MENU and {
+              label = localize('b_challenges'),
+              tab_definition_function = G.UIDEF.challenges,
+              tab_definition_function_args = from_game_over,
+              chosen = _challenge_chosen
+            } or nil,
+'''
+position = "at"
+payload = '''
+            {
+              label = localize('b_daily_challenge'),
+              tab_definition_function = G.UIDEF.challenge_description,
+              tab_definition_function_args = "daily",
+              chosen = _challenge_chosen
+            },
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+local challenge = G.CHALLENGES[args._id]
+'''
+position = "after"
+payload = '''
+local challenge = G.CHALLENGES[args._id] or Entropy.GetDailyChallenge()
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS CardSleeves "CardSleeves.lua"]'''
+pattern = '''
+local challenge = G.CHALLENGES[args._id]
+'''
+position = "after"
+payload = '''
+local challenge = G.CHALLENGES[args._id] or Entropy.GetDailyChallenge()
 '''
 match_indent = true

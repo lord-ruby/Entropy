@@ -569,11 +569,11 @@ function Entropy.DeckOrSleeve(key)
 end
 
 Entropy.charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890~#$^~#$^~#$^~#$^~#$^"
-function Entropy.srandom(length) 
+function Entropy.srandom(length, charset) 
     local total = ""
     for i = 0, length do
-        local val = math.random(1,#Entropy.charset)
-        total = total..(Entropy.charset:sub(val, val))
+        local val = math.random(1,charset and #charset or #Entropy.charset)
+        total = total..((charset or Entropy.charset):sub(val, val))
     end
     return total
 end
@@ -1177,3 +1177,106 @@ end
 function Entropy.GetIota()
     return {[G.GAME.iotablind.key] = G.GAME.iotablind}
 end
+
+local function hash(str)
+    local h = 5381
+
+    for i = 1, #str do
+       h = h*32 + h + str:byte(i)
+    end
+    return h
+end
+
+function Entropy.GetDailyChallenge()
+    local seed = os.date("%x")
+    math.randomseed(hash(seed))
+    G.CHALLENGES["daily"] = Entropy.SpecialDailies[seed] or Entropy.GenerateDaily()
+end
+function Entropy.GenerateDaily()
+    local seed = os.date("%x")
+    math.randomseed(hash(seed))
+    local allowed_rules = {
+        "no_shop_jokers",
+        "no_reward",
+        "no_interest",
+        "no_extra_hand_money",
+        "inflation",
+        "all_eternal",
+    }
+    local rules = math.random(0, 1)
+    local generate = {}
+    local arules = {}
+    if rules > 0 then
+        for i = 1, rules do
+            local rule= allowed_rules[math.random(1, #allowed_rules)]
+            while generate[rule] do
+                rule = allowed_rules[math.random(1, #allowed_rules)]
+            end
+            generate[rule] = true
+            table.insert(arules, {id=rule})
+        end
+    end
+    local seed = os.date("%x")
+    math.randomseed(hash(seed))
+    table.insert(arules, {id = 'entr_set_seed', value = Entropy.srandom(8, "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")})
+    return {
+        consumeables = {
+            {id = Entropy.GetInPoolDaily("Consumeables")},
+            math.random(1, 100) < 40 and {id = Entropy.GetInPoolDaily("Consumeables")} or nil,
+        },
+        vouchers = {
+            math.random(1, 100) < 50 and {
+                id = Entropy.GetInPoolDaily("Voucher")
+            } or nil,
+            math.random(1, 100) < 10 and {
+                id = Entropy.GetInPoolDaily("Voucher")
+            } or nil
+        },
+        jokers = {
+            math.random(1, 100) < 75 and {
+                id = Entropy.GetInPoolDaily("Joker")
+            } or nil,
+            math.random(1, 100) < 25 and {
+                id = Entropy.GetInPoolDaily("Joker")
+            } or nil,
+            math.random(1, 100) < 2 and {
+                id = Entropy.GetInPoolDaily("Joker")
+            } or nil
+        },
+        rules = {
+            custom = arules,
+        },
+        key = "c_entr_daily",
+        id = "c_entr_daily",
+        original_key = "daily",
+        registered = true,
+        deck = {
+            type = "Challenge Deck"
+        }
+        -- consumeables = {
+        --     {id = G.P_CENTER_POOLS.Consumeables[math.random(1, #G.P_CENTER_POOLS.Consumeables)].key},
+        --     {id = G.P_CENTER_POOLS.Consumeables[math.random(1, #G.P_CENTER_POOLS.Consumeables)].key}
+        -- }
+    }
+end
+
+function Entropy.GetInPoolDaily(pool)
+    local center = G.P_CENTER_POOLS[pool][math.random(1, #G.P_CENTER_POOLS[pool])]
+    local allowed = {
+        entr = true,
+        Cryptid = true
+    }
+    while center.no_doe or center.set == "CBlind" or (center.original_mod and not allowed[center.original_mod.id]) do
+        center = G.P_CENTER_POOLS[pool][math.random(1, #G.P_CENTER_POOLS[pool])]
+    end
+    return center.key
+end
+
+G.FUNCS.start_challenge_run = function(e)
+    if G.OVERLAY_MENU then G.FUNCS.exit_overlay_menu() end
+    local seed = nil
+    for i, v in ipairs(G.CHALLENGES[e.config.id].rules.custom) do
+        if v.id == "entr_set_seed" then seed = v.value end
+    end
+    G.FUNCS.start_run(e, {stake = 1, challenge = G.CHALLENGES[e.config.id], seed =seed})
+  end

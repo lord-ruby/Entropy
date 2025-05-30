@@ -2671,7 +2671,9 @@ local decs = {
 			b_change_path_1 = "Enter The",
 			b_change_path_2 = "Flip-Side",
 			b_change_path_3 = "Return",
-			b_infinity = "Infinity"
+			b_infinity = "Infinity",
+
+			b_daily_challenge = "Daily Challenge"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",
@@ -2719,11 +2721,13 @@ local decs = {
 			}
 		},
 		challenge_names = {
-			c_entr_hyperbolic_chamber = "Hyperbolic Hell-Tier Chamber"
+			c_entr_hyperbolic_chamber = "Hyperbolic Hell-Tier Chamber",
+			c_entr_daily = "Daily Challenge"
 		},
 		v_text = {
 			ch_c_entr_starting_ante_mten = { "Start on Ante -10" },
 			ch_c_entr_reverse_redeo = { "Invert Redeo's ante change" },
+			ch_c_entr_set_seed = {"Set Seed: #1#"}
 		},
 		quips={
 			lq_ee_1={
