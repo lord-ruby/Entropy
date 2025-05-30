@@ -262,7 +262,7 @@ local eta = {
 	pos = { x = 0, y = 6 },
 	atlas = "altblinds",
 	boss_colour = HEX("907c7c"),
-    mult=3,
+    mult=2,
     dollars = 6,
     altpath=true,
 	boss = {
@@ -350,7 +350,7 @@ local iota = {
 	pos = { x = 0, y = 8 },
 	atlas = "altblinds",
     boss_colour = HEX("907c7c"),
-    mult=3,
+    mult=2,
     dollars = 6,
     boss = {
         min = 1
@@ -1139,6 +1139,45 @@ local upsilon = {
 	end,
 }
 
+local phi = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+21,
+	name = "entr-phi",
+	key = "phi",
+	pos = { x = 0, y = 20 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=2,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+    recalc_debuff = function(self, card, from_blind)
+		allowed = {
+			[14] = true,
+			[6]=true,
+			[8]=true,
+			[3]=true,
+			[9]=true
+			
+		}
+        if not allowed[card.base.id] then
+            return true
+        end
+        return false
+    end,
+}
+
+
 return {
     items = {
         alpha,
@@ -1160,6 +1199,7 @@ return {
 		rho,
 		sigma,
 		tau,
-		upsilon
+		upsilon,
+		phi
     }
 }

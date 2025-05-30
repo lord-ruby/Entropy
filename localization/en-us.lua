@@ -780,6 +780,14 @@ local decs = {
 					"-0.25 Ascension Power"
 				}
 			},
+			bl_entr_phi = {
+				name = "Phi",
+				text = {
+					"Ranks that arent",
+					"Ace, 3, 6, 8, or 9",
+					"are debuffed"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {
