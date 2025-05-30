@@ -1177,6 +1177,41 @@ local phi = {
     end,
 }
 
+local chi = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+22,
+	name = "entr-chi",
+	key = "chi",
+	pos = { x = 0, y = 21 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=2,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+    calculate = function(self, blind, context)
+		if context.before and not G.GAME.blind.disabled then
+			local ranks = {}
+			for i, v in ipairs(G.play.cards) do
+				if not ranks[v.base.id] then
+					v:set_debuff(true)
+					ranks[v.base.id] = true
+				end
+			end
+		end
+	end
+}
+
 
 return {
     items = {
@@ -1200,6 +1235,7 @@ return {
 		sigma,
 		tau,
 		upsilon,
-		phi
+		phi,
+		chi
     }
 }

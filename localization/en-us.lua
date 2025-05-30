@@ -788,6 +788,13 @@ local decs = {
 					"are debuffed"
 				}
 			},
+			bl_entr_chi = {
+				name = "Chi",
+				text = {
+					"The first scored card",
+					"of each rank is debuffed"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {
