@@ -751,6 +751,13 @@ local decs = {
 					"become perishable"
 				}
 			},
+			bl_entr_rho = {
+				name = "Rho",
+				text = {
+					"Divide final mult based on the",
+					"number of played ranks"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {

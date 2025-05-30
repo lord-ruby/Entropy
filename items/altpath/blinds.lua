@@ -178,6 +178,20 @@ function evaluate_play_main (text, disp_text, poker_hands, scoring_hand, non_loc
         update_hand_text({delay=0}, {mult=mult})
         delay(0.4)
     end
+	if Entropy.BlindIs("bl_entr_rho") and #G.play.cards > 1 and not G.GAME.blind.disabled then
+        local used = 1
+        local ranks = {}
+		for i, v in ipairs(G.play.cards) do
+			if not ranks[v.base.id] then
+				ranks[v.base.id] = true
+				used = used + 1
+			end
+		end
+        G.GAME.blind.triggered = true
+		mult = mult / used
+        update_hand_text({delay=0}, {mult=mult})
+        delay(0.4)
+    end
     return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
 end
 
