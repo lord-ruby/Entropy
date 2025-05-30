@@ -1275,7 +1275,14 @@ local omega = {
             G.FUNCS.get_poker_hand_info(G.play.cards)
 			if text == G.GAME.current_round.most_played_poker_hand then
 				G.GAME.blind.triggered = true
-				G.GAME.blind.chips = G.GAME.blind.chips * 2
+				G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					delay = 0.2,
+					func = function()
+						G.GAME.blind.chips = G.GAME.blind.chips * 2
+						G.GAME.blind:juice_up()
+					end
+				}))
 			end
 		end
 	end,
