@@ -795,6 +795,14 @@ local decs = {
 					"of each rank is debuffed"
 				}
 			},
+			bl_entr_psi = {
+				name = "Psi",
+				text = {
+					"#1# in 2 chance for",
+					"scored cards to become",
+					"flickering"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {

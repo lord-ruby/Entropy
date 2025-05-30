@@ -1212,6 +1212,40 @@ local chi = {
 	end
 }
 
+local psi = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+23,
+	name = "entr-psi",
+	key = "psi",
+	pos = { x = 0, y = 22 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=2,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+    calculate = function(self, blind, context)
+		if context.individual and context.cardarea == G.play and context.other_card and not G.GAME.blind.disabled then
+			if pseudorandom("psi_blind") < G.GAME.probabilities.normal / 2 then
+				Entropy.FlipThen({context.other_card}, function(card)
+					SMODS.Stickers.cry_flickering:apply(card, true)
+				end)
+			end
+		end
+	end,
+	loc_vars = function() return {vars = {G.GAME.probabilities.normal}} end,
+	collection_loc_vars = function() return {vars = {1}} end
+}
 
 return {
     items = {
@@ -1236,6 +1270,7 @@ return {
 		tau,
 		upsilon,
 		phi,
-		chi
+		chi,
+		psi
     }
 }
