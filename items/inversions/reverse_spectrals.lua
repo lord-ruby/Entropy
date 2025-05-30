@@ -1494,7 +1494,6 @@ local pulsar = {
         )
         for i, v in pairs(G.GAME.hands) do
             v.AscensionPower = to_big(v.AscensionPower or 0) + to_big(card.ability.level*amt)
-            v.visible = true
         end
         delay(1.0)
         G.E_MANAGER:add_event(Event({
