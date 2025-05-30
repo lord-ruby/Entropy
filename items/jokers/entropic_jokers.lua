@@ -301,7 +301,7 @@ local anaptyxi = {
         for i, v in pairs(G.jokers.cards) do
             if not Card.no(v, "immutable", true) and v ~= card and v ~= joker then
                 Cryptid.with_deck_effects(v, function(card2)
-                    Cryptid.misprintize(card2, { min = to_big(card.ability.extra.scale*new_scale), max = to_big(card.ability.extra.scale*new_scale)}, nil, true, "+")
+                    Cryptid.misprintize(card2, { min = to_big(card.ability.extra.scale)*to_big(new_scale), max = to_big(card.ability.extra.scale)*to_big(new_scale)}, nil, true, "+")
                 end)
                 card_eval_status_text(
                     v,
@@ -309,7 +309,7 @@ local anaptyxi = {
                     nil,
                     nil,
                     nil,
-                    { message = "+ "..number_format(to_big(card.ability.extra.scale*new_scale)) }
+                    { message = "+ "..number_format(to_big(card.ability.extra.scale)*to_big(new_scale)) }
                 )
             end
             if v.ability and v.ability.extra and type(v.ability.extra) == "table" and v.ability.extra.odds and type(v.ability.extra.odds) == "table" then
