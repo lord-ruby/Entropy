@@ -994,6 +994,77 @@ local pi = {
 	end
 }
 
+local rho = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+17,
+	name = "entr-rho",
+	key = "rho",
+	pos = { x = 0, y = 16 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=2,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+	calculate = function(self, blind, context)
+	end
+}
+
+local sigma = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+18,
+	name = "entr-sigma",
+	key = "sigma",
+	pos = { x = 0, y = 17 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=2,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+	calculate = function(self, blind, context)
+		if not G.GAME.blind.disabled then
+			if context.before then
+				ease_discard(-1)
+				G.GAME.blind.triggered = true
+			end
+			if context.pre_discard then
+				ease_hands_played(-1)
+				if to_big(G.GAME.current_round.hands_left) <= to_big(0) then
+					end_round()
+				end
+				G.GAME.blind.triggered = true
+			end
+		end
+	end,
+	setting_blind = function()
+		local avg = math.ceil((G.GAME.round_resets.hands+G.GAME.round_resets.discards)/2)
+		ease_hands_played(avg-G.GAME.round_resets.hands)
+		ease_discard(abg-G.GAME.round_resets.discards)
+		G.GAME.blind.triggered = true
+	end
+}
+
 return {
     items = {
         alpha,
@@ -1011,6 +1082,8 @@ return {
 		nu,
 		xi,
 		omicron,
-		pi
+		pi,
+		rho,
+		sigma
     }
 }

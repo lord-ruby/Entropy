@@ -758,6 +758,13 @@ local decs = {
 					"number of played ranks"
 				}
 			},
+			bl_entr_sigma = {
+				name = "Sigma",
+				text = {
+					"Hands and discards are now",
+					"a shared resource"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {
