@@ -1247,6 +1247,43 @@ local psi = {
 	collection_loc_vars = function() return {vars = {1}} end
 }
 
+local omega = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+24,
+	name = "entr-omega",
+	key = "omega",
+	pos = { x = 0, y = 23 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=2,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+    calculate = function(self, blind, context)
+		if context.after and not G.GAME.blind.disabled then
+			local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
+            G.FUNCS.get_poker_hand_info(G.play.cards)
+			if text == G.GAME.current_round.most_played_poker_hand then
+				G.GAME.blind.triggered = true
+				G.GAME.blind.chips = G.GAME.blind.chips * 2
+			end
+		end
+	end,
+	loc_vars = function() return {vars = {localize(G.GAME.current_round.most_played_poker_hand, 'poker_hands')}} end,
+	collection_loc_vars = function() return {vars = {"[most played hand]"}} end
+}
+
+
 return {
     items = {
         alpha,
@@ -1271,6 +1308,7 @@ return {
 		upsilon,
 		phi,
 		chi,
-		psi
+		psi,
+		omega
     }
 }

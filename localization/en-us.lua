@@ -803,6 +803,14 @@ local decs = {
 					"flickering"
 				}
 			},
+			bl_entr_omega = {
+				name = "Omega",
+				text = {
+					"Playing a #1#",
+					"multiplies score",
+					"requirements by 2x"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {
