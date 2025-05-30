@@ -420,6 +420,7 @@ end
 
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, initial, delay)
+    if type(center) == "string" then center = G.P_CENTERS[center] end
     if not self.ability then self.ability = {} end
     if not self.ability.bonus then self.ability.bonus = 0 end
     if center and G.GAME.DefineKeys and G.GAME.DefineKeys[center.key] and not G.SETTINGS.paused then
