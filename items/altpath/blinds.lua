@@ -1065,6 +1065,51 @@ local sigma = {
 	end
 }
 
+local tau = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+19,
+	name = "entr-tau",
+	key = "tau",
+	pos = { x = 0, y = 18 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=2,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+	calculate = function(self, blind, context)
+		if context.pre_discard then
+			G.GAME.tau = G.GAME.tau - 1
+			Entropy.ChangeFullCSL(-1)
+		end
+	end,
+	disable = function()
+		Entropy.ChangeFullCSL(-G.GAME.tau)
+		G.GAME.tau = nil
+	end,
+	defeat = function()
+		if not G.GAME.blind.disabled then
+			Entropy.ChangeFullCSL(-G.GAME.tau)
+			G.GAME.tau = nil
+		end
+	end,
+	setting_blind = function()
+		G.GAME.tau = G.GAME.tau or 0
+		G.GAME.tau = G.GAME.tau + 1
+		Entropy.ChangeFullCSL(1)
+	end
+}
+
 return {
     items = {
         alpha,
@@ -1084,6 +1129,7 @@ return {
 		omicron,
 		pi,
 		rho,
-		sigma
+		sigma,
+		tau
     }
 }

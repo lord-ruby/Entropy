@@ -765,6 +765,14 @@ local decs = {
 					"a shared resource"
 				}
 			},
+			bl_entr_tau = {
+				name = "Tau",
+				text = {
+					"+1 Selection Limit",
+					"-1 Selection Limit",
+					"when discarding"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {
