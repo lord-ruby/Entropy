@@ -1088,7 +1088,7 @@ local tau = {
         return G.GAME.entr_alt
     end,
 	calculate = function(self, blind, context)
-		if context.pre_discard then
+		if context.pre_discard and not G.GAME.blind.disabled then
 			G.GAME.tau = G.GAME.tau - 1
 			Entropy.ChangeFullCSL(-1)
 		end
@@ -1103,11 +1103,40 @@ local tau = {
 			G.GAME.tau = nil
 		end
 	end,
-	setting_blind = function()
+	set_blind = function()
 		G.GAME.tau = G.GAME.tau or 0
 		G.GAME.tau = G.GAME.tau + 1
 		Entropy.ChangeFullCSL(1)
 	end
+}
+
+local upsilon = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1000+20,
+	name = "entr-upsilon",
+	key = "upsilon",
+	pos = { x = 0, y = 19 },
+	atlas = "altblinds",
+	boss_colour = HEX("907c7c"),
+    mult=2,
+    dollars = 6,
+    altpath=true,
+	boss = {
+		min = 1,
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+	calculate = function(self, blind, context)
+		if context.individual and context.cardarea == G.play and context.other_card and not G.GAME.blind.disabled then
+			SMODS.calculate_individual_effect({plus_asc = -0,25}, context.other_card, 'plus_asc', -0.25, false)
+		end
+	end,
 }
 
 return {
@@ -1130,6 +1159,7 @@ return {
 		pi,
 		rho,
 		sigma,
-		tau
+		tau,
+		upsilon
     }
 }

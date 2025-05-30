@@ -773,6 +773,13 @@ local decs = {
 					"when discarding"
 				}
 			},
+			bl_entr_upsilon = {
+				name = "Upsilon",
+				text = {
+					"Scored cards give",
+					"-0.25 Ascension Power"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {
