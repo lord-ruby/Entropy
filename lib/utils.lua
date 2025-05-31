@@ -1191,7 +1191,7 @@ function Entropy.GetDailyChallenge()
     local seed = os.date("%x")
     --https://tools.aimylogic.com/api/now?tz=Europa/England&format=dd/MM/yyyy to:do use this
     math.randomseed(hash(seed))
-    G.CHALLENGES["daily"] = Entropy.SpecialDailies[seed] or Entropy.GenerateDaily()
+    G.CHALLENGES["daily"] = Entropy.SpecialDailies[seed] or Entropy.SpecialDailies[os.date("%m").."/"..os.date("%d")] or Entropy.GenerateDaily()
 end
 function Entropy.GenerateDaily()
     local seed = os.date("%x")

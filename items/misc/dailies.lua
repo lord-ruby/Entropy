@@ -1,4 +1,4 @@
-Entropy.SpecialDailies["06/01/25"] = {
+Entropy.SpecialDailies["06/01"] = {
     jokers = {
         { id = "j_blueprint", edition = "freaky", stickers = {"entr_aleph"} },
         { id = "j_brainstorm", edition = "freaky", stickers = {"entr_aleph"} },
