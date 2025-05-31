@@ -1262,14 +1262,13 @@ function Entropy.GenerateDaily()
 end
 
 function Entropy.GetInPoolDaily(pool)
-    local center = G.P_CENTER_POOLS[pool][math.random(1, #G.P_CENTER_POOLS[pool])]
     local allowed = {
         entr = true,
         Cryptid = true
     }
     local actual = {}
-    for i, v in ipairs(G.P_CENTER_POOLS[pool]) do
-        if not (center.no_doe or center.set == "CBlind" or (center.original_mod and not allowed[center.original_mod.id])) then
+    for i, v in pairs(G.P_CENTER_POOLS[pool]) do
+        if (not v.no_doe and v.set ~= "CBlind" and (not v.original_mod or allowed[v.original_mod.id])) then
             actual[#actual+1] = v 
         end
     end
