@@ -2867,5 +2867,5 @@ end
 local ref = G.UIDEF.run_setup
 function G.UIDEF.run_setup(from_game_over)
     Entropy.UpdateDailySeed()
-    ref(from_game_over)
+    return ref(from_game_over)
 end
