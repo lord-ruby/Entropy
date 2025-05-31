@@ -48,7 +48,8 @@ local i = {
     "items/altpath/blinds",
 
     "compat/partners",
-    "compat/finity"
+    "compat/finity",
+    "compat/malverk"
 }
 local items = {}
 for _, v in pairs(i) do
