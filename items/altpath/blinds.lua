@@ -1281,6 +1281,7 @@ local omega = {
 					func = function()
 						G.GAME.blind.chips = G.GAME.blind.chips * 2
 						G.GAME.blind:juice_up()
+						return true
 					end
 				}))
 			end
