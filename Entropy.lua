@@ -110,3 +110,5 @@ end
 for i, v in pairs(SMODS.Blind.obj_table) do
     Cryptid.pointerblistify(i)
 end
+
+Entropy.UpdateDailySeed()

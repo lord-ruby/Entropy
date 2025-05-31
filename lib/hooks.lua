@@ -2062,6 +2062,9 @@ function Game:update_round_eval(dt)
             }))
         end
     end
+    if dt > 60 * 30 then
+        Entropy.UpdateDailySeed()
+    end
 end
 
 local create_cardref = create_card_for_shop
@@ -2857,4 +2860,12 @@ G.FUNCS.usage_minus = function(e)
     G.FUNCS.overlay_menu{
       definition = (G.USAGE_PAGE or 0)-1 < 0 and G.UIDEF.usage_tabs() or create_usage_tabspage((G.USAGE_PAGE or 0)-1)
     }
+end
+
+
+
+local ref = G.UIDEF.run_setup
+function G.UIDEF.run_setup(from_game_over)
+    Entropy.UpdateDailySeed()
+    ref(from_game_over)
 end

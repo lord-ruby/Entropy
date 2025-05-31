@@ -1189,13 +1189,15 @@ local function hash(str)
 end
 
 function Entropy.GetDailyChallenge()
-    local seed = os.date("%x")
+    Entropy.UpdateDailySeed()
+    local seed = Entropy.DAILYSEED
     --https://tools.aimylogic.com/api/now?tz=Europa/England&format=dd/MM/yyyy to:do use this
     math.randomseed(hash(seed))
     G.CHALLENGES["daily"] = Entropy.SpecialDailies[seed] or Entropy.SpecialDailies[os.date("%m").."/"..os.date("%d")] or Entropy.GenerateDaily()
 end
 function Entropy.GenerateDaily()
-    local seed = os.date("%x")
+    Entropy.UpdateDailySeed()
+    local seed = Entropy.DAILYSEED
     math.randomseed(hash(seed))
     local allowed_rules = {
         "no_shop_jokers",
@@ -1218,7 +1220,7 @@ function Entropy.GenerateDaily()
             table.insert(arules, {id=rule})
         end
     end
-    local seed = os.date("%x")
+    local seed = Entropy.DAILYSEED
     math.randomseed(hash(seed))
     table.insert(arules, {id = 'entr_set_seed', value = Entropy.srandom(8, "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")})
     return {
