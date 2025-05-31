@@ -1,8 +1,8 @@
 Entropy.SpecialDailies["06/01"] = {
     jokers = {
-        { id = "j_blueprint", edition = "e_entr_freaky", stickers = {"entr_aleph"} },
-        { id = "j_brainstorm", edition = "e_entr_freaky", stickers = {"entr_aleph"} },
-        { id = "j_banner", edition = "e_polychrome" }
+        { id = "j_blueprint", edition = "entr_freaky", stickers = {"entr_aleph"} },
+        { id = "j_brainstorm", edition = "entr_freaky", stickers = {"entr_aleph"} },
+        { id = "j_banner", edition = "polychrome" }
     },
     rules = {
         custom = {
