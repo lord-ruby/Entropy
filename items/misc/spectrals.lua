@@ -32,7 +32,7 @@ local flipside = {
     loc_vars = function(self, q, card)
         return {
             vars = {
-                card.ability.select
+                card.ability.select,
             }
         }
     end

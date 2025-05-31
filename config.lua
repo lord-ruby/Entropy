@@ -4,5 +4,6 @@ return {
 	["blind_tokens"] = true,
 	["freebird"] = true,
 	["override_glitched"] = true,
-	["omega_aleph"] = false
+	["omega_aleph"] = false,
+	["inversion_queues"] = 2,
 }

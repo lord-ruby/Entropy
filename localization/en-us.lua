@@ -2195,7 +2195,8 @@ local decs = {
 			inversion_allowed = {
 				name = "Flipside",
 				text = {
-					"Can be {C:red}Inverted{}"
+					"Can be {C:red}Inverted{}",
+					"into {C:red}#1#{}"
 				}
 			},
 			p_entr_twisted_pack_normal = { 
@@ -2673,7 +2674,13 @@ local decs = {
 			b_change_path_3 = "Return",
 			b_infinity = "Infinity",
 
-			b_daily_challenge = "Daily Challenge"
+			b_daily_challenge = "Daily Challenge",
+
+			flipside_none = 'None',
+			flipside_minimal = 'Minimal',
+			flipside_full = 'Full',
+			
+			flipside_info = 'Inversion display when holding Flipside',
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",
