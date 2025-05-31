@@ -1256,7 +1256,8 @@ function Entropy.GenerateDaily()
         registered = true,
         deck = {
             type = "Challenge Deck"
-        }
+        },
+        restrictions = Entropy.DailyBanlist()
         -- consumeables = {
         --     {id = G.P_CENTER_POOLS.Consumeables[math.random(1, #G.P_CENTER_POOLS.Consumeables)].key},
         --     {id = G.P_CENTER_POOLS.Consumeables[math.random(1, #G.P_CENTER_POOLS.Consumeables)].key}
@@ -1285,4 +1286,37 @@ G.FUNCS.start_challenge_run = function(e)
         if v.id == "entr_set_seed" then seed = v.value end
     end
     G.FUNCS.start_run(e, {stake = 1, challenge = G.CHALLENGES[e.config.id], seed =seed})
+  end
+
+  function Entropy.DailyBanlist()
+    return {
+        banned_cards = {
+            {id="c_entr_decrement"},
+            {id="c_entr_push"},
+            {id="c_entr_evocation"},
+            {id="c_entr_memory_leak"},
+            {id="c_entr_define"},
+            {id="c_cry_crash"},
+            {id="c_cry_pointer"},
+            {id="c_cry_hook"},
+            {id="c_entr_desync"},
+            {id="c_entr_shatter"},
+
+            {id="v_cry_asteroglyph"},
+
+            {id="j_cry_pity_prize"},
+            {id="j_cry_demicolon"},
+            {id="j_cry_crustulum"},
+            {id="j_entr_ieros"},
+            {id="j_entr_dekatria"},
+            {id="j_cry_cotton_candy"},
+            {id="j_cry_coin"},
+            {id="j_cry_copypaste"},
+            {id="j_entr_trapezium_cluster"},
+        },
+        banned_tags = {
+            {id="tag_entr_fractured"},
+            {id="tag_entr_ascendant_fractured"},
+        }
+    }
   end
