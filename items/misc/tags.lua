@@ -118,6 +118,9 @@ local solar = {
 			end
 		end
 	end,
+	entr_credits = {
+		art = {"Grakhon"}
+	}
 }
 
 local fractured = {
@@ -576,7 +579,9 @@ local infdiscard = {
 
 local oversat = Entropy.EditionTag("e_cry_oversat", "oversat", true, {x=0,y=3},18)
 local sunny_asc = Entropy.EditionTag("e_entr_sunny", "sunny", true, {x=6,y=4},19)
-local solar_asc = Entropy.EditionTag("e_entr_solar", "solar", true, {x=1,y=3},20)
+local solar_asc = Entropy.EditionTag("e_entr_solar", "solar", true, {x=1,y=3},20, {
+	art = {"Grakhon"}
+})
 local fractured_asc = Entropy.EditionTag("e_entr_fractured", "fractured", true, {x=6,y=5},20.5)
 local freaky_asc = Entropy.EditionTag("e_entr_freaky", "freaky", true, {x=7,y=5},20.75)
 

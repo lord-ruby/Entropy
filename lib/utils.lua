@@ -473,7 +473,7 @@ function Entropy.RareTag(rarity, key, ascendant, colour, pos, fac, legendary,ord
     }
 end
 
-function Entropy.EditionTag(edition, key, ascendant, pos,order)
+function Entropy.EditionTag(edition, key, ascendant, pos,order, credits)
     return {
         object_type = "Tag",
         dependencies = {
@@ -508,7 +508,8 @@ function Entropy.EditionTag(edition, key, ascendant, pos,order)
         end,
         loc_vars = function(s,q,c)
             q[#q+1] = edition and G.P_CENTERS[edition] or nil
-        end
+        end,
+        entr_credits = credits
     }
 end
 
