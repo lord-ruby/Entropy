@@ -1270,7 +1270,7 @@ function Entropy.GetInPoolDaily(pool)
     local actual = {}
     for i, v in ipairs(G.P_CENTER_POOLS[pool]) do
         if not (center.no_doe or center.set == "CBlind" or (center.original_mod and not allowed[center.original_mod.id])) then
-            actual[#actual+1]
+            actual[#actual+1] = v 
         end
     end
     return actual[math.random(1,#actual)].key
