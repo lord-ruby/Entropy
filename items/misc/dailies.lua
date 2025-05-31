@@ -9,7 +9,14 @@ Entropy.SpecialDailies["06/01"] = {
           {id="entr_set_seed", value = "PRIDMNTH"}
         }
     },
-    restrictions = Entropy.DailyBanlist()
+    restrictions = Entropy.DailyBanlist(),
+    key = "c_entr_daily",
+    id = "c_entr_daily",
+    original_key = "daily",
+    registered = true,
+    deck = {
+        type = "Challenge Deck"
+    },
 }
 
 
