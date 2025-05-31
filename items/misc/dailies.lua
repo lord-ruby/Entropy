@@ -9,9 +9,7 @@ Entropy.SpecialDailies["06/01"] = {
           {id="entr_set_seed", value = "PRIDMNTH"}
         }
     },
-    restrictions = {
-        Entropy.DailyBanlist()
-    }
+    restrictions = Entropy.DailyBanlist()
 }
 
 
