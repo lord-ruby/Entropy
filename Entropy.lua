@@ -45,6 +45,8 @@ local i = {
     "items/misc/blind_tokens",
     "items/inversions/define",
 
+    "items/misc/dailies",
+
     "items/altpath/blinds",
 
     "compat/partners",
