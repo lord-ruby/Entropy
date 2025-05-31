@@ -1189,6 +1189,7 @@ end
 
 function Entropy.GetDailyChallenge()
     local seed = os.date("%x")
+    --https://tools.aimylogic.com/api/now?tz=Europa/England&format=dd/MM/yyyy to:do use this
     math.randomseed(hash(seed))
     G.CHALLENGES["daily"] = Entropy.SpecialDailies[seed] or Entropy.GenerateDaily()
 end
@@ -1266,10 +1267,13 @@ function Entropy.GetInPoolDaily(pool)
         entr = true,
         Cryptid = true
     }
-    while center.no_doe or center.set == "CBlind" or (center.original_mod and not allowed[center.original_mod.id]) do
-        center = G.P_CENTER_POOLS[pool][math.random(1, #G.P_CENTER_POOLS[pool])]
+    local actual = {}
+    for i, v in ipairs(G.P_CENTER_POOLS[pool]) do
+        if not (center.no_doe or center.set == "CBlind" or (center.original_mod and not allowed[center.original_mod.id])) then
+            actual[#actual+1]
+        end
     end
-    return center.key
+    return actual[math.random(1,#actual)].key
 end
 
 G.FUNCS.start_challenge_run = function(e)
