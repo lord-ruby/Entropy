@@ -1615,7 +1615,7 @@ local regenerate = {
     key = "regenerate",
     set = "RSpectral",
     
-    
+    inversion = "c_entr_shatter",
 	
     atlas = "consumables",
     config = {
@@ -1663,6 +1663,78 @@ local regenerate = {
     }
 }
 
+local pure = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Sticker",
+    order = 2500+4,
+    atlas = "entr_stickers",
+    pos = { x = 8, y = 1 },
+    key = "entr_pure",
+    no_sticker_sheet = true,
+    prefix_config = { key = false },
+    badge_colour = HEX("c75985"),
+    should_apply = false,
+    apply = function(self,card,val)
+        card.ability.entr_pure = true
+    end,
+}
+
+local purity = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 34,
+    key = "purity",
+    set = "RSpectral",
+    
+    inversion = "c_entr_lust",
+	
+    atlas = "consumables",
+    config = {
+        limit = 2
+    },
+	pos = {x=9,y=8},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card, area, copier)
+        Entropy.FlipThen(Entropy.GetHighlightedCards({G.jokers}, card), function(card)
+            Entropy.ApplySticker(card, "entr_pure")
+        end)
+    end,
+    can_use = function(self, card)
+        local num = #Entropy.GetHighlightedCards({G.jokers}, card)
+        return num > 0 and num <= card.ability.limit
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {set = "Other", key = "entr_pure"}
+        return {
+            vars = {
+                card.ability.limit
+            }
+        }
+    end
+}
+local calculate_joker = Card.calculate_joker
+function Card:calculate_joker(context)
+    local abil = copy_table(self.ability)
+    local c = calculate_joker(self, context)
+    self.ability = abil
+    return c
+end
+
+local misprintize = Cryptid.misprintize
+function Cryptid.misprintize(card, ...)
+    if not card.ability.entr_pure then
+        return misprintize(card, ...)
+    end
+end
+
 return {
     items = {
         changeling,
@@ -1700,6 +1772,8 @@ return {
         conduct,
         pulsar,
         regenerate,
-        beyond
+        beyond,
+        pure,
+        purity
     }
 }

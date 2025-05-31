@@ -1008,12 +1008,23 @@ pattern = '''
 '''
 position = "at"
 payload = '''
-            {
+            G.STAGE == G.STAGES.MAIN_MENU and {
+              label = localize('b_challenges'),
+              tab_definition_function = G.UIDEF.challenges,
+              tab_definition_function_args = from_game_over,
+              chosen = _challenge_chosen
+            } or {
               label = localize('b_daily_challenge'),
               tab_definition_function = G.UIDEF.challenge_description,
               tab_definition_function_args = "daily",
               chosen = _challenge_chosen
             },
+            G.STAGE == G.STAGES.MAIN_MENU and {
+              label = localize('b_daily_challenge'),
+              tab_definition_function = G.UIDEF.challenge_description,
+              tab_definition_function_args = "daily",
+              chosen = _challenge_chosen
+            } or nil,
 '''
 match_indent = true
 

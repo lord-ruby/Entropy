@@ -1915,6 +1915,13 @@ local decs = {
 					"{C:inactive}(Doesn't remove Aleph){}"
 				}
 			},
+			c_entr_purity = {
+				name = "Purity",
+				text = {
+					"Apply a {C:dark_edition}Pure{} sticker to",
+					"{C:attention}#1#{} selected joker#<s>1#"
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {
@@ -2415,6 +2422,13 @@ local decs = {
 					"#1#",
 					"#2#"
 				}
+			},
+			entr_pure = {
+				name = "Pure",
+				text = {
+					"This Jokers values",
+					"cannot change"
+				}
 			}
 		},
 		DescriptionDummy = {
@@ -2709,7 +2723,7 @@ local decs = {
 			scarred = "Scarred",
 			desync = "Desynced",
 			entr_aleph = "Aleph",
-
+			entr_pure = "Pure",
 			entr_crimson_seal = "Crimson Seal",
 			entr_sapphire_seal = "Sapphire Seal",
 			entr_silver_seal = "Silver Seal",
