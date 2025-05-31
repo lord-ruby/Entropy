@@ -2753,3 +2753,108 @@ function generate_card_ui(_c, full_UI_table, specific_vars, card_type, badges, h
     end
     return generate_uiref(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
 end
+
+function G.UIDEF.usage_tabs()
+    return create_UIBox_generic_options({back_func = 'high_scores', contents ={create_tabs(
+      {tabs = {
+          {
+            label = localize('b_stat_jokers'),
+            chosen = true,
+            tab_definition_function = create_UIBox_usage,
+            tab_definition_function_args = {'joker_usage'},
+          },
+          {
+            label = localize('b_stat_consumables'),
+            tab_definition_function = create_UIBox_usage,
+            tab_definition_function_args = {'consumeable_usage'},
+          },
+          {
+            label = localize('b_stat_tarots'),
+            tab_definition_function = create_UIBox_usage,
+            tab_definition_function_args = {'consumeable_usage', 'Tarot'},
+          },
+          {
+            label = localize('b_stat_planets'),
+            tab_definition_function = create_UIBox_usage,
+            tab_definition_function_args = {'consumeable_usage', 'Planet'},
+          },
+          {
+            label = localize('b_stat_spectrals'),
+            tab_definition_function = create_UIBox_usage,
+            tab_definition_function_args = {'consumeable_usage', 'Spectral'},
+          },
+          {
+            label = localize('b_stat_vouchers'),
+            tab_definition_function = create_UIBox_usage,
+            tab_definition_function_args = {'voucher_usage', 'Voucher'},
+          },
+      },
+      tab_h = 8,
+      snap_to_nav = true}),
+      UIBox_button({
+        button = "usage_plus",
+        label = { ">" },
+      })}})
+  end
+
+function create_usage_tabspage(args)
+    local old = G.USAGE_PAGE
+    local page = args
+    local per_page = 6
+    local types = {}
+    for i, v in ipairs(SMODS.ConsumableType.obj_buffer) do
+        if SMODS.ConsumableType.obj_table[v].original_mod and v ~= "Unique" then types[#types+1] = v end
+    end
+    G.USAGE_PAGE = page
+    if not types[1+(page*per_page)] then
+        G.USAGE_PAGE = old
+        page = old
+    end
+    local options = {
+    }
+    for i = 1+(page*per_page), math.max(1+(page*per_page)+per_page, #types-1) do
+        local key = types[i]
+        if key then
+            options[#options+1] = {
+                label = localize("b_stat_"..(key or "")) == "ERROR" and key or localize("b_stat_"..(key or "")),
+                tab_definition_function = create_UIBox_usage,
+                tab_definition_function_args = {'consumeable_usage', key},
+                chosen = i == 1+(page*per_page),
+            }
+        end
+    end
+    return create_UIBox_generic_options({back_func = 'high_scores', contents ={create_tabs(
+      {tabs = options,
+      tab_h = 8,
+      snap_to_nav = true}),  
+      {n=G.UIT.R, config={minw = 5, align='cm', padding = 0.1}, nodes = {    
+      UIBox_button({
+        button = "usage_minus",
+        label = { "<" },
+        col = true
+      }),
+      types[1+((page+1)*per_page)] and UIBox_button({
+        button = "usage_plus",
+        label = { ">" },
+        align = 'cl',
+        col=true
+      })}}}})
+end
+
+G.FUNCS.usage_plus = function(e)
+    G.SETTINGS.paused = true
+    if G.OVERLAY_MENU then G.OVERLAY_MENU:remove(); G.OVERLAY_MENU = nil end
+    G.FUNCS.overlay_menu{
+      definition = create_usage_tabspage((G.USAGE_PAGE or -1)+1)
+    }
+end
+G.FUNCS.usage_minus = function(e)
+    G.SETTINGS.paused = true
+    if G.OVERLAY_MENU then G.OVERLAY_MENU:remove(); G.OVERLAY_MENU = nil end
+    if (G.USAGE_PAGE or 0)-1 < 0 then
+        G.USAGE_PAGE = nil
+    end
+    G.FUNCS.overlay_menu{
+      definition = (G.USAGE_PAGE or 0)-1 < 0 and G.UIDEF.usage_tabs() or create_usage_tabspage((G.USAGE_PAGE or 0)-1)
+    }
+end

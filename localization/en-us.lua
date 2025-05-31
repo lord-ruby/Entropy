@@ -2681,6 +2681,12 @@ local decs = {
 			flipside_full = 'Full',
 			
 			flipside_info = 'Inversion display when holding Flipside',
+
+			b_stat_CBlind = "Blind Token",
+			b_stat_RTarot = "Fraud",
+			b_stat_RPlanet = "Star",
+			b_stat_RSpectral = "Omen",
+			b_stat_RCode = "Command",
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",
