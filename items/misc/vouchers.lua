@@ -60,7 +60,10 @@ local supersede = {
         G.GAME.Supersede = nil
     end,
     loc_vars = function(self, info_queue, card)
-    end
+    end,
+    entr_credits = {
+        art = {"Grahkon"}
+    }
 }
 
 return {
