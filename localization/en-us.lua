@@ -566,6 +566,14 @@ local decs = {
 					"and their {C:blue}chips{} are {C:attention}added{} to this Joker",
 					"{C:inactive}(Currently: {}{C:blue}+#1#{} {C:inactive}Chips){}"
 				}
+			},
+			j_entr_bossfight = {
+				name = "Bossfight",
+				text = {
+					"If exactly {C:attention}#1#{} cards are played",
+					"all cards held in {C:attention}hand{}",
+					"gain {C:blue}+#2#{} chip#<s>2#"
+				}
 			}
 		},
 		Blind = {

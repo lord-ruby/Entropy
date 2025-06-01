@@ -884,7 +884,7 @@ local dating_simbo = {
         if context.destroying_card and not context.blueprint and context.cardarea == G.play then
             if context.destroying_card:is_suit("Hearts") then
                 card_eval_status_text(
-					G.jokers.cards[1],
+					card,
 					"extra",
 					nil,
 					nil,
@@ -914,6 +914,54 @@ local dating_simbo = {
         art = {"Lyman"}
     }
 }
+
+--order 19 reserved for sweet tooth
+
+local bossfight = {
+    order = 18,
+    object_type = "Joker",
+    key = "bossfight",
+    config = {
+        chips = 20,
+        cards = 4
+    },
+    rarity = 2,
+    cost = 5,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 1, y = 3 },
+    soul_pos = {x = 2, y = 3},
+    atlas = "jokers",
+    demicoloncompat = true,
+    loc_vars = function(self, info_queue, center)
+        return {
+            vars = {
+                number_format(math.floor(center.ability.cards)),
+                number_format(center.ability.chips)
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.after or context.forcetrigger then
+            local cards = #G.play.cards
+            if cards == math.floor(card.ability.cards) or context.forcetrigger then
+                Entropy.FlipThen(G.hand.cards, function(card2)
+                    card2.ability.bonus = (card2.ability.bonus or 0) + card.ability.chips
+                end)
+            end
+        end
+	end,
+    entr_credits = {
+        idea = {"CapitalChirp"},
+        art = {"Lyman"}
+    }
+}
+
 return {
     items = {
         surreal,
@@ -933,6 +981,7 @@ return {
         seventyseven,
         tesseract,
         skullcry,
-        dating_simbo
+        dating_simbo,
+        bossfight
     }
 }
