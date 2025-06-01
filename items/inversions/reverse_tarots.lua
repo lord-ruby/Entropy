@@ -543,7 +543,9 @@ local earl = {
         }
     end,
     
-	
+	entr_credits = {
+        art = {"HexaCryonic"}
+    }
 }
 
 local whetstone = {
