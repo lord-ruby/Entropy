@@ -854,7 +854,66 @@ local skullcry = {
         custom = {key="wish", text="denserver10"}
     }
 }
-
+local dating_simbo = {
+    order = 18,
+    object_type = "Joker",
+    key = "dating_simbo",
+    config = {
+        chips = 0
+    },
+    rarity = 2,
+    cost = 5,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 9, y = 2 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    loc_vars = function(self, info_queue, center)
+        return {
+            vars = {
+                number_format(center.ability.chips)
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.destroying_card and not context.blueprint and context.cardarea == G.play then
+            if context.destroying_card:is_suit("Hearts") then
+                card_eval_status_text(
+					G.jokers.cards[1],
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_upgrade_ex"), colour = G.C.FILTER }
+				)
+                local card2 = context.destroying_card
+                G.E_MANAGER:add_event(Event({
+					trigger = "after",
+					func = function()
+                        card2:juice_up()
+                        return true
+                    end
+                }))
+                card.ability.chips = card.ability.chips + math.max(context.destroying_card.base.nominal + (context.destroying_card.ability.bonus or 0), 0)            
+                return { remove = not context.destroying_card.ability.eternal }
+            end
+        end
+        if context.joker_main or context.forcetrigger then
+            return {
+                chips = card.ability.chips
+            }
+        end
+	end,
+    entr_credits = {
+        idea = {"CapitalChirp"},
+        art = {"Lyman"}
+    }
+}
 return {
     items = {
         surreal,
@@ -873,6 +932,7 @@ return {
         eden,
         seventyseven,
         tesseract,
-        skullcry
+        skullcry,
+        dating_simbo
     }
 }

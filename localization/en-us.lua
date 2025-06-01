@@ -558,6 +558,14 @@ local decs = {
 					"{C:red}self destructs{} if chips are not",
 					"within {C:attention}#2#%{} of {C:attention}log_#1#(Blind Requirement){}"
 				}
+			},
+			j_entr_dating_simbo = {
+				name = "Dating Sim-Bo",
+				text = {
+					"Scored {C:hearts}Hearts{} are destroyed",
+					"and their {C:blue}chips{} are {C:attention}added{} to this Joker",
+					"{C:inactive}(Currently: {}{C:blue}+#1#{} {C:inactive}Chips){}"
+				}
 			}
 		},
 		Blind = {
