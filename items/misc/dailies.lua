@@ -30,7 +30,7 @@ Entropy.SpecialDailies["06/02"] = {
     },
     rules = {
         custom = {
-          {id="entr_set_seed", value = "ASCPAIR"}
+          {id="entr_set_seed", value = "ASCPAIR2"}
         }
     },
     restrictions = Entropy.DailyBanlist(),
