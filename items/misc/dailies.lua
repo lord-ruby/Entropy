@@ -33,8 +33,12 @@ local function check_daily_seed(code, body, headers)
     end
 end
 function Entropy.UpdateDailySeed()
-    https.asyncRequest(
-        "https://tools.aimylogic.com/api/now?tz=Europa/England&format=dd/MM/yyyy",
-        check_daily_seed
-    )   
+    if Cryptid_config.HTTPS and https and https.asyncRequest then
+        https.asyncRequest(
+            "https://tools.aimylogic.com/api/now?tz=Europa/England&format=dd/MM/yyyy",
+            check_daily_seed
+        )   
+    else
+        Entropy.DAILYSEED = os.date("%x")
+    end
 end
