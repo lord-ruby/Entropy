@@ -329,7 +329,7 @@ local heretic = {
     
 	
     entr_credits = {
-        idea = {"notmario"}
+        idea = {"notmario"},
         art = {"MrVarius"}
     }
 }
