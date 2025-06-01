@@ -201,14 +201,14 @@ function SMODS.injectItems(...)
         }))
 		return ret
 	end
-    for i, v in ipairs(G.P_CENTERS) do
+    for i, v in pairs(G.P_CENTERS) do
         if v.inversion then 
             Entropy.FlipsidePureInversions[v.inversion]=i 
             Entropy.FlipsideInversions[v.inversion]=i 
             Entropy.FlipsideInversions[i]=v.inversion
         end
     end
-    for i, v in ipairs(G.P_BLINDS) do
+    for i, v in pairs(G.P_BLINDS) do
         if v.altpath then
             Entropy.AltBlinds[#Entropy.AltBlinds+1] = v
         end
