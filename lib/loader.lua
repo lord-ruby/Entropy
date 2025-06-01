@@ -22,18 +22,7 @@ function SMODS.injectItems(...)
     end
 
     loadmodsref(...)
-    SMODS.ObjectType({
-        key = "Twisted",
-        default = "j_entr_memory_leak",
-        cards = {},
-        inject = function(self)
-            SMODS.ObjectType.inject(self)
-            for i, v in pairs(Entropy.FlipsidePureInversions) do
-                if G.P_CENTERS[v] then self:inject_card(G.P_CENTERS[v]) end
-            end
-        end,
-    })
-    SMODS.ObjectTypes.Twisted:inject()
+
     G.ASSET_ATLAS["cry_gameset"] = Entropy.GamesetAtlas
 
     local references = {
@@ -213,6 +202,18 @@ function SMODS.injectItems(...)
             Entropy.AltBlinds[#Entropy.AltBlinds+1] = v
         end
     end
+    SMODS.ObjectType({
+        key = "Twisted",
+        default = "j_entr_memory_leak",
+        cards = {},
+        inject = function(self)
+            SMODS.ObjectType.inject(self)
+            for i, v in pairs(Entropy.FlipsidePureInversions) do
+                if G.P_CENTERS[v] then self:inject_card(G.P_CENTERS[v]) end
+            end
+        end,
+    })
+    SMODS.ObjectTypes.Twisted:inject()
 end
 
 if SMODS.Mods.DereJkr and SMODS.Mods.DereJkr.can_load then
