@@ -1722,7 +1722,7 @@ local purity = {
 }
 local calculate_joker = Card.calculate_joker
 function Card:calculate_joker(context)
-    if self.abil.entr_pure then
+    if self.ability.entr_pure then
     local abil = copy_table(self.ability)
     local c = calculate_joker(self, context)
     self.ability = abil
