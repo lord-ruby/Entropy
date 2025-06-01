@@ -1022,6 +1022,73 @@ local bossfight = {
     }
 }
 
+local phantom_shopper = {
+    order = 21,
+    object_type = "Joker",
+    key = "phantom_shopper",
+    config = {
+        rarity = "Common",
+        progress = 0,
+        needed_progress = 4
+    },
+    rarity = 3,
+    cost = 8,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 3, y = 3 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    loc_vars = function(self, info_queue, center)
+        return {
+            vars = {
+                localize("k_"..string.lower(center.ability.rarity)),
+                number_format(center.ability.needed_progress),
+                number_format(center.ability.needed_progress - center.ability.progress),
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.selling_self or context.forcetrigger then
+            SMODS.add_card{
+                set="Joker",
+                area = G.jokers,
+                rarity = card.ability.rarity,
+                legendary = card.ability.rarity == "Legendary"
+            }
+        end
+        if context.ending_shop or context.forcetrigger then
+            card.ability.progress = card.ability.progress + 1
+            if card.ability.progress >= card.ability.needed_progress then
+                card.ability.progress = 0
+                card.ability.rarity = ({
+                    Common = "Uncommon",
+                    Uncommon = "Rare",
+                    Rare = "cry_epic",
+                    cry_epic = "Legendary"
+                })[card.ability.rarity]
+            else
+                card_eval_status_text(
+                    card,
+                    "extra",
+                    nil,
+                    nil,
+                    nil,
+                    { message = number_format(card.ability.progress).."/"..number_format(card.ability.needed_progress), colour = G.C.FILTER }
+                )
+            end
+        end
+	end,
+    entr_credits = {
+        idea = {"Lyman"},
+        art = {"Lyman"}
+    }
+}
+
 return {
     items = {
         surreal,
@@ -1043,6 +1110,7 @@ return {
         skullcry,
         dating_simbo,
         bossfight,
-        sweet_tooth
+        sweet_tooth,
+        phantom_shopper
     }
 }

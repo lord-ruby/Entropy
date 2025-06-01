@@ -584,6 +584,15 @@ local decs = {
 					"then increase this Jokers chips by {X:dark_edition,C:white}^#2#{}",
 					"if any {c:attention}Food{} or {C:attention}Candy{} Jokers were destroyed"
 				}
+			},
+			j_entr_phantom_shopper = {
+				name = "Phantom Shopper",
+				text = {
+					"Sell this Joker to create a",
+					"{C:attention}#1#{} Rarity Joker",
+					"Increases every {C:attention}#2#{} {C:inactive}[#3#]{}",
+					"shops visited"
+				}
 			}
 		},
 		Blind = {
