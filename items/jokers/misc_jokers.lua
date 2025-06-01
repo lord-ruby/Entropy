@@ -1109,6 +1109,10 @@ local sunny_side_up = {
     pos = { x = 5, y = 3 },
     atlas = "jokers",
     demicoloncompat = true,
+    pools = {
+        --["Sunny"] = true,
+        ["Food"] = true
+    }
     loc_vars = function(self, info_queue, center)
         return {
             vars = {
