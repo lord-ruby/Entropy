@@ -19,6 +19,31 @@ Entropy.SpecialDailies["06/01"] = {
     },
 }
 
+Entropy.SpecialDailies["06/02"] = {
+    jokers = {
+        { id = "j_jolly", edition = "entr_sunny", stickers = {"entr_aleph"} },
+        { id = "j_entr_sunny_joker", edition = "cry_m", stickers = {"entr_aleph"} }
+    },
+    consumeables = {
+        { id = "c_entr_hydrae", edition = "entr_freaky" },
+        { id = "c_lovers"}
+    },
+    rules = {
+        custom = {
+          {id="entr_set_seed", value = "ASCPAIR"}
+        }
+    },
+    restrictions = Entropy.DailyBanlist(),
+    key = "c_entr_daily",
+    id = "c_entr_daily",
+    original_key = "daily",
+    registered = true,
+    deck = {
+        type = "Challenge Deck"
+        --,enhancement = "m_wild"
+    },
+}
+
 
 local succ, https = pcall(require, "SMODS.https")
 local function check_daily_seed(code, body, headers)
