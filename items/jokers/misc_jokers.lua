@@ -1031,7 +1031,7 @@ local phantom_shopper = {
         progress = 0,
         needed_progress = 4
     },
-    rarity = 3,
+    rarity = 2,
     cost = 8,
     dependencies = {
         items = {
@@ -1089,6 +1089,74 @@ local phantom_shopper = {
     }
 }
 
+local sunny_side_up = {
+    order = 21,
+    object_type = "Joker",
+    key = "sunny_side_up",
+    config = {
+        asc = 12,
+        asc_mod = 2
+    },
+    rarity = 2,
+    cost = 6,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 5, y = 3 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    loc_vars = function(self, info_queue, center)
+        return {
+            vars = {
+                number_format(center.ability.asc),
+                number_format(center.ability.asc_mod),
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main or context.forcetrigger then
+            local asc = card.ability.asc
+            card.ability.asc = card.ability.asc - card.ability.asc_mod
+            if to_big(card.ability.asc) > to_big(0) then
+                return {
+                    plus_asc = asc
+                }
+            else    
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound("tarot1")
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								G.jokers:remove_card(card)
+								card:remove()
+								card = nil
+								return true
+							end,
+						}))
+						return true
+					end,
+                }))
+            end
+        end
+	end,
+    entr_credits = {
+        idea = {"footlongdingledong"},
+        art = {"footlongdingledong"}
+    }
+}
+
+
 return {
     items = {
         surreal,
@@ -1111,6 +1179,7 @@ return {
         dating_simbo,
         bossfight,
         sweet_tooth,
-        phantom_shopper
+        phantom_shopper,
+        sunny_side_up
     }
 }

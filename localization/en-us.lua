@@ -593,6 +593,14 @@ local decs = {
 					"Increases every {C:attention}#2#{} {C:inactive}[#3#]{}",
 					"shops visited"
 				}
+			},
+			j_entr_sunny_side_up = {
+				name = "Sunny Side Up",
+				text = {
+					"{C:gold}+#1#{} Ascension Power",
+					"{C:gold}-#2#{} Ascension Power per",
+					"hand played"
+				}
 			}
 		},
 		Blind = {
