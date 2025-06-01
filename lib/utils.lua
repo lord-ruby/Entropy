@@ -1301,6 +1301,8 @@ G.FUNCS.start_challenge_run = function(e)
             {id="c_cry_hook"},
             {id="c_entr_desync"},
             {id="c_entr_shatter"},
+            {id="c_entr_break"},
+            {id="c_cry_revert"},
 
             {id="v_cry_asteroglyph"},
 
@@ -1313,6 +1315,7 @@ G.FUNCS.start_challenge_run = function(e)
             {id="j_cry_coin"},
             {id="j_cry_copypaste"},
             {id="j_entr_trapezium_cluster"},
+            {id="j_entr_antidagger"},
         },
         banned_tags = {
             {id="tag_entr_fractured"},
