@@ -574,6 +574,16 @@ local decs = {
 					"all cards held in {C:attention}hand{}",
 					"gain {C:blue}+#2#{} chip#<s>2#"
 				}
+			},
+			j_entr_sweet_tooth = {
+				name = "Sweet Tooth",
+				text = {
+					"{C:blue}+#1#{} Chip#<s>1#",
+					"at the end of the {C:attention}shop{}",
+					"destroy all {C:attention}Food{} or {C:attention}Candy{} Jokers",
+					"then increase this Jokers chips by {X:dark_edition,C:white}^#2#{}",
+					"if any {c:attention}Food{} or {C:attention}Candy{} Jokers were destroyed"
+				}
 			}
 		},
 		Blind = {

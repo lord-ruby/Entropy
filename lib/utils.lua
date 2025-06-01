@@ -1323,3 +1323,19 @@ G.FUNCS.start_challenge_run = function(e)
         }
     }
   end
+
+
+function Card:is_food()
+    local food = {
+        j_gros_michel=true,
+		j_egg=true,
+		j_ice_cream=true,
+		j_cavendish=true,
+		j_turtle_bean=true,
+		j_diet_cola=true,
+		j_popcorn=true,
+		j_ramen=true,
+		j_selzer=true,
+    }
+    if food[self.config.center.key] or Cryptid.safe_get(self.config.center, "pools", "Food") then return true end
+end

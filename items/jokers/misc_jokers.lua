@@ -915,10 +915,70 @@ local dating_simbo = {
     }
 }
 
---order 19 reserved for sweet tooth
+local sweet_tooth = {
+    order = 19,
+    object_type = "Joker",
+    key = "sweet_tooth",
+    config = {
+        chips = 20,
+        chip_exp = 1.1
+    },
+    rarity = 3,
+    cost = 8,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 0, y = 3 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    loc_vars = function(self, info_queue, center)
+        return {
+            vars = {
+                number_format(center.ability.chips),
+                number_format(center.ability.chip_exp)
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main then
+            return {
+                chips = card.ability.chips
+            }
+        end
+        if context.ending_shop and not context.blueprint then
+            local check
+            for i, v in ipairs(G.jokers.cards) do
+                if Cryptid.safe_get(v.config.center, "pools", "Candy") or v:is_food() then
+                    v:start_dissolve()
+                    check = true
+                end
+            end
+            if check then
+                card_eval_status_text(
+                    card,
+                    "extra",
+                    nil,
+                    nil,
+                    nil,
+                    { message = localize("k_upgrade_ex"), colour = G.C.FILTER }
+                )
+                card.ability.chips = to_big(card.ability.chips) ^ to_big(card.ability.chip_exp)
+            end
+        end
+	end,
+    entr_credits = {
+        idea = {"Lyman"},
+        art = {"Lyman"}
+    }
+}
+
 
 local bossfight = {
-    order = 18,
+    order = 20,
     object_type = "Joker",
     key = "bossfight",
     config = {
@@ -982,6 +1042,7 @@ return {
         tesseract,
         skullcry,
         dating_simbo,
-        bossfight
+        bossfight,
+        sweet_tooth
     }
 }
