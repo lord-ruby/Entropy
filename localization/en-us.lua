@@ -1086,14 +1086,14 @@ local decs = {
 			c_entr_imp = {
 				name = "The Imp",
 				text = {
-					"Enhanced {C:attention}#1#{} Selected card#<s>1#",
+					"Enhance {C:attention}#1#{} Selected card#<s>1#",
 					"into {C:attention}Dark{} Cards"
 				}
 			},
 			c_entr_oracle = {
 				name = "The Oracle",
 				text = {
-					"Enhanced {C:attention}#1#{} random card#<s>1# held in",
+					"Enhance {C:attention}#1#{} random card#<s>1# held in",
 					"hand into {C:attention}Editioned{} {C:purple}CCD Star{} Cards"
 				}
 			},

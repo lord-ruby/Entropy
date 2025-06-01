@@ -78,16 +78,6 @@ for i, category in pairs(items) do
         item = nil
     end
     category = nil
-    for i, v in pairs(SMODS[i].obj_table) do
-        if v.inversion then 
-            Entropy.FlipsidePureInversions[v.inversion]=i 
-            Entropy.FlipsideInversions[v.inversion]=i 
-            Entropy.FlipsideInversions[i]=v.inversion
-        end
-        if v.altpath then
-            Entropy.AltBlinds[#Entropy.AltBlinds+1] = v
-        end
-    end
 end
 items = nil
 SMODS.current_mod.optional_features = {
