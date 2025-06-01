@@ -400,3 +400,13 @@ SMODS.Blind:take_ownership("cry_pin", {
 		return false
 	end,
 },true)
+
+
+local enh_table = {
+	m_entr_flesh = { "flesh" },
+  m_entr_disavowed = { "disavowed" },
+  m_entr_dark = { "dark" },
+  --no prismatic fuck you
+}
+
+Cryptid.load_enhancement_aliases(enh_table)

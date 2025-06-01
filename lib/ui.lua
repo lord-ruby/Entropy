@@ -301,21 +301,7 @@ G.FUNCS.inherit_apply = function()
       Entropy.ChangeEnhancements({G.discard, G.deck, G.hand}, enh_suffix, base_enh, true)
       G.CHOOSE_ENH:remove()
   end
-  local enh_table = {
-      m_bonus = { "bonus" },
-      m_mult = { "mult", "red" },
-      m_wild = { "wild", "suit" },
-      m_glass = { "glass", "xmult" },
-      m_steel = { "steel", "metal", "grey" },
-      m_stone = { "stone", "chip", "chips" },
-      m_gold = { "gold", "money", "yellow" },
-      m_lucky = { "lucky", "rng" },
-      m_cry_echo = { "echo", "retrigger", "retriggers" },
-      m_cry_light = { "light" },
-      c_base = {"base", "default", "none"},
-      ccd = { "ccd" },
-      null = { "nil" },
-  }
+  local enh_table = Cryptid.enhancement_alias_list
 
   local enh_suffix = nil
 
