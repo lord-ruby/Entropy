@@ -409,4 +409,4 @@ local enh_table = {
   --no prismatic fuck you
 }
 
-Cryptid.load_enhancement_aliases(enh_table)
+if Cryptid.load_enhancement_aliases then Cryptid.load_enhancement_aliases(enh_table) end
