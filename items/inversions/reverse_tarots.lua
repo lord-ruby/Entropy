@@ -83,8 +83,9 @@ local master = {
 			} or nil,
         }
     end,
-    
-	
+    entr_credits = {
+        art = {"MrVarius"}
+    }
 }
 
 local mason = {
@@ -170,6 +171,9 @@ local oracle = {
             }
         }
     end,
+    entr_credits = {
+        art = {"MrVarius"}
+    }
 }
 
 
@@ -326,6 +330,7 @@ local heretic = {
 	
     entr_credits = {
         idea = {"notmario"}
+        art = {"MrVarius"}
     }
 }
 
@@ -610,7 +615,9 @@ local whetstone = {
         }
     end,
     
-	
+	entr_credits = {
+        art = {"MrVarius"}
+    }
 }
 
 local endurance = {
