@@ -201,6 +201,16 @@ function SMODS.injectItems(...)
         }))
 		return ret
 	end
+    for i, v in ipairs(G.P_CENTERS) do
+        if v.altpath then
+            Entropy.AltBlinds[#Entropy.AltBlinds+1] = v
+        end
+    end
+    for i, v in ipairs(G.P_BLINDS) do
+        if v.altpath then
+            Entropy.AltBlinds[#Entropy.AltBlinds+1] = v
+        end
+    end
 end
 
 if SMODS.Mods.DereJkr and SMODS.Mods.DereJkr.can_load then
