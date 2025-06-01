@@ -925,8 +925,8 @@ local bossfight = {
         chips = 20,
         cards = 4
     },
-    rarity = 2,
-    cost = 5,
+    rarity = 3,
+    cost = 8,
     dependencies = {
         items = {
             "set_entr_misc_jokers"
