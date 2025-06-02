@@ -97,7 +97,7 @@ local solarflare = {
 		if
 			(context.other_joker
 			and context.other_joker.edition
-			and context.other_joker.edition.sol
+			and context.other_joker.edition.key == "e_entr_solar"
 			and card ~= context.other_joker)
 		then
 			if not Talisman.config_file.disable_anims then
@@ -113,7 +113,7 @@ local solarflare = {
 			}
 		end
 		if context.individual and context.cardarea == G.play then
-			if context.other_card.edition and context.other_card.edition.sol then
+			if context.other_card.edition and context.other_card.edition.key == "e_entr_solar" then
 				return {
 					asc = lenient_bignum(card.ability.asc),
 					colour = G.C.MULT,
@@ -125,7 +125,7 @@ local solarflare = {
 			(context.individual
 			and context.cardarea == G.hand
 			and context.other_card.edition
-			and context.other_card.edition.sol
+			and context.other_card.edition.key == "e_entr_solar"
 			and not context.end_of_round)
 		then
 			if context.other_card.debuff then

@@ -1101,7 +1101,7 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
-target = "functions/UI_definitions.lua"
+target = "functions/common_events.lua"
 pattern = '''
                 if pseudorandom('soul_'..v.key.._type..G.GAME.round_resets.ante) > (1 - v.soul_rate) then
                     forced_key = v.key
