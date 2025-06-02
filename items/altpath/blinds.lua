@@ -1355,6 +1355,38 @@ local styx = {
 	end
 }
 
+local choir = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1025+1,
+	name = "entr-choir",
+	key = "choir",
+	pos = { x = 0, y = 1 },
+	atlas = "altshowdowns",
+	boss_colour = HEX("b2bbaa"),
+    mult=2,
+    dollars = 10,
+    altpath=true,
+	boss = {
+		min = 1,
+		showdown = true
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+	calculate = function(self, blind, context)
+		if context.post_trigger and not context.other_card.debuff then
+			context.other_card.debuff = true
+			context.other_card:juice_up()
+			G.GAME.blind.triggered = true
+		end
+	end
+}
+
 return {
     items = {
         alpha,
@@ -1382,6 +1414,7 @@ return {
 		psi,
 		omega,
 		--showdowns
-		styx
+		styx,
+		choir
     }
 }

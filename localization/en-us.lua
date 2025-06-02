@@ -864,6 +864,13 @@ local decs = {
 					"before hand is scored"
 				}
 			},
+			bl_entr_choir = {
+				name = "Callous Choir",
+				text = {
+					"Triggered Jokers are",
+					"debuffed for this round"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {
