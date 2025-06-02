@@ -67,30 +67,6 @@ Entropy.SpecialDailies["06/04"] = {
     },
 }
 
-Entropy.SpecialDailies["06/04"] = {
-    jokers = {
-        { id = "j_entr_rusty_shredder", stickers = {"entr_aleph"} },
-        { id = "j_entr_metanoia", edition = "negative", stickers = {"entr_aleph"} }
-    },
-    consumeables = {
-        { id = "c_entr_multithread"}
-    },
-    rules = {
-        custom = {
-          {id="entr_set_seed", value = "MEATNOIA"}
-        }
-    },
-    restrictions = Entropy.DailyBanlist(),
-    key = "c_entr_daily",
-    id = "c_entr_daily",
-    original_key = "daily",
-    registered = true,
-    deck = {
-        type = "Challenge Deck"
-    },
-}
-
-
 Entropy.SpecialDailies["06/05"] = {
     jokers = {
         { id = "j_egg", edition = "entr_neon" },
