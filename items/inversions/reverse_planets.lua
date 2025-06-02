@@ -97,7 +97,7 @@ function Entropy.ReverseSuitUse(self, card, area, copier, num)
     Entropy.ReversePlanetUse(v, card, num)
   end
 end
-function Entropy.ReverseSuitLocVars(self, q, card)
+function Entropy.ReverseSuitLocVars(self, q, card, instant, noengulf)
   return {
     vars = {
       localize(card.ability.handnames[1], "poker_hands"),
@@ -169,6 +169,11 @@ function Entropy.ReversePlanetUse(handname, card, amt)
     end,
   }))
   update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = to_big(G.GAME.hands[handname].AscensionPower + G.GAME.hands[handname].level) })
+  delay(1.6)
+  if card.edition and to_big(amt or 1) > to_big(0) and not noengulf then
+    if Engulf.SpecialFuncs[card.config.center.key] then 
+    else Engulf.EditionHand(card, handname, card.edition, amt, instant) end 
+  end
   delay(2.6)
   update_hand_text(
     { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
