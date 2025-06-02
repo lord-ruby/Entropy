@@ -562,7 +562,7 @@ local fork = {
                     trigger="immediate",
                     func = function()
                         local ed = pseudorandom_element(G.P_CENTER_POOLS.Enhanced)
-                        while ed.no_doe do
+                        while ed.no_doe or G.GAME.banned_keys[ed.key] do
                             ed = pseudorandom_element(G.P_CENTER_POOLS.Enhanced)
                         end
                         card:set_ability(ed)

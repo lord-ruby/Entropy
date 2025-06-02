@@ -111,7 +111,9 @@ local mason = {
                 area = G.hand
             })
             SMODS.change_base(card, "entr_nilsuit", "entr_nilrank")
-            card:set_edition(pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("mason")).key)
+            card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("mason"),function(e)
+                return G.GAME.banned_keys[e.key] or e.no_doe
+            end).key)
             G.hand:emplace(card)
             table.insert(G.playing_cards, card)
         end
@@ -157,8 +159,12 @@ local oracle = {
             actual[i] = cards[i]
         end
         Entropy.FlipThen(actual, function(card)
-            card:set_ability(pseudorandom_element(G.P_CENTER_POOLS.RPlanet, pseudoseed("oracle_ccd")))
-            card:set_edition(pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("oracle_edition")).key)
+            card:set_ability(Entropy.pseudorandom_element(G.P_CENTER_POOLS.RPlanet, pseudoseed("oracle_ccd"),function(e)
+                return G.GAME.banned_keys[e.key] or e.no_doe
+            end))
+            card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("oracle_edition")).key,function(e)
+                return G.GAME.banned_keys[e.key] or e.no_doe
+            end)
         end)
     end,
     can_use = function(self, card)
@@ -297,7 +303,9 @@ local heretic = {
                 card:set_seal(seal)
             end
             if modification == "Edition" then
-                local edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("heretic_edition")).key
+                local edition = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("heretic_edition"),function(e)
+                    return G.GAME.banned_keys[e.key] or e.no_doe
+                end).key
                 card:set_edition(edition)
             end
             if modification == "Enhancement" then
@@ -1280,8 +1288,12 @@ local integrity = {
     use = function(self, card2)
         local cards = Entropy.FilterTable(Entropy.GetHighlightedCards({G.hand}, card), function(card) return card.config.center.key ~= "c_base" end)
         Entropy.FlipThen(cards, function(card)
-            local edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy")).key
-            local seal = pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("entropy")).key
+            local edition = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
+                return G.GAME.banned_keys[e.key] or e.no_doe
+            end).key
+            local seal = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("entropy"),function(e)
+                return G.GAME.banned_keys[e.key] or e.no_doe
+            end).key
             card:set_edition(edition)
             card:set_seal(seal)
             card:set_ability(G.P_CENTERS.c_base)

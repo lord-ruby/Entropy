@@ -177,7 +177,11 @@ end
 function Entropy.FindPreviousInPool(item, pool)
     for i, v in pairs(G.P_CENTER_POOLS[pool]) do
         if G.P_CENTER_POOLS[pool][i].key == item then
-            return G.P_CENTER_POOLS[pool][i-1].key
+            local ind = i - 1
+            while G.GAME.banned_keys[G.P_CENTER_POOLS[pool][ind].key] or G.P_CENTER_POOLS[pool][ind].no_doe do
+                ind = ind - 1
+            end
+            return G.P_CENTER_POOLS[pool][ind].key
         end
     end
     return nil
@@ -948,7 +952,9 @@ Entropy.TMTrainerEffects["joker_choose_rarity"] = function(key) SMODS.add_card({
 Entropy.TMTrainerEffects["edition"] = function(key) 
     local element = pseudorandom_element(G.jokers.cards, pseudoseed(key))
     Entropy.FlipThen({element}, function(card)
-        card:set_edition(pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy")).key)
+        card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy")).key,function(e)
+            return G.GAME.banned_keys[e.key] or e.no_doe
+        end)
     end)
 end
 Entropy.TMTrainerEffects["ante"] = function(key) ease_ante(-pseudorandom(key)*0.1) end
@@ -1272,7 +1278,7 @@ function Entropy.GetInPoolDaily(pool)
     }
     local actual = {}
     for i, v in pairs(G.P_CENTER_POOLS[pool]) do
-        if (not v.no_doe and v.set ~= "CBlind" and (not v.original_mod or allowed[v.original_mod.id])) then
+        if (not v.no_doe and v.set ~= "CBlind" and (not v.original_mod or allowed[v.original_mod.id])) and not Entropy.DailyBanlistContains(v.key) then
             actual[#actual+1] = v 
         end
     end
@@ -1320,10 +1326,18 @@ G.FUNCS.start_challenge_run = function(e)
         banned_tags = {
             {id="tag_entr_fractured"},
             {id="tag_entr_ascendant_fractured"},
+        },
+        banned_other = {
+            {id="e_entr_fractured", set="Edition"}
         }
     }
-  end
+end
 
+function Entropy.DailyBanlistContains(key)
+    for i, v in pairs(Entropy.DailyBanlist().banned_cards) do
+        if v.id == key then return true end
+    end
+end
 
 function Card:is_food()
     local food = {
@@ -1338,4 +1352,11 @@ function Card:is_food()
 		j_selzer=true,
     }
     if food[self.config.center.key] or Cryptid.safe_get(self.config.center, "pools", "Food") then return true end
+end
+
+function Entropy.pseudorandom_element(table, seed, blacklist)
+    local elem = pseudorandom_element(table, seed)
+    while blacklist(elem) do
+        elem = pseudorandom_element(table, seed)
+    end
 end

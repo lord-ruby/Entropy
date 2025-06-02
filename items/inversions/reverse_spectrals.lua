@@ -22,7 +22,9 @@ local changeling = {
             actual[i] = cards[i]
         end
         Entropy.FlipThen(actual, function(card)
-            card:set_edition(pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("changeling_edition")).key)
+            card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("changeling_edition")).key, function(e)
+                return G.GAME.banned_keys[e.key] or e.no_doe
+            end)
             SMODS.change_base(card, nil, pseudorandom_element({"King", "Queen", "Jack"}, pseudoseed("changeling_rank")))
         end)
     end,
@@ -464,10 +466,14 @@ local rejuvenate = {
         for i = 1, card2.ability.num do
             actual[i] = cards[i]
         end
-        local ed = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("rejuvenate")).key
+        local ed = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("rejuvenate"),function(e)
+            return G.GAME.banned_keys[e.key] or e.no_doe
+        end).key
         local enh = G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("rejuvenate")).key]
         while enh.no_doe do enh = G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("rejuvenate")).key] end
-        local seal = pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("rejuvenate")).key
+        local seal = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("rejuvenate"),function(e)
+            return G.GAME.banned_keys[e.key] or e.no_doe
+        end).key
         local card = Entropy.GetHighlightedCards({G.hand}, card2)[1]
         card:set_edition(ed)
         card:set_ability(enh)
@@ -622,7 +628,9 @@ local entropy = {
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
         Entropy.FlipThen(G.hand.highlighted, function(card,area)
-            local edition = pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy")).key
+            local edition = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
+                return G.GAME.banned_keys[e.key] or e.no_doe
+            end).key
             local enhancement_type = pseudorandom_element({"Enhanced","Enhanced","Enhanced","Joker","Consumable","Voucher","Booster"}, pseudoseed("entropy"))
             if enhancement_type == "Consumable" then
                 enhancement_type = pseudorandom_element({"Tarot","Planet","Spectral","Code","RPlanet","RSpectral","RCode"}, pseudoseed("entropy"))
@@ -631,7 +639,9 @@ local entropy = {
             while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
                 enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("entropy")).key
             end
-            local seal = pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("entropy")).key
+            local seal = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("entropy"),function(e)
+                return G.GAME.banned_keys[e.key] or e.no_doe
+            end).key
             card:set_edition(edition)
             card:set_ability(G.P_CENTERS[enhancement])
             card:set_seal(seal)
