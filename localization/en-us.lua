@@ -880,6 +880,15 @@ local decs = {
 					"temporary card"
 				}
 			},
+			bl_entr_cassandra = {
+				name = "Condemned Cassandra",
+				text = {
+					"Discarded cards return",
+					"to the deck instead",
+					"Jokers have a #1# in 5 chance",
+					"to be debuffed before scoring"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {

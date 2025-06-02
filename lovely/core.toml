@@ -1118,7 +1118,15 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "cardarea.lua"
-pattern = "        table.sort(self.cards, function (a, b) return a.T.x + a.T.w/2 - 100*((a.pinned and not a.ignore_pinned) and a.sort_id or 0) < b.T.x + b.T.w/2 - 100*((b.pinned and not b.ignore_pinned) and b.sort_id or 0) end)"
+pattern = "table.sort(self.cards, function (a, b) return a.T.x + a.T.w/2 - 100*((a.pinned and not a.ignore_pinned) and a.sort_id or 0) < b.T.x + b.T.w/2 - 100*((b.pinned and not b.ignore_pinned) and b.sort_id or 0) end)"
 position = "at"
 payload = "if not G.GAME.entr_fastened then table.sort(self.cards, function (a, b) return a.T.x + a.T.w/2 - 100*((a.pinned and not a.ignore_pinned) and a.sort_id or 0) < b.T.x + b.T.w/2 - 100*((b.pinned and not b.ignore_pinned) and b.sort_id or 0) end) end"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "draw_card(G.hand, G.discard, i*100/highlighted_count, 'down', false, G.hand.highlighted[i]) "
+position = "at"
+payload = '''draw_card(G.hand, Entropy.BlindIs("bl_entr_cassandra") and G.deck or G.discard, i*100/highlighted_count, 'down', false, G.hand.highlighted[i])'''
 match_indent = true

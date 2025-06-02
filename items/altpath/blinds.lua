@@ -1418,6 +1418,48 @@ local pandora = {
 	end
 }
 
+local cassandra = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1025+3,
+	name = "entr-cassandra",
+	key = "cassandra",
+	pos = { x = 0, y = 3 },
+	atlas = "altshowdowns",
+	boss_colour = HEX("7f3127"),
+    mult=3,
+    dollars = 10,
+    altpath=true,
+	boss = {
+		min = 1,
+		showdown = true
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+	loc_vars = function()
+		return {vars = {G.GAME.probabilities.normal}}
+	end,
+	collection_loc_vars = function ()
+		return {vars = {1}}
+	end,
+	calculate = function(self, blind, context)
+		if context.before then
+			for i, v in ipairs(G.jokers.cards) do
+				if pseudorandom("cassandra") < G.GAME.probabilities.normal / (5) then
+					v.debuff = true
+					G.GAME.blind.triggered = true
+					v:juice_up()
+				end
+			end
+		end
+	end
+}
+
 return {
     items = {
         alpha,
@@ -1447,6 +1489,7 @@ return {
 		--showdowns
 		styx,
 		choir,
-		pandora
+		pandora,
+		cassandra
     }
 }
