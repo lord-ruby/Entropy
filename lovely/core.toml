@@ -1098,3 +1098,19 @@ payload = '''
         end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+                if pseudorandom('soul_'..v.key.._type..G.GAME.round_resets.ante) > (1 - v.soul_rate) then
+                    forced_key = v.key
+                end
+'''
+position = "at"
+payload = '''
+                if pseudorandom('soul_'..v.key.._type..G.GAME.round_resets.ante) > (1 - v.soul_rate) then
+                    if not G.GAME.banned_keys[v.key] then forced_key = v.key end
+                end
+'''
+match_indent = true
