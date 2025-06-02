@@ -727,6 +727,52 @@ local exelixi = {
 }
 
 
+local atomikos = {
+    order = 410,
+    object_type = "Joker",
+    key = "atomikos",
+    rarity = "entr_entropic",
+    cost = 150,
+    
+    eternal_compat = true,
+    blueprint_compat = true,
+    dependencies = {
+        items = {
+            "set_entr_entropics"
+        }
+    },
+    pos = { x = 6, y = 3 },
+    soul_pos = { x = 8, y = 3, extra = { x = 7, y = 3 } },
+    atlas = "exotic_jokers",
+    calculate = function(self, card, context)
+        if context.after then
+            local handname = G.FUNCS.get_poker_hand_info(G.play.cards)
+            if handname ~= "High Card" then
+                G.GAME.atomikos_deleted = G.GAME.atomikos_deleted or {}
+                G.GAME.atomikos_deleted[handname] = true
+                G.GAME.hands["High Card"].operator = (G.GAME.hands["High Card"].operator or 0) + 1
+                G.GAME.hands["High Card"].chips = G.GAME.hands["High Card"].chips + G.GAME.hands[handname].chips
+                G.GAME.hands["High Card"].mult = G.GAME.hands["High Card"].mult + G.GAME.hands[handname].mult
+                if G.GAME.hands["High Card"].AscensionPower or G.GAME.hands[handname].AscensionPower then
+                    G.GAME.hands["High Card"].AscensionPower = (G.GAME.hands["High Card"].AscensionPower or 0) + (G.GAME.hands[handname].AscensionPower or 0)
+                end
+                G.GAME.hands["High Card"].l_chips = G.GAME.hands["High Card"].l_chips + G.GAME.hands[handname].l_chips
+                G.GAME.hands["High Card"].l_mult = G.GAME.hands["High Card"].l_mult + G.GAME.hands[handname].l_mult
+                card:juice_up()
+                card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_upgrade_atomikos"), colour = G.C.EDITION }
+				)
+            end
+        end
+    end,
+}
+
+
 return {
     items = {
         epitachyno,
@@ -739,6 +785,7 @@ return {
         akyros,
         katarraktis,
         ieros,
-        exelixi
+        exelixi,
+        atomikos
     }
 }

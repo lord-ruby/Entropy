@@ -1138,3 +1138,86 @@ pattern = "draw_card(G.hand, G.discard, i*100/highlighted_count, 'down', false, 
 position = "at"
 payload = '''draw_card(G.hand, Entropy.BlindIs("bl_entr_cassandra") and G.deck or G.discard, i*100/highlighted_count, 'down', false, G.hand.highlighted[i])'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''{n=G.UIT.T, config={text = "X", lang = G.LANGUAGES['en-us'], scale = scale*2, colour = G.C.UI_MULT, shadow = true}},'''
+position = "at"
+payload = '''{n=G.UIT.T, config={id = "chipmult_op", text = "X", lang = G.LANGUAGES['en-us'], scale = scale*2, colour = G.C.UI_MULT, shadow = true}},'''
+match_indent = true
+
+[[patches]]
+[patches.regex]
+target = "functions/state_events.lua"
+pattern = '''hand_chips\*mult'''
+position = "at"
+payload = '''Entropy.get_chipmult_score(hand_chips, mult)'''
+match_indent = true
+
+
+[[patches]]
+[patches.regex]
+target = "functions/state_events.lua"
+pattern = '''to_big\(hand_chips\)\*mult'''
+position = "at"
+payload = "Entropy.get_chipmult_score(hand_chips, mult)"
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if to_big(hand_chips)*mult > to_big(0) then"
+position = "at"
+payload = "Entropy.get_chipmult_score(hand_chips, mult)"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = "G.ARGS.score_intensity.earned_score = G.GAME.current_round.current_hand.chips*G.GAME.current_round.current_hand.mult"
+position = "at"
+payload = '''
+local bigzero = to_big(0)
+if not G.GAME.blind or to_big(G.GAME.blind.chips or 0) <= bigzero then
+	G.ARGS.score_intensity.earned_score = 0
+else
+	G.ARGS.score_intensity.earned_score = math.max(Entropy.get_chipmult_score(G.GAME.current_round.current_hand.chips, G.GAME.current_round.current_hand.mult), 100)
+end
+bigzero = nil
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+	for _, v in ipairs(G.handlist) do
+		local ui_element = create_UIBox_current_hand_row(v, simple)
+		G.current_hands[index + 1] = ui_element
+		if ui_element then
+			index = index + 1
+		end
+		if index >= 10 then
+			break
+		end
+	end
+'''
+position = "at"
+payload = '''
+	for _, v in ipairs(G.handlist) do
+    if not (G.GAME.atomikos_deleted or {})[v] then
+      local ui_element = create_UIBox_current_hand_row(v, simple)
+      G.current_hands[index + 1] = ui_element
+      if ui_element then
+        index = index + 1
+      end
+      if index >= 10 then
+        break
+      end
+    end
+	end
+'''
+match_indent = true

@@ -601,6 +601,15 @@ local decs = {
 					"{C:gold}-#2#{} Ascension Power per",
 					"hand played"
 				}
+			},
+			j_entr_atomikos = {
+				name = "Atomikos",
+				text = {
+					"{C:attention}Played{} poker hands are {C:red}deleted{}",
+					"and their stats are {C:attention}added{} to {C:attention}High Card{}",
+					"increase {C:attention}High Card's{} {C:dark_edition}operator{}",
+					"when this occurs"
+				}
 			}
 		},
 		Blind = {
@@ -2788,6 +2797,7 @@ local decs = {
 			b_stat_Star = "Star",
 			b_stat_Omen = "Omen",
 			b_stat_Command = "Command",
+			k_upgrade_atomikos = "Destroyed"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

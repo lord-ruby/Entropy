@@ -160,8 +160,17 @@ function evaluate_play_final_scoring(text, disp_text, poker_hands, scoring_hand,
       trigger = 'after',
       	func = (function()
             G.GAME.asc_power_hand = nil
+            G.GAME.hand_operator = nil
+            local txt = "X"
+            local operator = G.HUD:get_UIE_by_ID('chipmult_op')
+            operator.config.text = txt
+            operator.config.text_drawable:set(txt)
+            operator.UIBox:recalculate()
+            operator.config.colour = G.C.RED
+            Entropy.score_cache = {}
         return true end)
     }))
+    
     return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
 end
 
@@ -1518,6 +1527,16 @@ function G.FUNCS.get_poker_hand_info(_cards)
 			loc_disp_text = localize(disp_text, "poker_hands")
         end
     end
+    if text ~= "High Card" or not G.GAME.hands["High Card"].operator then
+        local txt = "X"
+        local operator = G.HUD:get_UIE_by_ID('chipmult_op')
+        operator.config.text = txt
+        operator.config.text_drawable:set(txt)
+        operator.config.scale = 0.8
+        operator.UIBox:recalculate()
+        operator.config.colour = G.C.RED
+        G.GAME.hand_operator = nil
+    end
     return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
 
@@ -2021,9 +2040,6 @@ local evaluate_poker_hand_ref = evaluate_poker_hand
 function evaluate_poker_hand(hand)
     local results = evaluate_poker_hand_ref(hand)
     for i, v in ipairs(G.handlist) do
-        if G.GAME.SudoHand and G.GAME.SudoHand[v] and not G.GAME.USINGSUDO then
-            results[G.GAME.SudoHand[v]] = results[v]
-        end
         if G.GAME.Interfered then
             results[v] = results[pseudorandom_element(G.handlist, pseudoseed("interfered"))]
         end
@@ -2896,4 +2912,52 @@ G.FUNCS.draw_from_deck_to_hand = function(e)
         end
     end
     draw_ref(e)
+end
+
+local evaluate_ref = evaluate_poker_hand
+function evaluate_poker_hand(hand)
+    local results = evaluate_ref(hand)
+    for i, v in pairs(results) do
+        if G.GAME.atomikos_deleted and G.GAME.atomikos_deleted[i] then results[i] = {} end
+        if G.GAME.SudoHand and G.GAME.SudoHand[i] and #results[i] > 0 and Entropy.no_recurse_scoring(results) == i then results[G.GAME.SudoHand[i]] = results[i] end
+    end
+    return results
+end
+
+local parse_ref = CardArea.parse_highlighted
+function CardArea:parse_highlighted()
+    parse_ref(self)
+    local text,disp_text,poker_hands = G.FUNCS.get_poker_hand_info(self.highlighted)
+    if text == "High Card" and G.GAME.hands["High Card"].operator then
+        local colours = {
+            [1] = G.C.EDITION,
+            [2] = G.C.CRY_ASCENDANT,
+            [3] = G.C.CRY_EXOTIC,
+            [4] = Entropy.entropic_gradient
+        }
+        local txt = Entropy.FormatArrowMult(G.GAME.hands["High Card"].operator, "")
+        local operator = G.HUD:get_UIE_by_ID('chipmult_op')
+        operator.config.text = txt
+		operator.config.text_drawable:set(txt)
+        if G.GAME.hands["High Card"].operator > 1 and G.GAME.hands["High Card"].operator < 6 then
+            operator.config.scale = 0.3 + 0.5 / G.GAME.hands["High Card"].operator
+        else
+            operator.config.scale = 0.8
+        end
+        
+		operator.UIBox:recalculate()
+		operator.config.colour = colours[math.min(G.GAME.hands["High Card"].operator, 4)]
+        G.GAME.hand_operator = G.GAME.hands["High Card"].operator
+    else
+        if operator then
+            local txt = "X"
+            local operator = G.HUD:get_UIE_by_ID('chipmult_op')
+            operator.config.text = txt
+            operator.config.text_drawable:set(txt)
+            operator.config.scale = 0.8
+            operator.UIBox:recalculate()
+            operator.config.colour = G.C.RED
+            G.GAME.hand_operator = nil
+        end
+    end
 end

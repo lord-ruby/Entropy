@@ -412,7 +412,7 @@ function Entropy.card_eval_status_text_eq(card, eval_type, amt, percent, dir, ex
 end
 
 function Entropy.FormatArrowMult(arrows, mult)
-    mult = number_format(mult)
+    mult = type(mult) ~= "string" and number_format(mult) or mult
     if to_big(arrows) < to_big(-1) then 
         return "="..mult 
     elseif to_big(arrows) < to_big(0) then 
@@ -430,7 +430,7 @@ function Entropy.FormatArrowMult(arrows, mult)
         return "{"..arrows.."}"..mult
     end
 end
-
+--print(G.GAME.hands[text].operator and to_big(hand_chips):arrow(G.GAME.hands[text].operator, to_big(mult)))
 function Entropy.RareTag(rarity, key, ascendant, colour, pos, fac, legendary,order)
     return {
         object_type = "Tag",
@@ -1362,4 +1362,25 @@ function Entropy.pseudorandom_element(table, seed, blacklist)
         tries = tries + 1
     end
     return elem
+end
+Entropy.score_cache = {}
+function Entropy.get_chipmult_score(hand_chips, mult)
+    local operator = G.GAME.hand_operator
+    if Entropy.score_cache[number_format(hand_chips).."x"..number_format(mult)] then return Entropy.score_cache[number_format(hand_chips).."x"..number_format(mult)] end
+    local ret = (operator and to_big(hand_chips):arrow(operator, to_big(mult)) or to_big(hand_chips)*to_big(mult))
+    Entropy.score_cache[number_format(hand_chips).."x"..number_format(mult)] = ret
+    return ret
+end
+
+function Entropy.no_recurse_scoring(poker_hands)
+    local text 
+    local scoring_hand
+	for _, v in ipairs(G.handlist) do
+		if next(poker_hands[v]) then
+			text = v
+			scoring_hand = poker_hands[v][1]
+			break
+		end
+	end
+    return text
 end
