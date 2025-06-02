@@ -952,9 +952,9 @@ Entropy.TMTrainerEffects["joker_choose_rarity"] = function(key) SMODS.add_card({
 Entropy.TMTrainerEffects["edition"] = function(key) 
     local element = pseudorandom_element(G.jokers.cards, pseudoseed(key))
     Entropy.FlipThen({element}, function(card)
-        card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy")).key,function(e)
+        card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
             return G.GAME.banned_keys[e.key] or e.no_doe
-        end)
+        end).key)
     end)
 end
 Entropy.TMTrainerEffects["ante"] = function(key) ease_ante(-pseudorandom(key)*0.1) end
@@ -1359,4 +1359,5 @@ function Entropy.pseudorandom_element(table, seed, blacklist)
     while blacklist(elem) do
         elem = pseudorandom_element(table, seed)
     end
+    return elem
 end

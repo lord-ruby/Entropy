@@ -162,9 +162,9 @@ local oracle = {
             card:set_ability(Entropy.pseudorandom_element(G.P_CENTER_POOLS.RPlanet, pseudoseed("oracle_ccd"),function(e)
                 return G.GAME.banned_keys[e.key] or e.no_doe
             end))
-            card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("oracle_edition")).key,function(e)
+            card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("oracle_edition"),function(e)
                 return G.GAME.banned_keys[e.key] or e.no_doe
-            end)
+            end).key)
         end)
     end,
     can_use = function(self, card)

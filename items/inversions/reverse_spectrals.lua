@@ -22,9 +22,9 @@ local changeling = {
             actual[i] = cards[i]
         end
         Entropy.FlipThen(actual, function(card)
-            card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("changeling_edition")).key, function(e)
+            card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("changeling_edition"), function(e)
                 return G.GAME.banned_keys[e.key] or e.no_doe
-            end)
+            end).key)
             SMODS.change_base(card, nil, pseudorandom_element({"King", "Queen", "Jack"}, pseudoseed("changeling_rank")))
         end)
     end,
