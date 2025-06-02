@@ -2869,3 +2869,31 @@ function G.UIDEF.run_setup(from_game_over)
     Entropy.UpdateDailySeed()
     return ref(from_game_over)
 end
+
+local draw_ref = G.FUNCS.draw_from_deck_to_hand
+G.FUNCS.draw_from_deck_to_hand = function(e)
+    e = e or G.hand.config.card_limit - #G.hand.cards
+    if Entropy.BlindIs("bl_entr_pandora") then
+        local am = 0
+        for i = 1, e do
+            if pseudorandom("bl_entr_pandora") < 0.33 then
+                am = am + 1
+            end
+        end
+        local actual = e - am
+        e = am
+        if actual > 0 then
+            for i = 1, actual do
+                local card = SMODS.create_card{
+                    key = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("pandora"), function(e) return e.no_doe or G.GAME.banned_keys[e.key] end).key,
+                    set = "Enhanced",
+                    area = G.hand
+                  }
+                SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("pandora")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("pandora")))
+                card.ability.temporary = true
+                G.hand:emplace(card)
+            end
+        end
+    end
+    draw_ref(e)
+end

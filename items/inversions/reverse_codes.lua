@@ -929,7 +929,7 @@ local segfault = {
         end
         G.playing_card = (G.playing_card and G.playing_card + 1) or 1
         local _card = create_card("Base", G.deck, nil, nil, nil, nil, nil, "segfault")
-        SMODS.change_base(_card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("entropy")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("segfault")))
+        SMODS.change_base(_card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("segfault")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("segfault")))
         if G.P_CENTERS[key] then _card:set_ability(G.P_CENTERS[key]) else print(key) end
         _card:add_to_deck()
         table.insert(G.playing_cards, _card)

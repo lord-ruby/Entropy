@@ -871,6 +871,15 @@ local decs = {
 					"debuffed for this round"
 				}
 			},
+			bl_entr_pandora = {
+				name = "Pristine Pandora",
+				text = {
+					"#1# in 3 chance for",
+					"when cards are drawn",
+					"to instead draw a random",
+					"temporary card"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {

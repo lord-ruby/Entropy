@@ -1387,6 +1387,37 @@ local choir = {
 	end
 }
 
+local pandora = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1025+2,
+	name = "entr-pandora",
+	key = "pandora",
+	pos = { x = 0, y = 2 },
+	atlas = "altshowdowns",
+	boss_colour = HEX("4e2252"),
+    mult=3,
+    dollars = 10,
+    altpath=true,
+	boss = {
+		min = 1,
+		showdown = true
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+	loc_vars = function()
+		return {vars = {2*G.GAME.probabilities.normal}}
+	end,
+	collection_loc_vars = function ()
+		return {vars = {2}}
+	end
+}
+
 return {
     items = {
         alpha,
@@ -1415,6 +1446,7 @@ return {
 		omega,
 		--showdowns
 		styx,
-		choir
+		choir,
+		pandora
     }
 }

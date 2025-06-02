@@ -1356,8 +1356,10 @@ end
 
 function Entropy.pseudorandom_element(table, seed, blacklist)
     local elem = pseudorandom_element(table, seed)
-    while blacklist(elem) do
+    local tries = 0
+    while blacklist(elem) and tries < 100 do
         elem = pseudorandom_element(table, seed)
+        tries = tries + 1
     end
     return elem
 end
