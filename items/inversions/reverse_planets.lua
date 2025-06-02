@@ -309,6 +309,13 @@ Entropy.ReversePlanets = {
   {name="cry_UltPair", key="marsmoons", new_key = "binarystars", sprite_pos={x=6,y=2},prefix = "c_cry_",set_badges = function(self, card, badges)
     badges[1] = create_badge(localize("k_planet_binary_star"), get_type_colour(self or card.config, card), nil, 1.2)
   end, art="Binary"},
+  {name="cry_None", key="nibiru", new_key = "deadcore", sprite_pos={x=11,y=2},prefix = "c_cry_",set_badges = function(self, card, badges)
+    
+		if badges[1] and badges[1].remove then
+			badges[1]:remove()
+		end
+		badges[1] = nil
+  end},
   {name="cry_WholeDeck", key="universe", new_key = "multiverse", sprite_pos={x=7,y=2},prefix = "c_cry_",set_badges = function(self, card, badges)
     badges[1] = create_badge(localize("k_planet_multiverse"), get_type_colour(self or card.config, card), nil, 1.2)
   end},

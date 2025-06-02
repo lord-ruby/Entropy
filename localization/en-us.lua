@@ -1608,6 +1608,14 @@ local decs = {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
+			c_entr_deadcore = {
+				name = "Dead Core",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
 			c_entr_dark_matter = {
 				name = "Dark Matter",
 				text = {
