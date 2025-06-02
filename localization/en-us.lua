@@ -885,8 +885,9 @@ local decs = {
 				text = {
 					"Discarded cards return",
 					"to the deck instead",
-					"Jokers have a #1# in 5 chance",
-					"to be debuffed before scoring"
+					"Jokers have a #1# in 5",
+					"chance to be debuffed",
+					"before scoring"
 				}
 			},
 		},

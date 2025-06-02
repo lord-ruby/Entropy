@@ -15,7 +15,10 @@ local marked = {
     end,
     unredeem = function(self, card) 
         G.GAME.Marked = nil
-    end
+    end,
+    entr_credits = {
+        art = {"Grahkon"}
+    }
 }
 
 local trump_card = {
