@@ -733,7 +733,10 @@ local atomikos = {
     key = "atomikos",
     rarity = "entr_entropic",
     cost = 150,
-    
+    config = {
+        times = 2,
+        left = 2
+    },
     eternal_compat = true,
     blueprint_compat = true,
     dependencies = {
@@ -747,10 +750,16 @@ local atomikos = {
     calculate = function(self, card, context)
         if context.after then
             local handname = G.FUNCS.get_poker_hand_info(G.play.cards)
-            if handname ~= "High Card" then
-                G.GAME.atomikos_deleted = G.GAME.atomikos_deleted or {}
-                G.GAME.atomikos_deleted[handname] = true
-                G.GAME.hands["High Card"].operator = (G.GAME.hands["High Card"].operator or 0) + 1
+            if handname ~= "High Card" or to_big(card.ability.times) <= to_big(1e-300) then
+                card.ability.left = card.ability.left - 1
+                if  handname ~= "High Card" then
+                    G.GAME.atomikos_deleted = G.GAME.atomikos_deleted or {}
+                    G.GAME.atomikos_deleted[handname] = true
+                end
+                if to_big(card.ability.left) <= to_big(0) or to_big(card.ability.times) <= to_big(1e-300) then
+                    G.GAME.hands["High Card"].operator = (G.GAME.hands["High Card"].operator or 0) + 1
+                    card.ability.left = card.ability.times
+                end
                 G.GAME.hands["High Card"].chips = G.GAME.hands["High Card"].chips + G.GAME.hands[handname].chips
                 G.GAME.hands["High Card"].mult = G.GAME.hands["High Card"].mult + G.GAME.hands[handname].mult
                 if G.GAME.hands["High Card"].AscensionPower or G.GAME.hands[handname].AscensionPower then
@@ -772,6 +781,13 @@ local atomikos = {
     end,
     add_to_deck = function()
         G.GAME.hands["High Card"].operator = -1
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.times, card.ability.left
+            }
+        }
     end
 }
 

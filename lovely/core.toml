@@ -1221,3 +1221,15 @@ payload = '''
 	end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/UI_definitions'''
+pattern = '''
+{n=G.UIT.T, config={text = "X", scale = 0.45, colour = G.C.MULT}},
+'''
+position = "at"
+payload = '''
+{n=G.UIT.T, config={text = G.GAME.hands[handname].operator and Entropy.FormatArrowMult(G.GAME.hands[handname].operator, "") or "X", scale = 0.45, colour = G.C.MULT}},
+'''
+match_indent = true

@@ -609,7 +609,7 @@ local decs = {
 					"{C:attention}Played{} poker hands are {C:red}deleted{}",
 					"and their stats are {C:attention}added{} to {C:attention}High Card{}",
 					"increase {C:attention}High Card's{} {C:dark_edition}operator{}",
-					"when this occurs"
+					"every {C:attention}#1#{} {C:inactive}[#2#]{} times this occurs"
 				}
 			}
 		},

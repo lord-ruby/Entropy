@@ -1386,3 +1386,15 @@ function Entropy.no_recurse_scoring(poker_hands)
 	end
     return text
 end
+
+function Entropy.get_arrow_color(operator)
+    local colours = {
+        [-1] = HEX("a26161"),
+        [0] = G.C.RED,
+        [1] = G.C.EDITION,
+        [2] = G.C.CRY_ASCENDANT,
+        [3] = G.C.CRY_EXOTIC,
+        [4] = Entropy.entropic_gradient
+    }
+    return colours[operator]
+end
