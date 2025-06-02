@@ -770,6 +770,9 @@ local atomikos = {
             end
         end
     end,
+    add_to_deck = function()
+        G.GAME.hands["High Card"].operator = -1
+    end
 }
 
 

@@ -1367,8 +1367,12 @@ Entropy.score_cache = {}
 function Entropy.get_chipmult_score(hand_chips, mult)
     local operator = G.GAME.hand_operator
     if Entropy.score_cache[number_format(hand_chips).."x"..number_format(mult)] then return Entropy.score_cache[number_format(hand_chips).."x"..number_format(mult)] end
-    local ret = (operator and to_big(hand_chips):arrow(operator, to_big(mult)) or to_big(hand_chips)*to_big(mult))
-    Entropy.score_cache[number_format(hand_chips).."x"..number_format(mult)] = ret
+    if operator == -1 then return to_big(hand_chips)+to_big(mult) 
+    elseif operator == -1 then return to_big(hand_chips)*to_big(mult)
+    else
+        local ret = (operator and to_big(hand_chips):arrow(operator, to_big(mult)) or to_big(hand_chips)*to_big(mult))
+        Entropy.score_cache[number_format(hand_chips).."x"..number_format(mult)] = ret
+    end
     return ret
 end
 
