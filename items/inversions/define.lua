@@ -8,7 +8,7 @@ local define = {
         items = {"set_entr_inversions"}
     },
     atlas = "consumables",
-    set = "RSpectral",
+    set = "Omen",
     hidden=true,
     soul_rate = 0,
     can_use = function(self, card)
@@ -57,14 +57,14 @@ G.FUNCS.create_UIBox_define = function(card)
     local t = create_UIBox_generic_options({
         no_back = true,
         colour = HEX("04200c"),
-        outline_colour = G.C.SET.RSpectral,
+        outline_colour = G.C.SET.Omen,
         contents = {
             {
                 n = G.UIT.R,
                 nodes = {
                     create_text_input({
-                        colour = G.C.SET.RSpectral,
-                        hooked_colour = darken(copy_table(G.C.SET.RSpectral), 0.3),
+                        colour = G.C.SET.Omen,
+                        hooked_colour = darken(copy_table(G.C.SET.Omen), 0.3),
                         w = 4.5,
                         h = 1,
                         max_length = 100,
@@ -81,7 +81,7 @@ G.FUNCS.create_UIBox_define = function(card)
                 config = { align = "cm" },
                 nodes = {
                     UIBox_button({
-                        colour = G.C.SET.RSpectral,
+                        colour = G.C.SET.Omen,
                         button = "define_apply",
                         label = { localize("cry_code_create") },
                         minw = 4.5,
@@ -94,7 +94,7 @@ G.FUNCS.create_UIBox_define = function(card)
                 config = { align = "cm" },
                 nodes = {
                     UIBox_button({
-                        colour = G.C.SET.RSpectral,
+                        colour = G.C.SET.Omen,
                         button = "your_collection",
                         label = { localize("b_collection_cap") },
                         minw = 4.5,

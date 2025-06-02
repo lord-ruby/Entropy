@@ -116,7 +116,7 @@ function Entropy.SealSpectral(key, sprite_pos, seal,order, inversion, entr_credi
         object_type = "Consumable",
         order = order,
         key = key,
-        set = "RSpectral",
+        set = "Omen",
         
         atlas = "consumables",
         config = {

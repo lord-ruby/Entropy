@@ -185,7 +185,7 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
     object_type="Consumable",
     order = order - 200,
     key = new_key,
-    set = "RPlanet",
+    set = "Star",
     
     dependencies = {
       items = {
@@ -405,7 +405,7 @@ Entropy.ReversePlanets = {
   {name="", key="Kaikki", new_key = "kivi", sprite_pos={x=12,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"cry_Bulwark", "cry_Clusterfuck", "cry_UltPair"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc},
 }
 function Entropy.RegisterReversePlanets()
-  Entropy.RPlanetLocs = {}
+  Entropy.StarLocs = {}
     for i, v in pairs(Entropy.ReversePlanets) do
 		Entropy.RegisterReversePlanet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name,v.set_badges,v.loc_vars,v.config,v.new_key, v.calc, v.art)
         planets[#planets].inversion = (v.prefix or "c_")..v.key

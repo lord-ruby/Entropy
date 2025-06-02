@@ -2,7 +2,7 @@ local card_drawref = Card.draw
 function Card:draw(layer)
     local ref = card_drawref(self, layer)
     if self.config and self.config.center then
-        if self.config.center.set == "RSpectral" and self.sprite_facing == "front" then
+        if self.config.center.set == "Omen" and self.sprite_facing == "front" then
             self.children.center:draw_shader('booster', nil, self.ARGS.send_to_shader)
         end
         if self.config.center.tsoul_pos then
@@ -1029,7 +1029,7 @@ function G.UIDEF.use_and_sell_buttons(card)
               }},
           }}
     end
-    if card.area == G.pack_cards and G.pack_cards and not card.config.center.no_select and ((card.ability.set == "RCode" or card.ability.set == "CBlind" or card.ability.set == "RTarot" or card.ability.set == "RSpectral" or card.config.center.key == "c_entr_flipside") or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front) and (card.ability.consumeable) then
+    if card.area == G.pack_cards and G.pack_cards and not card.config.center.no_select and ((card.ability.set == "Command" or card.ability.set == "CBlind" or card.ability.set == "Fraud" or card.ability.set == "Omen" or card.config.center.key == "c_entr_flipside") or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front) and (card.ability.consumeable) then
         return {
             n = G.UIT.ROOT,
             config = { padding = -0.1, colour = G.C.CLEAR },
@@ -1049,14 +1049,14 @@ function G.UIDEF.use_and_sell_buttons(card)
                         colour = G.C.UI.BACKGROUND_INACTIVE,
                         one_press = true,
                         button = "use_card",
-                        func = (card.ability.set == "RCode" or card.ability.set == "CBlind" or card.ability.set == "RTarot" or card.ability.set == "RSpectral" or card.config.center.key == "c_entr_flipside") and "can_reserve_card" or "can_reserve_card_to_deck",
+                        func = (card.ability.set == "Command" or card.ability.set == "CBlind" or card.ability.set == "Fraud" or card.ability.set == "Omen" or card.config.center.key == "c_entr_flipside") and "can_reserve_card" or "can_reserve_card_to_deck",
                         handy_insta_action = 'use'
                     },
                     nodes = {
                         {
                             n = G.UIT.T,
                             config = {
-                                text = card.ability.set == "RCode" and localize("b_pull")  or localize("b_select"),
+                                text = card.ability.set == "Command" and localize("b_pull")  or localize("b_select"),
                                 colour = G.C.UI.TEXT_LIGHT,
                                 scale = 0.55,
                                 shadow = true,
@@ -1354,9 +1354,9 @@ Entropy.ParakmiBlacklist.Seal = true
 Entropy.ParakmiBlacklist.Stake = true
 Entropy.ParakmiBlacklist.Unique = true
 Entropy.ParakmiBlacklist.sleeve_casl_none = true
-Entropy.ChaosConversions.RCode = "Twisted"
-Entropy.ChaosConversions.RPlanet = "Twisted"
-Entropy.ChaosConversions.RSpectral = "Twisted"
+Entropy.ChaosConversions.Command = "Twisted"
+Entropy.ChaosConversions.Star = "Twisted"
+Entropy.ChaosConversions.Omen = "Twisted"
 local ref = create_card
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
     if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi"))) and not forced_key then
@@ -1622,8 +1622,8 @@ G.FUNCS.has_inversion = function(e)
     end
  end
 
- G.FUNCS.has_rtarot = function(e) 
-    if G.GAME.last_rtarot and G.GAME.last_rtarot ~= "c_entr_prophecy" then 
+ G.FUNCS.has_fraud = function(e) 
+    if G.GAME.last_fraud and G.GAME.last_fraud ~= "c_entr_prophecy" then 
         e.config.colour = mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8)
     else
         e.config.colour = mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8)
@@ -1640,8 +1640,8 @@ G.FUNCS.use_card = function(e, mute, nosave)
             set = card.config.center.set
         }
     end
-    if card.config.center.set == "RTarot" and (card.config.center.key ~= "c_entr_prophecy" or not G.GAME.last_rtarot) then
-        G.GAME.last_rtarot = {
+    if card.config.center.set == "Fraud" and (card.config.center.key ~= "c_entr_prophecy" or not G.GAME.last_fraud) then
+        G.GAME.last_fraud = {
             key = card.config.center.key,
             set = card.config.center.set
         }
@@ -1727,7 +1727,7 @@ SMODS.Booster:take_ownership_by_kind('Spectral', {
 	create_card = function(self, card, i)
 		G.GAME.entropy = G.GAME.entropy or 0
 		if to_big(pseudorandom("doc")) < to_big(1 - 0.997^(G.GAME.entropy/2)) and Entropy.DeckOrSleeve("doc") and Cryptid.enabled("c_entr_beyond") == true then
-			return create_card("RSpectral", G.pack_cards, nil, nil, true, true, "c_entr_beyond")
+			return create_card("Omen", G.pack_cards, nil, nil, true, true, "c_entr_beyond")
 		elseif to_big(pseudorandom("doc")) < to_big(1 - 0.996^(G.GAME.entropy/2)) and Entropy.DeckOrSleeve("doc") and Cryptid.enabled("c_cry_gateway") == true then
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
 		end
@@ -2128,7 +2128,7 @@ local htuis = G.FUNCS.hand_text_UI_set
 G.FUNCS.hand_text_UI_set = function(e)
     htuis(e)
     if G.GAME.cry_exploit_override then
-        e.config.object.colours = { G.C.SET.RCode }
+        e.config.object.colours = { G.C.SET.Command }
     else
         e.config.object.colours = { G.C.UI.TEXT_LIGHT }
     end

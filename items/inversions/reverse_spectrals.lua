@@ -11,7 +11,7 @@ local changeling = {
     },
     config = { random = 3 },
     atlas = "consumables",
-    set = "RSpectral",
+    set = "Omen",
     
     use = function(self, card)
         local cards = {}
@@ -53,7 +53,7 @@ local rend = {
     },
     config = { select = 3 },
     atlas = "consumables",
-    set = "RSpectral",
+    set = "Omen",
     
     use = function(self, card)
         Entropy.FlipThen(G.hand.highlighted, function(card)
@@ -84,7 +84,7 @@ local inscribe = {
     object_type = "Consumable",
     order = 2000 + 2,
     key = "inscribe",
-    set = "RSpectral",
+    set = "Omen",
     
 	
     inversion = "c_incantation",
@@ -131,7 +131,7 @@ local siphon = {
     object_type = "Consumable",
     order = 2000 + 4,
     key = "siphon",
-    set = "RSpectral",
+    set = "Omen",
     
     inversion = "c_aura",
 
@@ -180,7 +180,7 @@ local ward = {
     object_type = "Consumable",
     order = 2000 + 5,
     key = "ward",
-    set = "RSpectral",
+    set = "Omen",
     inversion = "c_wraith",
     atlas = "consumables",
     config = {
@@ -230,7 +230,7 @@ local disavow = {
     object_type = "Consumable",
     order = 2000 + 6,
     key = "disavow",
-    set = "RSpectral",
+    set = "Omen",
     inversion = "c_sigil",
     atlas = "consumables",
     config = {
@@ -310,7 +310,7 @@ local pact = {
     object_type = "Consumable",
     order = 2000 + 7,
     key = "pact",
-    set = "RSpectral",
+    set = "Omen",
 
     inversion = "c_ouija",
 
@@ -398,7 +398,7 @@ local ichor = {
     object_type = "Consumable",
     order = 2000 + 8,
     key = "ichor",
-    set = "RSpectral",
+    set = "Omen",
     
     inversion="c_ectoplasm",
 
@@ -447,7 +447,7 @@ local rejuvenate = {
     object_type = "Consumable",
     order = 2000 + 9,
     key = "rejuvenate",
-    set = "RSpectral",
+    set = "Omen",
     
     inversion = "c_immolate",
 
@@ -512,7 +512,7 @@ local crypt = {
     object_type = "Consumable",
     order = 2000 + 10,
     key = "crypt",
-    set = "RSpectral",
+    set = "Omen",
     inversion = "c_ankh",
     atlas = "consumables",
     config = {
@@ -557,7 +557,7 @@ local charm = {
     object_type = "Consumable",
     order = 2000 + 11,
     key = "charm",
-    set = "RSpectral",
+    set = "Omen",
     
 	inversion = "c_hex",
 
@@ -616,7 +616,7 @@ local entropy = {
     object_type = "Consumable",
     order = 2000 + 14,
     key = "entropy",
-    set = "RSpectral",
+    set = "Omen",
     
     inversion = "c_cryptid",
 
@@ -633,7 +633,7 @@ local entropy = {
             end).key
             local enhancement_type = pseudorandom_element({"Enhanced","Enhanced","Enhanced","Joker","Consumable","Voucher","Booster"}, pseudoseed("entropy"))
             if enhancement_type == "Consumable" then
-                enhancement_type = pseudorandom_element({"Tarot","Planet","Spectral","Code","RPlanet","RSpectral","RCode"}, pseudoseed("entropy"))
+                enhancement_type = pseudorandom_element({"Tarot","Planet","Spectral","Code","Star","Omen","Command"}, pseudoseed("entropy"))
             end
             local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("entropy")).key
             while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
@@ -670,7 +670,7 @@ local fervour = {
     object_type = "Consumable",
     order = 2000 + 15,
     key = "fervour",
-    set = "RSpectral",
+    set = "Omen",
     
     inversion = "c_soul",
     
@@ -682,7 +682,7 @@ local fervour = {
     soul_rate = 0, --probably only obtainable from flipsiding a gateway
     hidden = true, 
 	pos = {x=4,y=0},
-    soul_set = "RSpectral",
+    soul_set = "Omen",
     tsoul_pos = {x=5,y=0},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card, area, copier)
@@ -727,7 +727,7 @@ local quasar = {
     object_type = "Consumable",
     order = 2000 + 16,
     key = "quasar",
-    set = "RSpectral",
+    set = "Omen",
     
     inversion = "c_black_hole",
 
@@ -738,7 +738,7 @@ local quasar = {
     soul_rate = 0,
     hidden = true, 
 	pos = {x=7,y=3},
-    soul_set = "RPlanet",
+    soul_set = "Star",
     --soul_pos = { x = 5, y = 0},
     use = function(self, card, area, copier,amt)
         local amt = amt or 1
@@ -824,7 +824,7 @@ local weld = {
     object_type = "Consumable",
     order = 2000 + 17,
     key = "weld",
-    set = "RSpectral",
+    set = "Omen",
     
     inversion = "c_cry_lock",
 
@@ -929,7 +929,7 @@ local cleanse = {
     object_type = "Consumable",
     order = 2000 + 18,
     key = "cleanse",
-    set = "RSpectral",
+    set = "Omen",
     
     inversion = "c_cry_vacuum",
 
@@ -978,7 +978,7 @@ local fusion = {
     object_type = "Consumable",
     order = 2000 + 19,
     key = "fusion",
-    set = "RSpectral",
+    set = "Omen",
     
     inversion = "c_cry_hammerspace",
 
@@ -1034,7 +1034,7 @@ local substitute = {
     object_type = "Consumable",
     order = 2000 + 20,
     key = "substitute",
-    set = "RSpectral",
+    set = "Omen",
     
     inversion = "c_cry_trade",
 
@@ -1105,7 +1105,7 @@ local evocation = {
     object_type = "Consumable",
     order = 2000 + 21,
     key = "evocation",
-    set = "RSpectral",
+    set = "Omen",
     
     inversion = "c_cry_summoning",
 
@@ -1169,7 +1169,7 @@ local mimic = {
     object_type = "Consumable",
     order = 2000 + 22,
     key = "mimic",
-    set = "RSpectral",
+    set = "Omen",
     
     
 	
@@ -1231,7 +1231,7 @@ local superego = {
     object_type = "Consumable",
     order = 2000 + 23,
     key = "superego",
-    set = "RSpectral",
+    set = "Omen",
     
     inversion = "c_cry_analog",
 
@@ -1299,7 +1299,7 @@ local engulf = {
     object_type = "Consumable",
     order = 2000 + 26,
     key = "engulf",
-    set = "RSpectral",
+    set = "Omen",
     
     inversion = "c_cry_ritual",
 
@@ -1337,7 +1337,7 @@ local offering = {
     object_type = "Consumable",
     order = 2000 + 27,
     key = "offering",
-    set = "RSpectral",
+    set = "Omen",
 
     inversion = "c_cry_adversary",
 
@@ -1385,7 +1385,7 @@ local entomb = {
     object_type = "Consumable",
     order = 2000 + 28,
     key = "entomb",
-    set = "RSpectral",
+    set = "Omen",
 
     inversion = "c_cry_chambered",
 
@@ -1433,7 +1433,7 @@ local conduct = {
     object_type = "Consumable",
     order = 2000 + 29,
     key = "conduct",
-    set = "RSpectral",
+    set = "Omen",
 
     inversion = "c_cry_conduit",
 
@@ -1482,7 +1482,7 @@ local pulsar = {
     object_type = "Consumable",
     order = 2000 + 30,
     key = "pulsar",
-    set = "RSpectral",
+    set = "Omen",
     
     inversion = "c_cry_white_hole",
 
@@ -1566,7 +1566,7 @@ local beyond = {
         items = {"set_entr_entropics", "set_entr_inversions"}
     },
     atlas = "consumables",
-    set = "RSpectral",
+    set = "Omen",
     no_select = true,
     hidden=true,
     soul_rate = 0,
@@ -1623,7 +1623,7 @@ local regenerate = {
     object_type = "Consumable",
     order = 2000 + 33,
     key = "regenerate",
-    set = "RSpectral",
+    set = "Omen",
     
     inversion = "c_entr_shatter",
 	
@@ -1702,7 +1702,7 @@ local purity = {
     object_type = "Consumable",
     order = 2000 + 34,
     key = "purity",
-    set = "RSpectral",
+    set = "Omen",
     
     inversion = "c_entr_lust",
 	
@@ -1733,10 +1733,10 @@ local purity = {
 local calculate_joker = Card.calculate_joker
 function Card:calculate_joker(context)
     if self.ability.entr_pure then
-    local abil = copy_table(self.ability)
-    local c = calculate_joker(self, context)
-    self.ability = abil
-    return c
+        local abil = copy_table(self.ability)
+        local c = calculate_joker(self, context)
+        self.ability = abil
+        return c
     end
     return calculate_joker(self, context)
 end

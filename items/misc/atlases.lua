@@ -88,7 +88,7 @@ SMODS.Atlas {
 }
 
 SMODS.Atlas { 
-    key = 'rtarot', 
+    key = 'fraud', 
     path = 'reverse_tarots.png', 
     px = 71, 
     py = 95 

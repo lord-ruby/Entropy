@@ -1015,7 +1015,7 @@ local decs = {
 				},
 			},
 		},
-		RTarot = {
+		Fraud = {
 			c_entr_master = {
 				name = "The Master",
 				text = {
@@ -1259,7 +1259,7 @@ local decs = {
 				},
 			},
 		},
-		RCode = {
+		Command = {
 			c_entr_memory_leak = {
 				name = "(~)$ memoryleak",
 				text = {
@@ -1485,7 +1485,7 @@ local decs = {
 				}
 			},
 		},
-		RPlanet = {
+		Star = {
 			c_entr_regulus = {
 				name = "Proxima Centauri",
 				text = {
@@ -1699,13 +1699,13 @@ local decs = {
 				},
 			},
 		},
-		RSpectral = {
+		Omen = {
 			c_entr_define = {
 				name = "#1#define",
 				text = {
 					"Replace all future instances of",
-					"a {C:entr_rspectral}selected card{} with",
-					"a card of {C:entr_rspectral}your choice{}",
+					"a {C:entr_omen}selected card{} with",
+					"a card of {C:entr_omen}your choice{}",
 					"then {C:attention}destroy{} the selected card",
 					"{C:inactive}(Rare consumables and{}",
 					"{C:inactive}>=Exotic Jokers excluded){}"
@@ -2660,17 +2660,17 @@ local decs = {
 			k_entr_entropic = "Entropic",
 			k_entr_reverse_legendary = "Legendary?",
 			k_entr_zenith = "Zenith",
-			k_rtarot = "Fraud",
-			k_rtarot_pack = "Fraud Pack",
-			b_rtarot_cards = "Fraud Cards",
+			k_fraud = "Fraud",
+			k_fraud_pack = "Fraud Pack",
+			b_fraud_cards = "Fraud Cards",
 
-			k_rcode = "Command",
-			k_rcode_pack = "Command Pack",
-			b_rcode_cards = "Command Cards",
+			k_command = "Command",
+			k_command_pack = "Command Pack",
+			b_command_cards = "Command Cards",
 
-			k_rspectral = "Omen",
-			k_rspectral_pack = "Omen Pack",
-			b_rspectral_cards = "Omen Cards",
+			k_omen = "Omen",
+			k_omen_pack = "Omen Pack",
+			b_omen_cards = "Omen Cards",
 
 			a_eqmult = { "Mult = #1#" },
 
@@ -2686,8 +2686,8 @@ local decs = {
 			k_entr_entropic_music = "Entropic Jokers (Joker in Greek by gemstonez)",
 			k_entr_blind_tokens = "Enable Blind Tokens",
 
-			k_rplanet = "Star",
-			b_rplanet_cards = "Star Cards",	
+			k_star = "Star",
+			b_star_cards = "Star Cards",	
 			k_planet_multiverse = Cryptid_config.family_mode and "Multiverse" or "The Actual Fucking Multiverse",
 			k_planet_binary_star = "Binary Star System",
 			k_planet_dyson_swarm = "Stellar Megastructure",
@@ -2766,10 +2766,10 @@ local decs = {
 			flipside_info = 'Inversion display when holding Flipside',
 
 			b_stat_CBlind = "Blind Token",
-			b_stat_RTarot = "Fraud",
-			b_stat_RPlanet = "Star",
-			b_stat_RSpectral = "Omen",
-			b_stat_RCode = "Command",
+			b_stat_Fraud = "Fraud",
+			b_stat_Star = "Star",
+			b_stat_Omen = "Omen",
+			b_stat_Command = "Command",
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

@@ -27,8 +27,8 @@
 -- 32 - The Automaton -     The Mallet
 local master = {
     key = "master",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -900,
     dependencies = {
@@ -90,8 +90,8 @@ local master = {
 
 local mason = {
     key = "mason",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -900 + 1,
     dependencies = {
@@ -136,8 +136,8 @@ local mason = {
 
 local oracle = {
     key = "oracle",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -900 + 2,
     dependencies = {
@@ -159,7 +159,7 @@ local oracle = {
             actual[i] = cards[i]
         end
         Entropy.FlipThen(actual, function(card)
-            card:set_ability(Entropy.pseudorandom_element(G.P_CENTER_POOLS.RPlanet, pseudoseed("oracle_ccd"),function(e)
+            card:set_ability(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Star, pseudoseed("oracle_ccd"),function(e)
                 return G.GAME.banned_keys[e.key] or e.no_doe
             end))
             card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("oracle_edition"),function(e)
@@ -185,8 +185,8 @@ local oracle = {
 
 local princess = {
     key = "princess",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -900 + 3,
     dependencies = {
@@ -223,8 +223,8 @@ local princess = {
 
 local servant = {
     key = "servant",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -900 + 4,
     dependencies = {
@@ -280,8 +280,8 @@ local servant = {
 
 local heretic = {
     key = "heretic",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -900 + 6,
     dependencies = {
@@ -344,8 +344,8 @@ local heretic = {
 
 local feud = {
     key = "feud",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -900 + 6,
     dependencies = {
@@ -397,8 +397,8 @@ local feud = {
 
 local scar = {
     key = "scar",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -900 + 7,
     dependencies = {
@@ -456,8 +456,8 @@ local scarred = {
 
 local dagger = {
     key = "dagger",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -900 + 8,
     dependencies = {
@@ -519,8 +519,8 @@ local dagger = {
 
 local earl = {
     key = "earl",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -900 + 8,
     dependencies = {
@@ -558,8 +558,8 @@ local earl = {
 
 local whetstone = {
     key = "whetstone",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -901+10,
     dependencies = {
@@ -632,8 +632,8 @@ local whetstone = {
 
 local endurance = {
     key = "endurance",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -901+11,
     dependencies = {
@@ -678,8 +678,8 @@ local endurance = {
 
 local advisor = {
     key = "advisor",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -901+12,
     dependencies = {
@@ -725,8 +725,8 @@ local advisor = {
 
 local statue = {
     key = "statue",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -901+13,
     dependencies = {
@@ -776,8 +776,8 @@ local statue = {
 
 local feast = {
     key = "feast",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -901+14,
     dependencies = {
@@ -823,8 +823,8 @@ local feast = {
 
 local companion = {
     key = "companion",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -901+15,
     dependencies = {
@@ -866,8 +866,8 @@ local companion = {
 
 local village = {
     key = "village",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -901+16,
     dependencies = {
@@ -904,8 +904,8 @@ local village = {
 
 local ocean = {
     key = "ocean",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -901+17,
     dependencies = {
@@ -946,8 +946,8 @@ local ocean = {
 
 local forest = {
     key = "forest",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -901+18,
     dependencies = {
@@ -991,8 +991,8 @@ local forest = {
 
 local mountain = {
     key = "mountain",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -901+19,
     dependencies = {
@@ -1036,8 +1036,8 @@ local mountain = {
 
 local forgiveness = {
     key = "forgiveness",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -901+20,
     dependencies = {
@@ -1074,8 +1074,8 @@ local forgiveness = {
 
 local tent = {
     key = "tent",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -901+21,
     dependencies = {
@@ -1116,8 +1116,8 @@ local tent = {
 
 local penumbra = {
     key = "penumbra",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -901+22,
     dependencies = {
@@ -1161,8 +1161,8 @@ local penumbra = {
 
 local prophecy = {
     key = "prophecy",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -900+23,
     dependencies = {
@@ -1176,15 +1176,15 @@ local prophecy = {
         counter = 2
     },
     use = function(self, card, area, copier)
-        G.GAME.next_inversions_prophecy = G.GAME.last_rtarot.key
-        G.GAME.last_rtarot = nil
+        G.GAME.next_inversions_prophecy = G.GAME.last_fraud.key
+        G.GAME.last_fraud = nil
         G.GAME.inversions_prophecy_counter = card.ability.counter
     end,
     can_use = function(self, card)
-        return G.GAME.last_rtarot
+        return G.GAME.last_fraud
 	end,
     loc_vars = function(self, q, card)
-        card.ability.last_rtarot = G.GAME.last_rtarot and G.GAME.last_rtarot.set and G.localization.descriptions[G.GAME.last_rtarot.set][G.GAME.last_rtarot.key].name or "None"
+        card.ability.last_fraud = G.GAME.last_fraud and G.GAME.last_fraud.set and G.localization.descriptions[G.GAME.last_fraud.set][G.GAME.last_fraud.key].name or "None"
         return {
             vars = {
                 card.ability.counter
@@ -1202,14 +1202,14 @@ local prophecy = {
 								colour = G.C.JOKER_GREY,
 								r = 0.05,
 								padding = 0.1,
-								func = "has_rtarot",
+								func = "has_fraud",
 							},
 							nodes = {
 								{
 									n = G.UIT.T,
 									config = {
 										ref_table = card.ability,
-										ref_value = "last_rtarot",
+										ref_value = "last_fraud",
 										colour = G.C.UI.TEXT_LIGHT,
 										scale = 0.32*0.8,
 									},
@@ -1229,8 +1229,8 @@ local prophecy = {
 
 local imp = {
     key = "imp",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -901+24,
     dependencies = {
@@ -1271,8 +1271,8 @@ local imp = {
 
 local integrity = {
     key = "integrity",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -901+25,
     dependencies = {
@@ -1317,8 +1317,8 @@ local integrity = {
 
 local mallet = {
     key = "mallet",
-    set = "RTarot",
-    atlas = "rtarot",
+    set = "Fraud",
+    atlas = "fraud",
     object_type = "Consumable",
     order = -901+32,
     dependencies = {
@@ -1344,7 +1344,7 @@ local mallet = {
                 func = function()
                     if G.consumeables.config.card_count < G.consumeables.config.card_limit then
                         SMODS.add_card({
-                            set = "RCode",
+                            set = "Command",
                             area = G.consumeables
                         })
                     end

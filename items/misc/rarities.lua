@@ -62,7 +62,7 @@ function loc_colour(_c, default)
         local new_colors = {
             entr_entropic = Entropy.entropic_gradient,
             entr_reverse_legendary = Entropy.reverse_legendary_gradient,
-            entr_rspectral = G.C.Entropy.RSpectral,
+            entr_omen = G.C.Entropy.Omen,
             entr_zenith = Entropy.zenith_gradient,
             entr_eqmult = HEX("cb7f7f"),
             entr_eqchips = HEX("5b89a6"),

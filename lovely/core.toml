@@ -30,10 +30,10 @@ Entropy.BoosterSets = {
     ["Planet"] = "p_celestial_mega_1",
     ["Spectral"] = "p_spectral_mega_1",
     ["Code"] = "p_cry_code_mega_1",
-    ["RCode"] = "p_entr_twisted_pack_mega",
-    ["RPlanet"] = "p_entr_twisted_pack_mega",
-    ["RSpectral"] = "p_entr_twisted_pack_mega",
-    ["RTarot"] = "p_entr_twisted_pack_mega",
+    ["Command"] = "p_entr_twisted_pack_mega",
+    ["Star"] = "p_entr_twisted_pack_mega",
+    ["Omen"] = "p_entr_twisted_pack_mega",
+    ["Fraud"] = "p_entr_twisted_pack_mega",
     ["Voucher"] = "p_entr_voucher_pack",
     ["Joker"] = "p_entr_buffoon_mega_1"
 }

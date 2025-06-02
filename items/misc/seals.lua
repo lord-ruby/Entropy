@@ -228,7 +228,7 @@ local verdant = {
                 G.E_MANAGER:add_event(Event({
 					func = function()
                         if G.consumeables.config.card_count < G.consumeables.config.card_limit then
-                            local c = create_card("RCode", G.consumeables, nil, nil, nil, nil, nil) 
+                            local c = create_card("Command", G.consumeables, nil, nil, nil, nil, nil) 
                             c:add_to_deck()
                             G.consumeables:emplace(c)
                         end
@@ -239,7 +239,7 @@ local verdant = {
         end
         if context.forcetrigger then
             local key = pseudorandom_element(Entropy.FlipsideInversions, pseudoseed("verdant"))
-            while G.P_CENTERS[key].set ~= "RCode" do key = pseudorandom_element(Entropy.FlipsideInversions, pseudoseed("verdant")) end
+            while G.P_CENTERS[key].set ~= "Command" do key = pseudorandom_element(Entropy.FlipsideInversions, pseudoseed("verdant")) end
             local c = create_card("Consumables", G.consumeables, nil, nil, nil, nil, key) 
             c:add_to_deck()
             G.consumeables:emplace(c)

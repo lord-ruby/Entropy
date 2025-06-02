@@ -7,7 +7,7 @@ local memoryleak = {
     object_type = "Consumable",
     order = 4000 + 1,
     key = "memory_leak",
-    set = "RCode",
+    set = "Command",
     no_collection = true,
     inversion = "c_cry_crash",
 
@@ -55,7 +55,7 @@ local rootkit = {
     object_type = "Consumable",
     order = 4000 + 2,
     key = "root_kit",
-    set = "RCode",
+    set = "Command",
 
     inversion = "c_cry_payload",
 
@@ -91,7 +91,7 @@ local bootstrap = {
     object_type = "Consumable",
     order = 4000 + 3,
     key = "bootstrap",
-    set = "RCode",
+    set = "Command",
 
     inversion = "c_cry_reboot",
 
@@ -117,7 +117,7 @@ local quickload = {
     object_type = "Consumable",
     order = 4000+4,
     key = "quickload",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_revert",
 
@@ -151,7 +151,7 @@ local detour = {
     object_type = "Consumable",
     order = 4000+4.5,
     key = "detour",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_cryfunction",
 
@@ -187,7 +187,7 @@ local break_card = {
     object_type = "Consumable",
     order = 4000+5,
     key = "break",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_run",
 
@@ -246,7 +246,7 @@ local new = {
     object_type = "Consumable",
     order = 4000+6,
     key = "new",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_semicolon",
 
@@ -303,7 +303,7 @@ local interference = {
     object_type = "Consumable",
     order = 4000+7,
     key = "interference",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_malware",
 
@@ -332,7 +332,7 @@ local constant = {
     object_type = "Consumable",
     order = 4000+8,
     key = "constant",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_variable",
 
@@ -373,7 +373,7 @@ local pseudorandom = {
     object_type = "Consumable",
     order = 4000+9,
     key = "pseudorandom",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_seed",
 
@@ -494,7 +494,7 @@ local inherit = {
     object_type = "Consumable",
     order = 4000+10,
     key = "inherit",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_class",
 
@@ -540,7 +540,7 @@ local fork = {
     object_type = "Consumable",
     order = 4000+11,
     key = "fork",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_merge",
 
@@ -602,7 +602,7 @@ local push = {
     object_type = "Consumable",
     order = 4000+12,
     key = "push",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_commit",
 
@@ -688,7 +688,7 @@ local increment = {
     object_type = "Consumable",
     order = 4000+13,
     key = "increment",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_divide",
 
@@ -735,7 +735,7 @@ local decrement = {
     object_type = "Consumable",
     order = 4000+14,
     key = "decrement",
-    set = "RCode",
+    set = "Command",
 
     inversion = "c_cry_multiply",
 
@@ -780,7 +780,7 @@ local invariant = {
     object_type = "Consumable",
     order = 4000+15,
     key = "invariant",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_delete",
 
@@ -867,7 +867,7 @@ local cookies = {
     object_type = "Consumable",
     order = 4000+17,
     key = "cookies",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_spaghetti",
 
@@ -900,7 +900,7 @@ local segfault = {
     object_type = "Consumable",
     order = 4000+18,
     key = "segfault",
-    set = "RCode",
+    set = "Command",
 
     inversion = "c_cry_machinecode",
 
@@ -954,7 +954,7 @@ local sudo = {
     object_type = "Consumable",
     order = 4000+19,
     key = "sudo",
-    set = "RCode",
+    set = "Command",
     
     inverison = "c_cry_exploit",
 
@@ -1006,7 +1006,7 @@ local overflow = {
     object_type = "Consumable",
     order = 4000+20,
     key = "overflow",
-    set = "RCode",
+    set = "Command",
 
     inversion = "c_cry_oboe",
 
@@ -1042,7 +1042,7 @@ local refactor = {
     object_type = "Consumable",
     order = 4000+21,
     key = "refactor",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_rework",
 
@@ -1107,7 +1107,7 @@ local hotfix = {
     object_type = "Consumable",
     order = 4000+22,
     key = "hotfix",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_patch",
 
@@ -1188,7 +1188,7 @@ local desync_card = {
     object_type = "Consumable",
     order = 4000+22,
     key = "desync",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_hook",
 
@@ -1214,7 +1214,7 @@ local ctrl_x = {
     object_type = "Consumable",
     order = 4000+22,
     key = "ctrl_x",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_ctrl_v",
 
@@ -1292,7 +1292,7 @@ local multithread = {
     object_type = "Consumable",
     order = 4000+24,
     key = "multithread",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_inst",
 
@@ -1381,7 +1381,7 @@ local autostart = {
     object_type = "Consumable",
     order = 4000+25,
     key = "autostart",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_alttab",
 
@@ -1422,7 +1422,7 @@ local local_card = {
     object_type = "Consumable",
     order = 4000+27,
     key = "local",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_global",
 
@@ -1459,7 +1459,7 @@ local badarg = {
     object_type = "Consumable",
     order = 4000+29,
     key = "badarg",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_nperror",
 
@@ -1506,7 +1506,7 @@ local transpile = {
     object_type = "Consumable",
     order = 4000+30,
     key = "transpile",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_assemble",
 
@@ -1549,7 +1549,7 @@ local mbr = {
     object_type = "Consumable",
     order = 4000+31,
     key = "mbr",
-    set = "RCode",
+    set = "Command",
     
     inversion = "c_cry_keygen",
 

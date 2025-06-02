@@ -179,14 +179,14 @@ function G.UIDEF.define_keys()
     local t = create_UIBox_generic_options({
         no_back = true,
         colour = HEX("04200c"),
-        outline_colour = G.C.Entropy.RCode,
+        outline_colour = G.C.Entropy.Command,
         contents = {
             {
                 n = G.UIT.R,
                 nodes = {
                     create_text_input({
-                        colour = G.C.Entropy.RCode,
-                        hooked_colour = darken(copy_table(G.C.Entropy.RCode), 0.3),
+                        colour = G.C.Entropy.Command,
+                        hooked_colour = darken(copy_table(G.C.Entropy.Command), 0.3),
                         w = 4.5,
                         h = 1,
                         max_length = 2500,
@@ -203,7 +203,7 @@ function G.UIDEF.define_keys()
                 config = { align = "cm" },
                 nodes = {
                     UIBox_button({
-                        colour = G.C.Entropy.RCode,
+                        colour = G.C.Entropy.Command,
                         button = "ca",
                         label = { localize("cry_code_execute") },
                         minw = 4.5,
@@ -344,7 +344,7 @@ function create_UIBox_sudo(card)
               nodes = {
                   create_text_input({
                       colour = HEX("FF0000"),
-                      hooked_colour = darken(copy_table(G.C.SET.RCode), 0.3),
+                      hooked_colour = darken(copy_table(G.C.SET.Command), 0.3),
                       w = 4.5,
                       h = 1,
                       max_length = 24,

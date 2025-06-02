@@ -10,8 +10,8 @@ SMODS.ConsumableType{
 
 SMODS.ConsumableType({
 	object_type = "ConsumableType",
-	key = "RTarot",
-	primary_colour = G.C.Entropy.RTarot,
+	key = "Fraud",
+	primary_colour = G.C.Entropy.Fraud,
 	secondary_colour = HEX("a54747"),
 	collection_rows = { 4, 4 },
 	shop_rate = 0.0,
@@ -21,9 +21,9 @@ SMODS.ConsumableType({
 
 SMODS.ConsumableType({
 	object_type = "ConsumableType",
-	key = "RPlanet",
-	primary_colour = G.C.Entropy.RPlanet,
-	secondary_colour = G.C.Entropy.RPlanet,
+	key = "Star",
+	primary_colour = G.C.Entropy.Star,
+	secondary_colour = G.C.Entropy.Star,
 	collection_rows = { 6, 6 },
 	shop_rate = 0.0,
 	loc_txt = {},
@@ -32,9 +32,9 @@ SMODS.ConsumableType({
 
 SMODS.ConsumableType({
 	object_type = "ConsumableType",
-	key = "RSpectral",
-	primary_colour = G.C.Entropy.RSpectral,
-	secondary_colour = G.C.Entropy.RSpectral,
+	key = "Omen",
+	primary_colour = G.C.Entropy.Omen,
+	secondary_colour = G.C.Entropy.Omen,
 	collection_rows = { 4, 5 },
 	shop_rate = 0.0,
 	loc_txt = {},
@@ -43,9 +43,9 @@ SMODS.ConsumableType({
 
 SMODS.ConsumableType({
 	object_type = "ConsumableType",
-	key = "RCode",
-	primary_colour = G.C.Entropy.RCode,
-	secondary_colour = G.C.Entropy.RCode,
+	key = "Command",
+	primary_colour = G.C.Entropy.Command,
+	secondary_colour = G.C.Entropy.Command,
 	collection_rows = { 4, 4 },
 	shop_rate = 0.0,
 	loc_txt = {},
