@@ -865,7 +865,7 @@ local decs = {
 				}
 			},
 			bl_entr_choir = {
-				name = "Callous Choir",
+				name = "Callous Chorus",
 				text = {
 					"Triggered Jokers are",
 					"debuffed for this round"
