@@ -1130,3 +1130,11 @@ pattern = "draw_card(G.hand, G.discard, i*100/highlighted_count, 'down', false, 
 position = "at"
 payload = '''draw_card(G.hand, Entropy.BlindIs("bl_entr_cassandra") and G.deck or G.discard, i*100/highlighted_count, 'down', false, G.hand.highlighted[i])'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "draw_card(G.hand, G.discard, i*100/highlighted_count, 'down', false, G.hand.highlighted[i]) "
+position = "at"
+payload = '''draw_card(G.hand, Entropy.BlindIs("bl_entr_cassandra") and G.deck or G.discard, i*100/highlighted_count, 'down', false, G.hand.highlighted[i])'''
+match_indent = true
