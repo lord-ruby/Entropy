@@ -605,7 +605,7 @@ local decs = {
 			j_entr_atomikos = {
 				name = "Atomikos",
 				text = {
-					"{C:attention}High Card's{} {C:dark_edition}operator{} is set to {C:attention}+{}"
+					"{C:attention}High Card's{} {C:dark_edition}operator{} is set to {C:attention}+{}",
 					"{C:attention}Played{} poker hands are {C:red}deleted{}",
 					"and their stats are {C:attention}added{} to {C:attention}High Card{}",
 					"increase {C:attention}High Card's{} {C:dark_edition}operator{}",
