@@ -181,3 +181,12 @@ SMODS.Atlas {
     frames = 1, 
     atlas_table = 'ANIMATION_ATLAS'
 }
+
+SMODS.Atlas {
+    key = 'altshowdowns', 
+    path = 'alt_showdowns.png', 
+    px = 34, 
+    py = 34, 
+    frames = 1, 
+    atlas_table = 'ANIMATION_ATLAS'
+}

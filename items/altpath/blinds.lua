@@ -22,15 +22,15 @@ local alpha = {
     end,
     calculate = function(self, blind, context)
 		if
-			context.full_hand
+			context.full_play
 			and context.destroy_card
 			and (context.cardarea == G.play)
 			and not G.GAME.blind.disabled
 		then
             local check = nil
-            local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
-            G.FUNCS.get_poker_hand_info(G.play.cards)
-            for i, v in ipairs(scoring_hand) do
+            local text, loc_disp_text, poker_plays, scoring_play, disp_text =
+            G.FUNCS.get_poker_play_info(G.play.cards)
+            for i, v in ipairs(scoring_play) do
                 if i == 1 and v == context.destroy_card then check = true end
             end
             G.GAME.blind.triggered = true
@@ -66,23 +66,23 @@ local beta = {
 			context.after
 			and not G.GAME.blind.disabled
 		then
-            G.hand.config.card_limit = G.hand.config.card_limit - 1
+            G.play.config.card_limit = G.play.config.card_limit - 1
             G.GAME.beta_modifer = (G.GAME.beta_modifer or 0) + 1
             G.GAME.blind.triggered = true
 		end
     end,
     defeat = function()
         if not G.GAME.blind.disabled then
-            G.hand.config.card_limit = G.hand.config.card_limit + G.GAME.beta_modifer
+            G.play.config.card_limit = G.play.config.card_limit + G.GAME.beta_modifer
             G.GAME.beta_modifer = nil
         end
     end,
     disable = function()
-        G.hand.config.card_limit = G.hand.config.card_limit + G.GAME.beta_modifer
+        G.play.config.card_limit = G.play.config.card_limit + G.GAME.beta_modifer
         G.GAME.beta_modifer = nil
     end,
     set_blind = function()
-        G.hand.config.card_limit = G.hand.config.card_limit - 1
+        G.play.config.card_limit = G.play.config.card_limit - 1
         G.GAME.beta_modifer = (G.GAME.beta_modifer or 0) + 1
     end
 }
@@ -127,8 +127,8 @@ local gamma = {
 				end
 			end
             discovered = math.max(discovered, 2)
-            G.GAME.current_round.current_hand.mult = G.GAME.current_round.current_hand.mult * (1-1/discovered)
-            update_hand_text({delay = 0}, {mult = G.GAME.current_round.current_hand.mult})
+            G.GAME.current_round.current_play.mult = G.GAME.current_round.current_play.mult * (1-1/discovered)
+            update_play_text({delay = 0}, {mult = G.GAME.current_round.current_play.mult})
             G.GAME.blind.triggered = true
 		end
 	end,
@@ -160,14 +160,14 @@ local delta = {
     end
 }
 local eval_ref = evaluate_play_main
-function evaluate_play_main (text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
-    local text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta = eval_ref(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
-    if Entropy.BlindIs("bl_entr_delta") and G.GAME.round_resets.hands > G.GAME.current_round.hands_left and not G.GAME.blind.disabled then
-        local used = G.GAME.round_resets.hands - G.GAME.current_round.hands_left
+function evaluate_play_main (text, disp_text, poker_plays, scoring_play, non_loc_disp_text, percent, percent_delta)
+    local text, disp_text, poker_plays, scoring_play, non_loc_disp_text, percent, percent_delta = eval_ref(text, disp_text, poker_plays, scoring_play, non_loc_disp_text, percent, percent_delta)
+    if Entropy.BlindIs("bl_entr_delta") and G.GAME.round_resets.plays > G.GAME.current_round.plays_left and not G.GAME.blind.disabled then
+        local used = G.GAME.round_resets.plays - G.GAME.current_round.plays_left
         used = math.max(used,2)
         mult = mult / used
         G.GAME.blind.triggered = true
-        update_hand_text({delay=0}, {mult=mult})
+        update_play_text({delay=0}, {mult=mult})
         delay(0.4)
     end
     if Entropy.BlindIs("bl_entr_epsilon") and #G.play.cards > 1 and not G.GAME.blind.disabled then
@@ -175,7 +175,7 @@ function evaluate_play_main (text, disp_text, poker_hands, scoring_hand, non_loc
         used = math.max(used,1)
         mult = mult / used
         G.GAME.blind.triggered = true
-        update_hand_text({delay=0}, {mult=mult})
+        update_play_text({delay=0}, {mult=mult})
         delay(0.4)
     end
 	if Entropy.BlindIs("bl_entr_rho") and #G.play.cards > 1 and not G.GAME.blind.disabled then
@@ -189,10 +189,10 @@ function evaluate_play_main (text, disp_text, poker_hands, scoring_hand, non_loc
 		end
         G.GAME.blind.triggered = true
 		mult = mult / used
-        update_hand_text({delay=0}, {mult=mult})
+        update_play_text({delay=0}, {mult=mult})
         delay(0.4)
     end
-    return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
+    return text, disp_text, poker_plays, scoring_play, non_loc_disp_text, percent, percent_delta
 end
 
 local epsilon = {
@@ -243,7 +243,7 @@ local zeta = {
     in_pool = function()
         return G.GAME.entr_alt
     end,
-    debuff_hand = function(self, cards, hand, handname, check)
+    debuff_play = function(self, cards, play, playname, check)
         if #cards == 3 or #cards == 5 then return true end
         return false
     end
@@ -274,7 +274,7 @@ local eta = {
     calculate = function(self, blind, context)
         if context.after then
             G.GAME.blind.suit_debuffed = pseudorandom_element({"Spades", "Hearts", "Diamonds", "Clubs"}, pseudoseed("eta_suit"))
-            for i, v in ipairs(G.hand.cards) do
+            for i, v in ipairs(G.play.cards) do
                 SMODS.recalc_debuff(v)
             end
             for i, v in ipairs(G.deck.cards) do
@@ -394,7 +394,7 @@ local iota = {
 				s:set_blind(reset, silent)
 			end
 			if s.name == "The Eye" and not reset then
-				G.GAME.blind.hands = {
+				G.GAME.blind.plays = {
 					["Flush Five"] = false,
 					["Flush House"] = false,
 					["Five of a Kind"] = false,
@@ -410,7 +410,7 @@ local iota = {
 				}
 			end
 			if s.name == "The Mouth" and not reset then
-				G.GAME.blind.only_hand = false
+				G.GAME.blind.only_play = false
 			end
 			if s.name == "The Fish" and not reset then
 				G.GAME.blind.prepped = nil
@@ -420,11 +420,11 @@ local iota = {
 				ease_discard(-G.GAME.blind.discards_sub)
 			end
 			if s.name == "The Needle" and not reset then
-				G.GAME.blind.hands_sub = G.GAME.round_resets.hands - 1
-				ease_hands_played(-G.GAME.blind.hands_sub)
+				G.GAME.blind.plays_sub = G.GAME.round_resets.plays - 1
+				ease_plays_played(-G.GAME.blind.plays_sub)
 			end
 			if s.name == "The Manacle" and not reset then
-				G.hand:change_size(-1)
+				G.play:change_size(-1)
 			end
 			if s.name == "Amber Acorn" and not reset and #G.jokers.cards > 0 then
 				G.jokers:unhighlight_all()
@@ -483,7 +483,7 @@ local iota = {
 				G.P_BLINDS[k]:defeat(silent)
 			end
 			if G.P_BLINDS[k].name == "The Manacle" and not self.disabled then
-				G.hand:change_size(1)
+				G.play:change_size(1)
 			end
 		end
 	end,
@@ -498,13 +498,13 @@ local iota = {
 					func = function()
 						local any_selected = nil
 						local _cards = {}
-						for k, v in ipairs(G.hand.cards) do
+						for k, v in ipairs(G.play.cards) do
 							_cards[#_cards + 1] = v
 						end
 						for i = 1, 2 do
-							if G.hand.cards[i] then
+							if G.play.cards[i] then
 								local selected_card, card_key = pseudorandom_element(_cards, pseudoseed("ObsidianOrb"))
-								G.hand:add_to_highlighted(selected_card, true)
+								G.play:add_to_highlighted(selected_card, true)
 								table.remove(_cards, card_key)
 								any_selected = true
 								play_sound("card1", 1)
@@ -550,15 +550,15 @@ local iota = {
 			end
 		end
 	end,
-	modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
+	modify_play = function(self, cards, poker_plays, text, mult, play_chips)
 		local new_mult = mult
-		local new_chips = hand_chips
+		local new_chips = play_chips
 		local trigger = false
 		for k, _ in pairs(Entropy.GetIota()) do
 			s = G.P_BLINDS[k]
-			if s.modify_hand then
+			if s.modify_play then
 				local this_trigger = false
-				new_mult, new_chips, this_trigger = s:modify_hand(cards, poker_hands, text, new_mult, new_chips)
+				new_mult, new_chips, this_trigger = s:modify_play(cards, poker_plays, text, new_mult, new_chips)
 				trigger = trigger or this_trigger
 			end
 			if s.name == "The Flint" then
@@ -568,19 +568,19 @@ local iota = {
 				trigger = true
 			end
 		end
-		return new_mult or mult, new_chips or hand_chips, trigger
+		return new_mult or mult, new_chips or play_chips, trigger
 	end,
-	debuff_hand = function(self, cards, hand, handname, check)
+	debuff_play = function(self, cards, play, playname, check)
 		G.GAME.blind.debuff_boss = nil
 		for k, _ in pairs(Entropy.GetIota()) do
 			s = G.P_BLINDS[k]
-			if s.debuff_hand and s:debuff_hand(cards, hand, handname, check) then
+			if s.debuff_play and s:debuff_play(cards, play, playname, check) then
 				G.GAME.blind.debuff_boss = s
 				return true
 			end
 			if s.debuff then
 				G.GAME.blind.triggered = false
-				if s.debuff.hand and next(hand[s.debuff.hand]) then
+				if s.debuff.play and next(play[s.debuff.play]) then
 					G.GAME.blind.triggered = true
 					G.GAME.blind.debuff_boss = s
 					return true
@@ -596,39 +596,39 @@ local iota = {
 					return true
 				end
 				if s.name == "The Eye" then
-					if G.GAME.blind.hands[handname] then
+					if G.GAME.blind.plays[playname] then
 						G.GAME.blind.triggered = true
 						G.GAME.blind.debuff_boss = s
 						return true
 					end
 					if not check then
-						G.GAME.blind.hands[handname] = true
+						G.GAME.blind.plays[playname] = true
 					end
 				end
 				if s.name == "The Mouth" then
-					if s.only_hand and s.only_hand ~= handname then
+					if s.only_play and s.only_play ~= playname then
 						G.GAME.blind.triggered = true
 						G.GAME.blind.debuff_boss = s
 						return true
 					end
 					if not check then
-						s.only_hand = handname
+						s.only_play = playname
 					end
 				end
 			end
 			if s.name == "The Arm" then
 				G.GAME.blind.triggered = false
-				if to_big(G.GAME.hands[handname].level) > to_big(1) then
+				if to_big(G.GAME.plays[playname].level) > to_big(1) then
 					G.GAME.blind.triggered = true
 					if not check then
-						level_up_hand(G.GAME.blind.children.animatedSprite, handname, nil, -1)
+						level_up_play(G.GAME.blind.children.animatedSprite, playname, nil, -1)
 						G.GAME.blind:wiggle()
 					end
 				end
 			end
 			if s.name == "The Ox" then
 				G.GAME.blind.triggered = false
-				if handname == G.GAME.current_round.most_played_poker_hand then
+				if playname == G.GAME.current_round.most_played_poker_play then
 					G.GAME.blind.triggered = true
 					if not check then
 						ease_dollars(-G.GAME.dollars, true)
@@ -639,25 +639,25 @@ local iota = {
 		end
 		return false
 	end,
-	drawn_to_hand = function(self)
+	drawn_to_play = function(self)
 		for k, _ in pairs(Entropy.GetIota()) do
 			s = G.P_BLINDS[k]
-			if s.drawn_to_hand then
-				s:drawn_to_hand()
+			if s.drawn_to_play then
+				s:drawn_to_play()
 			end
 			if s.name == "Cerulean Bell" then
 				local any_forced = nil
-				for k, v in ipairs(G.hand.cards) do
+				for k, v in ipairs(G.play.cards) do
 					if v.ability.forced_selection then
 						any_forced = true
 					end
 				end
 				if not any_forced then
-					G.hand:unhighlight_all()
-					local forced_card = pseudorandom_element(G.hand.cards, pseudoseed("ObsidianOrb"))
+					G.play:unhighlight_all()
+					local forced_card = pseudorandom_element(G.play.cards, pseudoseed("ObsidianOrb"))
 					if focred_card then
 						forced_card.ability.forced_selection = true
-						G.hand:add_to_highlighted(forced_card)
+						G.play:add_to_highlighted(forced_card)
 					end
 				end
 			end
@@ -684,7 +684,7 @@ local iota = {
 			if s.stay_flipped and s:stay_flipped(area, card) then
 				return true
 			end
-			if area == G.hand then
+			if area == G.play then
 				if
 					s.name == "The Wheel"
 					and pseudorandom(pseudoseed("ObsidianOrb")) < G.GAME.probabilities.normal / 7
@@ -693,7 +693,7 @@ local iota = {
 				end
 				if
 					s.name == "The House"
-					and G.GAME.current_round.hands_played == 0
+					and G.GAME.current_round.plays_played == 0
 					and G.GAME.current_round.discards_used == 0
 				then
 					return true
@@ -789,19 +789,19 @@ local kappa = {
     end,
 }
 
-local hand_info = G.FUNCS.get_poker_hand_info
-G.FUNCS.get_poker_hand_info = function(_cards)
-	local text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta = hand_info(_cards)
+local play_info = G.FUNCS.get_poker_play_info
+G.FUNCS.get_poker_play_info = function(_cards)
+	local text, disp_text, poker_plays, scoring_play, non_loc_disp_text, percent, percent_delta = play_info(_cards)
 	if Entropy.BlindIs("bl_entr_kappa") and not G.GAME.blind.disabled then 
-		scoring_hand2 = {}
+		scoring_play2 = {}
 		for i, v in ipairs(_cards) do
-			if not SMODS.in_scoring(v, scoring_hand or {}) then
-				scoring_hand2[#scoring_hand2+1]=v
+			if not SMODS.in_scoring(v, scoring_play or {}) then
+				scoring_play2[#scoring_play2+1]=v
 			end
 		end
-		return text, disp_text, poker_hands, scoring_hand2 or {}, non_loc_disp_text, percent, percent_delta
+		return text, disp_text, poker_plays, scoring_play2 or {}, non_loc_disp_text, percent, percent_delta
 	end
-	return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
+	return text, disp_text, poker_plays, scoring_play, non_loc_disp_text, percent, percent_delta
 end
 
 local lambda = {
@@ -827,9 +827,9 @@ local lambda = {
         return G.GAME.entr_alt
     end,
 	calculate = function(self, blind, context)
-		local _, _, _, hand = G.FUNCS.get_poker_hand_info(G.play.cards)
+		local _, _, _, play = G.FUNCS.get_poker_play_info(G.play.cards)
 		if context.after then
-			Entropy.FlipThen(hand, function(card)
+			Entropy.FlipThen(play, function(card)
 				card.ability.perishable = true
 				card.ability.perish_tally = 5
 			end)
@@ -860,7 +860,7 @@ local mu = {
     in_pool = function()
         return G.GAME.entr_alt
     end,
-	debuff_hand = function(self, cards, hand, handname, check)
+	debuff_play = function(self, cards, play, playname, check)
 		local total = 0
 		for i, v in ipairs(cards) do
 			total = total + v.base.nominal
@@ -922,7 +922,7 @@ local xi = {
     end,
 	calculate = function(self, blind, context)
 		if context.pre_discard and not G.GAME.blind.discarded then
-			Entropy.FlipThen(G.hand.highlighted, function(card)
+			Entropy.FlipThen(G.play.highlighted, function(card)
 				card.ability.eternal = true
 			end)
 			G.GAME.blind.discarded = true
@@ -986,7 +986,7 @@ local pi = {
     end,
 	calculate = function(self, blind, context)
 		if context.pre_discard then
-			Entropy.FlipThen(G.hand.highlighted, function(card)
+			Entropy.FlipThen(G.play.highlighted, function(card)
 				card.ability.perishable = true
 				card.ability.perish_tally = 5
 			end)
@@ -1049,8 +1049,8 @@ local sigma = {
 				G.GAME.blind.triggered = true
 			end
 			if context.pre_discard then
-				ease_hands_played(-1)
-				if to_big(G.GAME.current_round.hands_left) <= to_big(0) then
+				ease_plays_played(-1)
+				if to_big(G.GAME.current_round.plays_left) <= to_big(0) then
 					end_round()
 				end
 				G.GAME.blind.triggered = true
@@ -1058,8 +1058,8 @@ local sigma = {
 		end
 	end,
 	setting_blind = function()
-		local avg = math.ceil((G.GAME.round_resets.hands+G.GAME.round_resets.discards)/2)
-		ease_hands_played(avg-G.GAME.round_resets.hands)
+		local avg = math.ceil((G.GAME.round_resets.plays+G.GAME.round_resets.discards)/2)
+		ease_plays_played(avg-G.GAME.round_resets.plays)
 		ease_discard(abg-G.GAME.round_resets.discards)
 		G.GAME.blind.triggered = true
 	end
@@ -1271,9 +1271,9 @@ local omega = {
     end,
     calculate = function(self, blind, context)
 		if context.after and not G.GAME.blind.disabled then
-			local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
-            G.FUNCS.get_poker_hand_info(G.play.cards)
-			if text == G.GAME.current_round.most_played_poker_hand then
+			local text, loc_disp_text, poker_plays, scoring_play, disp_text =
+            G.FUNCS.get_poker_play_info(G.play.cards)
+			if text == G.GAME.current_round.most_played_poker_play then
 				G.GAME.blind.triggered = true
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
@@ -1287,10 +1287,73 @@ local omega = {
 			end
 		end
 	end,
-	loc_vars = function() return {vars = {localize(G.GAME.current_round.most_played_poker_hand, 'poker_hands')}} end,
-	collection_loc_vars = function() return {vars = {"[most played hand]"}} end
+	loc_vars = function() return {vars = {localize(G.GAME.current_round.most_played_poker_play, 'poker_plays')}} end,
+	collection_loc_vars = function() return {vars = {"[most played play]"}} end
 }
 
+local styx = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1025+0,
+	name = "entr-styx",
+	key = "styx",
+	pos = { x = 0, y = 0 },
+	atlas = "altshowdowns",
+	boss_colour = HEX("988f72"),
+    mult=3,
+    dollars = 10,
+    altpath=true,
+	boss = {
+		min = 1,
+		showdown = true
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+    set_blind = function()
+		G.GAME.blind.fastened = G.GAME.cry_fastened
+		G.GAME.cry_fastened = true
+		G.GAME.entr_fastened = true
+	end,
+	disable = function()
+		G.GAME.cry_fastened = G.GAME.blind.fastened
+		G.GAME.entr_fastened = nil
+	end,
+	defeat = function()
+		G.GAME.cry_fastened = G.GAME.blind.fastened
+		G.GAME.entr_fastened = nil
+	end,
+	calculate = function(self, blind, context)
+		if context.before and not G.GAME.blind.disabled then
+			local joker_1 = pseudorandom("styx_joker1", 1, #G.jokers.cards)
+			local joker_2 = pseudorandom("styx_joker2", 1, #G.jokers.cards)
+			local tries = 20
+			while G.jokers.cards[joker_2] == G.jokers.cards[joker_1] or tries <= 0 do
+				joker_2 = pseudorandom("styx_joker2_repoll", 1, #G.jokers.cards)
+				tries = tries - 1
+			end
+			local temp = G.jokers.cards[joker_2]
+			G.jokers.cards[joker_2] = G.jokers.cards[joker_1]
+			G.jokers.cards[joker_1] = temp
+
+			local play_1 = pseudorandom("styx_play1", 1, #G.play.cards)
+			local play_2 = pseudorandom("styx_play2", 1, #G.play.cards)
+			local tries = 20
+			while G.play.cards[play_2] == G.play.cards[play_1] or tries <= 0 do
+				play_2 = pseudorandom("styx_play2_repoll", 1, #G.play.cards)
+				tries = tries - 1
+			end
+			local temp = G.play.cards[play_2]
+			G.play.cards[play_2] = G.play.cards[play_1]
+			G.play.cards[play_1] = temp
+
+		end
+	end
+}
 
 return {
     items = {
@@ -1317,6 +1380,8 @@ return {
 		phi,
 		chi,
 		psi,
-		omega
+		omega,
+		--showdowns
+		styx
     }
 }

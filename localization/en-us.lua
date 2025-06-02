@@ -854,6 +854,16 @@ local decs = {
 					"requirements by 2x"
 				}
 			},
+
+			bl_entr_styx = {
+				name = "Sorrowful Styx",
+				text = {
+					"Jokers and Playing cards",
+					"cannot be rearranged",
+					"Move 1 Joker and Playing Card",
+					"before hand is scored"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {
