@@ -1322,13 +1322,13 @@ G.FUNCS.start_challenge_run = function(e)
             {id="j_cry_copypaste"},
             {id="j_entr_trapezium_cluster"},
             {id="j_entr_antidagger"},
+            {id="e_entr_fractured", type="Edition"}
         },
         banned_tags = {
             {id="tag_entr_fractured"},
             {id="tag_entr_ascendant_fractured"},
         },
         banned_other = {
-            {id="e_entr_fractured", set="Edition"}
         }
     }
 end

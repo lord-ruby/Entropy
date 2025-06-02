@@ -1073,3 +1073,28 @@ if (Entropy.FlipsideInversions[_c.key] or (_c.ability and Entropy.FlipsideInvers
 end
 '''
 match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+          for k, v in ipairs(row_card) do
+            local card = Card(0,0, G.CARD_W*card_size, G.CARD_H*card_size, nil, G.P_CENTERS[v.id], {bypass_discovery_center = true,bypass_discovery_ui = true})
+            banned_card_area:emplace(card)
+          end
+'''
+position = "at"
+payload = '''
+        for k, v in ipairs(row_card) do
+          if v.type == "Edition" or v.type == "Enhanced" then
+              local card = Card(0,0, G.CARD_W*card_size, G.CARD_H*card_size, G.P_CARDS.empty, G.P_CENTERS[v.id], {bypass_discovery_center = true,bypass_discovery_ui = true})
+              card:set_edition(v.id, true, true)
+              banned_card_area:emplace(card)
+          else
+            local card = Card(0,0, G.CARD_W*card_size, G.CARD_H*card_size, nil, G.P_CENTERS[v.id], {bypass_discovery_center = true,bypass_discovery_ui = true})
+            banned_card_area:emplace(card)
+          end
+        end
+'''
+match_indent = true
