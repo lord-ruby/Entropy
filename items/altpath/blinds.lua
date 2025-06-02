@@ -1170,7 +1170,7 @@ local phi = {
 			[9]=true
 			
 		}
-        if not allowed[card.base.id] then
+        if not allowed[card.base.id] and card.base.suit then
             return true
         end
         return false
