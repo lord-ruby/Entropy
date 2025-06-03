@@ -577,7 +577,8 @@ local chocolate_egg = {
         if context.selling_self then card.ability.no_destroy = true end
     end,
     entr_credits = {
-        idea = {"cassknows"}
+        idea = {"cassknows"},
+        art = {"missingnumber"}
     }
 }
 
