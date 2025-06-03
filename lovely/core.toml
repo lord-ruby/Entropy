@@ -1147,30 +1147,33 @@ position = "at"
 payload = '''{n=G.UIT.T, config={id = "chipmult_op", text = "X", lang = G.LANGUAGES['en-us'], scale = scale*2, colour = G.C.UI_MULT, shadow = true}},'''
 match_indent = true
 
-[[patches]]
-[patches.regex]
-target = "functions/state_events.lua"
-pattern = '''hand_chips\*mult'''
-position = "at"
-payload = '''Entropy.get_chipmult_score(hand_chips, mult)'''
-match_indent = true
+
+
+
 
 
 [[patches]]
-[patches.regex]
+[patches.pattern]
 target = "functions/state_events.lua"
-pattern = '''to_big\(hand_chips\)\*mult'''
+pattern = "if hand_chips*mult > 0 then"
 position = "at"
-payload = "Entropy.get_chipmult_score(hand_chips, mult)"
+payload = "if Entropy.get_chipmult_score(hand_chips, mult) > to_big(0) then"
 match_indent = true
-
 
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"
 pattern = "if to_big(hand_chips)*mult > to_big(0) then"
 position = "at"
-payload = "Entropy.get_chipmult_score(hand_chips, mult)"
+payload = "if to_big(Entropy.get_chipmult_score(hand_chips, mult)) > to_big(0) then"
+match_indent = true
+
+[[patches]]
+[patches.regex]
+target = "functions/state_events.lua"
+pattern = '''hand_chips\*mult'''
+position = "at"
+payload = '''Entropy.get_chipmult_score(hand_chips, mult)'''
 match_indent = true
 
 [[patches]]
@@ -1219,17 +1222,5 @@ payload = '''
       end
     end
 	end
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = '''functions/UI_definitions'''
-pattern = '''
-{n=G.UIT.T, config={text = "X", scale = 0.45, colour = G.C.MULT}},
-'''
-position = "at"
-payload = '''
-{n=G.UIT.T, config={text = G.GAME.hands[handname].operator and Entropy.FormatArrowMult(G.GAME.hands[handname].operator, "") or "X", scale = 0.45, colour = G.C.MULT}},
 '''
 match_indent = true

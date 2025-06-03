@@ -600,3 +600,4 @@ function get_challenge_int_from_id(_id)
     if _id == "daily" then return "daily" end
     return idref(_id)
 end
+
