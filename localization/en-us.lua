@@ -894,9 +894,8 @@ local decs = {
 				name = "Condemned Cassandra",
 				text = {
 					"Discarded cards return",
-					"to the deck instead",
-					"Jokers have a #1# in 5",
-					"chance to be debuffed",
+					"to the deck, #1# in 5",
+					"Jokers are debuffed",
 					"before scoring"
 				}
 			},
