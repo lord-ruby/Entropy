@@ -1061,7 +1061,7 @@ local phantom_shopper = {
                 legendary = card.ability.rarity == "Legendary"
             }
         end
-        if context.ending_shop or context.forcetrigger then
+        if (context.ending_shop and not context.blueprint and not context.retrigger_joker) or context.forcetrigger then
             card.ability.progress = card.ability.progress + 1
             if card.ability.progress >= card.ability.needed_progress then
                 card.ability.progress = 0

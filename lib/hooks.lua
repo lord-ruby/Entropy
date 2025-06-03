@@ -246,6 +246,17 @@ function Card:set_edition(...)
     end
 end
 
+local ref = Card.get_other_side_dummy
+function Card:get_other_side_dummy()
+    local val = ref(self)
+    if val then
+        val.is_sunny = function(_, ...)
+            return self:is_sunny(...)
+        end
+    end
+    return val
+end
+
 local start_dissolveref = Card.start_dissolve
 function Card:start_dissolve(...)
     start_dissolveref(self, ...)
