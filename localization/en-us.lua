@@ -934,6 +934,13 @@ local decs = {
 					"{C:attention}X#1#{} Shop Costs"
 				},
 			},
+			e_entr_lowres = {
+				name = "Low-Res",
+				text = {
+					"{C:attention}Retrigger{} this cards {C:attention}#1#{} times",
+					"{C:attention}X#2#{} Card values {C:inactive}(If Possible){}"
+				},
+			},
 		},
 		Back = {
 			b_entr_twisted = {
@@ -2814,6 +2821,7 @@ local decs = {
 			entr_sunny = "Sunny",
 			entr_solar = "Solar",
 			entr_neon = "Neon",
+			entr_lowres = "Low-Res",
 			entr_fractured = "Fractured",
 			entr_freaky = "Freaky",
 			entr_yellow_sign = "Yellow Sign",

@@ -21,6 +21,7 @@ local solar = {
           "set_entr_misc"
         }
     },
+	extra_cost = 10,
 	in_shop = true,
 	weight = 0.4,
     badge_color = HEX("fca849"),
@@ -78,6 +79,7 @@ local fractured ={
           "set_entr_misc"
         }
     },
+	extra_cost = 10,
 	in_shop = true,
 	weight = 0.2,
     badge_color = HEX("fca849"),
@@ -126,6 +128,7 @@ local sunny = {
     config = {
         sol = 4
     },
+	extra_cost = 4,
 	sound = {
 		sound = "entr_e_solar",
 		per = 1,
@@ -192,6 +195,7 @@ local freaky = {
           "set_entr_misc"
         }
     },
+	extra_cost = 18,
 	in_shop = true,
 	weight = 0.5,
     badge_color = HEX("fca849"),
@@ -327,12 +331,73 @@ function Card:set_cost()
 	end
 end
 
+
+SMODS.Shader({
+    key="lowres",
+    path="lowres.fs"
+})
+
+local lowres = {
+	object_type = "Edition",
+	order = 9000-1.75,
+    key="lowres",
+    shader="lowres",
+	sound = {
+		sound = "multhit1",
+		per = 1,
+		vol = 0.4,
+	},
+	config = {
+		triggers = 2,
+		factor = 0.25
+	},
+	dependencies = {
+        items = {
+          "set_entr_misc"
+        }
+    },
+	extra_cost = 5,
+	in_shop = true,
+	weight = 0.45,
+    badge_color = HEX("fca849"),
+    loc_vars = function(self,q,card)
+		return {vars={card and card.edition and card.edition.triggers or 2, card and card.edition and card.edition.factor or 0.25}}
+    end,
+    calculate = function(self, card, context)
+		if context.other_card == card and ((context.repetition and context.cardarea == G.play) or (context.retrigger_joker_check and not context.retrigger_joker)) then
+			return {
+				message = localize("k_again_ex"),
+				repetitions = card.edition.triggers,
+				card = card,
+			}
+		end
+	end,
+	on_apply = function(card)
+		Cryptid.with_deck_effects(card, function(card)
+			Cryptid.misprintize(card, {
+				min = 0.25,
+				max = 0.25,
+			}, nil, true)
+		end)
+	end,
+	on_remove = function(card)
+		Cryptid.with_deck_effects(card, function(card)
+			Cryptid.misprintize(card, { min = 1, max = 1 }, true)
+			Cryptid.misprintize(card)
+		end)
+	end,
+	entr_credits = {
+		custom={key="shader",text="cassknows"}
+	}
+}
+
 return {
     items = {
         solar,
         fractured,
 		sunny,
 		freaky,
-		neon
+		neon,
+		lowres
     }
 }
