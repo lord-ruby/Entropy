@@ -1555,6 +1555,23 @@ local pulsar = {
     }
 }
 
+if Engulf then
+    Engulf.SpecialFuncs = {
+        c_entr_pulsar = function(card, hand, instant, amount)
+            if card.edition then
+                for i, v in pairs(G.GAME.hands) do
+                    Engulf.EditionHand(card, i, card.edition, Engulf.config.stackeffects and amount or 1, true)
+                end
+            end
+        end,
+        c_entr_quasar = function(card, hand, instant, amount)
+            if card.edition then
+                Engulf.EditionHand(card, hand, card.edition, Engulf.config.stackeffects and amount or 1, instant)
+            end
+        end
+    }
+end
+
 local beyond = {
     object_type = "Consumable",
     order = 2000 + 31,
