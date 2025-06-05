@@ -1,3 +1,4 @@
+
 # Entropy
 An unbalanced cryptid addon for balatro, Built around the madness gameset
 
@@ -5,8 +6,8 @@ An unbalanced cryptid addon for balatro, Built around the madness gameset
 
 Entropy currently adds:
 
-![image](https://github.com/user-attachments/assets/41c63a07-20a1-4064-b763-81ca26ec48d7)
-![image](https://github.com/user-attachments/assets/dcde5255-194c-442a-a4ba-1582f0e756bd)
-![image](https://github.com/user-attachments/assets/80af70ec-9dd4-4a4d-ab3e-5366ff5bc8db)
+![image](https://github.com/user-attachments/assets/08305112-cd4b-4e43-b82c-ae462f11e55d)
+![image](https://github.com/user-attachments/assets/9da13205-bd78-4b58-8bd2-60a1af3cf2e7)
+![image](https://github.com/user-attachments/assets/bb1e1514-5c95-4bab-87f2-8a20c7a104cf)
 
 For enquiries please join the [Entropy Discord](https://discord.gg/beqqy4Bb7m)
