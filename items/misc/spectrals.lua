@@ -170,11 +170,85 @@ function Cryptid.reload_localization()
 end
 
 
+local null = {
+    key = "null",
+    set = "Spectral",
+    
+    order = 39,
+    object_type = "Consumable",
+    config = {create = 5},
+    atlas = "consumables",
+    pos = {x=3,y=7},
+    dependencies = {
+        items = {
+          "set_entr_spectrals"
+        }
+    },
+    use = function(self, card, area, copier)
+        local destroyed_cards = {}
+        destroyed_cards[#destroyed_cards+1] = pseudorandom_element(G.hand.cards, pseudoseed('random_destroy'))
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+            play_sound('tarot1')
+            card:juice_up(0.3, 0.5)
+            return true 
+        end }))
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.1,
+            func = function() 
+                for i=#destroyed_cards, 1, -1 do
+                    local card = destroyed_cards[i]
+                    if card.ability.name == 'Glass Card' then 
+                        card:shatter()
+                    else
+                        card:start_dissolve(nil, i ~= #destroyed_cards)
+                    end
+                end
+                return true 
+            end 
+        }))
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.7,
+            func = function() 
+                local cards = {}
+                for i=1, card.ability.create do
+                    cards[i] = true
+                    local _suit, _rank = nil, nil
+                    _rank = "entr_nilrank"
+                    _suit = "entr_nilsuit"
+                    local cen_pool = {}
+                    for k, v in pairs(G.P_CENTER_POOLS["Enhanced"]) do
+                        if v.key ~= 'm_stone' then 
+                            cen_pool[#cen_pool+1] = v
+                        end
+                    end
+                    create_playing_card({front = G.P_CARDS[_suit..'_'.._rank], center = pseudorandom_element(cen_pool, pseudoseed('spe_card'))}, G.hand, nil, i ~= 1, {G.C.SECONDARY_SET.Spectral})
+                end
+                playing_card_joker_effects(cards)
+                return true 
+            end 
+        }))
+        for i = 1, #G.jokers.cards do
+            G.jokers.cards[i]:calculate_joker({remove_playing_cards = true, removed = destroyed_cards})
+        end
+    end,
+    can_use = function(self, card)
+        return G.hand and #G.hand.cards > 0
+	end,
+    loc_vars = function(self, q, card)
+        return {vars={
+            card.ability.create
+        }}
+    end,
+}
+
 return {
     items = {
         flipside,
         shatter,
         destiny,
-        lust
+        lust,
+        null
     }
 }

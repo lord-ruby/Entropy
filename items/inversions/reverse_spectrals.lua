@@ -1570,11 +1570,9 @@ if Engulf then
             end
         end
     }
-    Engulf.SpecialWhitelist{
-        c_entr_pulsar = true,
-        c_entr_quasar = true,
-        Omen = true
-    }
+    Engulf.SpecialWhitelist["c_entr_pulsar"] = true
+    Engulf.SpecialWhitelist["c_entr_quasar"] = true
+    Engulf.SpecialWhitelist["Omen"] = true
 end
 
 local beyond = {
@@ -1769,6 +1767,7 @@ function Cryptid.misprintize(card, ...)
         return misprintize(card, ...)
     end
 end
+
 
 return {
     items = {

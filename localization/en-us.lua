@@ -2056,6 +2056,15 @@ local decs = {
 					"{C:attention}#1#{} selected cards in hand",
 				}
 			},
+			c_entr_null = {
+				name = "Null",
+				text = {
+					"Destroy {C:attention}1{} random card ",
+					"in your hand, add {C:attention}#1#{}",
+					"random {C:attention}Enhanced Nil of Nil{}",
+					"card#<s>1# to your hand",
+				}
+			},
 		},
 		Stake = {
 			stake_entr_entropic = {
