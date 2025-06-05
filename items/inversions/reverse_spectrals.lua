@@ -1570,6 +1570,11 @@ if Engulf then
             end
         end
     }
+    Engulf.SpecialWhitelist{
+        c_entr_pulsar = true,
+        c_entr_quasar = true,
+        Omen = true
+    }
 end
 
 local beyond = {
