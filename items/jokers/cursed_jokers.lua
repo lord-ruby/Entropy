@@ -44,7 +44,7 @@ local jokerinyellow = {
 
                 G.E_MANAGER:add_event(Event({
                     trigger = 'before',
-                    delay = delay,
+                    delay = 0.2,
                     func = function()
                         local card = pseudorandom_element(cards, pseudoseed("kiy"))
                         if card then
