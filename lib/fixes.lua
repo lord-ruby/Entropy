@@ -415,3 +415,36 @@ local ref = localize
 function localize(args, misc_cat)
   return ref(args or {}, misc_cat)
 end
+
+if PTASaka then
+  SMODS.Joker:take_ownership("payasaka_paya", {
+    calculate = function(self, card, context)
+      if context.setting_blind and ((pseudorandom('paya_hell') < (G.GAME.probabilities.normal or 1) / card.ability.odds) or card.ability.cry_rigged) then
+        card.ability.extra.exponential_active = true
+        G.E_MANAGER:add_event(Event {
+          func = function()
+            G.GAME.paya_operator = ( G.GAME.paya_operator or 0) + 1
+            update_operator_display()
+            return true
+          end
+        })
+        return {
+          message = "Active!"
+        }
+      end
+      if context.end_of_round and card.ability.extra.exponential_active then
+        card.ability.extra.exponential_active = false
+        G.E_MANAGER:add_event(Event {
+          func = function()
+            G.GAME.paya_operator = (G.GAME.paya_operator or 0) - 1
+            update_operator_display()
+            return true
+          end
+        })
+        return {
+          message = "Inactive!"
+        }
+      end
+    end
+  }, true)
+end

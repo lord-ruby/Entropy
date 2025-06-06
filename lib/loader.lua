@@ -247,8 +247,8 @@ function SMODS.injectItems(...)
         if orig_final then
             op = op + orig_final() - 1
         end
-        if G.GAME.payasaka_exponential_count then
-            op = op + G.GAME.payasaka_exponential_count
+        if G.GAME.paya_operator then
+            op = op + G.GAME.paya_operator
         end
         return op
     end

@@ -191,7 +191,7 @@ end
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, initial, delay)
     local link = self and self.ability and self.ability.link
-    if self.config.center ~= "m_entr_disavowed" and (not self.entr_aleph or self.ability.bypass_aleph) then
+    if self.config and self.config.center ~= "m_entr_disavowed" and (not self.entr_aleph or self.ability.bypass_aleph) then
         set_abilityref(self, center, initial, delay)
     end
     self.ability.link = link
@@ -1539,8 +1539,10 @@ function G.FUNCS.get_poker_hand_info(_cards)
         end
     end
     if not G.GAME.hands[text] or not G.GAME.hands[text].operator then
-        G.GAME.hand_operator = 0
-        update_operator_display()
+        if not G.GAME.paya_operator or G.GAME.paya_operator == 0 then
+            G.GAME.hand_operator = 0
+            update_operator_display()
+        end
     end
     return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
@@ -2997,4 +2999,16 @@ function create_shop_card_ui(card, type, area)
     else
         ref(card, type, area)
     end
+end
+
+local set_blindref = Blind.set_blind
+function Blind:set_blind(...)
+    set_blindref(self, ...)
+    update_operator_display()
+    G.E_MANAGER:add_event(Event({
+        func = function()
+            update_operator_display()
+            return true
+        end
+    }))
 end
