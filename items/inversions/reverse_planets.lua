@@ -206,7 +206,7 @@ function Entropy.ReversePlanetUse(handname, card, amt)
   }))
   update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = to_big(G.GAME.hands[handname].AscensionPower + G.GAME.hands[handname].level) })
   delay(1.6)
-  if card.edition and to_big(amt or 1) > to_big(0) and not noengulf then
+  if card.edition and to_big(amt or 1) > to_big(0) and not noengulf and Engulf then
     if Engulf.SpecialFuncs[card.config.center.key] then 
     else Engulf.EditionHand(card, handname, card.edition, amt, instant) end 
   end
