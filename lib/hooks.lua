@@ -1541,8 +1541,8 @@ function G.FUNCS.get_poker_hand_info(_cards)
     if not G.GAME.hands[text] or not G.GAME.hands[text].operator then
         if not G.GAME.paya_operator or G.GAME.paya_operator == 0 then
             G.GAME.hand_operator = 0
-            update_operator_display()
         end
+        update_operator_display()
     end
     return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
@@ -2619,6 +2619,7 @@ G.FUNCS.evaluate_play = function(e)
         trigger="after",
         func = function()
             update_hand_text_random({delay = 0}, {chips=0, mult=0, handname = "", level=""})
+            update_operator_display()
             return true
         end
     }))
