@@ -942,6 +942,9 @@ local ocean = {
             }
         }
     end,
+    etnr_credits = {
+        art = {"Lyman"}
+    }
 }
 
 local forest = {
