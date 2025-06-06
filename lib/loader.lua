@@ -234,8 +234,9 @@ function SMODS.injectItems(...)
         else
             operator.config.scale = 0.8
         end
+        local col = colours[math.min(math.max(aoperator, -1), 4)]
         operator.UIBox:recalculate()
-        operator.config.colour = colours[math.min(math.max(aoperator, -1), 4)]
+        operator.config.colour = col
     end
     
     local orig_final = get_final_operator
