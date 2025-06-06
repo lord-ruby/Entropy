@@ -899,6 +899,15 @@ local decs = {
 					"before scoring"
 				}
 			},
+			bl_entr_labyrinth = {
+				name = "Limitless Labyrinth",
+				text = {
+					"+3 Hand Size, +1 Selection limit.",
+					"Cards cannot be unhighlighted",
+					"Highlight a random card when a",
+					"card is highlighted"
+				}
+			},
 		},
 		Edition = {
 			e_entr_solar = {

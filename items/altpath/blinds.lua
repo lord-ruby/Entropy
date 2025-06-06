@@ -1460,6 +1460,73 @@ local cassandra = {
 	end
 }
 
+local labyrinth = {
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	object_type = "Blind",
+    order = 1025+4,
+	name = "entr-labyrinth",
+	key = "labyrinth",
+	pos = { x = 0, y = 4 },
+	atlas = "altshowdowns",
+	boss_colour = HEX("acb1b6"),
+    mult=3,
+    dollars = 10,
+    altpath=true,
+	boss = {
+		min = 1,
+		showdown = true
+	},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+	set_blind = function()
+		G.hand.config.card_limit = G.hand.config.card_limit + 3
+		Entropy.ChangeFullCSL(1)
+		G.GAME.blind.cards = {}
+	end,
+	defeat = function()
+		if not G.GAME.blind.disabled then
+			G.hand.config.card_limit = G.hand.config.card_limit - 3
+			Entropy.ChangeFullCSL(-1)
+			for i, v in ipairs(G.GAME.blind.cards) do v.ability.forced_selection = nil end
+		end
+	end,
+	disable = function()
+		G.hand.config.card_limit = G.hand.config.card_limit - 3
+		Entropy.ChangeFullCSL(-1)
+		for i, v in ipairs(G.GAME.blind.cards) do v.ability.forced_selection = nil end
+	end
+}
+
+local highlighted_ref = Card.highlight
+function Card:highlight(is_highlighted)
+	highlighted_ref(self, is_highlighted)
+	if Entropy.BlindIs("bl_entr_labyrinth") then
+		if is_highlighted and self.area == G.hand then
+			if not self.ability.forced_selection then
+				local cards = {}
+				for i, v in ipairs(G.hand.cards) do
+					if not v.ability.forced_selection and not v.highlighted then
+						cards[#cards+1]=v
+					end
+				end
+				local card = pseudorandom_element(cards, pseudoseed("labyrinth"))
+				if card then
+					card.ability.forced_selection = true
+					G.GAME.blind.cards[#card + 1] = card
+				end
+				G.GAME.blind.cards[#card + 1] = self 
+				card:highlight(true)
+			end
+			self.ability.forced_selection = true
+		end
+	end
+end
+
 return {
     items = {
         alpha,
@@ -1490,6 +1557,7 @@ return {
 		styx,
 		choir,
 		pandora,
-		cassandra
+		cassandra,
+		labyrinth
     }
 }
