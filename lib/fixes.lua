@@ -420,30 +420,28 @@ if PTASaka then
   SMODS.Joker:take_ownership("payasaka_paya", {
     calculate = function(self, card, context)
       if context.setting_blind and ((pseudorandom('paya_hell') < (G.GAME.probabilities.normal or 1) / card.ability.odds) or card.ability.cry_rigged) then
-        card.ability.extra.exponential_active = true
+        card.ability.extra.exponential_cnt = card.ability.extra.exponential_cnt + 1
         G.E_MANAGER:add_event(Event {
           func = function()
-            G.GAME.paya_operator = ( G.GAME.paya_operator or 0) + 1
-            update_operator_display()
+            G.GAME.paya_operator = G.GAME.paya_operator + 1
             return true
           end
         })
         return {
-          message = "Active!"
+          message = card.ability.extra.exponential_cnt == 1 and localize('k_active_ex') or localize('k_payasaka_hyperactive_ex'),
+          colour = card.ability.extra.exponential_cnt == 1 and G.C.GOLD or G.C.DARK_EDITION,
+          card = context.blueprint_card or card
         }
       end
-      if context.end_of_round and card.ability.extra.exponential_active then
-        card.ability.extra.exponential_active = false
+      while context.end_of_round and card.ability.extra.exponential_cnt > 0 and not context.individual do
+        card.ability.extra.exponential_cnt = card.ability.extra.exponential_cnt - 1
         G.E_MANAGER:add_event(Event {
           func = function()
-            G.GAME.paya_operator = (G.GAME.paya_operator or 0) - 1
-            update_operator_display()
+            G.GAME.paya_operator = math.max(G.GAME.paya_operator - 1, 0)
             return true
           end
         })
-        return {
-          message = "Inactive!"
-        }
+        card_eval_status_text(card, 'extra', nil, nil, nil, { message = localize('k_payasaka_inactive_ex') })
       end
     end
   }, true)
