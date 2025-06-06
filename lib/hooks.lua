@@ -1538,7 +1538,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 			loc_disp_text = localize(disp_text, "poker_hands")
         end
     end
-    if G.GAME.hands[text] or not G.GAME.hands[text].operator then
+    if not G.GAME.hands[text] or not G.GAME.hands[text].operator then
         G.GAME.hand_operator = 0
         update_operator_display()
     end
