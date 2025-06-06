@@ -1219,3 +1219,15 @@ payload = '''
 	end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+SMODS.displayed_hand = nil
+'''
+position = "after"
+payload = '''
+if not G.GAME.hands[text] then text = "cry_None" end
+'''
+match_indent = true

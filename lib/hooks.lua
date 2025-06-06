@@ -2937,7 +2937,11 @@ function CardArea:parse_highlighted()
         G.GAME.hand_operator = G.GAME.hands[text].operator
         update_operator_display()
     else
-        G.GAME.hand_operator = 0
+        if G.PROFILES[G.SETTINGS.profile].cry_none then
+            G.GAME.hand_operator = G.GAME.hands["cry_None"].operator
+        else    
+            G.GAME.hand_operator = 0
+        end
         update_operator_display()
     end
 end

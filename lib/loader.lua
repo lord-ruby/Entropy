@@ -247,6 +247,9 @@ function SMODS.injectItems(...)
         if orig_final then
             op = op + orig_final() - 1
         end
+        if G.GAME.payasaka_exponential_count then
+            op = op + G.GAME.payasaka_exponential_count
+        end
         return op
     end
     function get_chipmult_sum(chips, mult)
