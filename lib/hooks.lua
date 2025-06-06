@@ -159,15 +159,7 @@ function evaluate_play_final_scoring(text, disp_text, poker_hands, scoring_hand,
     G.E_MANAGER:add_event(Event({
       trigger = 'after',
       	func = (function()
-            G.GAME.asc_power_hand = nil
-            G.GAME.hand_operator = nil
-            local txt = "X"
-            local operator = G.HUD:get_UIE_by_ID('chipmult_op')
-            operator.config.text = txt
-            operator.config.text_drawable:set(txt)
-            operator.UIBox:recalculate()
-            operator.config.colour = G.C.RED
-            Entropy.score_cache = {}
+            update_operator_display()
         return true end)
     }))
     
