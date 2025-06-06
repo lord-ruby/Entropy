@@ -227,16 +227,18 @@ function SMODS.injectItems(...)
         }
         local txt = Entropy.FormatArrowMult(aoperator, "")
         local operator = G.HUD:get_UIE_by_ID('chipmult_op')
-        operator.config.text = txt
-        operator.config.text_drawable:set(txt)
-        if aoperator > 1 and aoperator < 6 then
-            operator.config.scale = 0.3 + 0.5 / aoperator
-        else
-            operator.config.scale = 0.8
+        if operator then
+            operator.config.text = txt
+            operator.config.text_drawable:set(txt)
+            if aoperator > 1 and aoperator < 6 then
+                operator.config.scale = 0.3 + 0.5 / aoperator
+            else
+                operator.config.scale = 0.8
+            end
+            local col = colours[math.min(math.max(aoperator, -1), 4)]
+            operator.UIBox:recalculate()
+            operator.config.colour = col
         end
-        local col = colours[math.min(math.max(aoperator, -1), 4)]
-        operator.UIBox:recalculate()
-        operator.config.colour = col
     end
     
     local orig_final = get_final_operator
