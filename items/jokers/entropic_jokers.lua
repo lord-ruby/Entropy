@@ -780,7 +780,10 @@ local atomikos = {
         end
     end,
     add_to_deck = function()
-        G.GAME.hands["High Card"].operator = -1
+        if not G.GAME.atomikos_deleted then
+            G.GAME.hands["High Card"].operator = -1
+            G.GAME.atomikos_deleted = {}
+        end
     end,
     loc_vars = function(self, q, card)
         return {

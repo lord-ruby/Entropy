@@ -2941,39 +2941,9 @@ local parse_ref = CardArea.parse_highlighted
 function CardArea:parse_highlighted()
     parse_ref(self)
     local text,disp_text,poker_hands = G.FUNCS.get_poker_hand_info(self.highlighted)
-    if text == "High Card" and G.GAME.hands["High Card"].operator then
-        local colours = {
-            [-1] = HEX("a26161"),
-            [0] = G.C.RED,
-            [1] = G.C.EDITION,
-            [2] = G.C.CRY_ASCENDANT,
-            [3] = G.C.CRY_EXOTIC,
-            [4] = Entropy.entropic_gradient
-        }
-        local txt = Entropy.FormatArrowMult(G.GAME.hands["High Card"].operator, "")
-        local operator = G.HUD:get_UIE_by_ID('chipmult_op')
-        operator.config.text = txt
-		operator.config.text_drawable:set(txt)
-        if G.GAME.hands["High Card"].operator > 1 and G.GAME.hands["High Card"].operator < 6 then
-            operator.config.scale = 0.3 + 0.5 / G.GAME.hands["High Card"].operator
-        else
-            operator.config.scale = 0.8
-        end
-        
-		operator.UIBox:recalculate()
-		operator.config.colour = colours[math.min(G.GAME.hands["High Card"].operator, 4)]
-        G.GAME.hand_operator = G.GAME.hands["High Card"].operator
-    else
-        if operator then
-            local txt = "X"
-            local operator = G.HUD:get_UIE_by_ID('chipmult_op')
-            operator.config.text = txt
-            operator.config.text_drawable:set(txt)
-            operator.config.scale = 0.8
-            operator.UIBox:recalculate()
-            operator.config.colour = G.C.RED
-            G.GAME.hand_operator = nil
-        end
+    if G.GAME.hands[text] and G.GAME.hands[text].operator then
+        G.GAME.hand_operator = G.GAME.hands[text].operator
+        update_operator_display()
     end
 end
 
@@ -3028,4 +2998,27 @@ function create_shop_card_ui(card, type, area)
     else
         ref(card, type, area)
     end
+end
+
+function update_operator_display()
+    local aoperator = get_final_operator()
+    local colours = {
+        [-1] = HEX("a26161"),
+        [0] = G.C.RED,
+        [1] = G.C.EDITION,
+        [2] = G.C.CRY_ASCENDANT,
+        [3] = G.C.CRY_EXOTIC,
+        [4] = Entropy.entropic_gradient
+    }
+    local txt = Entropy.FormatArrowMult(aoperator, "")
+    local operator = G.HUD:get_UIE_by_ID('chipmult_op')
+    operator.config.text = txt
+    operator.config.text_drawable:set(txt)
+    if aoperator > 1 and aoperator < 6 then
+        operator.config.scale = 0.3 + 0.5 / aoperator
+    else
+        operator.config.scale = 0.8
+    end
+    operator.UIBox:recalculate()
+    operator.config.colour = colours[math.min(G.GAME.hands["High Card"].operator, 4)]
 end

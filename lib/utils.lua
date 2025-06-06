@@ -1365,13 +1365,26 @@ function Entropy.pseudorandom_element(table, seed, blacklist)
 end
 Entropy.score_cache = {}
 function Entropy.get_chipmult_score(hand_chips, mult)
-    local operator = G.GAME.hand_operator or 0
+    local operator = math.max(get_final_operator(), -1)
     if Entropy.score_cache[number_format(hand_chips).."x"..number_format(mult)] then return Entropy.score_cache[number_format(hand_chips).."x"..number_format(mult)] end
     if operator == -1 then return to_big(hand_chips)+to_big(mult) 
     elseif operator == 0 then return to_big(hand_chips)*to_big(mult) end
     local ret = (operator and to_big(hand_chips):arrow(operator, to_big(mult)) or to_big(hand_chips)*to_big(mult))
     Entropy.score_cache[number_format(hand_chips).."x"..number_format(mult)] = ret
     return ret
+end
+
+local orig_final = get_final_operator
+function get_final_operator()
+    local op = 0
+    if G.GAME.hand_operator then
+        op = op + G.GAME.hand_operator
+    end
+    print(op)
+    if orig_final then
+        op = op + orig_final() - 1
+    end
+    return op
 end
 
 function Entropy.no_recurse_scoring(poker_hands)
