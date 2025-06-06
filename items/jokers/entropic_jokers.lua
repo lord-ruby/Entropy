@@ -752,9 +752,14 @@ local atomikos = {
             local handname = G.FUNCS.get_poker_hand_info(G.play.cards)
             if handname ~= "High Card" or to_big(card.ability.times) <= to_big(1e-300) then
                 card.ability.left = card.ability.left - 1
-                if  handname ~= "High Card" then
-                    G.GAME.atomikos_deleted = G.GAME.atomikos_deleted or {}
-                    G.GAME.atomikos_deleted[handname] = true
+                if handname ~= "High Card" then
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            G.GAME.atomikos_deleted = G.GAME.atomikos_deleted or {}
+                            G.GAME.atomikos_deleted[handname] = true
+                            return true
+                        end
+                    }))
                 end
                 if to_big(card.ability.left) <= to_big(0) or to_big(card.ability.times) <= to_big(1e-300) then
                     G.GAME.hands["High Card"].operator = (G.GAME.hands["High Card"].operator or 0) + 1

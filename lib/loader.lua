@@ -235,7 +235,7 @@ function SMODS.injectItems(...)
             operator.config.scale = 0.8
         end
         operator.UIBox:recalculate()
-        operator.config.colour = colours[math.min(math.max(G.GAME.hands["High Card"].operator, -1), 4)]
+        operator.config.colour = colours[math.min(math.max(aoperator, -1), 4)]
     end
     
     local orig_final = get_final_operator
