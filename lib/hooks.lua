@@ -1538,17 +1538,9 @@ function G.FUNCS.get_poker_hand_info(_cards)
 			loc_disp_text = localize(disp_text, "poker_hands")
         end
     end
-    if text ~= "High Card" or not G.GAME.hands["High Card"].operator then
-        local txt = "X"
-        local operator = G.HUD:get_UIE_by_ID('chipmult_op')
-        if operator then
-            operator.config.text = txt
-            operator.config.text_drawable:set(txt)
-            operator.config.scale = 0.8
-            operator.UIBox:recalculate()
-            operator.config.colour = G.C.RED
-            G.GAME.hand_operator = nil
-        end
+    if G.GAME.hands[text] or not G.GAME.hands[text].operator then
+        G.GAME.hand_operator = 0
+        update_operator_display()
     end
     return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
@@ -2998,27 +2990,4 @@ function create_shop_card_ui(card, type, area)
     else
         ref(card, type, area)
     end
-end
-
-function update_operator_display()
-    local aoperator = get_final_operator()
-    local colours = {
-        [-1] = HEX("a26161"),
-        [0] = G.C.RED,
-        [1] = G.C.EDITION,
-        [2] = G.C.CRY_ASCENDANT,
-        [3] = G.C.CRY_EXOTIC,
-        [4] = Entropy.entropic_gradient
-    }
-    local txt = Entropy.FormatArrowMult(aoperator, "")
-    local operator = G.HUD:get_UIE_by_ID('chipmult_op')
-    operator.config.text = txt
-    operator.config.text_drawable:set(txt)
-    if aoperator > 1 and aoperator < 6 then
-        operator.config.scale = 0.3 + 0.5 / aoperator
-    else
-        operator.config.scale = 0.8
-    end
-    operator.UIBox:recalculate()
-    operator.config.colour = colours[math.min(G.GAME.hands["High Card"].operator, 4)]
 end

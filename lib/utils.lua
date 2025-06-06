@@ -413,9 +413,9 @@ end
 
 function Entropy.FormatArrowMult(arrows, mult)
     mult = type(mult) ~= "string" and number_format(mult) or mult
-    if to_big(arrows) < to_big(-1) then 
+    if to_big(arrows) < to_big(-1.1) then 
         return "="..mult 
-    elseif to_big(arrows) < to_big(0) then 
+    elseif to_big(arrows) < to_big(-0.1) then 
         return "+"..mult 
     elseif to_big(arrows) < to_big(6) then 
         if to_big(arrows) < to_big(1) then
@@ -1374,18 +1374,7 @@ function Entropy.get_chipmult_score(hand_chips, mult)
     return ret
 end
 
-local orig_final = get_final_operator
-function get_final_operator()
-    local op = 0
-    if G.GAME.hand_operator then
-        op = op + G.GAME.hand_operator
-    end
-    print(op)
-    if orig_final then
-        op = op + orig_final() - 1
-    end
-    return op
-end
+
 
 function Entropy.no_recurse_scoring(poker_hands)
     local text 
