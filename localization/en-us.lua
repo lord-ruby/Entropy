@@ -1262,6 +1262,13 @@ local decs = {
 					"{C:blue}+#1#{} bonus chips"
 				}
 			},
+			c_entr_rift = {
+				name = "The Rift",
+				text = {
+					"Apply a {C:attention}random{} {C:dark_edition}Edition{}",
+					"to a {C:attention}random{} Card"
+				}
+			},
 		},
 		Voucher = {
 			v_entr_marked = {
