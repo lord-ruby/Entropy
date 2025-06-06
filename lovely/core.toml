@@ -1147,11 +1147,6 @@ position = "at"
 payload = '''{n=G.UIT.T, config={id = "chipmult_op", text = "X", lang = G.LANGUAGES['en-us'], scale = scale*2, colour = G.C.UI_MULT, shadow = true}},'''
 match_indent = true
 
-
-
-
-
-
 [[patches]]
 [patches.pattern]
 target = "functions/state_events.lua"

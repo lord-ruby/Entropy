@@ -11,6 +11,6 @@ position = "after"
 payload = '''
     if G.GAME.entr_shop_price_modifier then
         self.cost = cry_format(self.cost * G.GAME.entr_shop_price_modifier,'%.2f') end
-    if not G.GAME.modifiers.cry_misprint_min and not G.GAME.entr_shop_price_modifier then self.cost = math.floor(self.cost) end end
+    if not G.GAME.modifiers.cry_misprint_min and not G.GAME.entr_shop_price_modifier then self.cost = math.floor(self.cost) end
 '''
 match_indent = true
