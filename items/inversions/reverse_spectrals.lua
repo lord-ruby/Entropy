@@ -474,7 +474,7 @@ local rejuvenate = {
         local seal = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("rejuvenate"),function(e)
             return G.GAME.banned_keys[e.key] or e.no_doe
         end).key
-        local card = Entropy.GetHighlightedCards({G.hand}, card2)[1]
+        local card = Entropy.GetHighlightedCards({G.hand}, card2)[1] or pseudorandom_element(G.hand.cards, pseudoseed("rejuvenate"))
         card:set_edition(ed)
         card:set_ability(enh)
         card:set_seal(seal)
