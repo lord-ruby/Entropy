@@ -2936,6 +2936,9 @@ function CardArea:parse_highlighted()
     if G.GAME.hands[text] and G.GAME.hands[text].operator then
         G.GAME.hand_operator = G.GAME.hands[text].operator
         update_operator_display()
+    else
+        G.GAME.hand_operator = 0
+        update_operator_display()
     end
 end
 
