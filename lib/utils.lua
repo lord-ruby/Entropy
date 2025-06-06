@@ -413,6 +413,9 @@ end
 
 function Entropy.FormatArrowMult(arrows, mult)
     mult = type(mult) ~= "string" and number_format(mult) or mult
+    if to_big(arrows) <= to_big(-2) then
+        return "{"..arrows.."}"..mult
+    end
     if to_big(arrows) < to_big(-1.1) then 
         return "="..mult 
     elseif to_big(arrows) < to_big(-0.1) then 
