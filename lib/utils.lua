@@ -413,7 +413,7 @@ end
 
 function Entropy.FormatArrowMult(arrows, mult)
     mult = type(mult) ~= "string" and number_format(mult) or mult
-    if to_big(arrows) <= to_big(-2) then
+    if to_big(arrows) <= to_big(-2.01) then
         return "{"..arrows.."}"..mult
     end
     if to_big(arrows) < to_big(-1.1) then 
@@ -1370,7 +1370,9 @@ Entropy.score_cache = {}
 function Entropy.get_chipmult_score(hand_chips, mult)
     local operator = math.max(get_final_operator(), -1)
     if Entropy.score_cache[number_format(hand_chips).."x"..number_format(mult)] then return Entropy.score_cache[number_format(hand_chips).."x"..number_format(mult)] end
-    if operator == -1 then return to_big(hand_chips)+to_big(mult) 
+    if operator == < -2 then return to_big(1) / to_big(0)
+    elseif operator == -2 then hand_chips=to_big(mult); return hand_chips
+    elseif operator == -1 then return to_big(hand_chips)+to_big(mult) 
     elseif operator == 0 then return to_big(hand_chips)*to_big(mult) end
     local ret = (operator and to_big(hand_chips):arrow(operator, to_big(mult)) or to_big(hand_chips)*to_big(mult))
     Entropy.score_cache[number_format(hand_chips).."x"..number_format(mult)] = ret
