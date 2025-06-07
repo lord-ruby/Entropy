@@ -40,6 +40,22 @@ local rift = {
 	end,
 }
 
+local katevaino = {
+	object_type = "Achievement",
+	key = "katevaino",
+	order = 600,
+	bypass_all_unlocked = true,
+	atlas = "entr_achievements",
+	--reset_on_startup = true,
+    pos = {x=1,y=1},
+    hidden_text = true,
+	unlock_condition = function(self, args)
+        if args.type == "parakmi_transcend" then
+		    return true
+        end
+	end,
+}
+
 local megalyteri = {
 	object_type = "Achievement",
 	key = "megalyteri",
@@ -96,6 +112,7 @@ return {
         megalyteri,
         outopia,
         acheros,
-		rift
+		rift,
+		katevaino
     }
 }

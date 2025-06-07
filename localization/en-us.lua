@@ -2041,6 +2041,13 @@ local decs = {
 					"{C:attention}#1#{} selected joker#<s>1#"
 				}
 			},
+			c_entr_transcend = {
+				name = "Transcend",
+				text = {
+					"Convert {C:attention}#1#{} selected card#<s>1#",
+					"to a {C:attention}random{} {C:red}object{}"
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {
@@ -2652,7 +2659,8 @@ local decs = {
 			ach_entr_megalyteri = "Megalyteri",
 			ach_entr_outopia = "Outopia",
 			ach_entr_acheros = "Acheros",
-			ach_entr_rift = "Rift"
+			ach_entr_rift = "Rift",
+			ach_entr_katevaino = "Katevaino"
 		},
 		achievement_descriptions = {
 			ach_entr_event_horizon = "Use define to turn Obelisk into Sob",
@@ -2660,7 +2668,8 @@ local decs = {
 			ach_entr_megalyteri = "Reach {50000} on Dekatria",
 			ach_entr_outopia = "Obtain a zenith rarity Joker",
 			ach_entr_acheros = "Beat Ante 32s boss blind, Endless Entropy",
-			ach_entr_rift = "Beat Ante 8 on The Alternate Path"
+			ach_entr_rift = "Beat Ante 8 on The Alternate Path",
+			ach_entr_katevaino = "Use Transcend on Parakmi"
 		},
 		suits_plural = {
 			entr_nilsuit = "Nil",

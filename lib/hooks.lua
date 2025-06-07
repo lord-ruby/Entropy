@@ -839,7 +839,7 @@ function G.UIDEF.use_and_sell_buttons(card)
               }}
         end
     end
-    if (card.area == G.consumeables and G.consumeables and card.config.center.set == "Booster") then
+    if ((card.area == G.consumeables or card.area == G.jokers) and G.consumeables and card.config.center.set == "Booster") then
         sell = {n=G.UIT.C, config={align = "cr"}, nodes={
             {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = 'sell'}, nodes={
               {n=G.UIT.B, config = {w=0.1,h=0.6}},
@@ -901,7 +901,7 @@ function G.UIDEF.use_and_sell_buttons(card)
               }}
 		end
 	end
-    if (card.area == G.consumeables and G.consumeables) and card.config.center.set == "Voucher" then
+    if ((card.area == G.consumeables or card.area == G.jokers) and G.consumeables) and card.config.center.set == "Voucher" then
         sell = {n=G.UIT.C, config={align = "cr"}, nodes={
             {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = 'sell'}, nodes={
               {n=G.UIT.B, config = {w=0.1,h=0.6}},
