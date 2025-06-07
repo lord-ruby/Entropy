@@ -1326,11 +1326,25 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 end
 
 local ref = level_up_hand
-function level_up_hand(card, hand, instant, amount)
+function level_up_hand(card, hand, instant, amount, ...)
+    local chips = G.GAME.hands[hand].chips
+    local mult = G.GAME.hands[hand].mult
+    local level = G.GAME.hands[hand].level
     if Entropy.HasJoker("j_entr_strawberry_pie",true) and hand ~= "High Card" then
         hand = "High Card"
     end
-    ref(card,hand,instant,amount)
+    local val = ref(card,hand,instant,amount, ...)
+    if card.config.center.set == "Joker" then
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.GAME.hands[hand].level = level
+                G.GAME.hands[hand].chips = chips
+                G.GAME.hands[hand].mult = mult
+                ref(card, hand, true, amount)
+                return true
+            end
+        }))
+    end
 end
 
 local start_dissolveref = Card.start_dissolve
