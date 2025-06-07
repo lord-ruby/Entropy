@@ -2624,6 +2624,7 @@ G.FUNCS.evaluate_play = function(e)
     G.E_MANAGER:add_event(Event({
         trigger="after",
         func = function()
+            G.GAME.asc_power_hand = nil
             update_hand_text_random({delay = 0}, {chips=0, mult=0, handname = "", level=""})
             update_operator_display()
             return true
