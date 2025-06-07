@@ -1106,7 +1106,7 @@ local decs = {
 				text = {
 					"Multiply #1# selected card#<s>1#",
 					"values by {C:attention}#2#{} then",
-					"apply Perishable"
+					"apply Banana"
 				}
 			},
 			c_entr_scar = {
