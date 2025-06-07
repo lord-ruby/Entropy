@@ -19,3 +19,29 @@ payload = '''if card and card.playing_card and Entropy.HasJoker("j_entr_jokeriny
             end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Cryptid "lib/pointerlib.lua"]'''
+pattern = 'and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit -- and you have room'
+position = "at"
+payload = '''
+and (#G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit or next(SMODS.find_card("j_entr_dreamweaver"))) -- and you have room
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Cryptid "lib/pointerlib.lua"]'''
+pattern = '''
+	if G.GAME.banned_keys[target] then
+		results[1] = true
+	end
+'''
+position = "at"
+payload = '''
+	if G.GAME.banned_keys[target] and not next(SMODS.find_card("j_entr_dreamweaver")) then
+		results[1] = true
+	end
+'''
+match_indent = true

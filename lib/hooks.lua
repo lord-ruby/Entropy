@@ -3020,3 +3020,22 @@ function Blind:set_blind(...)
         end
     }))
 end
+
+local ref = Cryptid.pointergetblist
+function Cryptid.pointergetblist(target)
+    if next(SMODS.find_card("j_entr_dreamweaver")) then
+        Cryptid.pointerblisttype = {
+            rarity = {
+                "entr_zenith"
+            }
+        }
+        local blist = {}
+        for i, v in pairs(Cryptid.pointerblist) do
+            if G.P_BLINDS[v] then
+                blist[#blist + 1] = v
+            end
+        end
+        Cryptid.pointerblist = blist
+    end
+    return ref(target)
+end

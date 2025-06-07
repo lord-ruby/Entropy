@@ -62,7 +62,8 @@ Entropy.BlindTokenBlacklist = {
 }
 Entropy.References = {}
 Entropy.Zeniths = {
-  "j_entr_ruby"
+  "j_entr_ruby",
+  "j_entr_dreamweaver"
 }
 Entropy.RarityPoints = {
     [1] = 1, --common
