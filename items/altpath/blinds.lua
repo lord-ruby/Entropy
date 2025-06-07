@@ -1329,28 +1329,30 @@ local styx = {
 	end,
 	calculate = function(self, blind, context)
 		if context.before and not G.GAME.blind.disabled then
-			local joker_1 = pseudorandom("styx_joker1", 1, #G.jokers.cards)
-			local joker_2 = pseudorandom("styx_joker2", 1, #G.jokers.cards)
-			local tries = 20
-			while G.jokers.cards[joker_2] == G.jokers.cards[joker_1] or tries <= 0 do
-				joker_2 = pseudorandom("styx_joker2_repoll", 1, #G.jokers.cards)
-				tries = tries - 1
+			if #G.jokers.cards > 1 then
+				local joker_1 = pseudorandom("styx_joker1", 1, #G.jokers.cards)
+				local joker_2 = pseudorandom("styx_joker2", 1, #G.jokers.cards)
+				local tries = 20
+				while G.jokers.cards[joker_2] == G.jokers.cards[joker_1] and tries > 0 do
+					joker_2 = pseudorandom("styx_joker2_repoll", 1, #G.jokers.cards)
+					tries = tries - 1
+				end
+				local temp = G.jokers.cards[joker_2]
+				G.jokers.cards[joker_2] = G.jokers.cards[joker_1]
+				G.jokers.cards[joker_1] = temp
 			end
-			local temp = G.jokers.cards[joker_2]
-			G.jokers.cards[joker_2] = G.jokers.cards[joker_1]
-			G.jokers.cards[joker_1] = temp
-
-			local play_1 = pseudorandom("styx_play1", 1, #G.play.cards)
-			local play_2 = pseudorandom("styx_play2", 1, #G.play.cards)
-			local tries = 20
-			while G.play.cards[play_2] == G.play.cards[play_1] or tries <= 0 do
-				play_2 = pseudorandom("styx_play2_repoll", 1, #G.play.cards)
-				tries = tries - 1
+			if #G.play.cards > 1 then
+				local play_1 = pseudorandom("styx_play1", 1, #G.play.cards)
+				local play_2 = pseudorandom("styx_play2", 1, #G.play.cards)
+				local tries = 20
+				while G.play.cards[play_2] == G.play.cards[play_1] and tries > 0 do
+					play_2 = pseudorandom("styx_play2_repoll", 1, #G.play.cards)
+					tries = tries - 1
+				end
+				local temp = G.play.cards[play_2]
+				G.play.cards[play_2] = G.play.cards[play_1]
+				G.play.cards[play_1] = temp
 			end
-			local temp = G.play.cards[play_2]
-			G.play.cards[play_2] = G.play.cards[play_1]
-			G.play.cards[play_1] = temp
-
 		end
 	end
 }
