@@ -481,7 +481,7 @@ local decs = {
 				name = "Ruby, The Dreamweaver",
 				text = {
 					"{C:red}Removes{} {C:green}Pointers{} Restrictions",
-					"Create {C:attention}1{} {C:green}When Boss Blind is selected",
+					"Create {C:attention}1{} {C:green}Pointer{} When Boss Blind is selected",
 					"{s:0.8,C:purple}Isnt this what you wanted?...{}"
 				}
 			},
