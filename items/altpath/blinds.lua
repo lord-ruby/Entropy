@@ -827,8 +827,8 @@ local lambda = {
         return G.GAME.entr_alt
     end,
 	calculate = function(self, blind, context)
-		local _, _, _, hand = G.FUNCS.get_poker_hand_info(G.play.cards)
-		if context.after then
+		if context.after and not G.GAME.blind.disabled then
+			local _, _, _, hand = G.FUNCS.get_poker_hand_info(G.play.cards)
 			Entropy.FlipThen(hand, function(card)
 				card.ability.perishable = true
 				card.ability.perish_tally = 5

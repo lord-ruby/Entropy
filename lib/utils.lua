@@ -1438,8 +1438,6 @@ function Entropy.GetPooledCenter(_type)
         forced_key = 'c_base'
     end
 
-
-
     if forced_key and not G.GAME.banned_keys[forced_key] then 
         center = G.P_CENTERS[forced_key]
         _type = (center.set ~= 'Default' and center.set or _type)
