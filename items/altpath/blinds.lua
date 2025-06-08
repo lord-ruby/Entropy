@@ -1520,9 +1520,9 @@ function Card:highlight(is_highlighted)
 				if card then
 					card.ability.forced_selection = true
 					G.GAME.blind.cards[#G.GAME.blind.cards + 1] = card
+					card:highlight(true)
 				end
 				G.GAME.blind.cards[#G.GAME.blind.cards + 1] = self 
-				card:highlight(true)
 			end
 			self.ability.forced_selection = true
 		end
