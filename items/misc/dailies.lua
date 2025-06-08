@@ -179,6 +179,141 @@ Entropy.SpecialDailies["06/09"] = {
     },
 }
 
+Entropy.SpecialDailies["06/10"] = {
+    jokers = {
+        { id = "j_to_the_moon", edition = "negative"}
+    },
+    consumeables = {
+        { id = "c_cry_exploit", edition = "negative" },
+        { id = "c_cry_exploit", edition = "negative" },
+        { id = "c_cry_exploit", edition = "negative" },
+        { id = "c_cry_exploit", edition = "negative" },
+        { id = "c_cry_exploit", edition = "negative" }
+    },
+    rules = {
+        custom = {
+          {id="entr_set_seed", value = "00000O00"}
+        }
+    },
+    restrictions = Entropy.DailyBanlist(),
+    key = "c_entr_daily",
+    id = "c_entr_daily",
+    original_key = "daily",
+    registered = true,
+    deck = {
+        type = "Challenge Deck",
+        cards = {}
+    },
+}
+
+Entropy.SpecialDailies["06/11"] = {
+    jokers = {
+        { id = "j_entr_ridiculus_absens", stickers = {"entr_aleph"} },
+        { id = "j_entr_chaos", edition = "entr_lowres", stickers = {"eternal", "perishable", "rental", "desync", "entr_hotfix", "entr_pseudorandom"}}
+    },
+    consumeables = {
+        { id = "c_cry_machinecode" },
+        { id = "c_entr_interference" }
+    },
+    rules = {
+        custom = {
+          {id="entr_set_seed", value = "M1551NGN0"}
+        }
+    },
+    restrictions = Entropy.DailyBanlist(),
+    key = "c_entr_daily",
+    id = "c_entr_daily",
+    original_key = "daily",
+    registered = true,
+    deck = {
+        type = "Challenge Deck",
+        cards = {
+            {s='D', r='2',}, {s='C', r='9',}, {s='S', r='9',}, {s='H', r='2',},
+            {s='D', r='A',}, {s='C', r='8',}, {s='S', r='3',}, {s='H', r='Q',},
+            {s='D', r='2',}, {s='C', r='4',}, {s='D', r='T',}, {s='H', r='4',},
+            {s='D', r='5',}, {s='C', r='5',}, {s='S', r='T',}, {s='H', r='5',},
+            {s='D', r='6',}, {s='C', r='7',}, {s='S', r='2',}, {s='H', r='Q',},
+            {s='D', r='2',}, {s='D', r='7',}, {s='S', r='7',}, {s='S', r='Q',},
+            {s='D', r='8',}, {s='C', r='8',}, {s='S', r='8',}, {s='H', r='8',},
+            {s='D', r='9',}, {s='C', r='9',}, {s='S', r='T',}, {s='H', r='9',},
+            {s='D', r='T',}, {s='C', r='A',}, {s='S', r='T',}, {s='S', r='K',},
+            {s='D', r='A',}, {s='D', r='J',}, {s='S', r='J',}, {s='H', r='J',},
+            {s='D', r='3',}, {s='C', r='6',}, {s='S', r='J',}, {s='H', r='Q',},
+            {s='D', r='K',}, {s='S', r='K',}, {s='S', r='K',}, {s='H', r='K',},
+            {s='D', r='4',}, {s='C', r='5',}, {s='S', r='A',}, {s='H', r='A',}
+        }
+    },
+}
+
+Entropy.SpecialDailies["06/13"] = {
+    jokers = {
+        { id = "j_cry_necromancer", stickers = {"entr_aleph"}},
+        { id = "j_entr_recursive_joker", edition = "entr_neon"}
+    },
+    consumeables = {
+        { id = "c_cry_divide"}
+    },
+    rules = {
+        custom = {
+          {id="entr_set_seed", value = "1D4BL00N"}
+        }
+    },
+    restrictions = Entropy.DailyBanlist(),
+    key = "c_entr_daily",
+    id = "c_entr_daily",
+    original_key = "daily",
+    registered = true,
+    deck = {
+        type = "Challenge Deck",
+    },
+}
+
+Entropy.SpecialDailies["06/14"] = {
+    jokers = {
+        { id = "j_cry_night", edition = "negative", stickers = {"entr_aleph"}},
+        { id = "j_space", edition = "negative", stickers = {"entr_aleph"}},
+        { id = "j_cry_universum", edition = "entr_lowres", stickers = {"entr_aleph"}},
+                { id = "j_constellation", edition = "negative"},
+    },
+    consumeables = {
+        { id = "c_black_hole", stickers = {"eternal", "perishable"}}
+    },
+    rules = {
+        custom = {
+          {id="entr_set_seed", value = "ST4RG4ZE"}
+        }
+    },
+    restrictions = Entropy.DailyBanlist(),
+    key = "c_entr_daily",
+    id = "c_entr_daily",
+    original_key = "daily",
+    registered = true,
+    deck = {
+        type = "Challenge Deck",
+    },
+}
+
+Entropy.SpecialDailies["06/15"] = {
+    jokers = {
+        { id = "j_entr_stillicidium", edition = "negative", stickers = {"entr_aleph", "pinned"}},
+    },
+    consumeables = {
+        { id = "c_entr_mbr" }
+    },
+    rules = {
+        custom = {
+          {id="entr_set_seed", value = "DELT4T43"}
+        }
+    },
+    restrictions = Entropy.DailyBanlist(),
+    key = "c_entr_daily",
+    id = "c_entr_daily",
+    original_key = "daily",
+    registered = true,
+    deck = {
+        type = "Challenge Deck",
+    },
+}
 
 local succ, https = pcall(require, "SMODS.https")
 local function check_daily_seed(code, body, headers)
