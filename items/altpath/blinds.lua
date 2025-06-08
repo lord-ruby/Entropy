@@ -1519,9 +1519,9 @@ function Card:highlight(is_highlighted)
 				local card = pseudorandom_element(cards, pseudoseed("labyrinth"))
 				if card then
 					card.ability.forced_selection = true
-					G.GAME.blind.cards[#card + 1] = card
+					G.GAME.blind.cards[#G.GAME.blind.cards + 1] = card
 				end
-				G.GAME.blind.cards[#card + 1] = self 
+				G.GAME.blind.cards[#G.GAME.blind.cards + 1] = self 
 				card:highlight(true)
 			end
 			self.ability.forced_selection = true
