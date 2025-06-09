@@ -1329,28 +1329,28 @@ local rift = {
         }
     },
     pos = {x=7,y=2},
-    inversion = "c_cry_automaton",
+    inversion = "c_cry_meld",
     use = function(self, card2)
         local cards = {}
-        for i, v in ipairs(G.hand.cards) do
+        for i, v in ipairs(G.hand.cards or {}) do
             cards[#cards+1] = v 
         end
-        for i, v in ipairs(G.jokers.cards) do
+        for i, v in ipairs(G.jokers.cards or {}) do
             cards[#cards+1] = v 
         end
-        for i, v in ipairs(G.consumeables.cards) do
+        for i, v in ipairs(G.consumeables.cards or {}) do
             cards[#cards+1] = v 
         end
-        for i, v in ipairs((G.pack_cards or {cards = {}}).cards) do
+        for i, v in ipairs((G.pack_cards or {cards = {}}).cards or {}) do
             cards[#cards+1] = v 
         end
-        for i, v in ipairs((G.shop_jokers or {cards = {}}).cards) do
+        for i, v in ipairs((G.shop_jokers or {cards = {}}).cards or {}) do
             cards[#cards+1] = v 
         end
-        for i, v in ipairs((G.shop_booster or {cards = {}}).cards) do
+        for i, v in ipairs((G.shop_booster or {cards = {}}).cards or {}) do
             cards[#cards+1] = v 
         end
-        for i, v in ipairs((G.shop_vouchers or {cards = {}}).cards) do
+        for i, v in ipairs((G.shop_vouchers or {cards = {}}).cards or {}) do
             cards[#cards+1] = v 
         end
         local card = pseudorandom_element(cards, pseudoseed("rift_card"))
@@ -1361,7 +1361,7 @@ local rift = {
         end)
     end,
     can_use = function(self, card)
-        return G.hand and #G.hand.cards > 0
+        return #G.I.CARD > 0
     end,
     loc_vars = function(self, q, card)
         return {

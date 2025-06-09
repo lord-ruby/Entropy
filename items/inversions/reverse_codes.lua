@@ -956,7 +956,7 @@ local sudo = {
     key = "sudo",
     set = "Command",
     
-    inverison = "c_cry_exploit",
+    inversion = "c_cry_exploit",
 
     atlas = "consumables",
     config = {
