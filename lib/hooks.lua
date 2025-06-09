@@ -1334,7 +1334,7 @@ function level_up_hand(card, hand, instant, amount, ...)
         hand = "High Card"
     end
     local val = ref(card,hand,instant,amount, ...)
-    if card.config.center.set == "Joker" then
+    if card and card.config.center.set == "Joker" then
         G.E_MANAGER:add_event(Event({
             func = function()
                 G.GAME.hands[hand].level = level
@@ -2437,30 +2437,35 @@ end
 
 
 function Entropy.GetRecipe(cards)
-    local enhancements = Entropy.EnhancementPoints
-    local rares = {}
-    for i, v in pairs(G.P_CENTER_POOLS.Joker) do
-        if not rares[v.rarity] then rares[v.rarity] = {} end
-        rares[v.rarity][#rares[v.rarity]+1] = v.key
-    end
-    local enh = {}
-    for i = 1, 5 do
-        local card = cards[i]
-        enh[#enh+1]=card.config.center.key
-    end
-    local sum = 0
-    for i, v in pairs(enh) do
-        if not enhancements[v] then
-            enhancements[v] = 4.5 + math.random()*0.1-0.05
+    if #cards == 5 then
+        local enhancements = Entropy.EnhancementPoints
+        local rares = {}
+        for i, v in pairs(G.P_CENTER_POOLS.Joker) do
+            if not rares[v.rarity] then rares[v.rarity] = {} end
+            rares[v.rarity][#rares[v.rarity]+1] = v.key
         end
-        sum = sum + (enhancements[v] or 4.5) 
+        local enh = {}
+        for i = 1, 5 do
+            local card = cards[i]
+            if card then
+                enh[#enh+1]=card.config.center.key
+            end
+        end
+        local sum = 0
+        for i, v in pairs(enh) do
+            if not enhancements[v] then
+                enhancements[v] = 4.5 + math.random()*0.1-0.05
+            end
+            sum = sum + (enhancements[v] or 4.5) 
+        end
+        table.sort(enh, function(a,b)return (enhancements[a])>(enhancements[b]) end)
+        G.GAME.JokerRecipes = G.GAME.JokerRecipes or {}
+        if not G.GAME.JokerRecipes[Entropy.ConcatStrings(enh)] then
+            G.GAME.JokerRecipes[Entropy.ConcatStrings(enh)]=Entropy.GetRecipeResult(sum, rares,Entropy.ConcatStrings(enh))
+        end
+        return Entropy.FixedRecipes[Entropy.ConcatStrings(enh)] or G.GAME.JokerRecipes[Entropy.ConcatStrings(enh)]
     end
-    table.sort(enh, function(a,b)return (enhancements[a])>(enhancements[b]) end)
-    G.GAME.JokerRecipes = G.GAME.JokerRecipes or {}
-    if not G.GAME.JokerRecipes[Entropy.ConcatStrings(enh)] then
-        G.GAME.JokerRecipes[Entropy.ConcatStrings(enh)]=Entropy.GetRecipeResult(sum, rares,Entropy.ConcatStrings(enh))
-    end
-    return Entropy.FixedRecipes[Entropy.ConcatStrings(enh)] or G.GAME.JokerRecipes[Entropy.ConcatStrings(enh)]
+    return "j_joker"
 end
 
 Entropy.DiscardSpecific = function(cards)
