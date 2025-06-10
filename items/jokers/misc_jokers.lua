@@ -453,7 +453,7 @@ local insatiable_dagger = {
             for i, v in pairs(G.jokers.cards) do
                 if v == card and G.jokers.cards[i-1] then check = i-1 end
             end
-            if check then
+            if check and not G.jokers.cards[#G.jokers.cards].eternal then
                 G.E_MANAGER:add_event(Event({
                     func = function()
                         local sliced_card = G.jokers.cards[#G.jokers.cards]
