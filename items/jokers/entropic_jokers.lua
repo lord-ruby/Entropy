@@ -238,7 +238,7 @@ local anaptyxi = {
     rarity = "entr_entropic",
     cost = 150,
     
-    name = "cry-Scalae",
+    name = "entr-Anaptyxi",
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 6 },
@@ -266,16 +266,18 @@ local anaptyxi = {
         }
     end,
     calculate = function(self, card, context)
-        if (context.end_of_round and not context.individual and not context.repetition and not context.blueprint) or context.forcetrigger then
+        if (context.end_of_round and not context.individual and not context.repetition and not context.blueprint)
+            or context.forcetrigger then
             card.ability.extra.scale = card.ability.extra.scale + card.ability.extra.scale_mod
             return {
 				message = localize("k_upgrade_ex"),
 				colour = G.C.DARK_EDITION,
 			}
         end
+        return nil, nil
     end,
 	cry_scale_mod = function(self, card, joker, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
-        if joker.config.center.key == "j_entr_anaptyxi" then return end
+        if joker.config.center.key == "j_entr_anaptyxi" or joker.config.center.name == "cry-Scalae" then return end
         local new_scale = lenient_bignum(
             to_big(true_base)
                 * (

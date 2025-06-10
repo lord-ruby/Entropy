@@ -1232,3 +1232,44 @@ payload = '''
 if not G.GAME.hands[text] then text = "cry_None" end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Cryptid "lib/calculate.lua"]'''
+pattern = '''
+local active_side = self
+'''
+position = "after"
+payload = '''
+local ability
+if self.ability.entr_pure then
+  ability = copy_table(card.ability)
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Cryptid "lib/calculate.lua"]'''
+pattern = '''
+	if next(find_joker("cry-Scalae")) or next(find_joker("cry-Double Scale")) then
+		active_side:cry_double_scale_calc(orig_ability, in_context_scaling)
+	end
+'''
+position = "after"
+payload = '''
+if self.ability.entr_pure then self.ability = ability end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Cryptid "lib/calculate.lua"]'''
+pattern = '''
+	if next(find_joker("cry-Scalae")) or next(find_joker("cry-Double Scale")) then
+'''
+position = "at"
+payload = '''
+if next(find_joker("cry-Scalae")) or next(find_joker("cry-Double Scale")) or next(find_joker("entr-Anaptyxi")) then
+'''
+match_indent = true

@@ -1750,16 +1750,6 @@ local purity = {
         }
     end
 }
-local calculate_joker = Card.calculate_joker
-function Card:calculate_joker(context)
-    if self.ability.entr_pure then
-        local abil = copy_table(self.ability)
-        local c = calculate_joker(self, context)
-        self.ability = abil
-        return c
-    end
-    return calculate_joker(self, context)
-end
 
 local misprintize = Cryptid.misprintize
 function Cryptid.misprintize(card, ...)
