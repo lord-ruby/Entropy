@@ -653,7 +653,7 @@ local endurance = {
             card.ability.banana = true
             if not Card.no(card, "immutable", true) then
                 Cryptid.with_deck_effects(card, function(card3)
-                    Cryptid.misprintize(card3, { min=card2.ability.factor,max=card2.ability.factor }, nil, true)
+                    Cryptid.manipulate(card3, { value=card2.ability.factor })
                 end)
             end
         end)

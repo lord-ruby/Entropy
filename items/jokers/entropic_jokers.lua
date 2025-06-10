@@ -30,7 +30,7 @@ local epitachyno = {
 			    --local card = G.jokers.cards[i]
                 if not Card.no(G.jokers.cards[1], "immutable", true) and (G.jokers.cards[i].config.center.key ~= "j_entr_epitachyno" or context.forcetrigger) then
                     Cryptid.with_deck_effects(v, function(card2)
-                        Cryptid.misprintize(card2, { min=exp,max=exp }, nil, true, "^", 1)
+                        Cryptid.manipulate(card2, { value = {arrows = 1, height = exp}, type = "hyper" })
                     end)
                     check = true
                 end
@@ -301,7 +301,7 @@ local anaptyxi = {
         for i, v in pairs(G.jokers.cards) do
             if not Card.no(v, "immutable", true) and v ~= card and v ~= joker then
                 Cryptid.with_deck_effects(v, function(card2)
-                    Cryptid.misprintize(card2, { min = to_big(card.ability.extra.scale)*to_big(new_scale), max = to_big(card.ability.extra.scale)*to_big(new_scale)}, nil, true, "+")
+                    Cryptid.manipulate(card2, { value = to_big(card.ability.extra.scale)*to_big(new_scale), type="+"})
                 end)
                 card_eval_status_text(
                     v,

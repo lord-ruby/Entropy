@@ -374,16 +374,15 @@ local lowres = {
 	end,
 	on_apply = function(card)
 		Cryptid.with_deck_effects(card, function(card)
-			Cryptid.misprintize(card, {
-				min = 0.25,
-				max = 0.25,
+			Cryptid.manipulate(card, {
+				value = 0.25
 			}, nil, true)
 		end)
 	end,
 	on_remove = function(card)
 		Cryptid.with_deck_effects(card, function(card)
-			Cryptid.misprintize(card, { min = 1, max = 1 }, true)
-			Cryptid.misprintize(card)
+			Cryptid.manuipulate(card, { value = 1 })
+			Cryptid.manipulate(card)
 		end)
 	end,
 	entr_credits = {

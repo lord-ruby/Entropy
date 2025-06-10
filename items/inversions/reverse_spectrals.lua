@@ -1768,6 +1768,13 @@ function Cryptid.misprintize(card, ...)
     end
 end
 
+local manipulate = Cryptid.manipulate
+function Cryptid.manipulate(card, ...)
+    if not card.ability.entr_pure then
+        return manipulate(card, ...)
+    end
+end
+
 local transcend = {
     dependencies = {
         items = {

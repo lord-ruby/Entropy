@@ -17,7 +17,7 @@ if FinisherBossBlindStringMap then
                     local card = G.jokers.cards[i]
                     if not Card.no(card, "immutable", true) then
                         Cryptid.with_deck_effects(card, function(card)
-                            Cryptid.misprintize(card, { min = 1.666, max = 1.66 }, nil, true)
+                            Cryptid.manipulate(card, { value = 1.66 })
                         end)
                         check = true
                     end

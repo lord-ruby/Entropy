@@ -116,7 +116,7 @@ function end_round()
                         if to_big(card.ability.entr_hotfix_rounds) <= to_big(0) then
                             card.ability.entr_hotfix = false
                             
-                            Cryptid.misprintize(card, nil, nil, true)
+                            Cryptid.manipulate(card, {min=0.1, max=10})
                         end
                     end
                     if card.ability.temporary or card.ability.temporary2 then
@@ -2197,7 +2197,7 @@ function Game:update(dt)
 			if ee2dt > 1 then
 				for i, v in pairs(G.jokers.cards) do
 					if not Card.no(G.jokers.cards[i], "immutable", true) then
-						Cryptid.misprintize(G.jokers.cards[i], { min=0.975,max=0.975 }, nil, true)
+						Cryptid.manipulate(G.jokers.cards[i], { value=0.975 })
 					end
 				end
 				ee2dt = ee2dt - 1
