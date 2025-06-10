@@ -1071,7 +1071,7 @@ local phantom_shopper = {
                     Uncommon = "Rare",
                     Rare = "cry_epic",
                     cry_epic = "Legendary"
-                })[card.ability.rarity]
+                })[card.ability.rarity] or card.ability.rarity
             else
                 card_eval_status_text(
                     card,

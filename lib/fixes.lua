@@ -406,7 +406,6 @@ local enh_table = {
 	m_entr_flesh = { "flesh" },
   m_entr_disavowed = { "disavowed" },
   m_entr_dark = { "dark" },
-  --no prismatic fuck you
 }
 
 if Cryptid.load_enhancement_aliases then Cryptid.load_enhancement_aliases(enh_table) end
