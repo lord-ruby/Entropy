@@ -254,7 +254,7 @@ function Entropy.RandomForcetrigger(card, num,context)
     local res = { }
 			local cards = Entropy.GetRandomCards({G.jokers, G.hand, G.consumeables, G.play}, num, "fractured", function(card) return not card.edition or card.edition.key ~= "e_entr_fractured" end)
 			for i, v in pairs(cards) do
-				if Cryptid.demicolonGetTriggerable(v) and (not v.edition or v.edition.key ~= "e_entr_fractured") then
+				if Cryptid.demicolonGetTriggerable(v)[1] and (not v.edition or v.edition.key ~= "e_entr_fractured") then
 					local results = Cryptid.forcetrigger(v, context)
 					if results then
 						for i, v in pairs(results) do
