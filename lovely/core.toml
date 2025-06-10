@@ -1243,7 +1243,7 @@ position = "after"
 payload = '''
 local ability
 if self.ability.entr_pure then
-  ability = copy_table(card.ability)
+  ability = copy_table(self.ability)
 end
 '''
 match_indent = true
@@ -1271,5 +1271,30 @@ pattern = '''
 position = "at"
 payload = '''
 if next(find_joker("cry-Scalae")) or next(find_joker("cry-Double Scale")) or next(find_joker("entr-Anaptyxi")) then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Cryptid "lib/calculate.lua"]'''
+pattern = '''
+				if not dbl_info.scaler_base[info_i] then
+					dbl_info.scaler_base[info_i] = #dbl_info.scaler[info_i] == 2
+							and orig_ability[dbl_info.scaler[info_i][1]][dbl_info.scaler[info_i][2]]
+						or orig_ability[dbl_info.scaler[info_i][1]]
+				end
+'''
+position = "at"
+payload = '''
+				if not dbl_info.scaler_base[info_i] then
+          if not dbl_info.scaler[info_i] or not orig_ability
+          or not orig_ability[dbl_info.scaler[info_i][1] or ""]
+          or not dbl_info.scaler[info_i][2]
+          or not orig_ability[dbl_info.scaler[info_i][1]][dbl_info.scaler[info_i][2] or ""]
+           then return end
+					dbl_info.scaler_base[info_i] = #dbl_info.scaler[info_i] == 2
+							and orig_ability[dbl_info.scaler[info_i][1]][dbl_info.scaler[info_i][2]]
+						or orig_ability[dbl_info.scaler[info_i][1]]
+				end
 '''
 match_indent = true

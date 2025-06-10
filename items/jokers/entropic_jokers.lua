@@ -320,6 +320,11 @@ local anaptyxi = {
         end
         return new_scale
 	end,
+    cry_double_scale_info = function(self, dbl_info)
+        dbl_info.base = { { "extra", "scale" } }
+        dbl_info.scaler = { { "extra", "scale_mod" } }
+        dbl_info.scaler_base = dbl_info.scaler_base or { self.ability.extra.shadow_scale_mod }
+    end,
     entr_credits = {
         art = {"Lil. Mr. Slipstream"}
     }
