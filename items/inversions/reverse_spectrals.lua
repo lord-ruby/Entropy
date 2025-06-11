@@ -1785,6 +1785,9 @@ local weld = {
         select = 1,
     },
 	pos = {x=10,y=8},
+    hidden = true,
+    soul_rate = 0,
+    no_select = true,
     --soul_pos = { x = 5, y = 0},
     use = function(self, card, area, copier)
         Entropy.FlipThen(Entropy.GetHighlightedCards({G.jokers}, card), function(card)
@@ -1803,6 +1806,9 @@ local weld = {
             }
         }
     end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    }
 }
 
 return {

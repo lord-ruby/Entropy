@@ -1806,8 +1806,15 @@ local decs = {
 			c_entr_dispel = {
 				name = "Dispel",
 				text = {
-					"Banish {C:attention}#1#{} selected Joker#s<1>#",
+					"Banish {C:attention}#1#{} selected Joker#<s>1#",
 					"{C:inactive}(Bypasses Eternal){}"
+				}
+			},
+			c_entr_weld = {
+				name = "Weld",
+				text = {
+					"Apply {C:dark_edition}Negative{} and {C:purple,E:1}Aleph{}",
+					"to #1# selected Joker#<s>1#"
 				}
 			},
 			c_entr_cleanse = {

@@ -120,7 +120,8 @@ Entropy.RareInversions = {
   "c_entr_define",
   "c_entr_quasar",
   "c_entr_pulsar",
-  "c_entr_beyond"
+  "c_entr_beyond",
+  "c_entr_weld"
 }
 Entropy.FixedRecipes = {
     c_basec_basec_basec_basec_base = "j_joker",
