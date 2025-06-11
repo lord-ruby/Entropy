@@ -1800,6 +1800,8 @@ local weld = {
         return #cards > 0 and #cards <= card.ability.select
 	end,
     loc_vars = function(self, q, card)
+        q[#q+1] = {set="Other", key = "entr_aleph"}
+        q[#q+1] = G.P_CENTERS.e_negative
         return {
             vars = {
                 card.ability.select,

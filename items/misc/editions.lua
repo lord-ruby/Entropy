@@ -381,7 +381,7 @@ local lowres = {
 	end,
 	on_remove = function(card)
 		Cryptid.with_deck_effects(card, function(card)
-			Cryptid.manuipulate(card, { value = 1 })
+			Cryptid.manipulate(card, { value = 1 })
 			Cryptid.manipulate(card)
 		end)
 	end,

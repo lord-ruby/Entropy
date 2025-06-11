@@ -243,12 +243,36 @@ local null = {
     end,
 }
 
+local antithesis = {
+    key = "antithesis",
+    set = "Spectral",
+    order = 40,
+    object_type = "Consumable",
+    atlas = "consumables",
+    pos = {x=3,y=8},
+    dependencies = {
+        items = {
+          "set_entr_spectrals"
+        }
+    },
+    use = function(self, card, area, copier)
+        
+        for i = 1, #G.jokers.cards do
+            G.jokers.cards[i].ability.eternal = not G.jokers.cards[i].ability.eternal
+        end
+    end,
+    can_use = function(self, card)
+        return G.jokers and #G.jokers.cards > 0
+	end,
+}
+
 return {
     items = {
         flipside,
         shatter,
         destiny,
         lust,
-        null
+        null,
+        antithesis
     }
 }
