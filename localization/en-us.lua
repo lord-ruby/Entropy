@@ -619,7 +619,15 @@ local decs = {
 					"increase {C:attention}High Card's{} {C:dark_edition}operator{}",
 					"every {C:attention}#1#{} {C:inactive}[#2#]{} times this occurs"
 				}
-			}
+			},
+			j_entr_code_m = {
+				name = "M()",
+				text = {
+					"When a {C:green}Code{} Card is used",
+					"apply {C:dark_edition}Jolly{} to a",
+					"{C:attention}random{} Joker"
+				}
+			},
 		},
 		Blind = {
 			bl_entr_red = {
@@ -2100,6 +2108,13 @@ local decs = {
 					"in your hand, add {C:attention}#1#{}",
 					"random {C:attention}Enhanced Nil of Nil{}",
 					"card#<s>1# to your hand",
+				}
+			},
+			c_entr_antithesis = {
+				name = "Antithesis",
+				text = {
+					"Toggle {C:purple,E:1}Eternal{}",
+					"for {C:attention}all{} held Jokers"
 				}
 			},
 		},

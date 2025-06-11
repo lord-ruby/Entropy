@@ -1161,6 +1161,43 @@ local sunny_side_up = {
     }
 }
 
+local code_m = {
+    order = 22,
+    object_type = "Joker",
+    key = "code_m",
+    rarity = 3,
+    cost = 10,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+            "set_cry_code"
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 6, y = 3 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    pools = {
+        --["Sunny"] = true,
+        ["M"] = true
+    },
+    loc_vars = function(self, info_queue, center)
+        info_queue[#info_queue+1] = G.P_CENTERS.e_cry_m
+    end,
+    calculate = function(self, card, context)
+        if (context.using_consumeable and context.consumeable.config.center.set == "Code") or context.forcetrigger then
+            local cards = {}
+            for i, v in ipairs(G.jokers.cards) do
+                if not v.edition then cards[#cards+1] = v end
+            end
+            local jcard = pseudorandom_element(cards, pseudoseed("code_m"))
+            Entropy.FlipThen({jcard}, function(card)
+                card:set_edition("e_cry_m")
+            end)
+        end
+	end,
+}
 
 return {
     items = {
@@ -1185,6 +1222,7 @@ return {
         bossfight,
         sweet_tooth,
         phantom_shopper,
-        sunny_side_up
+        sunny_side_up,
+        code_m
     }
 }
