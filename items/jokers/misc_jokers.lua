@@ -1280,7 +1280,10 @@ local sunflower_seeds = {
 			return true
 		end
         return false
-    end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
 }
 
 return {
