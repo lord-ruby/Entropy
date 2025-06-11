@@ -628,6 +628,15 @@ local decs = {
 					"{C:attention}random{} Joker"
 				}
 			},
+
+			j_entr_sunflower_seeds = {
+				name = "Sunflower Seeds",
+				text = {
+					"After playing {C:attention}#1#{} {C:inactive}[#2#]{}",
+					"{C:gold}Ascended{} hands apply {C:dark_edition}Sunny{}",
+					"to a {C:attention}random{} Joker and {C:red}Self Destruct{}"
+				}
+			},
 		},
 		Blind = {
 			bl_entr_red = {

@@ -1179,7 +1179,6 @@ local code_m = {
     atlas = "jokers",
     demicoloncompat = true,
     pools = {
-        --["Sunny"] = true,
         ["M"] = true
     },
     loc_vars = function(self, info_queue, center)
@@ -1197,6 +1196,91 @@ local code_m = {
             end)
         end
 	end,
+}
+
+local sunflower_seeds = {
+    order = 23,
+    object_type = "Joker",
+    key = "sunflower_seeds",
+    rarity = 2,
+    cost = 6,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        needed = 3,
+        left = 3
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 7, y = 3 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    pools = {
+        --["Sunny"] = true,
+        ["Food"] = true
+    },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue+1] = G.P_CENTERS.e_entr_sunny
+        return {
+            vars = {
+                number_format(card.ability.needed),
+                number_format(card.ability.left)
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.after and ((G.GAME.current_round.current_hand.cry_asc_num or 0) + (G.GAME.asc_power_hand or 0)) ~= 0 then
+            card.ability.left = card.ability.left - 1
+            if card.ability.left <= 0 then
+                local cards = {}
+                for i, v in ipairs(G.jokers.cards) do
+                    if not v.edition and v ~= card then cards[#cards+1] = v end
+                end
+                local jcard = pseudorandom_element(cards, pseudoseed("code_m"))
+                Entropy.FlipThen({jcard}, function(card)
+                    card:set_edition("e_entr_sunny")
+                end)
+                G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound("tarot1")
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								G.jokers:remove_card(card)
+								card:remove()
+								card = nil
+								return true
+							end,
+						}))
+						return true
+					end,
+				}))
+				return {
+					message = localize("k_eaten_ex"),
+					colour = G.C.FILTER,
+				}
+            end
+            return {
+                message = number_format(card.ability.needed-card.ability.left).."/"..number_format(card.ability.needed),
+                colour = G.C.GOLD,
+            }
+        end
+	end,
+    in_pool = function()
+		if G.GAME.cry_asc_played and G.GAME.cry_asc_played > 0 then
+			return true
+		end
+        return false
+    end
 }
 
 return {
@@ -1223,6 +1307,7 @@ return {
         sweet_tooth,
         phantom_shopper,
         sunny_side_up,
-        code_m
+        code_m,
+        sunflower_seeds
     }
 }
