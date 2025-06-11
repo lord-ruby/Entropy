@@ -1334,7 +1334,7 @@ function level_up_hand(card, hand, instant, amount, ...)
         hand = "High Card"
     end
     local val = ref(card,hand,instant,amount, ...)
-    if card and and card.config and card.config.center and card.config.center.set == "Joker" then
+    if card and card.config and card.config.center and card.config.center.set == "Joker" then
         G.E_MANAGER:add_event(Event({
             func = function()
                 G.GAME.hands[hand].level = level

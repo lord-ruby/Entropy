@@ -815,7 +815,7 @@ local quasar = {
     }
 }
 
-local weld = {
+local dispel = {
     dependencies = {
         items = {
           "set_entr_inversions",
@@ -823,7 +823,7 @@ local weld = {
     },
     object_type = "Consumable",
     order = 2000 + 17,
-    key = "weld",
+    key = "dispel",
     set = "Omen",
     
     inversion = "c_cry_lock",
@@ -831,63 +831,25 @@ local weld = {
     atlas = "consumables",
     config = {
         select = 1,
-        discard = 1
     },
 	pos = {x=11,y=6},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card, area, copier)
-        for i = 1, card.ability.select do
-            local card = G.jokers.highlighted[i]
-            if card then
-                G.E_MANAGER:add_event(Event({
-                    trigger = "after",
-                    delay = 0.2,
-                    func = function()
-                        card:flip()
-                        return true
-                    end
-                }))
+        for i, v in pairs(Entropy.GetHighlightedCards({G.jokers}, card)) do
+            if not v.entr_aleph then
+                v:start_dissolve()
+                G.GAME.banned_keys[v.config.center.key] = true
             end
         end
-        for i = 1, card.ability.select do
-            local card = G.jokers.highlighted[i]
-            if card then
-                G.E_MANAGER:add_event(Event({
-                    trigger = "after",
-                    delay = 0.2,
-                    func = function()
-                        card.ability.eternal = true
-                        return true
-                    end
-                }))
-            end
-        end
-        for i = 1, card.ability.select do
-            local card = G.jokers.highlighted[i]
-            if card then
-                G.E_MANAGER:add_event(Event({
-                    trigger = "after",
-                    delay = 0.2,
-                    func = function()
-                        card:flip()
-                        return true
-                    end
-                }))
-            end
-        end
-        --G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.discard
-        --ease_discard(-card.ability.discard)
     end,
     can_use = function(self, card)
         local cards = Entropy.GetHighlightedCards({G.jokers}, card)
         return #cards > 0 and #cards <= card.ability.select
 	end,
     loc_vars = function(self, q, card)
-        q[#q+1] = {key = "eternal", set="Other"}
         return {
             vars = {
                 card.ability.select,
-                -card.ability.discard
             }
         }
     end,
@@ -1805,6 +1767,44 @@ local transcend = {
     end
 }
 
+local weld = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 36,
+    key = "weld",
+    set = "Omen",
+    
+    inversion = "c_entr_antithesis",
+
+    atlas = "consumables",
+    config = {
+        select = 1,
+    },
+	pos = {x=10,y=8},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card, area, copier)
+        Entropy.FlipThen(Entropy.GetHighlightedCards({G.jokers}, card), function(card)
+            card.ability.entr_aleph = true
+            card:set_edition("e_negative")
+        end)
+    end,
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.jokers}, card)
+        return #cards > 0 and #cards <= card.ability.select
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.select,
+            }
+        }
+    end,
+}
+
 return {
     items = {
         changeling,
@@ -1828,7 +1828,7 @@ return {
         entropy,
         quasar,
         fervour,
-        weld,
+        dispel,
         cleanse,
         fusion,
         substitute,
@@ -1845,6 +1845,7 @@ return {
         beyond,
         pure,
         purity,
-        transcend
+        transcend,
+        weld
     }
 }
