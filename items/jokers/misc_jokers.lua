@@ -1286,6 +1286,57 @@ local sunflower_seeds = {
     }
 }
 
+local tenner = {
+    order = 23,
+    object_type = "Joker",
+    key = "tenner",
+    rarity = 1,
+    cost = 4,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        dollars = 10
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 8, y = 3 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                number_format(card.ability.dollars),
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main or context.forcetrigger then
+            G.E_MANAGER:add_event(Event({
+                trigger = "after",
+                delay = 0.3,
+                blockable = false,
+                func = function()
+                    G.GAME.dollars = 0
+                    ease_dollars(10)
+                    return true
+                end
+            }))
+            return {
+                message = localize("$").." = "..number_format(card.ability.dollars),
+                colour = G.C.GOLD,
+            }
+        end
+	end,
+    entr_credits = {
+        art = {"missingnumber"},
+        idea = {"missingnumber", "cassknows"}
+    }
+}
+
+
 return {
     items = {
         surreal,
@@ -1311,6 +1362,7 @@ return {
         phantom_shopper,
         sunny_side_up,
         code_m,
-        sunflower_seeds
+        sunflower_seeds,
+        tenner
     }
 }

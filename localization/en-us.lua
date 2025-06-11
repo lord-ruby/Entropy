@@ -637,6 +637,12 @@ local decs = {
 					"to a {C:attention}random{} Joker and {C:red}Self Destruct{}"
 				}
 			},
+			j_entr_tenner = {
+				name = "Tenner",
+				text = {
+					"$ = {X:gold,C:white}#1#{}"
+				}
+			},
 		},
 		Blind = {
 			bl_entr_red = {
