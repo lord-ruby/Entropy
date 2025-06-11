@@ -1246,6 +1246,9 @@ local entr_define_dt = 0
 local entr_antireal_dt = 0
 local entr_xekanos_dt = 0
 local update_ref = Game.update
+Entropy.last_csl = nil
+Entropy.last_slots = nil
+local cdt = 0
 function Game:update(dt)
     if entr_xekanos_dt > 0.05 then
         entr_xekanos_dt = 0
@@ -1281,6 +1284,33 @@ function Game:update(dt)
         end
 	end
     entr_xekanos_dt = entr_xekanos_dt + dt
+    cdt = cdt + dt
+    if Entropy.DeckOrSleeve("ambisinister") and cdt > 0.05 and G.jokers then
+        if not Entropy.last_csl then Entropy.last_csl = G.hand.config.highlighted_limit end
+        if not Entropy.last_slots then Entropy.last_slots = (G.jokers.config.card_limit - #G.jokers.cards) end
+        local slots_diff = (G.jokers.config.card_limit - #G.jokers.cards) - Entropy.last_slots
+        local csl_diff = (G.hand.config.highlighted_limit) - Entropy.last_csl
+        if csl_diff ~= 0 then
+            G.jokers.config.card_limit = G.jokers.config.card_limit + csl_diff
+        end
+        if slots_diff ~= 0 then
+            G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + slots_diff
+            G.GAME.starting_params.discard_limit = G.GAME.starting_params.discard_limit + slots_diff
+            G.GAME.starting_params.play_limit = G.GAME.starting_params.play_limit + slots_diff
+        end
+        Entropy.last_slots = G.jokers.config.card_limit - #G.jokers.cards
+        G.hand.config.highlighted_limit = (G.jokers.config.card_limit - #G.jokers.cards)
+        G.GAME.starting_params.play_limit = (G.jokers.config.card_limit - #G.jokers.cards)
+        G.GAME.starting_params.discard_limit = (G.jokers.config.card_limit - #G.jokers.cards)
+        SMODS.hand_limit_strings.discard = G.GAME.starting_params.discard_limit ~= 5 and localize('b_limit') .. G.GAME.starting_params.discard_limit or ''
+        SMODS.hand_limit_strings.play = G.GAME.starting_params.play_limit ~= 5 and localize('b_limit') .. G.GAME.starting_params.play_limit or ''
+        Entropy.last_csl = G.hand.config.highlighted_limit
+    end
+    if not Entropy.DeckOrSleeve("ambisinister") and cdt > 0.05 then
+        Entropy.last_csl = nil
+        Entropy.last_slots = nil
+        cdt = 0
+    end
 end
 
 local card_drawref = Card.draw

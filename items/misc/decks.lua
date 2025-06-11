@@ -133,6 +133,25 @@ local containment = {
     config = { vouchers = { "v_magic_trick", "v_illusion" } },
   }
 
+
+  local ambisinister = {
+    object_type = "Back",
+    order = 7004,
+    dependencies = {
+      items = {
+        "set_entr_decks"
+      }
+    },
+    key = "ambisinister",
+    pos = { x = 5, y = 0 },
+    atlas = "decks",
+    apply = function()
+      G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots + 3
+      Entropy.last_csl = nil
+      Entropy.last_slots = nil
+    end
+  }
+
 Cryptid.edeck_sprites.seal.entr_cerulean = {atlas="entr_crypt_deck", pos = {x=0,y=0}}
 Cryptid.edeck_sprites.seal.entr_sapphire = {atlas="entr_crypt_deck", pos = {x=1,y=0}}
 Cryptid.edeck_sprites.seal.entr_verdant = {atlas="entr_crypt_deck", pos = {x=3,y=0}}
@@ -245,6 +264,18 @@ if CardSleeves then
         end
     end
     }
+
+  CardSleeves.Sleeve {
+    key = "ambisinister",
+    atlas = "sleeves",
+    pos = { x = 1, y = 0 },
+    config = {joker_slot=3},
+    apply = function()
+      G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots + 3
+      Entropy.last_csl = nil
+      Entropy.last_slots = nil
+    end
+  }
 end
 
 return {
@@ -252,6 +283,7 @@ return {
       twisted,
       redefined,
       containment,
-      destiny
+      destiny,
+      ambisinister
     }
   }
