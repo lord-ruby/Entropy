@@ -684,6 +684,7 @@ local fervour = {
     config = {
 
     },
+    no_select = true,
 	name = "entr-Fervour",
     soul_rate = 0, --probably only obtainable from flipsiding a gateway
     hidden = true, 
@@ -741,6 +742,7 @@ local quasar = {
     config = {
         level = 3
     },
+    no_select = true,
     soul_rate = 0,
     hidden = true, 
 	pos = {x=7,y=3},
@@ -1524,6 +1526,7 @@ local pulsar = {
     config = {
         level = 4
     },
+    no_select = true,
     soul_rate = 0,
     hidden = true, 
 	pos = {x=6,y=3},

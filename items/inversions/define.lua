@@ -7,6 +7,7 @@ local define = {
     dependencies = {
         items = {"set_entr_inversions"}
     },
+    no_select = true,
     atlas = "consumables",
     set = "Omen",
     hidden=true,
