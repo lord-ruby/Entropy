@@ -258,6 +258,29 @@ function SMODS.injectItems(...)
     function get_chipmult_sum(chips, mult)
         return Entropy.get_chipmult_score(chips, mult)
     end
+
+    if MP then
+        function MP.DECK.ban_card(card_id)
+            if card_id:sub(1, 1) == "j" then
+                MP.DECK.BANNED_JOKERS[card_id] = true
+            elseif card_id:sub(1, 1) == "c" then
+                MP.DECK.BANNED_CONSUMABLES[card_id] = true
+            elseif card_id:sub(1, 1) == "v" then
+                MP.DECK.BANNED_VOUCHERS[card_id] = true
+            elseif card_id:sub(1, 1) == "m" then
+                MP.DECK.BANNED_ENHANCEMENTS[card_id] = true
+            end
+        end
+        sendDebugMessage("Entropy compatibility detected", "MULTIPLAYER")
+        MP.DECK.ban_card("j_entr_ruby")
+        MP.DECK.ban_card("c_entr_new")
+        for i, b in pairs(SMODS.Consumable.obj_table) do
+            if b.set == "CBlind" then
+                MP.DECK.ban_card(b.key)
+            end
+        end
+        MP.DECK.ban_card("j_entr_xekanos")
+    end
 end
 
 if SMODS.Mods.DereJkr and SMODS.Mods.DereJkr.can_load then
