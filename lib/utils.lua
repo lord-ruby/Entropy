@@ -174,6 +174,42 @@ function Entropy.ModifyHandCard(modifications, cards)
     end
 end
 
+function Entropy.ModifyHandCardNF(modifications, cards)
+    return function()
+        for i, mcard in pairs(cards) do
+            G.E_MANAGER:add_event(Event({ --Add bonus chips from this card
+            trigger = 'before',
+            delay = delay,
+            func = function()
+                if modifications.suit or modifications.rank then
+                    SMODS.change_base(mcard, modifications.suit, modifications.rank)
+                end
+                if modifications.enhancement then
+                    mcard:set_ability(G.P_CENTERS[modifications.enhancement])
+                end
+                if modifications.edition then
+                    if type(modifications.edition) == "table" then
+                        mcard:set_edition(modifications.edition)
+                    else
+                        mcard:set_edition(G.P_CENTERS[modifications.edition])
+                    end
+                end
+                if modifications.seal then
+                    mcard:set_seal(modifications.seal)
+                end
+                if modifications.sticker then
+                    Entropy.ApplySticker(mcard, modifications.sticker)
+                end
+                if modifications.extra then
+                    for i, v in pairs(modifications.extra) do mcard.ability[i] = v end
+                end
+                mcard:juice_up()
+                return true
+            end}))
+        end
+    end
+end
+
 function Entropy.FindPreviousInPool(item, pool)
     for i, v in pairs(G.P_CENTER_POOLS[pool]) do
         if G.P_CENTER_POOLS[pool][i].key == item then
@@ -257,13 +293,9 @@ function Entropy.RandomForcetrigger(card, num,context)
 				if Cryptid.demicolonGetTriggerable(v)[1] and (not v.edition or v.edition.key ~= "e_entr_fractured") then
 					local results = Cryptid.forcetrigger(v, context)
 					if results then
-						for i, v in pairs(results) do
-							for i2, result in pairs(v) do
-								if type(result) == "number" or (type(result) == "table" and result.tetrate) then
-									res[i2] = Entropy.StackEvalReturns(res[i2], result, i2)
-								else
-									res[i2] = result
-								end
+						for i, v2 in pairs(results) do
+							for i2, result in pairs(v2) do
+                                SMODS.calculate_individual_effect({[i2] = result}, v, i2, result, false)
 							end
 						end
 					end
@@ -278,25 +310,17 @@ function Entropy.RandomForcetrigger(card, num,context)
 				elseif v.base.id and (not v.edition or v.edition.key ~= "e_entr_fractured") then
 					local results = eval_card(v, {cardarea=G.play,main_scoring=true, forcetrigger=true, individual=true})
 					if results then
-						for i, v in pairs(results) do
-							for i2, result in pairs(v) do
-								if type(result) == "number" or (type(result) == "table" and result.tetrate) then
-									res[i2] = Entropy.StackEvalReturns(res[i2], result, i2)
-								else
-									res[i2] = result
-								end
+						for i, v2 in pairs(results) do
+							for i2, result in pairs(v2) do
+                                SMODS.calculate_individual_effect({[i2] = result}, v, i2, result, false)
 							end
 						end
 					end
 					local results = eval_card(v, {cardarea=G.hand,main_scoring=true, forcetrigger=true, individual=true})
 					if results then
-						for i, v in pairs(results) do
-							for i2, result in pairs(v) do
-								if type(result) == "number" or (type(result) == "table" and result.tetrate) then
-									res[i2] = Entropy.StackEvalReturns(res[i2], result, i2)
-								else
-									res[i2] = result
-								end
+						for i, v2 in pairs(results) do
+							for i2, result in pairs(v2) do
+                                SMODS.calculate_individual_effect({[i2] = result}, v, i2, result, false)
 							end
 						end
 					end
@@ -310,8 +334,6 @@ function Entropy.RandomForcetrigger(card, num,context)
 					)
 				end
 			end
-			if res.p_dollars then ease_dollars(res.p_dollars) end
-			return res
 end
 
 function Entropy.GetRandomSet(has_parakmi)
