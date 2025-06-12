@@ -1406,7 +1406,8 @@ local decs = {
 				text = {
 					"Transform {C:red}#1#{} selected {C:attention}Joker#<s>1#{}",
 					"to the {C:red}Joker{} that appears",
-					"previously in the {C:red}collection{}"
+					"previously in the {C:red}collection{}",
+					"{C:inactive}(Currently: #2#){}"
 				}
 			},
 			c_entr_cookies = {
