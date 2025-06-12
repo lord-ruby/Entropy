@@ -1017,31 +1017,88 @@ local substitute = {
         local usable_vouchers = {}
         local voucher = pseudorandom_element(G.vouchers.cards, pseudoseed("substitute"))
         local tries = 100
+        local uvouchers = {}
         while (voucher.ability.eternal or voucher.ability.cry_absolute or Entropy.GetHigherVoucherTier(voucher.config.center.key) == nil) and tries > 0 do
             voucher = pseudorandom_element(G.vouchers.cards, pseudoseed("substitute"))
             tries = tries - 1
         end
-        voucher:unredeem()
-        voucher:start_dissolve()
+        uvouchers[#uvouchers+1] = voucher
         for i, v in pairs(voucher.config.center.requires or {}) do
             if Entropy.InTable(G.vouchers.cards, v) then
                 local voucher2 = G.vouchers.cards[Entropy.InTable(G.vouchers.cards, v)]
                 for i2, v2 in pairs(voucher2.config.center.requires or {}) do
                     if Entropy.InTable(G.vouchers.cards, v2) then
                         local voucher3 = G.vouchers.cards[Entropy.InTable(G.vouchers.cards, v2)]
-                        voucher3:unredeem()
-                        voucher3:start_dissolve()
+                        uvouchers[#uvouchers+1] = voucher3
                     end
                 end
-                voucher2:unredeem()
-                voucher2:start_dissolve()
+                uvouchers[#uvouchers+1] = voucher2
             end
         end
-        local card = create_card("Voucher", G.vouchers, nil, nil, nil, nil, nil, "entr_subby")
-        card:set_ability(G.P_CENTERS[Entropy.GetHigherVoucherTier(voucher.config.center.key) or "v_blank"])
-        card:add_to_deck()
-        G.vouchers:emplace(card)
         --Entropy.GetHigherVoucherTier(voucher.config.center.key) 
+
+        local area
+		if G.STATE == G.STATES.HAND_PLAYED then
+			if not G.redeemed_vouchers_during_hand then
+				G.redeemed_vouchers_during_hand =
+					CardArea(G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, { type = "play", card_limit = 5 })
+			end
+			area = G.redeemed_vouchers_during_hand
+		else
+			area = G.play
+		end
+
+        for i, v in pairs(uvouchers) do
+            local card2 = copy_card(v)
+            card2.ability.extra = copy_table(v.ability.extra)
+            if card2.facing == "back" then
+                card2:flip()
+            end
+            card2:start_materialize()
+            area:emplace(card2)
+            card2.cost = 0
+            card2.shop_voucher = false
+            local current_round_voucher = G.GAME.current_round.voucher
+            card2:unredeem()
+            G.GAME.current_round.voucher = current_round_voucher
+            G.E_MANAGER:add_event(Event({
+                trigger = "after",
+                delay = 0,
+                func = function()
+                    card2:start_dissolve()
+                    v:start_dissolve()
+                    return true
+                end,
+            }))
+        end
+        local area
+        if G.STATE == G.STATES.HAND_PLAYED then
+            if not G.redeemed_vouchers_during_hand then
+                G.redeemed_vouchers_during_hand =
+                    CardArea(G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, { type = "play", card_limit = 5 })
+            end
+            area = G.redeemed_vouchers_during_hand
+        else
+            area = G.play
+        end
+
+        local card = create_card("Voucher", G.vouchers, nil, nil, nil, nil, nil, "entr_subby")
+        card:set_ability(G.P_CENTERS[Entropy.GetHigherVoucherTier(voucher.config.center.key) or voucher.config.center.key] or G.P_CENTERS[voucher.config.center.key])
+        card:add_to_deck()
+        area:emplace(card)
+        card.cost = 0
+        card.shop_voucher = false
+        local current_round_voucher = G.GAME.current_round.voucher
+        card:redeem()
+        G.GAME.current_round.voucher = current_round_voucher
+        G.E_MANAGER:add_event(Event({
+            trigger = "after",
+            delay = 0,
+            func = function()
+                card:start_dissolve()
+                return true
+            end,
+        }))
     end,
     can_use = function(self, card)
         local usable_count = 0
