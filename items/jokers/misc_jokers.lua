@@ -1369,6 +1369,7 @@ local sticker_sheet = {
             local stickers = {
                 "eternal",
                 "banana",
+                "perishable",
                 "cry_rigged",
                 "cry_global_sticker",
                 "rental",
@@ -1376,14 +1377,13 @@ local sticker_sheet = {
                 "scarred",
                 "pinned",
                 "entr_pseudorandom",
-                "temporary",
-                "entr_yellow_sign",
-                "superego",
                 "entr_pure",
                 "desync"
             }
             local card = pseudorandom_element(G.play.cards, pseudoseed("sticker_sheet"))
-            card.ability[pseudorandom_element(stickers, pseudoseed("sticker_sheet_sticker"))] = true
+            local sticker = pseudorandom_element(stickers, pseudoseed("sticker_sheet_sticker"))
+            card.ability[sticker] = true
+            if sticker == "perishable" then card.ability.perish_tally = 5 end
             card:juice_up()
             return {
                 mult = card2.ability.per_sticker * Entropy.CountStickers()
