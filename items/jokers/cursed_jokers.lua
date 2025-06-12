@@ -1,6 +1,6 @@
 local jokerinyellow = {
     object_type = "Joker",
-    order = 2500+6,
+    order = -2500,
     dependencies = {
 		items = {
 			"set_cry_cursed",
@@ -138,7 +138,7 @@ local yellow_sign = {
         }
     },
     object_type = "Sticker",
-    order = 2500 + 6.66,
+    order = -2500,
     no_sticker_sheet = true,
     prefix_config = { key = false },
     badge_colour = HEX("ffa200"),
