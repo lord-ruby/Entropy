@@ -178,8 +178,7 @@ function Entropy.ModifyHandCardNF(modifications, cards)
     return function()
         for i, mcard in pairs(cards or G.hand.highlighted) do
             G.E_MANAGER:add_event(Event({ --Add bonus chips from this card
-            trigger = 'before',
-            delay = delay,
+            delay = 0,
             func = function()
                 if modifications.suit or modifications.rank then
                     SMODS.change_base(mcard, modifications.suit, modifications.rank)
@@ -295,7 +294,7 @@ function Entropy.RandomForcetrigger(card, num,context)
 					if results then
 						for i, v2 in pairs(results) do
 							for i2, result in pairs(v2) do
-                                SMODS.calculate_individual_effect({[i2] = result}, v, i2, result, false)
+                                SMODS.calculate_individual_effect({[i2] = result}, card, i2, result, false)
 							end
 						end
 					end
@@ -312,7 +311,7 @@ function Entropy.RandomForcetrigger(card, num,context)
 					if results then
 						for i, v2 in pairs(results) do
 							for i2, result in pairs(v2) do
-                                SMODS.calculate_individual_effect({[i2] = result}, v, i2, result, false)
+                                SMODS.calculate_individual_effect({[i2] = result}, card, i2, result, false)
 							end
 						end
 					end
@@ -320,7 +319,7 @@ function Entropy.RandomForcetrigger(card, num,context)
 					if results then
 						for i, v2 in pairs(results) do
 							for i2, result in pairs(v2) do
-                                SMODS.calculate_individual_effect({[i2] = result}, v, i2, result, false)
+                                SMODS.calculate_individual_effect({[i2] = result}, card, i2, result, false)
 							end
 						end
 					end
