@@ -176,7 +176,7 @@ end
 
 function Entropy.ModifyHandCardNF(modifications, cards)
     return function()
-        for i, mcard in pairs(cards) do
+        for i, mcard in pairs(cards or G.hand.highlighted) do
             G.E_MANAGER:add_event(Event({ --Add bonus chips from this card
             trigger = 'before',
             delay = delay,
