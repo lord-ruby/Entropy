@@ -1454,3 +1454,15 @@ function Entropy.GetPooledCenter(_type)
     end
     return center
 end
+
+function Entropy.CountStickers()
+    local total = 0
+    for i, v in pairs(SMODS.Sticker.obj_table) do
+        for i2, v2 in pairs(G.I.CARD) do
+            if v2.ability and v2.ability[i] then
+                total = total + 1
+            end
+        end
+    end
+    return total
+end

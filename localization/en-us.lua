@@ -643,6 +643,16 @@ local decs = {
 					"$ = {X:gold,C:white}#1#{}"
 				}
 			},
+			j_entr_sticker_sheet = {
+				name = "Sticker Sheet",
+				text = {
+					"Gives {C:mult}#1#{} Mult",
+					"for each applied {C:attention}sticker{}",
+					"Apply a {C:attention}random{} sticker to",
+					"a {C:attention}random{} scored card",
+					"{C:inactive}(Currently:{} {C:mult}+#2#{} {C:inactive}Mult){}"
+				}
+			},
 		},
 		Blind = {
 			bl_entr_red = {

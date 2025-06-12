@@ -1337,6 +1337,62 @@ local tenner = {
 }
 
 
+local sticker_sheet = {
+    order = 24,
+    object_type = "Joker",
+    key = "sticker_sheet",
+    rarity = 2,
+    cost = 5,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        per_sticker = 2
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 9, y = 3 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                number_format(card.ability.per_sticker),
+                number_format(card.ability.per_sticker * Entropy.CountStickers())
+            }
+        }
+    end,
+    calculate = function(self, card2, context)
+        if context.joker_main or context.forcetrigger then
+            local stickers = {
+                "eternal",
+                "banana",
+                "cry_rigged",
+                "cry_global_sticker",
+                "rental",
+                "entr_hotfix",
+                "scarred",
+                "pinned",
+                "entr_pseudorandom",
+                "temporary",
+                "entr_yellow_sign",
+                "superego",
+                "entr_pure",
+                "desync"
+            }
+            local card = pseudorandom_element(G.play.cards, pseudoseed("sticker_sheet"))
+            card.ability[pseudorandom_element(stickers, pseudoseed("sticker_sheet_sticker"))] = true
+            card:juice_up()
+            return {
+                mult = card2.ability.per_sticker * Entropy.CountStickers()
+            }
+        end
+	end,
+}
+
+
 return {
     items = {
         surreal,
@@ -1363,6 +1419,7 @@ return {
         sunny_side_up,
         code_m,
         sunflower_seeds,
-        tenner
+        tenner,
+        sticker_sheet
     }
 }
