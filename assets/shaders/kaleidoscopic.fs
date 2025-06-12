@@ -4,7 +4,7 @@
 	#define MY_HIGHP_OR_MEDIUMP mediump
 #endif
 
-extern MY_HIGHP_OR_MEDIUMP vec2 astral;
+extern MY_HIGHP_OR_MEDIUMP vec2 kaleidoscopic;
 extern MY_HIGHP_OR_MEDIUMP number dissolve;
 extern MY_HIGHP_OR_MEDIUMP number time;
 extern MY_HIGHP_OR_MEDIUMP vec4 texture_details;
@@ -103,15 +103,15 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	vec2 uv = (((texture_coords)*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba;
 	
     vec2 noise = vec2(
-        dot(floor(texture_coords*image_details+astral.yx*vec2(3.17634,10.186)), vec2(12.9898, 78.233)),
-        dot(floor(texture_coords*image_details+astral.yx*vec2(4.94356,7.234)), vec2(45.2345, 894.2341))
+        dot(floor(texture_coords*image_details+kaleidoscopic.yx*vec2(3.17634,10.186)), vec2(12.9898, 78.233)),
+        dot(floor(texture_coords*image_details+kaleidoscopic.yx*vec2(4.94356,7.234)), vec2(45.2345, 894.2341))
     );
     noise = fract(sin(noise) * 0.0); //143758.5453);
     
     vec2 offset = 1/image_details*vec2(1,0);
     vec4 tex = Texel(texture, texture_coords);
     tex.r = Texel(texture,texture_coords+offset).r;
-    tex.rgb += vec3(0.0,-0.1,0.2)-astral.x*0.1;
+    tex.rgb += vec3(0.0,-0.1,0.2)-kaleidoscopic.x*0.1;
     tex.rgb += max(0, pow(noise.x*noise.y,8));
 	number low = min(tex.r, min(tex.g, tex.b));
     number high = max(tex.r, max(tex.g, tex.b));
@@ -122,7 +122,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
 	vec4 hsl = HSL(vec4(tex.r*saturation_fac, tex.g*saturation_fac, tex.b, tex.a));
 
-	float t = astral.y*2.221 + time;
+	float t = kaleidoscopic.y*2.221 + time;
 	vec2 floored_uv = (floor((uv*texture_details.ba)))/texture_details.ba;
     vec2 uv_scaled_centered = (floored_uv - 0.5) * 50.;
 	

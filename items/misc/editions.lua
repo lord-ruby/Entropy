@@ -364,7 +364,7 @@ local lowres = {
 		return {vars={card and card.edition and card.edition.triggers or 2, card and card.edition and card.edition.factor or 0.25}}
     end,
     calculate = function(self, card, context)
-		if context.other_card == card and ((context.repetition and context.cardarea == G.play) or (context.retrigger_joker_check and not context.retrigger_joker)) then
+		if context.other_card == card and ((context.repetition and (context.cardarea == G.play or context.cardarea == G.hand)) or (context.retrigger_joker_check and not context.retrigger_joker)) then
 			return {
 				message = localize("k_again_ex"),
 				repetitions = card.edition.triggers,
@@ -390,6 +390,67 @@ local lowres = {
 	}
 }
 
+SMODS.Shader({
+    key="kaleidoscopic",
+    path="kaleidoscopic.fs"
+})
+
+
+local kaleidoscopic = {
+	object_type = "Edition",
+	order = 9000+4,
+    key="kaleidoscopic",
+    shader="kaleidoscopic",
+	sound = {
+		sound = "multhit1",
+		per = 1,
+		vol = 0.4,
+	},
+	config = {
+		cards = 2
+	},
+	dependencies = {
+        items = {
+          "set_entr_misc"
+        }
+    },
+	extra_cost = 5,
+	in_shop = true,
+	weight = 0.45,
+    badge_color = HEX("fca849"),
+    loc_vars = function(self,q,card)
+		return {vars={card and card.edition and card.edition.triggers or 2, card and card.edition and card.edition.cards or 2}}
+    end,
+    calculate = function(self, card, context)
+		if context.edition or context.main_scoring then
+			local cards = {}
+			for i, v in pairs(card.area.cards) do cards[#cards+1] = v; end
+			pseudoshuffle(cards, pseudoseed('kaleidoscopic_cards'))
+			local actual = {}
+			for i = 1, card.edition and card.edition.cards or 2 do
+				actual[i] = cards[i]
+			end
+			card.kcards = actual
+		end
+		if context.other_card then
+			local check = false
+			for i, v in pairs(card.kcards or {}) do
+				if context.other_card == v then check = true end
+			end
+			if check and ((context.repetition and (context.cardarea == G.play or context.cardarea == G.hand)) or (context.retrigger_joker_check and not context.retrigger_joker)) then
+				return {
+					message = localize("k_again_ex"),
+					repetitions = 1,
+					card = card,
+				}
+			end
+		end
+	end,
+	entr_credits = {
+		custom={key="shader",text="cassknows"}
+	}
+}
+
 return {
     items = {
         solar,
@@ -397,6 +458,7 @@ return {
 		sunny,
 		freaky,
 		neon,
-		lowres
+		lowres,
+		kaleidoscopic
     }
 }

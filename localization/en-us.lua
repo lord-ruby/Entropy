@@ -981,6 +981,13 @@ local decs = {
 					"{C:attention}X#2#{} Card values {C:inactive}(If Possible){}"
 				},
 			},
+			e_entr_kaleidoscopic = {
+				name = "Kaleidoscopic",
+				text = {
+					"Retrigger {C:attention}#1#{} random",
+					"cards in this cards area"
+				},
+			},
 		},
 		Back = {
 			b_entr_twisted = {
@@ -2900,6 +2907,7 @@ local decs = {
 			entr_solar = "Solar",
 			entr_neon = "Neon",
 			entr_lowres = "Low-Res",
+			entr_kaleidoscopic = "Kaleidoscopic",
 			entr_fractured = "Fractured",
 			entr_freaky = "Freaky",
 			entr_yellow_sign = "Yellow Sign",
