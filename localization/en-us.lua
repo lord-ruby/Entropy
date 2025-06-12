@@ -646,7 +646,7 @@ local decs = {
 			j_entr_sticker_sheet = {
 				name = "Sticker Sheet",
 				text = {
-					"Gives {C:mult}#1#{} Mult",
+					"Gives {C:mult}+#1#{} Mult",
 					"for each applied {C:attention}sticker{}",
 					"Apply a {C:attention}random{} sticker to",
 					"a {C:attention}random{} scored card",
