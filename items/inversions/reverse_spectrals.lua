@@ -58,6 +58,7 @@ local rend = {
     use = function(self, card)
         Entropy.FlipThen(G.hand.highlighted, function(card)
             card:set_ability(G.P_CENTERS.m_entr_flesh)
+            card:highlight()
         end)
     end,
     can_use = function(self, card)
@@ -339,6 +340,7 @@ local pact = {
             end
             v.ability.link = linktxt
             v:juice_up()
+            v:highlight()
         end
     end,
     can_use = function(self, card)
@@ -484,6 +486,7 @@ local rejuvenate = {
                 card3:set_ability(enh)
                 card3:set_seal(seal)
         end)
+        G.hand:unhighlight_all()
         ease_dollars(card2.ability.dollars)
     end,
     can_use = function(self, card)
@@ -533,6 +536,7 @@ local crypt = {
                 v:set_edition()
             end
         end)
+        G.jokers:unhighlight_all()
     end,
     can_use = function(self, card)
         local cards = Entropy.GetHighlightedCards({G.jokers}, card)
@@ -571,6 +575,7 @@ local charm = {
         for i, v in pairs(G.jokers.highlighted) do
             v:set_edition("e_cry_astral")
             v.ability.eternal = true
+            v:highlight()
         end
         local joker = nil
         local tries = 100
@@ -646,6 +651,7 @@ local entropy = {
             card:set_ability(G.P_CENTERS[enhancement])
             card:set_seal(seal)
             SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("entropy")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("entropy")))
+            card:highlight()
         end)
     end,
     can_use = function(self, card)
@@ -973,6 +979,7 @@ local fusion = {
                     card:set_ability(G.P_CENTERS[enhancement])
                 end
             end
+            card:highlight()
         end)
     end,
     can_use = function(self, card)
@@ -1105,6 +1112,7 @@ local evocation = {
         end
         G.GAME.round_resets.hands = G.GAME.round_resets.hands - card2.ability.hands
         ease_hands_played(-card2.ability.hands)
+        G.jokers:unhighlight_all()
     end,
     can_use = function(self, card)
         return G.jokers and #G.jokers.highlighted > 0 and #G.jokers.highlighted <= card.ability.num
@@ -1168,6 +1176,7 @@ local mimic = {
                 G.FUNCS.buy_from_shop({config={ref_table=newcard}})
             end
         end
+        orig:highlight()
     end,
     can_use = function(self, card)
         return #Entropy.GetHighlightedCards({G.shop_booster, G.shop_jokers, G.shop_vouchers, G.hand, G.consumeables, G.jokers, G.pack_cards}, card) == card.ability.num
@@ -1210,6 +1219,8 @@ local superego = {
             card.ability.superego_copies = 0
             card.debuff = true
             card.sell_cost = 0
+            card:juice_up()
+            card:highlight()
         end
     end,
     can_use = function(self, card)
@@ -1272,9 +1283,11 @@ local engulf = {
 	pos = {x=8,y=7},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
-        Entropy.FlipThen(Entropy.GetHighlightedCards({G.hand}, card), function(card, area)
-            card:set_edition("e_entr_solar")
-        end)
+        for i, v in pairs(G.hand.highlighted) do
+            v:set_edition("e_entr_solar")
+            v:juice_up()
+            v:highlight()
+        end
     end,
     can_use = function(self, card)
         local num = #Entropy.GetHighlightedCards({G.hand}, card) 
@@ -1373,6 +1386,7 @@ local entomb = {
             c.area = G.consumeables
             G.consumeables:align_cards()
         end
+        G.consumeables:unhighlight_all()
     end,
     can_use = function(self, card)
         return G.consumeables and #Entropy.GetHighlightedCards({G.consumeables}, card) > 0 and #Entropy.GetHighlightedCards({G.consumeables}, card) <= card.ability.num
@@ -1416,6 +1430,7 @@ local conduct = {
             card3:set_edition(edition)
             card3:add_to_deck()
         end)
+        Entropy.Unhighlight({G.hand, G.jokers, G.consumeables, G.pack_cards})
     end,
     can_use = function(self, card)
         return #Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables, G.pack_cards}, card) == 1 and Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables, G.pack_cards}, card)[1].edition
@@ -1637,6 +1652,7 @@ local regenerate = {
                     card.base.value == "entr_nilrank" and pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("regenerate"))
                 )
             end
+            card:highlight()
         end)
     end,
     can_use = function(self, card)
@@ -1695,9 +1711,11 @@ local purity = {
 	pos = {x=9,y=8},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card, area, copier)
-        Entropy.FlipThen(Entropy.GetHighlightedCards({G.jokers}, card), function(card)
-            Entropy.ApplySticker(card, "entr_pure")
-        end)
+        for i, v in pairs(G.jokers.highlighted) do
+            Entropy.ApplySticker(v, "entr_pure")
+            v:juice_up()
+        end
+        G.jokers:unhighlight_all()
     end,
     can_use = function(self, card)
         local num = #Entropy.GetHighlightedCards({G.jokers}, card)
@@ -1752,6 +1770,7 @@ local transcend = {
                 check_for_unlock({ type = "parakmi_transcend" })
             end
             card:set_ability(Entropy.GetPooledCenter(Entropy.GetRandomSet(true)))
+            card:highlight()
         end)
     end,
     can_use = function(self, card)
@@ -1790,10 +1809,12 @@ local weld = {
     no_select = true,
     --soul_pos = { x = 5, y = 0},
     use = function(self, card, area, copier)
-        Entropy.FlipThen(Entropy.GetHighlightedCards({G.jokers}, card), function(card)
+        for i, card in pairs(G.jokers.highlighted) do
             card.ability.entr_aleph = true
             card:set_edition("e_negative")
-        end)
+            card:juice_up()
+            card:highlight()
+        end
     end,
     can_use = function(self, card)
         local cards = Entropy.GetHighlightedCards({G.jokers}, card)

@@ -354,6 +354,7 @@ local constant = {
                 copy_card(G.hand.highlighted[1],v)
             end
         end
+        G.hand:unhighlight_all()
     end,
     can_use = function(self, card)
         return #Entropy.GetHighlightedCards({G.hand}, card) == 1
@@ -573,6 +574,7 @@ local fork = {
                         table.insert(G.playing_cards, card)
                         orig.area:emplace(card)
                         playing_card_joker_effects({ card })
+                        card:highlight()
                         return true
                     end,
                 }))
@@ -791,6 +793,8 @@ local invariant = {
     pos = {x=4,y=3},
     use = function(self, card, area, copier)
         Entropy.ApplySticker(Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card)[1], "entr_pinned")
+        Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card)[1]:juice_up()
+        Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card)[1]:highlight(false)
     end,
     can_use = function(self, card)
         return #Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card) > 0
@@ -1085,6 +1089,7 @@ local refactor = {
                 return true
             end,
         }))
+        G.jokers:unhighlight_all()
     end,
     can_use = function(self, card)
         local num = Entropy.GetHighlightedCards({G.jokers}, card)
@@ -1115,6 +1120,8 @@ local hotfix = {
     pos = {x=1,y=5},
     use = function(self, card, area, copier)
         Entropy.ApplySticker(Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card)[1], "entr_hotfix")
+        Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card)[1]:juice_up()
+        Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card)[1]:highlight()
     end,
     can_use = function(self, card)
         return #Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card) == 1
@@ -1196,6 +1203,8 @@ local desync_card = {
     pos = {x=0,y=5},
     use = function(self, card, area, copier)
         Entropy.ApplySticker(Entropy.GetHighlightedCards({G.jokers, G.consumeables}, card)[1], "desync")
+        Entropy.GetHighlightedCards({G.jokers, G.consumeables}, card)[1]:juice_up()
+        Entropy.GetHighlightedCards({G.jokers, G.consumeables}, card)[1]:highlight()
     end,
     can_use = function(self, card)
         return #Entropy.GetHighlightedCards({G.jokers, G.consumeables}, card) == 1
@@ -1312,6 +1321,7 @@ local multithread = {
             c:add_to_deck()
             c.ability.temporary = true
             G.hand:emplace(c)
+            v:highlight()
         end 
     end,
     can_use = function(self, card)
@@ -1432,7 +1442,11 @@ local local_card = {
         select = 3
     },
     use = function(self, card, area, copier)
-        Entropy.FlipThen(G.hand.highlighted, function(card) card.ability.temporary = true end)
+        for i, card in pairs(G.hand.highlighted) do
+            card.ability.temporary = true
+            card:juice_up()
+            card:highlight()
+        end
     end,
     can_use = function(self, card)
         return G.hand and #Entropy.GetHighlightedCards({G.hand}, nil, card) > 0 and #Entropy.GetHighlightedCards({G.hand}, nil, card) <= card.ability.select
@@ -1477,6 +1491,7 @@ local badarg = {
         update_hand_text({delay=0}, {handname = "", chips="bad", mult="arg"})
         G.boss_throw_hand = true
         G.bad_arg = true
+        G.hand:unhighlight_all()
     end,
     can_use = function(self, card)
         local num = G.PROFILES[G.SETTINGS.profile].cry_none and -1 or 0

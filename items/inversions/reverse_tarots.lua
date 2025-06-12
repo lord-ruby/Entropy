@@ -257,6 +257,7 @@ local servant = {
                     }))
                 end
             end
+            v:highlight()
         end
     end,
     can_use = function(self, card)
@@ -320,6 +321,7 @@ local heretic = {
                 local rank = modification == "Rank" and pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("heretic_rank"))
                 SMODS.change_base(card, suit, rank)
             end
+            card:highlight()
         end)
     end,
     can_use = function(self, card)
@@ -375,6 +377,7 @@ local feud = {
             if to_big(bonus_chips) > to_big(0) then
                 card.ability.bonus = bonus_chips
             end
+            card:highlight()
         end)
     end,
     can_use = function(self, card)
@@ -413,9 +416,11 @@ local scar = {
     pos = {x=7, y = 0},
     use = function(self, card, area, copier)
         local cards = Entropy.GetHighlightedCards({G.hand}, card)
-        Entropy.FlipThen(cards, function(card)
-            Entropy.ApplySticker(card, "scarred")
-        end)
+        for i, v in pairs(cards) do
+            Entropy.ApplySticker(v, "scarred")
+            v:juice_up()
+        end
+        G.hand:unhighlight_all()
     end,
     can_use = function(self, card)
         local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card)
@@ -590,6 +595,7 @@ local whetstone = {
                     end
                 end
             end)
+            G.hand:unhighlight_all()
         else
             local used_tarot = card2
             G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
@@ -649,14 +655,16 @@ local endurance = {
     inversion = "c_strength",
     use = function(self, card2)
         local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card)
-        Entropy.FlipThen(cards, function(card)
+        for i, card in pairs(cards) do
             card.ability.banana = true
             if not Card.no(card, "immutable", true) then
                 Cryptid.with_deck_effects(card, function(card3)
                     Cryptid.manipulate(card3, { value=card2.ability.factor })
                 end)
             end
-        end)
+            card:juice_up()
+            card:highlight()
+        end
     end,
     can_use = function(self, card)
         local num = #Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card)
@@ -751,6 +759,7 @@ local statue = {
                     card:set_ability(G.P_CENTERS.m_stone)
                     card:set_edition()
                     card.seal = nil
+                    card:highlight()
                 end)
                 return true
             end
@@ -1249,6 +1258,7 @@ local imp = {
         local cards = Entropy.GetHighlightedCards({G.hand}, card)
         Entropy.FlipThen(cards, function(card)
             card:set_ability(G.P_CENTERS.m_entr_dark)
+            card:highlight()
         end)
             
     end,
@@ -1299,6 +1309,7 @@ local integrity = {
             card:set_edition(edition)
             card:set_seal(seal)
             card:set_ability(G.P_CENTERS.c_base)
+            card:highlight()
         end)
             
     end,
@@ -1355,6 +1366,7 @@ local rift = {
         end
         local card = pseudorandom_element(cards, pseudoseed("rift_card"))
         Entropy.FlipThen({card}, function(card)
+            card:juice_up()
             card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
                 return G.GAME.banned_keys[e.key] or e.no_doe
             end).key)
