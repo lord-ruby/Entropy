@@ -46,6 +46,7 @@ function Entropy.RegisterBlinds()
             end,
             can_use = function(self, card)
                 if not G.GAME.round_resets then return false end
+                if G.STATE ~= G.STATES.BLIND_SELECT and G.STATE ~= G.STATES.SELECTING_HAND then return false end
                 for i, v in pairs(G.GAME.round_resets.blind_states or {}) do
                     if v == "Select" or (not SMODS.Mods.NotJustYet or (not SMODS.Mods.NotJustYet.can_load and v == "Current")) then return true end
                 end
@@ -108,6 +109,7 @@ function Entropy.RegisterBlinds()
                 end,
                 can_use = function(self, card)
                     if not G.GAME.round_resets then return false end
+                    if G.STATE ~= G.STATES.BLIND_SELECT and G.STATE ~= G.STATES.SELECTING_HAND then return false end
                     for i, v in pairs(G.GAME.round_resets.blind_states or {}) do
                         if v == "Select" or (not SMODS.Mods.NotJustYet or (not SMODS.Mods.NotJustYet.can_load and v == "Current")) then return true end
                     end
