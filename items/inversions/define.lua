@@ -152,23 +152,12 @@ end
 G.FUNCS.define_apply = function()
     local current_card
     local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables, G.jokers, G.shop_booster, G.pack_cards, G.shop_jokers, G.shop_vouchers})
-    local entered_card = G.ENTERED_CARD
+    local entered_card = Cryptid.pointergetalias(G.ENTERED_CARD)
 
     G.PREVIOUS_ENTERED_CARD = G.ENTERED_CARD
     for i, v in pairs(Cryptid.pointeralias) do
         for i2, a in pairs(v or {}) do
             if entered_card == a then entered_card = i end
-        end
-    end
-    for i, v in pairs(G.P_CENTERS) do
-        if v.name and string.lower(entered_card) == string.lower(v.name) then
-            current_card = i
-        end
-        if string.lower(entered_card or "") == string.lower(i) then
-            current_card = i
-        end
-        if string.lower(entered_card or "") == string.lower(localize({ type = "name_text", set = v.set, key = i })) then
-            current_card = i
         end
     end
     --Cryptid.pointerblisttype.rarity[]
