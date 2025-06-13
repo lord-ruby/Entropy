@@ -366,7 +366,7 @@ local metamorphosis = {
     atlas = "jokers",
     loc_vars = function(self, info_queue, card2)
         if not card2.ability.immutable then card2.ability.immutable = {} end
-        if not card2.ability.immutable.rank then
+        if not card2.ability.immutable.rank and G.deck then
             local card = pseudorandom_element(G.deck.cards, pseudoseed("metamorphosis"))
             if not card then card = pseudorandom_element(G.hand.cards, pseudoseed("metamorphosis")) end
             if not card then card = pseudorandom_element(G.play.cards, pseudoseed("metamorphosis")) end

@@ -1393,6 +1393,70 @@ local sticker_sheet = {
 }
 
 
+local fourbit = {
+    order = 25,
+    object_type = "Joker",
+    key = "fourbit",
+    rarity = 2,
+    cost = 5,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        needed = 16,
+        left = 16
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 1, y = 4 },
+    pixel_size = { w = 53, h = 53 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                number_format(card.ability.needed),
+                number_format(card.ability.left)
+            }
+        }
+    end,
+    calculate = function(self, card2, context)
+        if context.joker_main and not context.blueprint then
+            local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
+            G.FUNCS.get_poker_hand_info(G.play.cards)
+            for i, card in pairs(scoring_hand) do
+                card2.ability.left = card2.ability.left - 1
+                if to_big(card2.ability.left) <= to_big(0) then
+                    card2.ability.left = card2.ability.needed
+                    Entropy.FlipThen({card}, function(card)
+                        card:set_ability(Entropy.Get4bit())
+                    end)
+                    card_eval_status_text(
+                        card2,
+                        "extra",
+                        nil,
+                        nil,
+                        nil,
+                        { message = localize("k_upgrade_ex"), colour = G.C.GREEN }
+                    )
+                else
+                    card_eval_status_text(
+                        card2,
+                        "extra",
+                        nil,
+                        nil,
+                        nil,
+                        { message = number_format(card2.ability.needed - card2.ability.left) .."/"..number_format(card2.ability.needed), colour = G.C.GREEN }
+                    )
+                end
+            end
+        end
+	end,
+}
+
+
 return {
     items = {
         surreal,
@@ -1420,6 +1484,7 @@ return {
         code_m,
         sunflower_seeds,
         tenner,
-        sticker_sheet
+        sticker_sheet,
+        fourbit
     }
 }

@@ -662,6 +662,15 @@ local decs = {
 					"rank changes every hand"
 				}
 			},
+
+			j_entr_fourbit = {
+				name = "4Bit Joker",
+				text = {
+					"Every {C:attention}#1#{}th {C:inactive}[#2#]{} Scoring Card",
+					"has a {C:attention}random{} card applied",
+					"as an {C:attention}enhancement{}"
+				}
+			},
 		},
 		Blind = {
 			bl_entr_red = {

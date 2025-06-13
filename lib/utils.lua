@@ -1495,3 +1495,15 @@ function Entropy.Unhighlight(areas)
         v:unhighlight_all()
     end
 end
+
+function Entropy.Get4bit()
+    local key = ""
+    local ptype = pseudorandom_element({
+        "Booster",
+        "Voucher",
+        "Tarot",
+        "Joker",
+        "Consumeable",
+    }, pseudoseed("4bit"))
+    return Entropy.GetPooledCenter(ptype)
+end

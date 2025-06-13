@@ -8,7 +8,7 @@ function Entropy.RegisterBlinds()
         blinds[#blinds+1] = {
             key = "entr_"..i,
             set = "CBlind",
-            
+            pixel_size = { w = 32, h = 32 },
             pos = {x=9999,y=9999},
             config = {
                 blind = i,
@@ -84,7 +84,7 @@ function Entropy.RegisterBlinds()
                 key = "entr_"..i,
                 set = "CBlind",
                 atlas="entr_consumables",
-                
+                pixel_size = { w = 32, h = 32 },
                 pos = {x=9999,y=9999},
                 config = {
                     blind = i,
