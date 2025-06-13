@@ -3100,3 +3100,11 @@ if SMODS.Mods.Multipack and SMODS.Mods.Multipack.can_load then
         end,
     }, true)
 end
+
+local card_flipref = Card.flip
+function Card:flip(...)
+    local mod = G.GAME.modifiers.entr_twisted
+    G.GAME.modifiers.entr_twisted = nil
+    card_flipref(self, ...)
+    G.GAME.modifiers.entr_twisted = mod
+end
