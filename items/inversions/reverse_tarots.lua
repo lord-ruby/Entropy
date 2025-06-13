@@ -1,30 +1,3 @@
--- 0 - The Fool -     The Master (Coded)
--- 1 - The Magician -    The Mason
--- 2 - The High Priestess -    The Oracle
--- 3 - The Empress -    The Princess
--- 4 - The Emperor -    The Servant (Coded)
--- 5 - The Hierophant -    The Heretic
--- 6 - The Lovers -     The Feud
--- 7 - The Chariot -     The Scar
--- 8 - Justice -     The Dagger
--- 9 - The Hermit -     The Earl
--- 10 - The Wheel of Fortune -   Whetstone (idk about this one) (Coded)
--- 11 - Strength -     Endurance (Coded)
--- 12 - The Hanged Man -    The Advisor
--- 13 - Death -    The Statue (Coded)
--- 14 - Temperance -    The Feast (Coded)
--- 15 - The Devil -     The Companion
--- 16 - The Tower -   The Village
--- 17 - The Star -    The Ocean
--- 18 - The Moon -     The Forest
--- 19 - The Sun -     The Mountain --cassknows & lfmoth
--- 20 - Judgement -     Forgiveness
--- 21 - The World -     The Tent
--- 22 - The Eclipse -     Penumbra
--- 23 - Blessing -     The Prophecy
--- 24 - The Seraph -     The Imp --lfmoth
--- 25 - Instability -     Integrity
--- 32 - The Automaton -     The Mallet
 local master = {
     key = "master",
     set = "Fraud",
@@ -1234,7 +1207,8 @@ local prophecy = {
         }
     end,
     entr_credits = {
-        idea = {"cassknows"}
+        idea = {"cassknows"},
+        art = {"Grahkon"}
     }
 	
 }
