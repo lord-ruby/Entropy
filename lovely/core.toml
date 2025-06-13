@@ -1073,6 +1073,14 @@ if (Entropy.FlipsideInversions[_c.key] or (_c.ability and Entropy.FlipsideInvers
     info_queue[#info_queue+1] = {key = "inversion_allowed", set = "Other", vars = {"???"}}
   end
 end
+  if Entropy.DeckOrSleeve("doc") then
+    if _c.key == "c_entr_beyond" then
+      info_queue[#info_queue+1] = {set="Other", key="no_downside_cond"}
+    end
+    if _c.key == "c_cry_gateway" then
+      info_queue[#info_queue+1] = {set="Other", key="no_downside"}
+    end
+  end
 '''
 match_indent = true
 

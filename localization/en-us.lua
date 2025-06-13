@@ -1027,13 +1027,12 @@ local decs = {
 			b_entr_doc = {
 				name = "Deck of Containment",
 				text =  {
-								"{C:entr_entropic}Beyond{} has higher chances of showing",
-								"up and {X:blue,C:white}Chips{} are lowered",
-								"based on how high your {X:dark_edition,C:white}Entropy{} is",
 								"Gain {X:dark_edition,C:white}Entropy{} when playing",
-								"Editioned/Enhanced cards, secret hands",
-								"or using consumables"
-							}
+								"Editioned/Enhanced cards, secret hands or",
+								"using consumables. {C:entr_entropic}Beyond{}, {C:cry_exotic}Gateway{}",
+								"and {C:spectral}Spectral Packs{} show up more often",
+								"chips are lowered based on {X:dark_edition,C:white}Entropy{}"
+						}
 			},
 			b_entr_crafting = {
 				name = "Deck of Destiny",
@@ -1081,12 +1080,12 @@ local decs = {
 			sleeve_entr_doc = {
 				name = "Anomalous Sleeve",
 				text = {
-					"{C:entr_entropic}Beyond{} has higher chances of showing up and",
-					"{X:blue,C:white}Chips{} are lowered based on how high",
-					"your {X:dark_edition,C:white}Entropy{} is, Gain {X:dark_edition,C:white}Entropy{}",
-					"when playing Editioned/Enhanced cards, secret hands",
-					"or using consumables"
-				},
+					"Gain {X:dark_edition,C:white}Entropy{} when playing",
+					"Editioned/Enhanced cards, secret hands or",
+					"using consumables. {C:entr_entropic}Beyond{}, {C:cry_exotic}Gateway{}",
+					"and {C:spectral}Spectral Packs{} show up more often",
+					"chips are lowered based on {X:dark_edition,C:white}Entropy{}"
+				}
 			},
 			sleeve_entr_butterfly = {
 				name = "Butterfly Sleeve",
@@ -2410,6 +2409,20 @@ local decs = {
 				text = {
 					"Can be {C:red}Inverted{}",
 					"into {C:red}#1#{}"
+				}
+			},
+			no_downside = {
+				name = "Downside Negated",
+				text = {
+					"Downside is Removed",
+				}
+			},
+			no_downside_cond = {
+				name = "Downside Negated",
+				text = {
+					"Downside is Removed",
+					"When {X:dark_edition,C:white}Entropy{}",
+					"is higher than {C:attention}200{}"
 				}
 			},
 			p_entr_twisted_pack_normal = { 
