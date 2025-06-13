@@ -3074,3 +3074,29 @@ function Cryptid.pointergetblist(target)
     end
     return ref(target)
 end
+
+if SMODS.Mods.Multipack and SMODS.Mods.Multipack.can_load then
+    SMODS.Booster:take_ownership("p_mupack_favoritepack", {
+        create_card = function(self, card, i)
+            local used_cards = {}
+            local max_amt = 0
+            for k, v in pairs(G.PROFILES[G.SETTINGS.profile]['joker_usage']) do
+                if G.P_CENTERS[k] and G.P_CENTERS[k].discovered and not G.P_CENTERS[k].no_doe and not G.P_CENTERS[k].no_collection then
+                used_cards[#used_cards + 1] = {count = v.count, key = k}
+                if v.count > max_amt then max_amt = v.count end
+                end
+            end
+    
+            table.sort(used_cards, function (a, b) return a.count > b.count end )
+            
+            local _card
+            local v = used_cards[i]
+                if v then 
+                    _card = {set = "Joker", area = G.pack_cards, skip_materialize = true, soulable = false, key = v.key, key_append = "fav1"}
+                else
+                    _card = {set = "Joker", area = G.pack_cards, skip_materialize = true, soulable = false, key_append = "fav2"}
+                end
+            return _card
+        end,
+    }, true)
+end
