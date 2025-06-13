@@ -403,6 +403,9 @@ local metamorphosis = {
             end
         end
     end,
+    entr_credits = {
+        art = {"Lfmoth"}
+    }
 }
 
 return {

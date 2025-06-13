@@ -778,8 +778,9 @@ local statue = {
             }
         }
     end,
-    
-	
+    entr_credits = {
+        art = {"Lfmoth"}
+    }
 }
 
 local feast = {
@@ -1041,7 +1042,7 @@ local mountain = {
         }
     end,
     entr_credits = {
-        art = {"lfmoth"}
+        art = {"Lfmoth"}
     }
 }
 
@@ -1277,7 +1278,7 @@ local imp = {
     
 	
     entr_credits = {
-        art = {"lfmoth"}
+        art = {"Lfmoth"}
     }
 }
 
