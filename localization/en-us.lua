@@ -653,6 +653,15 @@ local decs = {
 					"{C:inactive}(Currently:{} {C:mult}+#2#{} {C:inactive}Mult){}"
 				}
 			},
+
+			j_entr_metamorphosis = {
+				name = "Metamorphosis",
+				text = {
+					"Main Joker {C:attention}scoring{} effects",
+					"instead trigger when {C:attention}#1#{}'s are scored",
+					"rank changes every hand"
+				}
+			},
 		},
 		Blind = {
 			bl_entr_red = {

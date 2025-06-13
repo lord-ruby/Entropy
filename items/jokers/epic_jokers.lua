@@ -340,6 +340,70 @@ local jokezmann_brain = {
     }
 }
 
+local metamorphosis = {
+    order = 107,
+    object_type = "Joker",
+    key = "metamorphosis",
+    rarity = "cry_epic",
+    cost = 15,
+    
+    dependencies = {
+        items = {
+            "set_cry_epic"
+        }
+    },
+    eternal_compat = true,
+    demicoloncompat = true,
+    pos = { x = 0, y = 4 },
+    atlas = "jokers",
+    config = {
+        extra = {
+            immutable = {
+                rank = nil
+            }
+        }
+    },
+    atlas = "jokers",
+    loc_vars = function(self, info_queue, card2)
+        if not card2.ability.immutable.rank then
+            local card = pseudorandom_element(G.deck.cards, pseudoseed("metamorphosis"))
+            if not card then card = pseudorandom_element(G.hand.cards, pseudoseed("metamorphosis")) end
+            if not card then card = pseudorandom_element(G.play.cards, pseudoseed("metamorphosis")) end
+            if card then
+                card2.ability.immutable.rank = card:get_id()
+            end
+        end
+        if G.jokers then
+            local ranks = {
+                [14] = "Ace",
+                [13] = "King",
+                [12] = "Queen",
+                [11] = "Jack"
+            }
+            return {
+                vars = {
+                    G.localization.misc.ranks[ranks[card2.ability.immutable.rank] or tostring(card2.ability.immutable.rank) or ""]
+                }
+            }
+        end
+        return {
+            vars = {
+                "[Rank]"
+            }
+        }
+    end,
+    calculate = function (self, card2, context)
+        if context.after then
+            local card = pseudorandom_element(G.deck.cards, pseudoseed("metamorphosis"))
+            if not card then card = pseudorandom_element(G.hand.cards, pseudoseed("metamorphosis")) end
+            if not card then card = pseudorandom_element(G.play.cards, pseudoseed("metamorphosis")) end
+            if card then
+                card2.ability.immutable.rank = card:get_id()
+            end
+        end
+    end,
+}
+
 return {
     items = {
         burnt_m,
@@ -348,6 +412,7 @@ return {
         trapezium,
         antireal,
         jokezmann_brain,
-        metanoia
+        metanoia,
+        metamorphosis
     }
 }
