@@ -1501,9 +1501,11 @@ function Entropy.Get4bit()
     local ptype = pseudorandom_element({
         "Booster",
         "Voucher",
-        "Tarot",
         "Joker",
         "Consumeable",
     }, pseudoseed("4bit"))
+    if ptype == "Consumeable" then
+        return G.P_CENTERS[Cryptid.random_consumable("4bit_c", nil, "c_fool").key]
+    end
     return Entropy.GetPooledCenter(ptype)
 end
