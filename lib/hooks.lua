@@ -143,6 +143,10 @@ function end_round()
     if G.GAME.blind_on_deck == "Boss" then
         G.GAME.entr_princess = nil
     end
+    G.E_MANAGER:add_event(Event({
+        trigger = 'immediate',
+        func = (function() G.GAME.current_round.current_hand.cry_asc_num = 0;G.GAME.current_round.current_hand.cry_asc_num_text = '';return true end)
+      }))
 end
 
 local set_debuffref = Card.set_debuff
