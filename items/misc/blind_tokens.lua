@@ -8,8 +8,8 @@ function Entropy.RegisterBlinds()
         blinds[#blinds+1] = {
             key = "entr_"..i,
             set = "CBlind",
-            pixel_size = { w = 32, h = 32 },
-            pos = {x=9999,y=9999},
+            pixel_size = { w = 34, h = 34 },
+            display_size = { w = 68, h = 68 },
             config = {
                 blind = i,
                 pos = v.pos,
@@ -23,7 +23,8 @@ function Entropy.RegisterBlinds()
             },
             weight = 0,
             no_doe = true,
-            atlas="entr_consumables",
+            blpos = v.pos,
+            blatlas = v.atlas,
             --soul_pos = { x = 5, y = 0},
             in_pool = function()
                 return false
@@ -55,17 +56,8 @@ function Entropy.RegisterBlinds()
                 q[#q+1]={set="Blind",key=self.config.blind}
             end,
             set_sprites = function(self, card, front)
-                card.children.floating_sprite = AnimatedSprite(
-                    card.T.x+0.7,
-                    card.T.y+0.7,
-                    1.4 * (card.no_ui and 1.1*1.2 or 1),
-                    1.4 * (card.no_ui and 1.1*1.2 or 1),
-                    G.ANIMATION_ATLAS["blind_chips"],
-                    self.config.pos
-                )
-                card.children.floating_sprite.role.draw_major = card
-                card.children.floating_sprite.states.hover.can = false
-                card.children.floating_sprite.states.click.can = false
+                card.children.center.atlas = G.ANIMATION_ATLAS["blind_chips"]
+                card.children.center:set_sprite_pos(self.blpos)
             end,
         }
     end
@@ -83,9 +75,11 @@ function Entropy.RegisterBlinds()
                 },
                 key = "entr_"..i,
                 set = "CBlind",
-                atlas="entr_consumables",
-                pixel_size = { w = 32, h = 32 },
-                pos = {x=9999,y=9999},
+                --atlas="entr_consumables",
+                pixel_size = { w = 34, h = 34 },
+                display_size = { w = 68, h = 68 },
+                blpos = v.pos,
+                blatlas = v.atlas,
                 config = {
                     blind = i,
                     pos = v.pos,
@@ -126,17 +120,9 @@ function Entropy.RegisterBlinds()
                 entr_credits = v.entr_credits,
                 cry_credits = v.cry_credits,
                 set_sprites = function(self, card, front)
-                    card.children.floating_sprite = AnimatedSprite(
-                        card.T.x+0.7,
-                        card.T.y+0.7,
-                        1.4 * (card.no_ui and 1.1*1.2 or 1),
-                        1.4 * (card.no_ui and 1.1*1.2 or 1),
-                        G.ANIMATION_ATLAS[self.config.atlas or ""] or G.ANIMATION_ATLAS["blind_chips"],
-                        self.config.pos
-                    )
-                    card.children.floating_sprite.role.draw_major = card
-                    card.children.floating_sprite.states.hover.can = false
-                    card.children.floating_sprite.states.click.can = false
+                    card.children.center.sprite_pos = self.blpos
+                    card.children.center:reset()
+                    card.children.center.atlas = G.ANIMATION_ATLAS[self.blatlas] or G.ANIMATION_ATLAS["blind_chips"]
                 end,
                 set_badges = function(self, card, badges)
                     if v.original_mod then badges[#badges+1] = create_badge(v.original_mod.name, v.original_mod.badge_colour, G.C.WHITE, 1 ) end
