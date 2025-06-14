@@ -1141,7 +1141,9 @@ local penumbra = {
         }
     end,
     
-	
+    entr_credits = {
+        art = {"Grahkon"}
+    }
 }
 
 local prophecy = {
