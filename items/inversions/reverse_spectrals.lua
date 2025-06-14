@@ -340,8 +340,8 @@ local pact = {
             end
             v.ability.link = linktxt
             v:juice_up()
-            v.area:remove_from_highlighted(v)
         end
+        G.hand:unhighlight_all()
     end,
     can_use = function(self, card)
         local num = Entropy.GetHighlightedCards({G.hand}, card)
