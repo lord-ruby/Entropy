@@ -28,7 +28,7 @@ local epitachyno = {
                 local check = false
                 local exp = card.ability.extra
 			    --local card = G.jokers.cards[i]
-                if not Card.no(G.jokers.cards[1], "immutable", true) and (G.jokers.cards[i].config.center.key ~= "j_entr_epitachyno" or context.forcetrigger) then
+                if not Card.no(G.jokers.cards[i], "immutable", true) and (G.jokers.cards[i].config.center.key ~= "j_entr_epitachyno" or context.forcetrigger) then
                     Cryptid.with_deck_effects(v, function(card2)
                         Cryptid.manipulate(card2, { value = {arrows = 1, height = exp}, type = "hyper" })
                     end)
