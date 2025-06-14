@@ -58,7 +58,7 @@ local rend = {
     use = function(self, card)
         Entropy.FlipThen(G.hand.highlighted, function(card)
             card:set_ability(G.P_CENTERS.m_entr_flesh)
-            card:highlight()
+            card.area:remove_from_highlighted(card)
         end)
     end,
     can_use = function(self, card)
@@ -340,7 +340,7 @@ local pact = {
             end
             v.ability.link = linktxt
             v:juice_up()
-            v:highlight()
+            v.area:remove_from_highlighted(v)
         end
     end,
     can_use = function(self, card)
@@ -575,7 +575,7 @@ local charm = {
         for i, v in pairs(G.jokers.highlighted) do
             v:set_edition("e_cry_astral")
             v.ability.eternal = true
-            v:highlight()
+            v.area:remove_from_highlighted(v)
         end
         local joker = nil
         local tries = 100
@@ -651,7 +651,7 @@ local entropy = {
             card:set_ability(G.P_CENTERS[enhancement])
             card:set_seal(seal)
             SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("entropy")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("entropy")))
-            card:highlight()
+            card.area:remove_from_highlighted(card)
         end)
     end,
     can_use = function(self, card)
@@ -981,7 +981,7 @@ local fusion = {
                     card:set_ability(G.P_CENTERS[enhancement])
                 end
             end
-            card:highlight()
+            G.hand:remove_from_highlighted(card)
         end)
     end,
     can_use = function(self, card)
@@ -1235,7 +1235,7 @@ local mimic = {
                 G.FUNCS.buy_from_shop({config={ref_table=newcard}})
             end
         end
-        orig:highlight()
+        orig.area:remove_from_highlighted(orig)
     end,
     can_use = function(self, card)
         return #Entropy.GetHighlightedCards({G.shop_booster, G.shop_jokers, G.shop_vouchers, G.hand, G.consumeables, G.jokers, G.pack_cards}, card) == card.ability.num
@@ -1279,7 +1279,7 @@ local superego = {
             card.debuff = true
             card.sell_cost = 0
             card:juice_up()
-            card:highlight()
+            card.area:remove_from_highlighted(card)
         end
     end,
     can_use = function(self, card)
@@ -1345,7 +1345,7 @@ local engulf = {
         for i, v in pairs(G.hand.highlighted) do
             v:set_edition("e_entr_solar")
             v:juice_up()
-            v:highlight()
+            v.area:remove_from_highlighted(v)
         end
     end,
     can_use = function(self, card)
@@ -1712,7 +1712,7 @@ local regenerate = {
                     card.base.value == "entr_nilrank" and pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("regenerate"))
                 )
             end
-            card:highlight()
+            card.area:remove_from_highlighted(card)
         end)
     end,
     can_use = function(self, card)
@@ -1830,7 +1830,7 @@ local transcend = {
                 check_for_unlock({ type = "parakmi_transcend" })
             end
             card:set_ability(Entropy.GetPooledCenter(Entropy.GetRandomSet(true)))
-            card:highlight()
+            card.area:remove_from_highlighted(card)
         end)
     end,
     can_use = function(self, card)
@@ -1873,7 +1873,7 @@ local weld = {
             card.ability.entr_aleph = true
             card:set_edition("e_negative")
             card:juice_up()
-            card:highlight()
+            card.area:remove_from_highlighted(card)
         end
     end,
     can_use = function(self, card)

@@ -230,7 +230,7 @@ local servant = {
                     }))
                 end
             end
-            v:highlight()
+            v.area:remove_from_highlighted(v)
         end
     end,
     can_use = function(self, card)
@@ -294,7 +294,7 @@ local heretic = {
                 local rank = modification == "Rank" and pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("heretic_rank"))
                 SMODS.change_base(card, suit, rank)
             end
-            card:highlight()
+            card.area:remove_from_highlighted(card)
         end)
     end,
     can_use = function(self, card)
@@ -350,7 +350,7 @@ local feud = {
             if to_big(bonus_chips) > to_big(0) then
                 card.ability.bonus = bonus_chips
             end
-            card:highlight()
+            card.area:remove_from_highlighted(card)
         end)
     end,
     can_use = function(self, card)
@@ -636,7 +636,7 @@ local endurance = {
                 end)
             end
             card:juice_up()
-            card:highlight()
+            card.area:remove_from_highlighted(card)
         end
     end,
     can_use = function(self, card)
@@ -732,7 +732,7 @@ local statue = {
                     card:set_ability(G.P_CENTERS.m_stone)
                     card:set_edition()
                     card.seal = nil
-                    card:highlight()
+                    G.hand:remove_from_highlighted(card)
                 end)
                 return true
             end
@@ -1233,7 +1233,7 @@ local imp = {
         local cards = Entropy.GetHighlightedCards({G.hand}, card)
         Entropy.FlipThen(cards, function(card)
             card:set_ability(G.P_CENTERS.m_entr_dark)
-            card:highlight()
+            G.hand:remove_from_highlighted(card)
         end)
             
     end,
@@ -1284,7 +1284,7 @@ local integrity = {
             card:set_edition(edition)
             card:set_seal(seal)
             card:set_ability(G.P_CENTERS.c_base)
-            card:highlight()
+            G.hand:remove_from_highlighted(card)
         end)
             
     end,
