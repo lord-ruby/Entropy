@@ -393,6 +393,7 @@ local metamorphosis = {
             }
         }
     end,
+    blueprint_compat=true,
     calculate = function (self, card2, context)
         if context.after then
             local card = pseudorandom_element(G.deck.cards, pseudoseed("metamorphosis"))
@@ -401,6 +402,33 @@ local metamorphosis = {
             if card then
                 card2.ability.immutable.rank = card:get_id()
             end
+        end
+        if context.individual and context.cardarea == G.play and context.other_card then
+            if context.other_card:get_id() == card2.ability.immutable.rank then
+                if not context.retrigger_joker then card2:juice_up() end
+                return {
+                    func = function()
+                        context.joker_main = true
+                        context.cardarea = G.jokers
+                        local text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta = G.FUNCS.get_poker_hand_info(G.play.cards)
+                        for i, v in pairs(G.jokers.cards) do
+                          local res = eval_card(v, {cardarea = G.jokers, joker_main = true, full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands})
+                          if res and res.jokers then 
+                            res = res.jokers
+                            for i2, v2 in pairs(res) do
+                              if i2 ~= "message" and i2 ~= "colour" then
+                                SMODS.calculate_individual_effect({[i2] = v2}, v, i2, v2, false)
+                              end
+                            end
+                            card_eval_status_text(context.other_card, "extra", nil, nil, nil, res)
+                          end
+                        end
+                        context.joker_main = nil
+                        context.cardarea = G.play
+                    end
+                }
+            end
+            return nil, true
         end
     end,
     entr_credits = {
