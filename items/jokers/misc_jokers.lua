@@ -1320,7 +1320,7 @@ local tenner = {
                 blockable = false,
                 func = function()
                     G.GAME.dollars = 0
-                    ease_dollars(10)
+                    ease_dollars(card.ability.dollars)
                     return true
                 end
             }))
