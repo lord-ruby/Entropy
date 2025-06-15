@@ -230,7 +230,7 @@ local servant = {
                     }))
                 end
             end
-            v.area:remove_from_highlighted(v)
+
         end
     end,
     can_use = function(self, card)
@@ -294,7 +294,7 @@ local heretic = {
                 local rank = modification == "Rank" and pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("heretic_rank"))
                 SMODS.change_base(card, suit, rank)
             end
-            card.area:remove_from_highlighted(card)
+
         end)
     end,
     can_use = function(self, card)
@@ -350,7 +350,7 @@ local feud = {
             if to_big(bonus_chips) > to_big(0) then
                 card.ability.bonus = bonus_chips
             end
-            card.area:remove_from_highlighted(card)
+
         end)
     end,
     can_use = function(self, card)
@@ -393,7 +393,7 @@ local scar = {
             Entropy.ApplySticker(v, "scarred")
             v:juice_up()
         end
-        G.hand:unhighlight_all()
+        ()
     end,
     can_use = function(self, card)
         local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card)
@@ -568,7 +568,7 @@ local whetstone = {
                     end
                 end
             end)
-            G.hand:unhighlight_all()
+            ()
         else
             local used_tarot = card2
             G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
@@ -636,7 +636,7 @@ local endurance = {
                 end)
             end
             card:juice_up()
-            card.area:remove_from_highlighted(card)
+
         end
     end,
     can_use = function(self, card)
