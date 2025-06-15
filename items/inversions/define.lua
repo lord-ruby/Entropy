@@ -461,6 +461,10 @@ function CardArea:emplace(card, location, stay_flipped)
             table.insert(G.playing_cards, card)
         end
     else
+        if G.GAME.banned_keys[card.config.center.key] and G.GAME.challenge == "c_entr_daily" then
+            if card.config.center.key == "c_entr_define" then card:set_ability(G.P_CENTERS.c_entr_disavow) end
+            if card.config.center.key == "c_cry_pointer" then card:set_ability(G.P_CENTERS.c_cry_oboe) end
+        end
         add_ref(self, card, location, stay_flipped)
     end
 end
