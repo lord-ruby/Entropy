@@ -1743,6 +1743,7 @@ function evaluate_play_main(text, disp_text, poker_hands, scoring_hand, non_loc_
         poker_hands[text].mult = m
         poker_hands[text].chips = c
     end
+    return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
 end
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, f, s)
