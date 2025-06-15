@@ -1768,6 +1768,45 @@ function Cryptid.misprintize(card, ...)
     end
 end
 
+local transcend = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 35,
+    key = "transcend",
+    set = "Omen",
+    
+    inversion = "c_entr_null",
+	
+    atlas = "consumables",
+    config = {
+        limit = 1
+    },
+	pos = {x=11,y=7},
+    --soul_pos = { x = 5, y = 0},
+    use = function(self, card, area, copier)
+        Entropy.FlipThen(Entropy.GetHighlightedCards({G.consumeables, G.hand, G.pack_cards, G.shop_jokers, G.shop_vouchers, G.shop_booster, G.jokers}, card), function(card)
+            if card.config.center.key == "j_entr_parakmi" then
+                check_for_unlock({ type = "parakmi_transcend" })
+            end
+            card:set_ability(Entropy.GetPooledCenter(Entropy.GetRandomSet(true)))
+        end)
+    end,
+    can_use = function(self, card)
+        local num = #Entropy.GetHighlightedCards({G.consumeables, G.hand, G.pack_cards, G.shop_jokers, G.shop_vouchers, G.shop_booster, G.jokers}, card)
+        return num > 0 and num <= card.ability.limit
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.limit
+            }
+        }
+    end
+}
 
 return {
     items = {
@@ -1808,6 +1847,7 @@ return {
         regenerate,
         beyond,
         pure,
-        purity
+        purity,
+        transcend
     }
 }

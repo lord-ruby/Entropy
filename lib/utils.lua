@@ -1405,3 +1405,54 @@ function Entropy.get_arrow_color(operator)
     }
     return colours[operator]
 end
+
+function Entropy.GetPooledCenter(_type)
+    local area = area or G.jokers
+    local center = G.P_CENTERS.b_red
+        
+
+    --should pool be skipped with a forced key
+    if not forced_key and soulable and (not G.GAME.banned_keys['c_soul']) then
+        for _, v in ipairs(SMODS.Consumable.legendaries) do
+            if (_type == v.type.key or _type == v.soul_set) and not (G.GAME.used_jokers[v.key] and not next(find_joker("Showman")) and not v.can_repeat_soul) and (not v.in_pool or (type(v.in_pool) ~= "function") or v:in_pool()) then
+                                if pseudorandom('soul_'..v.key.._type..G.GAME.round_resets.ante) > (1 - v.soul_rate) then
+                                    if not G.GAME.banned_keys[v.key] then forced_key = v.key end
+                                end
+            end
+        end
+        if (_type == 'Tarot' or _type == 'Spectral' or _type == 'Tarot_Planet') and
+        not (G.GAME.used_jokers['c_soul'] and not next(find_joker("Showman")))  then
+            if pseudorandom('soul_'.._type..G.GAME.round_resets.ante) > 0.997 then
+                forced_key = 'c_soul'
+            end
+        end
+        if (_type == 'Planet' or _type == 'Spectral') and
+        not (G.GAME.used_jokers['c_black_hole'] and not next(find_joker("Showman")))  then 
+            if pseudorandom('soul_'.._type..G.GAME.round_resets.ante) > 0.997 then
+                forced_key = 'c_black_hole'
+            end
+        end
+    end
+
+    if _type == 'Base' then 
+        forced_key = 'c_base'
+    end
+
+
+
+    if forced_key and not G.GAME.banned_keys[forced_key] then 
+        center = G.P_CENTERS[forced_key]
+        _type = (center.set ~= 'Default' and center.set or _type)
+    else
+        local _pool, _pool_key = get_current_pool(_type, _rarity, legendary, key_append)
+        center = pseudorandom_element(_pool, pseudoseed(_pool_key))
+        local it = 1
+        while center == 'UNAVAILABLE' do
+            it = it + 1
+            center = pseudorandom_element(_pool, pseudoseed(_pool_key..'_resample'..it))
+        end
+
+        center = G.P_CENTERS[center]
+    end
+    return center
+end

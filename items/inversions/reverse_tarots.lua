@@ -650,8 +650,7 @@ local endurance = {
     use = function(self, card2)
         local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card)
         Entropy.FlipThen(cards, function(card)
-            card.ability.perishable = true -- Done manually to bypass perish compat
-            card.ability.perish_tally = G.GAME.perishable_rounds
+            card.ability.banana = true
             if not Card.no(card, "immutable", true) then
                 Cryptid.with_deck_effects(card, function(card3)
                     Cryptid.misprintize(card3, { min=card2.ability.factor,max=card2.ability.factor }, nil, true)

@@ -839,7 +839,7 @@ function G.UIDEF.use_and_sell_buttons(card)
               }}
         end
     end
-    if (card.area == G.consumeables and G.consumeables and card.config.center.set == "Booster") then
+    if ((card.area == G.consumeables or card.area == G.jokers) and G.consumeables and card.config.center.set == "Booster") then
         sell = {n=G.UIT.C, config={align = "cr"}, nodes={
             {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = 'sell'}, nodes={
               {n=G.UIT.B, config = {w=0.1,h=0.6}},
@@ -901,7 +901,7 @@ function G.UIDEF.use_and_sell_buttons(card)
               }}
 		end
 	end
-    if (card.area == G.consumeables and G.consumeables) and card.config.center.set == "Voucher" then
+    if ((card.area == G.consumeables or card.area == G.jokers) and G.consumeables) and card.config.center.set == "Voucher" then
         sell = {n=G.UIT.C, config={align = "cr"}, nodes={
             {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = 'sell'}, nodes={
               {n=G.UIT.B, config = {w=0.1,h=0.6}},
@@ -1326,11 +1326,25 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
 end
 
 local ref = level_up_hand
-function level_up_hand(card, hand, instant, amount)
+function level_up_hand(card, hand, instant, amount, ...)
+    local chips = G.GAME.hands[hand].chips
+    local mult = G.GAME.hands[hand].mult
+    local level = G.GAME.hands[hand].level
     if Entropy.HasJoker("j_entr_strawberry_pie",true) and hand ~= "High Card" then
         hand = "High Card"
     end
-    ref(card,hand,instant,amount)
+    local val = ref(card,hand,instant,amount, ...)
+    if card.config.center.set == "Joker" then
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.GAME.hands[hand].level = level
+                G.GAME.hands[hand].chips = chips
+                G.GAME.hands[hand].mult = mult
+                ref(card, hand, true, amount)
+                return true
+            end
+        }))
+    end
 end
 
 local start_dissolveref = Card.start_dissolve
@@ -2610,6 +2624,7 @@ G.FUNCS.evaluate_play = function(e)
     G.E_MANAGER:add_event(Event({
         trigger="after",
         func = function()
+            G.GAME.asc_power_hand = nil
             update_hand_text_random({delay = 0}, {chips=0, mult=0, handname = "", level=""})
             update_operator_display()
             return true
@@ -3004,4 +3019,23 @@ function Blind:set_blind(...)
             return true
         end
     }))
+end
+
+local ref = Cryptid.pointergetblist
+function Cryptid.pointergetblist(target)
+    if next(SMODS.find_card("j_entr_dreamweaver")) then
+        Cryptid.pointerblisttype = {
+            rarity = {
+                "entr_zenith"
+            }
+        }
+        local blist = {}
+        for i, v in pairs(Cryptid.pointerblist) do
+            if G.P_BLINDS[v] then
+                blist[#blist + 1] = v
+            end
+        end
+        Cryptid.pointerblist = blist
+    end
+    return ref(target)
 end
