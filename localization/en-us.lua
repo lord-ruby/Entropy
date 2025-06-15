@@ -1327,13 +1327,6 @@ local decs = {
 					"{C:blue}+#1#{} bonus chips"
 				}
 			},
-			c_entr_rift = {
-				name = "The Rift",
-				text = {
-					"Apply a {C:attention}random{} {C:dark_edition}Edition{}",
-					"to a {C:attention}random{} Card"
-				}
-			},
 		},
 		Voucher = {
 			v_entr_marked = {
@@ -1816,6 +1809,13 @@ local decs = {
 			},
 		},
 		Omen = {
+			c_entr_rift = {
+				name = "Rift",
+				text = {
+					"Apply a {C:attention}random{} {C:dark_edition}Edition{}",
+					"to a {C:attention}random{} Card"
+				}
+			},
 			c_entr_define = {
 				name = "#1#define",
 				text = {

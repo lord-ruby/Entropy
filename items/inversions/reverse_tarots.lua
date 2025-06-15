@@ -1305,62 +1305,6 @@ local integrity = {
 	
 }
 
-local rift = {
-    key = "rift",
-    set = "Fraud",
-    atlas = "fraud",
-    object_type = "Consumable",
-    order = -901+26,
-    dependencies = {
-        items = {
-            "set_entr_inversions"
-        }
-    },
-    pos = {x=7,y=2},
-    inversion = "c_cry_meld",
-    use = function(self, card2)
-        local cards = {}
-        for i, v in ipairs(G.hand.cards or {}) do
-            cards[#cards+1] = v 
-        end
-        for i, v in ipairs(G.jokers.cards or {}) do
-            cards[#cards+1] = v 
-        end
-        for i, v in ipairs(G.consumeables.cards or {}) do
-            cards[#cards+1] = v 
-        end
-        for i, v in ipairs((G.pack_cards or {cards = {}}).cards or {}) do
-            cards[#cards+1] = v 
-        end
-        for i, v in ipairs((G.shop_jokers or {cards = {}}).cards or {}) do
-            cards[#cards+1] = v 
-        end
-        for i, v in ipairs((G.shop_booster or {cards = {}}).cards or {}) do
-            cards[#cards+1] = v 
-        end
-        for i, v in ipairs((G.shop_vouchers or {cards = {}}).cards or {}) do
-            cards[#cards+1] = v 
-        end
-        local card = pseudorandom_element(cards, pseudoseed("rift_card"))
-        Entropy.FlipThen({card}, function(card)
-            card:juice_up()
-            card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
-                return G.GAME.banned_keys[e.key] or e.no_doe
-            end).key)
-        end)
-    end,
-    can_use = function(self, card)
-        return #G.I.CARD > 0
-    end,
-    loc_vars = function(self, q, card)
-        return {
-            vars = {
-                card.ability.create
-            }
-        }
-    end,
-}
-
 local mallet = {
     key = "mallet",
     set = "Fraud",
@@ -1442,6 +1386,5 @@ return {
         prophecy,
         mallet,
         village,
-        rift
     }
 }

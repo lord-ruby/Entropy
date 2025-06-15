@@ -121,6 +121,45 @@ local rendezvous = Entropy.SealSpectral("rendezvous", {x=10,y=5}, "entr_crimson"
 local eclipse = Entropy.SealSpectral("eclipse", {x=12,y=5}, "entr_sapphire",2000+12, "c_trance")
 local calamity = Entropy.SealSpectral("calamity", {x=6,y=6}, "entr_pink",2000+13, "c_medium",{art = {"Lil. Mr. Slipstream"}})
 local downpour = Entropy.SealSpectral("downpour", {x=12,y=7}, "entr_cerulean",2000+24, "c_cry_typhoon")
+
+local rift = {
+    key = "rift",
+    set = "Omen",
+    atlas = "consumables",
+    object_type = "Consumable",
+    order = 2000+24.5,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        num = 2
+    },
+    pos = {x=7,y=2},
+    inversion = "c_cry_meld",
+    use = function(self, card2)
+        local cards = Entropy.GetHighlightedCards({G.jokers, G.consumeables, G.hand}, card2)
+        Entropy.FlipThen(cards, function(card)
+            card:juice_up()
+            card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
+                return G.GAME.banned_keys[e.key] or e.no_doe
+            end).key)
+        end)
+    end,
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.jokers, G.consumeables, G.hand}, card)
+        return #cards > 0 and #cards < card.ability.num
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.num
+            }
+        }
+    end,
+}
+
 local script = Entropy.SealSpectral("script", {x=6,y=8}, "entr_verdant",2000+25, "c_cry_source")
 
 local siphon = {
@@ -1935,6 +1974,7 @@ return {
         pure,
         purity,
         transcend,
-        weld
+        weld,
+        rift
     }
 }
