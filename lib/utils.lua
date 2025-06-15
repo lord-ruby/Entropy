@@ -171,7 +171,6 @@ function Entropy.ModifyHandCard(modifications, cards)
                 for i, v in pairs(modifications.extra) do mcard.ability[i] = v end
             end
         end)
-        ()
     end
 end
 
@@ -207,7 +206,7 @@ function Entropy.ModifyHandCardNF(modifications, cards)
                 return true
             end}))
         end
-        ()
+
     end
 end
 

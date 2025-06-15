@@ -341,7 +341,7 @@ local pact = {
             v.ability.link = linktxt
             v:juice_up()
         end
-        ()
+
     end,
     can_use = function(self, card)
         local num = Entropy.GetHighlightedCards({G.hand}, card)
@@ -486,7 +486,7 @@ local rejuvenate = {
                 card3:set_ability(enh)
                 card3:set_seal(seal)
         end)
-        ()
+
         ease_dollars(card2.ability.dollars)
     end,
     can_use = function(self, card)
@@ -536,7 +536,7 @@ local crypt = {
                 v:set_edition()
             end
         end)
-        ()
+
     end,
     can_use = function(self, card)
         local cards = Entropy.GetHighlightedCards({G.jokers}, card)
@@ -1171,7 +1171,7 @@ local evocation = {
         end
         G.GAME.round_resets.hands = G.GAME.round_resets.hands - card2.ability.hands
         ease_hands_played(-card2.ability.hands)
-        ()
+
     end,
     can_use = function(self, card)
         return G.jokers and #G.jokers.highlighted > 0 and #G.jokers.highlighted <= card.ability.num
@@ -1445,7 +1445,7 @@ local entomb = {
             c.area = G.consumeables
             G.consumeables:align_cards()
         end
-        ()
+
     end,
     can_use = function(self, card)
         return G.consumeables and #Entropy.GetHighlightedCards({G.consumeables}, card) > 0 and #Entropy.GetHighlightedCards({G.consumeables}, card) <= card.ability.num
@@ -1775,7 +1775,7 @@ local purity = {
             Entropy.ApplySticker(v, "entr_pure")
             v:juice_up()
         end
-        ()
+
     end,
     can_use = function(self, card)
         local num = #Entropy.GetHighlightedCards({G.jokers}, card)

@@ -354,7 +354,7 @@ local constant = {
                 copy_card(G.hand.highlighted[1],v)
             end
         end
-        ()
+
     end,
     can_use = function(self, card)
         return #Entropy.GetHighlightedCards({G.hand}, card) == 1
@@ -1101,7 +1101,7 @@ local refactor = {
                 return true
             end,
         }))
-        ()
+
     end,
     can_use = function(self, card)
         local num = Entropy.GetHighlightedCards({G.jokers}, card)
@@ -1505,7 +1505,7 @@ local badarg = {
         update_hand_text({delay=0}, {handname = "", chips="bad", mult="arg"})
         G.boss_throw_hand = true
         G.bad_arg = true
-        ()
+
     end,
     can_use = function(self, card)
         local num = G.PROFILES[G.SETTINGS.profile].cry_none and -1 or 0

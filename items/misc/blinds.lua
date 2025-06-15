@@ -395,7 +395,7 @@ local phase4 = {
 				G.hand:change_size(-1)
 			end
 			if s.name == "Amber Acorn" and not reset and #G.jokers.cards > 0 then
-				()
+				G.jokers:unhighlight_all()
 				for k, v in ipairs(G.jokers.cards) do
 					v:flip()
 				end
@@ -627,7 +627,7 @@ local phase4 = {
 					end
 				end
 				if not any_forced then
-					()
+					G.hand:unhighlight_all()
 					local forced_card = pseudorandom_element(G.hand.cards, pseudoseed("ObsidianOrb"))
 					if focred_card then
 						forced_card.ability.forced_selection = true

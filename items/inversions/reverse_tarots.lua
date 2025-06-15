@@ -393,7 +393,7 @@ local scar = {
             Entropy.ApplySticker(v, "scarred")
             v:juice_up()
         end
-        ()
+
     end,
     can_use = function(self, card)
         local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card)
@@ -568,7 +568,7 @@ local whetstone = {
                     end
                 end
             end)
-            ()
+
         else
             local used_tarot = card2
             G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
