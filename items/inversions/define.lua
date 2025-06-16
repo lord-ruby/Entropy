@@ -155,11 +155,7 @@ G.FUNCS.define_apply = function()
     local entered_card = Cryptid.pointergetalias(G.ENTERED_CARD)
 
     G.PREVIOUS_ENTERED_CARD = G.ENTERED_CARD
-    for i, v in pairs(Cryptid.pointeralias) do
-        for i2, a in pairs(v or {}) do
-            if entered_card == a then entered_card = i end
-        end
-    end
+    entered_card = Cryptid.pointergetalias(entered_card)
     --Cryptid.pointerblisttype.rarity[]
     --eval local current_card = "e_entr_shatter"
     if not Entropy.DefineBlacklist[current_card] and not Cryptid.pointergetblist(current_card)[1] and G.P_CENTERS[current_card] and not Entropy.DefineBlacklist[G.P_CENTERS[current_card].set] then
