@@ -1191,7 +1191,7 @@ local bigzero = to_big(0)
 if not G.GAME.blind or to_big(G.GAME.blind.chips or 0) <= bigzero then
 	G.ARGS.score_intensity.earned_score = 0
 else
-	G.ARGS.score_intensity.earned_score = to_number(math.max(Entropy.get_chipmult_score(G.GAME.current_round.current_hand.chips, G.GAME.current_round.current_hand.mult), 100))
+	G.ARGS.score_intensity.earned_score = to_number(math.min(Entropy.get_chipmult_score(G.GAME.current_round.current_hand.chips, G.GAME.current_round.current_hand.mult), 1e300))
 end
 bigzero = nil
 '''

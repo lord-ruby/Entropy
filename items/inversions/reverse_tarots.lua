@@ -639,6 +639,19 @@ local endurance = {
 
         end
     end,
+    bulk_use = function(self,card2,area,copier,amt)
+        local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card)
+        for i, card in pairs(cards) do
+            card.ability.banana = true
+            if not Card.no(card, "immutable", true) then
+                Cryptid.with_deck_effects(card, function(card3)
+                    Cryptid.manipulate(card3, { value=card2.ability.factor^to_big(amt) })
+                end)
+            end
+            card:juice_up()
+
+        end
+    end,
     can_use = function(self, card)
         local num = #Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card)
         return num > 0 and num <= card.ability.select
