@@ -164,7 +164,7 @@ G.FUNCS.define_apply = function()
             check_for_unlock({ type = "event_horizon" })
         end
         for i, card in ipairs(cards) do
-            if card.config.center.set == "Default" then
+            if card.config.center.set == "Default" or card.config.center.set == "Enhanced" then
                 G.GAME.DefineKeys[card.base.name] = current_card
             else
                 G.GAME.DefineKeys[card.config.center.key] = current_card
