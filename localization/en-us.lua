@@ -1813,7 +1813,7 @@ local decs = {
 				name = "Rift",
 				text = {
 					"Apply a {C:attention}random{} {C:dark_edition}Edition{}",
-					"to a {C:attention}random{} Card"
+					"to {C:attention}#1#{} selected card#<s>1#"
 				}
 			},
 			c_entr_define = {

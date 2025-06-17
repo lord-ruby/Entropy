@@ -136,7 +136,7 @@ local rift = {
     config = {
         num = 2
     },
-    pos = {x=7,y=2},
+    pos = {x=11,y=8},
     inversion = "c_cry_meld",
     use = function(self, card2)
         local cards = Entropy.GetHighlightedCards({G.jokers, G.consumeables, G.hand}, card2)
