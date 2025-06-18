@@ -205,6 +205,9 @@ function SMODS.injectItems(...)
             if G.GAME.paya_operator then
                 op = op + G.GAME.paya_operator
             end
+            if ast_get_final_operator then
+                op = op + ast_get_final_operator()
+            end
             return op
         end
         function get_chipmult_sum(chips, mult)
