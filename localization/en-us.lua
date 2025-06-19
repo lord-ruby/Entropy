@@ -671,6 +671,15 @@ local decs = {
 					"as an {C:attention}enhancement{}"
 				}
 			},
+			j_entr_scenic_route = {
+				name = "Scenic Route",
+				text = {
+					"Create a {C:red}(~)$ new(){}",
+					"When a {C:attention}Boss Blind{}",
+					"is defeated",
+					"{C:inactive}(Must have room){}"
+				}
+			},
 		},
 		Blind = {
 			bl_entr_red = {
@@ -2930,7 +2939,8 @@ local decs = {
 			b_stat_Star = "Star",
 			b_stat_Omen = "Omen",
 			b_stat_Command = "Command",
-			k_upgrade_atomikos = "Destroyed"
+			k_upgrade_atomikos = "Destroyed",
+			k_new = "new();"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

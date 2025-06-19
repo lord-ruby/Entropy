@@ -195,3 +195,10 @@ SMODS.Atlas {
     frames = 1, 
     atlas_table = 'ANIMATION_ATLAS'
 }
+
+SMODS.Atlas { 
+    key = 'placeholder', 
+    path = 'placeholders.png', 
+    px = 71, 
+    py = 95 
+}

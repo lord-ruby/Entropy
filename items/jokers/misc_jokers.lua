@@ -1408,12 +1408,11 @@ local fourbit = {
         needed = 16,
         left = 16
     },
-    blueprint_compat = true,
+    blueprint_compat = false,
     eternal_compat = true,
     pos = { x = 1, y = 4 },
     pixel_size = { w = 53, h = 53 },
     atlas = "jokers",
-    demicoloncompat = true,
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
@@ -1457,6 +1456,43 @@ local fourbit = {
 }
 
 
+local scenic_route = {
+    order = 25,
+    object_type = "Joker",
+    key = "scenic_route",
+    rarity = 2,
+    cost = 5,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 1, y = 0 },
+    atlas = "placeholder",
+    demicoloncompat = true,
+    loc_vars = function(self, q, card) q[#q+1] = G.P_CENTERS.c_entr_new end,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.individual and not context.repetition and G.GAME.blind.boss) or context.forcetrigger then
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    if G.consumeables.config.card_count < G.consumeables.config.card_limit then
+                        SMODS.add_card{
+                            key="c_entr_new",
+                            area=G.consumeables
+                        }
+                    end
+                    return true
+                end
+            }))
+            return {
+                message = localize("k_new")
+            }
+        end
+    end
+}
+
 return {
     items = {
         surreal,
@@ -1485,6 +1521,7 @@ return {
         sunflower_seeds,
         tenner,
         sticker_sheet,
-        fourbit
+        fourbit,
+        scenic_route
     }
 }
