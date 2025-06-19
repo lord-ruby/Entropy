@@ -142,7 +142,7 @@ local rift = {
         local cards = Entropy.GetHighlightedCards({G.jokers, G.consumeables, G.hand}, card2)
         Entropy.FlipThen(cards, function(card)
             card:juice_up()
-            card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
+            card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("rift"),function(e)
                 return G.GAME.banned_keys[e.key] or e.no_doe
             end).key)
         end)
