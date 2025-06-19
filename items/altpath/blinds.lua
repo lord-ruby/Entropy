@@ -1382,7 +1382,7 @@ local choir = {
     end,
 	calculate = function(self, blind, context)
 		if context.post_trigger and not context.other_card.debuff then
-			context.other_card.debuff = true
+			context.other_card:set_debuff(true)
 			context.other_card:juice_up()
 			G.GAME.blind.triggered = true
 		end
@@ -1453,7 +1453,7 @@ local cassandra = {
 		if context.before then
 			for i, v in ipairs(G.jokers.cards) do
 				if pseudorandom("cassandra") < G.GAME.probabilities.normal / (5) then
-					v.debuff = true
+					v:set_debuff(true)
 					G.GAME.blind.triggered = true
 					v:juice_up()
 				end

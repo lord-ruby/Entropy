@@ -1315,7 +1315,7 @@ local superego = {
         for i, card in ipairs(cards) do
             card.ability.superego = true
             card.ability.superego_copies = 0
-            card.debuff = true
+            card:set_debuff(true)
             card.sell_cost = 0
             card:juice_up()
 
@@ -1355,7 +1355,7 @@ local superego_sticker = {
     apply = function(self,card,val)
         card.ability.superego = true
         card.ability.superego_copies = 0
-        card.debuff = true
+        card.ability.debuff = true
     end,
     loc_vars = function(self, q, card) return {vars={card.ability and math.floor(card.ability.superego_copies or 0) or 0}} end
 }

@@ -1493,6 +1493,85 @@ local scenic_route = {
     end
 }
 
+
+local crimson_flask = {
+    order = 26,
+    object_type = "Joker",
+    key = "crimson_flask",
+    rarity = 2,
+    cost = 5,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 1, y = 0 },
+    atlas = "placeholder",
+    demicoloncompat = true,
+    config = {
+        xmult = 1,
+        xmult_joker = 0.25,
+        xmult_card = 0.05
+    },
+    loc_vars = function(self, q, card) return {vars = {number_format(card.ability.xmult_joker), number_format(card.ability.xmult_card), number_format(card.ability.xmult)}} end,
+    calculate = function(self, card, context)
+        if context.joker_debuffed then
+            card.ability.xmult = card.ability.xmult + card.ability.xmult_joker
+            return {
+                message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.xmult }})
+            }
+        end
+        if context.debuffed_card_drawn then
+            card.ability.xmult = card.ability.xmult + card.ability.xmult_card
+            return {
+                message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.xmult }})
+            }
+        end
+        if context.setting_blind then
+            local cards = {}
+            for i, v in pairs(G.jokers.cards) do if v ~= card then cards[#cards+1] = v end end
+            if #cards > 0 then
+                pseudorandom_element(cards, pseudoseed("crimson_flask_card")):set_debuff(true)
+            end
+        end
+        if context.joker_main or context.forcetrigger then
+            return {
+                xmult = card.ability.xmult
+            }
+        end
+    end
+}
+
+local card_dissolveref = Card.start_dissolve
+function Card:start_dissolve(...)
+    self.dissolved = true
+    return card_dissolveref(self, ...)
+end
+
+local card_sellref = Card.sell_card
+function Card:sell_card(...)
+    self.dissolved = true
+    return card_sellref(self, ...)
+end
+
+local card_debuffref = Card.set_debuff
+function Card:set_debuff(debuff)
+    if self.area == G.jokers and (debuff or (self.ability.perishable and (self.ability.perish_tally or 0) <= 0)) and self.config.center.set == "Joker" and not self.debuff and not self.dissolved then
+        SMODS.calculate_context{joker_debuffed = true, card = self}
+    end
+    return card_debuffref(self, debuff)
+end
+
+local cardarea_emplaceref = CardArea.emplace
+function CardArea:emplace(card, ...)
+    if self == G.hand and G.hand and self.debuff then
+        SMODS.calculate_context{debuffed_card_drawn = true, card = self}
+    end
+    return cardarea_emplaceref(self, card, ...)
+end
+
 return {
     items = {
         surreal,
@@ -1522,6 +1601,7 @@ return {
         tenner,
         sticker_sheet,
         fourbit,
-        scenic_route
+        scenic_route,
+        crimson_flask
     }
 }

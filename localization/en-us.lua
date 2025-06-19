@@ -680,6 +680,16 @@ local decs = {
 					"{C:inactive}(Must have room){}"
 				}
 			},
+			j_entr_crimson_flask = {
+				name = "Crimson Flask",
+				text = {
+					"This Joker gains {X:mult,C:white}X#1#{} when a Joker",
+					"is {C:attention}debuffed{} and {X:mult,C:white}X#2#{} when a {C:attention}debuffed{}",
+					"playing card is drawn to hand",
+					"Debuff a {C:attention}random{} Joker each round"
+					"{C:inactive}(Currently{} {X:mult,C:white}X#3#{}{C:inactive}){}",
+				},
+			},
 		},
 		Blind = {
 			bl_entr_red = {
