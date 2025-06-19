@@ -1656,7 +1656,10 @@ local grotesque_joker = {
                 xchips = card.ability.xchips
             }
         end
-    end
+    end,
+    entr_credits = {
+        idea = {"crabus"}
+    }
 }
 
 return {
