@@ -1,5 +1,5 @@
 function Entropy.GetHighlightedCards(cardareas, ignorecard, min, max, blacklist)
-    return Cryptid.get_highlighted_cards(cardareas, ignorecard, min, max, blacklist and function(card)
+    return Cryptid.get_highlighted_cards(cardareas, ignorecard or {}, min or 1, max or 1, blacklist and function(card)
         return not blacklist[card.config.center.key]
     end)
 end
@@ -169,7 +169,7 @@ end
 
 function Entropy.ModifyHandCardNF(modifications, cards)
     return function(self, card)
-        for i, mcard in pairs(cards or Cryptid.get_highlighted_cards({G.hand}, card, 1, card.ability.highlighted)) do
+        for i, mcard in pairs(cards or Cryptid.get_highlighted_cards({G.hand}, {}, 1, card.ability.highlighted or 1)) do
             G.E_MANAGER:add_event(Event({ --Add bonus chips from this card
             delay = 0,
             func = function()
