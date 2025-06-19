@@ -1194,13 +1194,13 @@ local hotfix = {
     atlas = "consumables",
     pos = {x=1,y=5},
     use = function(self, card, area, copier)
-        Entropy.ApplySticker(Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, card.ability.extra)[1], "entr_hotfix")
-        local card = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, card.ability.extra)[1]
+        Entropy.ApplySticker(Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, 1)[1], "entr_hotfix")
+        local card = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, 1)[1]
         card:juice_up()
 
     end,
     can_use = function(self, card)
-        return #Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, card.ability.extra) == 1
+        return #Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, 1) == 1
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "entr_hotfix", set="Other"}
@@ -1282,13 +1282,13 @@ local desync_card = {
     atlas = "consumables",
     pos = {x=0,y=5},
     use = function(self, card, area, copier)
-        Entropy.ApplySticker(Entropy.GetHighlightedCards({G.jokers, G.consumeables}, card, 1, card.ability.extra)[1], "desync")
-        local card = Entropy.GetHighlightedCards({G.jokers, G.consumeables}, card, 1, card.ability.extra)[1]
+        Entropy.ApplySticker(Entropy.GetHighlightedCards({G.jokers, G.consumeables}, card, 1, 1)[1], "desync")
+        local card = Entropy.GetHighlightedCards({G.jokers, G.consumeables}, card, 1, 1)[1]
         card:juice_up()
 
     end,
     can_use = function(self, card)
-        return #Entropy.GetHighlightedCards({G.jokers, G.consumeables}, card, 1, card.ability.extra) == 1
+        return #Entropy.GetHighlightedCards({G.jokers, G.consumeables}, card, 1, 1) == 1
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "desync", set="Other", vars = {"context.none"}}
