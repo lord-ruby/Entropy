@@ -60,6 +60,10 @@ function Entropy.RegisterBlinds()
                 card.children.center.atlas = G.ANIMATION_ATLAS["blind_chips"]
                 card.children.center:set_sprite_pos(self.blpos)
             end,
+            demicoloncompat = true,
+            force_use = function(self, card, area)
+                self:use(card, area)
+            end,
         }
     end
     for i, v in pairs(SMODS.Blind.obj_table) do
@@ -128,6 +132,10 @@ function Entropy.RegisterBlinds()
                 end,
                 set_badges = function(self, card, badges)
                     if v.original_mod then badges[#badges+1] = create_badge(v.original_mod.name, v.original_mod.badge_colour, G.C.WHITE, 1 ) end
+                end,
+                demicoloncompat = true,
+                force_use = function(self, card, area)
+                    self:use(card, area)
                 end,
             }
         end

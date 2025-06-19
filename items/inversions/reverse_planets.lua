@@ -287,6 +287,10 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
         }
       end
     end,
+    demicoloncompat = true,
+    force_use = function(self, card, area)
+      self:use(card, area)
+    end,
     entr_credits = art and {
       art = {art}
     } or nil

@@ -1,18 +1,7 @@
-function Entropy.GetHighlightedCards(cardareas, ignorecard, blacklist)
-    local cards = {}
-    blacklist = blacklist or {}
-    for i, area in pairs(cardareas) do
-        if area.cards then
-            for i2, card in ipairs(area.highlighted) do
-                if card ~= ignorecard and not blacklist[card.config.center.key] and card.highlighted and not card.checked then
-                    cards[#cards + 1] = card
-                    card.checked = true
-                end
-            end
-        end
-    end
-    for i, v in ipairs(cards) do v.checked = nil end
-    return cards
+function Entropy.GetHighlightedCards(cardareas, ignorecard, blacklist, min, max)
+    return Cryptid.get_highlighted_cards(cardareas, ignorecard, min, max, blacklist and function(card)
+        return not blacklist[card.config.center.key]
+    end)
 end
 
 function Entropy.FilterTable(table, func)
@@ -127,7 +116,7 @@ function Entropy.SealSpectral(key, sprite_pos, seal,order, inversion, entr_credi
         --soul_pos = { x = 5, y = 0},
         use = Entropy.ModifyHandCardNF({seal=seal}),
         can_use = function(self, card)
-            local cards = Entropy.GetHighlightedCards({G.hand}, card)
+            local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.highlighted)
             return #cards > 0 and #cards <= card.ability.highlighted
         end,
         loc_vars = function(self, q, card)
@@ -141,7 +130,11 @@ function Entropy.SealSpectral(key, sprite_pos, seal,order, inversion, entr_credi
                 }
             }
         end,
-        entr_credits = entr_credits
+        entr_credits = entr_credits,
+        demicoloncompat = true,
+        force_use = function(self, card)
+            self:use(card)
+        end
     }
 end
 
@@ -175,8 +168,8 @@ function Entropy.ModifyHandCard(modifications, cards)
 end
 
 function Entropy.ModifyHandCardNF(modifications, cards)
-    return function()
-        for i, mcard in pairs(cards or G.hand.highlighted) do
+    return function(self, card)
+        for i, mcard in pairs(cards or Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.highlighted)) do
             G.E_MANAGER:add_event(Event({ --Add bonus chips from this card
             delay = 0,
             func = function()

@@ -58,7 +58,11 @@ local master = {
     end,
     entr_credits = {
         art = {"MrVarius"}
-    }
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local mason = {
@@ -104,7 +108,11 @@ local mason = {
     
 	entr_credits = {
         art = {"Lyman"}
-    }
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local oracle = {
@@ -152,7 +160,11 @@ local oracle = {
     end,
     entr_credits = {
         art = {"MrVarius"}
-    }
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 
@@ -186,7 +198,10 @@ local princess = {
 	end,
     loc_vars = function(self, q, card)
     end,
-    
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end,
 	
     entr_credits = {
         idea = {"crabus"},
@@ -212,7 +227,7 @@ local servant = {
     inversion = "c_emperor",
     pos = {x=4, y = 0},
     use = function(self, card, area, copier)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card)
+        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card, 1, card.ability.select)
         for i, v in pairs(cards) do
             if Entropy.FlipsideInversions[v.config.center.key] then
                 local set = G.P_CENTERS[Entropy.FlipsideInversions[v.config.center.key]].set
@@ -234,7 +249,7 @@ local servant = {
         end
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card)
+        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card, 1, card.ability.select)
         local num = #cards
         return num > 0 and num <= card.ability.select and Entropy.TableAny(cards, function(value) return Entropy.FlipsideInversions[value.config.center.key] end)
 	end,
@@ -248,7 +263,11 @@ local servant = {
     end,
     entr_credits = {
         art = {"Lyman"}
-    }
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 	
 }
 
@@ -269,7 +288,7 @@ local heretic = {
     inversion = "c_heirophant",
     pos = {x=5, y = 0},
     use = function(self, card, area, copier)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
         Entropy.FlipThen(cards, function(card)
             local modification = pseudorandom_element({"Seal", "Enhancement", "Edition", "Suit", "Rank"}, pseudoseed("heretic_modification"))
             if modification == "Seal" then
@@ -298,7 +317,7 @@ local heretic = {
         end)
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
         local num = #cards
         return num > 0 and num <= card.ability.select
 	end,
@@ -314,7 +333,11 @@ local heretic = {
     entr_credits = {
         idea = {"notmario"},
         art = {"MrVarius"}
-    }
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local feud = {
@@ -334,7 +357,7 @@ local feud = {
     inversion = "c_lovers",
     pos = {x=6, y = 0},
     use = function(self, card, area, copier)
-        local cards = Entropy.FilterTable(G.hand.cards, function(card2) return card2.highlighted and card2 ~= card end)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
         local chips = 0
         local bonus_chips = 0
         for i = 2, to_number(card.ability.select) do
@@ -354,7 +377,7 @@ local feud = {
         end)
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
         local num = #cards
         return num >= 2 and num <= card.ability.select
 	end,
@@ -366,8 +389,10 @@ local feud = {
             }
         }
     end,
-    
-	
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 
@@ -388,7 +413,7 @@ local scar = {
     inversion = "c_chariot",
     pos = {x=7, y = 0},
     use = function(self, card, area, copier)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
         for i, v in pairs(cards) do
             Entropy.ApplySticker(v, "scarred")
             v:juice_up()
@@ -396,7 +421,7 @@ local scar = {
 
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card)
+        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card, 1, card.ability.select)
         local num = #cards
         return num > 0 and num <= card.ability.select
 	end,
@@ -409,7 +434,10 @@ local scar = {
         }
     end,
     
-	
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 
@@ -450,7 +478,7 @@ local dagger = {
     inversion = "c_justice",
     pos = {x=8, y = 0},
     use = function(self, card2, area, copier)
-        local cards = Entropy.GetHighlightedCards({G.jokers}, card2)
+        local cards = Entropy.GetHighlightedCards({G.jokers}, card2, 1, card2.ability.select)
         local total = 0
         local _hand, _tally = nil, -1
 		for k, v in ipairs(G.handlist) do
@@ -477,7 +505,7 @@ local dagger = {
         G.GAME.hands[_hand].mult = G.GAME.hands[_hand].mult + total
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.jokers}, card)
+        local cards = Entropy.GetHighlightedCards({G.jokers}, card, 1, card.ability.select)
         local num = #cards
         return num > 0 and num <= card.ability.select
 	end,
@@ -492,7 +520,11 @@ local dagger = {
     
 	entr_credits = {
         art = {"Lyman"}
-    }
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local earl = {
@@ -531,7 +563,11 @@ local earl = {
     
 	entr_credits = {
         art = {"HexaCryonic"}
-    }
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local whetstone = {
@@ -553,8 +589,8 @@ local whetstone = {
     pos = {x=0,y=1},
     use = function(self, card2)
         if pseudorandom("whetstone")
-        < cry_prob(card2.ability.cry_prob, card2.ability.extra.odds, card2.ability.cry_rigged) / card2.ability.extra.odds then
-            local cards = Entropy.GetHighlightedCards({G.hand}, card)
+        < cry_prob(card2.ability.cry_prob, card2.ability.extra.odds, card2.ability.cry_rigged) / card2.ability.extra.odds or G.cry_force_use then
+            local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
             Entropy.FlipThen(cards, function(card)
                 local enh = Entropy.UpgradeEnhancement(card, false, {m_entr_disavowed = true})
                 if G.P_CENTERS[enh] then
@@ -590,7 +626,7 @@ local whetstone = {
         end
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand}, card)
+        local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
         return num > 0 and num <= card.ability.select
     end,
     loc_vars = function(self, q, card)
@@ -606,7 +642,11 @@ local whetstone = {
     
 	entr_credits = {
         art = {"MrVarius"}
-    }
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local endurance = {
@@ -627,7 +667,7 @@ local endurance = {
     pos = {x=1,y=1},
     inversion = "c_strength",
     use = function(self, card2)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card)
+        local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, card.ability.select)
         for i, card in pairs(cards) do
             card.ability.banana = true
             if not Card.no(card, "immutable", true) then
@@ -640,7 +680,7 @@ local endurance = {
         end
     end,
     bulk_use = function(self,card2,area,copier,amt)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card)
+        local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, card.ability.select)
         for i, card in pairs(cards) do
             card.ability.banana = true
             if not Card.no(card, "immutable", true) then
@@ -653,7 +693,7 @@ local endurance = {
         end
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card)
+        local num = #Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, card.ability.select)
         return num > 0 and num <= card.ability.select
     end,
     loc_vars = function(self, q, card)
@@ -665,7 +705,10 @@ local endurance = {
             }
         }
     end,
-    
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 	
 }
 
@@ -713,7 +756,10 @@ local advisor = {
         return G.STATE == G.STATES.SELECTING_HAND
 	end,
     
-	
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local statue = {
@@ -734,7 +780,7 @@ local statue = {
     inversion = "c_death",
     pos = {x=3,y=1},
     use = function(self, card2)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
         G.E_MANAGER:add_event(Event({
 			func = function()
                 for i = 1, card2.ability.convert_per do
@@ -752,7 +798,7 @@ local statue = {
         }))
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand}, card)
+        local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
         return num > 0 and num <= card.ability.select and #G.hand.cards > 0
     end,
     loc_vars = function(self, q, card)
@@ -766,7 +812,11 @@ local statue = {
     end,
     entr_credits = {
         art = {"Lfmoth"}
-    }
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local feast = {
@@ -786,7 +836,7 @@ local feast = {
     pos = {x=4,y=1},
     inversion = "c_temperance",
     use = function(self, card2)
-        local cards = Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card)
+        local cards = Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.select)
         for i, v in pairs(cards) do
             local card = cards[i]
             G.E_MANAGER:add_event(Event({
@@ -800,7 +850,7 @@ local feast = {
             
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card)
+        local num = #Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.select)
         return num > 0 and num <= card.ability.select
     end,
     loc_vars = function(self, q, card)
@@ -813,7 +863,7 @@ local feast = {
     
 	entr_credits = {
         art = {"Lyman"}
-    }
+    },
 }
 
 local companion = {
@@ -856,7 +906,11 @@ local companion = {
 	entr_credits = {
         idea = {"Lyman"},
         art = {"Lyman"}
-    }
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local village = {
@@ -895,6 +949,10 @@ local village = {
             }
         }
     end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local ocean = {
@@ -939,7 +997,11 @@ local ocean = {
     end,
     etnr_credits = {
         art = {"Lyman"}
-    }
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local forest = {
@@ -984,7 +1046,11 @@ local forest = {
     end,
     entr_credits = {
         art = {"notmario"}
-    }
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local mountain = {
@@ -1029,7 +1095,11 @@ local mountain = {
     end,
     entr_credits = {
         art = {"Lfmoth"}
-    }
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local forgiveness = {
@@ -1067,7 +1137,11 @@ local forgiveness = {
 	
     entr_credits = {
         idea = "cassknows"
-    }
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local tent = {
@@ -1110,6 +1184,10 @@ local tent = {
             }
         }
     end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local penumbra = {
@@ -1129,7 +1207,7 @@ local penumbra = {
     pos = {x=2,y=2},
     inversion = "c_cry_eclipse",
     use = function(self, card2)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
         for i, v in pairs(cards) do
             local card = cards[i]
             G.E_MANAGER:add_event(Event({
@@ -1143,7 +1221,7 @@ local penumbra = {
             
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand}, card)
+        local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
         return num > 0 and num <= card.ability.select
     end,
     loc_vars = function(self, q, card)
@@ -1156,7 +1234,11 @@ local penumbra = {
     
     entr_credits = {
         art = {"Grahkon"}
-    }
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local prophecy = {
@@ -1224,8 +1306,11 @@ local prophecy = {
     entr_credits = {
         idea = {"cassknows"},
         art = {"Grahkon"}
-    }
-	
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local imp = {
@@ -1245,7 +1330,7 @@ local imp = {
     pos = {x=4,y=2},
     inversion = "c_cry_seraph",
     use = function(self, card2)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
         Entropy.FlipThen(cards, function(card)
             card:set_ability(G.P_CENTERS.m_entr_dark)
             G.hand:remove_from_highlighted(card)
@@ -1253,7 +1338,7 @@ local imp = {
             
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand}, card)
+        local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
         return num > 0 and num <= card.ability.select
     end,
     loc_vars = function(self, q, card)
@@ -1268,7 +1353,11 @@ local imp = {
 	
     entr_credits = {
         art = {"Lfmoth"}
-    }
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local integrity = {
@@ -1288,7 +1377,7 @@ local integrity = {
     pos = {x=5,y=2},
     inversion = "c_cry_instability",
     use = function(self, card2)
-        local cards = Entropy.FilterTable(Entropy.GetHighlightedCards({G.hand}, card), function(card) return card.config.center.key ~= "c_base" end)
+        local cards = Entropy.FilterTable(Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select), function(card) return card.config.center.key ~= "c_base" end)
         Entropy.FlipThen(cards, function(card)
             local edition = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
                 return G.GAME.banned_keys[e.key] or e.no_doe
@@ -1304,7 +1393,7 @@ local integrity = {
             
     end,
     can_use = function(self, card)
-        local num = #Entropy.FilterTable(Entropy.GetHighlightedCards({G.hand}, card), function(card) return card.config.center.key ~= "c_base" end)
+        local num = #Entropy.FilterTable(Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select), function(card) return card.config.center.key ~= "c_base" end)
         return num > 0 and num <= card.ability.select
     end,
     loc_vars = function(self, q, card)
@@ -1315,7 +1404,10 @@ local integrity = {
         }
     end,
     
-	
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local mallet = {
@@ -1367,6 +1459,10 @@ local mallet = {
             }
         }
     end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 return {
