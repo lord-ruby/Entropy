@@ -436,6 +436,72 @@ local metamorphosis = {
     }
 }
 
+local nyctophobia = {
+    order = 108,
+    object_type = "Joker",
+    key = "nyctophobia",
+    rarity = "cry_epic",
+    cost = 15,
+    
+    dependencies = {
+        items = {
+            "set_cry_epic"
+        }
+    },
+    eternal_compat = true,
+    demicoloncompat = true,
+    pos = { x = 2, y = 4 },
+    soul_pos = {x = 3, y = 4},
+    atlas = "jokers",
+    loc_vars = function(self, info_queue, card2)
+        info_queue[#info_queue+1] = G.P_CENTERS.m_entr_dark
+    end,
+    blueprint_compat=true,
+    calculate = function (self, card2, context)
+        if context.setting_blind or context.forcetrigger then
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    local cons = pseudorandom_element(G.consumeables.cards, pseudoseed("nyctophobia"))
+                    if cons then
+                        G.GAME.entr_used_cards = G.GAME.entr_used_cards or {}
+                        cons:start_dissolve()
+                        local num = (G.GAME.entr_used_cards[cons.config.center.key] or 0)*2
+                        if cons.getQty then
+                            num = num * cons:getQty()
+                        end
+                        for i = 1, math.max(to_number(math.min(num, 50)), 2) do
+                            local card = SMODS.create_card{
+                                set = "Enhanced",
+                                key = "m_entr_dark"
+                            }
+                            SMODS.change_base(card, pseudorandom_element({"Spades", "Clubs", "Diamonds", "Hearts"}, pseudoseed("nyctophobia_suit")),
+                            pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("nyctophobia_rank")))
+                            G.hand:emplace(card)
+                            table.insert(G.playing_cards, card)
+                        end
+                    elseif context.forcetrigger then
+                        for i = 1, 2 do
+                            local card = SMODS.create_card{
+                                set = "Enhanced",
+                                key = "m_entr_dark"
+                            }
+                            SMODS.change_base(card, pseudorandom_element({"Spades", "Clubs", "Diamonds", "Hearts"}, pseudoseed("nyctophobia_suit")),
+                            pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("nyctophobia_rank")))
+                            G.hand:emplace(card)
+                            table.insert(G.playing_cards, card)
+                        end
+                    end
+                end
+            }))
+            return nil, true
+        end
+    end,
+    entr_credits = {
+        idea = {"axo"},
+        art = {"axo"},
+    }
+}
+
 return {
     items = {
         burnt_m,
@@ -445,6 +511,7 @@ return {
         antireal,
         jokezmann_brain,
         metanoia,
-        metamorphosis
+        metamorphosis,
+        nyctophobia
     }
 }

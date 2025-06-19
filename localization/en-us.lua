@@ -698,6 +698,15 @@ local decs = {
 					"{C:inactive}(Currently{} {X:mult,C:white}X#3#{}, {X:chips,C:white}X#4#{}{C:inactive}){}",
 				},
 			},
+			j_entr_nyctophobia = {
+				name = "Nyctophobia",
+				text = {
+					"When blind is selected, destroy",
+					"a random {C:attention}consumable{} and draw two",
+					"random {C:dark_edition}Dark{} cards to hand for every time",
+					"that consumable was {C:attention}used{} previously"
+				},
+			},
 		},
 		Blind = {
 			bl_entr_red = {

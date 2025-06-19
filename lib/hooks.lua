@@ -1717,6 +1717,8 @@ G.FUNCS.use_card = function(e, mute, nosave)
             set = card.config.center.set
         }
     end
+    G.GAME.entr_used_cards = G.GAME.entr_used_cards or {}
+    G.GAME.entr_used_cards[card.config.center.key] = (G.GAME.entr_used_cards[card.config.center.key] or 0) + 1
 end
 
 local main_ref = evaluate_play_main
