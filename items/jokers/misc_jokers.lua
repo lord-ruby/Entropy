@@ -1490,7 +1490,10 @@ local scenic_route = {
                 message = localize("k_new")
             }
         end
-    end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
 }
 
 
@@ -1517,19 +1520,19 @@ local crimson_flask = {
     },
     loc_vars = function(self, q, card) return {vars = {number_format(card.ability.xmult_joker), number_format(card.ability.xmult_card), number_format(card.ability.xmult)}} end,
     calculate = function(self, card, context)
-        if context.joker_debuffed then
+        if context.joker_debuffed or context.forcetrigger then
             card.ability.xmult = card.ability.xmult + card.ability.xmult_joker
             return {
                 message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.xmult }})
             }
         end
-        if context.debuffed_card_drawn then
+        if context.debuffed_card_drawn or context.forcetrigger then
             card.ability.xmult = card.ability.xmult + card.ability.xmult_card
             return {
                 message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.xmult }})
             }
         end
-        if context.setting_blind then
+        if context.setting_blind or context.forcetrigger then
             local cards = {}
             for i, v in pairs(G.jokers.cards) do if v ~= card then cards[#cards+1] = v end end
             if #cards > 0 then
@@ -1541,7 +1544,10 @@ local crimson_flask = {
                 xmult = card.ability.xmult
             }
         end
-    end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
 }
 
 local card_dissolveref = Card.start_dissolve
@@ -1571,6 +1577,87 @@ function CardArea:emplace(card, ...)
     end
     return cardarea_emplaceref(self, card, ...)
 end
+
+local use_cardref = G.FUNCS.use_card
+G.FUNCS.use_card = function(e, mute, nosave, amt)
+    local ret = use_cardref(e, mute, nosave, amt)
+    local card = e.config.ref_table
+    if card.ability.set == 'Enhanced' or card.ability.set == 'Default' then
+        SMODS.calculate_context{enhancement_added = card.config.center.key, card=card}
+    end
+    return ret
+end
+local grotesque_joker = {
+    order = 27,
+    object_type = "Joker",
+    key = "grotesque_joker",
+    rarity = 3,
+    cost = 10,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+            "m_entr_flesh"
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 2, y = 0 },
+    atlas = "placeholder",
+    demicoloncompat = true,
+    config = {
+        xmult = 1,
+        xmult_mod = 0.1,
+        xchips = 1,
+        xchips_mod = 0.1
+    },
+    loc_vars = function(self, q, card) return {vars = {
+        number_format(card.ability.xmult_mod), 
+        number_format(card.ability.xchips_mod), 
+        number_format(card.ability.xmult),
+        number_format(card.ability.xchips)
+    }} 
+    end,
+    calculate = function(self, card, context)
+        if context.remove_playing_cards then
+            for i, v in pairs(context.removed) do
+                if v.config.center.key == "m_entr_flesh" then
+                    card.ability.xchips = card.ability.xchips + card.ability.xchips_mod
+                    card_eval_status_text(
+                        card,
+                        "extra",
+                        nil,
+                        nil,
+                        nil,
+                        { message = localize({ type = "variable", key = "a_xchips", vars = { card.ability.xchips }}), colour = G.C.FILTER }
+                    )
+                end
+            end
+        end
+        if context.forcetrigger then
+            card.ability.xchips = card.ability.xchips + card.ability.xchips_mod
+            card_eval_status_text(
+                card,
+                "extra",
+                nil,
+                nil,
+                nil,
+                { message = localize({ type = "variable", key = "a_xchips", vars = { card.ability.xchips }}), colour = G.C.FILTER }
+            )
+        end
+        if context.enhancement_added == "m_entr_flesh" or context.forcetrigger then
+            card.ability.xmult = card.ability.xmult + card.ability.xmult_mod
+            return {
+                message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.xmult }})
+            }
+        end
+        if context.joker_main or context.forcetrigger then
+            return {
+                xmult = card.ability.xmult,
+                xchips = card.ability.xchips
+            }
+        end
+    end
+}
 
 return {
     items = {
@@ -1602,6 +1689,7 @@ return {
         sticker_sheet,
         fourbit,
         scenic_route,
-        crimson_flask
+        crimson_flask,
+        grotesque_joker
     }
 }

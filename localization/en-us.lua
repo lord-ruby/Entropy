@@ -686,8 +686,16 @@ local decs = {
 					"This Joker gains {X:mult,C:white}X#1#{} when a Joker",
 					"is {C:attention}debuffed{} and {X:mult,C:white}X#2#{} when a {C:attention}debuffed{}",
 					"playing card is drawn to hand",
-					"Debuff a {C:attention}random{} Joker each round"
+					"Debuff a {C:attention}random{} Joker each round",
 					"{C:inactive}(Currently{} {X:mult,C:white}X#3#{}{C:inactive}){}",
+				},
+			},
+			j_entr_grotesque_joker = {
+				name = "Grotesque Joker",
+				text = {
+					"This Joker gains {X:mult,C:white}X#1#{} when a Flesh Card is",
+					"added and {X:chips,C:white}X#2#{} when a Flesh Card is destroyed",
+					"{C:inactive}(Currently{} {X:mult,C:white}X#3#{}, {X:chips,C:white}X#4#{}{C:inactive}){}",
 				},
 			},
 		},
