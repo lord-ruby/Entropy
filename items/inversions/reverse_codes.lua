@@ -550,7 +550,7 @@ local inherit = {
 		G.CHOOSE_ENH:align_to_major()
     end,
     can_use = function(self, card)
-        return #Entropy.GetHighlightedCards({G.hand}, card, {c_base=true}, 1, 1) == 1
+        return #Entropy.GetHighlightedCards({G.hand}, card, 1, 1,{c_base=true}) == 1
 	end,
     loc_vars = function(self, q, card)
         return {

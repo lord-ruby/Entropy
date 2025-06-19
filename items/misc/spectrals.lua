@@ -12,14 +12,14 @@ local flipside = {
     },
     set = "Spectral",
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.consumeables, G.hand, G.pack_cards, G.shop_jokers, G.shop_vouchers, G.shop_booster, G.jokers}, card)
+        local cards = Entropy.GetHighlightedCards({G.consumeables, G.hand, G.pack_cards, G.shop_jokers, G.shop_vouchers, G.shop_booster, G.jokers}, card, 1, card.ability.select)
         cards = Entropy.FilterTable(cards, function(card)
             return Entropy.Inversion(card)
         end)
         return #cards > 0 and #cards <= card.ability.select
     end,
     use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.consumeables, G.hand, G.pack_cards, G.shop_jokers, G.shop_vouchers, G.shop_booster, G.jokers}, card)
+        local cards = Entropy.GetHighlightedCards({G.consumeables, G.hand, G.pack_cards, G.shop_jokers, G.shop_vouchers, G.shop_booster, G.jokers}, card, 1, card.ability.select)
         local actual = Entropy.FilterTable(cards, function(card)
             return Entropy.Inversion(card)
         end)
@@ -58,7 +58,7 @@ local shatter = {
         end)
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand}, card)
+        local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.limit)
         return num > 0 and num <= card.ability.limit
 	end,
     loc_vars = function(self, q, card)
@@ -144,7 +144,7 @@ local lust = {
         end)
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand}, card)
+        local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.limit)
         return num > 0 and num <= card.ability.limit
 	end,
     loc_vars = function(self, q, card)

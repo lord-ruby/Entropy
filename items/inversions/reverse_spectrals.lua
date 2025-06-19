@@ -161,7 +161,7 @@ local rift = {
     end,
     can_use = function(self, card)
         local cards = Entropy.GetHighlightedCards({G.jokers, G.consumeables, G.hand}, card, 1, card.ability.num)
-        return #cards > 0 and #cards < card.ability.num
+        return #cards > 0 and #cards <= card.ability.num
     end,
     loc_vars = function(self, q, card)
         return {
@@ -549,7 +549,7 @@ local rejuvenate = {
         local seal = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("rejuvenate"),function(e)
             return G.GAME.banned_keys[e.key] or e.no_doe
         end).key
-        local card = Entropy.GetHighlightedCards({G.hand}, card2)[1] or pseudorandom_element(G.hand.cards, pseudoseed("rejuvenate"), 1, 1)
+        local card = Entropy.GetHighlightedCards({G.hand}, card2, 1, 1)[1] or pseudorandom_element(G.hand.cards, pseudoseed("rejuvenate"), 1, 1)
         card:set_edition(ed)
         card:set_ability(enh)
         card:set_seal(seal)
@@ -607,7 +607,7 @@ local crypt = {
                 joker = v 
             end 
         end
-        Entropy.FlipThen(Entropy.GetHighlightedCards({G.jokers}, card, 1, card.ability.select), function(v, area)
+        Entropy.FlipThen(Entropy.GetHighlightedCards({G.jokers}, card2, 1, card2.ability.select), function(v, area)
             if v ~= joker then            
                 copy_card(joker, v)
                 v:set_edition()
@@ -653,7 +653,7 @@ local charm = {
 	pos = {x=11,y=5},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
-        for i, v in pairs(Entropy.GetHighlightedCards({G.jokers}, card, 1, card.ability.select)) do
+        for i, v in pairs(Entropy.GetHighlightedCards({G.jokers}, card2, 1, card2.ability.select)) do
             v:set_edition("e_cry_astral")
             v.ability.eternal = true
 
@@ -717,7 +717,7 @@ local entropy = {
 	pos = {x=7,y=6},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
-        Entropy.FlipThen(Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select), function(card,area)
+        Entropy.FlipThen(Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select), function(card,area)
             local edition = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
                 return G.GAME.banned_keys[e.key] or e.no_doe
             end).key
@@ -1072,7 +1072,7 @@ local fusion = {
             actual[#actual+1] = cards[i]
         end
         Entropy.FlipThen(actual, function(card,area)
-            local sel = Entropy.GetHighlightedCards({G.jokers, G.consumeables, G.hand}, card, 1, 1, {c_base=true})[1]
+            local sel = Entropy.GetHighlightedCards({G.jokers, G.consumeables, G.hand}, card2, 1, 1, {c_base=true})[1]
             if sel then
                 local enhancement_type = sel.ability and sel.ability.set or sel.config.center.set
                 if sel.area == G.hand then
@@ -1463,14 +1463,14 @@ local engulf = {
 	pos = {x=8,y=7},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
-        for i, v in pairs(Entropy.GetHighlightedCards({G.hand}, card, 1, card2.ability.num) ) do
+        for i, v in pairs(Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.num) ) do
             v:set_edition("e_entr_solar")
             v:juice_up()
 
         end
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card2.ability.num) 
+        local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.num) 
         return num <= card.ability.num and num > 0
 	end,
     loc_vars = function(self, q, card)
@@ -1559,7 +1559,7 @@ local entomb = {
 	pos = {x=9,y=6},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
-        for i, v in pairs(Entropy.GetHighlightedCards({G.consumeables}, card, 1, card.ability.num)) do
+        for i, v in pairs(Entropy.GetHighlightedCards({G.consumeables}, card2, 1, card2.ability.num)) do
             local c
             if v.config.center.set == "Booster" then
                 c = copy_card(v)

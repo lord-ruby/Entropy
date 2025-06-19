@@ -590,7 +590,7 @@ local whetstone = {
     use = function(self, card2)
         if pseudorandom("whetstone")
         < cry_prob(card2.ability.cry_prob, card2.ability.extra.odds, card2.ability.cry_rigged) / card2.ability.extra.odds or G.cry_force_use then
-            local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+            local cards = Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select)
             Entropy.FlipThen(cards, function(card)
                 local enh = Entropy.UpgradeEnhancement(card, false, {m_entr_disavowed = true})
                 if G.P_CENTERS[enh] then
@@ -667,7 +667,7 @@ local endurance = {
     pos = {x=1,y=1},
     inversion = "c_strength",
     use = function(self, card2)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, card.ability.select)
+        local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card2, 1, card2.ability.select)
         for i, card in pairs(cards) do
             card.ability.banana = true
             if not Card.no(card, "immutable", true) then
@@ -780,7 +780,7 @@ local statue = {
     inversion = "c_death",
     pos = {x=3,y=1},
     use = function(self, card2)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select)
         G.E_MANAGER:add_event(Event({
 			func = function()
                 for i = 1, card2.ability.convert_per do
@@ -836,7 +836,7 @@ local feast = {
     pos = {x=4,y=1},
     inversion = "c_temperance",
     use = function(self, card2)
-        local cards = Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.select)
+        local cards = Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card2, 1, card2.ability.select)
         for i, v in pairs(cards) do
             local card = cards[i]
             G.E_MANAGER:add_event(Event({
@@ -1207,7 +1207,7 @@ local penumbra = {
     pos = {x=2,y=2},
     inversion = "c_cry_eclipse",
     use = function(self, card2)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select)
         for i, v in pairs(cards) do
             local card = cards[i]
             G.E_MANAGER:add_event(Event({
@@ -1330,7 +1330,7 @@ local imp = {
     pos = {x=4,y=2},
     inversion = "c_cry_seraph",
     use = function(self, card2)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select)
         Entropy.FlipThen(cards, function(card)
             card:set_ability(G.P_CENTERS.m_entr_dark)
             G.hand:remove_from_highlighted(card)
@@ -1377,7 +1377,7 @@ local integrity = {
     pos = {x=5,y=2},
     inversion = "c_cry_instability",
     use = function(self, card2)
-        local cards = Entropy.FilterTable(Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select), function(card) return card.config.center.key ~= "c_base" end)
+        local cards = Entropy.FilterTable(Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select), function(card) return card.config.center.key ~= "c_base" end)
         Entropy.FlipThen(cards, function(card)
             local edition = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
                 return G.GAME.banned_keys[e.key] or e.no_doe

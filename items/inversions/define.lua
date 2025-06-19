@@ -13,7 +13,7 @@ local define = {
     hidden=true,
     soul_rate = 0,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand, G.consumeables, G.jokers, G.shop_booster, G.pack_cards, G.shop_jokers, G.shop_vouchers}, card)
+        local num = #Entropy.GetHighlightedCards({G.hand, G.consumeables, G.jokers, G.shop_booster, G.pack_cards, G.shop_jokers, G.shop_vouchers}, card, 1, 1)
         return num > 0 and num <= 1
     end,
 
@@ -151,7 +151,7 @@ G.FUNCS.define_apply_previous = function()
 end
 G.FUNCS.define_apply = function()
     local current_card
-    local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables, G.jokers, G.shop_booster, G.pack_cards, G.shop_jokers, G.shop_vouchers})
+    local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables, G.jokers, G.shop_booster, G.pack_cards, G.shop_jokers, G.shop_vouchers}, 1, 1)
     local entered_card = Cryptid.pointergetalias(G.ENTERED_CARD)
 
     G.PREVIOUS_ENTERED_CARD = G.ENTERED_CARD
