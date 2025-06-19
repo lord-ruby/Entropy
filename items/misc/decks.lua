@@ -152,6 +152,23 @@ local containment = {
     end
   }
 
+  local butterfly = {
+    object_type = "Back",
+    order = 7005,
+    dependencies = {
+      items = {
+        "set_entr_decks"
+      }
+    },
+    config = { joker_slot = -2 },
+    key = "butterfly",
+    pos = { x = 4, y = 0 },
+    atlas = "decks",
+    loc_vars = function() 
+      return {vars = {G.GAME.probabilities.normal or 1}}
+    end
+  }
+
 Cryptid.edeck_sprites.seal.entr_cerulean = {atlas="entr_crypt_deck", pos = {x=0,y=0}}
 Cryptid.edeck_sprites.seal.entr_sapphire = {atlas="entr_crypt_deck", pos = {x=1,y=0}}
 Cryptid.edeck_sprites.seal.entr_verdant = {atlas="entr_crypt_deck", pos = {x=3,y=0}}
@@ -284,6 +301,7 @@ return {
       redefined,
       containment,
       destiny,
-      ambisinister
+      ambisinister,
+      butterfly
     }
   }

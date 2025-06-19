@@ -1324,3 +1324,31 @@ else
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+-- TARGET: add your own CardAreas for joker evaluation
+'''
+position = "after"
+payload = '''
+    if Entropy.DeckOrSleeve("butterfly") then
+        for i = 1, Entropy.DeckOrSleeve("butterfly") do
+            t[#t+1] = G.butterfly_jokers
+        end
+    end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''
+if card.area and area_set[card.area] then
+'''
+position = "at"
+payload = '''
+if card.area and (area_set[card.area] or card.needsnoarea) then
+'''
+match_indent = true

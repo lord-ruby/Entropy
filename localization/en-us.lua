@@ -1054,10 +1054,9 @@ local decs = {
 			b_entr_butterfly = {
 				name = "Butterfly Deck",
 				text =  {
-					"All {c:attention}Random{} outcomes",
-					"can affect eachother",
-					"Gain a {C:dark_edition}Negative{} {C:attention}Revert{}",
-					"when a Boss Blind is selected"
+					"{C:attention}-2{} Joker Slots",
+					"Sold Jokers have a {C:green}#1# in 2{}",
+					"chance to still trigger"
 				}
 			},
 			b_entr_ambisinister = {

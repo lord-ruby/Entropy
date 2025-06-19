@@ -351,7 +351,11 @@ function Entropy.BlindIs(blind)
     if Entropy.IsEE() and Entropy.EEWhitelist[blind] then return true end
 end
 
-function Entropy.card_eval_status_text_eq(card, eval_type, amt, percent, dir, extra, pref, col, sound, vol)
+function Entropy.card_eval_status_text_eq(card, eval_type, amt, percent, dir, extra, pref, col, sound, vol, ta)
+    if card.area == G.butterfly_jokers and G.deck.cards[1] then 
+        Entropy.card_eval_status_text_eq(G.deck.cards[1], eval_type, amt, percent, dir, extra, pref, col, sound, vol, true)
+        return
+    end
     percent = percent or (0.9 + 0.2*math.random())
     if dir == 'down' then 
         percent = 1-percent
@@ -365,13 +369,13 @@ function Entropy.card_eval_status_text_eq(card, eval_type, amt, percent, dir, ex
     local y_off = 0.15*G.CARD_H
     if card.area == G.jokers or card.area == G.consumeables then
         y_off = 0.05*card.T.h
-    elseif card.area == G.hand then
+    elseif card.area == G.hand or ta then
         y_off = -0.05*G.CARD_H
         card_aligned = 'tm'
     elseif card.area == G.play then
         y_off = -0.05*G.CARD_H
         card_aligned = 'tm'
-    elseif card.jimbo  then
+    elseif card.jimbo then
         y_off = -0.05*G.CARD_H
         card_aligned = 'tm'
     end
@@ -1507,4 +1511,26 @@ function Entropy.Get4bit()
         return G.P_CENTERS[Cryptid.random_consumable("4bit_c", nil, "c_fool").key]
     end
     return Entropy.GetPooledCenter(ptype)
+end
+
+local card_eval_status_text_ref = card_eval_status_text
+function card_eval_status_text(card, ...)
+    if card.area == G.butterfly_jokers and G.deck.cards[1] then
+        return card_eval_status_text_ref(G.deck.cards[1], ...)
+    else    
+        return card_eval_status_text_ref(card, ...)
+    end
+end
+
+local sell_cardref = Card.sell_card
+function Card:sell_card()
+    if self.ability.set == "Joker" then
+        local bcard = copy_card(self)
+        bcard.states.visible = false
+        G.jokers:remove_card(bcard)
+        bcard:remove_from_deck()
+        G.butterfly_jokers:emplace(bcard)
+        bcard:add_to_deck()
+    end
+    sell_cardref(self)
 end
