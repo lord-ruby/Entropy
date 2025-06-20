@@ -1662,6 +1662,36 @@ local grotesque_joker = {
     }
 }
 
+local dog_chocolate = {
+    order = 28,
+    object_type = "Joker",
+    key = "dog_chocolate",
+    rarity = "cry_candy",
+    cost = 6,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+            "tag_entr_dog"
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 4, y = 4 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if (context.tags_merged and context.first_tag.key == "tag_entr_dog") or context.forcetrigger then
+            SMODS.add_card{
+                set="Joker",
+                rarity="cry_candy",
+                area=G.jokers
+            }
+            return true
+        end
+    end,
+}
+
+
 return {
     items = {
         surreal,
@@ -1693,6 +1723,7 @@ return {
         fourbit,
         scenic_route,
         crimson_flask,
-        grotesque_joker
+        grotesque_joker,
+        dog_chocolate
     }
 }

@@ -707,6 +707,15 @@ local decs = {
 					"that consumable was {C:attention}used{} previously"
 				},
 			},
+			j_entr_dog_chocolate = {
+				name = "Dog Chocolate",
+				text = {
+					"When {C:attention}Dog Tags{} are merged",
+					"instead create a {C:attention}Candy{} Joker",
+					"and {C:red}destroy{} both of the {C:attention}Dog Tags{}"
+					"{C:attention}Dog Tags{} appear more frequently"
+				},
+			},
 		},
 		Blind = {
 			bl_entr_red = {

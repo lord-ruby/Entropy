@@ -1528,3 +1528,18 @@ function Card:sell_card()
     end
     sell_cardref(self)
 end
+
+function Entropy.GetNextTag(override)
+    if next(SMODS.find_card('j_cry_kittyprinter')) then return 'tag_cry_cat' end
+    if next(SMODS.find_card('j_entr_dog_chocolate')) then 
+        if not G.GAME.dog_tags then G.GAME.dog_tags = {} end
+        if G.GAME.dog_tags[(override or G.GAME.blind_on_deck)..G.GAME.round_resets.ante] == nil then
+            for i = 1, #SMODS.find_card('j_entr_dog_chocolate') do
+                if G.GAME.dog_tags[(override or G.GAME.blind_on_deck)..G.GAME.round_resets.ante] ~= true then
+                    G.GAME.dog_tags[(override or G.GAME.blind_on_deck)..G.GAME.round_resets.ante] = pseudorandom_element({true, false, false, false, false}, pseudoseed("dog_chocolate"))
+                end
+            end
+        end
+        if G.GAME.dog_tags[(override or G.GAME.blind_on_deck)..G.GAME.round_resets.ante] then return 'tag_entr_dog' end
+    end
+end
