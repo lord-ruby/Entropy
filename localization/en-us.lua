@@ -712,7 +712,7 @@ local decs = {
 				text = {
 					"When {C:attention}Dog Tags{} are merged",
 					"instead create a {C:attention}Candy{} Joker",
-					"and {C:red}destroy{} both of the {C:attention}Dog Tags{}"
+					"and {C:red}destroy{} both of the {C:attention}Dog Tags{}",
 					"{C:attention}Dog Tags{} appear more frequently"
 				},
 			},
