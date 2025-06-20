@@ -1149,55 +1149,6 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         key = key:gsub("mult_mod", "chip_mod")
         key = key:gsub("mult", "chips")
     end
-    if scored_card.ability.ast_semiconductor then
-        if key == "hypermult" or key == "hyperchips" or key == "hypermult_mod" or key == "hyperchip_mod" or key == "hyper_mult" or key == "hyper_chips" then
-            value[1] = value[1] + 1
-        elseif key == "eee_mult" or key = "eeemult" then
-            key = "hypermult"
-            value = {4, value}
-        elseif key = "eee_chips" or key == "eeechips" then
-            key = "hyperchips"
-            value = {4, value}
-        elseif key = "EEEmult_mod" then
-            key = "hypermult_mod"
-            value = {4, value}
-        elseif key = "EEEchip_mod" then
-            key = "hyperchip_mod"
-            value = {4, value}
-        else
-            key = ({
-                ["mult"] = "xmult",
-                ["mult_mod"] = "x_mult_mod",
-                ["chips"] = "x_chips",
-                ["chip_mod"] = "Xchip_mod",
-                ["x_chips"] = "echips",
-                ["xchips"] = "echips",
-                ["Xchip_mod"] = "Echip_mod",
-                ["x_mult"] = "emult",
-                ["xmult"] = "emult",
-                ["x_mult_mod"] = "Emult_mod",
-                ["Xmult_mod"] = "Emult_mod"
-                ['e_mult'] = "ee_mult",
-                ['e_chips'] = "ee_chips",
-                ['ee_mult'] = "eee_mult",
-                ['ee_chips'] = "eee_chips",
-                --'eee_mult', 
-                --'eee_chips'
-                ['emult'] = "ee_mult",
-                ['echips'] = "ee_chips",
-                ['eemult'] = "eee_mult",
-                ['eechips'] = "eee_chips",
-                --'eeemult', 
-                --'eeechips'
-                ['Emult_mod'] = "EEmult_mod",
-                ['Echip_mod'] = "EEchip_mod",
-                ['EEmult_mod'] = "EEEmult_mod", 
-                ['EEchip_mod'] = "EEEchip_mod", 
-                --'EEEmult_mod', 
-                --'EEEchip_mod'
-            })[key]
-        end
-    end
     local ret
     ret = scie(effect, scored_card, key, amount, from_edition)
     if ret then
@@ -2023,6 +1974,9 @@ function Cryptid.antimatter_apply(skip)
   end
   if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_entr_twisted", "wins", 8) or 0 ~= 0) or skip then
     G.GAME.modifiers.entr_twisted = true
+  end
+  if (Cryptid.safe_get(G.PROFILES, G.SETTINGS.profile, "deck_usage", "b_entr_butterfly", "wins", 8) or 0 ~= 0) or skip then
+    G.GAME.modifiers.butterfly_antimatter = true
   end
 end
 

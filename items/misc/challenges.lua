@@ -27,11 +27,12 @@ local hyperbolic_chamber = {
 
 local gsr = Game.start_run
 function Game:start_run(args)
-    G.butterfly_jokers = CardArea(
-        9999, 9999,
-        0,
-        0, 
-        {card_limit = 9999, type = 'joker', highlight_limit = 0})
+        G.butterfly_jokers = CardArea(
+            9999, 9999,
+            0,
+            0, 
+            {card_limit = 9999, type = 'joker', highlight_limit = 0}
+        )
 	gsr(self, args)
 	if G.GAME.modifiers.entr_starting_ante_mten and not args.savetext then
         ease_ante(-11, nil, true)

@@ -585,6 +585,7 @@ end
 function Entropy.DeckOrSleeve(key)
     local num = 0
     if key == "doc" and G.GAME.modifiers.doc_antimatter then num = num + 1 end
+    if key == "butterfly" and G.GAME.modifiers.butterfly_antimatter then num = num + 1 end
     if CardSleeves then
         if G.GAME.selected_sleeve == ("sleeve_entr_"..key) then num = num + 1 end
     end
