@@ -209,9 +209,9 @@ local decs = {
 			j_entr_oekrep = {
 				name = "Oekrep",
 				text = {
-					"Destroy a {C:attention}random{} consumable and",
-					"create a corresponding {C:dark_edition}Negative{}",
-					"Mega Booster Pack at the end of the {C:attention}shop{}"
+					"create a {C:dark_edition}Negative{} Mega Booster Pack ",
+					"at the end of the {C:attention}shop{}",
+					"based on one {C:attention}random{} consumable"
 				}
 			},
 			j_entr_kciroy = {
