@@ -399,12 +399,13 @@ local metamorphosis = {
             local card = pseudorandom_element(G.deck.cards, pseudoseed("metamorphosis"))
             if not card then card = pseudorandom_element(G.hand.cards, pseudoseed("metamorphosis")) end
             if not card then card = pseudorandom_element(G.play.cards, pseudoseed("metamorphosis")) end
+            if not card2.ability.immutable then card2.ability.immutable = {} end
             if card then
                 card2.ability.immutable.rank = card:get_id()
             end
         end
         if context.individual and context.cardarea == G.play and context.other_card then
-            if context.other_card:get_id() == card2.ability.immutable.rank then
+            if card2.ability.immutable and context.other_card:get_id() == card2.ability.immutable.rank then
                 if not context.retrigger_joker then card2:juice_up() end
                 return {
                     func = function()
