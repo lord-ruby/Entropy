@@ -492,6 +492,7 @@ local nyctophobia = {
                             table.insert(G.playing_cards, card)
                         end
                     end
+                    return true
                 end
             }))
             return nil, true
