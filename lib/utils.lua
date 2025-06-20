@@ -1,7 +1,26 @@
 function Entropy.GetHighlightedCards(cardareas, ignorecard, min, max, blacklist)
-    return Cryptid.get_highlighted_cards(cardareas, ignorecard or {}, min or 1, max or 1, blacklist and function(card)
-        return not blacklist[card.config.center.key]
-    end)
+    if Cryptid.get_highlighted_cards then
+        return Cryptid.get_highlighted_cards(cardareas, ignorecard or {}, min or 1, max or 1, blacklist and function(card)
+            return not blacklist[card.config.center.key]
+        end)
+    else    
+        local cards = {}
+        ignorecard.checked = true
+        blacklist = blacklist or {}
+        for i, area in pairs(cardareas) do
+            if area.cards then
+                for i2, card in ipairs(area.highlighted) do
+                    if card ~= ignorecard and not blacklist[card.config.center.key] and card.highlighted and not card.checked then
+                        cards[#cards + 1] = card
+                        card.checked = true
+                    end
+                end
+            end
+        end
+        for i, v in ipairs(cards) do v.checked = nil end
+        ignorecard.checked = false
+        return cards
+    end
 end
 
 function Entropy.FilterTable(table, func)
