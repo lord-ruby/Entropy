@@ -1400,7 +1400,7 @@ local superego = {
         end
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.jokers}, card, 1, card2.ability.num)
+        local num = #Entropy.GetHighlightedCards({G.jokers}, card, 1, card.ability.num)
         return num <= card.ability.num and num > 0
 	end,
     loc_vars = function(self, q, card)

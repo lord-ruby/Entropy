@@ -2889,8 +2889,15 @@ function create_usage_tabspage(args)
     local page = args
     local per_page = 6
     local types = {}
+    local blacklist = {
+        Unique = true,
+        Food = true,
+        Meme = true,
+        Tier3 = true,
+        M = true
+    }
     for i, v in ipairs(SMODS.ConsumableType.obj_buffer) do
-        if SMODS.ConsumableType.obj_table[v].original_mod and v ~= "Unique" then types[#types+1] = v end
+        if SMODS.ConsumableType.obj_table[v].original_mod and not blacklist[v] then types[#types+1] = v end
     end
     G.USAGE_PAGE = page
     if not types[1+(page*per_page)] then
@@ -2899,7 +2906,7 @@ function create_usage_tabspage(args)
     end
     local options = {
     }
-    for i = 1+(page*per_page), math.max(1+(page*per_page)+per_page, #types-1) do
+    for i = 1+(page*per_page), math.min(math.max(1+(page*per_page)+per_page, #types-1), per_page) do
         local key = types[i]
         if key then
             options[#options+1] = {
