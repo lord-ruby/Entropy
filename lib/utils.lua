@@ -5,7 +5,7 @@ function Entropy.GetHighlightedCards(cardareas, ignorecard, min, max, blacklist)
         end)
     else    
         local cards = {}
-        ignorecard.checked = true
+        if ignorecard then ignorecard.checked = true end
         blacklist = blacklist or {}
         for i, area in pairs(cardareas) do
             if area.cards then
@@ -18,7 +18,7 @@ function Entropy.GetHighlightedCards(cardareas, ignorecard, min, max, blacklist)
             end
         end
         for i, v in ipairs(cards) do v.checked = nil end
-        ignorecard.checked = false
+        if ignorecard then ignorecard.checked = false end
         return cards
     end
 end
