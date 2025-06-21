@@ -758,7 +758,7 @@ local atomikos = {
     calculate = function(self, card, context)
         if context.after then
             local handname = G.FUNCS.get_poker_hand_info(G.play.cards)
-            if handname and (handname ~= "High Card" or to_big(card.ability.times) <= to_big(1e-300)) then
+            if handname and (handname ~= "High Card" and handname ~= "cry_None") or to_big(card.ability.times) <= to_big(1e-300)) then
                 card.ability.left = card.ability.left - 1
                 if handname ~= "High Card" and handname ~= "cry_None" then
                     G.E_MANAGER:add_event(Event({
