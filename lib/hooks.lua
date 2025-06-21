@@ -1364,24 +1364,11 @@ end
 
 local ref = level_up_hand
 function level_up_hand(card, hand, instant, amount, ...)
-    local chips = G.GAME.hands[hand].chips
-    local mult = G.GAME.hands[hand].mult
-    local level = G.GAME.hands[hand].level
     if Entropy.HasJoker("j_entr_strawberry_pie",true) and hand ~= "High Card" then
         hand = "High Card"
     end
     local val = ref(card,hand,instant,amount, ...)
-    if card and card.config and card.config.center and card.config.center.set == "Joker" then
-        G.E_MANAGER:add_event(Event({
-            func = function()
-                G.GAME.hands[hand].level = level
-                G.GAME.hands[hand].chips = chips
-                G.GAME.hands[hand].mult = mult
-                ref(card, hand, true, amount)
-                return true
-            end
-        }))
-    end
+    return val
 end
 
 local start_dissolveref = Card.start_dissolve
@@ -1732,7 +1719,6 @@ function evaluate_play_main(text, disp_text, poker_hands, scoring_hand, non_loc_
         end
         G.GAME.hands[text].mult = G.GAME.Bootstrap.Mult
         G.GAME.hands[text].chips = G.GAME.Bootstrap.Chips
-        G.GAME.Bootstrap = nil
     end
     main_ref(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
     if G.GAME.UsingBootstrap then
@@ -1742,11 +1728,14 @@ function evaluate_play_main(text, disp_text, poker_hands, scoring_hand, non_loc_
         }
         G.GAME.UsingBootstrap = nil
     end
-    G.GAME.hands[text].mult = m
-    G.GAME.hands[text].chips = c
-    if poker_hands[text] then
-        poker_hands[text].mult = m
-        poker_hands[text].chips = c
+    if G.GAME.Bootstrap then
+        G.GAME.hands[text].mult = m
+        G.GAME.hands[text].chips = c
+        if poker_hands[text] then
+            poker_hands[text].mult = m
+            poker_hands[text].chips = c
+        end
+        G.GAME.Bootstrap = nil
     end
     return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
 end
