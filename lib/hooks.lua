@@ -2200,7 +2200,18 @@ end
 
 local add_tagref = add_tag
 function add_tag(_tag)
+    if not _tag.ability.added_to_deck then
+        for i, v in pairs(SMODS.get_card_areas('jokers')) do
+            for a, card in pairs(v.cards) do
+                local res = card:calculate_joker({tag_create = true, tag = _tag})
+                if res and res.tag then
+                    _tag = res.tag
+                end
+            end
+        end
+    end
     add_tagref(_tag)
+    _tag.ability.added_to_deck = true
     if not G.GAME.autostart_tags then G.GAME.autostart_tags = {} end
     if not G.GAME.autostart_tags[_tag.key] then G.GAME.autostart_tags[_tag.key] = _tag.key end
 end

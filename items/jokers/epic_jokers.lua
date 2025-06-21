@@ -504,6 +504,81 @@ local nyctophobia = {
     }
 }
 
+local caviar = {
+    order = 108,
+    object_type = "Joker",
+    key = "caviar",
+    rarity = "cry_epic",
+    cost = 15,
+    config = {
+        tags = 8
+    },
+    dependencies = {
+        items = {
+            "set_cry_epic"
+        }
+    },
+    eternal_compat = true,
+    pos = {x = 3, y = 0},
+    atlas = "placeholder",
+    loc_vars = function(self, info_queue, card2)
+        return {
+            vars = {
+                card2.ability.tags
+            }
+        }
+    end,
+    pools = {["Food"] = true},
+    calculate = function (self, card, context)
+        if context.tag_create and Entropy.AscendedTags[context.tag.key] then
+            card.ability.tags = card.ability.tags - 1
+            if to_number(card.ability.tags) <= 0.00000001 then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound("tarot1")
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								G.jokers:remove_card(card)
+								card:remove()
+								card = nil
+								return true
+							end,
+						}))
+						return true
+					end,
+				}))
+                card_eval_status_text(
+                    card,
+                    "extra",
+                    nil,
+                    nil,
+                    nil,
+                    { message = localize("k_eaten_ex"), colour = G.C.RARITY.cry_epic }
+                )
+                return
+            end
+            card_eval_status_text(
+                card,
+                "extra",
+                nil,
+                nil,
+                nil,
+                { message = localize("k_ascended_ex"), colour = G.C.RARITY.cry_epic }
+            )
+            return {
+                tag = Entropy.AscendedTags[context.tag.key] and Tag(Entropy.AscendedTags[context.tag.key])
+            }
+        end
+    end,
+}
+
 return {
     items = {
         burnt_m,
@@ -514,6 +589,7 @@ return {
         jokezmann_brain,
         metanoia,
         metamorphosis,
-        nyctophobia
+        nyctophobia,
+        caviar
     }
 }

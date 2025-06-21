@@ -724,6 +724,13 @@ local decs = {
 					"and suit and an upgraded {C:dark_edition}Edition{} to {C:attention}hand{}"
 				},
 			},
+			j_entr_caviar = {
+				name = "Caviar",
+				text = {
+					"{C:attention}Ascend{} the next {C:attention}#1#{}",
+					"obtained Tags"
+				},
+			},
 		},
 		Blind = {
 			bl_entr_red = {
@@ -2984,7 +2991,8 @@ local decs = {
 			b_stat_Omen = "Omen",
 			b_stat_Command = "Command",
 			k_upgrade_atomikos = "Destroyed",
-			k_new = "new();"
+			k_new = "new();",
+			k_ascended_ex = "Ascended"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",
