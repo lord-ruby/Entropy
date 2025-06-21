@@ -731,6 +731,14 @@ local decs = {
 					"obtained Tags"
 				},
 			},
+			j_entr_afterimage = {
+				name = "Afterimage",
+				text = {
+					"Scored cards have a {C:green}#1# in #2#{}",
+					"chance to draw a {C:attention}Banana{}",
+					"{C:attention}Perishable{} copy to hand"
+				},
+			},
 		},
 		Blind = {
 			bl_entr_red = {

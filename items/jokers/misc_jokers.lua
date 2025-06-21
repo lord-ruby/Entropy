@@ -1751,6 +1751,63 @@ local nucleotide = {
     end,
 }
 
+local afterimage = {
+    order = 30,
+    object_type = "Joker",
+    key = "afterimage",
+    rarity = 2,
+    cost = 5,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 1, y = 0 },
+    atlas = "placeholder",
+    demicoloncompat = true,
+    config = {
+        extra = {
+            odds = 3
+        }
+    },
+    loc_vars = function(self, q, card)
+        q[#q+1] = {set="Other", key="perishable", vars={5, 5}}
+        q[#q+1] = {set="Other", key="banana", vars={1, 10}}
+        return {
+            vars = {
+                cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.after then
+            local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
+            G.FUNCS.get_poker_hand_info(G.play.cards)
+            for i, v in pairs(scoring_hand) do
+                local old_card = v
+                if pseudorandom("afterimage")
+                < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
+                    / card.ability.extra.odds then
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            local new_card = copy_card(old_card)
+                            new_card.ability.banana = true
+                            new_card.ability.perishable = true
+                            new_card.ability.perish_tally = 5
+                            G.hand:emplace(new_card)
+                            table.insert(G.playing_cards, new_card)
+                            return true
+                        end
+                    }))
+                end
+            end
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -1784,6 +1841,7 @@ return {
         crimson_flask,
         grotesque_joker,
         dog_chocolate,
-        nucleotide
+        nucleotide,
+        afterimage
     }
 }
