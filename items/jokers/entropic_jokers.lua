@@ -736,7 +736,7 @@ local exelixi = {
 
 
 local atomikos = {
-    order = 410,
+    order = 411,
     object_type = "Joker",
     key = "atomikos",
     rarity = "entr_entropic",
@@ -808,7 +808,7 @@ local atomikos = {
 }
 
 local apeirostemma = {
-    order = 411,
+    order = 412,
     object_type = "Joker",
     key = "apeirostemma",
     rarity = "entr_entropic",
