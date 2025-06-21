@@ -1806,6 +1806,9 @@ local afterimage = {
             end
         end
     end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
 }
 
 return {
