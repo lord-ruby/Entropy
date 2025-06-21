@@ -714,6 +714,7 @@ local exelixi = {
                     card:set_ability(G.P_CENTERS[Entropy.UpgradeEnhancement(card, true, {m_entr_disavowed=true, m_entr_flesh=true})])
                 end
             end)
+            return nil, true
         end
         if context.discard then
             if context.other_card.config.center.set == "Enhanced" then

@@ -716,6 +716,14 @@ local decs = {
 					"{C:attention}Dog Tags{} appear more frequently"
 				},
 			},
+			j_entr_nucleotide = {
+				name = "Nucleotide",
+				text = {
+					"Draw a copy of the first discarded",
+					"card per round with an {C:attention}inversed{} rank",
+					"and suit and an upgraded {C:dark_edition}Edition{} to {C:attention}hand{}"
+				},
+			},
 		},
 		Blind = {
 			bl_entr_red = {

@@ -1562,3 +1562,30 @@ function Entropy.GetNextTag(override)
         if G.GAME.dog_tags[(override or G.GAME.blind_on_deck)..G.GAME.round_resets.ante] then return 'tag_entr_dog' end
     end
 end
+
+function Entropy.GetInverseSuit(suit)
+    return ({
+        Diamonds = "Hearts",
+        Hearts = "Diamonds",
+        Clubs = "Spades",
+        Spades = "Clubs"
+    })[suit] or suit
+end
+
+function Entropy.GetInverseRank(rank)
+    return ({
+        ["2"] = "Ace",
+        ["3"] = "King",
+        ["4"] = "Queen",
+        ["5"] = "Jack",
+        ["6"] = "10",
+        ["7"] = "9",
+        ["9"] = "7",
+        ["10"] = "6",
+        ["11"] = "5",
+        ["12"] = "4",
+        ["13"] = "3",
+        ["14"] = "2"
+        --["8"] = 8 duh
+    })[tostring(rank)] or rank
+end

@@ -1691,6 +1691,65 @@ local dog_chocolate = {
     end,
 }
 
+local nucleotide = {
+    order = 29,
+    object_type = "Joker",
+    key = "nucleotide",
+    rarity = 3,
+    cost = 10,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 2, y = 0 },
+    atlas = "placeholder",
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.first_hand_drawn then
+            G.GAME.current_round.discarded_cards = 0
+            local eval = function() return G.GAME.current_round.discarded_cards == 0 and not G.RESET_JIGGLES end
+            juice_card_until(card, eval, true)
+        end
+        if context.pre_discard and (G.GAME.current_round.discarded_cards or 0) <= 0 then
+            local card 
+            for i, v in pairs(G.hand.cards) do
+                if v.highlighted then card = v; break end
+            end
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    local new_card = SMODS.create_card{
+                        key = card.config.center.key,
+                        set = card.config.center.set
+                    }
+                    SMODS.change_base(new_card, Entropy.GetInverseSuit(card.base.suit), Entropy.GetInverseRank(card.base.id))
+                    local jkr = card
+                    local found_index = 1
+                    if jkr.edition then
+                        for i, v in ipairs(G.P_CENTER_POOLS.Edition) do
+                            if v.key == jkr.edition.key then
+                                found_index = i
+                                break
+                            end
+                        end
+                    end
+                    found_index = found_index + 1
+                    if found_index > #G.P_CENTER_POOLS.Edition then
+                        found_index = found_index - #G.P_CENTER_POOLS.Edition
+                    end
+                    new_card:set_edition(G.P_CENTER_POOLS.Edition[found_index].key)
+                    G.hand:emplace(new_card)
+                    table.insert(G.playing_cards, new_card)
+                    card:start_dissolve()
+                    return true
+                end
+            }))
+            G.GAME.current_round.discarded_cards = (G.GAME.current_round.discarded_cards or 0) + #G.hand.highlighted
+        end
+    end,
+}
 
 return {
     items = {
@@ -1724,6 +1783,7 @@ return {
         scenic_route,
         crimson_flask,
         grotesque_joker,
-        dog_chocolate
+        dog_chocolate,
+        nucleotide
     }
 }
