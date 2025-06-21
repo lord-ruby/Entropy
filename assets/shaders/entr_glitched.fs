@@ -228,15 +228,17 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     float offy;
     float rmasksum = -1;
     float rectmask = 1;
+    t = floor(t/4);
 
-    for(int i = 0; i < 3; i++)
+    for(int i = 0; i < 5; i++)
     {     
         randnum = bitxor(255*randnum + mod2(t,81), pow(randnum*(16-i), 2));
         mbx = (cx - 25*sin(100/randnum)) * (1 + 2*(floor(cos(177/randnum + 1))));
         mby = (cy - 25*cos(113/randnum + 1)) * (1 + 2*(floor(sin(221/randnum))));
         offx = bitxor(255*randnum, pow(255*randnum,5) - 255*randnum);
         offy = bitxor(255*randnum, pow(255*randnum,5) + 255*randnum);
-
+        offx /= 10;
+        offy /= 10;
         rectmask = (-mbx + abs(abs(mbx) + offx) - offx) - (mby - abs(abs(mby) - offy) + offy);
         rmasksum *= -1 * min(0, max(-1, 5 - pow(rectmask, 2)));
     }
@@ -244,9 +246,9 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     float laddermask = pow(sin((23-20*randnum*randnum)*pow(sin(sin(cy*randnum) + pow(sin(cy*randnum),2)),2)),2) * rmasksum;
     
 
-	hsl.x += floor(randnum + 0.2) * rmasksum * 4 * randnum * (1 - laddermask);// * bitxor(cx * xorscale, cy * xorscale)/4;
+	hsl.x += floor(randnum + 0.1) * rmasksum * 4 * randnum * (1 - laddermask);// * bitxor(cx * xorscale, cy * xorscale)/4;
     hsl.y += laddermask * (1 + 2 * rmasksum); 
-    hsl.z += floor(randnum + 0.2) * (1 + rmasksum) * (1 - 1.5*hsl.z);
+    hsl.z += floor(randnum + 0.2) * (1 + rmasksum) * (1 - 1.5*hsl.z) * 0.1;
 
     tex.rgb = RGB(hsl).rgb;
 
