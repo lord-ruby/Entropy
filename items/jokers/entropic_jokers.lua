@@ -807,6 +807,177 @@ local atomikos = {
     end
 }
 
+local apeirostemma = {
+    order = 411,
+    object_type = "Joker",
+    key = "apeirostemma",
+    rarity = "entr_entropic",
+    cost = 150,
+    config = {
+        immutable = {
+            dice_effect = 1,
+        },
+        extra = {
+            --d2
+            odds = 2,
+            --d3
+            ee_chips = 1,
+            ee_chips_mod = 0.1,
+            --d5
+            reroll_minus = 1,
+            --d6
+            retriggers = 6
+
+        }
+    },
+    eternal_compat = true,
+    dependencies = {
+        items = {
+            "set_entr_entropics"
+        }
+    },
+    blueprint_compat = true,
+    demicoloncompat = true,
+    pos = { x = 3, y = 4 },
+    soul_pos = { x = 5, y = 4, extra = { x = 4, y = 4 } },
+    atlas = "exotic_jokers",
+    calculate = function(self, card, context)
+        local e = card.ability.immutable.dice_effect
+        if e == 1 then
+            if context.ending_shop or context.forcetrigger then
+                local jokers = {}
+                local consumables = {}
+                for i, v in pairs(G.jokers.cards) do
+                    if v ~= card then jokers[#jokers+1] = v end
+                end
+                for i, v in pairs(G.consumeables.cards) do
+                    if v ~= card then consumables[#consumables+1] = v end
+                end
+                local joker = pseudorandom_element(jokers, pseudoseed("apeiro_dice_1_joker"))
+                local cons = pseudorandom_element(consumables, pseudoseed("apeiro_dice_1_consumable"))
+                if joker then
+                    local jc = copy_card(joker)
+                    jc:set_edition("e_negative")
+                    jc:add_to_deck()
+                    G.jokers:emplace(jc)
+                end
+                if cons then
+                    local cc = copy_card(cons)
+                    cc:set_edition("e_negative")
+                    cc:add_to_deck()
+                    G.consumeables:emplace(cc)
+                end
+            end
+        end
+        if e == 2 then
+            if context.joker_main then
+                for i, v in pairs(G.jokers.cards) do
+                    if pseudorandom("aperio_dice_2")
+                    < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
+                        / card.ability.extra.odds and v ~= card then
+                        local results = Cryptid.forcetrigger(v, context)
+                        if results then Entropy.EvaluateEffects(results, card) end
+                    end
+                end
+            end
+        end
+        if e == 3 then
+            if context.joker_main or context.forcetrigger then
+                if #G.play.cards == 3 or context.forcetrigger then
+                    card.ability.extra.ee_chips = card.ability.extra.ee_chips + card.ability.extra.ee_chips_mod
+                    card_eval_status_text(
+                        card,
+                        "extra",
+                        nil,
+                        nil,
+                        nil,
+                        { message = localize("k_upgrade_ex") }
+                    )
+                end
+                return {
+                    ee_chips = card.ability.extra.ee_chips
+                }
+            end
+        end
+        if e == 4 then
+            if context.first_hand_drawn or context.forcetrigger then
+                local c
+                for i, v in pairs(G.jokers.cards) do
+                    if c then
+                        Entropy.RerollJoker(card, v)
+                    end
+                    if v == card then c = true end
+                end
+            end
+        end
+        if e == 5 then
+            if context.buying_card or context.forcetrigger then
+                Cryptid.with_deck_effects(card, function(card)
+                    Cryptid.manipulate(card, {min = 1, max = 1.1, type="X"})
+                end)
+                card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_upgrade_ex"), colour = G.C.GREEN }
+				)
+            end
+        end
+        if e == 6 then
+            if context.retrigger_joker_check
+			and not context.retrigger_joker then
+                return {
+                    message = localize("k_again_ex"),
+                    card = card,
+                    repetitions = pseudorandom("apeirostemma_dice_6", 3, 9)
+                }
+            end
+            if context.repetition
+			and context.cardarea == G.play then
+                return {
+                    message = localize("k_again_ex"),
+                    card = card,
+                    repetitions = pseudorandom("apeirostemma_dice_6", 3, 9)
+                }
+            end
+        end
+    end,
+    loc_vars = function(self, q, card)
+        if G.SETTINGS.paused then
+            return {}
+        end
+        local e = card.ability.immutable.dice_effect
+        local vars = nil
+        if e == 2 then
+            vars =  {
+                cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
+				card.ability.extra.odds,
+            }
+        end
+        if e == 3 then
+            vars = {
+                number_format(card.ability.extra.ee_chips),
+                number_format(card.ability.extra.ee_chips_mod)
+            }
+        end
+        if e == 5 then
+            vars = {
+                number_format(card.ability.extra.reroll_minus)
+            }
+        end
+        if e == 6 then
+            vars = {
+                number_format(math.floor(math.min(card.ability.extra.retriggers, 100)))
+            }
+        end
+        return {
+            key = "j_entr_apeirostemma_"..(card.ability.immutable.dice_effect or 1),
+            vars = vars
+        }
+    end
+}
 
 return {
     items = {
@@ -821,6 +992,7 @@ return {
         katarraktis,
         ieros,
         exelixi,
-        atomikos
+        atomikos,
+        apeirostemma
     }
 }

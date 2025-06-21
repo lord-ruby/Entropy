@@ -1591,3 +1591,55 @@ function Entropy.GetInverseRank(rank)
         --["8"] = 8 duh
     })[tostring(rank)] or rank
 end
+
+function Entropy.EvaluateEffects(effects, card)
+    for i, v2 in pairs(effects) do
+        for i2, result in pairs(v2) do
+            SMODS.calculate_individual_effect({[i2] = result}, card, i2, result, false)
+        end
+    end
+end
+
+function Entropy.RerollJoker(card, joker)
+    local jokers = {joker}
+    local deleted_joker_key = jokers[1].config.center.key
+    local rarity = jokers[1].config.center.rarity
+    jokers[1].getting_sliced = true
+    local legendary = nil
+    --please someone add a rarity api to steamodded
+    if rarity == 1 then
+        rarity = 0
+    elseif rarity == 2 then
+        rarity = 0.9
+    elseif rarity == 3 then
+        rarity = 0.99
+    elseif rarity == 4 then
+        rarity = nil
+        legendary = true
+    end -- Deleted check for "cry epic" it was giving rare jokers by setting rarity to 1
+    local _first_dissolve = nil
+    G.E_MANAGER:add_event(Event({
+        trigger = "before",
+        delay = 0.75,
+        func = function()
+            jokers[1]:start_dissolve(nil, _first_dissolve)
+            _first_dissolve = true
+            return true
+        end,
+    }))
+    G.E_MANAGER:add_event(Event({
+        trigger = "after",
+        delay = 0.4,
+        func = function()
+            play_sound("timpani")
+            local card = create_card("Joker", G.jokers, legendary, rarity, nil, nil, nil, "cry_commit")
+            card:add_to_deck()
+            G.jokers:emplace(card)
+            card:juice_up(0.3, 0.5)
+            if card.config.center.key == deleted_joker_key then
+                check_for_unlock({ type = "pr_unlock" })
+            end
+            return true
+        end,
+    }))
+end

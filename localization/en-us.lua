@@ -450,15 +450,6 @@ local decs = {
 					"Self destructs if {C:attention}7 Diamonds{} are held when hand played"
 				}
 			},
-			j_entr_apeirostemma = {
-				name = "Apeirostemma",
-				text = {
-					"Cards in the {C:attention}shop{}",
-					"now cycle between 5 random cards",
-					"of the same type",
-					"changing every {C:attention}2{} seconds"
-				}
-			},
 			j_entr_lotteryticket = {
 				name = "Lottery Ticket",
 				text = {
@@ -738,6 +729,62 @@ local decs = {
 					"chance to draw a {C:attention}Banana{}",
 					"{C:attention}Perishable{} copy to hand"
 				},
+			},
+
+			j_entr_apeirostemma = {
+				name = "Apeirostemma",
+				text = {
+					"This Joker may cycle",
+					"between {C:attention}6{} different",
+					"effects"
+				}
+			},
+			j_entr_apeirostemma_1 = {
+				name = "Apeirostemma (D1)",
+				text = {
+					"Copy a {C:attention}random{} Joker and",
+					"a {C:attention}random{} consumable at",
+					"the end of the shop then apply negative",
+					"to the copied cards",
+					"{C:inactive}(Apeirostemma excluded){}"
+				}
+			},
+			j_entr_apeirostemma_2 = {
+				name = "Apeirostemma (D2)",
+				text = {
+					"{C:green}#1# in #2#{} chance",
+					"to {C:dark_edition}Force-Trigger{}",
+					"all other Jokers"
+				}
+			},
+			j_entr_apeirostemma_3 = {
+				name = "Apeirostemma (D3)",
+				text = {
+					"This Joker gains {X:dark_edition,C:white}^^#1#{} Chips",
+					"if exactly {C:attention}3{} cards are played",
+					"{C:inactive}(Currently{} {X:dark_edition,C:white}^^#2#{}{C:inactive}){}"
+				}
+			},
+			j_entr_apeirostemma_4 = {
+				name = "Apeirostemma (D4)",
+				text = {
+					"Reroll all Jokers to the {C:attention}Right{}",
+					"of this Joker when blind is selected"
+				}
+			},
+			j_entr_apeirostemma_5 = {
+				name = "Apeirostemma (D5)",
+				text = {
+					"When a shop item is bought",
+					"increase this Jokers values by",
+					"{C:attention}X(1 - 1.1){} excluding this effect"
+				}
+			},
+			j_entr_apeirostemma_6 = {
+				name = "Apeirostemma (D6)",
+				text = {
+					"Retrigger all cards {C:attention}3-9{} Times"
+				}
 			},
 		},
 		Blind = {
@@ -2981,6 +3028,7 @@ local decs = {
 			k_saved_just = "Not Just!",
 			b_on = "Enable",
 			b_off = "Disable",
+			b_cycle = "Cycle",
 			b_true_endless = "True Endless Mode",
 			k_entr_glitched = "Use new Glitched Shader (by cassknows)",
 			ph_hand_notreal = "Bad argument to function pokerhand",

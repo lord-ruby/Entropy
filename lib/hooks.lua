@@ -761,6 +761,18 @@ G.FUNCS.toggle_xekanos = function(e)
     e.parent.UIBox:get_UIE_by_ID("on_offswitch").UIBox:recalculate()
 end
 
+G.FUNCS.can_cycle_apeirostemma = function(e)
+    local c1 = e.config.ref_table
+    e.config.colour = G.C.GREEN
+    e.config.button = "cycle_apeirostemma"
+end
+G.FUNCS.cycle_apeirostemma = function(e)
+    local c1 = e.config.ref_table
+    c1.ability.immutable.dice_effect = c1.ability.immutable.dice_effect + 1
+    if c1.ability.immutable.dice_effect > 6 then
+        c1.ability.immutable.dice_effect = 1
+    end
+end
 
 G.FUNCS.can_buy_slot = function(e)
     if
@@ -1008,6 +1020,43 @@ function G.UIDEF.use_and_sell_buttons(card)
                 {n=G.UIT.R, config={align = 'cl'}, nodes={
                     sellslot
                   }},
+              }},
+          }}
+    end
+    if (card.area == G.jokers and G.jokers and card.config.center.key == "j_entr_apeirostemma") then
+        sell = {n=G.UIT.C, config={align = "cr"}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = 'sell'}, nodes={
+              {n=G.UIT.B, config = {w=0.1,h=0.6}},
+              {n=G.UIT.C, config={align = "tm"}, nodes={
+                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
+                  {n=G.UIT.T, config={text = localize('b_sell'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
+                }},
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                  {n=G.UIT.T, config={text = localize('$'),colour = G.C.WHITE, scale = 0.4, shadow = true}},
+                  {n=G.UIT.T, config={ref_table = card, ref_value = 'sell_cost_label',colour = G.C.WHITE, scale = 0.55, shadow = true}}
+                }}
+              }}
+            }},
+          }}
+        onoff = {n=G.UIT.C, config={align = "cr"}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, button = 'cycle_apeirostemma', func = 'can_cycle_apeirostemma', handy_insta_action = 'use'}, nodes={
+              {n=G.UIT.B, config = {w=0.1,h=0.3}},
+              {n=G.UIT.C, config={align = "tm"}, nodes={
+                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
+                  {n=G.UIT.T, config={text = localize('b_cycle'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true, id ="cycle"}}
+                }},
+              }}
+            }},
+          }}
+        return {
+            n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
+              {n=G.UIT.C, config={padding = 0, align = 'cl'}, nodes={
+                {n=G.UIT.R, config={align = 'cl'}, nodes={
+                  sell
+                }},
+                {n=G.UIT.R, config={align = 'cl'}, nodes={
+                  onoff
+                }},
               }},
           }}
     end
