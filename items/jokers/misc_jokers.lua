@@ -1764,8 +1764,8 @@ local afterimage = {
     },
     blueprint_compat = true,
     eternal_compat = true,
-    pos = { x = 1, y = 0 },
-    atlas = "placeholder",
+    pos = { x = 5, y = 4 },
+    atlas = "jokers",
     demicoloncompat = true,
     config = {
         extra = {
