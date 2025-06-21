@@ -179,6 +179,9 @@ Cryptid.edeck_sprites.edition.entr_solar = {atlas="entr_crypt_deck", pos = {x=2,
 Cryptid.edeck_sprites.edition.entr_sunny = {atlas="entr_crypt_deck", pos = {x=0,y=2}}
 Cryptid.edeck_sprites.edition.entr_fractured = {atlas="entr_crypt_deck", pos = {x=1,y=2}}
 Cryptid.edeck_sprites.edition.entr_freaky = {atlas="entr_crypt_deck", pos = {x=2,y=2}}
+Cryptid.edeck_sprites.edition.entr_neon = {atlas="entr_crypt_deck", pos = {x=0,y=3}}
+Cryptid.edeck_sprites.edition.entr_lowres = {atlas="entr_crypt_deck", pos = {x=1,y=3}}
+Cryptid.edeck_sprites.edition.entr_kaleidoscopic = {atlas="entr_crypt_deck", pos = {x=0,y=4}}
 Cryptid.edeck_sprites.suit.entr_nilsuit = {atlas="entr_crypt_deck", pos = {x=0,y=1}}
 Cryptid.edeck_sprites.enhancement.m_entr_flesh = {atlas="entr_crypt_deck", pos = {x=1,y=1}}
 Cryptid.edeck_sprites.enhancement.m_entr_disavowed = {atlas="entr_crypt_deck", pos = {x=2,y=1}}
@@ -282,6 +285,34 @@ if CardSleeves then
     end
     }
 
+    CardSleeves.Sleeve {
+      key = "crafting",
+      atlas = "sleeves",
+      pos = { x = 1, y = 0 },
+      config = { vouchers = { "v_magic_trick", "v_illusion" } },
+      apply = function()
+        G.GAME.modifiers.crafting = true
+        if not G.GAME.JokerRecipes then G.GAME.JokerRecipes = {} end
+        --G.hand.config.highlighted_limit = 
+        G.GAME.joker_rate = 0
+        if not G.GAME.banned_keys then G.GAME.banned_keys = {} end
+        G.GAME.banned_keys["p_bufoon_normal_1"] = true
+        G.GAME.banned_keys["p_bufoon_normal_2"] = true
+        G.GAME.banned_keys["p_bufoon_jubmo_1"] = true
+        G.GAME.banned_keys["p_bufoon_mega_1"] = true
+        G.E_MANAGER:add_event(Event({
+          trigger = 'after',
+          func = function()
+            local c = create_card("Spectral", G.consumeables, nil, nil, nil, nil, "c_entr_destiny") 
+            c:set_edition("e_negative")
+            c.ability.cry_absolute = true
+            c:add_to_deck()
+            G.consumeables:emplace(c)
+            return true
+          end}))
+      end
+    }
+
   CardSleeves.Sleeve {
     key = "ambisinister",
     atlas = "sleeves",
@@ -291,6 +322,19 @@ if CardSleeves then
       G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots + 3
       Entropy.last_csl = nil
       Entropy.last_slots = nil
+    end
+  }
+
+
+  CardSleeves.Sleeve {
+    key = "butterfly",
+    atlas = "sleeves",
+    pos = { x = 1, y = 0 },
+    apply = function()
+      G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots - 2
+    end,
+    loc_vars = function() 
+      return {vars = {G.GAME.probabilities.normal or 1}}
     end
   }
 end

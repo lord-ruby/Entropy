@@ -1181,6 +1181,22 @@ local decs = {
 					"{C:attention}+3{} Joker Slots"
 				},
 			},
+			sleeve_entr_crafting = {
+				name = "Sleeve of Fate",
+				text =  {
+					"Jokers may no longer appear naturally",
+					"Start with an {C:dark_edition}Aleph, Negative{} Destiny",
+					"Cards have a higher chance to be Enhanced"
+				}
+			},
+			sleeve_entr_butterfly = {
+				name = "Butterfly Sleeve",
+				text =  {
+					"{C:attention}-2{} Joker Slots",
+					"Sold Jokers have a {C:green}#1# in 2{}",
+					"chance to still trigger"
+				}
+			},
 		},
 		Fraud = {
 			c_entr_master = {
