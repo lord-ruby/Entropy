@@ -1176,7 +1176,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         end
         return true
     end
-    if (key == 'asc') or (key == 'asc_mod') then
+    if (key == 'asc') or (key == 'asc_mod') or key == "x_asc" then
         local e = card_eval_status_text
         local orig = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num)
         G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 1) + G.GAME.current_round.current_hand.cry_asc_num) * to_big(amount)
@@ -1245,7 +1245,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         return true
     end
 end
-for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'asc', 'asc_mod', 'plus_asc', 'plusasc_mod', 'exp_asc', 'exp_asc_mod', 'eq_chips', 'Eqchips_mod', 'xlog_chips'}) do
+for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'asc', 'asc_mod', 'plus_asc', 'plusasc_mod', 'exp_asc', 'exp_asc_mod', 'eq_chips', 'Eqchips_mod', 'xlog_chips', 'x_asc'}) do
     table.insert(SMODS.calculation_keys, v)
 end
 

@@ -267,7 +267,7 @@ local antireal = {
             local num = (G.jokers.config.card_limit - #G.jokers.cards + Entropy.HasJoker("j_entr_antireal") or 0) * card.ability.exp_per_slot
             if to_big(num) > to_big(0) then
                 return {
-                    exp_asc = num
+                    x_asc = num
                 }
             end
         end
