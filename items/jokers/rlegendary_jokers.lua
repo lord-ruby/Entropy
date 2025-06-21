@@ -353,7 +353,7 @@ local kciroy = {
         G.hand:change_size(math.min(card.ability.hs, 1000))
     end,
     remove_from_deck = function(self, card)
-        Entropy.ChangeFullCSL(card.ability.csl)
+        Entropy.ChangeFullCSL(-card.ability.csl)
         G.hand:change_size(-math.min(card.ability.hs, 1000))
     end,
     calculate = function (self, card, context)

@@ -1538,12 +1538,14 @@ end
 local sell_cardref = Card.sell_card
 function Card:sell_card()
     if self.ability.set == "Joker" then
-        local bcard = copy_card(self)
-        bcard.states.visible = false
-        G.jokers:remove_card(bcard)
-        bcard:remove_from_deck()
-        G.butterfly_jokers:emplace(bcard)
-        bcard:add_to_deck()
+        if Entropy.DeckOrSleeve("butterfly") then
+            local bcard = copy_card(self)
+            bcard.states.visible = false
+            G.jokers:remove_card(bcard)
+            bcard:remove_from_deck()
+            G.butterfly_jokers:emplace(bcard)
+            bcard:add_to_deck()
+        end
     end
     sell_cardref(self)
 end
