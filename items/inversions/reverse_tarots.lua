@@ -755,7 +755,9 @@ local advisor = {
     can_use = function(self, card)
         return G.STATE == G.STATES.SELECTING_HAND
 	end,
-    
+    entr_credits = {
+        art = {"Ein13"}
+    },
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)
