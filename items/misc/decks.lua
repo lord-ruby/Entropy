@@ -291,7 +291,7 @@ if CardSleeves then
     CardSleeves.Sleeve {
       key = "crafting",
       atlas = "sleeves",
-      pos = { x = 1, y = 0 },
+      pos = { x = 3, y = 0 },
       config = { vouchers = { "v_magic_trick", "v_illusion" } },
       apply = function()
         G.GAME.modifiers.crafting = true
@@ -319,7 +319,7 @@ if CardSleeves then
   CardSleeves.Sleeve {
     key = "ambisinister",
     atlas = "sleeves",
-    pos = { x = 1, y = 0 },
+    pos = { x = 4, y = 0 },
     config = {joker_slot=3},
     apply = function()
       G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots + 3
@@ -332,7 +332,7 @@ if CardSleeves then
   CardSleeves.Sleeve {
     key = "butterfly",
     atlas = "sleeves",
-    pos = { x = 1, y = 0 },
+    pos = { x = 5, y = 0 },
     apply = function()
       G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots - 2
     end,
