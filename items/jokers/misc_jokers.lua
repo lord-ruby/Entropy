@@ -1811,6 +1811,54 @@ local afterimage = {
     }
 }
 
+local qu = {
+    order = 31,
+    object_type = "Joker",
+    key = "qu",
+    rarity = 3,
+    cost = 8,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 6, y = 4 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.first_hand_drawn or context.forcetrigger then
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    card_eval_status_text(
+                        card,
+                        "extra",
+                        nil,
+                        nil,
+                        nil,
+                        { message = localize("k_upgraded_ex"), colour = G.C.GREEN }
+                    )
+                    local card = pseudorandom_element(G.hand.cards, pseudoseed("qu_card"))
+                    Entropy.FlipThen({card}, function(card)
+                        local elem = pseudorandom_element(Entropy.FlipsidePureInversions, pseudoseed("qu_twisted"))
+                        card:set_ability(G.P_CENTERS[elem])
+                    end)
+                    G.E_MANAGER:add_event(Event({
+                        blocking = false,
+                        trigger = "after",
+                        func = function()
+                            save_run()
+                            return true
+                        end
+                    }))
+                    return true
+                end
+            })) 
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -1845,6 +1893,7 @@ return {
         grotesque_joker,
         dog_chocolate,
         nucleotide,
-        afterimage
+        afterimage,
+        qu
     }
 }

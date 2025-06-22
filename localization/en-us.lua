@@ -786,6 +786,16 @@ local decs = {
 					"Retrigger all cards {C:attention}3-9{} Times"
 				}
 			},
+
+			j_entr_qu= {
+				name = "Qu",
+				text = {
+					"One {C:attention}random{} card in hand",
+					"gains a random {C:red}Twisted{} card",
+					"as an enhancement when {C:attention}blind{}",
+					"is selected"
+				}
+			},
 		},
 		Blind = {
 			bl_entr_red = {

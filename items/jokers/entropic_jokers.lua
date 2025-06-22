@@ -900,7 +900,7 @@ local apeirostemma = {
             end
         end
         if e == 4 then
-            if context.first_hand_drawn or context.forcetrigger then
+            if context.setting_blind or context.forcetrigger then
                 local c
                 for i, v in pairs(G.jokers.cards) do
                     if c then
