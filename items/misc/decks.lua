@@ -131,6 +131,9 @@ local containment = {
         end}))
     end,
     config = { vouchers = { "v_magic_trick", "v_illusion" } },
+    entr_credits = {
+      art = {"Lil. Mr. Slipstream"}
+    }
   }
 
 
