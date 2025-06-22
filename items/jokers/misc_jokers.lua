@@ -1837,7 +1837,7 @@ local qu = {
                         nil,
                         nil,
                         nil,
-                        { message = localize("k_upgraded_ex"), colour = G.C.GREEN }
+                        { message = localize("k_upgrade_ex"), colour = G.C.GREEN }
                     )
                     local card = pseudorandom_element(G.hand.cards, pseudoseed("qu_card"))
                     Entropy.FlipThen({card}, function(card)
