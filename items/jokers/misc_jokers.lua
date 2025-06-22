@@ -1839,6 +1839,7 @@ local qu = {
                         nil,
                         { message = localize("k_upgrade_ex"), colour = G.C.GREEN }
                     )
+                    card:juice_up()
                     local card = pseudorandom_element(G.hand.cards, pseudoseed("qu_card"))
                     Entropy.FlipThen({card}, function(card)
                         local elem = pseudorandom_element(Entropy.FlipsidePureInversions, pseudoseed("qu_twisted"))
@@ -1855,6 +1856,7 @@ local qu = {
                     return true
                 end
             })) 
+            return nil, true
         end
     end,
 }
