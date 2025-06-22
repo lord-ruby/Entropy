@@ -1829,34 +1829,22 @@ local qu = {
     demicoloncompat = true,
     calculate = function(self, card, context)
         if context.first_hand_drawn or context.forcetrigger then
+            local card = pseudorandom_element(G.hand.cards, pseudoseed("qu_card"))
+            Entropy.FlipThen({card}, function(card)
+                local elem = pseudorandom_element(Entropy.FlipsidePureInversions, pseudoseed("qu_twisted"))
+                card:set_ability(G.P_CENTERS[elem])
+            end)
             G.E_MANAGER:add_event(Event({
+                blocking = false,
+                trigger = "after",
                 func = function()
-                    card_eval_status_text(
-                        card,
-                        "extra",
-                        nil,
-                        nil,
-                        nil,
-                        { message = localize("k_upgrade_ex"), colour = G.C.GREEN }
-                    )
-                    card:juice_up()
-                    local card = pseudorandom_element(G.hand.cards, pseudoseed("qu_card"))
-                    Entropy.FlipThen({card}, function(card)
-                        local elem = pseudorandom_element(Entropy.FlipsidePureInversions, pseudoseed("qu_twisted"))
-                        card:set_ability(G.P_CENTERS[elem])
-                    end)
-                    G.E_MANAGER:add_event(Event({
-                        blocking = false,
-                        trigger = "after",
-                        func = function()
-                            save_run()
-                            return true
-                        end
-                    }))
+                    save_run()
                     return true
                 end
-            })) 
-            return nil, true
+            }))
+            return {
+                message = localize("k_upgrade_ex")
+            }
         end
     end,
 }
