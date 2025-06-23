@@ -1680,12 +1680,15 @@ local dog_chocolate = {
     atlas = "jokers",
     demicoloncompat = true,
     calculate = function(self, card, context)
-        if (context.tags_merged and context.first_tag.key == "tag_entr_dog") or context.forcetrigger then
-            SMODS.add_card{
+        if (context.tags_merged and (context.first_tag.key == "tag_entr_dog" or context.first_tag.key == "tag_entr_ascendant_dog")) or context.forcetrigger then
+            local card = SMODS.add_card{
                 set="Joker",
                 rarity="cry_candy",
                 area=G.jokers
             }
+            if context.first_tag.key == "tag_entr_ascendant_dog" then
+                card:set_edition("e_negative")
+            end
             return true
         end
     end,
