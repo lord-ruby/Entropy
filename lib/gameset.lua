@@ -204,9 +204,8 @@ G.FUNCS.cry_mainline = function(e)
 	G.selectedGameset = "mainline"
 end
 
-local gtc = get_type_colour
 function get_type_colour(center, card)
-	local color = gtc(center, card)
+	local color
 	if center.set == "Back" or center.set == "Tag" or center.set == "Blind" then
 		color = G.C.CRY_SELECTED
 	end

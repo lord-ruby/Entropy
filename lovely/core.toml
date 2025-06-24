@@ -1352,3 +1352,21 @@ payload = '''
 if card.area and (area_set[card.area] or card.needsnoarea) then
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Cryptid "lib/overrides.lua"]'''
+pattern = '''
+			set == "modest" and G.C.GREEN
+				or set == "mainline" and G.C.RED
+				or set == "madness" and G.C.CRY_EXOTIC
+				or G.C.CRY_ASCENDANT
+'''
+position = "at"
+payload = '''
+			set == "modest" and G.C.GREEN
+				or set == "mainline" and G.C.RED
+				or set == "madness" and Entropy.entropic_gradient
+				or G.C.CRY_ASCENDANT
+'''
+match_indent = true
