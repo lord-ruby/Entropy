@@ -669,8 +669,11 @@ G.FUNCS.buy_deckorsleeve = function(e)
                     G.HUD = nil
                     G.HUD = UIBox{
                         definition = create_UIBox_HUD(),
-                        config = {align=('cli'), offset = {x=-0.7,y=0},major = G.ROOM_ATTACH}
+                        config = {align=('cli'), offset = {x=-1.3,y=0},major = G.ROOM_ATTACH}
                     }
+                    for i, v in pairs(G.hand_text_area) do
+                        G.hand_text_area[i] = G.HUD:get_UIE_by_ID(v.config.id)
+                    end
                     return true
                 end
             }))
