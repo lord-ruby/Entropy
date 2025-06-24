@@ -659,6 +659,23 @@ G.FUNCS.buy_deckorsleeve = function(e)
         if i == "hand_size" then G.hand.config.card_limit = G.hand.config.card_limit + v end
         if i == "dollars" then ease_dollars(v) end
     end
+    if c1.config and c1.config.center and c1.config.center.config and c1.config.center.config then
+        if c1.config.center.key == "b_entr_doc" or c1.config.center.key == "sleeve_entr_doc" then
+            G.E_MANAGER:add_event(Event({
+                trigger = "after",
+                delay = 0.1,
+                func = function()
+                    G.HUD:remove()
+                    G.HUD = nil
+                    G.HUD = UIBox{
+                        definition = create_UIBox_HUD(),
+                        config = {align=('cli'), offset = {x=-0.7,y=0},major = G.ROOM_ATTACH}
+                    }
+                    return true
+                end
+            }))
+        end
+    end
     if c1.config and c1.config.center and c1.config.center.config and c1.config.center.config and c1.config.center.config.cry_beta then
         local count = G.consumeables.config.card_limit
         local cards = {}
@@ -1513,7 +1530,7 @@ function create_shop_card_ui(card, type, area)
                       }}
                   }}
               local t2 = {
-                n=G.UIT.ROOT, config = {ref_table = card, minw = 1.1, maxw = 1.3, padding = 0.1, align = 'bm', colour = G.C.GOLD, shadow = true, r = 0.08, minh = 0.94, func = 'can_buy_deckorsleeve_from_shop', one_press = true, button = 'buy_deckorsleeve', hover = true}, nodes={
+                n=G.UIT.ROOT, config = {ref_table = card, minw = 1.1, maxw = 1.3, padding = 0.1, align = 'bm', colour = G.C.GOLD, shadow = true, r = 0.08, minh = 0.94, func = 'can_buy_deckorsleeve_from_shop', one_press = true, button = 'buy_deckorsleeve_from_shop', hover = true}, nodes={
                     {n=G.UIT.T, config={text = localize('b_buy'),colour = G.C.WHITE, scale = 0.5}}
                 }}
 
