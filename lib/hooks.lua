@@ -1868,7 +1868,7 @@ SMODS.Booster:take_ownership_by_kind('Spectral', {
 },true)
 SMODS.Consumable:take_ownership("cry_gateway",{
 	use = function(self, card, area, copier)
-		if not Entropy.DeckOrSleeve("doc") then
+		if not Entropy.DeckOrSleeve("doc") and (#SMODS.find_card("j_jen_saint") + #SMODS.find_card("j_jen_saint_attuned")) <= 0 then
 			local deletable_jokers = {}
 			for k, v in pairs(G.jokers.cards) do
 				if not v.ability.eternal then
