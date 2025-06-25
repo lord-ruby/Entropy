@@ -808,14 +808,17 @@ local decrement = {
 	end,
     loc_vars = function(self, q, card)
         local name = "None"
-        if G.jokers and #G.jokers.highlighted > 0 then
-            local first = G.jokers.highlighted[1]
-            local ind = ReductionIndex(G.jokers.highlighted[1], "Joker")-1
-            while G.P_CENTER_POOLS["Joker"][ind].no_doe or G.P_CENTER_POOLS["Joker"].no_collection do
-                ind = ind - 1
+        local cards = Entropy.GetHighlightedCards({G.jokers, G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.extra)
+        if cards and #cards > 0 then
+            if cards[1].config.center.set == "Joker" or G.GAME.modifiers.cry_beta and cards[1].consumable then
+                local first = cards[1]
+                local ind = ReductionIndex(cards[1], cards[1].config.center.set )-1
+                while G.P_CENTER_POOLS[cards[1].config.center.set ][ind].no_doe or G.P_CENTER_POOLS[cards[1].config.center.set ].no_collection do
+                    ind = ind - 1
+                end
+                if ind < 1 then ind = 1 end
+                name = G.localization.descriptions[cards[1].config.center.set ][G.P_CENTER_POOLS[cards[1].config.center.set ][ind].key].name
             end
-            if ind < 1 then ind = 1 end
-            name = G.localization.descriptions["Joker"][G.P_CENTER_POOLS["Joker"][ind].key].name
         end
         return {
             vars = {
