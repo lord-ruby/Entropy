@@ -373,17 +373,13 @@ local lowres = {
 		end
 	end,
 	on_apply = function(card)
-		Cryptid.with_deck_effects(card, function(card)
-			Cryptid.manipulate(card, {
-				value = 0.25
-			}, nil, true)
-		end)
+		Cryptid.manipulate(card, {
+			value = 0.25
+		}, nil, true)
 	end,
 	on_remove = function(card)
-		Cryptid.with_deck_effects(card, function(card)
-			Cryptid.manipulate(card, { value = 1 })
-			Cryptid.manipulate(card)
-		end)
+		Cryptid.manipulate(card, { value = 1 })
+		Cryptid.manipulate(card)
 	end,
 	entr_credits = {
 		custom={key="shader",text="cassknows"}

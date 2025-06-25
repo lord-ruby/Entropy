@@ -671,9 +671,7 @@ local endurance = {
         for i, card in pairs(cards) do
             card.ability.banana = true
             if not Card.no(card, "immutable", true) then
-                Cryptid.with_deck_effects(card, function(card3)
-                    Cryptid.manipulate(card3, { value=card2.ability.factor })
-                end)
+                Cryptid.manipulate(card3, { value=card2.ability.factor })
             end
             card:juice_up()
 
@@ -684,9 +682,7 @@ local endurance = {
         for i, card in pairs(cards) do
             card.ability.banana = true
             if not Card.no(card, "immutable", true) then
-                Cryptid.with_deck_effects(card, function(card3)
-                    Cryptid.manipulate(card3, { value=card2.ability.factor^to_big(amt) })
-                end)
+                Cryptid.manipulate(card3, { value=card2.ability.factor^to_big(amt) })
             end
             card:juice_up()
 

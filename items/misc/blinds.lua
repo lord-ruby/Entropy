@@ -775,9 +775,7 @@ local alabaster = {
 	calculate = function(self, blind, context)
 		if context.after or context.pre_discard then
 			for i = 1, #G.jokers.cards do
-				Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
-					Cryptid.manipulate(card, { value = 0.95 })
-				end)
+				Cryptid.manipulate(card, { value = 0.95 })
 				G.jokers.cards[i].config.cry_multiply = (G.jokers.cards[i].config.cry_multiply or 1) * 0.95
 			end
 		end
@@ -788,9 +786,7 @@ local highlight_ref = Card.highlight
 function Card:highlight(is_highlighted)
 	if Entropy.BlindIs("bl_entr_alabaster_anchor") and self.area == G.hand and G.hand then
 		for i = 1, #G.jokers.cards do
-			Cryptid.with_deck_effects(G.jokers.cards[i], function(card)
-				Cryptid.manipulate(card, { value = 0.95 })
-			end)
+			Cryptid.manipulate(card, { value = 0.95 })
 			G.jokers.cards[i].config.cry_multiply = (G.jokers.cards[i].config.cry_multiply or 1) * 0.95
 		end
 	end
