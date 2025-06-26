@@ -1335,7 +1335,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         return true
     end
 end
-for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'asc', 'asc_mod', 'plus_asc', 'plusasc_mod', 'exp_asc', 'exp_asc_mod', 'eq_chips', 'Eqchips_mod', 'xlog_chips', 'x_asc'
+for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'asc', 'asc_mod', 'plus_asc', 'plusasc_mod', 'exp_asc', 'exp_asc_mod', 'eq_chips', 'Eqchips_mod', 'xlog_chips', 'x_asc',
                     'hyper_asc', 'hyper_asc_mod', 'hyperasc', 'hyperasc_mod'}) do
     table.insert(SMODS.calculation_keys, v)
 end
