@@ -29,7 +29,7 @@ local epitachyno = {
                 local exp = card.ability.extra
 			    --local card = G.jokers.cards[i]
                 if not Card.no(G.jokers.cards[i], "immutable", true) and (G.jokers.cards[i].config.center.key ~= "j_entr_epitachyno") then
-                    Cryptid.manipulate(card2, { value = {arrows = 1, height = exp}, type = "hyper" })
+                    Cryptid.manipulate(G.jokers.cards[i], { value = {arrows = 1, height = exp}, type = "hyper" })
                     check = true
                 end
 			    if check then
@@ -300,7 +300,7 @@ local anaptyxi = {
         end
         for i, v in pairs(G.jokers.cards) do
             if not Card.no(v, "immutable", true) and v ~= card and v ~= joker then
-                Cryptid.manipulate(card2, { value = to_big(card.ability.extra.scale)*to_big(new_scale), type="+"})
+                Cryptid.manipulate(v, { value = to_big(card.ability.extra.scale)*to_big(new_scale), type="+"})
                 card_eval_status_text(
                     v,
                     "extra",

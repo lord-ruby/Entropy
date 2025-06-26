@@ -118,21 +118,6 @@ local decs = {
 					"{C:money,s:0.8}Next increase: {s:1,c:money}$#4#",
 				},
 			},
-			j_cry_circus = {
-				name = "Circus",
-				text = {
-					"{C:red}Rare{} Jokers each give {X:mult,C:white} X#1# {} Mult",
-					"{C:cry_epic}Epic{} Jokers each give {X:mult,C:white} X#2# {} Mult",
-					"{C:legendary}Legendary{} Jokers each give {X:mult,C:white} X#3# {} Mult",
-					"{C:cry_exotic}Exotic{} Jokers each give {X:mult,C:white} X#4# {} Mult",
-					"{C:entr_entropic}Entropic{} jokers each give {X:mult,C:white} X#5# {} Mult"
-				},
-				unlock = {
-					"Obtain a {C:red}Rare{},",
-					"{C:cry_epic}Epic{} and {C:legendary}Legendary{}",
-					"Joker before {C:attention}Ante 9",
-				},
-			},
 			j_entr_stillicidium = {
 				name = "Stillicidium",
 				text = {

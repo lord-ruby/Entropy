@@ -1953,7 +1953,7 @@ end
 
 local manipulate = Cryptid.manipulate
 function Cryptid.manipulate(card, ...)
-    if not card.ability.entr_pure then
+    if card and not card.ability.entr_pure then
         return manipulate(card, ...)
     end
 end

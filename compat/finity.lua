@@ -16,7 +16,7 @@ if FinisherBossBlindStringMap then
                 for i, v in ipairs(G.jokers.cards) do
                     local card = G.jokers.cards[i]
                     if not Card.no(card, "immutable", true) then
-                        Cryptid.manipulate(card, { value = 1.66 })
+                        Cryptid.manipulate(G.jokers.cards[i], { value = 1.66 })
                         check = true
                     end
                 end
