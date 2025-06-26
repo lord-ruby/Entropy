@@ -21,6 +21,15 @@ function SMODS.injectItems(...)
         end
     end
 
+    if Cryptid.circus_rarities then
+        Cryptid.circus_rarities["entropic"] ={rarity = "entr_entropic", base_mult = 50, order = 5, colour = Entropy.entropic_gradient}
+        Cryptid.circus_rarities["rlegendary"] ={rarity = "entr_reverse_legendary", base_mult = 4, order = 9999, colour = G.C.RARITY.Legendary, hidden=true}
+    end
+    if Cryptid.pin_debuff then
+        Cryptid.pin_debuff["entr_entropic"] = true
+        Cryptid.pin_debuff["entr_reverse_legendary"] = true
+    end
+
     loadmodsref(...)
 
     G.ASSET_ATLAS["cry_gameset"] = Entropy.GamesetAtlas
@@ -287,6 +296,8 @@ function SMODS.injectItems(...)
             end
         end
         G.entr_hooked = true
+
+
     end
 end
 
