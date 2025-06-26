@@ -461,19 +461,9 @@ local decs = {
 			j_entr_ruby = {
 				name = "Ruby, Lord of Hope",
 				text = {
-					"{C:green}Fixed 50%{} chance to be revived",
-					"any time you would lose",
-					"{C:entr_zenith}+666{} Chips & Mult then,",
-					"{X:entr_zenith,C:white}#1#25000#2#666{} Chips & Mult",
-					"{s:0.8,C:entr_zenith}Dont you know, hope is the strongest aspect{}"
-				}
-			},
-			j_entr_dreamweaver = {
-				name = "Ruby, The Dreamweaver",
-				text = {
 					"{C:red}Removes{} {C:green}Pointers{} Restrictions",
 					"Create {C:attention}1{} {C:green}Pointer{} When Boss Blind is selected",
-					"{s:0.8,C:purple}Isnt this what you wanted?...{}"
+					"{s:0.8,C:entr_zenith}Dont you know, hope is the strongest aspect{}"
 				}
 			},
 			j_entr_devilled_suns = {

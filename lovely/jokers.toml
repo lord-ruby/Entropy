@@ -26,7 +26,7 @@ target = '''=[SMODS Cryptid "lib/pointerlib.lua"]'''
 pattern = 'and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit -- and you have room'
 position = "at"
 payload = '''
-and (#G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit or next(SMODS.find_card("j_entr_dreamweaver"))) -- and you have room
+and (#G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit or next(SMODS.find_card("j_entr_ruby"))) -- and you have room
 '''
 match_indent = true
 
@@ -40,7 +40,7 @@ pattern = '''
 '''
 position = "at"
 payload = '''
-	if G.GAME.banned_keys[target] and not next(SMODS.find_card("j_entr_dreamweaver")) then
+	if G.GAME.banned_keys[target] and not next(SMODS.find_card("j_entr_ruby")) then
 		results[1] = true
 	end
 '''
