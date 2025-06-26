@@ -19,12 +19,7 @@ function SMODS.injectItems(...)
                 SMODS[item.object_type](item)
             end
         end
-    end
-
-    if Cryptid.circus_rarities then
-        Cryptid.circus_rarities["entropic"] ={rarity = "entr_entropic", base_mult = 50, order = 5, colour = Entropy.entropic_gradient}
-        Cryptid.circus_rarities["rlegendary"] ={rarity = "entr_reverse_legendary", base_mult = 4, order = 9999, colour = G.C.RARITY.Legendary, hidden=true}
-    end
+    end    
     if Cryptid.pin_debuff then
         Cryptid.pin_debuff["entr_entropic"] = true
         Cryptid.pin_debuff["entr_reverse_legendary"] = true
@@ -298,6 +293,11 @@ function SMODS.injectItems(...)
         G.entr_hooked = true
 
 
+    end
+    if Cryptid.add_circus_rarity then
+        --true here as the last argument means dont reload localisation, only the last one needs to reload so its more optimised this way
+        Cryptid.add_circus_rarity({rarity = "entr_entropic", base_mult = 50, order = 5, colour = Entropy.entropic_gradient}, true) 
+        Cryptid.add_circus_rarity({rarity = "entr_reverse_legendary", base_mult = 4, order = 9999, colour = G.C.RARITY.Legendary, hidden=true})
     end
 end
 
