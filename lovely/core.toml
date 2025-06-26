@@ -286,6 +286,7 @@ position = "after"
 payload = '''
 elseif self.exponent[2] > 0 then
     local initial = to_big(get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling)
+    initial = Big:create(initial)
     initial = initial:arrow(self.exponent[1], self.exponent[2])
     self.chips = initial
 end

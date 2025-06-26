@@ -3152,7 +3152,7 @@ end
 
 local ref = Cryptid.pointergetblist
 function Cryptid.pointergetblist(target)
-    if next(SMODS.find_card("j_entr_dreamweaver")) then
+    if next(SMODS.find_card("j_entr_ruby")) then
         Cryptid.pointerblisttype = {
             rarity = {
                 "entr_zenith"

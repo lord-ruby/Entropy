@@ -130,12 +130,6 @@ SMODS.Atlas {
     px = 71, 
     py = 95 
 }
-SMODS.Atlas { 
-    key = 'dreamweaver_atlas', 
-    path = 'dreamweaver.png', 
-    px = 71, 
-    py = 95 
-}
 SMODS.Atlas {
     key = "modicon",
     path = "entr_icon.png",
