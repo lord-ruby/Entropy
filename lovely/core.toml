@@ -630,6 +630,18 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+assert(G.HUD_blind == e.UIBox)
+'''
+position = "at"
+payload = '''
+
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
 target = '''engine/ui.lua'''
 pattern = '''
             local tx = node.config.lang.font.FONT:getWidth(node.config.text)*node.config.lang.font.squish*scale*G.TILESCALE*node.config.lang.font.FONTSCALE

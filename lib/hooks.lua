@@ -674,6 +674,11 @@ G.FUNCS.buy_deckorsleeve = function(e)
                     for i, v in pairs(G.hand_text_area) do
                         G.hand_text_area[i] = G.HUD:get_UIE_by_ID(v.config.id)
                     end
+                    G.HUD_blind:remove()
+                    G.HUD_blind = UIBox{
+                        definition = create_UIBox_HUD_blind(),
+                        config = {major = G.HUD:get_UIE_by_ID('row_blind'), align = 'cm', offset = {x=0,y=-10}, bond = 'Weak'}
+                    }
                     return true
                 end
             }))
