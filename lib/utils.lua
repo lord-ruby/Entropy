@@ -188,7 +188,7 @@ end
 
 function Entropy.ModifyHandCardNF(modifications, cards)
     return function(self, card)
-        for i, mcard in pairs(cards or Cryptid.get_highlighted_cards({G.hand}, {}, 1, card.ability.highlighted or 1)) do
+        for i, mcard in pairs(cards or Entropy.GetHighlightedCards({G.hand}, {}, 1, card.ability.highlighted or 1)) do
             G.E_MANAGER:add_event(Event({ --Add bonus chips from this card
             delay = 0,
             func = function()
