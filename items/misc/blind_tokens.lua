@@ -25,6 +25,7 @@ function Entropy.RegisterBlinds()
             no_doe = true,
             blpos = v.pos,
             blatlas = v.atlas,
+            pos = {x = 0, y = 0},
             --soul_pos = { x = 5, y = 0},
             in_pool = function()
                 return false
@@ -58,12 +59,13 @@ function Entropy.RegisterBlinds()
             end,
             set_sprites = function(self, card, front)
                 card.children.center.atlas = G.ANIMATION_ATLAS["blind_chips"]
-                card.children.center:set_sprite_pos(self.blpos)
+                card.children.center:set_sprite_pos({x=self.blpos.x or 0, y=self.blpos.y or 0})
             end,
             demicoloncompat = true,
             force_use = function(self, card, area)
                 self:use(card, area)
             end,
+            order = (v.order or 0) - 1000
         }
     end
     for i, v in pairs(SMODS.Blind.obj_table) do
@@ -83,6 +85,7 @@ function Entropy.RegisterBlinds()
                 --atlas="entr_consumables",
                 pixel_size = { w = 34, h = 34 },
                 display_size = { w = 68, h = 68 },
+                pos = {x = 0, y = 0},
                 blpos = v.pos,
                 blatlas = v.atlas,
                 config = {
@@ -126,7 +129,8 @@ function Entropy.RegisterBlinds()
                 entr_credits = v.entr_credits,
                 cry_credits = v.cry_credits,
                 set_sprites = function(self, card, front)
-                    card.children.center.sprite_pos = self.blpos
+                    card.children.center.sprite_pos = {x=self.blpos.x or 0, y=self.blpos.y or 0}
+                    card.children.center.atlas = G.ANIMATION_ATLAS[self.blatlas] or G.ANIMATION_ATLAS["blind_chips"]
                     card.children.center:reset()
                     card.children.center.atlas = G.ANIMATION_ATLAS[self.blatlas] or G.ANIMATION_ATLAS["blind_chips"]
                 end,
@@ -137,9 +141,11 @@ function Entropy.RegisterBlinds()
                 force_use = function(self, card, area)
                     self:use(card, area)
                 end,
+                order = (v.order or 0) + (v.mod or {priority = 0}).priority
             }
         end
     end
+    table.sort(blinds, function(a, b) return (a.order or 0 ) < (b.order or 0) end)
     return {items = blinds}
 end
 
