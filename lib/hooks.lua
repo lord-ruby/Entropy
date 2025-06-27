@@ -1350,6 +1350,7 @@ end
 local entr_define_dt = 0
 local entr_antireal_dt = 0
 local entr_xekanos_dt = 0
+local bdt = 0
 local update_ref = Game.update
 Entropy.last_csl = nil
 Entropy.last_slots = nil
@@ -1357,6 +1358,9 @@ local cdt = 0
 function Game:update(dt)
     if entr_xekanos_dt > 0.05 then
         entr_xekanos_dt = 0
+    end
+    if bdt > 0.15 then
+        bdt = 0
     end
     update_ref(self, dt)
     if G.STATE == nil and (G.pack_cards == nil or #G.pack_cards == 0) and G.GAME.DefineBoosterState then
@@ -1389,6 +1393,7 @@ function Game:update(dt)
         end
 	end
     entr_xekanos_dt = entr_xekanos_dt + dt
+    bdt = bdt + dt
     cdt = cdt + dt
     if Entropy.DeckOrSleeve("ambisinister") and cdt > 0.05 and G.jokers then
         if not Entropy.last_csl then Entropy.last_csl = G.hand.config.highlighted_limit end
@@ -1435,6 +1440,13 @@ function Card:draw(layer)
             end
             v.children.floating_sprite2:set_sprite_pos(obj.pos)
             v.children.floating_sprite:set_sprite_pos({x=1, y=3})
+        end
+    end
+    if bdt > 0.15 and self.config.center.set == "CBlind" then
+        local obj = {pos = self.children.center.sprite_pos}
+        obj.pos.x = obj.pos.x + 1
+        if obj.pos.x >= self.children.center.atlas.frames or 21 then
+            obj.pos.x = 0
         end
     end
     return card_drawref(self, layer)

@@ -159,9 +159,8 @@ end
 
 
 local card_hoverref = Card.draw
-
 function Card:draw(layer)
-    local ref = card_hoverref(self, layer)
+    local ref = card_hoverref(self, layer)    
     if self.config.center.set_sprites and self.children and self.children.floating_sprite then
         local scale_mod = 0.6
         local rotate_mod = 0
