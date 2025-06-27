@@ -2337,6 +2337,33 @@ local decs = {
 					"becomes {C:dark_edition}Freaky{}"	
 				},
 			},
+
+			tag_entr_neon = {
+				name = "Neon Tag",
+				text = { 
+					"Next base Edition shop",
+					"Joker is free and",
+					"becomes {C:dark_edition}Neon{}"	
+				},
+			},
+
+			tag_entr_lowres = {
+				name = "Low-Res Tag",
+				text = { 
+					"Next base Edition shop",
+					"Joker is free and",
+					"becomes {C:dark_edition}Low-Res{}"	
+				},
+			},
+			tag_entr_kaleidoscopic = {
+				name = "kaleidoscopic Tag",
+				text = { 
+					"Next base Edition shop",
+					"Joker is free and",
+					"becomes {C:dark_edition}Kaleidoscopic{}"	
+				},
+			},
+
 			tag_entr_ascendant_rare = {
 				name = "{C:gold}Rare Tag{}",
 				text = { "Shop has a free", "{C:rare}Rare Joker{}" },
@@ -2437,6 +2464,20 @@ local decs = {
 				name = "{C:gold}Freaky Tag{}",
 				text = { "{C:attention}All{} shop items are {C:dark_edition}Freaky{}" },
 			},
+
+			tag_entr_ascendant_neon = {
+				name = "{C:gold}Neon Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Neon{}" },
+			},
+			tag_entr_ascendant_lowres = {
+				name = "{C:gold}Low-Res Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Low-Res{}" },
+			},
+			tag_entr_ascendant_kaleidoscopic = {
+				name = "{C:gold}Kaleidoscopic Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Kaleidoscopic{}" },
+			},
+
 			tag_entr_ascendant_infdiscard = {
 				name = "{C:gold}Discard Tag{}",
 				text = { "{C:attention}+3{} discards", "next round" },

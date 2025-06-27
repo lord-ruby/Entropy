@@ -33,6 +33,92 @@ SMODS.Sound({
 	path = "woof3.ogg",
 })
 
+local neon = {
+	object_type = "Tag",
+	order = -9.66,
+	dependencies = {
+	  items = {
+		"set_entr_tags"
+	  }
+	},
+	atlas = "tags",
+	pos = { x = 0, y = 1 },
+	key = "neon",
+	config = { type = "store_joker_modify", edition = "entr_neon" },
+	loc_vars = function(self, info_queue, tag)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_neon
+		return { vars = {} }
+	end,
+	apply = function(self, tag, context)
+		if context.type == "store_joker_modify" then
+			local _applied = nil
+			if Cryptid.forced_edition() then
+				tag:nope()
+			end
+			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
+				local lock = tag.ID
+				G.CONTROLLER.locks[lock] = true
+				context.card.temp_edition = true
+				tag:yep("+", G.C.DARK_EDITION, function()
+					context.card:set_edition("e_entr_neon", true)
+					context.card.ability.couponed = true
+					context.card:set_cost()
+					context.card.temp_edition = nil
+					G.CONTROLLER.locks[lock] = nil
+					return true
+				end)
+				_applied = true
+				tag.triggered = true
+			end
+		end
+	end,
+	shiny_atlas = "entr_shiny_tags",
+}
+
+local lowres = {
+	object_type = "Tag",
+	order = -9.33,
+	dependencies = {
+	  items = {
+		"set_entr_tags"
+	  }
+	},
+	atlas = "tags",
+	pos = { x = 1, y = 1 },
+	key = "lowres",
+	config = { type = "store_joker_modify", edition = "entr_lowres" },
+	loc_vars = function(self, info_queue, tag)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_lowres
+		return { vars = {} }
+	end,
+	apply = function(self, tag, context)
+		if context.type == "store_joker_modify" then
+			local _applied = nil
+			if Cryptid.forced_edition() then
+				tag:nope()
+			end
+			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
+				local lock = tag.ID
+				G.CONTROLLER.locks[lock] = true
+				context.card.temp_edition = true
+				tag:yep("+", G.C.DARK_EDITION, function()
+					context.card:set_edition("e_entr_lowres", true)
+					context.card.ability.couponed = true
+					context.card:set_cost()
+					context.card.temp_edition = nil
+					G.CONTROLLER.locks[lock] = nil
+					return true
+				end)
+				_applied = true
+				tag.triggered = true
+			end
+		end
+	end,
+	shiny_atlas = "entr_shiny_tags",
+	min_ante = 2
+}
+
+
 local sunny = {
 	object_type = "Tag",
 	order = -9,
@@ -171,6 +257,7 @@ local fractured = {
 	shiny_atlas = "entr_shiny_tags",
 }
 
+
 local freaky = {
 	object_type = "Tag",
 	order = -6,
@@ -215,6 +302,49 @@ local freaky = {
 	end,
 	shiny_atlas = "entr_shiny_tags",
 }
+
+local kaleidoscopic = {
+	object_type = "Tag",
+	order = -5,
+	dependencies = {
+	  items = {
+		"set_entr_tags"
+	  }
+	},
+	atlas = "tags",
+	pos = { x = 2, y = 1 },
+	key = "kaleidoscopic",
+	config = { type = "store_joker_modify", edition = "entr_kaleidoscopic" },
+	loc_vars = function(self, info_queue, tag)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_kaleidoscopic
+		return { vars = {} }
+	end,
+	apply = function(self, tag, context)
+		if context.type == "store_joker_modify" then
+			local _applied = nil
+			if Cryptid.forced_edition() then
+				tag:nope()
+			end
+			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
+				local lock = tag.ID
+				G.CONTROLLER.locks[lock] = true
+				context.card.temp_edition = true
+				tag:yep("+", G.C.DARK_EDITION, function()
+					context.card:set_edition("e_entr_kaleidoscopic", true)
+					context.card.ability.couponed = true
+					context.card:set_cost()
+					context.card.temp_edition = nil
+					G.CONTROLLER.locks[lock] = nil
+					return true
+				end)
+				_applied = true
+				tag.triggered = true
+			end
+		end
+	end,
+	min_ante = 4,
+}
+
 
 --ascendant tags
 
@@ -590,12 +720,16 @@ local infdiscard = {
 }
 
 local oversat = Entropy.EditionTag("e_cry_oversat", "oversat", true, {x=0,y=3},18)
+local neon_asc = Entropy.EditionTag("e_entr_neon", "neon", true, {x=7,y=4},18.33)
+local lowres_asc = Entropy.EditionTag("e_entr_lowres", "lowres", true, {x=7,y=3},18.66)
 local sunny_asc = Entropy.EditionTag("e_entr_sunny", "sunny", true, {x=6,y=4},19)
 local solar_asc = Entropy.EditionTag("e_entr_solar", "solar", true, {x=1,y=3},20, {
 	art = {"Grakhon"}
 })
 local fractured_asc = Entropy.EditionTag("e_entr_fractured", "fractured", true, {x=6,y=5},20.5)
 local freaky_asc = Entropy.EditionTag("e_entr_freaky", "freaky", true, {x=7,y=5},20.75)
+
+local kaleidoscopic_asc = Entropy.EditionTag("e_entr_kaleidoscopic", "kaleidoscopic", true, {x=7,y=2},20.9)
 
 local cat_asc = {
 	object_type = "Tag",
@@ -1502,8 +1636,11 @@ return {
 	items = {
 		dog,
 		sunny,
+		neon,
+		lowres,
 		solar,
 		fractured,
+		kaleidoscopic,
 		rare,
 		epic,
 		legendary,
@@ -1550,6 +1687,9 @@ return {
 		fractured_asc,
 		oversat,
 		freaky,
-		freaky_asc
+		freaky_asc,
+		neon_asc,
+		lowres_asc,
+		kaleidoscopic_asc
 	}
 }
