@@ -418,7 +418,7 @@ local kaleidoscopic = {
 		return {vars={card and card.edition and card.edition.triggers or 2, card and card.edition and card.edition.cards or 2}}
     end,
     calculate = function(self, card, context)
-		if context.edition or context.main_scoring then
+		if context.edition or context.main_scoring and not context.kaleidoscopic then
 			local cards = {}
 			for i, v in pairs(card.area.cards) do cards[#cards+1] = v; end
 			pseudoshuffle(cards, pseudoseed('kaleidoscopic_cards'))
@@ -426,19 +426,29 @@ local kaleidoscopic = {
 			for i = 1, card.edition and card.edition.cards or 2 do
 				actual[i] = cards[i]
 			end
-			card.kcards = actual
-		end
-		if context.other_card then
-			local check = false
-			for i, v in pairs(card.kcards or {}) do
-				if context.other_card == v then check = true end
-			end
-			if check and ((context.repetition and (context.cardarea == G.play or context.cardarea == G.hand)) or (context.retrigger_joker_check and not context.retrigger_joker)) then
-				return {
-					message = localize("k_again_ex"),
-					repetitions = 1,
-					card = card,
-				}
+			for i, v in pairs(actual) do
+				context.kaleidoscopic = true
+				local eval, post = eval_card(v, context)
+				local effects = {eval}
+				if context.main_scoring then 
+					eval.chips = v.base.nominal + v.ability.bonus or 0
+					SMODS.calculate_context({individual = true, other_card=v, cardarea = v.area})
+				end
+				for _,v in ipairs(post or {}) do effects[#effects+1] = v end
+				if eval.retriggers then
+					for rt = 1, #eval.retriggers do
+						local rt_eval, rt_post = eval_card(v, context)
+						table.insert(effects, {eval.retriggers[rt]})
+						table.insert(effects, rt_eval)
+						for _, v in ipairs(rt_post) do effects[#effects+1] = v end
+						if context.main_scoring then 
+							table.insert(effects, {chips = v.base.nominal + v.ability.bonus or 0}) 
+							SMODS.calculate_context({individual = true, other_card=v, cardarea = v.area})
+						end
+					end
+				end
+				SMODS.trigger_effects(effects, v)
+				context.kaleidoscopic = nil
 			end
 		end
 	end,
