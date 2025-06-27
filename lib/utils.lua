@@ -482,7 +482,7 @@ function Entropy.RareTag(rarity, key, ascendant, colour, pos, fac, legendary,ord
             "j_entr_exousia"
           }
         },
-        shiny_atlas="entr_shiny_ascendant_tags",
+        shiny_atlas="entr_shiny_asc_tags",
         key = (ascendant and "ascendant_" or "")..key,
         atlas = (ascendant and "ascendant_tags" or "tags"),
         pos = pos,
@@ -528,7 +528,7 @@ function Entropy.EditionTag(edition, key, ascendant, pos,order, credits)
             }
         },
         order = order,
-        shiny_atlas="entr_shiny_ascendant_tags",
+        shiny_atlas="entr_shiny_asc_tags",
         key = (ascendant and "ascendant_" or "")..key,
         atlas = (ascendant and "ascendant_tags" or "tags"),
         pos = pos,

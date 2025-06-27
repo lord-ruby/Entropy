@@ -73,6 +73,21 @@ SMODS.Atlas {
     py = 34
 }
 
+SMODS.Atlas {
+    key = 'shiny_tags',
+    path = 'shiny_tags.png',
+    px = 34,
+    py = 34
+}
+
+
+SMODS.Atlas {
+    key = 'shiny_asc_tags',
+    path = 'shiny_ascendant_tags.png',
+    px = 34,
+    py = 34
+}
+
 SMODS.Atlas { 
     key = 'vouchers', 
     path = 'vouchers.png', 

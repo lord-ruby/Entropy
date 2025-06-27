@@ -16,7 +16,8 @@ local dog = {
 	end,
 	set_ability = function(self, tag)
 		tag.hover_sound = function() return 'entr_woof'..math.random(3) end
-	end
+	end,
+	shiny_atlas = "entr_shiny_tags",
 }
 
 SMODS.Sound({
@@ -74,6 +75,7 @@ local sunny = {
 			end
 		end
 	end,
+	shiny_atlas = "entr_shiny_tags",
 }
 
 local solar = {
@@ -118,6 +120,7 @@ local solar = {
 			end
 		end
 	end,
+	shiny_atlas = "entr_shiny_tags",
 	entr_credits = {
 		art = {"Grakhon"}
 	}
@@ -165,6 +168,7 @@ local fractured = {
 			end
 		end
 	end,
+	shiny_atlas = "entr_shiny_tags",
 }
 
 local freaky = {
@@ -209,6 +213,7 @@ local freaky = {
 			end
 		end
 	end,
+	shiny_atlas = "entr_shiny_tags",
 }
 
 --ascendant tags
@@ -288,6 +293,7 @@ SMODS.Atlas {
 			return true
 		end
 	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 	set_ability = function(self, tag)
 		tag.ability.num = math.floor(pseudorandom("ascendant_copying")*4+4)
 	end
@@ -369,6 +375,7 @@ local voucher = {
 			tag.triggered = true
 		end
 	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 local saint =  {
@@ -406,6 +413,7 @@ local saint =  {
 			return card
 		end
 	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 local negative = Entropy.EditionTag("e_negative", "negative", true, {x=1,y=1}, 10.1)
 local foil =Entropy.EditionTag("e_foil", "foil", true, {x=2,y=1},10.2)
@@ -539,6 +547,7 @@ local better_voucher = {
 			tag.triggered = true
 		end
 	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 
@@ -577,6 +586,7 @@ local infdiscard = {
 			return true
 		end
 	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 local oversat = Entropy.EditionTag("e_cry_oversat", "oversat", true, {x=0,y=3},18)
@@ -616,7 +626,8 @@ local cat_asc = {
 			return G.P_CENTER_POOLS.Edition[(tag.ability.level2%#G.P_CENTER_POOLS.Edition)+1]
 		end
 	end,
-	in_pool = function() return false end
+	in_pool = function() return false end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 local dog_asc = {
@@ -649,7 +660,8 @@ local dog_asc = {
 		end
 		tag.hover_sound = function() return 'entr_woof'..math.random(3) end
 	end,
-	in_pool = function() return false end
+	in_pool = function() return false end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 local canvas = {
@@ -688,6 +700,7 @@ local canvas = {
 			return card
 		end
 	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 local unbounded = {
@@ -743,6 +756,7 @@ local unbounded = {
 			return true
 		end
 	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 local unbounded_pack = {
@@ -830,6 +844,7 @@ local unbounded_pack = {
 			G.consumeables:emplace(ccard)
 		end,
 	},
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 local ejoker = {
@@ -886,6 +901,7 @@ local ejoker = {
 			return true
 		end
 	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 
@@ -926,7 +942,8 @@ local universal = {
 		for i, v in pairs(G.GAME.hands) do
 			if v.order == order.order then tag.ability.hand = i end
 		end
-	end
+	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 local ebundle = {
@@ -973,6 +990,7 @@ local ebundle = {
 			return true
 		end
 	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 local twisted = {
@@ -1026,6 +1044,7 @@ local twisted = {
 			return true
 		end
 	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 local stock = {
@@ -1055,6 +1074,7 @@ local stock = {
 			return true
 		end
 	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 local blind = {
@@ -1107,6 +1127,7 @@ local blind = {
 			return true
 		end
 	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 local blind_pack = {
@@ -1209,6 +1230,7 @@ local reference = {
 			return true
 		end
 	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 local reference_pack = {
@@ -1296,6 +1318,7 @@ local cavendish = {
 			return true
 		end
 	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 local credit = {
@@ -1338,6 +1361,7 @@ local credit = {
 			end)
 		end
 	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 
@@ -1374,6 +1398,7 @@ local topup = {
 			return true
 		end
 	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 local better_topup = {
@@ -1409,6 +1434,7 @@ local better_topup = {
 			return true
 		end
 	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 local booster = {
@@ -1440,6 +1466,7 @@ local booster = {
 			return true
 		end
 	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 local effarcire = {
@@ -1468,6 +1495,7 @@ local effarcire = {
 			G.GAME.round_resets.temp_handsize = (G.GAME.round_resets.temp_handsize or 0) + #G.deck.cards
 		end
 	end,
+	shiny_atlas = "entr_shiny_asc_tags",
 }
 
 return {
