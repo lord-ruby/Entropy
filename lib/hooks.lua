@@ -1442,7 +1442,7 @@ function Card:draw(layer)
             v.children.floating_sprite:set_sprite_pos({x=1, y=3})
         end
     end
-    if bdt > 0.15 and self.config.center.set == "CBlind" then
+    if bdt >= 0.15 and self.config.center.set == "CBlind" then
         local obj = {pos = self.children.center.sprite_pos}
         obj.pos.x = obj.pos.x + 1
         if obj.pos.x >= self.children.center.atlas.frames or 21 then

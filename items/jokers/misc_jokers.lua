@@ -1508,8 +1508,8 @@ local crimson_flask = {
     },
     blueprint_compat = true,
     eternal_compat = true,
-    pos = { x = 1, y = 0 },
-    atlas = "placeholder",
+    pos = { x = 7, y = 4 },
+    atlas = "jokers",
     demicoloncompat = true,
     config = {
         xmult = 1,
@@ -1544,7 +1544,8 @@ local crimson_flask = {
         end
     end,
     entr_credits = {
-        idea = {"cassknows"}
+        idea = {"cassknows"},
+        art = {"missingnumber"}
     }
 }
 
