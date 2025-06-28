@@ -1134,7 +1134,8 @@ local forgiveness = {
     
 	
     entr_credits = {
-        idea = "cassknows"
+        idea = {"cassknows"},
+        art = {"Ein13"}
     },
     demicoloncompat = true,
     force_use = function(self, card)
