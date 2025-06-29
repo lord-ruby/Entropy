@@ -1674,7 +1674,7 @@ local decs = {
 				text = {
 					"Create a {C:attention}card, booster, or voucher{}",
 					"with a type {C:attention}corresponding{} to the",
-					"{C:attention}last obtained{} card, booster of voucher",
+					"{C:attention}last obtained{} card, booster or voucher",
 					"{C:inactive}(Currently: #1#){}"
 				}
 			},
