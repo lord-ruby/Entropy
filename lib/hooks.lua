@@ -3279,3 +3279,10 @@ function Controller:L_cursor_press(x, y)
 		end
 	end
 end
+
+
+local visible_ref = SMODS.is_poker_hand_visible
+function SMODS.is_poker_hand_visible(handname)
+    if G.GAME.atomikos_deleted and G.GAME.atomikos_deleted[handname] then return end
+    return visible_ref(handname)
+end
