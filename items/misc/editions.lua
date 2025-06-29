@@ -428,6 +428,7 @@ local kaleidoscopic = {
 			end
 			for i, v in pairs(actual) do
 				context.kaleidoscopic = true
+				context.edition = nil
 				local eval, post = eval_card(v, context)
 				local effects = {eval}
 				if context.main_scoring then 

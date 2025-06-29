@@ -533,22 +533,52 @@ local inherit = {
     atlas = "consumables",
     pos = {x=4,y=2},
     use = function(self, card, area, copier)
-        G.GAME.USING_CODE = true
-		G.ENTERED_ENH = ""
-		G.CHOOSE_ENH = UIBox({
-			definition = create_UIBox_inherit(card),
-			config = {
-				align = "cm",
-				offset = { x = 0, y = 10 },
-				major = G.ROOM_ATTACH,
-				bond = "Weak",
-				instance_type = "POPUP",
-			},
-		})
-		G.CHOOSE_ENH.alignment.offset.y = 0
-		G.ROOM.jiggle = G.ROOM.jiggle + 1
-		G.CHOOSE_ENH:align_to_major()
+		if not card.ability.cry_multiuse or to_big(card.ability.cry_multiuse) <= to_big(1)
+		 then
+			G.GAME.CODE_DESTROY_CARD = copy_card(card)
+			G.consumeables:emplace(G.GAME.CODE_DESTROY_CARD)
+		 else
+			card.ability.cry_multiuse = card.ability.cry_multiuse + 1
+		 end
+		G.GAME.USING_CODE = true
+		G.GAME.USING_INHERIT = true
+		G.FUNCS.overlay_menu({definition = create_UIBox_class()})
     end,
+    init = function(self)
+		local ccl = Card.click
+		function Card:click()
+			if G.GAME.USING_INHERIT then
+				if not self.debuff then
+					G.FUNCS.exit_overlay_menu_code()
+					delay(3)
+                    local card = Cryptid.get_highlighted_cards({ G.hand }, {}, 1, G.GAME.USING_CLASS or 1)[1]
+                    if card then
+                        local base_enh = card and card.config.center.key or ""
+                        Entropy.ChangeEnhancements({G.discard, G.deck, G.hand}, self.config.center.key, base_enh, true)
+                        G.hand:unhighlight_all()
+                    end
+					ccl(self)
+					if G.GAME.CODE_DESTROY_CARD then	
+						G.GAME.CODE_DESTROY_CARD:start_dissolve()
+						G.GAME.CODE_DESTROY_CARD = nil
+					end
+				end
+			else
+				ccl(self)
+			end
+		end
+		local emplace_ref = CardArea.emplace
+		function CardArea:emplace(card, ...)
+			if G.GAME.USING_CLASS or G.GAME.POINTER_SUBMENU == "Enhancement" then
+				local c = card.config.center
+				--no class is exclusive to class and no code is just a generic code cards cant create this thing
+				if c.hidden or c.noe_doe or c.no_collection or c.no_class or c.no_code then
+					card.debuff = true
+				end
+			end
+			return emplace_ref(self, card, ...)
+		end
+	end,
     can_use = function(self, card)
         return #Entropy.GetHighlightedCards({G.hand}, card, 1, 1,{c_base=true}) == 1
 	end,
@@ -1040,22 +1070,16 @@ local sudo = {
     },
     pos = {x=1,y=4},
     use = function(self, card, area, copier)
-        G.GAME.USING_CODE = true
-		G.ENTERED_HAND = ""
-		G.CHOOSE_HAND = UIBox({
-			definition = create_UIBox_sudo(card),
-			config = {
-				align = "cm",
-				offset = { x = 0, y = 10 },
-				major = G.ROOM_ATTACH,
-				bond = "Weak",
-				instance_type = "POPUP",
-			},
-		})
-        G.GAME.USINGSUDO = true
-		G.CHOOSE_HAND.alignment.offset.y = 0
-		G.ROOM.jiggle = G.ROOM.jiggle + 1
-		G.CHOOSE_HAND:align_to_major()
+        if not card.ability.cry_multiuse or to_big(card.ability.cry_multiuse) <= to_big(1) then
+			G.GAME.CODE_DESTROY_CARD = copy_card(card)
+			G.consumeables:emplace(G.GAME.CODE_DESTROY_CARD)
+		else
+			G.GAME.CODE_DESTROY_CARD = card
+			card.ability.cry_multiuse = card.ability.cry_multiuse + 1
+		end
+		G.GAME.USING_CODE = true
+		G.GAME.USING_SUDO = true
+		G.FUNCS.overlay_menu({definition = G.UIDEF.exploit_menu()})
     end,
     can_use = function(self, card)
         local num = G.PROFILES[G.SETTINGS.profile].cry_none and -1 or 0

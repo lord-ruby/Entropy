@@ -693,7 +693,7 @@ local endurance = {
         return num > 0 and num <= card.ability.select
     end,
     loc_vars = function(self, q, card)
-        q[#q+1] = {key = "perishable", set="Other", vars = {5, 5}}
+        q[#q+1] = {key = "banana", set="Other", vars = {5, 5}}
         return {
             vars = {
                 card.ability.select,

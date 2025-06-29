@@ -41,7 +41,10 @@ local changeling = {
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)
-    end
+    end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    },
 }
 
 local rend = {
@@ -128,11 +131,11 @@ local inscribe = {
         self:use(card)
     end
 }
-local insignia = Entropy.SealSpectral("insignia", {x=9,y=4}, "entr_silver", 2000+3, "c_talisman")
+local insignia = Entropy.SealSpectral("insignia", {x=9,y=4}, "entr_silver", 2000+3, "c_talisman", {art = {"Lil. Mr. Slipstream"}})
 local rendezvous = Entropy.SealSpectral("rendezvous", {x=10,y=5}, "entr_crimson",2000+10.5, "c_deja_vu")
-local eclipse = Entropy.SealSpectral("eclipse", {x=12,y=5}, "entr_sapphire",2000+12, "c_trance")
+local eclipse = Entropy.SealSpectral("eclipse", {x=12,y=5}, "entr_sapphire",2000+12, "c_trance", {art = {"Lil. Mr. Slipstream"}})
 local calamity = Entropy.SealSpectral("calamity", {x=6,y=6}, "entr_pink",2000+13, "c_medium",{art = {"Lil. Mr. Slipstream"}})
-local downpour = Entropy.SealSpectral("downpour", {x=12,y=7}, "entr_cerulean",2000+24, "c_cry_typhoon")
+local downpour = Entropy.SealSpectral("downpour", {x=12,y=7}, "entr_cerulean",2000+24, "c_cry_typhoon", {art = {"Lil. Mr. Slipstream"}})
 
 local rift = {
     key = "rift",
@@ -170,13 +173,16 @@ local rift = {
             }
         }
     end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    },
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)
     end
 }
 
-local script = Entropy.SealSpectral("script", {x=6,y=8}, "entr_verdant",2000+25, "c_cry_source")
+local script = Entropy.SealSpectral("script", {x=6,y=8}, "entr_verdant",2000+25, "c_cry_source", {art = {"Lil. Mr. Slipstream"}})
 
 local siphon = {
     dependencies = {
@@ -274,7 +280,8 @@ local ward = {
         }
     end,
     entr_credits = {
-        idea = {"CapitalChirp"}
+        idea = {"CapitalChirp"},
+        art = {"Lil. Mr. Slipstream"}
     },
     demicoloncompat = true,
     force_use = function(self, card)
@@ -319,7 +326,8 @@ local disavow = {
     loc_vars = function(self, q, card)
     end,
     entr_credits = {
-        idea = {"CapitalChirp"}
+        idea = {"CapitalChirp"},
+        art = {"Lil. Mr. Slipstream"}
     },
     demicoloncompat = true,
     force_use = function(self, card)
@@ -575,7 +583,8 @@ local rejuvenate = {
         }
     end,
     entr_credits = {
-        idea = {"crabus"}
+        idea = {"crabus"},
+        art = {"Lil. Mr. Slipstream"}
     },
     demicoloncompat = true,
     force_use = function(self, card)
@@ -626,6 +635,9 @@ local crypt = {
             }
         }
     end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    },
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)
@@ -750,6 +762,9 @@ local entropy = {
             }
         }
     end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"},
+    },
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)
@@ -958,6 +973,9 @@ local dispel = {
             }
         }
     end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    },
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)
@@ -1231,6 +1249,9 @@ local substitute = {
             }
         }
     end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    },
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)
@@ -1533,6 +1554,9 @@ local offering = {
             }
         }
     end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    },
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)

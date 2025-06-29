@@ -74,7 +74,10 @@ for i, category in pairs(items) do
     table.sort(category, function(a, b) return a.order < b.order end)
     for i2, item in pairs(category) do
         if not SMODS[item.object_type] then Entropy.fucker = item.object_type
-        else SMODS[item.object_type](item) end
+        else
+            SMODS[item.object_type](item)
+            if item.init then item.init() end
+        end
         item = nil
     end
     category = nil

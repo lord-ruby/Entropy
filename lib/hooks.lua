@@ -3243,3 +3243,39 @@ function Card:flip_side(...)
     card_flipref(self, ...)
     G.GAME.modifiers.entr_twisted = mod
 end
+
+local exit_ref = G.FUNCS.exit_overlay_menu_code
+function G.FUNCS.exit_overlay_menu_code()
+    exit_ref()
+    G.GAME.USING_INHERIT = nil
+    G.GAME.USING_SUDO = nil
+    G.GAME.USING_DEFINE = nil
+end
+
+local htref = create_UIBox_hand_tip
+function create_UIBox_hand_tip(handname)
+	if G.GAME.USING_SUDO then
+		G.GAME.USING_SUDO_HAND = handname
+	end
+	return htref(handname)
+end
+
+local lcpref = Controller.L_cursor_press
+function Controller:L_cursor_press(x, y)
+	lcpref(self, x, y)
+	if G and G.GAME and G.GAME.hands and G.GAME.USING_SUDO_HAND then
+		if G.CONTROLLER.cursor_hover and G.CONTROLLER.cursor_hover.target and G.CONTROLLER.cursor_hover.target.config and
+		G.CONTROLLER.cursor_hover.target.config.on_demand_tooltip and G.CONTROLLER.cursor_hover.target.config.on_demand_tooltip.filler and 
+		G.CONTROLLER.cursor_hover.target.config.on_demand_tooltip.filler.args and G.GAME.hands[G.CONTROLLER.cursor_hover.target.config.on_demand_tooltip.filler.args] then
+			if G.GAME.CODE_DESTROY_CARD then
+				G.GAME.CODE_DESTROY_CARD:start_dissolve()
+				G.GAME.CODE_DESTROY_CARD = nil
+			end
+            local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
+            G.FUNCS.get_poker_hand_info(G.hand.highlighted)
+            if not G.GAME.SudoHand then G.GAME.SudoHand = {} end
+            G.GAME.SudoHand[text] = G.GAME.USING_SUDO_HAND
+			G.FUNCS.exit_overlay_menu_code()
+		end
+	end
+end
