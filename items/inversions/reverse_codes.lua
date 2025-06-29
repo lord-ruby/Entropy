@@ -569,9 +569,8 @@ local inherit = {
 		end
 		local emplace_ref = CardArea.emplace
 		function CardArea:emplace(card, ...)
-			if G.GAME.USING_CLASS or G.GAME.POINTER_SUBMENU == "Enhancement" then
+			if G.GAME.USING_INHERIT then
 				local c = card.config.center
-				--no class is exclusive to class and no code is just a generic code cards cant create this thing
 				if c.hidden or c.noe_doe or c.no_collection or c.no_class or c.no_code then
 					card.debuff = true
 				end

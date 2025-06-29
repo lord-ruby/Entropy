@@ -339,15 +339,6 @@ SMODS.Blind:take_ownership("cry_pin", {
 	end,
 },true)
 
-
-local enh_table = {
-	m_entr_flesh = { "flesh" },
-  m_entr_disavowed = { "disavowed" },
-  m_entr_dark = { "dark" },
-}
-
-if Cryptid.load_enhancement_aliases then Cryptid.load_enhancement_aliases(enh_table) end
-
 local ref = localize
 function localize(args, misc_cat)
   return ref(args or {}, misc_cat)
