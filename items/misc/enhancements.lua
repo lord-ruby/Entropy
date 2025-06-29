@@ -80,6 +80,7 @@ local prismatic = {
 	},
 	no_doe = true,
 	upgrade_order = 9999,
+	no_code = true,
 	in_pool = function()
 		return false
 	end,

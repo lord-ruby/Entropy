@@ -370,6 +370,9 @@ SMODS.Atlas {
   local exotic = Entropy.RareTag("cry_exotic", "exotic", true, "cry_exotic", {x=3,y=0}, 0, nil,6)
   local entropic = Entropy.RareTag("entr_entropic", "entropic", true, "cry_exotic", {x=4,y=0}, 0, nil,7)
 
+  exotic.no_pointer = true
+  entropic.no_pointer = true
+
   local copying = {
 	object_type = "Tag",
     order = 8,
