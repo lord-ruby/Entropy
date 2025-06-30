@@ -1708,6 +1708,14 @@ local decs = {
 					"appear in future {C:red}Twisted{} or {C:cry_code}Program{} packs"
 				}
 			},
+			c_entr_overload = {
+				name = "(~)$ overload",
+				text = {
+					"The {C:attention}Next{} played hand",
+					"counts as containing {C:red}all{}",
+					"other hands"
+				}
+			},
 		},
 		Star = {
 			c_entr_regulus = {

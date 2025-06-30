@@ -1382,3 +1382,18 @@ payload = '''
 				or G.C.CRY_ASCENDANT
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+text = G.GAME.cry_exploit_override or text
+'''
+position = "before"
+payload = '''
+  if poker_hands.top then
+    text = poker_hands.top.text
+    scoring_hand = poker_hands.top[1]
+  end
+'''
+match_indent = true

@@ -1639,6 +1639,36 @@ local interpolate = {
     end
 }
 
+local overload = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 4000+28,
+    key = "overload",
+    set = "Command",
+    
+    inversion = "c_cry_declare",
+
+    atlas = "consumables",
+    pos = {x=2,y=6},
+    config = {
+        cry_multiuse = 3
+    },
+    use = function(self, card, area, copier)
+        G.GAME.overload = true
+    end,
+    can_use = function()
+        return not G.GAME.overload
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 local badarg = {
     dependencies = {
         items = {
@@ -1900,6 +1930,7 @@ return {
         desync,
         desync_card,
         badarg,
-        interpolate
+        interpolate,
+        overload
     }
 }

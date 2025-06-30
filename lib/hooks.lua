@@ -3286,3 +3286,29 @@ function SMODS.is_poker_hand_visible(handname)
     if G.GAME.atomikos_deleted and G.GAME.atomikos_deleted[handname] then return end
     return visible_ref(handname)
 end
+
+local evaluate_poker_hand_ref = evaluate_poker_hand
+function evaluate_poker_hand(cards)
+    local results = evaluate_poker_hand_ref(cards)
+    local top
+    for i, v in pairs(G.handlist) do
+        if not top and results[v] and results[v][1] then
+            top = {results[v][1]}
+            top.text = v
+            break
+        end
+    end
+    for i, v in pairs(G.handlist) do
+        if top then
+            results[v][1] = top[1]
+        end
+    end
+    results.top = top
+    return results
+end
+
+local play_ref = G.FUNCS.evaluate_play
+G.FUNCS.evaluate_play = function(e)
+    play_ref(e)
+    G.GAME.overload = nil
+end
