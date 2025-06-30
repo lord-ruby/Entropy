@@ -70,6 +70,7 @@ local define = {
                                 local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables, G.jokers, G.shop_booster, G.pack_cards, G.shop_jokers, G.shop_vouchers}, {}, 1, 1)
                                 for i, card in pairs(cards) do
                                     if card.config.center.set == "Default" or card.config.center.set == "Enhanced" then
+                                        G.GAME.DefineKeys = G.GAME.DefineKeys or {}
                                         G.GAME.DefineKeys[card.base.name] = {
                                             ["playing_card"] = true,
                                             ["_suit"] = G.GAME.POINTER_PLAYING.suit,
