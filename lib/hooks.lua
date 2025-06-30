@@ -3291,16 +3291,18 @@ local evaluate_poker_hand_ref = evaluate_poker_hand
 function evaluate_poker_hand(cards)
     local results = evaluate_poker_hand_ref(cards)
     local top
-    for i, v in pairs(G.handlist) do
-        if not top and results[v] and results[v][1] then
-            top = {results[v][1]}
-            top.text = v
-            break
+    if G.GAME.overload then
+        for i, v in pairs(G.handlist) do
+            if not top and results[v] and results[v][1] then
+                top = {results[v][1]}
+                top.text = v
+                break
+            end
         end
-    end
-    for i, v in pairs(G.handlist) do
-        if top then
-            results[v][1] = top[1]
+        for i, v in pairs(G.handlist) do
+            if top then
+                results[v][1] = top[1]
+            end
         end
     end
     results.top = top

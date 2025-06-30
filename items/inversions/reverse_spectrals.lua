@@ -672,9 +672,11 @@ local charm = {
         end
         local joker = nil
         local tries = 100
-        while (joker == nil or joker.ability.eternal or joker.ability.cry_absolute) and tries > 0 do
-            joker = pseudorandom_element(G.jokers.cards, pseudoseed("charm"))
-            tries = tries - 1
+        if #G.jokers.cards > 1 then
+            while (joker == nil or joker.ability.eternal or joker.ability.cry_absolute) and tries > 0 do
+                joker = pseudorandom_element(G.jokers.cards, pseudoseed("charm"))
+                tries = tries - 1
+            end
         end
         if joker then
             joker:start_dissolve()
@@ -683,13 +685,7 @@ local charm = {
     end,
     can_use = function(self, card)
         local cards = Entropy.GetHighlightedCards({G.jokers}, card, 1, card.ability.select)
-        local any_can_banish = false
-        for i, joker in pairs(G.jokers.cards) do
-            if not joker.ability.eternal and not joker.ability.cry_absolute and not joker.highlighted then
-                any_can_banish = true
-            end
-        end
-        return #cards <= card.ability.select and #cards > 0 and (any_can_banish)
+        return #cards <= card.ability.select and #cards > 0
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = G.P_CENTERS.e_cry_astral
