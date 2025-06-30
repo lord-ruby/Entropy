@@ -375,3 +375,59 @@ if PTASaka then
     end
   }, true)
 end
+SMODS.Booster:take_ownership("p_cry_code_normal_1", {
+  create_card = function()
+      if #G.GAME.interpolate_cards > 0 then
+        for i, v in pairs(G.GAME.interpolate_cards) do
+            local num = pseudorandom("twisted_interpolate")
+            if num <= 0.03 then
+                local c = v
+                return create_card(G.P_CENTERS[c].set, area or G.pack_cards, nil, nil, true, true, c)
+            end
+        end
+    end
+    return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program_1")
+  end
+}, true)
+SMODS.Booster:take_ownership("p_cry_code_normal_2", {
+  create_card = function()
+      if #G.GAME.interpolate_cards > 0 then
+        for i, v in pairs(G.GAME.interpolate_cards) do
+            local num = pseudorandom("twisted_interpolate")
+            if num <= 0.03 then
+                local c = v
+                return create_card(G.P_CENTERS[c].set, area or G.pack_cards, nil, nil, true, true, c)
+            end
+        end
+    end
+    return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program_1")
+  end
+}, true)
+SMODS.Booster:take_ownership("p_cry_code_jumbo_1", {
+  create_card = function()
+      if #G.GAME.interpolate_cards > 0 then
+        for i, v in pairs(G.GAME.interpolate_cards) do
+            local num = pseudorandom("twisted_interpolate")
+            if num <= 0.03 then
+                local c = v
+                return create_card(G.P_CENTERS[c].set, area or G.pack_cards, nil, nil, true, true, c)
+            end
+        end
+    end
+    return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program_1")
+  end
+}, true)
+SMODS.Booster:take_ownership("p_cry_code_mega_1", {
+  create_card = function()
+      if #G.GAME.interpolate_cards > 0 then
+        for i, v in pairs(G.GAME.interpolate_cards) do
+            local num = pseudorandom("twisted_interpolate")
+            if num <= 0.03 then
+                local c = v
+                return create_card(G.P_CENTERS[c].set, area or G.pack_cards, nil, nil, true, true, c)
+            end
+        end
+    end
+    return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program_1")
+  end
+}, true)

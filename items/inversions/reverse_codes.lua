@@ -1547,6 +1547,8 @@ local autostart = {
     end
 }
 
+--echo goes here
+
 local local_card = {
     dependencies = {
         items = {
@@ -1587,6 +1589,50 @@ local local_card = {
     entr_credits = {
         art = {"Grahkon"}
     },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
+local interpolate = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 4000+28,
+    key = "interpolate",
+    set = "Command",
+    
+    inversion = "c_cry_quantify",
+
+    atlas = "consumables",
+    pos = {x=1,y=6},
+    config = {
+        select = 1
+    },
+    use = function(self, card, area, copier)
+        G.GAME.interpolate_cards = G.GAME.interpolate_cards or {}
+        for i, card in pairs(Entropy.GetHighlightedCards({G.jokers, G.consumeables}, card, 1, card.ability.select)) do
+            G.GAME.interpolate_cards[#G.GAME.interpolate_cards+1] = card.config.center.key
+            card:start_dissolve()
+        end
+    end,
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.jokers, G.consumeables}, card, 1, card.ability.select)
+        return #cards > 0 and #cards <= card.ability.select
+	end,
+    loc_vars = function(self, q, card)
+        q[#q+1]=G.P_CENTERS.p_entr_twisted_pack_normal
+        q[#q+1]=G.P_CENTERS.p_cry_code_normal_1
+        return {
+            vars = {
+                card.ability.select
+            }
+        }
+    end,
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)
@@ -1853,6 +1899,7 @@ return {
         mbr,
         desync,
         desync_card,
-        badarg
+        badarg,
+        interpolate
     }
 }

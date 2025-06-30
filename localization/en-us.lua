@@ -1700,6 +1700,14 @@ local decs = {
 					"{C:attention}remainder{} of the run"
 				}
 			},
+			c_entr_interpolate = {
+				name = "(~)$ interpolate",
+				text = {
+					"Select and {C:red}Destroy{} #1# selected {C:attention}Joker#<s>1#{}",
+					"or {C:attention}Consumable#<s>1#{}, This card may",
+					"appear in future {C:red}Twisted{} or {C:cry_code}Program{} packs"
+				}
+			},
 		},
 		Star = {
 			c_entr_regulus = {
