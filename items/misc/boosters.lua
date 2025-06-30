@@ -144,7 +144,7 @@ local mega = {
 
 function create_inverted_card(area, seed)
     local num = pseudorandom("twisted_rare")
-    if #G.GAME.interpolate_cards > 0 then
+    if G.GAME.interpolate_cards and #G.GAME.interpolate_cards > 0 then
         for i, v in pairs(G.GAME.interpolate_cards) do
             local num = pseudorandom("twisted_interpolate")
             if num <= 0.03 then
