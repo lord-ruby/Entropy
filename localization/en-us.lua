@@ -1947,6 +1947,17 @@ local decs = {
 					"{C:gold}+#7#{} Ascension Power"
 				},
 			},
+			c_entr_chunk = {
+				name = "Chunk",
+				text = {
+					"({V:1}lvl.#4#{}{C:gold}#8#{})({V:2}lvl.#5#{}{C:gold}#9#{})({V:3}lvl.#6#{}{C:gold}#10#{})",
+					"Level up",
+					"{C:attention}#1#{},",
+					"{C:attention}#2#{},",
+					"and {C:attention}#3#{}",
+					"{C:gold}+#7#{} Ascension Power"
+				},
+			}
 		},
 		Omen = {
 			c_entr_rift = {

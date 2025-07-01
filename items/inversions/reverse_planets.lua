@@ -129,8 +129,15 @@ end
 
 function Entropy.ReverseSuitUse(self, card, area, copier, num)
   local handnames = card.ability.handnames
+  local declare = {
+    cry_Declare0 = true,
+    cry_Declare1 = true,
+    cry_Declare2 = true
+  }
   for i, v in pairs(handnames) do
-    Entropy.ReversePlanetUse(v, card, num)
+    if not delcare[v] or v.declare_cards then
+      Entropy.ReversePlanetUse(v, card, num)
+    end
   end
 end
 function Entropy.ReverseSuitLocVars(self, q, card, instant, noengulf)
@@ -163,6 +170,38 @@ function Entropy.ReverseSuitLocVars(self, q, card, instant, noengulf)
     },
   }
 end
+
+function Entropy.ChunkLocVars(self, q, card, instant, noengulf)
+  return {
+    vars = {
+      G.GAME.hands[card.ability.handnames[1]].declare_cards and localize(card.ability.handnames[1], "poker_hands") or localize("cry_code_empty"),
+      G.GAME.hands[card.ability.handnames[2]].declare_cards and localize(card.ability.handnames[2], "poker_hands") or localize("cry_code_empty"),
+      G.GAME.hands[card.ability.handnames[3]].declare_cards and localize(card.ability.handnames[3], "poker_hands") or localize("cry_code_empty"),
+      number_format(G.GAME.hands[card.ability.handnames[1]].level),
+      number_format(G.GAME.hands[card.ability.handnames[2]].level),
+      number_format(G.GAME.hands[card.ability.handnames[3]].level),
+      card.ability.level or 2,
+      G.GAME.hands[card.ability.handnames[1]].AscensionPower and " + "..number_format(G.GAME.hands[card.ability.handnames[1]].AscensionPower) or "",
+      G.GAME.hands[card.ability.handnames[2]].AscensionPower and " + "..number_format(G.GAME.hands[card.ability.handnames[2]].AscensionPower) or "",
+      G.GAME.hands[card.ability.handnames[3]].AscensionPower and " + "..number_format(G.GAME.hands[card.ability.handnames[3]].AscensionPower) or "",
+      colours = {
+        (
+          to_big(G.GAME.hands[card.ability.handnames[1]].level) == to_big(1) and G.C.UI.TEXT_DARK
+          or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands[card.ability.handnames[1]].level)):to_number()]
+        ),
+        (
+          to_big(G.GAME.hands[card.ability.handnames[2]].level) == to_big(1) and G.C.UI.TEXT_DARK
+          or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands[card.ability.handnames[2]].level)):to_number()]
+        ),
+        (
+          to_big(G.GAME.hands[card.ability.handnames[3]].level) == to_big(1) and G.C.UI.TEXT_DARK
+          or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands[card.ability.handnames[3]].level)):to_number()]
+        ),
+      },
+    },
+  }
+end
+
 function Entropy.ReversePlanetUse(handname, card, amt)
   if Entropy.HasJoker("j_entr_strawberry_pie",true) and handname ~= "High Card" then
     handname = "High Card"
@@ -457,6 +496,7 @@ Entropy.ReversePlanets = {
   {name="", key="Sydan", new_key = "paras", sprite_pos={x=10,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Full House", "Four of a Kind", "Straight Flush"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc},
   {name="", key="Lapio", new_key = "assa", sprite_pos={x=11,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Five of a Kind", "Flush House", "Flush Five"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc},
   {name="", key="Kaikki", new_key = "kivi", sprite_pos={x=12,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"cry_Bulwark", "cry_Clusterfuck", "cry_UltPair"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc},
+  {name="", key="voxel", new_key = "chunk", sprite_pos={x=1,y=7},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"cry_Declare0", "cry_Declare1", "cry_Declare2"}}, loc_vars = Entropy.ChunkLocVars, calc=Entropy.ReverseSuitCalc},
 }
 function Entropy.RegisterReversePlanets()
   Entropy.StarLocs = {}
