@@ -2630,7 +2630,7 @@ local decs = {
 				text = {
 					"Downside is Removed",
 					"When {X:dark_edition,C:white}Entropy{}",
-					"is higher than {C:attention}200{}"
+					"is higher than {C:attention}100{}"
 				}
 			},
 			p_entr_twisted_pack_normal = { 
