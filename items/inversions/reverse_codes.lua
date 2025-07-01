@@ -1547,7 +1547,46 @@ local autostart = {
     end
 }
 
---echo goes here
+local echo = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    object_type = "Consumable",
+    order = 4000+26,
+    key = "echo",
+    set = "Command",
+    
+    inversion = "c_cry_log",
+
+    atlas = "consumables",
+    pos = {x=5,y=5},
+    use = function(self, card, area, copier)
+        local cards = Cryptid.get_highlighted_cards({G.consumeables, G.shop_jokers, G.shop_vouchers, G.shop_booster}, card, 2,2, function(card)
+            return card.ability.consumeable
+        end)
+        if not G.GAME.entr_echo then
+            G.GAME.entr_echo = {}
+        end
+        G.GAME.entr_echo[cards[1].config.center.key] = G.GAME.entr_echo[cards[1].config.center.key] or {}
+        G.GAME.entr_echo[cards[1].config.center.key][#G.GAME.entr_echo[cards[1].config.center.key]+1] = cards[2].config.center.key
+        
+        G.GAME.entr_echo[cards[2].config.center.key] = G.GAME.entr_echo[cards[2].config.center.key] or {}
+        G.GAME.entr_echo[cards[2].config.center.key][#G.GAME.entr_echo[cards[2].config.center.key]+1] = cards[1].config.center.key
+    end,
+    can_use = function(self, card)
+        return #Cryptid.get_highlighted_cards({G.consumeables, G.shop_jokers, G.shop_vouchers, G.shop_booster}, card, 2,2, function(card)
+            return card.ability.consumeable
+        end) == 2
+	end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        if G.GAME.autostart_tags then
+            self:use(card)
+        end
+    end
+}
 
 local local_card = {
     dependencies = {
@@ -1931,6 +1970,7 @@ return {
         desync_card,
         badarg,
         interpolate,
-        overload
+        overload,
+        echo
     }
 }

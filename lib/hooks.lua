@@ -3314,3 +3314,59 @@ G.FUNCS.evaluate_play = function(e)
     play_ref(e)
     G.GAME.overload = nil
 end
+
+function Entropy.GetDummy(center, area, self)
+    local abil = copy_table(center.config)
+    abil.consumeable = copy_table(abil)
+    abil.name = center.name or center.key
+    local tbl = {
+        ability = abil,
+        config = {
+            center = center,
+        },
+        juice_up = function(_, ...)
+            return self:juice_up(...)
+        end,
+        start_dissolve = function(_, ...)
+            return self:start_dissolve(...)
+        end,
+        remove = function(_, ...)
+            return self:remove(...)
+        end,
+        flip = function(_, ...)
+            return self:flip(...)
+        end,
+        use_consumeable = function(self, ...)
+            self.bypass_echo = true
+            local ret = Card.use_consumeable(self, ...)
+            self.bypass_echo = nil
+        end,
+        original_card = self,
+        area = area,
+        added_to_deck = added_to_deck,
+    }
+    for i, v in pairs(self) do
+        if type(v) == "function" and i ~= "flip_side" then
+            tbl[i] = function(_, ...)
+                return v(self, ...)
+            end
+        end
+    end
+    return tbl
+end
+
+local use_ref = Card.use_consumeable 
+function Card:use_consumeable(...)
+    local ret = use_ref(self, ...)
+    if not self.bypass_echo then
+        if G.GAME.entr_echo and G.GAME.entr_echo[self.config.center.key] and #G.GAME.entr_echo[self.config.center.key] > 0 then
+            for i, v in pairs(G.GAME.entr_echo[self.config.center.key]) do
+                local dum = Entropy.GetDummy(G.P_CENTERS[v], self.area, self)
+                dum.bypass_echo = true
+                Cryptid.forcetrigger(dum, {})
+                dum.bypass_echo = nil
+            end
+        end
+    end
+    return ret
+end

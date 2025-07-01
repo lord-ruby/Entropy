@@ -70,7 +70,7 @@ Entropy.RarityPoints = {
     [3] = 8, --rare
     ["cry_epic"] = 30,
     [4] = 200, --legendary
-    ["entr_reverse_legendary] = 400,
+    ["entr_reverse_legendary"] = 400,
     ["cry_exotic"] = 700,
     ["entr_entropic"] = 2000,
 }
@@ -81,7 +81,7 @@ Entropy.RarityDiminishers = {
     [3] = 1.5,
     [4] = 2,
     ["cry_epic"] = 2.5,
-    ["entr_reverse_legendary] = 2.75,
+    ["entr_reverse_legendary"] = 2.75,
     ["cry_exotic"] = 3,
     ["entr_entropic"] = 4
 }
@@ -1095,6 +1095,12 @@ end
       info_queue[#info_queue+1] = {set="Other", key="no_downside"}
     end
   end
+if G.GAME.entr_echo and G.GAME.entr_echo[_c.key] then
+  for i, v in pairs(G.GAME.entr_echo[_c.key]) do
+    local other = G.P_CENTERS[v]
+    info_queue[#info_queue+1] = {set="Other", key="echo_tooltip", vars = {G.localization.descriptions[other.set][other.key].name}}
+  end
+end
 '''
 match_indent = true
 

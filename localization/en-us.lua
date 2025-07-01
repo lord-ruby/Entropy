@@ -1716,6 +1716,15 @@ local decs = {
 					"other hands"
 				}
 			},
+			c_entr_echo = {
+				name = "(~)$ echo",
+				text = {
+					"Select {C:attention}Two{} consumables",
+					"Two {C:dark_edition}trigger{} each-others effects",
+					"when they are used",
+					"{C:inactive}(including from the shop){}"
+				}
+			},
 		},
 		Star = {
 			c_entr_regulus = {
@@ -2585,6 +2594,13 @@ local decs = {
 			},
 		},
 		Other = {
+			echo_tooltip = {
+				name = "(~)$ echo",
+				text = {
+					"When this card is used",
+					"Also trigger {C:attention}#1#{}"
+				}
+			},
 			inversion_allowed = {
 				name = "Flipside",
 				text = {
