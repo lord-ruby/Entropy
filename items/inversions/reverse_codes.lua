@@ -1576,9 +1576,10 @@ local echo = {
         G.GAME.entr_echo[cards[2].config.center.key][#G.GAME.entr_echo[cards[2].config.center.key]+1] = cards[1].config.center.key
     end,
     can_use = function(self, card)
-        return #Cryptid.get_highlighted_cards({G.consumeables, G.shop_jokers, G.shop_vouchers, G.shop_booster}, card, 2,2, function(card)
+        local cards = Cryptid.get_highlighted_cards({G.consumeables, G.shop_jokers, G.shop_vouchers, G.shop_booster}, card, 2,2, function(card)
             return card.ability.consumeable
-        end) == 2
+        end)
+        return #cards == 2 and cards[1].config.center.key ~= cards[2].config.center.key
 	end,
     demicoloncompat = true,
     force_use = function(self, card)
