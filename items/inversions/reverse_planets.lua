@@ -135,7 +135,7 @@ function Entropy.ReverseSuitUse(self, card, area, copier, num)
     cry_Declare2 = true
   }
   for i, v in pairs(handnames) do
-    if not delcare[v] or v.declare_cards then
+    if not declare[v] or G.GAME.hands[v].declare_cards then
       Entropy.ReversePlanetUse(v, card, num)
     end
   end
