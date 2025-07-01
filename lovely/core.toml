@@ -70,6 +70,7 @@ Entropy.RarityPoints = {
     [3] = 8, --rare
     ["cry_epic"] = 30,
     [4] = 200, --legendary
+    ["entr_reverse_legendary] = 400,
     ["cry_exotic"] = 700,
     ["entr_entropic"] = 2000,
 }
@@ -80,6 +81,7 @@ Entropy.RarityDiminishers = {
     [3] = 1.5,
     [4] = 2,
     ["cry_epic"] = 2.5,
+    ["entr_reverse_legendary] = 2.75,
     ["cry_exotic"] = 3,
     ["entr_entropic"] = 4
 }
