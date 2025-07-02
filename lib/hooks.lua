@@ -190,7 +190,7 @@ function Card:set_ability(center, initial, delay)
         SMODS.calculate_context{enhancement_added = self.config.center.key, card=self}
     end
     local link = self and self.ability and self.ability.link
-    if self.config and self.config.center ~= "m_entr_disavowed" and (not self.entr_aleph or self.ability.bypass_aleph) then
+    if (self.config and self.config.center ~= "m_entr_disavowed" and (not self.entr_aleph or self.ability.bypass_aleph)) or G.SETTINGS.paused then
         set_abilityref(self, center, initial, delay)
     end
     self.ability.link = link
@@ -1852,14 +1852,14 @@ end
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, f, s)
     if type(center) == "string" then center = G.P_CENTERS[center] end
-    if self.config and self.config.center and self.config.center.key ~= "m_entr_disavowed" and (not self.entr_aleph or self.ability.bypass_aleph)  then
+    if (self.config and self.config.center and self.config.center.key ~= "m_entr_disavowed" and (not self.entr_aleph or self.ability.bypass_aleph)) or G.SETTINGS.paused then
         if center and Entropy.FlipsideInversions[center.key] and not G.SETTINGS.paused and (G.GAME.modifiers.entr_twisted or center.set == "Planet" and G.GAME.entr_princess) and not self.multiuse and not self.ability.fromflipside then
             set_abilityref(self, G.P_CENTERS[Entropy.FlipsideInversions[center.key]] or center, f, s)
         else    
             set_abilityref(self, center, f, s)
         end
     else
-        if not self.entr_aleph then
+        if not self.entr_aleph and not G.SETTINGS.paused then
             set_abilityref(self, G.P_CENTERS.m_entr_disavowed, f, s)
         else
             set_abilityref(self, self.config.center, f, s)

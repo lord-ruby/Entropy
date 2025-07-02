@@ -1405,3 +1405,15 @@ payload = '''
   end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+card_type = localize('cry_gameset_'..card.config.center.force_gameset)
+'''
+position = "at"
+payload = '''
+card_type = localize('cry_gameset_'..(card.config.center.force_gameset or ""))
+'''
+match_indent = true
