@@ -3370,3 +3370,10 @@ function Card:use_consumeable(...)
     end
     return ret
 end
+
+local ref = Cryptid.reload_localization
+function Cryptid.reload_localization()
+    ref()
+	SMODS.handle_loc_file(Entropy.path)
+    return init_localization()
+end
