@@ -212,6 +212,9 @@ function SMODS.injectItems(...)
             if ast_get_final_operator then
                 op = op + ast_get_final_operator()
             end
+            if get_score_operator then
+                op = op + get_score_operator()
+            end
             return op
         end
         function get_chipmult_sum(chips, mult)
