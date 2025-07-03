@@ -1,0 +1,91 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Multiplayer "networking/action_handlers.lua"]'''
+pattern = '''
+local function action_remove_phantom(key)
+	local card = MP.UTILS.get_phantom_joker(key)
+	if card then
+		card:remove_from_deck()
+		card:start_dissolve({ G.C.RED }, nil, 1.6)
+		MP.shared:remove_card(card)
+	end
+end
+'''
+position = "at"
+payload = '''
+local action_supernova = function()
+    local hand_type = "High Card"
+    local max_level = 0
+    for k, v in pairs(G.GAME.hands) do
+        if to_big(v.AscensionPower) > to_big(max_level) then
+            hand_type = k
+            max_level = v.AscensionPower
+        end
+    end
+    Entropy.ReversePlanetUse(hand_type, {ability = {}}, -2)
+end
+local function action_remove_phantom(key)
+    if key == "entr_weirdhack_collapse" then
+        action_supernova()
+        return
+    end
+	local card = MP.UTILS.get_phantom_joker(key)
+	if card then
+		card:remove_from_deck()
+		card:start_dissolve({ G.C.RED }, nil, 1.6)
+		MP.shared:remove_card(card)
+	end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Multiplayer "objects/consumables/asteroid.lua"]'''
+pattern = '''
+SMODS.Atlas({
+	key = "asteroid",
+	path = {
+		["default"] = "c_asteroid.png",
+		["ru"] = "c_asteroid_ru.png",
+	},
+	px = 71,
+	py = 95,
+})
+
+'''
+position = "after"
+payload = '''
+SMODS.Consumable{
+    object_type = "Consumable",
+    key = "supernova",
+    set = "Star",
+    atlas = "asteroid",
+    pos = {x = 0, y = 7},
+    cost = 3,
+    unlocked = true,
+    discovered = true,
+    inversion = "c_mp_asteroid",
+    order = 100,
+    loc_vars = function(self, info_queue, card)
+        add_nemesis_info(info_queue)
+        return { vars = { 2 } }
+    end,
+    in_pool = function(self)
+        return MP.LOBBY.code and MP.LOBBY.config.multiplayer_jokers
+    end,
+    can_use = function(self, card)
+        return true
+    end,
+    use = function(self, card, area, copier)
+        MP.ACTIONS.remove_phantom("entr_weirdhack_collapse")
+    end,
+}
+'''
+match_indent = true
+            

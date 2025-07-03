@@ -209,13 +209,13 @@ function Entropy.ReversePlanetUse(handname, card, amt)
   if not card then card = {ability={1}} end
   amt = amt or 1
   local used_consumable = copier or card
-  card.ability.level = card.ability.level or 2
+  card.ability.level = card.ability.level or 1
   local c = copy_table(G.C.UI_CHIPS)
   local m = copy_table(G.C.UI_MULT)
   delay(0.4)
   update_hand_text(
     { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-    { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = number_format(G.GAME.hands[handname].AscensionPower or 0 + G.GAME.hands[handname].level or 0, 1000000) }
+    { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = "..." }
   )
   G.GAME.hands[handname].AscensionPower = to_big((G.GAME.hands[handname].AscensionPower or 0)) + to_big(card.ability.level*amt) 
   G.GAME.hands[handname].visible = true
@@ -243,7 +243,7 @@ function Entropy.ReversePlanetUse(handname, card, amt)
       return true
     end,
   }))
-  update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = to_big(G.GAME.hands[handname].AscensionPower + G.GAME.hands[handname].level) })
+  update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = (to_big(card.ability.level*amt) > to_big(0) and "+" or "")..number_format(to_big(card.ability.level*amt) ) })
   delay(1.6)
   if card.edition and to_big(amt or 1) > to_big(0) and not noengulf and Engulf then
     if Engulf.SpecialFuncs[card.config.center.key] then 

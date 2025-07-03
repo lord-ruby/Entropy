@@ -1957,7 +1957,16 @@ local decs = {
 					"and {C:attention}#3#{}",
 					"{C:gold}+#7#{} Ascension Power"
 				},
-			}
+			},
+			c_mp_supernova = {
+				name = "Collapse",
+				text = {
+					"Remove #1# {C:gold}Ascension Power{} from",
+					"your {X:purple,C:white}Nemesis'{}",
+					"highest {C:gold}Ascension Power{}",
+					"{C:legendary,E:1}poker hand{}",
+				},
+			},
 		},
 		Omen = {
 			c_entr_rift = {

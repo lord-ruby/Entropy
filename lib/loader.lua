@@ -294,13 +294,14 @@ function SMODS.injectItems(...)
             end
         end
         G.entr_hooked = true
-
-
     end
     if Cryptid.add_circus_rarity then
         --true here as the last argument means dont reload localisation, only the last one needs to reload so its more optimised this way
         Cryptid.add_circus_rarity({rarity = "entr_entropic", base_mult = 50, order = 5, colour = Entropy.entropic_gradient}, true) 
         Cryptid.add_circus_rarity({rarity = "entr_reverse_legendary", base_mult = 4, order = 9999, colour = G.C.RARITY.Legendary, hidden=true})
+    end
+    if MP then
+        SMODS.Consumable:take_ownership("c_mp_supernova", {atlas = "entr_consumables"}, true)
     end
 end
 

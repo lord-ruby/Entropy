@@ -51,7 +51,8 @@ local i = {
 
     "compat/partners",
     "compat/finity",
-    "compat/malverk"
+    "compat/malverk",
+    "compat/multiplayer"
 }
 local items = {}
 for _, v in pairs(i) do
