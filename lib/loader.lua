@@ -301,7 +301,7 @@ function SMODS.injectItems(...)
         Cryptid.add_circus_rarity({rarity = "entr_reverse_legendary", base_mult = 4, order = 9999, colour = G.C.RARITY.Legendary, hidden=true})
     end
     if MP then
-        SMODS.Consumable:take_ownership("c_mp_supernova", {atlas = "entr_consumables"}, true)
+        SMODS.Consumable:take_ownership("c_mp_supernova", {atlas = "entr_consumables"})
     end
 end
 
