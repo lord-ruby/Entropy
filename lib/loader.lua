@@ -54,7 +54,7 @@ function SMODS.injectItems(...)
                 local ind1
                 if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
                     for i, v in pairs(G.title_top.cards) do
-                        if v.config.center.key == "c_entr_entropy" then
+                        if v.config.center.key == "c_cryptid" then
                             G.title_top:remove_card(v)
                             G.title_top:emplace(v)
                         end
@@ -66,7 +66,7 @@ function SMODS.injectItems(...)
                         G.CARD_W,
                         G.CARD_H,
                         G.P_CARDS.empty,
-                        G.P_CENTERS.c_cryptid,
+                        G.P_CENTERS.c_entr_entropy,
                         { bypass_discovery_center = true }
                     )
                     -- recenter the title
