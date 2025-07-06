@@ -236,84 +236,85 @@ G.FUNCS.dont_reroll_boss = function(e)
 	}))
 end
 
-Cryptid.notifications.antireal = {
-    nodes = function()
-        return {
-            n = G.UIT.R,
-            config = {
-                align = "cm",
-                colour = empty and G.C.CLEAR or G.C.UI.BACKGROUND_WHITE,
-                r = 0.1,
-                padding = 0.04,
-                minw = 2,
-                minh = 0.8,
-                emboss = not empty and 0.05 or nil,
-                filler = true,
-            },
-            nodes = {
-                {
-                    n = G.UIT.R,
-                    config = { align = "cm", padding = 0.03 },
-                    nodes = {
-                        {
-                            n = G.UIT.R,
-                            config = { align = "cm", padding = 0 },
-                            nodes = {
-                                {
-                                    n = G.UIT.T,
-                                    config = {
-                                        text = localize("cry_notif_antireal_d1"),
-                                        scale = 0.5,
-                                        colour = G.C.BLACK,
+if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
+    Cryptid.notifications.antireal = {
+        nodes = function()
+            return {
+                n = G.UIT.R,
+                config = {
+                    align = "cm",
+                    colour = empty and G.C.CLEAR or G.C.UI.BACKGROUND_WHITE,
+                    r = 0.1,
+                    padding = 0.04,
+                    minw = 2,
+                    minh = 0.8,
+                    emboss = not empty and 0.05 or nil,
+                    filler = true,
+                },
+                nodes = {
+                    {
+                        n = G.UIT.R,
+                        config = { align = "cm", padding = 0.03 },
+                        nodes = {
+                            {
+                                n = G.UIT.R,
+                                config = { align = "cm", padding = 0 },
+                                nodes = {
+                                    {
+                                        n = G.UIT.T,
+                                        config = {
+                                            text = localize("cry_notif_antireal_d1"),
+                                            scale = 0.5,
+                                            colour = G.C.BLACK,
+                                        },
                                     },
                                 },
                             },
-                        },
-                        {
-                            n = G.UIT.R,
-                            config = { align = "cm", padding = 0 },
-                            nodes = {
-                                {
-                                    n = G.UIT.T,
-                                    config = {
-                                        text = localize("cry_notif_antireal_d2"),
-                                        scale = 0.5,
-                                        colour = G.C.BLACK,
+                            {
+                                n = G.UIT.R,
+                                config = { align = "cm", padding = 0 },
+                                nodes = {
+                                    {
+                                        n = G.UIT.T,
+                                        config = {
+                                            text = localize("cry_notif_antireal_d2"),
+                                            scale = 0.5,
+                                            colour = G.C.BLACK,
+                                        },
                                     },
                                 },
                             },
-                        },
-                        {
-                            n = G.UIT.R,
-                            config = { align = "cm", padding = 0 },
-                            nodes = {
-                                {
-                                    n = G.UIT.T,
-                                    config = {
-                                        text = localize("cry_notif_antireal_d3"),
-                                        scale = 0.5,
-                                        colour = G.C.BLACK,
+                            {
+                                n = G.UIT.R,
+                                config = { align = "cm", padding = 0 },
+                                nodes = {
+                                    {
+                                        n = G.UIT.T,
+                                        config = {
+                                            text = localize("cry_notif_antireal_d3"),
+                                            scale = 0.5,
+                                            colour = G.C.BLACK,
+                                        },
                                     },
                                 },
                             },
                         },
                     },
                 },
-            },
-        }
-    end,
-    cta = {
-        label = "k_disable_music",
-    },
-}
+            }
+        end,
+        cta = {
+            label = "k_disable_music",
+        },
+    }
 
-G.FUNCS.notif_antireal = function()
-    Entropy.config.freebird = false
-    G:save_settings()
-    G.FUNCS:exit_overlay_menu()
-    -- todo: autosave settings (Not sure if this autosaves it)
+    G.FUNCS.notif_antireal = function()
+        Entropy.config.freebird = false
+        G:save_settings()
+        G.FUNCS:exit_overlay_menu()
+        -- todo: autosave settings (Not sure if this autosaves it)
+    end
 end
-
 G.FUNCS.can_toggle_path = function(e)
     local c1 = e.config.ref_table
     if

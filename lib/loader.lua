@@ -40,10 +40,11 @@ function SMODS.injectItems(...)
 					{ name = "time", ref_table = G.TIMERS, ref_value = "REAL_SHADER" },
 					{ name = "vort_speed", val = 0.4 },
 					{ name = "colour_1", ref_table = Entropy, ref_value = "entropic_gradient" },
-					{ name = "colour_2", ref_table = G.C, ref_value = "CRY_EXOTIC" },
+					{ name = "colour_2", ref_table = G.C, ref_value = "PURPLE" },
 				},
 			},
 		})
+        
         G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			delay = 0,
@@ -51,10 +52,38 @@ function SMODS.injectItems(...)
 			blocking = false,
 			func = function()
                 local ind1
-                for i, v in pairs(G.title_top.cards) do
-                    if v.config.center.key == "c_entr_entropy" then
-                        G.title_top:remove_card(v)
-                        G.title_top:emplace(v)
+                if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
+                    for i, v in pairs(G.title_top.cards) do
+                        if v.config.center.key == "c_entr_entropy" then
+                            G.title_top:remove_card(v)
+                            G.title_top:emplace(v)
+                        end
+                    end
+                else    
+                    local newcard = Card(
+                        G.title_top.T.x,
+                        G.title_top.T.y,
+                        G.CARD_W,
+                        G.CARD_H,
+                        G.P_CARDS.empty,
+                        G.P_CENTERS.c_cryptid,
+                        { bypass_discovery_center = true }
+                    )
+                    -- recenter the title
+                    G.title_top.T.w = G.title_top.T.w * 1.7675
+                    G.title_top.T.x = G.title_top.T.x - 0.8
+                    G.title_top:emplace(newcard)
+                    -- make the card look the same way as the title screen Ace of Spades
+                    newcard.T.w = newcard.T.w * 1.1 * 1.2
+                    newcard.T.h = newcard.T.h * 1.1 * 1.2
+                    newcard.no_ui = true
+                    newcard.states.visible = false
+                    if change_context == "splash" then
+                        newcard.states.visible = true
+                        newcard:start_materialize({ G.C.WHITE, G.C.WHITE }, true, 2.5)
+                    else
+                        newcard.states.visible = true
+                        newcard:start_materialize({ G.C.WHITE, G.C.WHITE }, nil, 1.2)
                     end
                 end
                 return true

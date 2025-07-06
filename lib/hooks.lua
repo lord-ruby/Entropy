@@ -1236,7 +1236,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         scie(effect, scored_card, "Xmult_mod", 0, from_edition)
         scie(effect, scored_card, "mult_mod", amount, from_edition)
         card_eval_status_text = e
-        if not Talisman.config_file.disable_anims then
+        if not Talisman or not Talisman.config_file.disable_anims then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent)
         end
         return true
@@ -1247,7 +1247,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         scie(effect, scored_card, "Xchip_mod", 0, from_edition)
         scie(effect, scored_card, "chip_mod", amount, from_edition)
         card_eval_status_text = e
-        if not Talisman.config_file.disable_anims then
+        if not Talisman or not Talisman.config_file.disable_anims then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'chips', amount, percent, nil, nil, "="..amount.. " Chips", G.C.BLUE)
         end
         return true
@@ -1267,7 +1267,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         card_eval_status_text = e
-        if not Talisman.config_file.disable_anims then
+        if not Talisman or not Talisman.config_file.disable_anims then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "X"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
         end
         return true
@@ -1286,7 +1286,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         card_eval_status_text = e
-        if not Talisman.config_file.disable_anims then
+        if not Talisman or not Talisman.config_file.disable_anims then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, (to_big(amount) < to_big(0) and "" or "+")..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
         end
         return true
@@ -1307,7 +1307,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         card_eval_status_text = e
-        if not Talisman.config_file.disable_anims then
+        if not Talisman or not Talisman.config_file.disable_anims then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "^"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
         end
         return true
@@ -1328,7 +1328,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         card_eval_status_text = e
-        if not Talisman.config_file.disable_anims then
+        if not Talisman or not Talisman.config_file.disable_anims then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, Entropy.FormatArrowMult(amount[1], amount[2]).." Asc", G.C.GOLD, "entr_e_solar", 0.6)
         end
         return true
@@ -1336,7 +1336,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
     if key == 'xlog_chips' then
         hand_chips = mod_chips(hand_chips * math.max(math.log(to_big(hand_chips) < to_big(0) and 1 or hand_chips, amount), 1))
         update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
-        if not Talisman.config_file.disable_anims then
+        if not Talisman or not Talisman.config_file.disable_anims then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'chips', 1, percent, nil, nil, "Chips Xlog(Chips)", G.C.BLUE, "entr_e_rizz", 0.6)
         end
         return true
@@ -1617,18 +1617,7 @@ function Cryptid.ascend(num, curr2) -- edit this function at your leisure
     if Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled then
         curr2 = curr2 * (Entropy.IsEE() and -0.25 or -1)
     end
-    if Cryptid.enabled("set_cry_poker_hand_stuff") ~= true then
-        return num
-    end
-    if Cryptid.gameset() == "modest" then
-        -- x(1.1 + 0.05 per sol) base, each card gives + (0.1 + 0.05 per sol)
-        if not G.GAME.current_round.current_hand.cry_asc_num then
-            return num
-        end
-        return num *
-            (1 + 0.1 + to_big(0.05 * (G.GAME.sunnumber or 0)) +
-                to_big((0.1 + (0.05 * (G.GAME.sunnumber or 0))) * to_big(curr2)))
-    elseif Entropy.HasJoker("j_entr_helios", true) then
+    if Entropy.HasJoker("j_entr_helios", true) then
         local curr = 1
         for i, v in pairs(G.jokers.cards) do
             if not v.debuff and v.config.center.key == "j_entr_helios" and to_big(v.ability.extra):gt(curr) then
@@ -2040,7 +2029,7 @@ function ease_entropy(mod)
           G.GAME.entropy = (G.GAME.entropy or 0) + mod
           if round_UI then
             G.HUD:recalculate()
-            if not Talisman.config_file.disable_anims then
+            if not Talisman or not Talisman.config_file.disable_anims then
               attention_text({
                 text = text..tostring(math.abs(mod)),
                 scale = 1, 
@@ -2052,7 +2041,7 @@ function ease_entropy(mod)
             end
           end
           --Play a chip sound
-          if not Talisman.config_file.disable_anims then
+          if not Talisman or not Talisman.config_file.disable_anims then
             play_sound('timpani', 0.8)
             play_sound('generic1')
           end

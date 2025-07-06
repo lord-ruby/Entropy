@@ -38,7 +38,7 @@ function Entropy.Inversion(card)
 end
 
 function Entropy.FlipThen(cardlist, func, before, after)
-    if not Talisman.config_file.disable_anims then
+    if not Talisman or not Talisman.config_file.disable_anims then
         for i, v in ipairs(cardlist) do
             local card = cardlist[i]
             if card then
@@ -83,7 +83,7 @@ function Entropy.FlipThen(cardlist, func, before, after)
             )
         end
     end
-    if not Talisman.config_file.disable_anims then
+    if not Talisman or not Talisman.config_file.disable_anims then
         for i, v in ipairs(cardlist) do
             local card = cardlist[i]
             if card then
@@ -1684,4 +1684,39 @@ function create_UIBox_HUD_blind_doc()
           }},
         }},
       }}
+end
+
+function Entropy.load_files(files)
+    local items = {}
+    for _, v in pairs(files) do
+        local f, err = SMODS.load_file(v..".lua")
+        if f then 
+            local results = f() 
+            if results then
+                if results.init then results.init(results) end
+                if results.items then
+                    for i, result in pairs(results.items) do
+                        if type(result) == "table" then
+                            if not items[result.object_type] then items[result.object_type] = {} end
+                            result.cry_order = result.order
+                            items[result.object_type][#items[result.object_type]+1]=result
+                        end
+                    end
+                end
+            end
+        else error("error in file "..v..": "..err) end
+    end
+    for i, category in pairs(items) do
+        table.sort(category, function(a, b) return a.order < b.order end)
+        for i2, item in pairs(category) do
+            if not SMODS[item.object_type] then Entropy.fucker = item.object_type
+            else
+                SMODS[item.object_type](item)
+                if item.init then item.init() end
+            end
+            item = nil
+        end
+        category = nil
+    end
+    items = nil
 end

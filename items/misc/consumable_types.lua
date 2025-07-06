@@ -41,13 +41,15 @@ SMODS.ConsumableType({
 	default = "c_entr_changeling"
 })
 
-SMODS.ConsumableType({
-	object_type = "ConsumableType",
-	key = "Command",
-	primary_colour = G.C.Entropy.Command,
-	secondary_colour = G.C.Entropy.Command,
-	collection_rows = { 4, 4 },
-	shop_rate = 0.0,
-	loc_txt = {},
-	default = "c_entr_memory_leak"
-})
+if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
+	SMODS.ConsumableType({
+		object_type = "ConsumableType",
+		key = "Command",
+		primary_colour = G.C.Entropy.Command,
+		secondary_colour = G.C.Entropy.Command,
+		collection_rows = { 4, 4 },
+		shop_rate = 0.0,
+		loc_txt = {},
+		default = "c_entr_memory_leak"
+	})
+end

@@ -3090,14 +3090,14 @@ local decs = {
 			entr_ascended = "Ascended!",
 			k_entr_freebird = "Antireal (Freebird by Lynyrd Skynyrd - Copyrighted)",
 
-			cry_gameset_modest = "Ethereal",
-			cry_gameset_mainline = "Elysian",
-			cry_gameset_madness = "Exalted",
-			cry_gameset_custom = "Emergent",
+			entr_gameset_modest = "Ethereal",
+			entr_gameset_mainline = "Elysian",
+			entr_gameset_madness = "Exalted",
+			entr_gameset_custom = "Emergent",
 
-			b_reset_gameset_modest = "Reset Gameset Config (Ethereal)",
-			b_reset_gameset_mainline = "Reset Gameset Config (Elysian)",
-			b_reset_gameset_madness = "Reset Gameset Config (Exalted)",
+			entr_b_reset_gameset_modest = "Reset Gameset Config (Ethereal)",
+			entr_b_reset_gameset_mainline = "Reset Gameset Config (Elysian)",
+			entr_b_reset_gameset_madness = "Reset Gameset Config (Exalted)",
 
 			entr_opened = "Opened!",
 			entr_kiy_banished = "Banished.",

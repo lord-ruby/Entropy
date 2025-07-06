@@ -82,7 +82,7 @@ G.FUNCS.cry_intro_part = function(_part)
 		--TODO: localize
 		G.modestBtn = create_UIBox_character_button_with_sprite({
 			sprite = modestSprite,
-			button = localize("cry_gameset_modest"),
+			button = localize("entr_gameset_modest"),
 			id = "modest",
 			func = "cry_modest",
 			colour = G.C.GREEN,
@@ -90,7 +90,7 @@ G.FUNCS.cry_intro_part = function(_part)
 		})
 		G.mainlineBtn = create_UIBox_character_button_with_sprite({
 			sprite = mainlineSprite,
-			button = localize("cry_gameset_mainline"),
+			button = localize("entr_gameset_mainline"),
 			id = "mainline",
 			func = "cry_mainline",
 			colour = G.C.RED,
@@ -98,7 +98,7 @@ G.FUNCS.cry_intro_part = function(_part)
 		})
 		G.madnessBtn = create_UIBox_character_button_with_sprite({
 			sprite = madnessSprite,
-			button = localize("cry_gameset_madness"),
+			button = localize("entr_gameset_madness"),
 			id = "madness",
 			func = "cry_madness",
 			colour = Entropy.entropic_gradient,

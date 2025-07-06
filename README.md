@@ -1,8 +1,8 @@
 
 # Entropy
-An unbalanced cryptid addon for balatro, Built around the madness gameset
+A chaotic balatro mod
 
-[Download Cryptid](https://github.com/SpectralPack/Cryptid/) (Make sure you download via Code > Download zip)
+[Download CryptLib](https://github.com/SpectralPack/Cryptlib) (Make sure you download via Code > Download zip)
 
 Entropy currently adds:
 

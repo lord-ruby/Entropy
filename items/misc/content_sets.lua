@@ -35,13 +35,15 @@ SMODS.ContentSet({
 	cry_order = 2,
 })
 
-SMODS.ContentSet({
-	key = "entropics",
-	atlas = "exotic_jokers",
-	pos = { x = 3, y = 2 },
-    soul_pos = { x = 5, y = 2, extra = { x = 4, y = 2 } },
-	cry_order = 3,
-})
+if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
+	SMODS.ContentSet({
+		key = "entropics",
+		atlas = "exotic_jokers",
+		pos = { x = 3, y = 2 },
+		soul_pos = { x = 5, y = 2, extra = { x = 4, y = 2 } },
+		cry_order = 3,
+	})
+end
 
 SMODS.ContentSet({
 	key = "vouchers",

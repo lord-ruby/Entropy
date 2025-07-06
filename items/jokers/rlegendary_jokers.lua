@@ -386,7 +386,7 @@ return {
         tocihc,
         teluobirt,
         oinac,
-        entropy_card,
-        kciroy
+        kciroy,
+        SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load and entropy_card or nil, --lazy so this goes here
     }
 }
