@@ -3365,3 +3365,13 @@ function Cryptid.handle_other_localizations()
     ref()
 	SMODS.handle_loc_file(Entropy.path)
 end
+
+if not SMODS.get_probability_vars then
+    SMODS.get_probability_vars = function(card, n, d)
+        return card.ability.cry_rigged and d or n, d
+    end
+    SMODS.pseudorandom_probability = function(card, seed, n, d)
+        if card.ability.cry_rigged then return true end
+        return pseudorandom(seed) < n * G.GAME.probabilities.normal / d
+    end
+end
