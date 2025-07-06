@@ -41,6 +41,31 @@ SMODS.ConsumableType({
 	default = "c_entr_changeling"
 })
 
+SMODS.UndiscoveredSprite({
+	key = "Fraud",
+	atlas = "undiscovered",
+	path = "undiscovered.png",
+	pos = { x = 0, y = 0 },
+	px = 71,
+	py = 95,
+})
+SMODS.UndiscoveredSprite({
+	key = "Star",
+	atlas = "undiscovered",
+	path = "undiscovered.png",
+	pos = { x = 1, y = 0 },
+	px = 71,
+	py = 95,
+})
+SMODS.UndiscoveredSprite({
+	key = "Omen",
+	atlas = "undiscovered",
+	path = "undiscovered.png",
+	pos = { x = 2, y = 0 },
+	px = 71,
+	py = 95,
+})
+
 if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
 	SMODS.ConsumableType({
 		object_type = "ConsumableType",
@@ -51,5 +76,13 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
 		shop_rate = 0.0,
 		loc_txt = {},
 		default = "c_entr_memory_leak"
+	})
+	SMODS.UndiscoveredSprite({
+		key = "Command",
+		atlas = "undiscovered",
+		path = "undiscovered.png",
+		pos = { x = 3, y = 0 },
+		px = 71,
+		py = 95,
 	})
 end

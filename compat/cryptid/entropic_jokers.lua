@@ -868,8 +868,7 @@ local apeirostemma = {
         if e == 2 then
             if context.joker_main then
                 for i, v in pairs(G.jokers.cards) do
-                    if pseudorandom("aperio_dice_2")
-                    < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
+                    if SMODS.pseudorandom_probability(card, 'apeiro_dice_2', 1, card.ability.extra.odds)
                         / card.ability.extra.odds and v ~= card then
                         local results = Cryptid.forcetrigger(v, context)
                         if results then Entropy.EvaluateEffects(results, card) end
@@ -945,9 +944,10 @@ local apeirostemma = {
         local e = card.ability.immutable.dice_effect
         local vars = nil
         if e == 2 then
+            local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
             vars =  {
-                cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
+                numerator,
+                denominator
             }
         end
         if e == 3 then

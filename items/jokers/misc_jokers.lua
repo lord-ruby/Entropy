@@ -235,10 +235,11 @@ local antidagger = {
     demicoloncompat = true,
     config = { extra = { odds = 6 } },
     loc_vars = function(self, info_queue, card)
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
         return {
             vars = {
-                cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
+                numerator,
+                denominator
             },
         }
     end,
@@ -262,9 +263,7 @@ local antidagger = {
                 c:add_to_deck()
                 G.jokers:emplace(c)
             end
-            if pseudorandom("antidagger")
-            < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
-                / card.ability.extra.odds then
+            if SMODS.pseudorandom_probability(card, 'antidagger', 1, card.ability.extra.odds) then
                     local joker = pseudorandom_element(G.jokers.cards, pseudoseed("antidagger"))
                     G.GAME.banned_keys["j_entr_antidagger"] = true
                     G.GAME.banned_keys[joker.config.center.key] = true
@@ -422,18 +421,18 @@ local rusty_shredder = {
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = {key = 'e_negative_playing_card', set = 'Edition', config = {extra = 1}}
         info_queue[#info_queue+1] = {key = "temporary", set = "Other"}
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
         return {
             vars = {
-                cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
+                numerator,
+                denominator
             },
         }
     end,
     calculate = function (self, card, context)
         if (context.pre_discard) then
             for i, v in pairs(G.hand.highlighted) do
-                if pseudorandom("rusty_shredder")
-                < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
+                if SMODS.pseudorandom_probability(card, 'rusty_shredder', 1, card.ability.extra.odds) then
                     local c = copy_card(v)
                     c:set_edition("e_negative")
                     c.ability.temporary = true
@@ -510,11 +509,13 @@ local lotteryticket = {
     atlas = "jokers",
     config = {extra = {odds = 5, odds2 = 5, lose=1, payoutsmall = 20, payoutlarge = 50}},
     loc_vars = function(self, info_queue, card)
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
+        local _, denominator2 = SMODS.get_probability_vars(card, 1, card.ability.extra.odds * card.ability.extra.odds2)
         return {
             vars = {
-                cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
-                card.ability.extra.odds2*card.ability.extra.odds,
+                numerator,
+                denominator,
+               denominator2,
                 card.ability.extra.lose,
                 card.ability.extra.payoutsmall,
                 card.ability.extra.payoutlarge
@@ -525,10 +526,8 @@ local lotteryticket = {
         if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
             G.E_MANAGER:add_event(Event({
                 func = function()
-                    if pseudorandom("lottery")
-                    < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
-                        if pseudorandom("lottery")
-                        < cry_prob(card.ability.cry_prob, card.ability.extra.odds2, card.ability.cry_rigged) / card.ability.extra.odds2 then
+                    if SMODS.pseudorandom_probability(card, 'lottery', 1, card.ability.extra.odds) then
+                        if SMODS.pseudorandom_probability(card, 'lottery', 1, card.ability.extra.odds) then
                             ease_dollars(card.ability.extra.payoutlarge-card.ability.extra.lose)
                         else
                             ease_dollars(card.ability.extra.payoutsmall-card.ability.extra.lose)
@@ -1617,10 +1616,11 @@ local afterimage = {
     loc_vars = function(self, q, card)
         q[#q+1] = {set="Other", key="perishable", vars={5, 5}}
         q[#q+1] = {set="Other", key="banana", vars={1, 10}}
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
         return {
             vars = {
-                cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
+                numerator,
+                denominator
             }
         }
     end,
@@ -1630,9 +1630,7 @@ local afterimage = {
             G.FUNCS.get_poker_hand_info(G.play.cards)
             for i, v in pairs(scoring_hand) do
                 local old_card = v
-                if pseudorandom("afterimage")
-                < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
-                    / card.ability.extra.odds then
+                if SMODS.pseudorandom_probability(card, 'afterimage', 1, card.ability.extra.odds) then
                     G.E_MANAGER:add_event(Event({
                         func = function()
                             local new_card = copy_card(old_card)

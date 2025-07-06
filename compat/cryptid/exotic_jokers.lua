@@ -339,10 +339,11 @@ local ridiculus_absens = {
     demicoloncompat = true,
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue+1] = G.P_CENTERS.e_cry_glitched
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
         return {
             vars = {
-                cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-                card.ability.extra.odds,
+                numerator,
+                denominator
             }
         }
     end,
@@ -350,9 +351,7 @@ local ridiculus_absens = {
         if context.joker_main then
             local cards = {}
             for i, v in ipairs(G.play.cards) do
-                if pseudorandom("tmtrainer")
-                < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged)
-                    / card.ability.extra.odds then
+                if SMODS.pseudorandom_probability(card, 'tmtrainer', 1, card.ability.extra.odds) then
                     if not v.edition or v.edition and v.edition.key ~= "e_cry_glitched" then
                         cards[#cards+1]=v
                     end

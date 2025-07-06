@@ -2702,6 +2702,42 @@ local decs = {
 					"{C:attention}#2#{} {C:attention}Vouchers{}",
 				}
 			},
+			undiscovered_fraud = {
+				name = "Not Discovered",
+				text = {
+					"Purchase or use",
+					"this card in an",
+					"unseeded run to",
+					"learn what it does",
+				},
+			},
+			undiscovered_omen = {
+				name = "Not Discovered",
+				text = {
+					"Purchase or use",
+					"this card in an",
+					"unseeded run to",
+					"learn what it does",
+				},
+			},
+			undiscovered_star = {
+				name = "Not Discovered",
+				text = {
+					"Purchase or use",
+					"this card in an",
+					"unseeded run to",
+					"learn what it does",
+				},
+			},
+			undiscovered_command = {
+				name = "Not Discovered",
+				text = {
+					"Purchase or use",
+					"this card in an",
+					"unseeded run to",
+					"learn what it does",
+				},
+			},
 			entr_pinned = {
 				name = "Invariant",
 				text = {

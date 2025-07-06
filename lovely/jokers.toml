@@ -11,7 +11,7 @@ position = "after"
 payload = '''if card and card.playing_card and Entropy.HasJoker("j_entr_jokerinyellow") then
                 for i, v in pairs(G.jokers.cards) do
                     if v.config.center.key == "j_entr_jokerinyellow" then
-                        if pseudorandom("kiy") < cry_prob(v.ability.cry_prob, v.ability.extra.odds, v.ability.cry_rigged) / v.ability.extra.odds then
+                        if SMODS.pseudorandom_probability(v, 'kiy', 1, v.ability.extra.odds) then
                             card.ability.entr_yellow_sign = true
                         end
                     end

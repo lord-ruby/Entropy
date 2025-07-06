@@ -310,10 +310,11 @@ local jokezmann_brain = {
         if not card.edition or card.edition.key ~= "e_cry_oversat" then
             info_queue[#info_queue+1]=G.P_CENTERS.e_cry_oversat
         end
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
         return {
             vars = {
-                cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged),
-				card.ability.extra.odds,
+                numerator,
+                denominator
             }
         }
     end,
@@ -321,8 +322,7 @@ local jokezmann_brain = {
         if context.ending_shop or context.forcetrigger then
             if G.jokers.config.card_limit - #G.jokers.cards > 0 then
                 for i = 1, G.jokers.config.card_limit - #G.jokers.cards do
-                    if pseudorandom("jokezmann")
-                    < cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds then
+                    if SMODS.pseudorandom_probability(card, 'jokezmann', 1, card.ability.extra.odds) then
                         local card = create_card("Joker", G.jokers)
                         card:set_edition("e_cry_oversat")
                         card:add_to_deck()

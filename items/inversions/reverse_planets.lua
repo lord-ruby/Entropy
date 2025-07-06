@@ -336,10 +336,11 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
     odds = 5
   },
   loc_vars = function(self,q,card) 
+    local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
     return {
       vars = {
-        card and cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged),
-        card.ability.odds,
+        numerator,
+        denominator,
         card.ability.level,
       }
     }
@@ -494,9 +495,7 @@ Entropy.RegisterReversePlanets()
 function Entropy.StarLuaSingle(self,card,area,copier)
   local used_consumable = copier or card
   if
-    pseudorandom("starlua")
-    < cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged)
-      / card.ability.odds
+  SMODS.pseudorandom_probability(card, 'starlua', 1, card.ability.odds)
   then --Code "borrowed" from black hole
     delay(0.4)
     update_hand_text(
@@ -588,12 +587,10 @@ end
 function Entropy.StarLuaBulk(self,card,area,copier,number)
   local used_consumable = copier or card
   if
-    pseudorandom("starlua")
-    < cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged) * number
-      / card.ability.odds
+  SMODS.pseudorandom_probability(card, 'starlua', 1 * number, card.ability.odds)
   then --Code "borrowed" from black hole
-    local quota = (cry_prob(card.ability.cry_prob, card.ability.odds, card.ability.cry_rigged)
-    / card.ability.odds)
+    local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.odds)
+    local quota = numerator*number / denominator
     delay(0.4)
     update_hand_text(
       { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },

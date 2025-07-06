@@ -25,10 +25,11 @@ local jokerinyellow = {
     loc_vars = function(self, q, card)
         q[#q+1] = {key ="entr_yellow_sign", set="Other"}
         q[#q+1] = {key ="temporary", set="Other"}
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
         return {
             vars = {
-                math.min(cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged), card.ability.extra.odds),
-                card.ability.extra.odds,
+                numerator,
+                denominator
             }
         }
     end,
