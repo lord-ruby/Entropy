@@ -203,28 +203,3 @@ G.FUNCS.cry_mainline = function(e)
 	G.FUNCS.cry_intro_part("mainline")
 	G.selectedGameset = "mainline"
 end
-
-function get_type_colour(center, card)
-	local color
-	if center.set == "Back" or center.set == "Tag" or center.set == "Blind" then
-		color = G.C.CRY_SELECTED
-	end
-	if card.gameset_select then
-		if center.force_gameset == "modest" then
-			color = G.C.GREEN
-		elseif center.force_gameset == "mainline" then
-			color = G.C.RED
-		elseif center.force_gameset == "madness" then
-			color = Entropy.entropic_gradient
-		elseif center.force_gameset ~= "disabled" then
-			color = G.C.CRY_ASCENDANT
-		end
-	end
-	if
-		Cryptid.gameset(card, center) == "disabled"
-		or (center.cry_disabled and (not card.gameset_select or center.cry_disabled.type ~= "manual"))
-	then
-		color = mix_colours(G.C.RED, G.C.GREY, 0.7)
-	end
-	return color
-end
