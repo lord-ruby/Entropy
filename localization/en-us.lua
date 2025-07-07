@@ -2610,6 +2610,41 @@ local decs = {
 				},
 			},
 		},
+		["Rune Tag"] = {
+			rune_entr_jera = {
+				name = "Jera",
+				text = {
+					"Copies the next",
+					"{C:attention}used{} Consumable"
+				}
+			},
+			rune_entr_jera_providence = {
+				name = "Jera{C:purple}+{}",
+				text = {
+					"Copies the next",
+					"{C:attention}used{} Consumable",
+					"{C:purple,E:1}Twice{}"
+				}
+			}
+		},
+		Rune = {
+			c_entr_jera = {
+				name = "Rune of Jera",
+				text = {
+					"Create a {C:attention}copy{} of",
+					"the next {C:attention}used{}",
+					"Consumable"
+				}
+			},
+			c_entr_jera_providence = {
+				name = "Rune of Jera{C:purple}+{}",
+				text = {
+					"Create {C:purple,E:1}Two{} {C:attention}copies{} of",
+					"the next {C:attention}used{}",
+					"Consumable"
+				}
+			}
+		},
 		Other = {
 			echo_tooltip = {
 				name = "(~)$ echo",
@@ -2698,6 +2733,15 @@ local decs = {
 					"Choose {C:attention}#1#{} of up to",
 					"{C:attention}#2#{} {C:attention}Vouchers{}",
 				}
+			},
+			undiscovered_rune = {
+				name = "Not Discovered",
+				text = {
+					"Purchase or use",
+					"this card in an",
+					"unseeded run to",
+					"learn what it does",
+				},
 			},
 			undiscovered_fraud = {
 				name = "Not Discovered",
@@ -3175,7 +3219,11 @@ local decs = {
 			b_stat_Command = "Command",
 			k_upgrade_atomikos = "Destroyed",
 			k_new = "new();",
-			k_ascended_ex = "Ascended"
+			k_ascended_ex = "Ascended",
+
+			k_rune = "Rune",
+			k_rune_pack = "Rune Pack",
+			b_rune_cards = "Runes",
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

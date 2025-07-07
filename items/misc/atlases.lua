@@ -218,3 +218,17 @@ SMODS.Atlas {
     px = 71, 
     py = 95 
 }
+
+SMODS.Atlas { 
+    key = 'rune_indicators', 
+    path = 'rune_indicators.png', 
+    px = 40, 
+    py = 40
+}
+
+SMODS.Atlas { 
+    key = 'rune_atlas', 
+    path = 'runes.png', --placeholder
+    px = 71, 
+    py = 95 
+}

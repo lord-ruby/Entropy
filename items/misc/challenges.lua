@@ -56,6 +56,16 @@ function Game:start_run(args)
         --     G.hand_text_area[i] = G.HUD:get_UIE_by_ID(v.config.id)
         -- end
     end
+    local saveTable = args.savetext or nil
+    G.GAME.runes = {}
+    if saveTable then
+        local tags = saveTable.runes or {}
+        for k, v in ipairs(tags) do
+            local _tag = Tag('rune_entr_jera')
+            _tag:load(v)
+            add_rune(_tag, nil, true)
+        end
+    end
 end
 
 local set_abilityref = Card.set_ability

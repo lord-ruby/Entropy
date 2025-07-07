@@ -1,12 +1,22 @@
-SMODS.ConsumableType{
-	key = "CBlind",
-	primary_colour = HEX("ab3a3e"),
-	secondary_colour = HEX("ab3a3e"),
-	--collection_rows = { 4, 5 },
+SMODS.ConsumableType({
+	object_type = "ConsumableType",
+	key = "Rune",
+	primary_colour = G.C.Entropy.Rune,
+	secondary_colour = G.C.Entropy.Rune,
+	collection_rows = { 4, 5 },
 	shop_rate = 0.0,
-	default = "c_entr_bl_small",
-    hidden=true,
-}
+	loc_txt = {},
+	default = "c_entr_jera"
+})
+
+SMODS.UndiscoveredSprite({
+	key = "Rune",
+	atlas = "undiscovered",
+	path = "undiscovered.png",
+	pos = { x = 4, y = 0 },
+	px = 71,
+	py = 95,
+})
 
 SMODS.ConsumableType({
 	object_type = "ConsumableType",
@@ -86,3 +96,13 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
 		py = 95,
 	})
 end
+
+SMODS.ConsumableType{
+	key = "CBlind",
+	primary_colour = HEX("ab3a3e"),
+	secondary_colour = HEX("ab3a3e"),
+	--collection_rows = { 4, 5 },
+	shop_rate = 0.0,
+	default = "c_entr_bl_small",
+    hidden=true,
+}

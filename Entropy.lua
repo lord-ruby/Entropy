@@ -49,6 +49,7 @@ local i = {
     "items/misc/dailies",
 
     "items/altpath/blinds",
+    "items/misc/runes",
 
     "compat/partners",
     "compat/finity",

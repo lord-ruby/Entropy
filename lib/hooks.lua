@@ -1733,7 +1733,7 @@ function Tag:init(_tag, for_collection, _blind_type, ...)
     end
     ref(self, _tag, for_collection, _blind_type, ...)
     local tag = self
-    if G.P_TAGS[tag.key].set_ability then
+    if G.P_TAGS[tag.key] and G.P_TAGS[tag.key].set_ability then
         G.P_TAGS[tag.key]:set_ability(tag)
     end
     return tag
