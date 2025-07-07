@@ -18,8 +18,8 @@ local decs = {
 			m_entr_prismatic = {
 				name = "Prismatic Card",
 				text = {
-					"{X:dark_edition,C:white}^^#1#{} Mult",
-					"increase by {X:dark_edition,C:white}^^#2#{}",
+					"{X:dark_edition,C:white}^#1#{} Mult",
+					"increase by {X:dark_edition,C:white}^#2#{}",
 					"when card is scored."
 				}
 			},
@@ -156,7 +156,7 @@ local decs = {
 				name = "Helios",
 				text = {
  					"{X:dark_edition,C:white}Infinite{} {C:attention}card selection limit{}",
-					"Ascension formula is now {X:dark_edition,C:white}X(#1#^^#2#n){}",
+					"Ascension formula is now {X:dark_edition,C:white}X(#1#^#2#n){}",
 					"{C:attention}All cards{} contribute to {C:Attention}Ascension power{}"
 				}
 			},
@@ -176,19 +176,18 @@ local decs = {
 				text = {
  					"{X:dark_edition,C:white}33%{} chance to upgrade",
 					"Joker {C:attention}rarities{} in the shop recursively",
-					"Gain {X:dark_edition,C:white}^^Chips{} when buying a Joker",
+					"Gain {X:dark_edition,C:white}^Chips{} when buying a Joker",
 					"based on the Joker's {C:attention}rarity{}",
-					"{C:inactive}(Currently: {}{X:dark_edition,C:white}^^#1#{}{C:inactive}){}",
+					"{C:inactive}(Currently: {}{X:dark_edition,C:white}^#1#{}{C:inactive}){}",
 				}
 			},
 			j_entr_dekatria = {
 				name = "Dekatria",
 				text = {
- 					"{X:dark_edition,C:white}#1#{} Mult",
+					"This Joker gains {X:dark_edition,C:white}^#1#{} for every",
+					"{C:attention}#2#{} {C:inactive}[#3#]{} Pairs in played hand",
 					"All cards are {C:dark_edition}Jolly{}",
-					"Increase operator once for every",
-					"{C:attention}#2#{} Pairs in played hand",
-					"{C:inactive}(Currently: #3#){}"
+					"{C:inactive}(Currently: {X:dark_edition,C:white}^#4#{C:inactive}){}"
 				}
 			},
 			j_entr_oekrep = {
@@ -579,11 +578,9 @@ local decs = {
 			j_entr_atomikos = {
 				name = "Atomikos",
 				text = {
-					"{C:attention}High Card's{} {C:dark_edition}operator{} is set to {C:attention}+{}",
+					"{C:attention}High Card's{} {C:dark_edition}operator{} is set to {C:attention}^{}",
 					"{C:attention}Played{} poker hands are {C:red}deleted{}",
 					"and their stats are {C:attention}added{} to {C:attention}High Card{}",
-					"increase {C:attention}High Card's{} {C:dark_edition}operator{}",
-					"every {C:attention}#1#{} {C:inactive}[#2#]{} times this occurs"
 				}
 			},
 			j_entr_code_m = {
@@ -735,9 +732,9 @@ local decs = {
 			j_entr_apeirostemma_3 = {
 				name = "Apeirostemma (D3)",
 				text = {
-					"This Joker gains {X:dark_edition,C:white}^^#1#{} Chips",
+					"This Joker gains {X:dark_edition,C:white}^#1#{} Chips",
 					"if exactly {C:attention}3{} cards are played",
-					"{C:inactive}(Currently{} {X:dark_edition,C:white}^^#2#{}{C:inactive}){}"
+					"{C:inactive}(Currently{} {X:dark_edition,C:white}^#2#{}{C:inactive}){}"
 				}
 			},
 			j_entr_apeirostemma_4 = {

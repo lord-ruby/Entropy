@@ -794,7 +794,7 @@ end
 
 function Entropy.CanEeSpawn()
     if MP and MP.LOBBY and MP.LOBBY.code then return false end
-    return true
+    return Cryptid and Talisman
 end
 
 function Entropy.stringsplit(s) 

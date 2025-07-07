@@ -1624,7 +1624,7 @@ function Cryptid.ascend(num, curr2) -- edit this function at your leisure
                 curr = v.ability.extra + 0.4
             end
         end
-        return num * to_big((1.75 + (G.GAME.sunnumber or 0))):tetrate(to_big((curr2) * curr))
+        return num * to_big((1.75 + (G.GAME.sunnumber or 0))) ^ (to_big((curr2) * curr))
     else
         return num * (to_big((1.25 + (G.GAME.sunnumber or 0))) ^ to_big(curr2))
     end

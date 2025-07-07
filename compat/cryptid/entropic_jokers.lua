@@ -152,11 +152,9 @@ local dekatria = {
     eternal_compat = true,
     pos = { x = 0, y = 5 },
     config = {
-        mult=13,
-        immutable = {
-            arrows = -2
-        },
-        pairs_needed = 8,
+        e_mult=1,
+        e_mult_mod = 0.1,
+        pairs_needed = 4,
         pairs_current = 0
     },
     dependencies = {
@@ -171,9 +169,10 @@ local dekatria = {
         if not card.edition or card.edition.key ~= "e_cry_m" then q[#q+1]=G.P_CENTERS.e_cry_m end
         return {
             vars = {
-                Entropy.FormatArrowMult(card.ability.immutable.arrows, card.ability.mult),
+                card.ability.e_mult_mod,
                 card.ability.pairs_needed,
-                card.ability.pairs_current
+                card.ability.pairs_needed-card.ability.pairs_current,
+                card.ability.e_mult
             },
         }
     end,
@@ -192,39 +191,17 @@ local dekatria = {
             if to_big(card.ability.pairs_needed) < to_big(1e-300) then card.ability.pairs_needed = 1e-300 end
             while to_big(card.ability.pairs_current) >= to_big(card.ability.pairs_needed) do
                 card.ability.pairs_current = card.ability.pairs_current - card.ability.pairs_needed
-                card.ability.pairs_needed = card.ability.pairs_needed * 2
-                card.ability.immutable.arrows = card.ability.immutable.arrows + 1
-            end
-            if card.ability.immutable.arrows > 50000 then
-                check_for_unlock({ type = "dekatria_50k" })
+                card.ability.e_mult = card.ability.e_mult + card.ability.e_mult_mod
             end
         end
         if context.joker_main or context.forcetrigger then
-            if to_big(card.ability.immutable.arrows) < to_big(-1) then
+            if to_big(card.ability.e_mult) > to_big(0) then
                 return {
-                    Eqmult_mod=card.ability.mult,
-                }
-            elseif to_big(card.ability.immutable.arrows) < to_big(0) then
-                    return {
-                        mult_mod=card.ability.mult,
-                        message = Entropy.FormatArrowMult(card.ability.immutable.arrows, card.ability.mult) .. ' Mult',
-                        colour = G.C.RED,
-                    }
-            elseif to_big(card.ability.immutable.arrows) < to_big(1) then
-                return {
-                    Xmult_mod=card.ability.mult,
-                    message = Entropy.FormatArrowMult(card.ability.immutable.arrows, card.ability.mult) .. ' Mult',
+                    Emult_mod=card.ability.mult,
+                    message = "^" ..number_format(card.ability.e_mult).. ' Mult',
                     colour = G.C.RED,
                 }
             end
-            return {
-				hypermult_mod = {
-                    card.ability.immutable.arrows,
-                    card.ability.mult
-                },
-				message =   Entropy.FormatArrowMult(card.ability.immutable.arrows, card.ability.mult) .. ' Mult',
-				colour = { 0.8, 0.45, 0.85, 1 },
-			}
         end
     end,
 }
@@ -434,8 +411,8 @@ local AscendantTags = {
     tag_entr_solar="tag_entr_ascendant_solar",
     tag_entr_ascendant_rare="tag_entr_ascendant_epic",
     tag_entr_ascendant_epic="tag_entr_ascendant_legendary",
-    tag_entr_ascendant_legendary="tag_entr_ascendant_exotic",
-    tag_entr_ascendant_exotic="tag_entr_ascendant_entropic",
+    --tag_entr_ascendant_legendary="tag_entr_ascendant_exotic",
+    --tag_entr_ascendant_exotic="tag_entr_ascendant_entropic",
     tag_entr_sunny = "tag_entr_ascendant_sunny",
     tag_entr_freaky = "tag_entr_ascendant_freaky",
     tag_entr_fractured = "tag_entr_ascendant_fractured"
@@ -524,6 +501,7 @@ local akyros = {
     atlas = "exotic_jokers",
     loc_vars = function(self, info_queue, card)
         if G.jokers then
+            --this much money is bad for balancing but idk what to do about it??
             local ratio = 2-(#G.jokers.cards/G.jokers.config.card_limit)
             local amount = {math.max(-1+math.floor(math.log(G.jokers.config.card_limit/10)), -1), card.ability.base*ratio}
             local fac = (1/(amount[1]+1.05)) ^ 3.75
@@ -670,8 +648,8 @@ local ieros = {
         end
         if context.joker_main or context.forcetrigger then
             return {
-				EEchip_mod = card.ability.e_chips,
-				message =  '^^' .. number_format(card.ability.e_chips) .. ' Chips',
+				Echip_mod = card.ability.e_chips,
+				message =  '^' .. number_format(card.ability.e_chips) .. ' Chips',
 				colour = { 0.8, 0.45, 0.85, 1 },
 			}
         end
@@ -754,8 +732,7 @@ local atomikos = {
     calculate = function(self, card, context)
         if context.after then
             local handname = G.FUNCS.get_poker_hand_info(G.play.cards)
-            if handname and ((handname ~= "High Card" and handname ~= "cry_None") or to_big(card.ability.times) <= to_big(1e-300)) and G.GAME.hands[handname] then
-                card.ability.left = card.ability.left - 1
+            if handname and ((handname ~= "High Card" and handname ~= "cry_None")) and G.GAME.hands[handname] then
                 if handname ~= "High Card" and handname ~= "cry_None" then
                     G.E_MANAGER:add_event(Event({
                         func = function()
@@ -764,10 +741,6 @@ local atomikos = {
                             return true
                         end
                     }))
-                end
-                if to_big(card.ability.left) <= to_big(0) or to_big(card.ability.times) <= to_big(1e-300) then
-                    G.GAME.hands["High Card"].operator = (G.GAME.hands["High Card"].operator or 0) + 1
-                    card.ability.left = card.ability.times
                 end
                 G.GAME.hands["High Card"].chips = G.GAME.hands["High Card"].chips + G.GAME.hands[handname].chips
                 G.GAME.hands["High Card"].mult = G.GAME.hands["High Card"].mult + G.GAME.hands[handname].mult
@@ -790,16 +763,12 @@ local atomikos = {
     end,
     add_to_deck = function()
         if not G.GAME.atomikos_deleted then
-            G.GAME.hands["High Card"].operator = -1
+            G.GAME.hands["High Card"].operator = 1
             G.GAME.atomikos_deleted = {}
         end
     end,
-    loc_vars = function(self, q, card)
-        return {
-            vars = {
-                card.ability.times, card.ability.left
-            }
-        }
+    remove_from_deck = function()
+        G.GAME.hands["High Card"].operator = nil
     end
 }
 
@@ -890,7 +859,7 @@ local apeirostemma = {
                     )
                 end
                 return {
-                    ee_chips = card.ability.extra.ee_chips
+                    e_chips = card.ability.extra.ee_chips
                 }
             end
         end

@@ -95,7 +95,7 @@ function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
         end
       return num
           * to_big(
-					(1.75 + ((G.GAME.sunnumber or 0)))):tetrate(
+					(1.75 + ((G.GAME.sunnumber or 0)))) ^ (
 						to_big((curr2) * curr))
   else
 		return num
