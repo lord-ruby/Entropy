@@ -2626,6 +2626,21 @@ local decs = {
 			},
 		},
 		["Rune Tag"] = {
+			rune_entr_kaunan = {
+				name = "Kaunan",
+				text = {
+					"Levels up the",
+					"next {C:attention}played{} hand"
+				}
+			},
+			rune_entr_kaunan_providence = {
+				name = "Kaunan{C:purple}+{}",
+				text = {
+					"Levels up the",
+					"next {C:attention}played{} hand",
+					"{C:purple,E:1}Twice{}"
+				}
+			},
 			rune_entr_gebo = {
 				name = "Gebo",
 				text = {
@@ -2680,6 +2695,23 @@ local decs = {
 			},
 		},
 		Rune = {
+
+			c_entr_kaunan = {
+				name = "Rune of Kaunan",
+				text = {
+					"Level up the",
+					"next {C:attention}played{} hand"
+				}
+			},
+			c_entr_kaunan_providence = {
+				name = "Rune of Kaunan{C:purple}+{}",
+				text = {
+					"Level up the",
+					"next {C:attention}played{} hand",
+					"{C:purple,E:1}Twice{}"
+				}
+			},
+
 			c_entr_gebo = {
 				name = "Rune of Gebo",
 				text = {

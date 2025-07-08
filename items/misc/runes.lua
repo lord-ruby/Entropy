@@ -369,6 +369,31 @@ function Entropy.create_rune(key, pos, indicator_key, order, credits, loc_vars)
     }
 end
 
+local kaunan = Entropy.create_rune("kaunan", {x=5,y=0}, "rune_entr_kaunan", 6006)
+local kaunan_indicator = {
+    object_type = "RuneTag",
+    order = 7006,
+    key = "kaunan",
+    atlas = "rune_atlas",
+    pos = {x=5,y=0},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.before then
+            local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
+            G.FUNCS.get_poker_hand_info(G.play.cards)
+            local amount = G.GAME.providence and 2 or 1
+            level_up_hand(rune, text, nil, amount)
+            return {
+                --remove = true,
+                func = function()
+                    return true
+                end,
+            }
+        end
+    end
+}
+
 local gebo = Entropy.create_rune("gebo", {x=6,y=0}, "rune_entr_gebo", 6007)
 local gebo_indicator = {
     object_type = "RuneTag",
@@ -504,6 +529,7 @@ local jera_indicator = {
 
 return {
     items = {
+        kaunan, kaunan_indicator,
         gebo, gebo_indicator,
         naudiz, naudiz_indicator,
         jera, jera_indicator,
