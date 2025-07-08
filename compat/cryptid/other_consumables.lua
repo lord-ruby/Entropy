@@ -1188,7 +1188,7 @@ return {
         dispel,
         cleanse,
         fusion,
-        substitute.
+        substitute,
         evocation,
         mimic,
         project,
@@ -1201,6 +1201,8 @@ return {
         conduct,
         pulsar,
         beyond,
+        superego,
+        superego_sticker,
 
         --Fraud
         penumbra,
