@@ -195,7 +195,7 @@ function add_rune(_tag)
     G.HUD_runes = G.HUD_runes or {}
     local tag_sprite_ui = _tag:generate_UI()
     G.HUD_runes[#G.HUD_runes+1] = UIBox{
-        definition = {n=G.UIT.ROOT, config={align = "cm", padding = 0.05, colour = G.C.CLEAR}, nodes={
+        definition = {n=G.UIT.ROOT, config={align = "tm", padding = 0.05, colour = G.C.CLEAR}, nodes={
           tag_sprite_ui
         }},
         config = {
@@ -218,6 +218,9 @@ function add_rune(_tag)
 			G.HUD_runes[i].config.offset.y = -0.9 + 0.9 * (13 / #G.HUD_runes)
 		end
 	end
+    if G.P_RUNES[_tag.key] and G.P_RUNES[_tag.key].add_to_deck then
+        G.P_RUNES[_tag.key]:add_to_deck(_tag)
+    end
 end
 
 local tag_removeref = Tag.remove
@@ -251,7 +254,9 @@ function Tag:rune_remove()
         end
         table.remove(G.HUD_runes, HUD_tag_key)
     end
-
+    if G.P_RUNES[self.key] and G.P_RUNES[self.key].remove_from_deck then
+        G.P_RUNES[self.key]:remove_from_deck(self)
+    end
     self.HUD_rune:remove()
 
     if #G.HUD_runes >= 13 then
@@ -400,6 +405,69 @@ local gebo_indicator = {
     end
 }
 
+local naudiz = Entropy.create_rune("naudiz", {x=2,y=1}, "rune_entr_naudiz", 6010)
+local naudiz_indicator = {
+    object_type = "RuneTag",
+    order = 7010,
+    key = "naudiz",
+    atlas = "rune_atlas",
+    pos = {x=2,y=1},
+    atlas = "rune_indicators",
+    calculate = function(self, rune, context)
+        if context.buying_card then
+            return {
+                --remove = true,
+                func = function()
+                    if G.GAME.providence then
+                        G.E_MANAGER:add_event(Event({
+                            func = function()
+                                if to_big(context.card.cost) > to_big(G.GAME.dollars) and to_big(G.GAME.dollars - context.card.cost) <= to_big(0) then
+                                    local diff = math.min(context.card.cost, context.card.cost - G.GAME.dollars)
+                                    G.GAME.dollars = G.GAME.dollars + diff
+                                    if to_big(context.card.cost) > to_big(G.GAME.dollars) and to_big(G.GAME.dollars) > to_big(0) then
+                                        G.GAME.dollars = 0
+                                    end
+                                end
+                                return true
+                            end
+                        }))
+                    end
+                    return true
+                end,
+                rune_break = true
+            }
+        end
+    end,
+}
+
+local can_buy_ref = G.FUNCS.can_buy
+G.FUNCS.can_buy = function(e)
+    can_buy_ref(e)
+    if Entropy.has_rune("rune_entr_naudiz") then
+        e.config.colour = G.C.ORANGE
+        e.config.button = 'buy_from_shop'
+    end
+end
+
+local can_open_ref = G.FUNCS.can_open
+G.FUNCS.can_open = function(e)
+    can_open_ref(e)
+    if Entropy.has_rune("rune_entr_naudiz") then
+        e.config.colour = G.C.GREEN
+        e.config.button = 'use_card'
+    end
+end
+
+local can_redeem_ref = G.FUNCS.can_redeem
+G.FUNCS.can_redeem = function(e)
+    can_redeem_ref(e)
+    if Entropy.has_rune("rune_entr_naudiz") then
+        e.config.colour = G.C.GREEN
+        e.config.button = 'use_card'
+    end
+end
+
+
 local jera = Entropy.create_rune("jera", {x=4,y=1}, "rune_entr_jera", 6012)
 local jera_indicator = {
     object_type = "RuneTag",
@@ -433,6 +501,7 @@ local jera_indicator = {
 return {
     items = {
         gebo, gebo_indicator,
+        naudiz, naudiz_indicator,
         jera, jera_indicator,
     }
 }

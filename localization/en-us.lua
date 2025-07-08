@@ -2630,6 +2630,24 @@ local decs = {
 				}
 			},
 
+			rune_entr_naudiz = {
+				name = "Naudiz",
+				text = {
+					"Next item can",
+					"be bought {C:attention}regardless{}",
+					"of your current money"
+				}
+			},
+			rune_entr_naudiz_providence = {
+				name = "Naudiz{C:purple}+{}",
+				text = {
+					"Next item can",
+					"be bought {C:attention}regardless{}",
+					"of your current money",
+					"{C:purple,E:1}Obtain no debt from this{}"
+				}
+			},
+
 			rune_entr_jera = {
 				name = "Jera",
 				text = {
@@ -2663,6 +2681,25 @@ local decs = {
 					"the same type as the",
 					"next {C:attention}sold{} card",
 					"{C:purple,E:1}(May Overflow){}"
+				}
+			},
+
+			c_entr_naudiz = {
+				name = "Rune of Naudiz",
+				text = {
+					"The next {C:attention}bought{} shop card",
+					"can be bought {C:attention}regardless{} of",
+					"your current money, sending",
+					"you into {C:attention}debt{} if needed"
+				}
+			},
+			c_entr_naudiz_providence = {
+				name = "Rune of Naudiz{C:purple}+{}",
+				text = {
+					"The next {C:attention}bought{} shop card",
+					"can be bought {C:attention}regardless{} of",
+					"your current money",
+					"{C:purple,E:1}without gaining any debt{}"
 				}
 			},
 

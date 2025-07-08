@@ -1438,8 +1438,8 @@ payload = '''
   local runes = {}
   for k, v in ipairs(G.GAME.runes) do
     if (type(v) == "table") and v.is and v:is(Tag) then 
-      local tagSer = v:save()
-      if tagSer then tags[k] = tagSer end
+      local tagSer = v.key
+      if tagSer then runes[k] = tagSer end
     end
   end
 
@@ -1454,5 +1454,17 @@ payload = '''
     BACK = G.GAME.selected_back:save(),
     VERSION = G.VERSION
   }
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'tag.lua'
+pattern = '''
+G.GAME.tag_tally = math.max(self.tally, G.GAME.tag_tally) + 1
+'''
+position = "at"
+payload = '''
+G.GAME.tag_tally = math.max(self.tally or 0, G.GAME.tag_tally or 0) + 1
 '''
 match_indent = true

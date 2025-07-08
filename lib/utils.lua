@@ -1720,3 +1720,9 @@ function Entropy.load_files(files)
     end
     items = nil
 end
+
+function Entropy.has_rune(key)
+    for i, v in pairs(G.GAME.runes or {}) do
+        if v.key == key then return true end
+    end
+end

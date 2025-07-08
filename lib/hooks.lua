@@ -613,7 +613,7 @@ G.FUNCS.can_buy_deckorsleeve = function(e)
 end
 G.FUNCS.can_buy_deckorsleeve_from_shop = function(e)
     local c1 = e.config.ref_table
-    if to_big(G.GAME.dollars+G.GAME.bankrupt_at) > to_big(c1.cost) then
+    if to_big(G.GAME.dollars+G.GAME.bankrupt_at) > to_big(c1.cost) or if Entropy.has_rune("rune_entr_naudiz") then
         e.config.colour = G.C.GREEN
         e.config.button = "buy_deckorsleeve_from_shop"
     else
