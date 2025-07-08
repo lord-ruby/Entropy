@@ -306,6 +306,8 @@ function calculate_runes(context)
             end
         end
     end
+    G.GAME.rune_joker_buffer = 0
+    G.GAME.rune_consumeable_buffer = 0
 end
 
 local context_ref = SMODS.calculate_context
@@ -360,10 +362,47 @@ function Entropy.create_rune(key, pos, indicator_key, order, credits, loc_vars)
     }
 end
 
-local jera = Entropy.create_rune("jera", {x=4,y=1}, "rune_entr_jera", 6000)
+local gebo = Entropy.create_rune("gebo", {x=6,y=0}, "rune_entr_gebo", 6007)
+local gebo_indicator = {
+    object_type = "RuneTag",
+    order = 7007,
+    key = "gebo",
+    atlas = "rune_atlas",
+    pos = {x=6,y=0},
+    atlas = "rune_indicators",
+    calculate = function(self, rune, context)
+        if context.selling_card then
+            local card = context.card
+            local area = card.area
+            G.GAME.rune_joker_buffer = G.GAME.rune_joker_buffer or 0
+            G.GAME.rune_consumeable_buffer = G.GAME.rune_consumeable_buffer or 0
+            local buffer = card.config.center.set == "Joker" and G.GAME.rune_joker_buffer or G.GAME.rune_consumeable_buffer
+            if G.GAME.providence or (#area.cards + buffer <= area.config.card_limit) then
+                if card.config.center.set == "Joker" then
+                    G.GAME.rune_joker_buffer = G.GAME.rune_joker_buffer + 1
+                else    
+                    G.GAME.rune_consumeable_buffer = G.GAME.rune_consumeable_buffer + 1
+                end
+                return {
+                    --remove = true,
+                    func = function()
+                        SMODS.add_card{
+                            set = card.config.center.set,
+                            area = area,
+                            key_append = "entr_gebo_card"
+                        }
+                        return true
+                    end,
+                }
+            end
+        end
+    end
+}
+
+local jera = Entropy.create_rune("jera", {x=4,y=1}, "rune_entr_jera", 6012)
 local jera_indicator = {
     object_type = "RuneTag",
-    order = 12,
+    order = 7012,
     key = "jera",
     atlas = "rune_atlas",
     pos = {x=4,y=1},
@@ -392,6 +431,7 @@ local jera_indicator = {
 
 return {
     items = {
-        jera, jera_indicator
+        gebo, gebo_indicator,
+        jera, jera_indicator,
     }
 }

@@ -2611,6 +2611,25 @@ local decs = {
 			},
 		},
 		["Rune Tag"] = {
+			rune_entr_gebo = {
+				name = "Gebo",
+				text = {
+					"Creates a card of",
+					"the same type as the",
+					"next {C:attention}sold{} card",
+					"{C:inactive}(Must have room){}"
+				}
+			},
+			rune_entr_gebo_providence = {
+				name = "Gebo{C:purple}+{}",
+				text = {
+					"Creates a card of",
+					"the same type as the",
+					"next {C:attention}sold{} card",
+					"{C:purple,E:1}(May Overflow){}"
+				}
+			},
+
 			rune_entr_jera = {
 				name = "Jera",
 				text = {
@@ -2625,9 +2644,28 @@ local decs = {
 					"{C:attention}used{} Consumable",
 					"{C:purple,E:1}Twice{}"
 				}
-			}
+			},
 		},
 		Rune = {
+			c_entr_gebo = {
+				name = "Rune of Gebo",
+				text = {
+					"Creates a card of",
+					"the same type as the",
+					"next {C:attention}sold{} card",
+					"{C:inactive}(Must have room){}"
+				}
+			},
+			c_entr_gebo_providence = {
+				name = "Rune of Gebo{C:purple}+{}",
+				text = {
+					"Creates a card of",
+					"the same type as the",
+					"next {C:attention}sold{} card",
+					"{C:purple,E:1}(May Overflow){}"
+				}
+			},
+
 			c_entr_jera = {
 				name = "Rune of Jera",
 				text = {
@@ -2643,7 +2681,7 @@ local decs = {
 					"the next {C:attention}used{}",
 					"Consumable"
 				}
-			}
+			},
 		},
 		Other = {
 			echo_tooltip = {
