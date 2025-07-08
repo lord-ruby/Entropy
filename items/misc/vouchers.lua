@@ -42,37 +42,52 @@ local trump_card = {
     end
 }
 
-local supersede = {
+local diviner = {
     dependencies = {
         items = {
           "set_entr_vouchers",
-          "set_entr_inversions",
-          "set_cry_tier3"
+          "set_entr_runes",
         }
     },
 	object_type = "Voucher",
-    order = -2000+2,
-    key = "supersede",
+    order = -2000+3,
+    key = "diviner",
     atlas = "vouchers",
-    pos = {x=2, y=0},
-    requires = {"v_entr_trump_card"},
+    pos = {x=0, y=1},
     redeem = function(self, card)
-        G.GAME.Supersede = true
+        G.GAME.entr_diviner = true
     end,
     unredeem = function(self, card) 
-        G.GAME.Supersede = nil
+        G.GAME.entr_diviner = nil
     end,
-    loc_vars = function(self, info_queue, card)
+}
+
+local providence = {
+    dependencies = {
+        items = {
+          "set_entr_vouchers",
+          "set_entr_runes",
+        }
+    },
+	object_type = "Voucher",
+    order = -2000+4,
+    key = "providence",
+    atlas = "vouchers",
+    pos = {x=1, y=1},
+    requires = {"v_entr_marked"},
+    redeem = function(self, card)
+        G.GAME.providence = true
     end,
-    entr_credits = {
-        art = {"Grahkon"}
-    }
+    unredeem = function(self, card) 
+        G.GAME.providence = nil
+    end
 }
 
 return {
     items = {
         marked,
         trump_card,
-        supersede,
+        diviner,
+        providence
     }
 }

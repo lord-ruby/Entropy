@@ -106,6 +106,13 @@ local decs = {
 					"progression during runs",
 				},
 			},
+			set_entr_runes = {
+				name = "Runes",
+				text = {
+					"A new {C:attention}Consumable Type{}",
+					"added by Entropy",
+				},
+			},
 		},
 		Joker = {
 			j_cry_redeo = {
@@ -1464,10 +1471,18 @@ local decs = {
 					"any other Booster Pack in the shop"
 				},
 			},
-			v_entr_alt_path = {
-				name = "Other-Side",
+
+			v_entr_diviner = {
+				name = "Diviner",
 				text = {
-					"Change the Ante 1 Boss to ???"
+					"The chance for {C:purple}Runes{} to",
+					"show up in Booster Packs is increased"
+				},
+			},
+			v_entr_providence = {
+				name = "Providence",
+				text = {
+					"Runes have {C:purple,E:1}Enhanced{} effects",
 				},
 			},
 		},

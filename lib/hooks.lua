@@ -613,7 +613,7 @@ G.FUNCS.can_buy_deckorsleeve = function(e)
 end
 G.FUNCS.can_buy_deckorsleeve_from_shop = function(e)
     local c1 = e.config.ref_table
-    if to_big(G.GAME.dollars+G.GAME.bankrupt_at) > to_big(c1.cost) or if Entropy.has_rune("rune_entr_naudiz") then
+    if to_big(G.GAME.dollars+G.GAME.bankrupt_at) > to_big(c1.cost) or Entropy.has_rune("rune_entr_naudiz") then
         e.config.colour = G.C.GREEN
         e.config.button = "buy_deckorsleeve_from_shop"
     else
@@ -3375,3 +3375,74 @@ if not SMODS.get_probability_vars then
         return pseudorandom(seed) < n * G.GAME.probabilities.normal / d
     end
 end
+
+SMODS.Booster:take_ownership_by_kind('Arcana', {
+	create_card = function(self, card, i)
+        local rune
+        local rare_rune
+        if pseudorandom("entr_generate_rune") < 0.12 then rune = true end
+		if G.GAME.entr_diviner then
+            if pseudorandom("entr_generate_rune") < 0.07 then rune = true end
+        end
+        if pseudorandom("entr_rare_rune") < 0.03 then
+            rare_rune = true
+            rune = true
+        end
+        if rare_rune then
+            --generate Rune of Oss
+        end
+        if rune then
+            return create_card("Rune", G.pack_cards, nil, nil, true, true, nil, "spe")
+        end
+        local _card
+        if G.GAME.used_vouchers.v_omen_globe and pseudorandom('omen_globe') > 0.8 then
+            _card = {set = "Spectral", area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "ar2"}
+        else
+            _card = {set = "Tarot", area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "ar1"}
+        end
+        return _card
+	end
+},true)
+
+
+SMODS.Booster:take_ownership_by_kind('Celestial', {
+	create_card = function(self, card, i)
+        local rune
+        local rare_rune
+        if pseudorandom("entr_generate_rune") < 0.12 then rune = true end
+		if G.GAME.entr_diviner then
+            if pseudorandom("entr_generate_rune") < 0.07 then rune = true end
+        end
+        if pseudorandom("entr_rare_rune") < 0.03 then
+            rare_rune = true
+            rune = true
+        end
+        if rare_rune then
+            --generate Rune of Oss
+        end
+        if rune then
+            return create_card("Rune", G.pack_cards, nil, nil, true, true, nil, "spe")
+        end
+        local _card
+        if G.GAME.used_vouchers.v_telescope and i == 1 then
+            local _planet, _hand, _tally = nil, nil, 0
+            for k, v in ipairs(G.handlist) do
+                if SMODS.is_poker_hand_visible(v) and G.GAME.hands[v].played > _tally then
+                    _hand = v
+                    _tally = G.GAME.hands[v].played
+                end
+            end
+            if _hand then
+                for k, v in pairs(G.P_CENTER_POOLS.Planet) do
+                    if v.config.hand_type == _hand then
+                        _planet = v.key
+                    end
+                end
+            end
+            _card = {set = "Planet", area = G.pack_cards, skip_materialize = true, soulable = true, key = _planet, key_append = "pl1"}
+        else
+            _card = {set = "Planet", area = G.pack_cards, skip_materialize = true, soulable = true, key_append = "pl1"}
+        end
+        return _card
+	end
+},true)

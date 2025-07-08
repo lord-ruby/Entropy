@@ -73,3 +73,11 @@ SMODS.ContentSet({
 	cry_order = 7,
 	cry_blind = true,
 })
+
+SMODS.ContentSet({
+	key = "runes",
+	atlas = "rune_atlas",
+	pos = { x = 4, y = 1 }, --jera
+	cry_order = 8,
+	cry_blind = true,
+})

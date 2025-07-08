@@ -76,25 +76,3 @@ function loc_colour(_c, default)
 
     return loc_colour_ref(_c, default)
 end
-
-function add_rune(_tag)
-    G.HUD_runes = G.HUD_runes or {}
-    local tag_sprite_ui = _tag:generate_UI(1)
-    G.HUD_runes[#G.HUD_runes+1] = UIBox{
-        definition = {n=G.UIT.ROOT, config={align = "cm",padding = 0.05, colour = G.C.CLEAR}, nodes={
-          tag_sprite_ui
-        }},
-        config = {
-          align = G.HUD_runes[1] and 'tm' or 'bri',
-          offset = G.HUD_runes[1] and {x=0,y=0} or {x=0.7,y=0},
-          major = G.HUD_runes[1] and G.HUD_runes[#G.HUD_runes] or G.ROOM_ATTACH}
-    }
-    discover_card(G.P_RUNES[_tag.key])
-  
-    for i = 1, #G.GAME.runes do
-      G.GAME.runes[i]:apply_to_run({type = 'tag_add', tag = _tag})
-    end
-    
-    G.GAME.runes[#G.GAME.runes+1] = _tag
-    _tag.HUD_tag = G.HUD_runes[#G.HUD_runes]
-end

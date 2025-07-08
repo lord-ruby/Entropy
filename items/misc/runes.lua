@@ -332,6 +332,7 @@ function Entropy.create_rune(key, pos, indicator_key, order, credits, loc_vars)
         entr_credits = credits,
         order = order,
         key = key,
+        dependencies = {items = {"set_entr_runes"}},
         use = function()
             G.E_MANAGER:add_event(Event({
                 trigger = "after",
@@ -376,6 +377,7 @@ local gebo_indicator = {
     atlas = "rune_atlas",
     pos = {x=6,y=0},
     atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
         if context.selling_card then
             local card = context.card
@@ -413,6 +415,7 @@ local naudiz_indicator = {
     atlas = "rune_atlas",
     pos = {x=2,y=1},
     atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
         if context.buying_card then
             return {
@@ -476,6 +479,7 @@ local jera_indicator = {
     atlas = "rune_atlas",
     pos = {x=4,y=1},
     atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
         if context.using_consumeable then
             if not context.consumeable.config.center.hidden and context.consumeable.config.center.key ~= "c_entr_jera" then

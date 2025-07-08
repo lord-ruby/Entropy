@@ -186,9 +186,37 @@ local containment = {
     }
     end
 
+    local supersede = {
+        dependencies = {
+            items = {
+              "set_entr_vouchers",
+              "set_entr_inversions",
+              "set_cry_tier3"
+            }
+        },
+        object_type = "Voucher",
+        order = -2000+2,
+        key = "supersede",
+        atlas = "vouchers",
+        pos = {x=2, y=0},
+        requires = {"v_entr_trump_card"},
+        redeem = function(self, card)
+            G.GAME.Supersede = true
+        end,
+        unredeem = function(self, card) 
+            G.GAME.Supersede = nil
+        end,
+        loc_vars = function(self, info_queue, card)
+        end,
+        entr_credits = {
+            art = {"Grahkon"}
+        }
+    }
+
   return {
     items = {
-        containment
+        containment,
+        supersede
     }
   }
 end
