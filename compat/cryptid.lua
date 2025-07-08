@@ -21,7 +21,7 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
         "compat/cryptid/misc_jokers",
         "compat/cryptid/gameset"
     }
-    Entropy.load_files(files)
+    local items = Entropy.collect_files(files)
 
     Cryptid.edeck_sprites.seal.entr_cerulean = {atlas="entr_crypt_deck", pos = {x=0,y=0}}
     Cryptid.edeck_sprites.seal.entr_sapphire = {atlas="entr_crypt_deck", pos = {x=1,y=0}}
@@ -212,11 +212,9 @@ local containment = {
             art = {"Grahkon"}
         }
     }
-
+    items[#items+1]=containment
+    items[#items+1]=supersede
   return {
-    items = {
-        containment,
-        supersede
-    }
+    items = items
   }
 end
