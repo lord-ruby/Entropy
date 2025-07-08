@@ -276,6 +276,7 @@ function calculate_runes(context)
         func = true,
         nope = true
     }
+    if not G.GAME.runes then G.GAME.runes = {} end
     for i, v in pairs(G.GAME.runes) do
         if G.P_RUNES[v.key].calculate then
             local ret = G.P_RUNES[v.key]:calculate(v, context)
