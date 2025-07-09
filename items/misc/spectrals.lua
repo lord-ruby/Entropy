@@ -166,7 +166,12 @@ function Cryptid.reload_localization()
             v.children.center:set_sprite_pos({x=4,y=Cryptid_config.family_mode and 8 or 7})
         end
     end
-    return ref()
+    if ref then
+        return ref()
+    else
+        Entropy.config.family_mode = Cryptid_config.family_mode
+        return init_localization()
+    end
 end
 
 

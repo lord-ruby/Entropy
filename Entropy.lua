@@ -69,3 +69,7 @@ Cryptid.mod_gameset_whitelist["entr"] = true
 Cryptid.mod_gameset_whitelist["Entropy"] = true
 
 Entropy.UpdateDailySeed()
+
+if Entropy.config.family_mode then
+    Cryptid_config.family_mode = true
+end

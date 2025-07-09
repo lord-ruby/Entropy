@@ -197,20 +197,49 @@ payload = 'Cryptid.profile_prefix = Cryptid.profile_prefix == "M" and "E" or Cry
 match_indent = true
 
 
+
 [[patches]]
 [patches.pattern]
 target = "functions/UI_definitions.lua"
-pattern = "          G.GAME.stake > 1 and {"
+pattern = "return create_UIBox_generic_options({contents ={create_tabs("
 position = "before"
 payload = '''
-        {
-          label = G.GAME.DefineKeys and localize('b_definitions'),
-          tab_definition_function = G.GAME.DefineKeys and G.UIDEF.define_keys or nil,
-        },
-        {
-          label = G.GAME.entr_bought_decks and #G.GAME.entr_bought_decks > 0 and localize('b_decks') or nil, 
-          tab_definition_function = G.GAME.entr_bought_decks and #G.GAME.entr_bought_decks > 0 and G.UIDEF.bought_decks or nil,
-        },'''
+  local tabs = {
+
+  }
+
+  local def = G.GAME.DefineKeys and {
+          label = localize('b_definitions'),
+          tab_definition_function = G.UIDEF.define_keys,
+        } or nil
+  local decks = G.GAME.entr_bought_decks and #G.GAME.entr_bought_decks > 0 and {
+          label = localize('b_decks'), 
+          tab_definition_function = G.UIDEF.bought_decks,
+        } or nil
+  local stake = G.GAME.stake > 1 and {
+          label = localize('b_stake'),
+          tab_definition_function = G.UIDEF.current_stake,
+        } or nil
+  if def then tabs[#tabs+1] = def end
+  if decks then tabs[#tabs+1] = decks end
+  if stake then tabs[#tabs+1] = stake end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+        G.GAME.stake > 1 and {
+          label = localize('b_stake'),
+          tab_definition_function = G.UIDEF.current_stake,
+        } or nil,
+'''
+position = "at"
+payload = '''
+        tabs[1],
+        tabs[2],
+        tabs[3],'''
 match_indent = true
 
 [[patches]]
@@ -729,7 +758,7 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
-target = "main.lua"
+target = "main.lua"        
 pattern = '''
         local amounts = {
           to_big(300),  to_big(1000), to_big(3200),  to_big(9000),  to_big(25000),  to_big(60000),  to_big(110000),  to_big(200000)
@@ -863,7 +892,7 @@ if not G.GAME.badarg or (G.GAME.badarg and not G.GAME.badarg[text]) then
     update_hand_text({sound = G.GAME.current_round.current_hand.handname ~= disp_text and 'button' or nil, volume = 0.4, immediate = true, nopulse = nil,
                 delay = G.GAME.current_round.current_hand.handname ~= disp_text and 0.4 or 0}, {handname=disp_text, level=G.GAME.hands[text].level, mult = G.GAME.hands[text].mult, chips = G.GAME.hands[text].chips})
 end
-'''
+'''        
 position = "at"
 match_indent = true
 

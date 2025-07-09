@@ -3346,6 +3346,8 @@ local decs = {
 			k_rune = "Rune",
 			k_rune_pack = "Rune Pack",
 			b_rune_cards = "Runes",
+
+			cry_set_music = "Music"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

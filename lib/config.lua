@@ -48,22 +48,24 @@ local entrConfigTab = function()
 		ref_value = "family_mode",
 		callback = Cryptid.reload_localization,
 	})
-	entr_nodes[#entr_nodes + 1] = create_toggle({
-		label = localize("k_entr_faster_ante_scaling"),
-		active_colour = HEX("40c76d"),
-		ref_table = Entropy.config,
-		ref_value = "ante_scaling",
-		callback = function()
-        end,
-	})
-	entr_nodes[#entr_nodes + 1] = create_toggle({
-		label = localize("k_entr_glitched"),
-		active_colour = HEX("40c76d"),
-		ref_table = Entropy.config,
-		ref_value = "override_glitched",
-		callback = function()
-        end,
-	})
+	if SMODS.Mods["Cryptid"] and SMODS.Mods["Cryptid"].can_load then
+		entr_nodes[#entr_nodes + 1] = create_toggle({
+			label = localize("k_entr_faster_ante_scaling"),
+			active_colour = HEX("40c76d"),
+			ref_table = Entropy.config,
+			ref_value = "ante_scaling",
+			callback = function()
+			end,
+		})
+		entr_nodes[#entr_nodes + 1] = create_toggle({
+			label = localize("k_entr_glitched"),
+			active_colour = HEX("40c76d"),
+			ref_table = Entropy.config,
+			ref_value = "override_glitched",
+			callback = function()
+			end,
+		})
+	end
 	entr_nodes[#entr_nodes + 1] = create_toggle({
 		label = localize("k_entr_omega_aleph"),
 		active_colour = HEX("40c76d"),

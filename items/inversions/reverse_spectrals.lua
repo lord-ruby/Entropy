@@ -58,7 +58,7 @@ local rend = {
             "set_entr_inversions"
         }
     },
-    config = { select = 3 },
+    config = { select = 4 },
     atlas = "consumables",
     set = "Omen",
     
