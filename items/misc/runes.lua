@@ -15,7 +15,7 @@ SMODS.RuneTag = SMODS.Tag:extend{
             G.P_CENTER_POOLS[self.set] = {}
         end
         G.P_RUNES[self.key] = self
-        G.P_TAGS[self.key] = self
+        G.P_TAGS[self.key] = self -- ew
         SMODS.insert_pool(G.P_CENTER_POOLS[self.set], self)
 	end,
     in_pool = function()
@@ -29,6 +29,8 @@ SMODS.RuneTag = SMODS.Tag:extend{
     no_tags = true
 }
 
+-- all the ui shit is basically just copy pasted
+-- thank god for gpl 3.0 on smods
 SMODS.current_mod.custom_collection_tabs = function()
     local tally = 0
     for _, v in pairs(G.P_CENTER_POOLS["Rune Tag"]) do
@@ -174,6 +176,10 @@ G.FUNCS.your_collection_rune_tags_page = function(args)
     }
 end
 
+
+-- i have to fucking add them to tags too
+-- to prevent crashes so my weird workaround
+-- for the collection is to just lie
 local ref = SMODS.collection_pool
 function SMODS.collection_pool(_base_pool, include, ...)
     local pool = {}
