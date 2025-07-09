@@ -2516,7 +2516,7 @@ end
 local ref = update_hand_text
 
 function update_hand_text(config, vals)
-    if type(vals.mult) == "number" or type(vals.mult) == "table" and Entropy.HasJoker("j_entr_tesseract",true) and math.abs(to_big(vals.mult)) > to_big(0.001) then
+    if (type(vals.mult) == "number" or type(vals.mult) == "table") and Entropy.HasJoker("j_entr_tesseract",true) and math.abs(to_big(vals.mult)) > to_big(0.001) then
         local total_angle = 0
         for i, v in pairs(G.jokers.cards) do
             if v.config.center.key == "j_entr_tesseract" then
@@ -2528,7 +2528,7 @@ function update_hand_text(config, vals)
         local str = Entropy.WhatTheFuck(base, vals.mult)
         vals.mult = str
     end
-    if type(vals.chips) == "number" or type(vals.chips) == "table" and Entropy.HasJoker("j_entr_tesseract",true) and math.abs(to_big(vals.chips)) > to_big(0.001) then
+    if (type(vals.chips) == "number" or type(vals.chips) == "table") and Entropy.HasJoker("j_entr_tesseract",true) and math.abs(to_big(vals.chips)) > to_big(0.001) then
         local total_angle = 0
         for i, v in pairs(G.jokers.cards) do
             if v.config.center.key == "j_entr_tesseract" then

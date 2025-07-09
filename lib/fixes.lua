@@ -165,11 +165,11 @@ function UIElement:update_text()
   end
 end
 
-
 G.FUNCS.hand_chip_UI_set = function(e)
+  local old_chip_text = G.GAME.current_round.current_hand.chips
   local new_chip_text = number_format(G.GAME.current_round.current_hand.chips)
     if new_chip_text ~= G.GAME.current_round.current_hand.chip_text then 
-      G.GAME.current_round.current_hand.chip_text = new_chip_text
+      G.GAME.current_round.current_hand.chip_text = G.GAME.current_round.current_hand.chips
       e.config.object.scale = scale_number(G.GAME.current_round.current_hand.chips, 0.9, 1000)
       if string.len(new_chip_text) > 6 then
           e.config.object.scale = 0.9 / (string.len(new_chip_text)/6)
@@ -184,7 +184,7 @@ end
 G.FUNCS.hand_mult_UI_set = function(e)
   local new_mult_text = number_format(G.GAME.current_round.current_hand.mult)
   if new_mult_text ~= G.GAME.current_round.current_hand.mult_text then 
-    G.GAME.current_round.current_hand.mult_text = new_mult_text
+    G.GAME.current_round.current_hand.mult_text = G.GAME.current_round.current_hand.mult
     e.config.object.scale = scale_number(G.GAME.current_round.current_hand.mult, 0.9, 1000)
     if string.len(new_mult_text) > 6 then
       e.config.object.scale = 0.9 / (string.len(new_mult_text)/6)
