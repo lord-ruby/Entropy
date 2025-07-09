@@ -1126,12 +1126,12 @@ function Entropy.LevelSuit(suit, card, amt, chips_override)
     { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
     { handname = localize(suit,'suits_plural'), chips = number_format(G.GAME.SuitBuffs[suit].chips), mult = "...", level = G.GAME.SuitBuffs[suit].level }
     )
-    G.GAME.SuitBuffs[suit].chips = G.GAME.SuitBuffs[suit].chips + (10 or chips_override)*amt
+    G.GAME.SuitBuffs[suit].chips = G.GAME.SuitBuffs[suit].chips + (chips_override or 10)*amt
     G.GAME.SuitBuffs[suit].level = G.GAME.SuitBuffs[suit].level + amt
     for i, v in ipairs(G.I.CARD) do
         if v.base and v.base.suit == suit then
-            v.ability.bonus = (v.ability.bonus or 0) + amt
-            v.ability.bonus_from_suit = (v.ability.bonus_from_suit or 0) + amt
+            v.ability.bonus = (v.ability.bonus or 0) + (chips_override or 10)*amt
+            v.ability.bonus_from_suit = (v.ability.bonus_from_suit or 0) + (chips_override or 10)*amt
         end
     end
     G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
