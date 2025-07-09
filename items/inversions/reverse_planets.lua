@@ -166,15 +166,15 @@ function Entropy.ChunkLocVars(self, q, card, instant, noengulf)
       colours = {
         (
           to_big(G.GAME.hands[card.ability.handnames[1]].level) == to_big(1) and G.C.UI.TEXT_DARK
-          or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands[card.ability.handnames[1]].level)):to_number()]
+          or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands[card.ability.handnames[1]].level))]
         ),
         (
           to_big(G.GAME.hands[card.ability.handnames[2]].level) == to_big(1) and G.C.UI.TEXT_DARK
-          or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands[card.ability.handnames[2]].level)):to_number()]
+          or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands[card.ability.handnames[2]].level))]
         ),
         (
           to_big(G.GAME.hands[card.ability.handnames[3]].level) == to_big(1) and G.C.UI.TEXT_DARK
-          or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands[card.ability.handnames[3]].level)):to_number()]
+          or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands[card.ability.handnames[3]].level))]
         ),
       },
     },
