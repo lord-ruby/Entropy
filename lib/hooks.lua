@@ -428,7 +428,6 @@ end
 
 local is_suitref = Card.is_suit
 function Card:is_suit(suit, bypass_debuff, flush_calc)
-    --unified usually never shows up, support for life and other mods
     if self.base.suit == "entr_nilsuit" then
         return false
     else
@@ -1632,6 +1631,7 @@ end
 
 local pokerhandinforef = G.FUNCS.get_poker_hand_info
 function G.FUNCS.get_poker_hand_info(_cards)
+    G.GAME.current_round.current_hand.cry_asc_num = 0
     if Entropy.HasJoker("j_entr_helios", true) or (Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled) then G.GAME.used_vouchers.v_cry_hyperspacetether = true end
     local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
     if text and G.GAME.badarg and G.GAME.badarg[text] and text ~= "NULL" then
@@ -1677,7 +1677,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 end
 
 SMODS.Consumable:take_ownership('cry_sunplanet', -- object key (class prefix not required)
-    { -- table of properties to change from the existing object
+    {
         loc_vars = function(self, q, card)
             local levelone = (G.GAME.sunlevel and G.GAME.sunlevel or 0) + 1
             local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
@@ -1694,7 +1694,7 @@ SMODS.Consumable:take_ownership('cry_sunplanet', -- object key (class prefix not
             }
         end
     },
-    true -- silent | suppresses mod badge
+    true
 )
 
 local ease_anteref = ease_ante
@@ -2494,6 +2494,10 @@ function G.FUNCS.get_poker_hand_info(_cards)
     --     G.GAME.current_round.current_hand.entr_trans_num_text = "Transcendant "
     --     G.GAME.TRANSCENDENT = true
     -- end
+    if to_big(G.GAME.current_round.current_hand.cry_asc_num) <= to_big(0) then
+		ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
+		ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
+    end
 	if to_big(G.GAME.current_round.current_hand.cry_asc_num) ~= to_big(0) then
         if to_big(G.GAME.current_round.current_hand.cry_asc_num) > to_big(0) then
             G.GAME.current_round.current_hand.cry_asc_num_text = " (+"..G.GAME.current_round.current_hand.cry_asc_num..")"
@@ -2854,7 +2858,6 @@ if Entropy.config.omega_aleph then
         keyef(self, key, dt)
     end
 end
---SMODS.add_card{key="j_joker", area=G.hand}
 local add_ref = CardArea.emplace
 function CardArea:emplace(card, location, stay_flipped)
     if card and not card.set_card_area then
@@ -3302,6 +3305,18 @@ local play_ref = G.FUNCS.evaluate_play
 G.FUNCS.evaluate_play = function(e)
     play_ref(e)
     G.GAME.overload = nil
+    G.E_MANAGER:add_event(Event{
+        trigger = "after",
+        func = function()
+            if G.C.UI_CHIPS[1] == G.C.GOLD[1] then
+                ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
+                ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
+            end
+            G.GAME.current_round.current_hand.cry_asc_num = 0
+            G.GAME.current_round.current_hand.cry_asc_num_text = ""
+            return true
+        end
+    })
 end
 
 function Entropy.GetDummy(center, area, self)

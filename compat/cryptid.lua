@@ -217,4 +217,19 @@ local containment = {
   return {
     items = items
   }
+else
+    G.FUNCS.cry_asc_UI_set = function(e)
+        e.config.object.colours = { G.C.GOLD }
+        e.config.object:update_text()
+    end    
+    -- Needed because get_poker_hand_info isnt called at the end of the road
+    local evaluateroundref = G.FUNCS.evaluate_round
+    function G.FUNCS.evaluate_round()
+        evaluateroundref()
+        -- This is just the easiest way to check if its gold because lua is annoying
+        if G.C.UI_CHIPS[1] == G.C.GOLD[1] then
+            ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
+            ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
+        end
+    end
 end
