@@ -336,7 +336,7 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
     odds = 5
   },
   loc_vars = function(self,q,card) 
-    local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
+    local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.odds)
     return {
       vars = {
         numerator,
