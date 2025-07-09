@@ -13,5 +13,9 @@ Entropy currently adds:
 ## Wheres all the Other Content?
 Due to me wanting to depart from this mod as a Cryptid addon but not wanting the content to go to waste a lot of existing content has been moved into CrossMod territory, where it will only show up if you have Cryptid enabled. This includes entropic Jokers which are based on Exotics
 
+## What about Ascension Power
+Ascension Power will stay around even without Cryptid enabled due to how much Entropy content relies on it
+I could rename ascension power to further seperate it from Cryptid however I think this is unnecessary as the mechanics will remain the same
+
 ## Contact
 For enquiries please join the [Entropy Discord](https://discord.gg/beqqy4Bb7m)
