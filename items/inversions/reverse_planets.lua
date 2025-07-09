@@ -135,15 +135,15 @@ function Entropy.ReverseSuitLocVars(self, q, card, instant, noengulf)
       colours = {
         (
           to_big(G.GAME.hands[card.ability.handnames[1]].level) == to_big(1) and G.C.UI.TEXT_DARK
-          or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands[card.ability.handnames[1]].level)):to_number()]
+          or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands[card.ability.handnames[1]].level))]
         ),
         (
           to_big(G.GAME.hands[card.ability.handnames[2]].level) == to_big(1) and G.C.UI.TEXT_DARK
-          or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands[card.ability.handnames[2]].level)):to_number()]
+          or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands[card.ability.handnames[2]].level))]
         ),
         (
           to_big(G.GAME.hands[card.ability.handnames[3]].level) == to_big(1) and G.C.UI.TEXT_DARK
-          or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands[card.ability.handnames[3]].level)):to_number()]
+          or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands[card.ability.handnames[3]].level))]
         ),
       },
     },
@@ -280,7 +280,7 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
                 localize(card.ability.handname,'poker_hands'),
                 card.ability.level,
                 colours = {
-                  to_big(G.GAME.hands[card.ability.handname].level) < to_big(2) and G.C.BLACK or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.hands[card.ability.handname].level)):to_number()]
+                  to_big(G.GAME.hands[card.ability.handname].level) < to_big(2) and G.C.BLACK or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands[card.ability.handname].level))]
                 }
               }
             }

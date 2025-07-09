@@ -973,10 +973,10 @@ local ocean = {
     pos = {x=7,y=1},
     inversion = "c_star",
     use = function(self, card2)
-        Entropy.LevelSuit("Diamonds", card2, card2.ability.per_level)
+        Entropy.LevelSuit("Diamonds", card2, 1, card2.ability.per_level)
     end,
     bulk_use = function(self, card2, _, _, amount)
-        Entropy.LevelSuit("Diamonds", card2, card2.ability.per_level*amount)
+        Entropy.LevelSuit("Diamonds", card2, amount, card2.ability.per_level)
     end,
     can_use = function(self, card)
         return true
@@ -991,7 +991,7 @@ local ocean = {
                 localize("Diamonds",'suits_plural'),
                 card.ability.per_level,
                 colours = {
-                    to_big(G.GAME.SuitBuffs["Diamonds"].level or 1) < to_big(2) and G.C.BLACK or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.SuitBuffs["Diamonds"].level or 1)):to_number()]
+                    to_big(G.GAME.SuitBuffs["Diamonds"].level or 1) < to_big(2) and G.C.BLACK or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.SuitBuffs["Diamonds"].level or 1))]
                 }
             }
         }
@@ -1022,10 +1022,10 @@ local forest = {
     pos = {x=8,y=1},
     inversion = "c_moon",
     use = function(self, card2)
-        Entropy.LevelSuit("Clubs", card2, card2.ability.per_level)
+        Entropy.LevelSuit("Clubs", card2, 1, card2.ability.per_level)
     end,
     bulk_use = function(self, card2, _, _, amount)
-        Entropy.LevelSuit("Clubs", card2, card2.ability.per_level*amount)
+        Entropy.LevelSuit("Clubs", card2, amount, card2.ability.per_level)
     end,
     can_use = function(self, card)
         return true
@@ -1040,7 +1040,7 @@ local forest = {
                 localize("Clubs",'suits_plural'),
                 card.ability.per_level,
                 colours = {
-                    to_big(G.GAME.SuitBuffs["Clubs"].level or 1) < to_big(2) and G.C.BLACK or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.SuitBuffs["Clubs"].level or 1)):to_number()]
+                    to_big(G.GAME.SuitBuffs["Clubs"].level or 1) < to_big(2) and G.C.BLACK or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.SuitBuffs["Clubs"].level or 1))]
                 }
             }
         }
@@ -1071,10 +1071,10 @@ local mountain = {
     pos = {x=9,y=1},
     inversion = "c_sun",
     use = function(self, card2)
-        Entropy.LevelSuit("Hearts", card2, card2.ability.per_level)
+        Entropy.LevelSuit("Hearts", card2, 1, card2.ability.per_level)
     end,
     bulk_use = function(self, card2, _, _, amount)
-        Entropy.LevelSuit("Hearts", card2, card2.ability.per_level*amount)
+        Entropy.LevelSuit("Hearts", card2, amount, card2.ability.per_level)
     end,
     can_use = function(self, card)
         return true
@@ -1089,7 +1089,7 @@ local mountain = {
                 localize("Hearts",'suits_plural'),
                 card.ability.per_level,
                 colours = {
-                    to_big(G.GAME.SuitBuffs["Hearts"].level or 1) < to_big(2) and G.C.BLACK or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.SuitBuffs["Hearts"].level or 1)):to_number()]
+                    to_big(G.GAME.SuitBuffs["Hearts"].level or 1) < to_big(2) and G.C.BLACK or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.SuitBuffs["Hearts"].level or 1))]
                 }
             }
         }
@@ -1163,10 +1163,10 @@ local tent = {
     pos = {x=1,y=2},
     inversion = "c_world",
     use = function(self, card2)
-        Entropy.LevelSuit("Spades", card2, card2.ability.per_level)
+        Entropy.LevelSuit("Spades", card2, 1, card2.ability.per_level)
     end,
     bulk_use = function(self, card2, _, _, amount)
-        Entropy.LevelSuit("Spades", card2, card2.ability.per_level*amount)
+        Entropy.LevelSuit("Spades", card2, amount, card2.ability.per_level)
     end,
     can_use = function(self, card)
         return true
@@ -1181,7 +1181,7 @@ local tent = {
                 localize("Spades",'suits_plural'),
                 card.ability.per_level,
                 colours = {
-                  to_big(G.GAME.SuitBuffs["Spades"].level or 1) < to_big(2) and G.C.BLACK or G.C.HAND_LEVELS[to_big(math.min(7, G.GAME.SuitBuffs["Spades"].level or 1)):to_number()]
+                  to_big(G.GAME.SuitBuffs["Spades"].level or 1) < to_big(2) and G.C.BLACK or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.SuitBuffs["Spades"].level or 1))]
                 }
             }
         }
