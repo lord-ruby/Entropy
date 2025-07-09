@@ -2643,6 +2643,12 @@ local card_open = Card.open
 function Card:open(...)
     card_open(self, ...)
     G.GAME.detour_set = self.ability.set
+    if Entropy.has_rune("rune_entr_naudiz") then
+        calculate_runes({
+            buying_card = true,
+            card = self
+        })
+    end
 end
 
 function Card:calculate_banana()

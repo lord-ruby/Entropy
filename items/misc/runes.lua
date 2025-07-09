@@ -442,7 +442,7 @@ local naudiz_indicator = {
     atlas = "rune_indicators",
     dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
-        if context.buying_card then
+        if context.buying_card and to_big(context.card.cost) > to_big(G.GAME.dollars) then
             return {
                 --remove = true,
                 func = function()
