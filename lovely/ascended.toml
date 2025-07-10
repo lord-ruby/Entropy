@@ -15,7 +15,7 @@ pattern = '''
 '''
 position = "after"
 payload = '''
-{n=G.UIT.O, config={id = 'cry_asc', func = 'cry_asc_UI_set',object = DynaText({string = {{ref_table = G.GAME.current_round.current_hand, ref_value = "cry_asc_num_text"}}, colours = {G.C.GOLD}, shadow = true, float = true, scale = scale*1})}},
+{n=G.UIT.O, config=(SMODS.Mods["Cryptid"] or {}).can_load and nil or {id = 'cry_asc', func = 'cry_asc_UI_set',object = DynaText({string = {{ref_table = G.GAME.current_round.current_hand, ref_value = "cry_asc_num_text"}}, colours = {G.C.GOLD}, shadow = true, float = true, scale = scale*1})}},
 '''
 match_indent = true
 

@@ -75,7 +75,7 @@ local prismatic = {
     config = {
 		extra = {
             eemult = 1,
-			eemult_mod = 0.1
+			eemult_mod = 0.25
 		},
 	},
 	no_doe = true,

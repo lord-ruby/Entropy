@@ -153,7 +153,7 @@ local dekatria = {
     pos = { x = 0, y = 5 },
     config = {
         e_mult=1,
-        e_mult_mod = 0.1,
+        e_mult_mod = 0.8,
         pairs_needed = 4,
         pairs_current = 0
     },
@@ -504,14 +504,14 @@ local akyros = {
             --this much money is bad for balancing but idk what to do about it??
             local ratio = 2-(#G.jokers.cards/G.jokers.config.card_limit)
             local amount = {math.max(-1+math.floor(math.log(G.jokers.config.card_limit/10)), -1), card.ability.base*ratio}
-            local fac = (1/(amount[1]+1.05)) ^ 3.75
+            local fac = (1/(1.05)) ^ 3.75
             if to_big(fac) > to_big(2) then fac = 2 end
             amount[2] = amount[2]*fac+1
             return {
                 vars = {
                     card.ability.buycost,
                     card.ability.sellcost,
-                    Entropy.FormatArrowMult(amount[1], amount[2])
+                    Entropy.FormatArrowMult(0, amount[2])
                 }
             }
         end
@@ -526,7 +526,7 @@ local akyros = {
     calculate = function(self, card, context)
         if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
             local ratio = 2-(#G.jokers.cards/G.jokers.config.card_limit)
-            local amount = {math.max(-1+math.floor(math.log(G.jokers.config.card_limit/10)), -1), card.ability.base*ratio}
+            local amount = {0, card.ability.base*ratio}
             local fac = (1/(amount[1]+1.05)) ^ 3.75
             if to_big(fac) > to_big(2) then fac = 2 end
             amount[2] = amount[2]*fac+1
