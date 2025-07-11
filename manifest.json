@@ -14,5 +14,6 @@
         "Cryptlib"
     ],
     "conflicts": [
-    ]
+    ],
+    "allow_redistribution": true
 }
