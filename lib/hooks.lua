@@ -1613,6 +1613,12 @@ function Cryptid.ascend(num, curr2) -- edit this function at your leisure
         curr2 or
         ((G.GAME.current_round.current_hand.cry_asc_num or 0) + (G.GAME.asc_power_hand or 0)) *
             (1 + (G.GAME.nemesisnumber or 0))
+    local num2 = math.min(curr2 or 0, 50)
+    local diff = curr2 - num2
+    if to_big(curr2 or 0) > to_big(50) then
+        num2 = num2 + diff ^ 0.3
+    end
+    curr2 = num2
     if Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled then
         curr2 = curr2 * (Entropy.IsEE() and -0.25 or -1)
     end

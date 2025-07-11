@@ -87,7 +87,14 @@ end
 
 
 function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
-  local curr2 = to_big(((G.GAME.hands[hand].AscensionPower or 0)) * (1+(G.GAME.nemesisnumber or 0))) ^ to_big(G.GAME.hands[hand].TranscensionPower or 1)
+  local curr = G.GAME.hands[hand].AscensionPower or 0
+  local num2 = math.min(curr2 or 0, 50)
+  local diff = curr - num2
+  if to_big(curr or 0) > to_big(50) then
+      num2 = num2 + diff ^ 0.3
+  end
+  curr = num2
+  local curr2 = to_big(((curr)) * (1+(G.GAME.nemesisnumber or 0))) ^ to_big(G.GAME.hands[hand].TranscensionPower or 1)
 	if Entropy.HasJoker("j_entr_helios") then
         local curr = 1.5
         for i, v in pairs(G.jokers.cards) do

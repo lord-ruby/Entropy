@@ -144,6 +144,7 @@ local dr_sunshine = {
     eternal_compat = true,
     pos = { x = 4, y = 1 },
     atlas = "jokers",
+    pools = { ["Sunny"] = true, },
     demicoloncompat = true,
     loc_vars = function(self, info_queue, card)
         return {
@@ -195,7 +196,7 @@ local sunny_joker = {
     pos = { x = 5, y = 1 },
     atlas = "jokers",
     demicoloncompat = true,
-    pools = { ["Meme"] = true },
+    pools = { ["Meme"] = true, ["Sunny"] = true, },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
@@ -299,6 +300,7 @@ local solar_dagger = {
     atlas = "jokers",
     demicoloncompat = true,
     config = { x_asc = 1 },
+    pools = { ["Sunny"] = true, },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
@@ -465,7 +467,7 @@ local chocolate_egg = {
     pos = { x = 0, y = 2 },
     atlas = "jokers",
     demicoloncompat = true,
-    pools = { ["Food"] = true, ["Candy"] = true },
+    pools = { ["Food"] = true, ["Candy"] = true, ["Sunny"]=true },
     calculate = function(self, card, context)
         if (context.banishing_card and context.cardarea == G.jokers) or context.forcetrigger then
             card_eval_status_text(
@@ -562,6 +564,7 @@ local devilled_suns = {
     eternal_compat = true,
     pos = { x = 1, y = 2 },
     atlas = "jokers",
+    pools = { ["Sunny"] = true, ["Meme"] = true},
     config = { base = 2, per_sunny = 2},
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue+1] = G.P_CENTERS.e_entr_sunny
@@ -1019,7 +1022,7 @@ local sunny_side_up = {
     atlas = "jokers",
     demicoloncompat = true,
     pools = {
-        --["Sunny"] = true,
+        ["Sunny"] = true,
         ["Food"] = true
     },
     loc_vars = function(self, info_queue, center)
@@ -1090,7 +1093,7 @@ local sunflower_seeds = {
     atlas = "jokers",
     demicoloncompat = true,
     pools = {
-        --["Sunny"] = true,
+        ["Sunny"] = true,
         ["Food"] = true
     },
     loc_vars = function(self, info_queue, card)

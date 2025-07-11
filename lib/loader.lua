@@ -286,7 +286,7 @@ function SMODS.injectItems(...)
         end
         SMODS.ObjectType({
             key = "Twisted",
-            default = "j_entr_memory_leak",
+            default = "c_entr_memory_leak",
             cards = {},
             inject = function(self)
                 SMODS.ObjectType.inject(self)
@@ -296,6 +296,17 @@ function SMODS.injectItems(...)
             end,
         })
         SMODS.ObjectTypes.Twisted:inject()
+
+        SMODS.ObjectType({
+            key = "Sunny",
+            default = "j_entr_sunny_joker",
+            cards = {},
+            inject = function(self)
+                SMODS.ObjectType.inject(self)
+            end,
+        })
+        SMODS.ObjectTypes.Twisted:inject()
+
         --this has to be moved here for compatibility
         function update_operator_display()
             local aoperator = get_final_operator()
