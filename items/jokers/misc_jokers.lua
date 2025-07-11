@@ -613,6 +613,7 @@ local eden = {
     pos = { x = 2, y = 2 },
     atlas = "jokers",
     demicoloncompat = true,
+    pools = { ["Sunny"] = true, ["Meme"] = true },
     loc_vars = function(self, info_queue, center)
         if not center.edition or (center.edition and center.edition.key ~= "e_entr_sunny") then
 			info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_sunny
@@ -699,6 +700,7 @@ local seventyseven = {
     pos = { x = 3, y = 2 },
     atlas = "jokers",
     demicoloncompat = true,
+    pools = { ["Meme"] = true, },
     loc_vars = function(self, info_queue, center)
         return {
             vars = {
@@ -736,6 +738,7 @@ local skullcry = {
     pos = { x = 8, y = 2 },
     atlas = "jokers",
     demicoloncompat = true,
+    pools = { ["Meme"] = true, },
     loc_vars = function(self, info_queue, center)
         return {
             vars = {
