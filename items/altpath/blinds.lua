@@ -34,7 +34,7 @@ local alpha = {
                 if i == 1 and v == context.destroy_card then check = true end
             end
             G.GAME.blind.triggered = true
-			return { remove = check and not context.destroy_card.ability.eternal }
+			return { remove = check and not SMODS.is_eternal(context.destroy_card) }
 		end
     end
 }

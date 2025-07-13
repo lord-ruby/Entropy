@@ -38,7 +38,7 @@ local jokerinyellow = {
             if context.forcetrigger then
                 local cards = {}
                 for i, v in pairs(G.jokers.cards) do
-                    if not v.ability.eternal and not v.ability.cry_absolute and v.config.center.key ~= "j_entr_jokerinyellow" then
+                    if not SMODS.is_eternal(v) and not v.ability.cry_absolute and v.config.center.key ~= "j_entr_jokerinyellow" then
                         cards[#cards+1]=v
                     end
                 end
@@ -72,7 +72,7 @@ local jokerinyellow = {
                 if v2:is_suit("Diamonds") then
                     local cards = {}
                     for i, v in pairs(G.jokers.cards) do
-                        if not v.ability.eternal and not v.ability.cry_absolute and v.config.center.key ~= "j_entr_jokerinyellow" then
+                        if not SMODS.is_eternal(v) and not v.ability.cry_absolute and v.config.center.key ~= "j_entr_jokerinyellow" then
                             cards[#cards+1]=v
                         end
                     end

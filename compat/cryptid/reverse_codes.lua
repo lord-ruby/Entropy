@@ -680,7 +680,7 @@ local push = {
     use = function(self, card, area, copier)
         if not Entropy.CanCreateZenith() then
             for i, v in pairs(G.jokers.cards) do
-                if not v.ability or (not v.ability.eternal and not v.ability.cry_absolute) then
+                if not v.ability or (not SMODS.is_eternal(v) and not v.ability.cry_absolute) then
                     G.jokers.cards[i]:start_dissolve()
                 end
             end
@@ -710,7 +710,7 @@ local push = {
     can_use = function(self, card)
         if G.jokers and #G.jokers.cards > 0 then
             for i, v in pairs(G.jokers.cards) do
-                if not v.ability or (not v.ability.eternal and not v.ability.cry_absolute) then
+                if not v.ability or (not SMODS.is_eternal(v) and not v.ability.cry_absolute) then
                     return true
                 end
             end

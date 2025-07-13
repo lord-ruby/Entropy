@@ -491,7 +491,7 @@ local dagger = {
             total = total + card.sell_cost * card2.ability.sellmult
         end
         Entropy.FlipThen(cards, function(card)
-            if not card.ability.eternal then
+            if not SMODS.is_eternal(card) then
                 card:start_dissolve()
             end
         end)

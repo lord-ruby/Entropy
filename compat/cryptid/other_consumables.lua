@@ -232,7 +232,7 @@ local substitute = {
         local voucher = pseudorandom_element(G.vouchers.cards, pseudoseed("substitute"))
         local tries = 100
         local uvouchers = {}
-        while (voucher.ability.eternal or voucher.ability.cry_absolute or Entropy.GetHigherVoucherTier(voucher.config.center.key) == nil) and tries > 0 do
+        while (SMODS.is_eternal(voucher) or voucher.ability.cry_absolute or Entropy.GetHigherVoucherTier(voucher.config.center.key) == nil) and tries > 0 do
             voucher = pseudorandom_element(G.vouchers.cards, pseudoseed("substitute"))
             tries = tries - 1
         end
@@ -317,7 +317,7 @@ local substitute = {
     can_use = function(self, card)
         local usable_count = 0
 		for _, v in pairs(G.vouchers.cards) do
-			if not v.ability.eternal and Entropy.GetHigherVoucherTier(v.config.center.key) and not v.ability.cry_absolute then
+			if not SMODS.is_eternal(v) and Entropy.GetHigherVoucherTier(v.config.center.key) and not v.ability.cry_absolute then
 				usable_count = usable_count + 1
 			end
 		end
@@ -365,7 +365,7 @@ local evocation = {
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
         for i, v in pairs(G.jokers.cards) do
-            if not v.highlighted and not v.ability.cry_absolute and not v.ability.eternal then
+            if not v.highlighted and not v.ability.cry_absolute and not SMODS.is_eternal(v) then
                 v:remove_from_deck()
                 v:start_dissolve()
             end
@@ -861,7 +861,7 @@ local beyond = {
     use = function(self, card)
         local deletable_jokers = {}
 		for k, v in pairs(G.jokers.cards) do
-			if not v.ability.eternal then
+			if not SMODS.is_eternal(v) then
                 if not Entropy.DeckOrSleeve("doc") or to_big(G.GAME.entropy or 0) < to_big(100) then
 				    deletable_jokers[#deletable_jokers + 1] = v
                 end

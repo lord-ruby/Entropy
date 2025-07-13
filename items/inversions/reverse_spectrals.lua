@@ -206,7 +206,7 @@ local ward = {
     use = function(self, card, area, copier)
         local total = 0
         for i, v in pairs(G.jokers.cards) do
-            if not v.ability.eternal and not v.ability.cry_absolute then
+            if not SMODS.is_eternal(v) and not v.ability.cry_absolute then
                 local joker = G.jokers.cards[i]
                 total = total + joker.cost
                 G.E_MANAGER:add_event(Event({
@@ -625,7 +625,7 @@ local charm = {
         local joker = nil
         local tries = 100
         if #G.jokers.cards > 1 then
-            while (joker == nil or joker.ability.eternal or joker.ability.cry_absolute) and tries > 0 do
+            while (joker == nil or SMODS.is_eternal(joker) or joker.ability.cry_absolute) and tries > 0 do
                 joker = pseudorandom_element(G.jokers.cards, pseudoseed("charm"))
                 tries = tries - 1
             end

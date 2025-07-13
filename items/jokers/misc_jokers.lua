@@ -312,7 +312,7 @@ local solar_dagger = {
         if (context.setting_blind and not (context.blueprint_card or self).getting_sliced) or context.forcetrigger then
             local check
             for i, v in pairs(G.jokers.cards) do
-                if v == card and G.jokers.cards[i+1] and not G.jokers.cards[i+1].ability.eternal then check = i+1 end
+                if v == card and G.jokers.cards[i+1] and not SMODS.is_eternal(G.jokers.cards[i+1]) then check = i+1 end
             end
             if check then
                 G.E_MANAGER:add_event(Event({
@@ -365,7 +365,7 @@ local insatiable_dagger = {
             for i, v in pairs(G.jokers.cards) do
                 if v == card and G.jokers.cards[i-1] then check = i-1 end
             end
-            if check and not G.jokers.cards[#G.jokers.cards].eternal then
+            if check and not SMODS.is_eternal(G.jokers.cards[#G.jokers.cards]) then
                 G.E_MANAGER:add_event(Event({
                     func = function()
                         local sliced_card = G.jokers.cards[#G.jokers.cards]
@@ -815,7 +815,7 @@ local dating_simbo = {
                     end
                 }))
                 card.ability.chips = card.ability.chips + math.max(context.destroying_card.base.nominal + (context.destroying_card.ability.bonus or 0), 0)            
-                return { remove = not context.destroying_card.ability.eternal }
+                return { remove = not SMODS.is_eternal(context.destroying_card) }
             end
         end
         if context.joker_main or context.forcetrigger then
