@@ -228,7 +228,15 @@ SMODS.Atlas {
 
 SMODS.Atlas { 
     key = 'rune_atlas', 
-    path = 'runes.png', --placeholder
+    path = 'runes.png',
+    px = 71, 
+    py = 95 
+}
+
+
+SMODS.Atlas { 
+    key = 'consumables2', 
+    path = 'second_consumables.png', --placeholder
     px = 71, 
     py = 95 
 }

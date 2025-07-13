@@ -30,6 +30,15 @@ local decs = {
 					"Increase by {X:blue,C:white}X#1#{} for each",
 					"{C:attention}unique{} suit in scoring hand"
 				}
+			},
+			m_entr_ceramic = {
+				name = "Ceramic Card",
+				text = {
+					"Has its own {C:attention}Rank{}, and",
+					"counts as every {C:attention}Suit{}",
+					"When scored {C:red}destroy{} this card",
+					"and create a {C:attention}random{} consumable"
+				}
 			}
 		},
 		["Content Set"] = {
@@ -1446,6 +1455,14 @@ local decs = {
 					"{C:blue}+#1#{} bonus chips"
 				}
 			},
+			c_entr_frail = {
+				name = "Frail",
+				text = {
+					"Destroy {C:attention}#1#{} selected card#<s>1#",
+					"and {C:attention}distribute{} their modifications",
+					"between {C:attention}other{} cards held in hand"
+				}
+			}
 		},
 		Voucher = {
 			v_entr_marked = {
@@ -2292,6 +2309,16 @@ local decs = {
 					"to a {C:attention}random{} {C:red}object{}"
 				}
 			},
+		},
+		Tarot = {
+			c_entr_kiln = {
+				name = "Kiln",
+				text = {
+					"Enhances {C:attention}#1#{} selected",
+					"card#<s>1# into a",
+					"{C:attention}Ceramic Card{}"
+				}
+			}
 		},
 		Spectral = {
 			c_entr_flipside = {

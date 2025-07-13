@@ -111,7 +111,7 @@ local dark = {
           "set_entr_inversions"
         }
     },
-	order = 6999,
+	order = 10000+3,
 	object_type = "Enhancement",
 	key = "dark",
 	atlas = "enhancements",
@@ -164,11 +164,108 @@ local dark = {
 	end,
 }
 
+local ceramic = {
+	dependencies = {
+        items = {
+          "set_entr_misc"
+        }
+    },
+	order = 10000+5,
+	object_type = "Enhancement",
+	key = "ceramic",
+	atlas = "enhancements",
+	pos = { x = 2, y = 0 },
+	specific_rank = "entr_ceramic",
+	shatters = true,
+	force_no_face = true,
+	config = {
+		extra = {
+			survive = false
+		}
+	},
+	overrides_base_rank = true, --enhancement do not generate in grim, incantation, etc...
+	replace_base_card = true, --So no base chips and no image
+	calculate = function(self, card, context)
+		if context.final_scoring_step
+		and context.cardarea == G.play
+		and not context.repetition
+		and not SMODS.is_eternal(card)
+		and not (card.will_shatter or card.destroyed or card.shattered) then
+			G.E_MANAGER:add_event(Event({
+				trigger = "immediate",
+				func = function()
+					
+					if (#G.consumeables.cards + G.GAME.consumeable_buffer <= G.consumeables.config.card_limit) then
+						SMODS.add_card{
+							area=G.consumeables,
+							set = "Consumeables"
+						}
+					end
+					card:juice_up(0.9, 0.9)
+					card:shatter()
+					return true
+				end,
+			}))
+		end
+	end,
+	entr_credits = {
+		art = {"gudusername_53951"}
+	}
+}
+
+local kiln = {
+    key = "kiln",
+    set = "Tarot",
+    atlas = "consumables2",
+    object_type = "Consumable",
+    order = -1000,
+    dependencies = {
+        items = {
+            "set_entr_misc",
+			"m_entr_ceramic"
+        }
+    },
+    config = {
+        select = 1
+    },
+    pos = {x=0,y=0},
+    use = function(self, card2)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select)
+        Entropy.FlipThen(cards, function(card)
+            card:set_ability(G.P_CENTERS.m_entr_ceramic)
+            G.hand:remove_from_highlighted(card)
+        end)
+            
+    end,
+    can_use = function(self, card)
+        local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        return num > 0 and num <= card.ability.select
+    end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.m_entr_ceramic
+        return {
+            vars = {
+                card.ability.select
+            }
+        }
+    end,
+    
+	
+    entr_credits = {
+        art = {"aduckted"}
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
 return {
     items = {
         flesh,
         disavowed,
 		prismatic,
-		dark
+		dark,
+		ceramic,
+		kiln
     }
 }

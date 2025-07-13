@@ -1192,7 +1192,68 @@ local tent = {
     end
 }
 
-
+local frail = {
+    key = "frail",
+    set = "Fraud",
+    atlas = "fraud",
+    object_type = "Consumable",
+    order = -901+33,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        select = 1
+    },
+    pos = {x=7,y=2},
+    inversion = "c_entr_kiln",
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.select
+            }
+        }
+    end,
+    use = function(self, card2)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select)
+        local modifications = {}
+        for i, v in pairs(cards) do
+            if v.config.center.set == "Enhanced" then
+                modifications[#modifications+1] = {enhancement=v.config.center.key}
+            end
+            if v.edition then
+                modifications[#modifications+1] = {edition=v.edition.key}
+            end
+            if v.seal then
+                modifications[#modifications+1] = {seal = v.seal}
+            end
+        end
+        local possible_cards = {}
+        for i, v in pairs(G.hand.cards) do
+            if v ~= card2 then
+                possible_cards[#possible_cards+1] = v
+            end
+        end
+        for i, v in pairs(modifications) do
+            local card = pseudorandom_element(possible_cards, pseudoseed("frail_card"))
+            if v.enhancement then card:set_ability(v.enhancement) end
+            if v.edition then card:set_edition(v.edition) end
+            if v.seal then card:set_seal(v.seal) end
+        end
+        for i, v in pairs(cards) do
+            v:start_dissolve()
+        end
+    end,
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        return #cards > 0 and #cards <= card.ability.select
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
 
 return {
     items = {
@@ -1219,5 +1280,6 @@ return {
         tent,
         companion,
         village,
+        frail
     }
 }

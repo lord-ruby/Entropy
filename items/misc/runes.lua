@@ -297,7 +297,7 @@ function calculate_runes(context)
                     if ret.func then ret.func() end
                 else 
                     if ret.func then   
-                        v:yep("+", G.C.DARK_EDITION, function()
+                        v:yep("+", G.C.PURPLE, function()
                             ret.func()
                             return true
                         end)
