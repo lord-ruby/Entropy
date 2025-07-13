@@ -375,6 +375,27 @@ function Entropy.create_rune(key, pos, indicator_key, order, credits, loc_vars)
     }
 end
 
+local raido = Entropy.create_rune("raido", {x=4,y=0}, "rune_entr_raido", 6005)
+local raido_indicator = {
+    object_type = "RuneTag",
+    order = 7005,
+    key = "raido",
+    atlas = "rune_atlas",
+    pos = {x=4,y=0},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.entr_ante_change then
+            return {
+                ante_mod = G.GAME.providence and -context.entr_ante_change or 0,
+                func = function()
+                    return true
+                end,
+            }
+        end
+    end
+}
+
 local kaunan = Entropy.create_rune("kaunan", {x=5,y=0}, "rune_entr_kaunan", 6006)
 local kaunan_indicator = {
     object_type = "RuneTag",
@@ -535,6 +556,7 @@ local jera_indicator = {
 
 return {
     items = {
+        raido, raido_indicator,
         kaunan, kaunan_indicator,
         gebo, gebo_indicator,
         naudiz, naudiz_indicator,

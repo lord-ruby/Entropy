@@ -2626,6 +2626,20 @@ local decs = {
 			},
 		},
 		["Rune Tag"] = {
+			rune_entr_raido = {
+				name = "Raido",
+				text = {
+					"Cancels the next",
+					"change of Ante",
+				}
+			},
+			rune_entr_raido_providence = {
+				name = "Raido{C:purple}+{}",
+				text = {
+					"{C:purple,E:1}Inverts{} the next",
+					"change of Ante",
+				}
+			},
 			rune_entr_kaunan = {
 				name = "Kaunan",
 				text = {
@@ -2695,7 +2709,20 @@ local decs = {
 			},
 		},
 		Rune = {
-
+			c_entr_raido = {
+				name = "Rune of Raido",
+				text = {
+					"The next {C:attention}change{} in",
+					"Ante is cancelled out"
+				}
+			},
+			c_entr_raido_providence = {
+				name = "Rune of Raido{C:purple}+{}",
+				text = {
+					"The next {C:attention}change{} in",
+					"Ante is {C:purple,E:1}Inverted{}"
+				}
+			},
 			c_entr_kaunan = {
 				name = "Rune of Kaunan",
 				text = {
