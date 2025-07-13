@@ -1551,8 +1551,9 @@ function Card:sell_card()
     sell_cardref(self)
 end
 
-function Entropy.GetNextTag(override)
-    if next(SMODS.find_card('j_cry_kittyprinter')) then return 'tag_cry_cat' end
+local get_next_tagref = Cryptid.get_next_tag
+function Cryptid.get_next_tag(override)
+    local ref = get_next_tagref(override)
     if next(SMODS.find_card('j_entr_dog_chocolate')) then 
         if not G.GAME.dog_tags then G.GAME.dog_tags = {} end
         if G.GAME.dog_tags[(override or G.GAME.blind_on_deck)..G.GAME.round_resets.ante] == nil then
@@ -1564,6 +1565,7 @@ function Entropy.GetNextTag(override)
         end
         if G.GAME.dog_tags[(override or G.GAME.blind_on_deck)..G.GAME.round_resets.ante] then return 'tag_entr_dog' end
     end
+    if ref then return ref end
 end
 
 function Entropy.GetInverseSuit(suit)
