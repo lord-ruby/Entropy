@@ -253,12 +253,16 @@ function SMODS.injectItems(...)
         if MP then
             function MP.DECK.ban_card(card_id)
                 if card_id:sub(1, 1) == "j" then
+                    if not MP.DECK.BANNED_JOKERS then MP.DECK.BANNED_JOKERS = {} end
                     MP.DECK.BANNED_JOKERS[card_id] = true
                 elseif card_id:sub(1, 1) == "c" then
+                    if not MP.DECK.BANNED_CONSUMABLES then MP.DECK.BANNED_CONSUMABLES = {} end
                     MP.DECK.BANNED_CONSUMABLES[card_id] = true
                 elseif card_id:sub(1, 1) == "v" then
+                    if not MP.DECK.BANNED_VOUCHERS then MP.DECK.BANNED_VOUCHERS = {} end
                     MP.DECK.BANNED_VOUCHERS[card_id] = true
                 elseif card_id:sub(1, 1) == "m" then
+                    if not MP.DECK.BANNED_ENHANCEMENTS then MP.DECK.BANNED_ENHANCEMENTS = {} end
                     MP.DECK.BANNED_ENHANCEMENTS[card_id] = true
                 end
             end
