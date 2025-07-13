@@ -2629,7 +2629,7 @@ local decs = {
 			rune_entr_raido = {
 				name = "Raido",
 				text = {
-					"Cancels the next",
+					"Prevents the next",
 					"change of Ante",
 				}
 			},
@@ -2713,7 +2713,7 @@ local decs = {
 				name = "Rune of Raido",
 				text = {
 					"The next {C:attention}change{} in",
-					"Ante is cancelled out"
+					"Ante is prevented"
 				}
 			},
 			c_entr_raido_providence = {
