@@ -213,6 +213,12 @@ local ceramic = {
 	}
 }
 
+local is_suitref = Card.is_suit
+function Card:is_suit(...)
+	if self.config.center.key == "m_entr_ceramic" then return true end
+	return is_suitref(self, ...)
+end
+
 local kiln = {
     key = "kiln",
     set = "Tarot",
