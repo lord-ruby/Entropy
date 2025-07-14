@@ -89,6 +89,78 @@ G.FUNCS.change_challenge_description = function(e)
     if e.config.id == hyperbolic then G.GAME.ReverseRedeo = true else G.GAME.ReverseRedeo = false end
 end
 
+
+if not (SMODS.Mods["Cryptid"] or {}).can_load then
+    SMODS.Sticker({
+        badge_colour = HEX("e8c500"),
+        prefix_config = { key = false },
+        key = "banana",
+        atlas = "cry_banana",
+        pos = { x = 0, y = 0 },
+        should_apply = false,
+        loc_vars = function(self, info_queue, card)
+            if card.ability.consumeable then
+                return { key = "cry_banana_consumeable", vars = { G.GAME.probabilities.normal or 1, 4 } }
+            elseif card.ability.set == "Voucher" then
+                return { key = "cry_banana_voucher", vars = { G.GAME.probabilities.normal or 1, 12 } }
+            elseif card.ability.set == "Booster" then
+                return { key = "cry_banana_booster" }
+            else
+                return { vars = { G.GAME.probabilities.normal or 1, 10 } }
+            end
+        end,
+        calculate = function(self, card, context)
+            if
+                context.end_of_round
+                and not context.repetition
+                and not context.playing_card_end_of_round
+                and not context.individual
+            then
+                if card.ability.set == "Voucher" then
+                    if pseudorandom("byebyevoucher") < G.GAME.probabilities.normal / G.GAME.cry_voucher_banana_odds then
+                        local area
+                        if G.STATE == G.STATES.HAND_PLAYED then
+                            if not G.redeemed_vouchers_during_hand then
+                                G.redeemed_vouchers_during_hand = CardArea(
+                                    G.play.T.x,
+                                    G.play.T.y,
+                                    G.play.T.w,
+                                    G.play.T.h,
+                                    { type = "play", card_limit = 5 }
+                                )
+                            end
+                            area = G.redeemed_vouchers_during_hand
+                        else
+                            area = G.play
+                        end
+    
+                        local _card = copy_card(card)
+                        _card.ability.extra = copy_table(card.ability.extra)
+                        if _card.facing == "back" then
+                            _card:flip()
+                        end
+    
+                        _card:start_materialize()
+                        area:emplace(_card)
+                        _card.cost = 0
+                        _card.shop_voucher = false
+                        _card:unredeem()
+                        G.E_MANAGER:add_event(Event({
+                            trigger = "after",
+                            delay = 0,
+                            func = function()
+                                _card:start_dissolve()
+                                card:start_dissolve()
+                                return true
+                            end,
+                        }))
+                    end
+                end
+            end
+        end,
+    })
+end
+
 return {
     items = {
         hyperbolic_chamber

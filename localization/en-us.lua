@@ -2930,6 +2930,34 @@ local decs = {
 			},
 		},
 		Other = {
+			cry_banana_booster = {
+				name = "Banana",
+				text = {
+					"All cards in pack",
+					"are {C:attention}Banana{}",
+				},
+			},
+			cry_banana_voucher = {
+				name = "Banana",
+				text = {
+					"{C:green}#1# in #2#{} chance of being",
+					"unredeemed each round",
+				},
+			},
+			cry_banana_consumeable = {
+				name = "Banana",
+				text = {
+					"{C:green}#1# in #2#{} chance to do",
+					"nothing on use",
+				},
+			},
+			banana = {
+				name = "Banana",
+				text = {
+					"{C:green}#1# in #2#{} chance of being",
+					"destroyed each round",
+				},
+			},
 			echo_tooltip = {
 				name = "(~)$ echo",
 				text = {
@@ -3520,6 +3548,7 @@ local decs = {
 			wish = "Wish: #1#"
 		},
 		labels = {
+			banana = "Banana",
 			entr_pinned = "Invariant",
 			entr_hotfix = "Hotfixed",
 			temporary = "Temporary",

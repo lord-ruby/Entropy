@@ -240,3 +240,10 @@ SMODS.Atlas {
     px = 71, 
     py = 95 
 }
+
+SMODS.Atlas { 
+    key = 'cry_banana', 
+    path = 'cry_banana.png', --placeholder
+    px = 71, 
+    py = 95 
+}
