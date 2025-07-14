@@ -86,5 +86,4 @@ SMODS.ContentSet({
 	atlas = "rune_atlas",
 	pos = { x = 4, y = 1 }, --jera
 	cry_order = 9,
-	cry_blind = true,
 })
