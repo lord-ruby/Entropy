@@ -14,7 +14,7 @@ Entropy.AltBlinds = {}
 Entropy.FlipsideInversions = {}
 Entropy.FlipsidePureInversions = {}
 Entropy.EnhancementFuncs = {}
-Entropy.RarityChecks = {
+Entropy.RarityChecks = (Cryptid and Cryptid.memepack) and { --using legacy stuff to check for cryptid and not cryptlib
     [0]="cry_candy",
     1,
     2,
@@ -23,6 +23,8 @@ Entropy.RarityChecks = {
     4,
     "cry_exotic",
     "entr_entropic"
+} or {
+  1, 2, 3, 4
 }
 Entropy.BoosterSets = {
     ["Spectral"] = "p_spectral_mega_1",
