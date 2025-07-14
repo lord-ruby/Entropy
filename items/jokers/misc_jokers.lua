@@ -1863,7 +1863,7 @@ local insurance_fraud = {
         if context.selling_card and context.card.config.center.set == "Tarot" then
             G.E_MANAGER:add_event(Event({
                 func = (function()
-                    if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit + 1 then
+                    if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit + 1  then
                         SMODS.add_card{
                             set="Fraud",
                             area = G.consumeables
@@ -1873,6 +1873,56 @@ local insurance_fraud = {
                 end)
             }))
             return nil, true -- This is for Joker retrigger purposes
+        end
+    end,
+}
+
+local free_samples = {
+    order = 36,
+    object_type = "Joker",
+    key = "free_samples",
+    rarity = 2,
+    cost = 5,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    eternal_compat = true,
+    pos = { x = 4, y = 6 },
+    atlas = "jokers",
+    config = {
+        extra = {
+            odds = 4
+        }
+    },
+    loc_vars = function(self, q, card)
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
+        return {vars = {
+            numerator,
+            denominator,
+        }} 
+    end,
+    calculate = function(self, card, context)
+        if context.open_booster then
+            if SMODS.pseudorandom_probability(
+                card,
+                "entr_free_samples",
+                1,
+                card and card.ability.extra.odds or self.config.extra.odds
+            ) and (not context.card.area or context.card.area ~= G.consumeables) then
+                G.E_MANAGER:add_event(Event({
+                    func = (function()
+                        if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit + 1  then
+                            SMODS.add_card{
+                                key=context.card.config.center.key,
+                                area = G.consumeables
+                            }
+                        end
+                        return true
+                    end)
+                }))
+            end
         end
     end,
 }
@@ -1915,6 +1965,7 @@ return {
         memento_mori,
         broadcast,
         milk_chocolate,
-        insurance_fraud
+        insurance_fraud,
+        free_samples
     }
 }

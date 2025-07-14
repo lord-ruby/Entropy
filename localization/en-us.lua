@@ -909,6 +909,16 @@ local decs = {
 					"when a {C:purple}Tarot{} card is sold"
                 },
             },
+
+			j_entr_free_samples = {
+                name = "Free Samples",
+                text = {
+                    "{C:green}#1# in #2#{} chance for",
+					"opened {C:attention}Booster Packs{}",
+					"to be {C:attention}copied{} to your consumables",
+					"{C:inactive}(Must have room){}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
