@@ -358,7 +358,7 @@ local D100= {
         max_m2 = 1.25
     },
     calculate = function(self, card, context)
-        if context.mod_probability then
+        if context.mod_probability and context.trigger_obj then
             local num = context.numerator * (context.trigger_obj.ability.immutable and context.trigger_obj.ability.immutable.d100_modifier or 1)
             local denom = context.denominator * (context.trigger_obj.ability.immutable and context.trigger_obj.ability.immutable.d100_d_modifier or 1)
             return {
@@ -366,7 +366,7 @@ local D100= {
                 denominator = denom
             }
         end
-        if context.pseudorandom_result then
+        if context.pseudorandom_result and context.trigger_obj then
             local pcard = context.trigger_obj
             if not pcard.ability.immutable then
                 pcard.ability.immutable = {}
