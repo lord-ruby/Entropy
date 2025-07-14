@@ -106,3 +106,21 @@ SMODS.ConsumableType{
 	default = "c_entr_bl_small",
     hidden=true,
 }
+
+SMODS.ObjectType({
+	key = "Sunny",
+	default = "j_entr_sunny_joker",
+	cards = {},
+	inject = function(self)
+		SMODS.ObjectType.inject(self)
+	end,
+})
+SMODS.ObjectType({
+	key = "Dice",
+	default = "j_entr_d1",
+	cards = {},
+	inject = function(self)
+		SMODS.ObjectType.inject(self)
+		self:inject_card(G.P_CENTERS.j_oops)
+	end,
+})
