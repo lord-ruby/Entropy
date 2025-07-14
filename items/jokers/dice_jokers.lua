@@ -9,6 +9,7 @@ local D1 = {
             "set_entr_dice_jokers",
         }
     },
+    pools = {["Dice"] = true},
     eternal_compat = true,
     pos = { x = 1, y = 5 },
     atlas = "jokers",
@@ -41,6 +42,7 @@ local D4 = {
             "set_entr_dice_jokers",
         }
     },
+    pools = {["Dice"] = true},
     eternal_compat = true,
     pos = { x = 2, y = 5 },
     atlas = "jokers",
@@ -58,6 +60,7 @@ local D6 = {
             "set_entr_dice_jokers",
         }
     },
+    pools = {["Dice"] = true},
     eternal_compat = true,
     pos = { x = 3, y = 5 },
     atlas = "jokers",
@@ -111,6 +114,7 @@ local eternal_D6 = {
             "set_entr_dice_jokers",
         }
     },
+    pools = {["Dice"] = true},
     eternal_compat = true,
     pos = { x = 4, y = 5 },
     atlas = "jokers",
@@ -178,6 +182,7 @@ local D7 = {
             "set_entr_dice_jokers",
         }
     },
+    pools = {["Dice"] = true},
     eternal_compat = true,
     pos = { x = 5, y = 5 },
     atlas = "jokers",
@@ -248,6 +253,7 @@ local D8 = {
     config = {
         denominator = 1
     },
+    pools = {["Dice"] = true},
     loc_vars = function(self, q, card)
         return {vars = {
             number_format(card.ability.denominator)
@@ -282,6 +288,7 @@ local D10 = {
         min_n = -5,
         max_n = 5
     },
+    pools = {["Dice"] = true},
     calculate = function(self, card, context)
         if context.mod_probability then
             local n_mod = pseudorandom("d10_n", card.ability.min_n*100, card.ability.max_n*100)/100
@@ -326,6 +333,7 @@ local D12 = {
             }
         }
     end,
+    pools = {["Dice"] = true},
     calculate = function(self, card, context)
         if context.mod_probability then
             local count = #G.consumeables.cards
@@ -337,7 +345,7 @@ local D12 = {
     end,
 }
 
-local D100= {
+local D100 = {
     order = 208,
     object_type = "Joker",
     key = "d100",
@@ -357,6 +365,7 @@ local D100= {
         min_m2 = 0.95,
         max_m2 = 1.25
     },
+    pools = {["Dice"] = true},
     calculate = function(self, card, context)
         if context.mod_probability and context.trigger_obj then
             local num = context.numerator * (context.trigger_obj.ability.immutable and context.trigger_obj.ability.immutable.d100_modifier or 1)
@@ -381,6 +390,42 @@ local D100= {
     end,
 }
 
+local capsule_machine = {
+    order = 209,
+    object_type = "Joker",
+    key = "capsule_machine",
+    rarity = 2,
+    cost = 5,
+    dependencies = {
+        items = {
+            "set_entr_dice_jokers",
+        }
+    },
+    eternal_compat = true,
+    pos = { x = 2, y = 6 },
+    atlas = "jokers",
+    loc_vars = function(self, q, card)
+        q[#q+1] = {set="Other", key="perishable", vars = {5,5}}
+    end,
+    calculate = function(self, card, context)
+        if context.setting_blind then
+            if #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        local card = SMODS.add_card{
+                            set = "Dice",
+                            area = G.jokers
+                        }
+                        card.ability.perishable = true
+                        card.ability.perish_tally = 5
+                        return true
+                    end
+                })
+            end
+        end
+    end,
+}
+
 return {
     items = {
         D1,
@@ -391,6 +436,7 @@ return {
         D8,
         D10,
         D12,
-        D100
+        D100,
+        capsule_machine
     }
 }

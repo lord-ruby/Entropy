@@ -884,6 +884,14 @@ local decs = {
 					"when they are triggered"
 				}
 			},
+			j_entr_capsule_machine = {
+				name = "Capsule Machine",
+				text = {
+					"When blind is selected",
+					"create a {C:attention}Perishable{} {C:green}Dice{} {C:attention}Joker{}",
+					"{C:inactive}(Must have room){}"
+				}
+			},
 		},
 		Blind = {
 			bl_entr_red = {

@@ -309,7 +309,7 @@ function SMODS.injectItems(...)
                 SMODS.ObjectType.inject(self)
             end,
         })
-        SMODS.ObjectTypes.Twisted:inject()
+        SMODS.ObjectTypes.Sunny:inject()
 
         --this has to be moved here for compatibility
         function update_operator_display()
@@ -338,6 +338,17 @@ function SMODS.injectItems(...)
             end
         end
         G.entr_hooked = true
+
+        SMODS.ObjectType({
+            key = "Dice",
+            default = "j_entr_d1",
+            cards = {},
+            inject = function(self)
+                SMODS.ObjectType.inject(self)
+                self:inject_card(G.P_CENTERS.j_oops)
+            end,
+        })
+        SMODS.ObjectTypes.Dice:inject()
     end
     if Cryptid.add_circus_rarity then
         --true here as the last argument means dont reload localisation, only the last one needs to reload so its more optimised this way
