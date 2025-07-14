@@ -1755,11 +1755,45 @@ local broadcast = {
         if card.ability.extra == 1 then suffix = "st" end
         if card.ability.extra == 2 then suffix = "nd" end
         if card.ability.extra == 3 then suffix = "rd" end
+        local other_joker = G.jokers.cards[card.ability.extra]
+        local compatible = other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat
+        local main_end = {
+            {
+                n = G.UIT.C,
+                config = { align = "bm", minh = 0.4 },
+                nodes = {
+                    {
+                        n = G.UIT.C,
+                        config = {
+                            ref_table = card,
+                            align = "m",
+                            colour = compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8)
+                                or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8),
+                            r = 0.05,
+                            padding = 0.06,
+                        },
+                        nodes = {
+                            {
+                                n = G.UIT.T,
+                                config = {
+                                    text = " "
+                                        .. localize("k_" .. (compatible and "compatible" or "incompatible"))
+                                        .. " ",
+                                    colour = G.C.UI.TEXT_LIGHT,
+                                    scale = 0.32 * 0.8,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        }
         return {
             vars = {
                 card.ability.extra,
                 suffix
-            }
+            },
+            main_end = main_end
         }
     end,
     calculate = function(self, card, context)
@@ -1768,7 +1802,7 @@ local broadcast = {
             if card.ability.extra > #G.jokers.cards then
                 card.ability.extra = 1
             end
-        else
+        elseif G.jokers.cards[card.ability.extra] then 
             local ret = SMODS.blueprint_effect(card, G.jokers.cards[card.ability.extra], context)
             return ret
         end
