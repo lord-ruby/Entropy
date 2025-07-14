@@ -1758,7 +1758,6 @@ return {
         tenner,
         sticker_sheet,
         fourbit,
-        scenic_route,
         crimson_flask,
         grotesque_joker,
         dog_chocolate,

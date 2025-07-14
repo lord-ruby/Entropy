@@ -11,8 +11,8 @@ local scenic_route = {
     },
     blueprint_compat = true,
     eternal_compat = true,
-    pos = { x = 1, y = 0 },
-    atlas = "placeholder",
+    pos = { x = 9, y = 4 },
+    atlas = "jokers",
     demicoloncompat = true,
     loc_vars = function(self, q, card) q[#q+1] = G.P_CENTERS.c_entr_new end,
     calculate = function(self, card, context)
@@ -34,7 +34,8 @@ local scenic_route = {
         end
     end,
     entr_credits = {
-        idea = {"cassknows"}
+        idea = {"cassknows"},
+        art = {"Lfmoth"}
     }
 }
 
