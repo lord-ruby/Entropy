@@ -2536,6 +2536,7 @@ end
 local ref = update_hand_text
 
 function update_hand_text(config, vals)
+    if not G.GAME.current_round.current_hand.cry_asc_num_text then G.GAME.current_round.current_hand.cry_asc_num_text = '' end
     if (type(vals.mult) == "number" or type(vals.mult) == "table") and Entropy.HasJoker("j_entr_tesseract",true) and math.abs(to_big(vals.mult)) > to_big(0.001) then
         local total_angle = 0
         for i, v in pairs(G.jokers.cards) do
