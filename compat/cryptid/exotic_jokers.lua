@@ -1,5 +1,5 @@
 local stillicidium = {
-    order = 300,
+    order = 500,
     object_type = "Joker",
     key = "stillicidium",
     rarity = "cry_exotic",
@@ -145,7 +145,7 @@ function GetAreaIndex(cards, card)
 end
 
 local libra = {
-    order = 300 + 1,
+    order = 500 + 1,
     object_type = "Joker",
     key = "libra",
     rarity = "cry_exotic",
@@ -237,7 +237,7 @@ local libra = {
 }
 
 local scorpio = {
-    order = 300 + 2,
+    order = 500 + 2,
     object_type = "Joker",
     key = "scorpio",
     rarity = "cry_exotic",
@@ -314,7 +314,7 @@ local scorpio = {
 }
 
 local ridiculus_absens = {
-    order = 300 + 3,
+    order = 500 + 3,
     object_type = "Joker",
     key = "ridiculus_absens",
     rarity = "cry_exotic",

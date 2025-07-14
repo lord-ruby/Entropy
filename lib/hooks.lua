@@ -3483,3 +3483,41 @@ SMODS.Booster:take_ownership_by_kind('Celestial', {
         return _card
 	end
 },true)
+
+
+local get_probability_varsref = SMODS.get_probability_vars
+function SMODS.get_probability_vars(trigger_obj, base_numerator, base_denominator, identifier, from_roll)
+    local numerator, denominator = get_probability_varsref(trigger_obj, base_numerator, base_denominator, identifier, from_roll)
+    local any_active
+    for i, v in pairs(SMODS.find_card("j_entr_d1")) do
+        if not v.ability.triggered then any_active = true end
+    end
+    if any_active then
+        numerator = denominator
+    end
+    if numerator < 0 then numerator = 0 end
+    if denominator < 1 then denominator = 1 end
+    return numerator, denominator
+end
+
+Entropy.probability_cards = {}
+local probability_ref = SMODS.pseudorandom_probability
+function SMODS.pseudorandom_probability(trigger_obj, seed, base_numerator, base_denominator, identifier)
+    if trigger_obj and trigger_obj.config and trigger_obj.config.center and not Entropy.probability_cards[trigger_obj.config.center.key] then
+        Entropy.probability_cards[trigger_obj.config.center.key] = true
+    end
+    SMODS.calculate_context({pre_probability = true})
+    for i, v in pairs(SMODS.find_card("j_entr_d1")) do
+        if v.ability.triggered ~= true then
+            v.ability.triggered = true
+            return probability_ref(trigger_obj, seed, base_denominator, base_denominator, identifier)
+        else
+            v.ability.triggered = true
+        end
+    end
+    for i, v in pairs(SMODS.find_card("j_entr_d4")) do
+        local res = probability_ref(trigger_obj, seed, base_numerator, base_denominator, identifier) 
+        if res then return res end
+    end
+    return probability_ref(trigger_obj, seed, base_numerator, base_denominator, identifier)
+end

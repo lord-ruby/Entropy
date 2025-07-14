@@ -1,6 +1,6 @@
 local epitachyno = {
     object_type = "Joker",
-    order = 400,
+    order = 600,
     key = "epitachyno",
     atlas = "exotic_jokers",
     rarity = "entr_entropic",
@@ -52,7 +52,7 @@ local epitachyno = {
 }
 
 local helios = {
-    order = 401,
+    order = 601,
     object_type = "Joker",
     key = "helios",
     rarity = "entr_entropic",
@@ -96,7 +96,7 @@ local helios = {
 
 Cryptid.big_num_blacklist["j_entr_xekanos"] = true
 local xekanos = {
-    order = 402,
+    order = 602,
     object_type = "Joker",
     key = "xekanos",
     rarity = "entr_entropic",
@@ -141,7 +141,7 @@ local xekanos = {
 }
 
 local dekatria = {
-    order = 404,
+    order = 604,
     object_type = "Joker",
     key = "dekatria",
     rarity = "entr_entropic",
@@ -207,7 +207,7 @@ local dekatria = {
 }
 
 local anaptyxi = {
-    order = 405,
+    order = 605,
     object_type = "Joker",
     key = "anaptyxi",
     rarity = "entr_entropic",
@@ -304,7 +304,7 @@ local anaptyxi = {
 }
 
 local parakmi = {
-    order = 406,
+    order = 606,
     object_type = "Joker",
     key = "parakmi",
     rarity = "entr_entropic",
@@ -420,7 +420,7 @@ local AscendantTags = {
 for i, v in pairs(AscendantTags) do Entropy.AscendedTags[i]=v end
 
 local exousia = {
-    order = 407,
+    order = 607,
     object_type = "Joker",
     key = "exousia",
     rarity = "entr_entropic",
@@ -470,7 +470,7 @@ local exousia = {
 }
 
 local akyros = {
-    order = 408,
+    order = 608,
     object_type = "Joker",
     key = "akyros",
     rarity = "entr_entropic",
@@ -552,7 +552,7 @@ local akyros = {
 Cryptid.big_num_blacklist["j_entr_katarraktis"] = true
 
 local katarraktis = {
-    order = 409,
+    order = 609,
     object_type = "Joker",
     key = "katarraktis",
     rarity = "entr_entropic",
@@ -606,7 +606,7 @@ local katarraktis = {
 }
 
 local ieros = {
-    order = 403,
+    order = 603,
     object_type = "Joker",
     key = "ieros",
     rarity = "entr_entropic",
@@ -660,7 +660,7 @@ local ieros = {
 }
 
 local exelixi = {
-    order = 410,
+    order = 610,
     object_type = "Joker",
     key = "exelixi",
     rarity = "entr_entropic",
@@ -710,7 +710,7 @@ local exelixi = {
 
 
 local atomikos = {
-    order = 411,
+    order = 611,
     object_type = "Joker",
     key = "atomikos",
     rarity = "entr_entropic",
@@ -773,7 +773,7 @@ local atomikos = {
 }
 
 local apeirostemma = {
-    order = 412,
+    order = 612,
     object_type = "Joker",
     key = "apeirostemma",
     rarity = "entr_entropic",

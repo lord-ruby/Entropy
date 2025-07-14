@@ -1,5 +1,5 @@
 local oekrep = {
-    order = 200,
+    order = 400,
     object_type = "Joker",
     key = "oekrep",
     config = {
@@ -53,7 +53,7 @@ local oekrep = {
 }
 
 local tocihc = {
-    order = 201,
+    order = 401,
     object_type = "Joker",
     key = "tocihc",
     config = {
@@ -124,7 +124,7 @@ local tocihc = {
 }
 
 local teluobirt = {
-    order = 203,
+    order = 403,
     object_type = "Joker",
     key = "teluobirt",
     rarity = "entr_reverse_legendary",
@@ -191,7 +191,7 @@ local teluobirt = {
 }
 
 local oinac = {
-    order = 204,
+    order = 404,
     object_type = "Joker",
     key = "oinac",
     rarity = "entr_reverse_legendary",
@@ -263,7 +263,7 @@ local oinac = {
 }
 
 local entropy_card = {
-    order = 205,
+    order = 405,
     object_type = "Joker",
     key = "entropy_card",
     config = {
@@ -304,7 +304,7 @@ local entropy_card = {
 
 
 local kciroy = {
-    order = 202,
+    order = 02,
     object_type = "Joker",
     key = "kciroy",
     config = {

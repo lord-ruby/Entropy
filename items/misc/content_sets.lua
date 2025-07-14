@@ -75,9 +75,16 @@ SMODS.ContentSet({
 })
 
 SMODS.ContentSet({
+	key = "dice_jokers",
+	atlas = "jokers",
+	pos = { x = 1, y = 5 },
+	cry_order = 8,
+})
+
+SMODS.ContentSet({
 	key = "runes",
 	atlas = "rune_atlas",
 	pos = { x = 4, y = 1 }, --jera
-	cry_order = 8,
+	cry_order = 9,
 	cry_blind = true,
 })

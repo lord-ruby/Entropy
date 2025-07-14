@@ -1437,8 +1437,8 @@ local grotesque_joker = {
     },
     blueprint_compat = true,
     eternal_compat = true,
-    pos = { x = 2, y = 0 },
-    atlas = "placeholder",
+    pos = { x = 1, y = 6 },
+    atlas = "jokers",
     demicoloncompat = true,
     config = {
         xmult = 1,
@@ -1494,7 +1494,8 @@ local grotesque_joker = {
         end
     end,
     entr_credits = {
-        idea = {"crabus"}
+        idea = {"crabus"},
+        art = {"Lfmoth"}
     }
 }
 

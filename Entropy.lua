@@ -38,6 +38,8 @@ local i = {
     --"items/jokers/entropic_jokers",
     "items/jokers/zenith_jokers",
 
+    "items/jokers/dice_jokers",
+
     "items/inversions/reverse_tarots",
     "items/inversions/reverse_spectrals",
     "items/inversions/reverse_planets",

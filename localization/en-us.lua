@@ -115,6 +115,14 @@ local decs = {
 					"progression during runs",
 				},
 			},
+			set_entr_dice_jokers = {
+				name = "Dice Jokers",
+				text = {
+					"{C:attention}Jokers{} that modify",
+					"probabilities based on dices",
+					"added by Entropy"
+				},
+			},
 			set_entr_runes = {
 				name = "Runes",
 				text = {
@@ -802,6 +810,78 @@ local decs = {
 					"Copies the {C:attention}#1#{}#2# Jokers effect",
 					"Increases by {C:attention}1{} when hand played",
 					"Resets after reaching your {C:attention}last{} Joker"
+				}
+			},
+
+			j_entr_d1 = {
+				name = "D1",
+				text = {
+					"The {C:attention}First{} Probability Roll",
+					"each round is {C:green}Guaranteed{}"
+				}
+			},
+			j_entr_d4 = {
+				name = "D4",
+				text = {
+					"Probability Rolls are rolled {C:attention}Twice{}",
+					"with only {C:attention}one{} success needed"
+				}
+			},
+
+			j_entr_d6 = {
+				name = "D6",
+				text = {
+					"This Joker Gains {C:green}+#2#{} Numerator",
+					"when a Probability {C:red}fails{}",
+					"and resets when a Probability {C:green}succeeds{}",
+					"{C:inactive}(Currently {C:green}+#1#{C:inactive})"
+				}
+			},
+
+			j_entr_eternal_d6 = {
+				name = "Eternal D6",
+				text = {
+					"When rerolling {C:green}#1# in #2#{} Chance",
+					"to {C:red}destroy{} a random shop card else gain",
+					"{C:green}+#4#{} Numerator, resets at the end of the ante",
+					"{C:inactive}(Currently {C:green}+#3#{C:inactive})"
+				}
+			},
+
+			j_entr_d7 = {
+				name = "D7",
+				text = {
+					"{C:green}#1# in #2#{} chance to",
+					"Retigger each {C:green}Probability{}",
+					"based {C:attention}Joker{} and {C:attention}Enhancement{}"
+				}
+			},
+			j_entr_d8 = {
+				name = "D8",
+				text = {
+					"Probabilities are rolled with",
+					"a {C:green}Denominator{} lowered by {C:attention}#1#{}",
+				}
+			},
+			j_entr_d10 = {
+				name = "D10",
+				text = {
+					"Probabilities are rolled with",
+					"{C:attention}randomly{} offset {C:green}Numerators{} and {C:green}Denominators{}",
+				}
+			},
+			j_entr_d12 = {
+				name = "D12",
+				text = {
+					"{C:green}+#1#{} Numerator",
+					"for every {C:attention}held{} Consumable"
+				}
+			},
+			j_entr_d100 = {
+				name = "D100",
+				text = {
+					"Permanently {C:attention}randomize{} probabilities",
+					"when they are triggered"
 				}
 			},
 		},
@@ -3421,7 +3501,10 @@ local decs = {
 			k_rune_pack = "Rune Pack",
 			b_rune_cards = "Runes",
 
-			cry_set_music = "Music"
+			cry_set_music = "Music",
+
+			k_inactive = "Inactive!",
+			k_randomised = "Randomized!"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",
