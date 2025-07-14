@@ -1797,7 +1797,7 @@ local broadcast = {
         }
     end,
     calculate = function(self, card, context)
-        if context.after then
+        if context.after and not context.blueprint and not context.repetition then
             card.ability.extra = card.ability.extra + 1
             if card.ability.extra > #G.jokers.cards then
                 card.ability.extra = 1
