@@ -796,6 +796,14 @@ local decs = {
 					"each round is {C:attention}destroyed{}"
 				}
 			},
+			j_entr_broadcast = {
+				name = "Broadcast",
+				text = {
+					"Copies the {C:attention}#1#{}#2# Jokers effect",
+					"Increases by {C:attention}1{} when hand played",
+					"Resets after reaching your {C:attention}last{} Joker"
+				}
+			},
 		},
 		Blind = {
 			bl_entr_red = {

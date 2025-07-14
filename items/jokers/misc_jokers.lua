@@ -1729,6 +1729,52 @@ local memento_mori = {
     end,
 }
 
+
+local broadcast = {
+    order = 33,
+    object_type = "Joker",
+    key = "broadcast",
+    rarity = 3,
+    cost = 10,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 0, y = 5 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    config = {
+        extra = 1
+    },
+    immutable = true,
+    loc_vars = function(self, q, card)
+        local suffix = "th"
+        if card.ability.extra == 1 then suffix = "st" end
+        if card.ability.extra == 2 then suffix = "nd" end
+        if card.ability.extra == 3 then suffix = "rd" end
+        return {
+            vars = {
+                card.ability.extra,
+                suffix
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.after then
+            card.ability.extra = card.ability.extra + 1
+            if card.ability.extra > #G.jokers.cards then
+                card.ability.extra = 1
+            end
+        else
+            local ret = SMODS.blueprint_effect(card, G.jokers.cards[card.ability.extra], context)
+            return ret
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -1764,6 +1810,7 @@ return {
         nucleotide,
         afterimage,
         qu,
-        memento_mori
+        memento_mori,
+        broadcast
     }
 }
