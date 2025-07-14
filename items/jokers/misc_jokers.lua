@@ -1810,6 +1810,40 @@ local broadcast = {
     end,
 }
 
+local milk_chocolate = {
+    order = 34,
+    object_type = "Joker",
+    key = "milk_chocolate",
+    rarity = 2,
+    cost = 5,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    eternal_compat = true,
+    pos = { x = 3, y = 6 },
+    atlas = "jokers",
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = { key = 'tag_coupon', set = 'Tag' }
+        return { vars = { localize { type = 'name_text', set = 'Tag', key = 'tag_coupon' } } }
+    end,
+    pools = {["Food"] = true},
+    calculate = function(self, card, context)
+        if context.selling_self then
+            G.E_MANAGER:add_event(Event({
+                func = (function()
+                    add_tag(Tag('tag_coupon'))
+                    play_sound('generic1', 0.9 + math.random() * 0.1, 0.8)
+                    play_sound('holo1', 1.2 + math.random() * 0.1, 0.4)
+                    return true
+                end)
+            }))
+            return nil, true -- This is for Joker retrigger purposes
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -1846,6 +1880,7 @@ return {
         afterimage,
         qu,
         memento_mori,
-        broadcast
+        broadcast,
+        milk_chocolate
     }
 }

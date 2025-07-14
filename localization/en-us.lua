@@ -892,6 +892,15 @@ local decs = {
 					"{C:inactive}(Must have room){}"
 				}
 			},
+
+			j_entr_milk_chocolate = {
+                name = "Milk Chocolate",
+                text = {
+                    "Sell this card to",
+                    "create a free",
+                    "{C:attention}#1#",
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
