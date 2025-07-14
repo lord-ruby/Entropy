@@ -1553,7 +1553,7 @@ end
 
 local get_next_tagref = Cryptid.get_next_tag
 function Cryptid.get_next_tag(override)
-    local ref = get_next_tagref(override)
+    local ref = get_next_tagref and get_next_tagref(override)
     if next(SMODS.find_card('j_entr_dog_chocolate')) then 
         if not G.GAME.dog_tags then G.GAME.dog_tags = {} end
         if G.GAME.dog_tags[(override or G.GAME.blind_on_deck)..G.GAME.round_resets.ante] == nil then
