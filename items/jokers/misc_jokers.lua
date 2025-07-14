@@ -1844,6 +1844,39 @@ local milk_chocolate = {
     end,
 }
 
+local insurance_fraud = {
+    order = 35,
+    object_type = "Joker",
+    key = "insurance_fraud",
+    rarity = 2,
+    cost = 5,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+            "set_entr_inversions"
+        }
+    },
+    eternal_compat = true,
+    pos = { x = 1, y = 0 },
+    atlas = "placeholder",
+    calculate = function(self, card, context)
+        if context.selling_card and context.card.config.center.set == "Tarot" then
+            G.E_MANAGER:add_event(Event({
+                func = (function()
+                    if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit + 1 then
+                        SMODS.add_card{
+                            set="Fraud",
+                            area = G.consumeables
+                        }
+                    end
+                    return true
+                end)
+            }))
+            return nil, true -- This is for Joker retrigger purposes
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -1881,6 +1914,7 @@ return {
         qu,
         memento_mori,
         broadcast,
-        milk_chocolate
+        milk_chocolate,
+        insurance_fraud
     }
 }

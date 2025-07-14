@@ -901,6 +901,14 @@ local decs = {
                     "{C:attention}#1#",
                 },
             },
+
+			j_entr_insurance_fraud = {
+                name = "Insurance Fraud",
+                text = {
+                    "Create a random {C:red}Fraud{} card",
+					"when a {C:purple}Tarot{} card is sold"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
