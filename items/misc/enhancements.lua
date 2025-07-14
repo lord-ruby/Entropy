@@ -190,22 +190,67 @@ local ceramic = {
 		and context.cardarea == G.play
 		and not context.repetition
 		and not SMODS.is_eternal(card)
-		and not (card.will_shatter or card.destroyed or card.shattered) then
-			G.E_MANAGER:add_event(Event({
-				trigger = "immediate",
-				func = function()
-					
-					if (#G.consumeables.cards + G.GAME.consumeable_buffer <= G.consumeables.config.card_limit) then
+		and not (card.will_shatter or card.destroyed or card.shattered) and not card.activated then
+			if (#G.consumeables.cards + G.GAME.consumeable_buffer <= G.consumeables.config.card_limit) then
+				G.E_MANAGER:add_event(Event({
+					trigger = "immediate",
+					func = function()
 						SMODS.add_card{
 							area=G.consumeables,
 							set = "Consumeables"
 						}
+						card:juice_up(0.9, 0.9)
+						card:shatter()
+						return true
+					end,
+				}))
+			else
+				G.E_MANAGER:add_event(Event({
+					trigger = "immediate",
+					func = function()
+						card:juice_up(0.9, 0.9)
+						card:shatter()
+						return true
+					end,
+				}))
+			end
+			card.activated = true
+		end
+		if context.destroying_card and context.destroying_card == card and not card.activated then
+			if (#G.consumeables.cards + G.GAME.consumeable_buffer <= G.consumeables.config.card_limit) then
+				G.E_MANAGER:add_event(Event({
+					trigger = "immediate",
+					func = function()
+						SMODS.add_card{
+							area=G.consumeables,
+							set = "Consumeables"
+						}
+						return true
 					end
-					card:juice_up(0.9, 0.9)
-					card:shatter()
-					return true
-				end,
-			}))
+				}))
+			end
+			card.activated = true
+		end
+		if context.remove_playing_cards and not card.activated then
+			local check
+			for i, v in pairs(context.removed) do
+				if v == card then check = true end
+			end
+			if check then
+				if (#G.consumeables.cards + G.GAME.consumeable_buffer <= G.consumeables.config.card_limit) then
+					G.E_MANAGER:add_event(Event({
+						trigger = "immediate",
+						func = function()
+							SMODS.add_card{
+								area=G.consumeables,
+								set = "Consumeables"
+							}
+							return true
+						end
+					}))
+				end
+				card.activated = true
+			end
 		end
 	end,
 	entr_credits = {

@@ -1695,6 +1695,40 @@ local qu = {
     end,
 }
 
+local memento_mori = {
+    order = 32,
+    object_type = "Joker",
+    key = "memento_mori",
+    rarity = 2,
+    cost = 5,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = { x = 8, y = 4 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.setting_blind and not context.repetition and not context.blueprint then
+            local eval = function() return not card.ability.triggered and not G.RESET_JIGGLES end
+            juice_card_until(card, eval, true)
+        end
+        if context.destroy_card then
+            if not card.ability.triggered then
+                local dcard = G.play.cards[1]
+                if dcard and dcard == context.destroy_card then
+                    card.ability.triggered = true
+                    return {remove = not SMODS.is_eternal(dcard)}
+                end
+            end
+        end
+        if context.end_of_round and not context.individual then card.ability.triggered = false end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -1730,6 +1764,7 @@ return {
         dog_chocolate,
         nucleotide,
         afterimage,
-        qu
+        qu,
+        memento_mori
     }
 }

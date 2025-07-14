@@ -1720,7 +1720,7 @@ function ease_ante(mod)
         for i, v in pairs(G.GAME.runes or {}) do
             local ret = G.P_RUNES[v.key]:calculate(v, {entr_ante_change = mod})
             if ret and ret.ante_mod then
-                v:yep("+", G.C.DARK_EDITION, function()
+                v:yep("+", G.C.PURPLE, function()
                     return true
                 end)
                 mod = ret.ante_mod

@@ -37,7 +37,7 @@ local decs = {
 					"Has its own {C:attention}Rank{}, and",
 					"counts as every {C:attention}Suit{}",
 					"When scored {C:red}destroy{} this card",
-					"and create a {C:attention}random{} consumable"
+					"When destroyed create a {C:attention}random{} consumable"
 				}
 			}
 		},
@@ -782,6 +782,18 @@ local decs = {
 					"gains a random {C:red}Twisted{} card",
 					"as an enhancement when {C:attention}blind{}",
 					"is selected"
+				}
+			},
+			j_entr_memento_mori= {
+				name = {
+					"A Knee Slapping Joke Joker Title",
+					"Referring to how Entropy Joker",
+					"Effects are always kinda like that",
+					"(Memento Mori Entropic Edit)"
+				},
+				text = {
+					"The {C:attention}First{} played card",
+					"each round is {C:attention}destroyed{}"
 				}
 			},
 		},
