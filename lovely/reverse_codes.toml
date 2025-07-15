@@ -42,6 +42,7 @@ G.GAME.InterferencePayoutMod = nil
 if G.GAME.RedBlindStates then
         for i, v in pairs(G.GAME.RedBlindStates) do G.GAME.round_resets.blind_states[i] = v end
         G.GAME.RedBlindStates = nil
+        G.GAME.round_resets.blind_states['Red'] = nil
 end
 if G.GAME.round_resets.blind_states.Boss == "Defeated" then
         G.GAME.round_resets.blind_choices.Small = "bl_small"
