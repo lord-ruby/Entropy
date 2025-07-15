@@ -2010,6 +2010,21 @@ local opal = {
     end,
 }
 
+local inkbleed = {
+    order = 39,
+    object_type = "Joker",
+    key = "inkbleed",
+    rarity = 2,
+    cost = 4,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    eternal_compat = true,
+    pos = { x = 1, y = 0 },
+    atlas = "placeholder",
+}
 
 return {
     items = {
@@ -2052,6 +2067,7 @@ return {
         insurance_fraud,
         free_samples,
         fused_lens,
-        opal
+        opal,
+        inkbleed
     }
 }

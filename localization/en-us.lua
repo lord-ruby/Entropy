@@ -935,6 +935,14 @@ local decs = {
 					"{C:attention}Retrigger{} suitless cards"
                 },
             },
+			j_entr_inkbleed = {
+                name = "Inkbleed",
+                text = {
+                    "Cards that {C:attention}share{} a",
+					"{C:attention}Rank{} or {C:attention}Modification{}",
+					"count as eachothers suit"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

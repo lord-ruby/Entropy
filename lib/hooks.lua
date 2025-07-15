@@ -426,12 +426,27 @@ function SMODS.create_mod_badges(obj, badges)
 	end
 end
 
+function Entropy.shares_aspect(card1, card2)
+    if card1:get_id() == card2:get_id() then return true end
+    if card1.config.center.set ~= "Default" and card1.config.center.key == card2.config.center.key then return true end
+    if card1.edition and card2.edition and card1.edition.key == card2.edition.key then return true end
+    if card1.seal and card1.seal == card2.seal then return true end
+end
+
 local is_suitref = Card.is_suit
 function Card:is_suit(suit, bypass_debuff, flush_calc)
     if self.base.suit == "entr_nilsuit" and not next(SMODS.find_card("j_entr_opal")) then
         return false
     else
-       return is_suitref(self, suit, bypass_debuff, flush_calc)
+        if next(SMODS.find_card("j_entr_inkbleed")) then
+            local highlighted = self.highlighted
+            for i, v in pairs(highlighted and self.area.highlighted or self.area.cards) do
+                if v.base.suit == suit and Entropy.shares_aspect(self, v) then
+                    return true
+                end
+            end
+        end
+        return is_suitref(self, suit, bypass_debuff, flush_calc)
     end
 end
 local ref = Card.get_id
@@ -3550,5 +3565,3 @@ function Card:get_id(...)
     end
     return id
 end
-
-Entropy.p = SMODS.current_mod.path
