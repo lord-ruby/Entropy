@@ -142,7 +142,9 @@ local eternal_D6 = {
                 G.E_MANAGER:add_event(Event{
                     func = function()
                         local card = pseudorandom_element(G.shop_jokers.cards, pseudoseed("eternal_D6_card"))
-                        card:start_dissolve()
+                        if card then
+                            card:start_dissolve()
+                        end
                         return true
                     end
                 })
