@@ -2026,6 +2026,82 @@ local inkbleed = {
     atlas = "placeholder",
 }
 
+local roulette = {
+    order = 40,
+    object_type = "Joker",
+    key = "roulette",
+    rarity = 3,
+    cost = 9,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        mult_gain = 3,
+        extra = {
+            odds = 3,
+        },
+        card = 6,
+        immutable = {
+            curr_card = 0
+        }
+    },
+    eternal_compat = true,
+    pos = { x = 2, y = 0 },
+    atlas = "placeholder",
+    loc_vars = function(self, q, card)
+        local num, denom = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
+        return {
+            vars = {
+                num,
+                denom,
+                number_format(card.ability.mult_gain),
+                number_format(math.floor(card.ability.card))
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play then
+            if SMODS.pseudorandom_probability(
+                card,
+                "entr_roulette",
+                1,
+                card and card.ability.extra.odds or self.config.extra.odds
+            ) then
+                context.other_card.ability.perma_mult = context.other_card.ability.perma_mult + card.ability.mult_gain
+                return {
+                    message = localize("k_upgrade_ex"),
+                    colour = G.C.RED
+                }
+            end
+        end
+        if context.after then
+            local check
+            for i, v in pairs(G.play.cards) do
+                card.ability.immutable.curr_card = card.ability.immutable.curr_card + 1
+                if to_big(card.ability.immutable.curr_card) == to_big(math.floor(card.ability.card)) then
+                    G.E_MANAGER:add_event(Event{
+                        func = function()
+                            card.ability.immutable.curr_card = 0
+                            v:start_dissolve()
+                            v.ability.temporary2 = true
+                            return true
+                        end
+                    })
+                    check = true
+                end
+            end
+            if check then
+                return {
+                    message = localize("k_destroyed_ex"),
+                    colour = G.C.RED
+                }
+            end
+        end
+    end
+}
+
 return {
     items = {
         surreal,
@@ -2068,6 +2144,7 @@ return {
         free_samples,
         fused_lens,
         opal,
-        inkbleed
+        inkbleed,
+        roulette
     }
 }

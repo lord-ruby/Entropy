@@ -943,6 +943,14 @@ local decs = {
 					"count as eachothers suit"
                 },
             },
+			j_entr_roulette = {
+                name = "Roulette",
+                text = {
+                    "{C:green}#1# in #2#{} chance for",
+					"each scored card to gain {C:red}+#3#{} Bonus Mult",
+					"Destroy every {C:attention}#4#{}th scoring card"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
@@ -3715,7 +3723,8 @@ local decs = {
 			b_stat_Star = "Star",
 			b_stat_Omen = "Omen",
 			b_stat_Command = "Command",
-			k_upgrade_atomikos = "Destroyed",
+			k_upgrade_atomikos = "Destroyed!",
+			k_destroyed_ex = "Destroyed!",
 			k_new = "new();",
 			k_ascended_ex = "Ascended",
 
