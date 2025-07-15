@@ -2138,7 +2138,7 @@ local decs = {
 					"{C:gold}+#7#{} Ascension Power"
 				},
 			},
-			c_mp_supernova = {
+			c_entr_supernova = {
 				name = "Collapse",
 				text = {
 					"Remove #1# {C:gold}Ascension Power{} from",
