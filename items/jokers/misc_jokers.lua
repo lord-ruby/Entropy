@@ -1983,6 +1983,33 @@ local fused_lens = {
     end,
 }
 
+local opal = {
+    order = 38,
+    object_type = "Joker",
+    key = "opal",
+    rarity = 2,
+    cost = 7,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    eternal_compat = true,
+    pos = { x = 5, y = 6 },
+    atlas = "jokers",
+    calculate = function(self, card, context)
+        if context.repetition
+        and SMODS.has_no_suit(context.other_card, true)
+        then
+            return {
+                message = localize("k_again_ex"),
+                repetitions = 1,
+                card = card,
+            }
+        end
+    end,
+}
+
 
 return {
     items = {
@@ -2024,6 +2051,7 @@ return {
         milk_chocolate,
         insurance_fraud,
         free_samples,
-        fused_lens
+        fused_lens,
+        opal
     }
 }

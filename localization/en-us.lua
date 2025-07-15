@@ -927,6 +927,14 @@ local decs = {
 					"{C:inactive}(Must have room){}"
                 },
             },
+			j_entr_opal = {
+                name = "Opal",
+                text = {
+                    "Suitless cards may be used",
+					"to form poker hands",
+					"{C:attention}Retrigger{} suitless cards"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

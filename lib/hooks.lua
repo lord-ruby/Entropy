@@ -428,7 +428,7 @@ end
 
 local is_suitref = Card.is_suit
 function Card:is_suit(suit, bypass_debuff, flush_calc)
-    if self.base.suit == "entr_nilsuit" then
+    if self.base.suit == "entr_nilsuit" and not next(SMODS.find_card("j_entr_opal")) then
         return false
     else
        return is_suitref(self, suit, bypass_debuff, flush_calc)
@@ -3521,4 +3521,22 @@ function SMODS.pseudorandom_probability(trigger_obj, seed, base_numerator, base_
         if res then return res end
     end
     return probability_ref(trigger_obj, seed, base_numerator, base_denominator, identifier)
+end
+
+local has_no_suitref = SMODS.has_no_suit
+function SMODS.has_no_suit(card, bypass)
+    if next(SMODS.find_card("j_entr_opal"))  and not bypass then
+        return false
+    end
+    if card.base.suit == "entr_nilsuit" then return true end
+    return has_no_suitref(card)
+end
+
+local get_idref = Card.get_id
+function Card:get_id(...)
+    local id = get_idref(self, ...)
+    if next(SMODS.find_card("j_entr_opal")) then
+        if id ~= get_idref(self, ...) then return 15 end
+    end
+    return id
 end
