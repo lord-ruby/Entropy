@@ -509,32 +509,38 @@ local haglaz_indicator = {
     dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
         if context.after then
-            return {
+            local cards = G.play.cards
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                blocking = false,
                 func = function()
-                local cards = G.play.cards
-                G.E_MANAGER:add_event(Event{
-                    func = function()
-                        for i, v in pairs(cards) do
-                            v:start_dissolve()
-                        end
-                        return true
+                    for i, v in pairs(cards) do
+                        v:start_dissolve()
+                        v.ability.temporary2 = true
                     end
-                })
-            end}
+                    return true
+                end
+            })
+            return {
+                remove = true
+            }
         end
         if G.GAME.providence and context.pre_discard then
-            return {
+            local cards = G.hand.highlighted
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                blocking = false,
                 func = function()
-                local cards = G.hand.highlighted
-                G.E_MANAGER:add_event(Event{
-                    func = function()
-                        for i, v in pairs(cards) do
-                            v:start_dissolve()
-                        end
-                        return true
+                    for i, v in pairs(cards) do
+                        v:start_dissolve()
+                        v.ability.temporary2 = true
                     end
-                })
-            end}
+                    return true
+                end
+            })
+            return {
+                remove = true
+            }
         end
     end
 }
