@@ -38,7 +38,7 @@ SMODS.current_mod.custom_collection_tabs = function()
             tally = tally + 1
         end
     end
-    return {UIBox_button({button = "your_collection_rune_tags", label = {localize("k_rune_cards")}, count = {tally = tally, of = #G.P_CENTER_POOLS["Rune Tag"]}, minw = 5, id = "your_collection_rune_tags"})}
+    return {UIBox_button({button = "your_collection_rune_tags", label = {localize("b_rune_cards")}, count = {tally = tally, of = #G.P_CENTER_POOLS["Rune Tag"]}, minw = 5, id = "your_collection_rune_tags"})}
 end
 
 G.FUNCS.your_collection_rune_tags = function(e)
