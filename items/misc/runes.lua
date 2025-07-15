@@ -272,7 +272,6 @@ function Tag:rune_remove()
 		end
 	end
 end
-
 function Tag:remove_rune_from_game()
     local tag_key = nil
     for k, v in pairs(G.GAME.runes) do
@@ -290,7 +289,7 @@ function calculate_runes(context)
     }
     if not G.GAME.runes then G.GAME.runes = {} end
     for i, v in pairs(G.GAME.runes) do
-        if G.P_RUNES[v.key].calculate then
+        if v.key and G.P_RUNES[v.key] and G.P_RUNES[v.key].calculate then
             local ret = G.P_RUNES[v.key]:calculate(v, context)
             if ret then
                 if ret.nope then
