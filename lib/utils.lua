@@ -1747,6 +1747,6 @@ end
 
 function Entropy.has_rune(key)
     for i, v in pairs(G.GAME.runes or {}) do
-        if v.key == key then return true end
+        if v.key == key then return v end
     end
 end

@@ -113,9 +113,11 @@ local tocihc = {
                 G.HUD_blind:recalculate()
                 --card:juice_up()
             end
-            for i = 0, 10 do
-                if not tag.ability.shiny or tag.ability.shine == false then
-                    tag.ability.shiny=Cryptid.is_shiny()
+            if Cryptid.is_shiny then
+                for i = 0, 10 do
+                    if not tag.ability.shiny or tag.ability.shine == false then
+                        tag.ability.shiny=Cryptid.is_shiny()
+                    end
                 end
             end
             add_tag(tag)

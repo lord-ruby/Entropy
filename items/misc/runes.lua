@@ -337,15 +337,18 @@ function Entropy.get_random_rune(seed)
     return pseudorandom_element(runes, pseudoseed(seed or "wunjo_rune"))
 end
 
-function Entropy.create_rune(key, pos, indicator_key, order, credits, loc_vars)
+function Entropy.create_rune(key, pos, indicator_key, order, credits, loc_vars, spectral, soul_pos)
     return {
         object_type = "Consumable",
-        set = "Rune",
+        set = spectral and "Spectral" or "Rune",
         atlas = "rune_atlas",
         pos = pos,
+        soul_pos = soul_pos,
         entr_credits = credits,
         order = order,
         key = key,
+        soul_set = spectral and "Rune" or nil,
+        hidden = spectral,
         dependencies = {items = {"set_entr_runes"}},
         use = function()
             G.E_MANAGER:add_event(Event({
@@ -641,6 +644,32 @@ local jera_indicator = {
     end
 }
 
+local oss = Entropy.create_rune("oss", {x=3,y=3}, "rune_entr_oss", 6025, nil, nil, true, {x=4,y=3})
+local oss_indicator = {
+    object_type = "RuneTag",
+    order = 7025,
+    key = "oss",
+    atlas = "rune_atlas",
+    pos = {x=3,y=3},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.generate_rare_consumable and not rune.triggered then
+            return {
+                rune_break = true,
+                func = function()
+                    if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                        SMODS.add_card{
+                            set = "Rune",
+                            area = G.consumeables
+                        }
+                    end
+                end
+            }
+        end
+    end
+}
+
 return {
     items = {
         raido, raido_indicator,
@@ -650,5 +679,6 @@ return {
         haglaz, haglaz_indicator,
         naudiz, naudiz_indicator,
         jera, jera_indicator,
+        oss, oss_indicator
     }
 }

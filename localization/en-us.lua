@@ -2517,6 +2517,23 @@ local decs = {
 					"for {C:attention}all{} held Jokers"
 				}
 			},
+			c_entr_oss = {
+				name = "Rune of Oss",
+				text = {
+					"The next opened {C:attention}Booster Pack{}",
+					"will contain a {C:purple}Rare{} consumable",
+					"{C:inactive}(If Possible)"
+				}
+			},
+			c_entr_oss_providence = {
+				name = "Rune of Oss{C:purple}+{}",
+				text = {
+					"The next opened {C:attention}Booster Pack{}",
+					"will contain a {C:purple}Rare{} consumable",
+					"and a {C:purple}Rune{} is {C:purple,E:1}Generated{} when this occurs",
+					"{C:inactive}(If Possible)"
+				}
+			},
 		},
 		Stake = {
 			stake_entr_entropic = {
@@ -2915,6 +2932,24 @@ local decs = {
 					"Copies the next",
 					"{C:attention}used{} Consumable",
 					"{C:purple,E:1}Twice{}"
+				}
+			},
+
+			rune_entr_oss = {
+				name = "Oss",
+				text = {
+					"The next opened {C:attention}Booster Pack{}",
+					"will contain a {C:purple}Rare{} consumable",
+					"{C:inactive}(If Possible)"
+				}
+			},
+			rune_entr_oss_providence = {
+				name = "Oss{C:purple}+{}",
+				text = {
+					"The next opened {C:attention}Booster Pack{}",
+					"will contain a {C:purple}Rare{} consumable",
+					"and a {C:purple}Rune{} is {C:purple,E:1}Generated{} when this occurs",
+					"{C:inactive}(If Possible)"
 				}
 			},
 		},

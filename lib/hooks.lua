@@ -1529,6 +1529,27 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
         local element = "c_"..pseudorandom_element(Entropy.BlindC, pseudoseed(key_append or "parakmi"))
         forced_key = forced_key or element
     end
+    if soulable and not forced_key and Entropy.has_rune("rune_entr_oss") then
+        local valid = {}
+        for _, v in ipairs(SMODS.Consumable.legendaries) do
+            if (_type == v.type.key or _type == v.soul_set) and not (G.GAME.used_jokers[v.key] and not SMODS.showman(v.key) and not v.can_repeat_soul) and (not v.in_pool or (type(v.in_pool) ~= "function") or v:in_pool()) then
+                valid[#valid+1] = v
+            end
+        end
+        if (_type == 'Tarot' or _type == 'Spectral' or _type == 'Tarot_Planet') and
+        not (G.GAME.used_jokers['c_soul'] and not SMODS.showman('c_soul')) then
+            valid[#valid+1] = G.P_CENTERS.c_soul
+        end
+        if (_type == 'Planet' or _type == 'Spectral') and
+        not (G.GAME.used_jokers['c_black_hole'] and not SMODS.showman('c_black_hole')) then
+            valid[#valid+1] = G.P_CENTERS.c_black_hole
+        end
+        if #valid > 0 then
+            calculate_runes({generate_rare_consumable = true})
+            Entropy.has_rune("rune_entr_oss").triggered = true
+            return ref(_type, area, legendary, _rarity, skip_materialize, false, pseudorandom_element(valid, pseudoseed("rune_entr_oss")).key, key_append)
+        end
+    end
     local card = ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append)
     if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi"))) and not forced_key then 
         if not G.SETTINGS.paused and not G.GAME.akyrs_any_drag then
@@ -3422,13 +3443,6 @@ SMODS.Booster:take_ownership_by_kind('Arcana', {
 		if G.GAME.entr_diviner then
             if pseudorandom("entr_generate_rune") < 0.07 then rune = true end
         end
-        if pseudorandom("entr_rare_rune") < 0.03 then
-            rare_rune = true
-            rune = true
-        end
-        if rare_rune then
-            --generate Rune of Oss
-        end
         if rune then
             return create_card("Rune", G.pack_cards, nil, nil, true, true, nil, "spe")
         end
@@ -3450,13 +3464,6 @@ SMODS.Booster:take_ownership_by_kind('Celestial', {
         if pseudorandom("entr_generate_rune") < 0.12 then rune = true end
 		if G.GAME.entr_diviner then
             if pseudorandom("entr_generate_rune") < 0.07 then rune = true end
-        end
-        if pseudorandom("entr_rare_rune") < 0.03 then
-            rare_rune = true
-            rune = true
-        end
-        if rare_rune then
-            --generate Rune of Oss
         end
         if rune then
             return create_card("Rune", G.pack_cards, nil, nil, true, true, nil, "spe")

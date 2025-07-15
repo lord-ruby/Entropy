@@ -153,6 +153,12 @@ function create_inverted_card(area, seed)
             end
         end
     end
+    if Entropy.has_rune("rune_entr_oss") and not Entropy.has_rune("rune_entr_oss").triggered then
+        local c = pseudorandom_element(Entropy.RareInversions, pseudoseed(seed or "twisted_card_rare"))
+        calculate_runes({generate_rare_consumable = true})
+        Entropy.has_rune("rune_entr_oss").triggered = true
+        return create_card(G.P_CENTERS[c].set, area or G.pack_cards, nil, nil, true, true, c)
+    end
     if num - 0.003 <= 0 then
         local c = pseudorandom_element(Entropy.RareInversions, pseudoseed(seed or "twisted_card_rare"))
         return create_card(G.P_CENTERS[c].set, area or G.pack_cards, nil, nil, true, true, c)

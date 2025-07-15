@@ -330,6 +330,11 @@ function SMODS.injectItems(...)
         end
         G.entr_hooked = true
         SMODS.ObjectTypes.Dice:inject()
+        if (SMODS.Mods["Cryptid"] or {}).can_load then
+            Entropy.RareInversions[#Entropy.RareInversions+1] = "c_entr_define"
+            Entropy.RareInversions[#Entropy.RareInversions+1] = "c_entr_pulsar"
+            Entropy.RareInversions[#Entropy.RareInversions+1] = "c_entr_beyond"
+        end
     end
     if Cryptid.add_circus_rarity then
         --true here as the last argument means dont reload localisation, only the last one needs to reload so its more optimised this way
