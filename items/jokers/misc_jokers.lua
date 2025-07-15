@@ -1927,6 +1927,63 @@ local free_samples = {
     end,
 }
 
+local fused_lens = {
+    order = 37,
+    object_type = "Joker",
+    key = "fused_lens",
+    rarity = 2,
+    cost = 5,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+            "set_entr_inversions"
+        }
+    },
+    eternal_compat = true,
+    pos = { x = 1, y = 0 },
+    atlas = "placeholder",
+    config = {
+        extra = {
+            odds = 4
+        }
+    },
+    loc_vars = function(self, q, card)
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
+        return {vars = {
+            numerator,
+            denominator,
+        }} 
+    end,
+    calculate = function(self, card, context)
+        if context.after and SMODS.pseudorandom_probability(
+            card,
+            "entr_fused_lens",
+            1,
+            card and card.ability.extra.odds or self.config.extra.odds
+        ) then
+            local star_card
+            for i, v in pairs(G.P_CENTER_POOLS.Star) do
+                if v.config.handname == context.scoring_name then
+                    star_card = v.key
+                end
+            end
+            G.E_MANAGER:add_event(Event({
+                func = (function()
+                    if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit + 1  then
+                        SMODS.add_card{
+                            key=star_card,
+                            set = "Star",
+                            area = G.consumeables
+                        }
+                    end
+                    return true
+                end)
+            }))
+        end
+    end,
+}
+
+
 return {
     items = {
         surreal,
@@ -1966,6 +2023,7 @@ return {
         broadcast,
         milk_chocolate,
         insurance_fraud,
-        free_samples
+        free_samples,
+        fused_lens
     }
 }

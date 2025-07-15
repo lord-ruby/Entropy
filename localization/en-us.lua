@@ -919,6 +919,14 @@ local decs = {
 					"{C:inactive}(Must have room){}"
                 },
             },
+			j_entr_fused_lens = {
+                name = "Fused Lens",
+                text = {
+                    "{C:green}#1# in #2#{} chance to create",
+					"the {C:purple}Star{} card for your played hand",
+					"{C:inactive}(Must have room){}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
