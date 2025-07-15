@@ -329,6 +329,14 @@ function SMODS.calculate_context(context, return_table)
     return ret
 end
 
+function Entropy.get_random_rune(seed)
+    local runes = {}
+    for i, v in pairs(G.P_RUNES) do
+        runes[#runes+1]=v.key
+    end
+    return pseudorandom_element(runes, pseudoseed(seed or "wunjo_rune"))
+end
+
 function Entropy.create_rune(key, pos, indicator_key, order, credits, loc_vars)
     return {
         object_type = "Consumable",
@@ -459,6 +467,38 @@ local gebo_indicator = {
     end
 }
 
+local wunjo = Entropy.create_rune("wunjo", {x=0,y=1}, "rune_entr_wunjo", 6008)
+local wunjo_indicator = {
+    object_type = "RuneTag",
+    order = 7008,
+    key = "wunjo",
+    atlas = "rune_atlas",
+    pos = {x=0,y=1},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.using_consumeable then
+            return {
+                func = function()
+                    G.E_MANAGER:add_event(Event({
+                        trigger = "after",
+                        func = function()
+                            local tag1 = Entropy.get_random_rune("wunjo_rune")
+                            add_rune(Tag(tag1 and tag1 or "rune_entr_wunjo"))
+                            if G.GAME.providence then
+                                local tag2 = Entropy.get_random_rune("wunjo_rune")
+                                add_rune(Tag(tag2 and tag2 or "rune_entr_wunjo"))
+                            end
+                            return true
+                        end
+                    }))
+                end
+            }
+        end
+    end
+}
+
+
 local naudiz = Entropy.create_rune("naudiz", {x=2,y=1}, "rune_entr_naudiz", 6010)
 local naudiz_indicator = {
     object_type = "RuneTag",
@@ -559,6 +599,7 @@ return {
         raido, raido_indicator,
         kaunan, kaunan_indicator,
         gebo, gebo_indicator,
+        wunjo, wunjo_indicator,
         naudiz, naudiz_indicator,
         jera, jera_indicator,
     }

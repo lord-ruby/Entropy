@@ -2852,6 +2852,23 @@ local decs = {
 				}
 			},
 
+			rune_entr_wunjo = {
+				name = "Wunjo",
+				text = {
+					"Creates a {C:attention}random{} {C:purple}Rune{}",
+					"when the next consumable",
+					"is used"
+				}
+			},
+			rune_entr_wunjo_providence = {
+				name = "Wunjo{C:purple}+{}",
+				text = {
+					"Creates {C:purple}2{} {C:attention}random{} {C:purple}Runes{}",
+					"when the next consumable",
+					"is used"
+				}
+			},
+
 			rune_entr_naudiz = {
 				name = "Naudiz",
 				text = {
@@ -2933,6 +2950,23 @@ local decs = {
 					"the same type as the",
 					"next {C:attention}sold{} card",
 					"{C:purple,E:1}(May Overflow){}"
+				}
+			},
+
+			c_entr_wunjo = {
+				name = "Rune of Wunjo",
+				text = {
+					"Create a {C:attention}random{} {C:purple}Rune{}",
+					"when the next consumable",
+					"is used"
+				}
+			},
+			c_entr_wunjo_providence = {
+				name = "Rune of Wunjo{C:purple}+{}",
+				text = {
+					"Create {C:purple}2{} {C:attention}random{} {C:purple}Runes{}",
+					"when the next consumable",
+					"is used"
 				}
 			},
 
