@@ -2869,6 +2869,21 @@ local decs = {
 				}
 			},
 
+			rune_entr_haglaz = {
+				name = "Haglaz",
+				text = {
+					"{C:red}Destroys{} the next",
+					"played hand"
+				}
+			},
+			rune_entr_haglaz_providence = {
+				name = "Haglaz{C:purple}+{}",
+				text = {
+					"{C:red}Destroys{} the next",
+					"played or discarded hand"
+				}
+			},
+
 			rune_entr_naudiz = {
 				name = "Naudiz",
 				text = {
@@ -2967,6 +2982,21 @@ local decs = {
 					"Create {C:purple}2{} {C:attention}random{} {C:purple}Runes{}",
 					"when the next consumable",
 					"is used"
+				}
+			},
+
+			c_entr_haglaz = {
+				name = "Rune of Haglaz",
+				text = {
+					"{C:red}Destroy{} the next",
+					"played hand"
+				}
+			},
+			c_entr_haglaz_providence = {
+				name = "Rune of Haglaz{C:purple}+{}",
+				text = {
+					"{C:red}Destroy{} the next",
+					"played or discarded hand"
 				}
 			},
 

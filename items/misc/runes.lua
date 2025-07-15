@@ -498,6 +498,47 @@ local wunjo_indicator = {
     end
 }
 
+local haglaz = Entropy.create_rune("haglaz", {x=1,y=1}, "rune_entr_haglaz", 6009)
+local haglaz_indicator = {
+    object_type = "RuneTag",
+    order = 7009,
+    key = "haglaz",
+    atlas = "rune_atlas",
+    pos = {x=1,y=1},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.after then
+            return {
+                func = function()
+                local cards = G.play.cards
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        for i, v in pairs(cards) do
+                            v:start_dissolve()
+                        end
+                        return true
+                    end
+                })
+            end}
+        end
+        if G.GAME.providence and context.pre_discard then
+            return {
+                func = function()
+                local cards = G.hand.highlighted
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        for i, v in pairs(cards) do
+                            v:start_dissolve()
+                        end
+                        return true
+                    end
+                })
+            end}
+        end
+    end
+}
+
 
 local naudiz = Entropy.create_rune("naudiz", {x=2,y=1}, "rune_entr_naudiz", 6010)
 local naudiz_indicator = {
@@ -600,6 +641,7 @@ return {
         kaunan, kaunan_indicator,
         gebo, gebo_indicator,
         wunjo, wunjo_indicator,
+        haglaz, haglaz_indicator,
         naudiz, naudiz_indicator,
         jera, jera_indicator,
     }
