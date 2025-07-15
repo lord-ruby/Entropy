@@ -3540,3 +3540,5 @@ function Card:get_id(...)
     end
     return id
 end
+
+Entropy.p = SMODS.current_mod.path

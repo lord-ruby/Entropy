@@ -152,7 +152,7 @@ end
 local set_spritesref = Card.set_sprites
 function Card:set_sprites(_center, _front)
     set_spritesref(self,_center,_front)
-    if _center and _center.set_sprites then
+    if _center and _center.set_sprites and _center.set == "CBlind" then
         _center:set_sprites(self, _front)
     end
 end
@@ -161,7 +161,7 @@ end
 local card_hoverref = Card.draw
 function Card:draw(layer)
     local ref = card_hoverref(self, layer)    
-    if self.config.center.set_sprites and self.children and self.children.floating_sprite then
+    if self.config.center.set_sprites and self.children and self.children.floating_sprite and self.config.center.set == "CBlind" then
         local scale_mod = 0.6
         local rotate_mod = 0
 

@@ -57,7 +57,8 @@ local i = {
     "compat/finity",
     "compat/malverk",
     "compat/cryptid",
-    "compat/multiplayer"
+    "compat/multiplayer",
+    "compat/artbox"
 }
 Entropy.load_files(i)
 SMODS.current_mod.optional_features = {
