@@ -60,10 +60,17 @@ function Game:start_run(args)
     G.GAME.runes = {}
     if saveTable then
         local tags = saveTable.runes or {}
-        for k, v in ipairs(tags) do
-            local _tag = Tag(v)
-            add_rune(_tag, nil, true)
-        end
+        G.E_MANAGER:add_event(
+            Event{
+                func = function()
+                    for k, v in ipairs(tags) do
+                        local _tag = Tag(v)
+                        add_rune(_tag, nil, true)
+                    end
+                    return true
+                end
+            }
+        )
     end
     if not G.GAME.rune_rate then G.GAME.rune_rate = 0 end
     if G.GAME.cry_percrate and not G.GAME.cry_percrate["rune"] then G.GAME.cry_percrate["rune"] = 0 end

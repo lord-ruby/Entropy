@@ -210,6 +210,7 @@ function add_rune(_tag)
           major = G.HUD_runes[1] and G.HUD_runes[#G.HUD_runes] or G.ROOM_ATTACH}
     }
     discover_card(G.P_RUNES[_tag.key])
+    unlock_card(G.P_RUNES[_tag.key])
   
     for i = 1, #G.GAME.runes do
       G.GAME.runes[i]:apply_to_run({type = 'tag_add', tag = _tag})
