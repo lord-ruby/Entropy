@@ -644,6 +644,39 @@ local jera_indicator = {
     end
 }
 
+local dagaz = Entropy.create_rune("dagaz", {x=1,y=3}, "rune_entr_dagaz", 6023)
+local dagaz_indicator = {
+    object_type = "RuneTag",
+    order = 7023,
+    key = "dagaz",
+    atlas = "rune_atlas",
+    pos = {x=1,y=3},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.consumable_emplaced and not rune.triggered then
+            if Entropy.Inversion(context.consumeable) then
+                rune.triggered = true
+                return {
+                    --remove = true,
+                    func = function()
+                        context.consumeable:flip()
+                        context.consumeable:set_ability(Entropy.Inversion(context.consumeable))
+                        context.consumeable:flip()
+                        if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                            SMODS.add_card{
+                                set = "Twisted",
+                                area = G.consumeables
+                            }
+                        end
+                        return true
+                    end
+                }
+            end
+        end
+    end
+}
+
 local oss = Entropy.create_rune("oss", {x=3,y=3}, "rune_entr_oss", 6025, nil, nil, true, {x=4,y=3})
 local oss_indicator = {
     object_type = "RuneTag",
@@ -679,6 +712,7 @@ return {
         haglaz, haglaz_indicator,
         naudiz, naudiz_indicator,
         jera, jera_indicator,
+        dagaz, dagaz_indicator,
         oss, oss_indicator
     }
 }

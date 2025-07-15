@@ -2923,6 +2923,9 @@ function CardArea:emplace(card, location, stay_flipped)
         card.bypass_selfdestruct = true
     end
     if card then add_ref(self, card, location, stay_flipped) end
+    if self == G.consumeables then
+        calculate_runes({consumable_emplaced = true, consumeable=card})
+    end
 end
 
 local end_roundref = end_round

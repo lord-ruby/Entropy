@@ -2935,6 +2935,24 @@ local decs = {
 				}
 			},
 
+			rune_entr_dagaz = {
+				name = "Dagaz",
+				text = {
+					"Inverts the next",
+					"{C:attention}obtained{} Consumable"
+				}
+			},
+			rune_entr_dagaz_providence = {
+				name = "Dagaz{C:purple}+{}",
+				text = {
+					"Inverts the next",
+					"{C:attention}obtained{} Consumable",
+					"{C:purple,E:1}Create{} a random inverted",
+					"consumable when this occurs",
+					"{C:inactive}(Must have room){}"
+				}
+			},
+
 			rune_entr_oss = {
 				name = "Oss",
 				text = {
@@ -3068,6 +3086,24 @@ local decs = {
 					"Create {C:purple,E:1}Two{} {C:attention}copies{} of",
 					"the next {C:attention}used{}",
 					"Consumable"
+				}
+			},
+
+			c_entr_dagaz = {
+				name = "Rune of Dagaz",
+				text = {
+					"Invert the next",
+					"{C:attention}obtained{} Consumable"
+				}
+			},
+			c_entr_dagaz_providence = {
+				name = "Rune of Dagaz{C:purple}+{}",
+				text = {
+					"Invert the next",
+					"{C:attention}obtained{} Consumable and",
+					"{C:purple,E:1}Create{} a random inverted",
+					"consumable when this occurs",
+					"{C:inactive}(Must have room){}"
 				}
 			},
 		},
