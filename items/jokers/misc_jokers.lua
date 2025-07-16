@@ -1495,7 +1495,7 @@ local grotesque_joker = {
     end,
     entr_credits = {
         idea = {"crabus"},
-        art = {"Lfmoth"}
+        art = {"Lfmoth", "Lil. Mr. Slipstream"}
     }
 }
 
@@ -1728,6 +1728,9 @@ local memento_mori = {
         end
         if context.end_of_round and not context.individual then card.ability.triggered = false end
     end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    }
 }
 
 
@@ -2025,8 +2028,11 @@ local inkbleed = {
         }
     },
     eternal_compat = true,
-    pos = { x = 1, y = 0 },
-    atlas = "placeholder",
+    pos = { x = 7, y = 5 },
+    atlas = "jokers",
+    entr_credits = {
+        art = {"Lfmoth"}
+    }
 }
 
 local roulette = {
@@ -2162,6 +2168,9 @@ local debit_card = {
     calc_dollar_bonus = function(self, card)
         return card.ability.current
     end
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    }
 }
 
 return {

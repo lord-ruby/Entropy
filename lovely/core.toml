@@ -1496,18 +1496,3 @@ payload = '''
 G.GAME.tag_tally = math.max(self.tally or 0, G.GAME.tag_tally or 0) + 1
 '''
 match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = 'engine/text.lua'
-pattern = '''
-if self.strings[k].W > self.config.W then
-'''
-position = "before"
-payload = '''
-self.strings[k].W = to_number(self.strings[k].W)
-self.config.W = to_number(self.config.W)
-self.strings[k].H = to_number(self.strings[k].H)
-self.config.H = to_number(self.config.H)
-'''
-match_indent = true

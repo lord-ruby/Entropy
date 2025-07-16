@@ -500,7 +500,7 @@ local nyctophobia = {
     end,
     entr_credits = {
         idea = {"axo"},
-        art = {"axo"},
+        art = {"Lil. Mr. Slipstream"},
     }
 }
 
