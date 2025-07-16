@@ -329,10 +329,12 @@ function SMODS.calculate_context(context, return_table)
     return ret
 end
 
-function Entropy.get_random_rune(seed)
+function Entropy.get_random_rune(seed, no_hidden)
     local runes = {}
     for i, v in pairs(G.P_RUNES) do
-        runes[#runes+1]=v.key
+        if not v.hidden or not no_hidden then
+            runes[#runes+1]=v.key
+        end
     end
     return pseudorandom_element(runes, pseudoseed(seed or "wunjo_rune"))
 end
@@ -523,10 +525,10 @@ local wunjo_indicator = {
                     G.E_MANAGER:add_event(Event({
                         trigger = "after",
                         func = function()
-                            local tag1 = Entropy.get_random_rune("wunjo_rune")
+                            local tag1 = Entropy.get_random_rune("wunjo_rune", true)
                             add_rune(Tag(tag1 and tag1 or "rune_entr_wunjo"))
                             if G.GAME.providence then
-                                local tag2 = Entropy.get_random_rune("wunjo_rune")
+                                local tag2 = Entropy.get_random_rune("wunjo_rune", true)
                                 add_rune(Tag(tag2 and tag2 or "rune_entr_wunjo"))
                             end
                             return true
@@ -796,6 +798,7 @@ local oss_indicator = {
     pos = {x=3,y=3},
     atlas = "rune_indicators",
     dependencies = {items = {"set_entr_runes"}},
+    hidden = true,
     calculate = function(self, rune, context)
         if context.generate_rare_consumable and not rune.triggered then
             return {

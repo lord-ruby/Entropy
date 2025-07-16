@@ -2843,6 +2843,18 @@ local decs = {
 					"Draw {C:green}full deck{} to hand", "next round"
 				},
 			},
+			tag_entr_arcane = {
+				name = "Arcane Tag",
+				text = {
+					"Obtain a random {C:purple}Rune{}"
+				},
+			},
+			tag_entr_ascendant_arcane = {
+				name = "{C:gold}Arcane Tag{}",
+				text = {
+					"Obtain {C:attention}Two{} random {C:purple}Runes{}"
+				},
+			},
 		},
 		["Rune Tag"] = {
 			rune_entr_fehu = {

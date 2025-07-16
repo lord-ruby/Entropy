@@ -345,6 +345,32 @@ local kaleidoscopic = {
 	min_ante = 4,
 }
 
+local arcane = {
+	object_type = "Tag",
+	order = -4,
+	dependencies = {
+	  items = {
+		"set_entr_tags"
+	  }
+	},
+	atlas = "tags",
+	pos = { x = 3, y = 1 },
+	key = "arcane",
+	name = "entr-Arcane Tag",
+	config = { type = "immediate" },
+	apply = function(self, tag, context)
+		if context.type == "immediate" then
+			tag:yep("+", G.C.GOLD, function()
+				add_rune(Tag(Entropy.get_random_rune("entr_arcane_tag", true)))
+				return true
+			end)
+			tag.triggered = true
+			return true
+		end
+	end,
+	shiny_atlas = "entr_shiny_tags",
+}
+
 
 --ascendant tags
 
@@ -1635,6 +1661,36 @@ local effarcire = {
 	shiny_atlas = "entr_shiny_asc_tags",
 }
 
+local asc_arcane = {
+	object_type = "Tag",
+	order = 37,
+	dependencies = {
+	  items = {
+		"set_entr_tags",
+		"j_entr_exousia"
+	  }
+	},
+	atlas = "ascendant_tags",
+	pos = { x = 7, y = 1 },
+	key = "ascendant_arcane",
+	name = "entr-Arcane Tag",
+	config = { type = "immediate" },
+	in_pool = function() return false end or nil,
+	apply = function(self, tag, context)
+		if context.type == "immediate" then
+			tag:yep("+", G.C.GOLD, function()
+				add_rune(Tag(Entropy.get_random_rune("entr_arcane_tag")))
+				add_rune(Tag(Entropy.get_random_rune("entr_arcane_tag")))
+				return true
+			end)
+			tag.triggered = true
+			return true
+		end
+	end,
+	shiny_atlas = "entr_shiny_asc_tags",
+}
+
+
 return {
 	items = {
 		dog,
@@ -1693,6 +1749,8 @@ return {
 		freaky_asc,
 		neon_asc,
 		lowres_asc,
-		kaleidoscopic_asc
+		kaleidoscopic_asc,
+		arcane,
+		asc_arcane
 	}
 }
