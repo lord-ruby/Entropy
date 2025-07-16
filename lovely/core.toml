@@ -1496,3 +1496,15 @@ payload = '''
 G.GAME.tag_tally = math.max(self.tally or 0, G.GAME.tag_tally or 0) + 1
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'engine/text.lua'
+pattern = '''
+if self.strings[k].W > self.config.W then
+'''
+position = "at"
+payload = '''
+if to_number(self.strings[k].W) > to_number(self.config.W) then
+'''
+match_indent = true
