@@ -644,6 +644,79 @@ local jera_indicator = {
     end
 }
 
+local ihwaz = Entropy.create_rune("ihwaz", {x=5,y=1}, "rune_entr_ihwaz", 6013)
+local ihwaz_indicator = {
+    object_type = "RuneTag",
+    order = 7013,
+    key = "ihwaz",
+    atlas = "rune_atlas",
+    pos = {x=5,y=1},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.before then
+            local card = G.play.cards[1]
+            if card then
+                return {
+                    func = function()
+                        if G.GAME.providence then
+                            local edition = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
+                                return G.GAME.banned_keys[e.key] or e.no_doe
+                            end).key
+                            local enhancement_type = "Enhanced"
+                            local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("ihwaz")).key
+                            while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
+                                enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("ihwaz")).key
+                            end
+                            local seal = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("ihwaz"),function(e)
+                                return G.GAME.banned_keys[e.key] or e.no_doe
+                            end).key
+                            card:flip()
+                            card:set_edition(edition)
+                            card:set_ability(G.P_CENTERS[enhancement])
+                            card:set_seal(seal)
+                            SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("ihwaz")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("entropy")))
+                            card:flip()
+                        else
+                            local mtype = pseudorandom_element({"Enhancement", "Edition", "Seal", "Base"}, pseudoseed("ihwaz"))
+        
+                            if mtype == "Enhancement" then
+                                card:set_edition(edition)
+                                local edition = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
+                                    return G.GAME.banned_keys[e.key] or e.no_doe
+                                end).key
+                                card:juice_up()
+                            end
+                            if mtype == "Enhancement" then
+                                local enhancement_type = "Enhanced"
+                                local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("ihwaz")).key
+                                while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
+                                    enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("ihwaz")).key
+                                end
+                                card:flip()
+                                card:set_ability(G.P_CENTERS[enhancement])
+                                card:flip()
+                            end
+                            if mtype == "Seal" then
+                                local seal = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("ihwaz"),function(e)
+                                    return G.GAME.banned_keys[e.key] or e.no_doe
+                                end).key
+                                card:set_seal(seal)
+                                card:juice_up()
+                            end
+                            if mtype == "Base" then
+                                card:flip()
+                                SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("ihwaz")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("entropy")))
+                                card:flip()
+                            end
+                        end
+                    end
+                }
+            end
+        end
+    end
+}
+
 local dagaz = Entropy.create_rune("dagaz", {x=1,y=3}, "rune_entr_dagaz", 6023)
 local dagaz_indicator = {
     object_type = "RuneTag",
@@ -712,6 +785,7 @@ return {
         haglaz, haglaz_indicator,
         naudiz, naudiz_indicator,
         jera, jera_indicator,
+        ihwaz, ihwaz_indicator,
         dagaz, dagaz_indicator,
         oss, oss_indicator
     }

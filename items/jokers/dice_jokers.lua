@@ -205,6 +205,8 @@ local D7 = {
     calculate = function(self, card, context)
         if context.retrigger_joker_check
         and not context.retrigger_joker
+        and context.other_card
+        and context.other_card.config
         and context.other_card.config.center.key ~= "j_entr_d7"
         and Entropy.probability_cards[context.other_card.config.center.key] 
         and SMODS.pseudorandom_probability(
@@ -222,6 +224,8 @@ local D7 = {
         end
 
         if context.repetition
+        and context.other_card
+        and context.other_card.config
         and Entropy.probability_cards[context.other_card.config.center.key] 
         and SMODS.pseudorandom_probability(
             card,

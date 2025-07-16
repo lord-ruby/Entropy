@@ -2959,6 +2959,21 @@ local decs = {
 				}
 			},
 
+			rune_entr_ihwaz = {
+				name = "Ihwaz",
+				text = {
+					"Randomizes one aspect of",
+					"the next {C:attention}played{} card"
+				}
+			},
+			rune_entr_ihwaz_providence = {
+				name = "Ihwaz{C:purple}+{}",
+				text = {
+					"{C:purple,E:1}Fully{} Randomizes",
+					"the next {C:attention}played{} card"
+				}
+			},
+
 			rune_entr_dagaz = {
 				name = "Dagaz",
 				text = {
@@ -3110,6 +3125,20 @@ local decs = {
 					"Create {C:purple,E:1}Two{} {C:attention}copies{} of",
 					"the next {C:attention}used{}",
 					"Consumable"
+				}
+			},
+			c_entr_ihwaz = {
+				name = "Rune of Ihwaz",
+				text = {
+					"Randomize one aspect of",
+					"the next {C:attention}played{} card"
+				}
+			},
+			c_entr_ihwaz_providence = {
+				name = "Rune of Jera{C:purple}+{}",
+				text = {
+					"{C:purple,E:1}Fully{} Randomize the",
+					"next {C:attention}played{} card"
 				}
 			},
 
