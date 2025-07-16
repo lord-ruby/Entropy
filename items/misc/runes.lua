@@ -386,6 +386,32 @@ function Entropy.create_rune(key, pos, indicator_key, order, credits, loc_vars, 
     }
 end
 
+local fehu = Entropy.create_rune("fehu", {x=0,y=0}, "rune_entr_fehu", 6001)
+local fehu_indicator = {
+    object_type = "RuneTag",
+    order = 7001,
+    key = "fehu",
+    atlas = "rune_atlas",
+    pos = {x=0,y=0},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.selling_card then
+            return {
+                func = function()
+                    local mult = 0.5
+                    if G.GAME.providence then
+                        mult = 1
+                    end
+                    Entropy.FlipThen(G.jokers.cards, function(card)
+                        card.sell_cost = card.sell_cost + context.card.sell_cost * mult
+                    end)
+                end,
+            }
+        end
+    end
+}
+
 local raido = Entropy.create_rune("raido", {x=4,y=0}, "rune_entr_raido", 6005)
 local raido_indicator = {
     object_type = "RuneTag",
@@ -778,6 +804,7 @@ local oss_indicator = {
 
 return {
     items = {
+        fehu, fehu_indicator,
         raido, raido_indicator,
         kaunan, kaunan_indicator,
         gebo, gebo_indicator,

@@ -2845,6 +2845,22 @@ local decs = {
 			},
 		},
 		["Rune Tag"] = {
+			rune_entr_fehu = {
+				name = "Fehu",
+				text = {
+					"The next {C:attention}sold{} card",
+					"adds {C:attention}Half{} its sell",
+					"value to your Jokers"
+				}
+			},
+			rune_entr_fehu_providence = {
+				name = "Fehu{C:purple}+{}",
+				text = {
+					"The next {C:attention}sold{} card",
+					"adds its {C:purple,E:1}Full{} sell",
+					"value to your Jokers"
+				}
+			},
 			rune_entr_raido = {
 				name = "Raido",
 				text = {
@@ -3011,6 +3027,22 @@ local decs = {
 			},
 		},
 		Rune = {
+			c_entr_fehu = {
+				name = "Rune of Fehu",
+				text = {
+					"The next {C:attention}sold{} card",
+					"adds {C:attention}Half{} its sell",
+					"value to your Jokers"
+				}
+			},
+			c_entr_fehu_providence = {
+				name = "Rune of Fehu{C:purple}+{}",
+				text = {
+					"The next {C:attention}sold{} card",
+					"adds its {C:purple,E:1}Full{} sell",
+					"value to your Jokers"
+				}
+			},
 			c_entr_raido = {
 				name = "Rune of Raido",
 				text = {
