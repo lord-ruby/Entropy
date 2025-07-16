@@ -1985,6 +1985,9 @@ local fused_lens = {
                     return true
                 end)
             }))
+            return {
+                message = "+1 "..localize("k_star")
+            }
         end
     end,
 }
@@ -2167,7 +2170,7 @@ local debit_card = {
     end,
     calc_dollar_bonus = function(self, card)
         return card.ability.current
-    end
+    end,
     entr_credits = {
         art = {"Lil. Mr. Slipstream"}
     }
