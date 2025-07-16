@@ -1829,8 +1829,9 @@ local milk_chocolate = {
         return { vars = { localize { type = 'name_text', set = 'Tag', key = 'tag_coupon' } } }
     end,
     pools = {["Food"] = true},
+    demicoloncompat = true,
     calculate = function(self, card, context)
-        if context.selling_self then
+        if context.selling_self or context.forcetrigger then
             G.E_MANAGER:add_event(Event({
                 func = (function()
                     add_tag(Tag('tag_coupon'))
@@ -1859,8 +1860,9 @@ local insurance_fraud = {
     eternal_compat = true,
     pos = { x = 1, y = 0 },
     atlas = "placeholder",
+    demicoloncompat = true,
     calculate = function(self, card, context)
-        if context.selling_card and context.card.config.center.set == "Tarot" then
+        if (context.selling_card and context.card.config.center.set == "Tarot") or context.forcetrigger then
             G.E_MANAGER:add_event(Event({
                 func = (function()
                     if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit + 1  then
@@ -1954,13 +1956,14 @@ local fused_lens = {
             denominator,
         }} 
     end,
+    demicoloncompat = true,
     calculate = function(self, card, context)
-        if context.after and SMODS.pseudorandom_probability(
+        if (context.after and SMODS.pseudorandom_probability(
             card,
             "entr_fused_lens",
             1,
             card and card.ability.extra.odds or self.config.extra.odds
-        ) then
+        )) or context.forcetrigger then
             local star_card
             for i, v in pairs(G.P_CENTER_POOLS.Star) do
                 if v.config.handname == context.scoring_name then
@@ -2122,6 +2125,7 @@ local debit_card = {
         current_spent = 0,
         current = 0
     },
+    demicoloncompat = true,
     loc_vars = function(self, q, card)
         return {
             vars = {
@@ -2132,6 +2136,7 @@ local debit_card = {
             }
         }
     end,
+    demicoloncompat = true,
     calculate = function(self, card, context)
         if context.ease_dollars and to_big(context.ease_dollars) < to_big(0) and not context.blueprint then
             card.ability.current_spent = card.ability.current_spent - context.ease_dollars
@@ -2149,6 +2154,9 @@ local debit_card = {
             return {
                 message = number_format(card.ability.current_spent).."/"..number_format(card.ability.needed)
             }
+        end
+        if context.forcetrigger then
+            ease_dollars(card.ability.current)
         end
     end,
     calc_dollar_bonus = function(self, card)
