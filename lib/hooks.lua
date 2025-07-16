@@ -2350,21 +2350,24 @@ G.FUNCS.hand_text_UI_set = function(e)
 end
 
 local add_tagref = add_tag
-function add_tag(_tag)
-    if type(_tag) == "table" and not _tag.ability.added_to_deck then
-        for i, v in pairs(SMODS.get_card_areas('jokers')) do
-            for a, card in pairs(v.cards) do
-                local res = card:calculate_joker({tag_create = true, tag = _tag})
-                if res and res.tag then
-                    _tag = res.tag
+function add_tag(_tag, ...)
+    if type(_tag) == "table" then
+        if not _tag.ability.added_to_deck then
+            for i, v in pairs(SMODS.get_card_areas('jokers')) do
+                for a, card in pairs(v.cards) do
+                    local res = card:calculate_joker({tag_create = true, tag = _tag})
+                    if res and res.tag then
+                        _tag = res.tag
+                    end
                 end
             end
         end
+        add_tagref(_tag, ...)
+        _tag.ability.added_to_deck = true
+        if not G.GAME.autostart_tags then G.GAME.autostart_tags = {} end
+    else    
+        add_tagref(_tag, ...)
     end
-    add_tagref(_tag)
-    _tag.ability.added_to_deck = true
-    if not G.GAME.autostart_tags then G.GAME.autostart_tags = {} end
-    if not G.GAME.autostart_tags[_tag.key] then G.GAME.autostart_tags[_tag.key] = _tag.key end
 end
 
 local disable_ref = Blind.disable
