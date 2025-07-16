@@ -3457,9 +3457,9 @@ SMODS.Booster:take_ownership_by_kind('Arcana', {
 	create_card = function(self, card, i)
         local rune
         local rare_rune
-        if pseudorandom("entr_generate_rune") < 0.12 then rune = true end
+        if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
 		if G.GAME.entr_diviner then
-            if pseudorandom("entr_generate_rune") < 0.07 then rune = true end
+            if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
         end
         if rune then
             return create_card("Rune", G.pack_cards, nil, nil, true, true, nil, "spe")
@@ -3479,9 +3479,9 @@ SMODS.Booster:take_ownership_by_kind('Celestial', {
 	create_card = function(self, card, i)
         local rune
         local rare_rune
-        if pseudorandom("entr_generate_rune") < 0.12 then rune = true end
+        if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
 		if G.GAME.entr_diviner then
-            if pseudorandom("entr_generate_rune") < 0.07 then rune = true end
+            if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
         end
         if rune then
             return create_card("Rune", G.pack_cards, nil, nil, true, true, nil, "spe")
