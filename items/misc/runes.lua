@@ -412,6 +412,17 @@ local fehu_indicator = {
     end
 }
 
+local uruz = Entropy.create_rune("uruz", {x=1,y=0}, "rune_entr_uruz", 6002)
+local uruz_indicator = {
+    object_type = "RuneTag",
+    order = 7002,
+    key = "uruz",
+    atlas = "rune_atlas",
+    pos = {x=1,y=0},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+}
+
 local raido = Entropy.create_rune("raido", {x=4,y=0}, "rune_entr_raido", 6005)
 local raido_indicator = {
     object_type = "RuneTag",
@@ -805,6 +816,7 @@ local oss_indicator = {
 return {
     items = {
         fehu, fehu_indicator,
+        uruz, uruz_indicator,
         raido, raido_indicator,
         kaunan, kaunan_indicator,
         gebo, gebo_indicator,

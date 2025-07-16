@@ -37,7 +37,20 @@ target = "functions/state_events.lua"
 pattern = "add_round_eval_row({name = 'bottom', dollars = dollars})"
 position = "before"
 payload = '''
-dollars = dollars * (G.GAME.InterferencePayoutMod or 1)
+local mult = G.GAME.providence and 2 or 1.5
+mult = mult * #Entropy.find_runes("rune_entr_uruz")
+if to_big(mult) <= to_big(0) then mult = 1 end
+dollars = dollars * (G.GAME.InterferencePayoutMod or 1) * mult
+for i, v in pairs(Entropy.find_runes("rune_entr_uruz")) do
+    G.E_MANAGER:add_event(Event{
+        func = function()
+                v:yep("+", G.C.PURPLE, function()
+                    return true
+                end)
+            return true
+        end
+    })
+end
 G.GAME.InterferencePayoutMod = nil
 if G.GAME.RedBlindStates then
         for i, v in pairs(G.GAME.RedBlindStates) do G.GAME.round_resets.blind_states[i] = v end

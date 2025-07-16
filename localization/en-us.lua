@@ -2861,6 +2861,22 @@ local decs = {
 					"value to your Jokers"
 				}
 			},
+			rune_entr_uruz = {
+				name = "Uruz",
+				text = {
+					"Increases the next",
+					"{C:attention}payout{} by {X:gold,C:white}50%{}",
+					"{C:inactive}(Stacks additively){}"
+				}
+			},
+			rune_entr_uruz_providence = {
+				name = "Uruz{C:purple}+{}",
+				text = {
+					"Increases the next",
+					"{C:attention}payout{} by {X:purple,C:white,E:1}100%{}",
+					"{C:inactive}(Stacks additively){}"
+				}
+			},
 			rune_entr_raido = {
 				name = "Raido",
 				text = {
@@ -3041,6 +3057,22 @@ local decs = {
 					"The next {C:attention}sold{} card",
 					"adds its {C:purple,E:1}Full{} sell",
 					"value to your Jokers"
+				}
+			},
+			c_entr_uruz = {
+				name = "Rune of Uruz",
+				text = {
+					"The next {C:attention}payout{} is",
+					"increased by {X:gold,C:white}50%{}",
+					"{C:inactive}(Stacks additively){}"
+				}
+			},
+			c_entr_uruz_providence = {
+				name = "Rune of Uruz{C:purple}+{}",
+				text = {
+					"The next {C:attention}payout{} is",
+					"increased by {X:purple,C:white,E:1}100%{}",
+					"{C:inactive}(Stacks additively){}"
 				}
 			},
 			c_entr_raido = {

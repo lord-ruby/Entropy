@@ -1754,13 +1754,15 @@ function ease_ante(mod)
             end
         end
         for i, v in pairs(G.GAME.runes or {}) do
-            local ret = G.P_RUNES[v.key]:calculate(v, {entr_ante_change = mod})
-            if ret and ret.ante_mod then
-                v:yep("+", G.C.PURPLE, function()
-                    return true
-                end)
-                mod = ret.ante_mod
-                break;
+            if G.P_RUNES[v.key].calculate then
+                local ret = G.P_RUNES[v.key]:calculate(v, {entr_ante_change = mod})
+                if ret and ret.ante_mod then
+                    v:yep("+", G.C.PURPLE, function()
+                        return true
+                    end)
+                    mod = ret.ante_mod
+                    break;
+                end
             end
         end
         ease_anteref(mod * mult, a)
@@ -3573,4 +3575,29 @@ local ed = ease_dollars
 function ease_dollars(mod, x)
     ed(mod, x)
     SMODS.calculate_context{ ease_dollars = mod }
+end
+
+local rate_ref = Cryptid.interest_rate
+function Cryptid.interest_rate()
+	return rate_ref and rate_ref() or G.GAME.modifiers.cry_interest_rate or 5
+end
+
+local interest_ref = Cryptid.get_interest
+function Cryptid.get_interest(add_rows)
+    if interest_ref then
+        local interest = interest_ref(add_rows)
+        return interest
+    else    
+        local rate = Cryptid.interest_rate()
+        local interest = math.min(math.floor(G.GAME.dollars / rate), G.GAME.interest_cap / 5)
+        interst = interest * G.GAME.interest_amount
+        for _, a in pairs(SMODS.get_card_areas("jokers")) do
+            for i, c in pairs(a.cards) do
+                if c.config.center.cry_calc_interest then
+                    interest = c.config.center:cry_calc_interest(c, interest)
+                end
+            end
+        end
+        return interest
+    end
 end
