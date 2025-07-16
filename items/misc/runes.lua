@@ -268,7 +268,7 @@ function Tag:rune_remove()
 
     if #G.HUD_runes >= 13 then
 		for i = 2, #G.HUD_runes do
-			G.HUD_runes[i].config.offset.y = -0.9 + 0.9 * 13 / #G.HUD_tags
+			G.HUD_runes[i].config.offset.y = -0.9 + 0.9 * 13 / #G.HUD_runes
 		end
 	end
 end
