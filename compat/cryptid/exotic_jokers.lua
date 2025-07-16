@@ -33,7 +33,7 @@ local stillicidium = {
                             --v:start_dissolve()#
                             local v2 = G.jokers.cards[i]
                             local index = ReductionIndex(v2, "Joker")-1
-                            while G.P_CENTER_POOLS["Joker"][index].no_doe or G.P_CENTER_POOLS["Joker"].no_collection do
+                            while G.P_CENTER_POOLS["Joker"][index] and G.P_CENTER_POOLS["Joker"][index].no_doe or G.P_CENTER_POOLS["Joker"].no_collection do
                                 index = index - 1
                             end
                             if index < 1 then index = 1 end
