@@ -3135,7 +3135,7 @@ local decs = {
 				}
 			},
 			c_entr_ihwaz_providence = {
-				name = "Rune of Jera{C:purple}+{}",
+				name = "Rune of Ihwaz{C:purple}+{}",
 				text = {
 					"{C:purple,E:1}Fully{} Randomize the",
 					"next {C:attention}played{} card"
