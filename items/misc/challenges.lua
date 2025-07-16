@@ -56,6 +56,7 @@ function Game:start_run(args)
         --     G.hand_text_area[i] = G.HUD:get_UIE_by_ID(v.config.id)
         -- end
     end
+    G.HUD_runes = {}
     local saveTable = args.savetext or nil
     G.GAME.runes = {}
     if saveTable then

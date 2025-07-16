@@ -663,7 +663,7 @@ local dagaz_indicator = {
                         context.consumeable:flip()
                         context.consumeable:set_ability(Entropy.Inversion(context.consumeable))
                         context.consumeable:flip()
-                        if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                        if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit and G.GAME.providence then
                             SMODS.add_card{
                                 set = "Twisted",
                                 area = G.consumeables
