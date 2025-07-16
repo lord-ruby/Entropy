@@ -1503,8 +1503,11 @@ target = 'engine/text.lua'
 pattern = '''
 if self.strings[k].W > self.config.W then
 '''
-position = "at"
+position = "before"
 payload = '''
-if to_number(self.strings[k].W) > to_number(self.config.W) then
+self.strings[k].W = to_number(self.strings[k].W)
+self.config.W = to_number(self.config.W)
+self.strings[k].H = to_number(self.strings[k].H)
+self.config.H = to_number(self.config.H)
 '''
 match_indent = true
