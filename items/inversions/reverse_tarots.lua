@@ -588,7 +588,7 @@ local whetstone = {
     inversion = "c_wheel_of_fortune",
     pos = {x=0,y=1},
     use = function(self, card2)
-        if SMODS.pseudorandom_probability(card2, 'whetstone', 1 * number, card2.ability.odds) or G.cry_force_use then
+        if SMODS.pseudorandom_probability(card2, 'whetstone', 1, card2.ability.odds) or G.cry_force_use then
             local cards = Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select)
             Entropy.FlipThen(cards, function(card)
                 local enh = Entropy.UpgradeEnhancement(card, false, {m_entr_disavowed = true})
