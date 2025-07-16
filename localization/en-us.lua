@@ -951,6 +951,14 @@ local decs = {
 					"Destroy every {C:attention}#4#{}th scoring card"
                 },
             },
+			j_entr_debit_card = {
+                name = "Debit Card",
+                text = {
+                    "Earn {C:money}$#1#{} for every",
+					"{C:money}$#2#{} {C:inactive}[$#3#]{} spent",
+					"{C:inactive}(Currently {C:money}$#4#{C:inactive}){}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

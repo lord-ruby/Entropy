@@ -2102,6 +2102,60 @@ local roulette = {
     end
 }
 
+local debit_card = {
+    order = 41,
+    object_type = "Joker",
+    key = "debit_card",
+    rarity = 2,
+    cost = 7,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    eternal_compat = true,
+    pos = { x = 6, y = 6 },
+    atlas = "jokers",
+    config = {
+        amount = 1,
+        needed = 25,
+        current_spent = 0,
+        current = 0
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                number_format(card.ability.amount),
+                number_format(card.ability.needed),
+                number_format(card.ability.needed-card.ability.current_spent),
+                number_format(card.ability.current),
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.ease_dollars and to_big(context.ease_dollars) < to_big(0) and not context.blueprint then
+            card.ability.current_spent = card.ability.current_spent - context.ease_dollars
+            local check 
+            while to_big(card.ability.current_spent) >= to_big(card.ability.needed) do
+                card.ability.current_spent = card.ability.current_spent - card.ability.needed
+                card.ability.current = card.ability.current + card.ability.amount
+                check = true
+            end
+            if check then
+                return {
+                    message = localize("k_upgrade_ex")
+                }
+            end
+            return {
+                message = number_format(card.ability.current_spent).."/"..number_format(card.ability.needed)
+            }
+        end
+    end,
+    calc_dollar_bonus = function(self, card)
+        return card.ability.current
+    end
+}
+
 return {
     items = {
         surreal,
@@ -2145,6 +2199,7 @@ return {
         fused_lens,
         opal,
         inkbleed,
-        roulette
+        roulette,
+        debit_card
     }
 }

@@ -3565,3 +3565,9 @@ function Card:get_id(...)
     end
     return id
 end
+
+local ed = ease_dollars
+function ease_dollars(mod, x)
+    ed(mod, x)
+    SMODS.calculate_context{ ease_dollars = mod }
+end
