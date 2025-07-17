@@ -14,7 +14,8 @@ local ruby = {
             if G.GAME.blind_on_deck == "Boss" then
                 SMODS.add_card{
                     key = "c_cry_pointer",
-                    area = G.consumeables
+                    area = G.consumeables,
+                    key_append = "entr_zenith"
                 }
             end
         end

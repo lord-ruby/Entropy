@@ -130,7 +130,8 @@ local containment = {
                 SMODS.add_card({
                 rarity = "entr_entropic",
                 area = G.jokers,
-                set = "Joker"
+                set = "Joker",
+                key_append = "entr_doc_combo"
                 })
                 return true
             end

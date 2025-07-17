@@ -22,7 +22,8 @@ local scenic_route = {
                     if G.consumeables.config.card_count < G.consumeables.config.card_limit then
                         SMODS.add_card{
                             key="c_entr_new",
-                            area=G.consumeables
+                            area=G.consumeables,
+                            key_append = "entr_scenic_route"
                         }
                     end
                     return true

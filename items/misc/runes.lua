@@ -576,7 +576,7 @@ local gebo_indicator = {
                         SMODS.add_card{
                             set = card.config.center.set,
                             area = area,
-                            key_append = "entr_gebo_card"
+                            key_append = "entr_gebo_card",
                         }
                         return true
                     end,
@@ -728,6 +728,37 @@ G.FUNCS.can_redeem = function(e)
     end
 end
 
+local isaz = Entropy.create_rune("isaz", {x=3,y=1}, "rune_entr_isaz", 6011)
+local isaz_indicator = {
+    object_type = "RuneTag",
+    order = 7011,
+    key = "isaz",
+    atlas = "rune_atlas",
+    pos = {x=3,y=1},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.starting_shop then
+            return {
+                func = function()
+                    local card = SMODS.add_card{
+                        set = "Voucher",
+                        area = G.shop_vouchers,
+                        key_append = "entr_isaz"
+                    }
+                    Cryptid.manipulate(card)
+                    create_shop_card_ui(card, "Voucher", G.shop_vouchers)
+                    if G.GAME.providence then
+                        card.cost = card.cost / 2
+                    end
+                    card:start_materialize()
+                    G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
+                    return true
+                end,
+            }
+        end
+    end,
+}
 
 local jera = Entropy.create_rune("jera", {x=4,y=1}, "rune_entr_jera", 6012)
 local jera_indicator = {
@@ -855,7 +886,8 @@ local dagaz_indicator = {
                         if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit and G.GAME.providence then
                             SMODS.add_card{
                                 set = "Twisted",
-                                area = G.consumeables
+                                area = G.consumeables,
+                                key_append = "entr_dagaz"
                             }
                         end
                         return true
@@ -884,7 +916,8 @@ local oss_indicator = {
                     if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
                         SMODS.add_card{
                             set = "Rune",
-                            area = G.consumeables
+                            area = G.consumeables,
+                            key_append = "entr_oss"
                         }
                     end
                 end
@@ -905,6 +938,7 @@ return {
         wunjo, wunjo_indicator,
         haglaz, haglaz_indicator,
         naudiz, naudiz_indicator,
+        isaz, isaz_indicator,
         jera, jera_indicator,
         ihwaz, ihwaz_indicator,
         dagaz, dagaz_indicator,

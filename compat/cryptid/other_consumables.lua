@@ -1160,7 +1160,8 @@ local mallet = {
                     if G.consumeables.config.card_count < G.consumeables.config.card_limit then
                         SMODS.add_card({
                             set = "Command",
-                            area = G.consumeables
+                            area = G.consumeables,
+                            key_append = "entr_mallet"
                         })
                     end
                     return true

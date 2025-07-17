@@ -987,7 +987,8 @@ local phantom_shopper = {
                 set="Joker",
                 area = G.jokers,
                 rarity = card.ability.rarity,
-                legendary = card.ability.rarity == "Legendary"
+                legendary = card.ability.rarity == "Legendary",
+                key_append = "entr_phantom_shopper"
             }
         end
         if (context.ending_shop and not context.blueprint and not context.retrigger_joker) or context.forcetrigger then
@@ -1537,12 +1538,14 @@ local dog_chocolate = {
                 local card = SMODS.add_card{
                     set="Joker",
                     rarity="cry_candy",
-                    area=G.jokers
+                    area=G.jokers,
+                    key_append = "entr_dog_chocolate"
                 }
             else    
                 local card = SMODS.add_card{
                     set="Food",
-                    area=G.jokers
+                    area=G.jokers,
+                    key_append = "entr_dog_chocolate"
                 }
             end
             if context.first_tag.key == "tag_entr_ascendant_dog" then
@@ -1885,7 +1888,8 @@ local insurance_fraud = {
                     if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit + 1  then
                         SMODS.add_card{
                             set="Fraud",
-                            area = G.consumeables
+                            area = G.consumeables,
+                            key_append = "entr_insurance_fraud"
                         }
                     end
                     return true
@@ -1935,7 +1939,8 @@ local free_samples = {
                         if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit + 1  then
                             SMODS.add_card{
                                 key=context.card.config.center.key,
-                                area = G.consumeables
+                                area = G.consumeables,
+                                key_append = "entr_free_samples"
                             }
                         end
                         return true
@@ -1993,7 +1998,8 @@ local fused_lens = {
                         SMODS.add_card{
                             key=star_card,
                             set = "Star",
-                            area = G.consumeables
+                            area = G.consumeables,
+                            key_append = "entr_fused_lens"
                         }
                     end
                     return true

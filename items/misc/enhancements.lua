@@ -197,7 +197,8 @@ local ceramic = {
 					func = function()
 						SMODS.add_card{
 							area=G.consumeables,
-							set = "Consumeables"
+							set = "Consumeables",
+							key_append = "entr_ceramic"
 						}
 						card:juice_up(0.9, 0.9)
 						card:shatter()
@@ -223,7 +224,8 @@ local ceramic = {
 					func = function()
 						SMODS.add_card{
 							area=G.consumeables,
-							set = "Consumeables"
+							set = "Consumeables",
+							key_append = "entr_ceramic"
 						}
 						return true
 					end
@@ -243,7 +245,8 @@ local ceramic = {
 						func = function()
 							SMODS.add_card{
 								area=G.consumeables,
-								set = "Consumeables"
+								set = "Consumeables",
+								key_append = "entr_ceramic"
 							}
 							return true
 						end

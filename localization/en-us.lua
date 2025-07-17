@@ -3033,6 +3033,23 @@ local decs = {
 				}
 			},
 
+			rune_entr_isaz = {
+				name = "Isaz",
+				text = {
+					"Adds an additional",
+					"{C:attention}Voucher{} to the",
+					"next shop"
+				}
+			},
+			rune_entr_isaz_providence = {
+				name = "Isaz{C:purple}+{}",
+				text = {
+					"Adds an additional",
+					"{C:purple,E:1}Half Price{} {C:attention}Voucher{} to",
+					"the next shop"
+				}
+			},
+
 			rune_entr_jera = {
 				name = "Jera",
 				text = {
@@ -3260,6 +3277,22 @@ local decs = {
 					"can be bought {C:attention}regardless{} of",
 					"your current money",
 					"{C:purple,E:1}without gaining any debt{}"
+				}
+			},
+
+			c_entr_isaz = {
+				name = "Rune of Isaz",
+				text = {
+					"The next {C:attention}shop{}",
+					"contains an additional {C:attention}Voucher{}"
+				}
+			},
+			c_entr_isaz_providence = {
+				name = "Rune of Isaz{C:purple}+{}",
+				text = {
+					"The next {C:attention}shop{}",
+					"contains an additional {C:attention}Voucher{}",
+					"at {C:purple,E:1}Half Price{}"
 				}
 			},
 

@@ -317,7 +317,8 @@ local ornate = {
                     func = function()
                         SMODS.add_card{
                             set="Rune",
-                            area = G.consumeables
+                            area = G.consumeables,
+                            key_append = "entr_ornate"
                         }
                         G.GAME.consumeable_buffer = 0
                         return true
@@ -341,7 +342,8 @@ local ornate = {
                     func = function()
                         SMODS.add_card{
                             set="Rune",
-                            area = G.consumeables
+                            area = G.consumeables,
+                            key_append = "entr_ornate"
                         }
                         G.GAME.consumeable_buffer = 0
                         return true
@@ -360,7 +362,8 @@ local ornate = {
                     func = function()
                         SMODS.add_card{
                             set="Rune",
-                            area = G.consumeables
+                            area = G.consumeables,
+                            key_append = "entr_ornate"
                         }
                         return true
                     end

@@ -421,7 +421,8 @@ local capsule_machine = {
                     func = function()
                         local card = SMODS.add_card{
                             set = "Dice",
-                            area = G.jokers
+                            area = G.jokers,
+                            key_append = "entr_capsule_machine"
                         }
                         card.ability.perishable = true
                         card.ability.perish_tally = 5
