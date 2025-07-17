@@ -466,6 +466,28 @@ local thurisaz_indicator = {
     end
 }
 
+local ansuz = Entropy.create_rune("ansuz", {x=3,y=0}, "rune_entr_ansuz", 6004)
+local ansuz_indicator = {
+    object_type = "RuneTag",
+    order = 7004,
+    key = "ansuz",
+    atlas = "rune_atlas",
+    pos = {x=3,y=0},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.entr_add_tag then
+            return {
+                func = function()
+                    add_tag(Tag(context.tag.key), nil, true)
+                    if G.GAME.providence then
+                        add_tag(Tag(context.tag.key), nil, true)
+                    end
+                end
+            }
+        end
+    end
+}
 
 local raido = Entropy.create_rune("raido", {x=4,y=0}, "rune_entr_raido", 6005)
 local raido_indicator = {
@@ -863,6 +885,7 @@ return {
         fehu, fehu_indicator,
         uruz, uruz_indicator,
         thurisaz, thurisaz_indicator,
+        ansuz, ansuz_indicator,
         raido, raido_indicator,
         kaunan, kaunan_indicator,
         gebo, gebo_indicator,

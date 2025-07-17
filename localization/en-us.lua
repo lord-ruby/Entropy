@@ -2911,6 +2911,20 @@ local decs = {
 					"{C:attention}discarded{} card {C:purple,E:1}Twice{}"
 				}
 			},
+			rune_entr_ansuz = {
+				name = "Ansuz",
+				text = {
+					"Copies the next",
+					"{C:attention}obtained{} tag"
+				}
+			},
+			rune_entr_ansuz_providence = {
+				name = "Ansuz{C:purple}+{}",
+				text = {
+				"Copies the next",
+					"{C:attention}obtained{} tag {C:purple,E:1}Twice{}"
+				}
+			},
 			rune_entr_raido = {
 				name = "Raido",
 				text = {
@@ -3123,6 +3137,20 @@ local decs = {
 					"Create {C:purple,E:1}Two{} {C:attention}copies{} of",
 					"the next {C:attention}discarded{} card",
 					"and draw it to {C:attention}hand{}"
+				}
+			},
+			c_entr_ansuz = {
+				name = "Rune of Ansuz",
+				text = {
+					"Create a {C:attention}copy{} of",
+					"the next {C:attention}obtained{} tag",
+				}
+			},
+			c_entr_ansuz_providence = {
+				name = "Rune of Ansuz{C:purple}+{}",
+				text = {
+					"Create {C:purple,E:1}Two{} {C:attention}copies{} of",
+					"the next {C:attention}obtained{} tag",
 				}
 			},
 			c_entr_raido = {

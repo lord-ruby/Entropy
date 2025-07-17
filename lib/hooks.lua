@@ -3599,3 +3599,12 @@ function Cryptid.get_interest(add_rows)
         return interest
     end
 end
+
+local at2 = add_tag
+function add_tag(tag, from_skip, no_copy)
+    at2(tag, from_skip, no_copy)
+	if no_copy then
+		return
+	end
+	SMODS.calculate_context({ entr_add_tag = true, tag = tag })
+end
