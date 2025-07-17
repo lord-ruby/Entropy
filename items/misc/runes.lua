@@ -864,6 +864,48 @@ local ihwaz_indicator = {
     end
 }
 
+local perthro = Entropy.create_rune("perthro", {x=6,y=1}, "rune_entr_perthro", 6014)
+local perthro_indicator = {
+    object_type = "RuneTag",
+    order = 7014,
+    key = "perthro",
+    atlas = "rune_atlas",
+    pos = {x=6,y=1},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.reroll_shop then
+            return {
+                rune_break = true,
+                func = function()
+                    for i, v in pairs(G.shop_booster.cards) do
+                        v:start_dissolve()
+                    end
+                    for i = 1, G.shop_booster.config.card_limit do
+                        local card = SMODS.add_card{
+                            set = "Booster",
+                            area = G.shop_booster,
+                            key_append = "entr_perthro"
+                        }
+                        create_shop_card_ui(card, "Booster", G.shop_booster)
+                        card:start_materialize()
+                    end
+                    if G.GAME.providence then
+                        G.E_MANAGER:add_event(Event({
+                            func = function()
+                                change_shop_size(1)
+                                return true
+                            end,
+                        }))
+                        G.GAME.Increment = (G.GAME.Increment or 0) + 1
+                        G.GAME.IncrementAnte = G.GAME.round_resets.ante
+                    end
+                end
+            }
+        end
+    end
+}
+
 local dagaz = Entropy.create_rune("dagaz", {x=1,y=3}, "rune_entr_dagaz", 6023)
 local dagaz_indicator = {
     object_type = "RuneTag",
@@ -941,6 +983,7 @@ return {
         isaz, isaz_indicator,
         jera, jera_indicator,
         ihwaz, ihwaz_indicator,
+        perthro, perthro_indicator,
         dagaz, dagaz_indicator,
         oss, oss_indicator
     }

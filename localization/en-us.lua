@@ -3081,6 +3081,22 @@ local decs = {
 				}
 			},
 
+			rune_entr_perthro = {
+				name = "Perthro",
+				text = {
+					"Restocks {C:attention}Booster Packs{}",
+					"on the next {C:attention}reroll{}"
+				}
+			},
+			rune_entr_perthro_providence = {
+				name = "Perthro{C:purple}+{}",
+				text = {
+					"Restocks {C:attention}Booster Packs{}",
+					"and grants {C:purple,E:1}+1{} temporary",
+					"shop slot on the next {C:attention}reroll{}"
+				}
+			},
+
 			rune_entr_dagaz = {
 				name = "Dagaz",
 				text = {
@@ -3326,6 +3342,24 @@ local decs = {
 					"next {C:attention}played{} card"
 				}
 			},
+
+			c_entr_perthro = {
+				name = "Rune of Perthro",
+				text = {
+					"Restock {C:attention}Booster Packs{}",
+					"on the next {C:attention}reroll{}"
+				}
+			},
+			c_entr_perthro_providence = {
+				name = "Rune of Perthro{C:purple}+{}",
+				text = {
+					"Restock {C:attention}Booster Packs{}",
+					"and {C:attention}temporarily{} grant",
+					"{C:purple,E:1}+1{} Shop slots",
+					"on the next {C:attention}reroll{}"
+				}
+			},
+
 
 			c_entr_dagaz = {
 				name = "Rune of Dagaz",
