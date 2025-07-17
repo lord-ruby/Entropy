@@ -3430,18 +3430,39 @@ end
 
 local use_ref = Card.use_consumeable 
 function Card:use_consumeable(...)
-    local ret = use_ref(self, ...)
-    if not self.bypass_echo then
-        if G.GAME.entr_echo and G.GAME.entr_echo[self.config.center.key] and #G.GAME.entr_echo[self.config.center.key] > 0 then
-            for i, v in pairs(G.GAME.entr_echo[self.config.center.key]) do
-                local dum = Entropy.GetDummy(G.P_CENTERS[v], self.area, self)
-                dum.bypass_echo = true
-                Cryptid.forcetrigger(dum, {})
-                dum.bypass_echo = nil
+    if Entropy.DeckOrSleeve("gemstone") and SMODS.pseudorandom_probability(nil, "entr_gemstone_deck", 1, 3) and self.config.center.set ~= "Rune" then
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+            attention_text({
+                text = localize('k_nope_ex'),
+                scale = 1.3, 
+                hold = 1.4,
+                major = self,
+                backdrop_colour = G.C.PURPLE,
+                align = 'cm',
+                offset = {x = 0, y = (G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK) and -0.2 or 0},
+                silent = true
+                })
+                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.06*G.SETTINGS.GAMESPEED, blockable = false, blocking = false, func = function()
+                    play_sound('tarot2', 0.76, 0.4);return true end}))
+                play_sound('tarot2', 1, 0.4)
+                self:juice_up(0.3, 0.5)
+        return true end }))
+        return
+    else
+        local ret = use_ref(self, ...)
+        if not self.bypass_echo then
+            if G.GAME.entr_echo and G.GAME.entr_echo[self.config.center.key] and #G.GAME.entr_echo[self.config.center.key] > 0 then
+                for i, v in pairs(G.GAME.entr_echo[self.config.center.key]) do
+                    local dum = Entropy.GetDummy(G.P_CENTERS[v], self.area, self)
+                    dum.bypass_echo = true
+                    Cryptid.forcetrigger(dum, {})
+                    dum.bypass_echo = nil
+                end
             end
         end
+        self.used = true
+        return ret
     end
-    return ret
 end
 
 local ref = Cryptid.handle_other_localizations

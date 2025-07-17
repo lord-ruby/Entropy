@@ -1354,7 +1354,16 @@ local decs = {
 					"are now a shared resource",
 					"{C:attention}+3{} Joker Slots"
 				}
-			}
+			},
+			b_entr_gemstone = {
+				name = "Gemstone Deck",
+				text =  {
+					"Non Rune Consumables have a {C:green}1 in 3{}",
+					"chance to {C:red}fail{}, create a",
+					"random {C:purple}Rune Card{} every",
+					"{C:attention}2{} Non Rune Consumables used"
+				}
+			},
 		},
 		Sleeve = {
 			sleeve_entr_twisted = {

@@ -1104,14 +1104,14 @@ target = "functions/common_events.lua"
 pattern = 'for _, v in ipairs(info_queue) do'
 position = "before"
 payload = '''
-if (Entropy.FlipsideInversions[_c.key] or (_c.ability and Entropy.FlipsideInversions[_c.ability.name])) and first_pass and next(SMODS.find_card("c_entr_flipside")) and Entropy.config.inversion_queues > 1 then 
+if (Entropy.FlipsideInversions[_c.key] or (_c.ability and Entropy.FlipsideInversions[_c.ability.name])) and first_pass and Entropy.show_flipside() and Entropy.config.inversion_queues > 1 then 
   if _c.key ~= "c_entr_flipside" then
     local inversion = G.P_CENTERS[(Entropy.FlipsideInversions[_c.key] or (_c.ability and Entropy.FlipsideInversions[_c.ability.name]))] 
     info_queue[#info_queue+1] = {key = "inversion_allowed", set = "Other", vars = {G.localization.descriptions[inversion.set][inversion.key].name}}
     if Entropy.config.inversion_queues > 2 then
       info_queue[#info_queue+1] = inversion
     end
-  elseif #SMODS.find_card("c_entr_flipside") > 0 and Entropy.config.inversion_queues > 1 then
+  elseif Entropy.show_flipside() and Entropy.config.inversion_queues > 1 then
     info_queue[#info_queue+1] = {key = "inversion_allowed", set = "Other", vars = {"???"}}
   end
 end

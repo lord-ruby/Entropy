@@ -229,7 +229,7 @@ function add_rune(_tag, no_copy)
         G.P_RUNES[_tag.key]:add_to_deck(_tag)
     end
     if not no_copy then
-        SMODS.calculate_context({ entr_add_tag = true, rune = _tag })
+        SMODS.calculate_context({ entr_add_rune = true, rune = _tag })
     end
 end
 
@@ -479,7 +479,7 @@ local ansuz_indicator = {
     atlas = "rune_indicators",
     dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
-        if context.entr_add_tag then
+        if context.entr_add_tag and context.tag then
             return {
                 func = function()
                     add_tag(Tag(context.tag.key), nil, true)
@@ -489,7 +489,7 @@ local ansuz_indicator = {
                 end
             }
         end
-        if context.entr_add_rune then
+        if context.entr_add_rune and context.rune and context.rune.key ~= "rune_entr_ansuz" then
             return {
                 func = function()
                     add_rune(Tag(context.rune.key), true)
