@@ -3517,6 +3517,14 @@ local decs = {
 					"the played hand"
 				}
 			},
+			entr_ornate_seal = {
+				name = "Ornate Seal",
+				text = {
+					"Creates a {C:purple}Rune{} Card",
+					"when {C:red}destroyed{}",
+					"{C:inactive}(Must have room){}"
+				}
+			},
 			link = {
 				name = "Linked",
 				text = {
@@ -3881,6 +3889,7 @@ local decs = {
 			entr_pink_seal = "Pink Seal",
 			entr_verdant_seal = "Verdant Seal",
 			entr_cerulean_seal = "Cerulean Seal",
+			entr_ornate_seal = "Ornate Seal",
 		},
 		poker_hands = {
 			["entr_All"] = Cryptid_config.family_mode and "All" or "Literally Fucking Everything",

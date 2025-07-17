@@ -297,6 +297,58 @@ local cerulean = {
     end,
 }
 
+local ornate = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+	object_type = "Seal",
+    order = 3007,
+    key="entr_ornate",
+    atlas = "seals",
+    pos = {x=6,y=0},
+    badge_colour = HEX("4078e6"),
+    calculate = function(self, card, context)
+        if context.card_being_destroyed and context.card == card then
+            if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        SMODS.add_card{
+                            set="Rune",
+                            area = G.consumeables
+                        }
+                        return true
+                    end
+                })
+                card.delay_dissolve = true
+                return {
+                    message = "+1 "..localize("k_rune"),
+                    colour = G.C.PURPLE,
+                }
+            end
+        end
+        if context.forcetrigger then
+            if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        SMODS.add_card{
+                            set="Rune",
+                            area = G.consumeables
+                        }
+                        return true
+                    end
+                })
+            end
+        end
+    end,
+    draw = function(self, card, layer)
+		G.shared_seals["entr_ornate"].role.draw_major = card
+        G.shared_seals["entr_ornate"]:draw_shader('dissolve', nil, nil, nil, card.children.center)
+		G.shared_seals["entr_ornate"]:draw_shader('voucher', nil, card.ARGS.send_to_shader, nil, card.children.center)
+    end,
+}
+
 return {
     items = {
         crimson,
@@ -304,6 +356,7 @@ return {
         silver,
         pink,
         verdant,
-        cerulean
+        cerulean,
+        ornate
     }
 }

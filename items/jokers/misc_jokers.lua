@@ -485,6 +485,20 @@ local chocolate_egg = {
             c:set_edition("e_entr_sunny")
         end
         if context.selling_self then card.ability.no_destroy = true end
+        if context.card_being_destroyed and context.card == card then
+            card_eval_status_text(
+                self,
+                "extra",
+                nil,
+                nil,
+                nil,
+                { message = localize("entr_opened"), colour = G.C.GREEN }
+            )
+            local c = create_card("Joker", G.jokers, nil, "Rare")
+            c:add_to_deck()
+            G.jokers:emplace(c)
+            c:set_edition("e_entr_sunny")
+        end
     end,
     entr_credits = {
         idea = {"cassknows"},

@@ -18,18 +18,15 @@ local define = {
     end,
 
     use = function(self, card)
-        if not card.ability.cry_multiuse or to_big(card.ability.cry_multiuse) <= to_big(1) then
-			G.GAME.CODE_DESTROY_CARD = copy_card(card)
-			G.consumeables:emplace(G.GAME.CODE_DESTROY_CARD)
-		else
-			card.ability.cry_multiuse = card.ability.cry_multiuse + 1
-		end
+        local copy = copy_card(card)
+        G.consumeables:emplace(copy)
 		G.GAME.USING_CODE = true
 		G.E_MANAGER:add_event(Event({
 			func = function()
 				G.GAME.USING_DEFINE = true
                 G.GAME.POINTER_COLLECTION = true
 				G.FUNCS.overlay_menu({definition = create_UIBox_your_collection()})
+                G.GAME.CODE_DESTROY_CARD = copy
 				return true
 			end
 		}))

@@ -1496,21 +1496,19 @@ function level_up_hand(card, hand, instant, amount, ...)
 end
 
 local start_dissolveref = Card.start_dissolve
-function Card:start_dissolve(...)
-    start_dissolveref(self, ...)
-    if self.config.center.key == "j_entr_chocolate_egg" and not self.ability.no_destroy and self.area == G.jokers and G.jokers then
-        card_eval_status_text(
-            self,
-            "extra",
-            nil,
-            nil,
-            nil,
-            { message = localize("entr_opened"), colour = G.C.GREEN }
-        )
-        local c = create_card("Joker", G.jokers, nil, "Rare")
-        c:add_to_deck()
-        G.jokers:emplace(c)
-        c:set_edition("e_entr_sunny")
+function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_juice)
+    if not self.ability.no_destroy and G.deck then
+        SMODS.calculate_context({card_being_destroyed=true, card=self, cardarea == self.area})
+    end
+    if self.delay_dissolve then
+        G.E_MANAGER:add_event(Event{
+            func = function()
+                start_dissolveref(self, dissolve_colours, silent, dissolve_time_fac, no_juice)
+                return true
+            end
+        })
+    else    
+        start_dissolveref(self, dissolve_colours, silent, dissolve_time_fac, no_juice)
     end
 end
 
