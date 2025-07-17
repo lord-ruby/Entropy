@@ -2915,14 +2915,14 @@ local decs = {
 				name = "Ansuz",
 				text = {
 					"Copies the next",
-					"{C:attention}obtained{} tag"
+					"{C:attention}obtained{} tag or rune"
 				}
 			},
 			rune_entr_ansuz_providence = {
 				name = "Ansuz{C:purple}+{}",
 				text = {
 				"Copies the next",
-					"{C:attention}obtained{} tag {C:purple,E:1}Twice{}"
+					"{C:attention}obtained{} tag or rune {C:purple,E:1}Twice{}"
 				}
 			},
 			rune_entr_raido = {
@@ -3143,14 +3143,14 @@ local decs = {
 				name = "Rune of Ansuz",
 				text = {
 					"Create a {C:attention}copy{} of",
-					"the next {C:attention}obtained{} tag",
+					"the next {C:attention}obtained{} tag or rune",
 				}
 			},
 			c_entr_ansuz_providence = {
 				name = "Rune of Ansuz{C:purple}+{}",
 				text = {
 					"Create {C:purple,E:1}Two{} {C:attention}copies{} of",
-					"the next {C:attention}obtained{} tag",
+					"the next {C:attention}obtained{} tag or rune",
 				}
 			},
 			c_entr_raido = {

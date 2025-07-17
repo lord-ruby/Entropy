@@ -197,7 +197,7 @@ function SMODS.collection_pool(_base_pool, include, ...)
     return pool
 end
 
-function add_rune(_tag)
+function add_rune(_tag, no_copy)
     G.HUD_runes = G.HUD_runes or {}
     local tag_sprite_ui = _tag:generate_UI()
     G.HUD_runes[#G.HUD_runes+1] = UIBox{
@@ -227,6 +227,9 @@ function add_rune(_tag)
 	end
     if G.P_RUNES[_tag.key] and G.P_RUNES[_tag.key].add_to_deck then
         G.P_RUNES[_tag.key]:add_to_deck(_tag)
+    end
+    if not no_copy then
+        SMODS.calculate_context({ entr_add_tag = true, rune = _tag })
     end
 end
 
@@ -482,6 +485,16 @@ local ansuz_indicator = {
                     add_tag(Tag(context.tag.key), nil, true)
                     if G.GAME.providence then
                         add_tag(Tag(context.tag.key), nil, true)
+                    end
+                end
+            }
+        end
+        if context.entr_add_rune then
+            return {
+                func = function()
+                    add_rune(Tag(context.rune.key), true)
+                    if G.GAME.providence then
+                        add_rune(Tag(context.rune.key), true)
                     end
                 end
             }
