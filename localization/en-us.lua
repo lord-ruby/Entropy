@@ -2897,6 +2897,20 @@ local decs = {
 					"{C:inactive}(Stacks additively){}"
 				}
 			},
+			rune_entr_thruisaz = {
+				name = "Thurisaz",
+				text = {
+					"Copies the next",
+					"{C:attention}discarded{} card"
+				}
+			},
+			rune_entr_thurisaz_providence = {
+				name = "Thurisaz{C:purple}+{}",
+				text = {
+					"Copies the next",
+					"{C:attention}discarded{} card {C:purple,E:1}Twice{}"
+				}
+			},
 			rune_entr_raido = {
 				name = "Raido",
 				text = {
@@ -3093,6 +3107,22 @@ local decs = {
 					"The next {C:attention}payout{} is",
 					"increased by {X:purple,C:white,E:1}100%{}",
 					"{C:inactive}(Stacks additively){}"
+				}
+			},
+			c_entr_thurisaz = {
+				name = "Rune of Thurisaz",
+				text = {
+					"Create a {C:attention}copy{} of",
+					"the next {C:attention}discarded{} card",
+					"and draw it to {C:attention}hand{}"
+				}
+			},
+			c_entr_thurisaz_providence = {
+				name = "Rune of Thurisaz{C:purple}+{}",
+				text = {
+					"Create {C:purple,E:1}Two{} {C:attention}copies{} of",
+					"the next {C:attention}discarded{} card",
+					"and draw it to {C:attention}hand{}"
 				}
 			},
 			c_entr_raido = {

@@ -425,6 +425,48 @@ local uruz_indicator = {
     dependencies = {items = {"set_entr_runes"}},
 }
 
+local thurisaz = Entropy.create_rune("thurisaz", {x=2,y=0}, "rune_entr_thurisaz", 6003)
+local thurisaz_indicator = {
+    object_type = "RuneTag",
+    order = 7003,
+    key = "thurisaz",
+    atlas = "rune_atlas",
+    pos = {x=2,y=0},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.pre_discard and G.hand.highlighted[1] then
+            local highlighted = {}
+            for i, v in pairs(G.hand.cards) do
+                if v.highlighted then highlighted[#highlighted+1]=v end
+            end
+            return {
+                func = function()
+                    local new_cards = {}
+                    local prov_copy
+                    local copy
+                    if G.GAME.providence then
+                        prov_copy = copy_card(highlighted[1])
+                        new_cards[#new_cards+1] = prov_copy
+                    end
+                    copy = copy_card(highlighted[1])
+                    new_cards[#new_cards+1] = copy
+                    table.insert(G.playing_cards, copy)
+                    copy:add_to_deck()
+                    G.hand:emplace(copy)
+                    if prov_copy then
+                        table.insert(G.playing_cards, prov_copy)
+                        prov_copy:add_to_deck()
+                        G.hand:emplace(prov_copy)
+                    end
+                    playing_card_joker_effects(new_cards)
+                end
+            }
+        end
+    end
+}
+
+
 local raido = Entropy.create_rune("raido", {x=4,y=0}, "rune_entr_raido", 6005)
 local raido_indicator = {
     object_type = "RuneTag",
@@ -820,6 +862,7 @@ return {
     items = {
         fehu, fehu_indicator,
         uruz, uruz_indicator,
+        thurisaz, thurisaz_indicator,
         raido, raido_indicator,
         kaunan, kaunan_indicator,
         gebo, gebo_indicator,
