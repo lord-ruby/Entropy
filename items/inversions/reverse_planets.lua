@@ -101,9 +101,9 @@ function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
             if v.config.center.key == "j_entr_helios" and to_big(v.ability.extra):gt(curr) then curr = v.ability.extra+0.4 end
         end
       return num
-          * to_big(
-					(1.75 + ((G.GAME.sunnumber or 0)))) ^ (
-						to_big((curr2) * curr))
+          ^ (to_big(
+					(1.75 + ((G.GAME.sunnumber or 0)))) * (
+						to_big((curr2) * curr)))
   else
 		return num
 				* to_big(
@@ -416,12 +416,15 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
       if levelone == 1 then
         planetcolourone = G.C.UI.TEXT_DARK
       end
+      local str = "X("..((G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1.25).."^"..(G.GAME.nemesisnumber and G.GAME.nemesisnumber > 0 and G.GAME.nemesisnumber+1 or "").."asc)"
+      if G.jokers and Entropy.HasJoker("j_entr_helios") then
+          str = "^("..((G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1.75).."X"..(G.GAME.nemesisnumber and G.GAME.nemesisnumber > 0 and G.GAME.nemesisnumber+1 or "").."asc)"
+      end
       return {
         vars = {
           (G.GAME.nemesislevel or 0) + 1,
           card.ability.extra or 0.1,
-          (G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1.25,
-          (G.GAME.nemesisnumber and G.GAME.nemesisnumber > 0 and (G.GAME.nemesisnumber+1) ) or "",
+          str,
           colours = { planetcolourone },
         },
       }

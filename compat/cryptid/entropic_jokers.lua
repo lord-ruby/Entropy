@@ -152,10 +152,7 @@ local dekatria = {
     eternal_compat = true,
     pos = { x = 0, y = 5 },
     config = {
-        e_mult=1,
-        e_mult_mod = 0.8,
-        pairs_needed = 4,
-        pairs_current = 0
+        e_mult_mod = 1,
     },
     dependencies = {
         items = {
@@ -170,14 +167,11 @@ local dekatria = {
         return {
             vars = {
                 card.ability.e_mult_mod,
-                card.ability.pairs_needed,
-                card.ability.pairs_needed-card.ability.pairs_current,
-                card.ability.e_mult
             },
         }
     end,
     calculate = function(self, card, context)
-        if (context.after and not context.repetition and not context.blueprint) or context.forcetrigger then
+        if context.joker_main or context.forcetrigger then
             local pairs = 0
             for i = 1, #G.play.cards - 1 do
                 for j = i + 1, #G.play.cards do
@@ -187,21 +181,12 @@ local dekatria = {
                     end
                 end
             end
-            card.ability.pairs_current = card.ability.pairs_current + pairs
-            if to_big(card.ability.pairs_needed) < to_big(1e-300) then card.ability.pairs_needed = 1e-300 end
-            while to_big(card.ability.pairs_current) >= to_big(card.ability.pairs_needed) do
-                card.ability.pairs_current = card.ability.pairs_current - card.ability.pairs_needed
-                card.ability.e_mult = card.ability.e_mult + card.ability.e_mult_mod
-            end
-        end
-        if context.joker_main or context.forcetrigger then
-            if to_big(card.ability.e_mult) > to_big(0) then
-                return {
-                    Emult_mod=card.ability.mult,
-                    message = "^" ..number_format(card.ability.e_mult).. ' Mult',
-                    colour = G.C.RED,
-                }
-            end
+            local emult = pairs * card.ability.e_mult_mod
+            return {
+                Emult_mod=emult,
+                message = "^" ..number_format(emult).. ' Mult',
+                colour = G.C.RED,
+            }
         end
     end,
 }

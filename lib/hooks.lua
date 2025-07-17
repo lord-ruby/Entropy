@@ -1663,7 +1663,7 @@ function Cryptid.ascend(num, curr2) -- edit this function at your leisure
                 curr = v.ability.extra + 0.4
             end
         end
-        return num * to_big((1.75 + (G.GAME.sunnumber or 0))) ^ (to_big((curr2) * curr))
+        return num ^ (to_big((1.75 + (G.GAME.sunnumber or 0))) * (to_big((curr2) * curr)))
     else
         return num * (to_big((1.25 + (G.GAME.sunnumber or 0))) ^ to_big(curr2))
     end
@@ -1724,11 +1724,15 @@ SMODS.Consumable:take_ownership('cry_sunplanet', -- object key (class prefix not
             if levelone == 1 then
                 planetcolourone = G.C.UI.TEXT_DARK
             end
+            local str = "X("..((G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1.25).."^asc)"
+            if G.jokers and Entropy.HasJoker("j_entr_helios") then
+                str = "^("..((G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1.75).."Xasc)"
+            end
             return {
                 vars = {
                     (G.GAME.sunlevel or 0) + 1,
                     card.ability.extra or 0.05,
-                    ((G.GAME.sunnumber and G.GAME.sunnumber or 0) + ((G.jokers and Entropy.HasJoker("j_entr_helios") and 1.75) or 1.25)),
+                    str,
                     colours = { planetcolourone },
                 },
             }

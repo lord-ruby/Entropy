@@ -180,7 +180,7 @@ local decs = {
 				name = "Helios",
 				text = {
  					"{X:dark_edition,C:white}Infinite{} {C:attention}card selection limit{}",
-					"Ascension formula is now {X:dark_edition,C:white}X(#1#^#2#n){}",
+					"Ascension formula is now {X:dark_edition,C:white}^(#1#X#2#n){}",
 					"{C:attention}All cards{} contribute to {C:Attention}Ascension power{}"
 				}
 			},
@@ -208,10 +208,9 @@ local decs = {
 			j_entr_dekatria = {
 				name = "Dekatria",
 				text = {
-					"This Joker gains {X:dark_edition,C:white}^#1#{} for every",
-					"{C:attention}#2#{} {C:inactive}[#3#]{} Pairs in played hand",
+					"This Joker gives {X:dark_edition,C:white}^#1#{} mult",
+					"for every {C:attention}Pair{} in played hand",
 					"All cards are {C:dark_edition}Jolly{}",
-					"{C:inactive}(Currently: {X:dark_edition,C:white}^#4#{C:inactive}){}"
 				}
 			},
 			j_entr_oekrep = {
@@ -1639,6 +1638,17 @@ local decs = {
 				}
 			}
 		},
+		Planet = {
+			c_cry_sunplanet = {
+				name = "Sol",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
+					"Increase power of",
+					"{C:attention}Ascended{} hands by {X:gold,C:white}#2#{}",
+					"{C:inactive}(Currently {X:gold,C:white}#3#{C:inactive}",
+				},
+			},
+		},
 		Voucher = {
 			v_entr_marked = {
 				name = "Marked Cards",
@@ -2093,7 +2103,7 @@ local decs = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
 					"Increase exponent of",
 					"{C:attention}Ascended{} hands by {X:gold,C:white}+X#2#{}",
-					"{C:inactive}(Currently {X:gold,C:white}X(#3#^#4#asc){C:inactive})",
+					"{C:inactive}(Currently {X:gold,C:white}#3#{C:inactive})",
 				}
 			},
 			c_entr_paras = {
