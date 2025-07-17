@@ -251,7 +251,7 @@ local null = {
 local antithesis = {
     key = "antithesis",
     set = "Spectral",
-    order = 40,
+    order = 80,
     object_type = "Consumable",
     atlas = "consumables",
     pos = {x=3,y=8},
@@ -271,6 +271,43 @@ local antithesis = {
 	end,
 }
 
+local enchant = {
+    dependencies = {
+        items = {
+          "set_entr_runes",
+          "entr_ornate"
+        }
+    },
+    object_type = "Consumable",
+    order = 40,
+    key = "enchant",
+    set = "Spectral",
+    
+    atlas = "consumables2",
+    config = {
+        highlighted = 1
+    },
+    pos = {x=1,y=0},
+    use = Entropy.ModifyHandCardNF({seal="entr_ornate"}),
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.highlighted)
+        return #cards > 0 and #cards <= card.ability.highlighted
+    end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {key = "entr_ornate_seal", set="Other"}
+        return {
+            vars = {
+                card.ability.highlighted,
+            }
+        }
+    end,
+    entr_credits = entr_credits,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 return {
     items = {
         flipside,
@@ -278,6 +315,7 @@ return {
         destiny,
         lust,
         null,
-        antithesis
+        antithesis,
+        enchant
     }
 }

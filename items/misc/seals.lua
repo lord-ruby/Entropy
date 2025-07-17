@@ -308,16 +308,18 @@ local ornate = {
     key="entr_ornate",
     atlas = "seals",
     pos = {x=6,y=0},
-    badge_colour = HEX("4078e6"),
+    badge_colour = HEX("b47bbb"),
     calculate = function(self, card, context)
         if context.card_being_destroyed and context.card == card and not card.delay_dissolve then
             if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                G.GAME.consumeable_buffer =  G.GAME.consumeable_buffer + 1
                 G.E_MANAGER:add_event(Event{
                     func = function()
                         SMODS.add_card{
                             set="Rune",
                             area = G.consumeables
                         }
+                        G.GAME.consumeable_buffer = 0
                         return true
                     end
                 })
@@ -333,13 +335,15 @@ local ornate = {
             for i, v in pairs(context.removed) do
                 if v == card then check = true end
             end
-            if check then
+            if check and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
                 G.E_MANAGER:add_event(Event{
                     func = function()
                         SMODS.add_card{
                             set="Rune",
                             area = G.consumeables
                         }
+                        G.GAME.consumeable_buffer = 0
                         return true
                     end
                 })

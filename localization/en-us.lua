@@ -2558,6 +2558,14 @@ local decs = {
 					"{C:inactive}(If Possible)"
 				}
 			},
+			c_entr_enchant = {
+				name = "Enchant",
+				text = {
+					"Add an {C:purple}Ornate Seal{}",
+					"to {C:attention}#1#{} selected",
+					"card in your hand"
+				}
+			},
 		},
 		Stake = {
 			stake_entr_entropic = {
