@@ -1728,7 +1728,7 @@ SMODS.Consumable:take_ownership('cry_sunplanet', -- object key (class prefix not
                 vars = {
                     (G.GAME.sunlevel or 0) + 1,
                     card.ability.extra or 0.05,
-                    ((G.GAME.sunnumber and G.GAME.sunnumber or 0) + ((G.jokers and Entropy.HasJoker("j_entr_helios") and 1.75) or 1.25))..(G.jokers and Entropy.HasJoker("j_entr_helios") and "^" or ""),
+                    ((G.GAME.sunnumber and G.GAME.sunnumber or 0) + ((G.jokers and Entropy.HasJoker("j_entr_helios") and 1.75) or 1.25)),
                     colours = { planetcolourone },
                 },
             }

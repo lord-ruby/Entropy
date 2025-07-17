@@ -310,8 +310,30 @@ local ornate = {
     pos = {x=6,y=0},
     badge_colour = HEX("4078e6"),
     calculate = function(self, card, context)
-        if context.card_being_destroyed and context.card == card then
+        if context.card_being_destroyed and context.card == card and not card.delay_dissolve then
             if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        SMODS.add_card{
+                            set="Rune",
+                            area = G.consumeables
+                        }
+                        return true
+                    end
+                })
+                card.delay_dissolve = true
+                return {
+                    message = "+1 "..localize("k_rune"),
+                    colour = G.C.PURPLE,
+                }
+            end
+        end
+        if context.remove_playing_cards and not card.delay_dissolve then
+            local check
+            for i, v in pairs(context.removed) do
+                if v == card then check = true end
+            end
+            if check then
                 G.E_MANAGER:add_event(Event{
                     func = function()
                         SMODS.add_card{
