@@ -260,6 +260,8 @@ local antithesis = {
           "set_entr_spectrals"
         }
     },
+    hidden = true,
+    soul_set = "Spectral",
     use = function(self, card, area, copier)
         
         for i = 1, #G.jokers.cards do
