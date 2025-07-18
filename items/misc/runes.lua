@@ -904,6 +904,27 @@ local perthro_indicator = {
     end
 }
 
+local algiz = Entropy.create_rune("algiz", {x=0,y=2}, "rune_entr_algiz", 6015)
+local algiz_indicator = {
+    object_type = "RuneTag",
+    order = 7015,
+    key = "algiz",
+    atlas = "rune_atlas",
+    pos = {x=0,y=2},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.game_over then
+            return {
+                func = function()
+                    ease_dollars(G.GAME.providence and 10 or 5)
+                end,
+                saved = "k_saved_algiz"
+            }
+        end
+    end
+}
+
 local dagaz = Entropy.create_rune("dagaz", {x=1,y=3}, "rune_entr_dagaz", 6023)
 local dagaz_indicator = {
     object_type = "RuneTag",
@@ -982,6 +1003,7 @@ return {
         jera, jera_indicator,
         ihwaz, ihwaz_indicator,
         perthro, perthro_indicator,
+        algiz, algiz_indicator,
         dagaz, dagaz_indicator,
         oss, oss_indicator
     }

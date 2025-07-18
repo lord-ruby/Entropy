@@ -3106,6 +3106,22 @@ local decs = {
 				}
 			},
 
+			rune_entr_algiz = {
+				name = "Algiz",
+				text = {
+					"Prevents the next {C:red}Death{}",
+					"and grants {C:money}$5{} when this occurs"
+
+				}
+			},
+			rune_entr_algiz_providence = {
+				name = "Algiz{C:purple}+{}",
+				text = {
+					"Prevents the next {C:red}Death{}",
+					"and grants {C:purple,E:1}$10{} when this occurs"
+				}
+			},
+
 			rune_entr_dagaz = {
 				name = "Dagaz",
 				text = {
@@ -3369,6 +3385,20 @@ local decs = {
 				}
 			},
 
+			c_entr_algiz = {
+				name = "Rune of Algiz",
+				text = {
+					"Prevent the next {C:red}Death{}",
+					"and grant {C:money}$5{} when this occurs"
+				}
+			},
+			c_entr_algiz_providence = {
+				name = "Rune of Algiz{C:purple}+{}",
+				text = {
+					"Prevent the next {C:red}Death{}",
+					"and grant {C:purple,E:1}$10{} when this occurs"
+				}
+			},
 
 			c_entr_dagaz = {
 				name = "Rune of Dagaz",
@@ -4008,7 +4038,8 @@ local decs = {
 			cry_set_music = "Music",
 
 			k_inactive = "Inactive!",
-			k_randomised = "Randomized!"
+			k_randomised = "Randomized!",
+			k_saved_algiz = "Saved by Algiz"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",
