@@ -3633,3 +3633,11 @@ function add_tag(tag, from_skip, no_copy)
 	end
 	SMODS.calculate_context({ entr_add_tag = true, tag = tag })
 end
+
+local ref = G.FUNCS.exit_overlay_menu_code
+G.FUNCS.exit_overlay_menu_code = function(e)
+	if G.GAME.CODE_DESTROY_CARD then
+        G.GAME.CODE_DESTROY_CARD.ability.bypass_aleph = true
+    end
+    ref(e)
+end
