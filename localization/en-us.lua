@@ -3138,6 +3138,23 @@ local decs = {
 				}
 			},
 
+			rune_entr_tiwaz = {
+				name = "Tiwaz",
+				text = {
+					"Randomly {C:attention}modifies{}",
+					"the next {C:attention}drawn card{}"
+
+				}
+			},
+			rune_entr_tiwaz_providence = {
+				name = "Tiwaz{C:purple}+{}",
+				text = {
+					"Randomly {C:attention}modifies{}",
+					"the next {C:attention}drawn card{}",
+					"{C:purple,E:1}Twice{}"
+				}
+			},
+
 			rune_entr_dagaz = {
 				name = "Dagaz",
 				text = {
@@ -3428,6 +3445,21 @@ local decs = {
 				text = {
 					"The next {C:attention}discarded{} hand",
 					"gains {C:purple,E:1}+4{} Ascension Power"
+				}
+			},
+
+			c_entr_tiwaz = {
+				name = "Rune of Tiwaz",
+				text = {
+					"The next {C:attention}draw{} cardn",
+					"gains a {C:attention}random{} modification"
+				}
+			},
+			c_entr_tiwaz_providence = {
+				name = "Rune of Tiwaz{C:purple}+{}",
+				text = {
+					"The next {C:attention}draw{} cardn",
+					"gains {C:purple,E:1}Two{} {C:attention}random{} modification"
 				}
 			},
 

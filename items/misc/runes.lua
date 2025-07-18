@@ -823,37 +823,7 @@ local ihwaz_indicator = {
                             SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("ihwaz")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("entropy")))
                             card:flip()
                         else
-                            local mtype = pseudorandom_element({"Enhancement", "Edition", "Seal", "Base"}, pseudoseed("ihwaz"))
-        
-                            if mtype == "Enhancement" then
-                                card:set_edition(edition)
-                                local edition = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
-                                    return G.GAME.banned_keys[e.key] or e.no_doe
-                                end).key
-                                card:juice_up()
-                            end
-                            if mtype == "Enhancement" then
-                                local enhancement_type = "Enhanced"
-                                local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("ihwaz")).key
-                                while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
-                                    enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("ihwaz")).key
-                                end
-                                card:flip()
-                                card:set_ability(G.P_CENTERS[enhancement])
-                                card:flip()
-                            end
-                            if mtype == "Seal" then
-                                local seal = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("ihwaz"),function(e)
-                                    return G.GAME.banned_keys[e.key] or e.no_doe
-                                end).key
-                                card:set_seal(seal)
-                                card:juice_up()
-                            end
-                            if mtype == "Base" then
-                                card:flip()
-                                SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("ihwaz")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("entropy")))
-                                card:flip()
-                            end
+                            Entropy.randomise_once(card)
                         end
                     end
                 }
@@ -946,6 +916,45 @@ local sowilo_indicator = {
     end
 }
 
+local tiwaz = Entropy.create_rune("tiwaz", {x=2,y=2}, "rune_entr_tiwaz", 6017)
+local tiwaz_indicator = {
+    object_type = "RuneTag",
+    order = 7017,
+    key = "tiwaz",
+    atlas = "rune_atlas",
+    pos = {x=2,y=2},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.hand_drawn then
+            local card = context.hand_drawn[1]
+            if card then
+                return {
+                    func = function()
+                        local type1 = pseudorandom_element({"Enhancement", "Edition", "Seal"}, pseudoseed("tiwaz"))
+                        Entropy.randomise_once(card, {type1}, "tiwaz_first")
+                        if G.GAME.providence then
+                            G.E_MANAGER:add_event(Event{
+                                func = function()
+                                        local types = {}
+                                        for i, v in pairs({"Enhancement", "Edition", "Seal"}) do
+                                            if v ~= type1 then
+                                                types[#types+1] = v
+                                            end
+                                        end
+                                        local type2 = pseudorandom_element({"Enhancement", "Edition", "Seal"}, pseudoseed("tiwaz"))
+                                        Entropy.randomise_once(card, {type2}, "tiwaz")
+                                    return true
+                                end
+                            })
+                        end
+                    end,
+                }
+            end
+        end
+    end
+}
+
 
 local dagaz = Entropy.create_rune("dagaz", {x=1,y=3}, "rune_entr_dagaz", 6023)
 local dagaz_indicator = {
@@ -1027,6 +1036,7 @@ return {
         perthro, perthro_indicator,
         algiz, algiz_indicator,
         sowilo, sowilo_indicator,
+        tiwaz, tiwaz_indicator,
         dagaz, dagaz_indicator,
         oss, oss_indicator
     }

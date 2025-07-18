@@ -1761,3 +1761,36 @@ end
 function Entropy.show_flipside()
     return next(SMODS.find_card("c_entr_flipside")) or next(SMODS.find_card("c_entr_dagaz")) or Entropy.has_rune("rune_entr_dagaz")
 end
+
+function Entropy.randomise_once(card, types, seed)
+    local mtype = pseudorandom_element(types or {"Enhancement", "Edition", "Seal", "Base"}, pseudoseed(seed or "ihwaz"))    
+    if mtype == "Edition" then
+        local edition = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
+            return G.GAME.banned_keys[e.key] or e.no_doe
+        end).key
+        card:set_edition(edition)
+        card:juice_up()
+    end
+    if mtype == "Enhancement" then
+        local enhancement_type = "Enhanced"
+        local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed(seed or "ihwaz")).key
+        while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
+            enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed(seed or "ihwaz")).key
+        end
+        card:flip()
+        card:set_ability(G.P_CENTERS[enhancement])
+        card:flip()
+    end
+    if mtype == "Seal" then
+        local seal = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("ihwaz"),function(e)
+            return G.GAME.banned_keys[e.key] or e.no_doe
+        end).key
+        card:set_seal(seal)
+        card:juice_up()
+    end
+    if mtype == "Base" then
+        card:flip()
+        SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed(seed or "ihwaz")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("entropy")))
+        card:flip()
+    end
+end
