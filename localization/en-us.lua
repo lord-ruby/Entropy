@@ -2351,7 +2351,7 @@ local decs = {
 				}
 			},
 			c_entr_pact = {
-				name = "Pact",
+				name = "Bind",
 				text = {
 					"{C:attention}Link{} up to {C:attention}#1#{}",
 					"cards together, all modifications",
