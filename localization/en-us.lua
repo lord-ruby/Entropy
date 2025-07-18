@@ -2916,7 +2916,7 @@ local decs = {
 					"{C:inactive}(Stacks additively){}"
 				}
 			},
-			rune_entr_thruisaz = {
+			rune_entr_thurisaz = {
 				name = "Thurisaz",
 				text = {
 					"Copies the next",

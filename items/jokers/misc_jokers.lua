@@ -2051,7 +2051,7 @@ local inkbleed = {
         }
     },
     eternal_compat = true,
-    pos = { x = 7, y = 5 },
+    pos = { x = 7, y = 6 },
     atlas = "jokers",
     entr_credits = {
         art = {"Lfmoth"}
