@@ -438,7 +438,7 @@ function Card:is_suit(suit, bypass_debuff, flush_calc)
     if self.base.suit == "entr_nilsuit" and not next(SMODS.find_card("j_entr_opal")) then
         return false
     else
-        if next(SMODS.find_card("j_entr_inkbleed")) then
+        if next(SMODS.find_card("j_entr_inkbleed")) and self.area then
             local highlighted = self.highlighted
             for i, v in pairs(highlighted and self.area.highlighted or self.area.cards) do
                 if v.base.suit == suit and Entropy.shares_aspect(self, v) then
