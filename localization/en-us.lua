@@ -3451,14 +3451,14 @@ local decs = {
 			c_entr_tiwaz = {
 				name = "Rune of Tiwaz",
 				text = {
-					"The next {C:attention}draw{} cardn",
+					"The next {C:attention}draw{} card",
 					"gains a {C:attention}random{} modification"
 				}
 			},
 			c_entr_tiwaz_providence = {
 				name = "Rune of Tiwaz{C:purple}+{}",
 				text = {
-					"The next {C:attention}draw{} cardn",
+					"The next {C:attention}draw{} card",
 					"gains {C:purple,E:1}Two{} {C:attention}random{} modification"
 				}
 			},
