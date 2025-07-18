@@ -265,12 +265,8 @@ local antidagger = {
                 G.jokers:emplace(c)
             end
             if SMODS.pseudorandom_probability(card, 'antidagger', 1, card.ability.extra.odds) then
-                    local joker = pseudorandom_element(G.jokers.cards, pseudoseed("antidagger"))
                     G.GAME.banned_keys["j_entr_antidagger"] = true
-                    G.GAME.banned_keys[joker.config.center.key] = true
-                    joker.getting_sliced = true
-                    eval_card(joker, {banishing_card = true, banisher = card, card = joker, cardarea = joker.area})
-                    joker:start_dissolve()
+                    SMODS.calculate_context({banishing_card = true, card = card, cardarea = card.area, banisher = card})
                     card:start_dissolve()
                     play_sound("slice1", 0.96 + math.random() * 0.08)
             end

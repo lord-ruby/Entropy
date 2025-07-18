@@ -398,7 +398,7 @@ local decs = {
 					"Unbanish a random banished Joker",
 					"when a {C:attention}blind{} is selected",
 					"{C:green}#1# in #2#{} chance to {C:attention}banish{}",
-					"this Joker and {C:attention}another{} Joker"
+					"this Joker instead"
 				}
 			},
 			j_entr_solar_dagger = {
