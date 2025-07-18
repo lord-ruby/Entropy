@@ -1565,8 +1565,8 @@ local nucleotide = {
     },
     blueprint_compat = true,
     eternal_compat = true,
-    pos = { x = 2, y = 0 },
-    atlas = "placeholder",
+    pos = { x = 8, y = 6 },
+    atlas = "jokers",
     demicoloncompat = true,
     calculate = function(self, card, context)
         if context.first_hand_drawn then
