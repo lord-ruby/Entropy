@@ -3122,6 +3122,22 @@ local decs = {
 				}
 			},
 
+			rune_entr_sowilo = {
+				name = "Sowilo",
+				text = {
+					"Gives the next {C:attention}discarded{} hand",
+					"{C:gold}+2{} Ascension Power"
+
+				}
+			},
+			rune_entr_sowilo_providence = {
+				name = "Sowilo{C:purple}+{}",
+				text = {
+					"Gives the next {C:attention}discarded{} hand",
+					"{C:purple,E:1}+4{} Ascension Power"
+				}
+			},
+
 			rune_entr_dagaz = {
 				name = "Dagaz",
 				text = {
@@ -3397,6 +3413,21 @@ local decs = {
 				text = {
 					"Prevent the next {C:red}Death{}",
 					"and grant {C:purple,E:1}$10{} when this occurs"
+				}
+			},
+
+			c_entr_sowilo = {
+				name = "Rune of Sowilo",
+				text = {
+					"The next {C:attention}discarded{} hand",
+					"gains {C:gold}+2{} Ascension Power"
+				}
+			},
+			c_entr_sowilo_providence = {
+				name = "Rune of Sowilo{C:purple}+{}",
+				text = {
+					"The next {C:attention}discarded{} hand",
+					"gains {C:purple,E:1}+4{} Ascension Power"
 				}
 			},
 

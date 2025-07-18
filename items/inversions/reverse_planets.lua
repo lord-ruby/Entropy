@@ -87,30 +87,8 @@ end
 
 
 function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
-  local curr = G.GAME.hands[hand].AscensionPower or 0
-  local num2 = math.min(curr2 or 0, 50)
-  local diff = curr - num2
-  if to_big(curr or 0) > to_big(50) then
-      num2 = num2 + diff ^ 0.3
-  end
-  curr = num2
-  local curr2 = to_big(((curr)) * (1+(G.GAME.nemesisnumber or 0))) ^ to_big(G.GAME.hands[hand].TranscensionPower or 1)
-	if Entropy.HasJoker("j_entr_helios") then
-        local curr = 1.5
-        for i, v in pairs(G.jokers.cards) do
-            if v.config.center.key == "j_entr_helios" and to_big(v.ability.extra):gt(curr) then curr = v.ability.extra+0.4 end
-        end
-      return num
-          ^ (to_big(
-					(1.75 + ((G.GAME.sunnumber or 0)))) * (
-						to_big((curr2) * curr)))
-  else
-		return num
-				* to_big(
-					(1.25 + ((G.GAME.sunnumber or 0)))
-						^ to_big(curr2)
-				)
-	end
+    local ret = Cryptid.ascend(num, (G.GAME.hands[hand].AscensionPower or 0))
+    return ret
 end
 
 function Entropy.ReverseSuitUse(self, card, area, copier, num)
@@ -192,10 +170,10 @@ function Entropy.ReversePlanetUse(handname, card, amt)
   if Entropy.HasJoker("j_entr_strawberry_pie",true) and handname ~= "High Card" then
     handname = "High Card"
   end
-  if not card then card = {ability={1}} end
+  if not card then card = {ability={level=1}} end
+  local level = card.ability.level or 1
   amt = amt or 1
   local used_consumable = copier or card
-  card.ability.level = card.ability.level or 1
   local c = copy_table(G.C.UI_CHIPS)
   local m = copy_table(G.C.UI_MULT)
   delay(0.4)
@@ -203,7 +181,7 @@ function Entropy.ReversePlanetUse(handname, card, amt)
     { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
     { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = "..." }
   )
-  G.GAME.hands[handname].AscensionPower = to_big((G.GAME.hands[handname].AscensionPower or 0)) + to_big(card.ability.level*amt) 
+  G.GAME.hands[handname].AscensionPower = to_big((G.GAME.hands[handname].AscensionPower or 0)) + to_big(level*amt) 
   G.GAME.hands[handname].visible = true
   delay(1.0)
   G.E_MANAGER:add_event(Event({
@@ -229,7 +207,7 @@ function Entropy.ReversePlanetUse(handname, card, amt)
       return true
     end,
   }))
-  update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = (to_big(card.ability.level*amt) > to_big(0) and "+" or "")..number_format(to_big(card.ability.level*amt) ) })
+  update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = (to_big(level*amt) > to_big(0) and "+" or "")..number_format(to_big(level*amt) ) })
   delay(1.6)
   if card.edition and to_big(amt or 1) > to_big(0) and not noengulf and Engulf then
     if Engulf.SpecialFuncs[card.config.center.key] then 
@@ -240,6 +218,10 @@ function Entropy.ReversePlanetUse(handname, card, amt)
     { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
     { mult = 0, chips = 0, handname = "", level = "" }
   )
+  delay(1.6)
+  G.GAME.current_round.current_hand.cry_asc_num = 0
+  G.GAME.current_round.current_hand.cry_asc_num_text = ""
+  G.hand:parse_highlighted()
 end
 
 local planets = {}

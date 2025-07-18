@@ -925,6 +925,28 @@ local algiz_indicator = {
     end
 }
 
+local sowilo = Entropy.create_rune("sowilo", {x=1,y=2}, "rune_entr_sowilo", 6016)
+local sowilo_indicator = {
+    object_type = "RuneTag",
+    order = 7016,
+    key = "sowilo",
+    atlas = "rune_atlas",
+    pos = {x=1,y=2},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.pre_discard then
+            local text = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
+            Entropy.ReversePlanetUse(text, rune, G.GAME.providence and 4 or 2)
+            return {
+                func = function()
+                end,
+            }
+        end
+    end
+}
+
+
 local dagaz = Entropy.create_rune("dagaz", {x=1,y=3}, "rune_entr_dagaz", 6023)
 local dagaz_indicator = {
     object_type = "RuneTag",
@@ -1004,6 +1026,7 @@ return {
         ihwaz, ihwaz_indicator,
         perthro, perthro_indicator,
         algiz, algiz_indicator,
+        sowilo, sowilo_indicator,
         dagaz, dagaz_indicator,
         oss, oss_indicator
     }
