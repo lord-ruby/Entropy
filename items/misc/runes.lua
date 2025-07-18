@@ -182,15 +182,13 @@ end
 -- for the collection is to just lie
 local ref = SMODS.collection_pool
 function SMODS.collection_pool(_base_pool, include, ...)
+    local old_pool = ref(_base_pool, include)
     local pool = {}
-    if type(_base_pool) ~= 'table' then return pool end
-    local is_array = _base_pool[1]
+    local is_array = old_pool[1]
     local ipairs = is_array and ipairs or pairs
-    for _, v in ipairs(_base_pool) do
-        if (not G.ACTIVE_MOD_UI or v.mod == G.ACTIVE_MOD_UI) and not v.no_collection then
-            if not v.no_tags or include then
-                pool[#pool+1] = v
-            end
+    for _, v in ipairs(old_pool) do
+        if not v.no_tags or include then
+            pool[#pool+1] = v
         end
     end
     if not is_array then table.sort(pool, function(a,b) return a.order < b.order end) end

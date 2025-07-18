@@ -3,7 +3,7 @@ SMODS.ConsumableType({
 	key = "Rune",
 	primary_colour = G.C.Entropy.Rune,
 	secondary_colour = G.C.Entropy.Rune,
-	collection_rows = { 4, 5 },
+	collection_rows = { 6, 6 },
 	shop_rate = 0.0,
 	loc_txt = {},
 	default = "c_entr_jera"
@@ -23,7 +23,7 @@ SMODS.ConsumableType({
 	key = "Fraud",
 	primary_colour = G.C.Entropy.Fraud,
 	secondary_colour = HEX("a54747"),
-	collection_rows = { 4, 5 },
+	collection_rows = { 5, 6 },
 	shop_rate = 0.0,
 	loc_txt = {},
 	default = "c_entr_master"
