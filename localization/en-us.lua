@@ -3155,6 +3155,22 @@ local decs = {
 				}
 			},
 
+			rune_entr_berkano = {
+				name = "Berkano",
+				text = {
+					"Creates {C:attention}Two{} copies",
+					"of the next {C:red}Destroyed{} card"
+
+				}
+			},
+			rune_entr_berkano_providence = {
+				name = "Berkano{C:purple}+{}",
+				text = {
+					"Creates {C:purple,E:1}Three{} copies",
+					"of the next {C:red}Destroyed{} card"
+				}
+			},
+
 			rune_entr_dagaz = {
 				name = "Dagaz",
 				text = {
@@ -3460,6 +3476,21 @@ local decs = {
 				text = {
 					"The next {C:attention}draw{} card",
 					"gains {C:purple,E:1}Two{} {C:attention}random{} modification"
+				}
+			},
+
+			c_entr_berkano = {
+				name = "Rune of Berkano",
+				text = {
+					"Create {C:attention}Two{} copies of",
+					"the next {C:red}Destroyed{} card"
+				}
+			},
+			c_entr_berkano_providence = {
+				name = "Rune of Berkano{C:purple}+{}",
+				text = {
+					"Create {C:purple,E:1}Three{} copies of",
+					"the next {C:red}Destroyed{} card"
 				}
 			},
 
@@ -3910,7 +3941,8 @@ local decs = {
 			ach_entr_outopia = "Outopia",
 			ach_entr_acheros = "Acheros",
 			ach_entr_rift = "Rift",
-			ach_entr_katevaino = "Katevaino"
+			ach_entr_katevaino = "Katevaino",
+			ach_entr_joy_to_the_world = "Joy To The World"
 		},
 		achievement_descriptions = {
 			ach_entr_event_horizon = "Use define to turn Obelisk into Sob",
@@ -3919,7 +3951,8 @@ local decs = {
 			ach_entr_outopia = "Obtain a zenith rarity Joker",
 			ach_entr_acheros = "Beat Ante 32s boss blind, Endless Entropy",
 			ach_entr_rift = "Beat Ante 8 on The Alternate Path",
-			ach_entr_katevaino = "Use Transcend on Parakmi"
+			ach_entr_katevaino = "Use Transcend on Parakmi",
+			ach_entr_joy_to_the_world = "Have the Wunjo Rune create another Wunjo Rune"
 		},
 		suits_plural = {
 			entr_nilsuit = "Nil",

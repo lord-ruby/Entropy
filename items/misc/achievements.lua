@@ -27,6 +27,20 @@ local rift = {
 	end,
 }
 
+local joy_to_the_world = {
+	object_type = "Achievement",
+	key = "joy_to_the_world",
+	order = 3,
+	bypass_all_unlocked = true,
+	atlas = "entr_achievements",
+	--reset_on_startup = true,
+	unlock_condition = function(self, args)
+        if args.type == "wunjo_duplication" then
+		    return true
+        end
+	end,
+}
+
 if (SMODS.Mods["Cryptid"] or {}).can_load then
 	local event_horizon = {
 		object_type = "Achievement",
@@ -99,6 +113,7 @@ return {
         outopia,
         acheros,
 		rift,
-		katevaino
+		katevaino,
+		joy_to_the_world
     }
 }

@@ -602,8 +602,14 @@ local wunjo_indicator = {
                         func = function()
                             local tag1 = Entropy.get_random_rune("wunjo_rune", true)
                             add_rune(Tag(tag1 and tag1 or "rune_entr_wunjo"))
+                            if not tag1 or tag1 == "rune_entr_wunjo" then
+                                check_for_unlock({type = "wunjo_duplication"})
+                            end
                             if G.GAME.providence then
                                 local tag2 = Entropy.get_random_rune("wunjo_rune", true)
+                                if not tag2 or tag2 == "rune_entr_wunjo" then
+                                    check_for_unlock({type = "wunjo_duplication"})
+                                end
                                 add_rune(Tag(tag2 and tag2 or "rune_entr_wunjo"))
                             end
                             return true
@@ -955,6 +961,51 @@ local tiwaz_indicator = {
     end
 }
 
+local berkano = Entropy.create_rune("berkano", {x=3,y=2}, "rune_entr_berkano", 6018)
+local berkano_indicator = {
+    object_type = "RuneTag",
+    order = 7018,
+    key = "berkano",
+    atlas = "rune_atlas",
+    pos = {x=3,y=2},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.remove_playing_cards or (context.destroy_card and (context.destroy_card.area == G.hand or context.destroy_card.area == G.play)) then
+            local card = context.removed and context.removed[1] or context.destroy_card
+            if card then
+                return {
+                    func = function()
+                        local new_cards = {}
+                        local prov_copy
+                        local copy
+                        local copy2
+                        if G.GAME.providence then
+                            prov_copy = copy_card(card)
+                            new_cards[#new_cards+1] = prov_copy
+                        end
+                        copy = copy_card(card)
+                        copy2 = copy_card(card)
+                        new_cards[#new_cards+1] = copy
+                        new_cards[#new_cards+1] = copy2
+                        table.insert(G.playing_cards, copy)
+                        table.insert(G.playing_cards, copy2)
+                        copy:add_to_deck()
+                        G.hand:emplace(copy)
+                        G.hand:emplace(copy2)
+                        if prov_copy then
+                            table.insert(G.playing_cards, prov_copy)
+                            prov_copy:add_to_deck()
+                            G.hand:emplace(prov_copy)
+                        end
+                        playing_card_joker_effects(new_cards)
+                        return true
+                    end
+                }
+            end
+        end
+    end
+}
 
 local dagaz = Entropy.create_rune("dagaz", {x=1,y=3}, "rune_entr_dagaz", 6023)
 local dagaz_indicator = {
@@ -1037,6 +1088,7 @@ return {
         algiz, algiz_indicator,
         sowilo, sowilo_indicator,
         tiwaz, tiwaz_indicator,
+        berkano, berkano_indicator,
         dagaz, dagaz_indicator,
         oss, oss_indicator
     }
