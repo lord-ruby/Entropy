@@ -3020,7 +3020,7 @@ local decs = {
 				name = "Haglaz{C:purple}+{}",
 				text = {
 					"{C:red}Destroys{} the next",
-					"played or discarded hand"
+					"played or {C:purple,E:1}discarded{} hand"
 				}
 			},
 
@@ -3411,7 +3411,7 @@ local decs = {
 				name = "Rune of Haglaz{C:purple}+{}",
 				text = {
 					"{C:red}Destroy{} the next",
-					"played or discarded hand"
+					"played or {C:purple,E:1}discarded{} hand"
 				}
 			},
 

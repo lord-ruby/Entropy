@@ -1543,3 +1543,19 @@ pattern = '''table.insert(left_text,{n=G.UIT.O, config={object = DynaText({strin
 position = "at"
 payload = '''table.insert(left_text,{n=G.UIT.O, config={object = DynaText({string = {" "..localize{type = 'variable', key = 'interest', vars = {G.GAME.interest_amount, Cryptid.interest_rate(), G.GAME.interest_amount*G.GAME.interest_cap/5}}}, colours = {G.C.UI.TEXT_LIGHT}, shadow = true, pop_in = 0, scale = 0.4*scale, silent = true})}})'''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/ui.lua"]'''
+pattern = '''create_option_cycle({options = options, w = 4.5, cycle_shoulders = true, opt_callback = 'SMODS_card_collection_page', current_option = 1, colour = G.ACTIVE_MOD_UI and (G.ACTIVE_MOD_UI.ui_config or {}).collection_option_cycle_colour or G.C.RED, no_pips = true, focus_args = {snap_to = true, nav = 'wide'}})'''
+position = "at"
+payload = '''
+            (_pool[1].set == "Rune" and create_toggle{ -- tally function runs way too often but whatever
+                label = localize{ type = "name_text", set = "Voucher", key = "v_entr_providence" }, 
+                w = 0,
+                ref_table = G.GAME, 
+                ref_value = "providence" 
+            } or nil),
+            create_option_cycle({options = options, w = 4.5, cycle_shoulders = true, opt_callback = 'SMODS_card_collection_page', current_option = 1, colour = G.ACTIVE_MOD_UI and (G.ACTIVE_MOD_UI.ui_config or {}).collection_option_cycle_colour or G.C.RED, no_pips = true, focus_args = {snap_to = true, nav = 'wide'}})
+'''
+match_indent = true
