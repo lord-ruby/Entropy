@@ -30,7 +30,7 @@ SMODS.RuneTag = SMODS.Tag:extend{
 }
 
 function Entropy.providence_ui_active()
-    return (G.GAME.providence_temp and G.SETTINGS.paused) or G.GAME.providence
+    return (G.providence_temp and G.SETTINGS.paused) or G.GAME.providence
 end
 
 -- all the ui shit is basically just copy pasted
@@ -150,7 +150,7 @@ function create_UIBox_your_collection_rune_tags_content(page)
             create_toggle{ -- tally function runs way too often but whatever
                 label = localize{ type = "name_text", set = "Voucher", key = "v_entr_providence" }, 
                 w = 0,
-                ref_table = G.GAME, 
+                ref_table = G, 
                 ref_value = "providence_temp" 
             },
 			{
