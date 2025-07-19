@@ -23,11 +23,15 @@ SMODS.RuneTag = SMODS.Tag:extend{
     end,
     loc_vars = function(self, q, card)
         return {
-            key = G.GAME.providence and card.key.."_providence" or card.key
+            key = Entropy.providence_ui_active() and card.key.."_providence" or card.key
         }
     end,
     no_tags = true
 }
+
+function Entropy.providence_ui_active()
+    return (G.GAME.providence_temp and G.SETTINGS.paused) or G.GAME.providence
+end
 
 -- all the ui shit is basically just copy pasted
 -- thank god for gpl 3.0 on smods
@@ -68,7 +72,7 @@ end
 function create_UIBox_your_collection_rune_tags_content(page)
 	page = page or 1
 	local tag_matrix = {}
-	local rows = 4
+	local rows = 5
 	local cols = 6
 	local tag_tab = SMODS.collection_pool(G.P_RUNES, true)
 	for i = 1, math.ceil(rows) do
@@ -78,11 +82,6 @@ function create_UIBox_your_collection_rune_tags_content(page)
 	local tags_to_be_alerted = {}
 	local row, col = 1, 1
 	for k, v in ipairs(tag_tab) do
-        if row == 4 then
-            cols = 7
-        else    
-            cols = 6
-        end
 		if k <= cols*rows*(page-1) then elseif k > cols*rows*page then break else
 			local discovered = v.discovered
 			local temp_tag = Tag(v.key, true)
@@ -123,8 +122,8 @@ function create_UIBox_your_collection_rune_tags_content(page)
 		table.insert(table_nodes, { n = G.UIT.R, config = { align = "cm", minh = 1 }, nodes = tag_matrix[i] })
 	end
 	local page_options = {}
-	for i = 1, math.ceil(#tag_tab/(rows*cols+1)) do
-		table.insert(page_options, localize('k_page')..' '..tostring(i)..'/'..tostring(math.ceil(#tag_tab/(rows*cols+1))))
+	for i = 1, math.ceil(#tag_tab/(rows*cols)) do
+		table.insert(page_options, localize('k_page')..' '..tostring(i)..'/'..tostring(math.ceil(#tag_tab/(rows*cols))))
 	end
     local t = create_UIBox_generic_options({
 		colour = G.ACTIVE_MOD_UI and ((G.ACTIVE_MOD_UI.ui_config or {}).collection_colour or
@@ -152,7 +151,7 @@ function create_UIBox_your_collection_rune_tags_content(page)
                 label = localize{ type = "name_text", set = "Voucher", key = "v_entr_providence" }, 
                 w = 0,
                 ref_table = G.GAME, 
-                ref_value = "providence" 
+                ref_value = "providence_temp" 
             },
 			{
 				n = G.UIT.R,
@@ -387,11 +386,11 @@ function Entropy.create_rune(key, pos, indicator_key, order, credits, loc_vars, 
             if loc_vars then
                 return {
                     vars = loc_vars(self, q, card),
-                    key = G.GAME.providence and "c_entr_"..key.."_providence" or "c_entr_"..key
+                    key = Entropy.providence_ui_active() and "c_entr_"..key.."_providence" or "c_entr_"..key
                 }
             end
             return {
-                key = G.GAME.providence and "c_entr_"..key.."_providence" or "c_entr_"..key
+                key = Entropy.providence_ui_active() and "c_entr_"..key.."_providence" or "c_entr_"..key
             }
         end,
         can_use = function()
@@ -1174,6 +1173,26 @@ local dagaz_indicator = {
     end
 }
 
+local othila = Entropy.create_rune("othila", {x=2,y=3}, "rune_entr_othila", 6024)
+local othila_indicator = {
+    object_type = "RuneTag",
+    order = 7024,
+    key = "othila",
+    atlas = "rune_atlas",
+    pos = {x=2,y=3},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.selling_card then
+            return {
+                func = function()
+                    ease_dollars((G.GAME.providence and 4 or 2) * context.card.sell_cost)
+                end
+            }
+        end
+    end
+}
+
 local oss = Entropy.create_rune("oss", {x=3,y=3}, "rune_entr_oss", 6025, nil, nil, true, {x=4,y=3})
 local oss_indicator = {
     object_type = "RuneTag",
@@ -1230,6 +1249,7 @@ return {
         laguz, laguz_indicator,
         ingwaz, ingwaz_indicator,
         dagaz, dagaz_indicator,
+        othila, othila_indicator,
         oss, oss_indicator
     }
 }

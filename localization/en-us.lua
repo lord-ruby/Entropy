@@ -3253,6 +3253,21 @@ local decs = {
 				}
 			},
 
+			rune_entr_othila = {
+				name = "Othila",
+				text = {
+					"The next {C:attention}sold{} card gives",
+					"{X:gold,C:white}X3{} as much money"
+				}
+			},
+			rune_entr_othila_providence = {
+				name = "Ohtila{C:purple}+{}",
+				text = {
+					"The next {C:attention}sold{} card gives",
+					"{X:purple,C:white,E:1}X5{} as much money"
+				}
+			},
+
 			rune_entr_oss = {
 				name = "Oss",
 				text = {
@@ -3637,6 +3652,20 @@ local decs = {
 					"{C:purple,E:1}Create{} a random inverted",
 					"consumable when this occurs",
 					"{C:inactive}(Must have room){}"
+				}
+			},
+			c_entr_othila = {
+				name = "Rune of Othila",
+				text = {
+					"The next {C:attention}sold{} card gives",
+					"{X:gold,C:white}X3{} as much money"
+				}
+			},
+			c_entr_othila_providence = {
+				name = "Rune of Othila{C:purple}+{}",
+				text = {
+					"The next {C:attention}sold{} card gives",
+					"{X:purple,C:white,E:1}X5{} as much money"
 				}
 			},
 		},
