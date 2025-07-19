@@ -78,6 +78,11 @@ function create_UIBox_your_collection_rune_tags_content(page)
 	local tags_to_be_alerted = {}
 	local row, col = 1, 1
 	for k, v in ipairs(tag_tab) do
+        if row == 4 then
+            cols = 7
+        else    
+            cols = 6
+        end
 		if k <= cols*rows*(page-1) then elseif k > cols*rows*page then break else
 			local discovered = v.discovered
 			local temp_tag = Tag(v.key, true)
@@ -118,8 +123,8 @@ function create_UIBox_your_collection_rune_tags_content(page)
 		table.insert(table_nodes, { n = G.UIT.R, config = { align = "cm", minh = 1 }, nodes = tag_matrix[i] })
 	end
 	local page_options = {}
-	for i = 1, math.ceil(#tag_tab/(rows*cols)) do
-		table.insert(page_options, localize('k_page')..' '..tostring(i)..'/'..tostring(math.ceil(#tag_tab/(rows*cols))))
+	for i = 1, math.ceil(#tag_tab/(rows*cols+1)) do
+		table.insert(page_options, localize('k_page')..' '..tostring(i)..'/'..tostring(math.ceil(#tag_tab/(rows*cols+1))))
 	end
     local t = create_UIBox_generic_options({
 		colour = G.ACTIVE_MOD_UI and ((G.ACTIVE_MOD_UI.ui_config or {}).collection_colour or
@@ -143,6 +148,12 @@ function create_UIBox_your_collection_rune_tags_content(page)
 					},
 				}
 			},
+            create_toggle{ -- tally function runs way too often but whatever
+                label = localize{ type = "name_text", set = "Voucher", key = "v_entr_providence" }, 
+                w = 0,
+                ref_table = G.GAME, 
+                ref_value = "providence" 
+            },
 			{
 				n = G.UIT.R,
 				config = { align = 'cm' },
@@ -1072,6 +1083,29 @@ local mannaz_indicator = {
     end
 }
 
+local laguz = Entropy.create_rune("laguz", {x=6,y=2}, "rune_entr_laguz", 6021)
+local laguz_indicator = {
+    object_type = "RuneTag",
+    order = 7021,
+    key = "laguz",
+    atlas = "rune_atlas",
+    pos = {x=6,y=2},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.pre_discard then
+            return {
+                func = function()
+                    ease_discard(1)
+                    if G.GAME.providence then
+                        ease_hands_played(1)
+                    end
+                end
+            }
+        end
+    end
+}
+
 local dagaz = Entropy.create_rune("dagaz", {x=1,y=3}, "rune_entr_dagaz", 6023)
 local dagaz_indicator = {
     object_type = "RuneTag",
@@ -1159,6 +1193,7 @@ return {
         berkano, berkano_indicator,
         ehwaz, ehwaz_indicator,
         mannaz, mannaz_indicator,
+        laguz, laguz_indicator,
         dagaz, dagaz_indicator,
         oss, oss_indicator
     }

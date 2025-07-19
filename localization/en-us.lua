@@ -3204,6 +3204,20 @@ local decs = {
 				}
 			},
 
+			rune_entr_laguz = {
+				name = "Laguz",
+				text = {
+					"Refunds the next {C:attention}discard{}"
+				}
+			},
+			rune_entr_laguz_providence = {
+				name = "Laguz{C:purple}+{}",
+				text = {
+					"Refunds the next {C:attention}discard{}",
+					"and temporarily gives {C:purple,E:1}+1{} Hand"
+				}
+			},
+
 			rune_entr_dagaz = {
 				name = "Dagaz",
 				text = {
@@ -3555,6 +3569,22 @@ local decs = {
 				text = {
 					"The next {C:attention}opened{} Booster Pack",
 					"will contain {C:purple,E:1}Two{} {C:spectral}Spectral{} Cards"
+				}
+			},
+
+			c_entr_laguz = {
+				name = "Rune of Laguz",
+				text = {
+					"The next {C:attention}discard{}",
+					"is refunded"
+				}
+			},
+			c_entr_laguz_providence = {
+				name = "Rune of Laguz{C:purple}+{}",
+				text = {
+					"The next {C:attention}discard{}",
+					"is refunded and temporarily",
+					"gives {C:purple,E:1}+1{} Hands"
 				}
 			},
 
