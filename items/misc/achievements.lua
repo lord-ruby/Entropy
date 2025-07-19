@@ -4,7 +4,6 @@ local here_comes_the_sun = {
 	order = 1,
 	bypass_all_unlocked = true,
 	atlas = "entr_achievements",
-	--reset_on_startup = true,
 	unlock_condition = function(self, args)
         if args.type == "sunny_joker" then
 		    return true
@@ -19,7 +18,6 @@ local rift = {
 	order = 2,
 	bypass_all_unlocked = true,
 	atlas = "entr_achievements",
-	--reset_on_startup = true,
 	unlock_condition = function(self, args)
         if args.type == "rift" then
 		    return true
@@ -33,7 +31,6 @@ local joy_to_the_world = {
 	order = 3,
 	bypass_all_unlocked = true,
 	atlas = "entr_achievements",
-	--reset_on_startup = true,
 	unlock_condition = function(self, args)
         if args.type == "wunjo_duplication" then
 		    return true
@@ -48,7 +45,6 @@ if (SMODS.Mods["Cryptid"] or {}).can_load then
 		order = 500,
 		bypass_all_unlocked = true,
 		atlas = "entr_achievements",
-		--reset_on_startup = true,
 		unlock_condition = function(self, args)
 			if args.type == "event_horizon" then
 				return true
@@ -62,7 +58,6 @@ if (SMODS.Mods["Cryptid"] or {}).can_load then
 		order = 600,
 		bypass_all_unlocked = true,
 		atlas = "entr_achievements",
-		--reset_on_startup = true,
 		pos = {x=1,y=1},
 		hidden_text = true,
 		unlock_condition = function(self, args)
@@ -78,7 +73,6 @@ if (SMODS.Mods["Cryptid"] or {}).can_load then
 		order = 999,
 		bypass_all_unlocked = true,
 		atlas = "entr_achievements",
-		--reset_on_startup = true,
 		pos = {x=1,y=1},
 		hidden_text = true,
 		unlock_condition = function(self, args)
@@ -95,7 +89,6 @@ if (SMODS.Mods["Cryptid"] or {}).can_load then
 		order = 1000,
 		bypass_all_unlocked = true,
 		atlas = "entr_achievements",
-		--reset_on_startup = true,
 		pos = {x=1,y=1},
 		hidden_text = true,
 		unlock_condition = function(self, args)
