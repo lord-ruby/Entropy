@@ -1034,27 +1034,37 @@ local ehwaz_indicator = {
                 rune_break = true,
                 func = function()
                     G.E_MANAGER:add_event(Event({
-                        trigger = "immediate",
+                        trigger = "after",
+                        blocking = false,
                         func = function()
-                            G.STATE = G.STATES.ROUND_EVAL
-                            G.STATE_COMPLETE = false
-                            return true
-                        end,
-                    }))
-                    if G.blind_select then        
-                        G.blind_select:remove()
-                        G.blind_prompt_box:remove()
-                    end
-                    if G.GAME.providence then
-                        G.E_MANAGER:add_event(Event({
-                            func = function()
-                                change_shop_size(1)
+                            if G.STATE ~= G.STATES.SMODS_BOOSTER_OPENED then
+                                G.E_MANAGER:add_event(Event({
+                                    trigger = "after",
+                                    blocking = false,
+                                    func = function()
+                                        G.STATE = G.STATES.ROUND_EVAL
+                                        G.STATE_COMPLETE = false
+                                        return true
+                                    end,
+                                }))
+                                if G.blind_select then        
+                                    G.blind_select:remove()
+                                    G.blind_prompt_box:remove()
+                                end
+                                if G.GAME.providence then
+                                    G.E_MANAGER:add_event(Event({
+                                        func = function()
+                                            change_shop_size(1)
+                                            return true
+                                        end,
+                                    }))
+                                    G.GAME.Increment = (G.GAME.Increment or 0) + 1
+                                    G.GAME.IncrementAnte = G.GAME.round_resets.ante
+                                end
                                 return true
-                            end,
-                        }))
-                        G.GAME.Increment = (G.GAME.Increment or 0) + 1
-                        G.GAME.IncrementAnte = G.GAME.round_resets.ante
-                    end
+                            end
+                        end
+                    }))
                 end
             }
         end
