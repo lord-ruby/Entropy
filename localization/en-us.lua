@@ -3171,6 +3171,23 @@ local decs = {
 				}
 			},
 
+			rune_entr_ehwaz = {
+				name = "Ehwaz",
+				text = {
+					"Gives access to a {C:attention}Payout{} and a {C:attention}Shop{}",
+					"on the next {C:attention}skipped{} Blind"
+
+				}
+			},
+			rune_entr_ehwaz_providence = {
+				name = "Ehwaz{C:purple}+{}",
+				text = {
+					"Gives access to a {C:attention}Payout{} and a {C:attention}Shop{}",
+					"with {C:purple,E:1}+1{} Shop Slot",
+					"on the next {C:attention}skipped{} Blind"
+				}
+			},
+
 			rune_entr_dagaz = {
 				name = "Dagaz",
 				text = {
@@ -3491,6 +3508,22 @@ local decs = {
 				text = {
 					"Create {C:purple,E:1}Three{} copies of",
 					"the next {C:red}Destroyed{} card"
+				}
+			},
+
+			c_entr_ehwaz = {
+				name = "Rune of Ehwaz",
+				text = {
+					"Gives access to a {C:attention}Payout{} and a {C:attention}Shop{}",
+					"on the next {C:attention}skipped{} Blind"
+				}
+			},
+			c_entr_ehwaz_providence = {
+				name = "Rune of Ehwaz{C:purple}+{}",
+				text = {
+					"Gives access to a {C:attention}Payout{} and a {C:attention}Shop{}",
+					"with {C:purple,E:1}+1 Shop Slots{}",
+					"on the next {C:attention}skipped{} Blind"
 				}
 			},
 

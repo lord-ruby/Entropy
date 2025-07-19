@@ -1007,6 +1007,51 @@ local berkano_indicator = {
     end
 }
 
+local ehwaz = Entropy.create_rune("ehwaz", {x=4,y=2}, "rune_entr_ehwaz", 6019)
+local ehwaz_indicator = {
+    object_type = "RuneTag",
+    order = 7019,
+    key = "ehwaz",
+    atlas = "rune_atlas",
+    pos = {x=4,y=2},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.skip_blind then
+            local card = context.removed and context.removed[1] or context.destroy_card
+            return {
+                rune_break = true,
+                func = function()
+                    G.E_MANAGER:add_event(Event({
+                        trigger = "immediate",
+                        func = function()
+                            G.STATE = G.STATES.ROUND_EVAL
+                            G.STATE_COMPLETE = false
+                            return true
+                        end,
+                    }))
+                    if G.blind_select then        
+                        G.blind_select:remove()
+                        G.blind_prompt_box:remove()
+                    end
+                    if G.GAME.providence then
+                        G.E_MANAGER:add_event(Event({
+                            func = function()
+                                change_shop_size(1)
+                                return true
+                            end,
+                        }))
+                        G.GAME.Increment = (G.GAME.Increment or 0) + 1
+                        G.GAME.IncrementAnte = G.GAME.round_resets.ante
+                    end
+                end
+            }
+        end
+    end
+}
+
+
+
 local dagaz = Entropy.create_rune("dagaz", {x=1,y=3}, "rune_entr_dagaz", 6023)
 local dagaz_indicator = {
     object_type = "RuneTag",
@@ -1089,6 +1134,7 @@ return {
         sowilo, sowilo_indicator,
         tiwaz, tiwaz_indicator,
         berkano, berkano_indicator,
+        ehwaz, ehwaz_indicator,
         dagaz, dagaz_indicator,
         oss, oss_indicator
     }
