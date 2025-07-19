@@ -3218,6 +3218,23 @@ local decs = {
 				}
 			},
 
+			rune_entr_ingwaz = {
+				name = "Ingwaz",
+				text = {
+					"The next {C:attention}probability{} roll",
+					"will {C:green}succeed{}"
+				}
+			},
+			rune_entr_ingwaz_providence = {
+				name = "Ingwaz{C:purple}+{}",
+				text = {
+					"The next {C:attention}probability{} roll",
+					"will {C:green}succeed{} with a",
+					"{C:purple,E:1}33%{} chance to not consume",
+					"this rune when triggered"
+				}
+			},
+
 			rune_entr_dagaz = {
 				name = "Dagaz",
 				text = {
@@ -3585,6 +3602,23 @@ local decs = {
 					"The next {C:attention}discard{}",
 					"is refunded and temporarily",
 					"gives {C:purple,E:1}+1{} Hands"
+				}
+			},
+
+			c_entr_ingwaz = {
+				name = "Rune of Ingwaz",
+				text = {
+					"The next {C:attention}probability{} roll",
+					"will {C:green}succeed{}"
+				}
+			},
+			c_entr_ingwaz_providence = {
+				name = "Rune of Ingwaz{C:purple}+{}",
+				text = {
+					"The next {C:attention}probability{} roll",
+					"will {C:green}succeed{} with a",
+					"{C:purple,E:1}33%{} chance to not consume",
+					"this rune when triggered"
 				}
 			},
 

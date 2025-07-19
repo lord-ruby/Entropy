@@ -3510,6 +3510,9 @@ function SMODS.get_probability_vars(trigger_obj, base_numerator, base_denominato
     for i, v in pairs(SMODS.find_card("j_entr_d1")) do
         if not v.ability.triggered then any_active = true end
     end
+    if Entropy.has_rune("rune_entr_ingwaz") then
+        any_active = true
+    end
     if any_active then
         numerator = denominator
     end

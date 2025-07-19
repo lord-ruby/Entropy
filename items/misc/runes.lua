@@ -1116,6 +1116,30 @@ local laguz_indicator = {
     end
 }
 
+local ingwaz = Entropy.create_rune("ingwaz", {x=0,y=3}, "rune_entr_ingwaz", 6022)
+local ingwaz_indicator = {
+    object_type = "RuneTag",
+    order = 7022,
+    key = "ingwaz",
+    atlas = "rune_atlas",
+    pos = {x=0,y=3},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.pseudorandom_result and not rune.triggered then
+            if not G.GAME.providence or pseudorandom("rune_entr_ingwaz") < 0.66 then
+                rune.triggered = true
+                return {
+                    rune_break = true,
+                    func = function()
+                        
+                    end
+                }
+            end
+        end
+    end
+}
+
 local dagaz = Entropy.create_rune("dagaz", {x=1,y=3}, "rune_entr_dagaz", 6023)
 local dagaz_indicator = {
     object_type = "RuneTag",
@@ -1204,6 +1228,7 @@ return {
         ehwaz, ehwaz_indicator,
         mannaz, mannaz_indicator,
         laguz, laguz_indicator,
+        ingwaz, ingwaz_indicator,
         dagaz, dagaz_indicator,
         oss, oss_indicator
     }
