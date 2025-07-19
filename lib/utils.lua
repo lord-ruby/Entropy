@@ -1566,7 +1566,6 @@ function Cryptid.get_next_tag(override)
         if G.GAME.dog_tags[(override or G.GAME.blind_on_deck)..G.GAME.round_resets.ante] then return 'tag_entr_dog' end
     end
     if ref then return ref end
-    return "tag_entr_ascendant_twisted"
 end
 
 function Entropy.GetInverseSuit(suit)
