@@ -1050,7 +1050,27 @@ local ehwaz_indicator = {
     end
 }
 
+local mannaz = Entropy.create_rune("mannaz", {x=5,y=2}, "rune_entr_mannaz", 6020)
+local mannaz_indicator = {
+    object_type = "RuneTag",
+    order = 7020,
+    key = "mannaz",
+    atlas = "rune_atlas",
+    pos = {x=5,y=2},
+    atlas = "rune_indicators",
+    dependencies = {items = {"set_entr_runes"}},
+    calculate = function(self, rune, context)
+        if context.post_open_booster then
+            if rune.num_triggered then
+                return {
+                    func = function()
 
+                    end
+                }
+            end
+        end
+    end
+}
 
 local dagaz = Entropy.create_rune("dagaz", {x=1,y=3}, "rune_entr_dagaz", 6023)
 local dagaz_indicator = {
@@ -1097,19 +1117,22 @@ local oss_indicator = {
     dependencies = {items = {"set_entr_runes"}},
     hidden = true,
     calculate = function(self, rune, context)
-        if context.generate_rare_consumable and not rune.triggered then
-            return {
-                rune_break = true,
-                func = function()
-                    if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
-                        SMODS.add_card{
-                            set = "Rune",
-                            area = G.consumeables,
-                            key_append = "entr_oss"
-                        }
+        if context.post_open_booster then
+            if rune.triggered then
+                return {
+                    func = function()
+                        if G.GAME.providence then
+                            if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                                SMODS.add_card{
+                                    set = "Rune",
+                                    area = G.consumeables,
+                                    key_append = "entr_oss"
+                                }
+                            end
+                        end
                     end
-                end
-            }
+                }
+            end
         end
     end
 }
@@ -1135,6 +1158,7 @@ return {
         tiwaz, tiwaz_indicator,
         berkano, berkano_indicator,
         ehwaz, ehwaz_indicator,
+        mannaz, mannaz_indicator,
         dagaz, dagaz_indicator,
         oss, oss_indicator
     }

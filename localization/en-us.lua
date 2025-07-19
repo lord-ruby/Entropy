@@ -3188,6 +3188,22 @@ local decs = {
 				}
 			},
 
+			rune_entr_mannaz = {
+				name = "Mannaz",
+				text = {
+					"Adds a {C:spectral}Spectral{} Card to",
+					"the next {C:attention}opened{} Booster Pack"
+
+				}
+			},
+			rune_entr_mannaz_providence = {
+				name = "Mannaz{C:purple}+{}",
+				text = {
+					"Adds {C:purple,E:1}Two{} {C:spectral}Spectral{} Cards to",
+					"the next {C:attention}opened{} Booster Pack"
+				}
+			},
+
 			rune_entr_dagaz = {
 				name = "Dagaz",
 				text = {
@@ -3524,6 +3540,21 @@ local decs = {
 					"Gives access to a {C:attention}Payout{} and a {C:attention}Shop{}",
 					"with {C:purple,E:1}+1 Shop Slots{}",
 					"on the next {C:attention}skipped{} Blind"
+				}
+			},
+
+			c_entr_mannaz = {
+				name = "Rune of Mannaz",
+				text = {
+					"The next {C:attention}opened{} Booster Pack",
+					"will contain a {C:spectral}Spectral{} Card"
+				}
+			},
+			c_entr_mannaz_providence = {
+				name = "Rune of Mannaz{C:purple}+{}",
+				text = {
+					"The next {C:attention}opened{} Booster Pack",
+					"will contain {C:purple,E:1}Two{} {C:spectral}Spectral{} Cards"
 				}
 			},
 

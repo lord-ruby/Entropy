@@ -140,7 +140,18 @@ local mega = {
 	},
 }
 
-
+function Entropy.get_rare_inversion(seed)
+    local pool = {}
+    for i, k in pairs(Entropy.RareInversions) do
+        local v = G.P_CENTERS[k]
+        if not (G.GAME.used_jokers[v.key] and not SMODS.showman(v.key) and not v.can_repeat_soul) and (not v.in_pool or (type(v.in_pool) ~= "function") or v:in_pool()) then
+            pool[#pool+1] = k
+        end
+    end
+    if #pool > 0 then
+        return pseudorandom_element(pool, pseudoseed(seed or "entr_twisted_rare")), pool
+    end
+end
 
 function create_inverted_card(area, seed)
     local num = pseudorandom("twisted_rare")
@@ -154,14 +165,27 @@ function create_inverted_card(area, seed)
         end
     end
     if Entropy.has_rune("rune_entr_oss") and not Entropy.has_rune("rune_entr_oss").triggered then
-        local c = pseudorandom_element(Entropy.RareInversions, pseudoseed(seed or "twisted_card_rare"))
-        calculate_runes({generate_rare_consumable = true})
-        Entropy.has_rune("rune_entr_oss").triggered = true
-        return create_card(G.P_CENTERS[c].set, area or G.pack_cards, nil, nil, true, true, c)
+        local c = Entropy.get_rare_inversion("rune_entr_oss")
+        if c then
+            calculate_runes({generate_rare_consumable = true})
+            Entropy.has_rune("rune_entr_oss").triggered = true
+            return create_card(G.P_CENTERS[c].set, area or G.pack_cards, nil, nil, true, true, c)
+        end
+    else
+        if Entropy.has_rune("rune_entr_mannaz") and (Entropy.has_rune("rune_entr_mannaz").num_triggered or 0) <= 1 then
+            Entropy.has_rune("rune_entr_mannaz").num_triggered = (Entropy.has_rune("rune_entr_mannaz").num_triggered or 0) + 1
+            if Entropy.has_rune("rune_entr_mannaz").num_triggered > 1 or not G.GAME.providence then
+                Entropy.has_rune("rune_entr_mannaz").num_triggered = 2
+                Entropy.has_rune("rune_entr_mannaz").triggered = true
+            end
+            return create_card("Spectral", area or G.pack_cards, nil, nil, true, true, nil, "rune_entr_mannaz", true)
+        end
     end
     if num - 0.003 <= 0 then
-        local c = pseudorandom_element(Entropy.RareInversions, pseudoseed(seed or "twisted_card_rare"))
-        return create_card(G.P_CENTERS[c].set, area or G.pack_cards, nil, nil, true, true, c)
+        local c = Entropy.get_rare_inversion()
+        if c then
+            return create_card(G.P_CENTERS[c].set, area or G.pack_cards, nil, nil, true, true, c)
+        end
     end
     return create_card("Twisted", area or G.pack_cards, nil, nil, true, true, nil, "twisted_card")
 end
