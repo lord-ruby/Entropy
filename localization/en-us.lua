@@ -3286,14 +3286,24 @@ local decs = {
 				}
 			},
 			--pacts
+			rune_entr_decay = {
+				name = "Mark of Decay",
+				text = {
+					"Marked by {C:red}Decay{}"
+				}
+			},
 			rune_entr_envy = {
 				name = "Mark of Envy",
 				text = {
-					"{C:red}Destroy{} a {C:attention}Random{} Joker",
-					"Retrigger a {C:attention}random{} Joker",
-					"which changes each round"
+					{
+						"Marked by {C:red}Envy{}"
+					},
+					{
+						"Retrigger a {C:attention}random{} Joker",
+						"Which {C:attention}changes{} every round"
+					}
 				}
-			}
+			},
 		},
 		Rune = {
 			c_entr_fehu = {
@@ -3679,6 +3689,13 @@ local decs = {
 			},
 		},
 		Pact = {
+			c_entr_decay = {
+				name = "Pact of Decay",
+				text = {
+					"{C:red}Remove{} {C:attention}1{} Level from {C:attention}2{} random hands",
+					"Your most played hand gains {C:attention}2{} Levels"
+				}
+			},
 			c_entr_envy = {
 				name = "Pact of Envy",
 				text = {

@@ -18,14 +18,67 @@ function Entropy.create_mark(key, order, pos, calculate, credits)
     }
 end
 
+local decay_indicator = Entropy.create_mark("decay", 7056, {x = 5, y = 4})
+local decay = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=5,y=4},
+    order = 7606,
+    key = "decay",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_kaunan",
+    use = function(self, card)
+        local hand = "High Card"
+        for i, v in pairs(G.GAME.hands) do
+            if v.played > G.GAME.hands[hand].played then hand = i end
+        end
+        local hands = {}
+        for i, v in pairs(G.GAME.hands) do
+            if i ~= hand and v.visible and to_big(v.level) > to_big(0) then hands[#hands+1] = i end
+        end
+        for i = 1, math.min(2, #hands) do
+            local rhand = pseudorandom_element(hands, pseudoseed("entr_decay_hand"))
+            SMODS.smart_level_up_hand(card, rhand, false, -1)
+            local ind
+            for i, v in pairs(hands) do
+                if v == rhand then ind = i; break end
+            end
+            table.remove(hands, ind)
+        end
+
+        SMODS.smart_level_up_hand(card, "High Card", false, 2)
+        Entropy.pact_mark("rune_entr_decay")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function()
+        return false
+    end
+}
+
+local envy_indicator = Entropy.create_mark("envy", 7057, {x = 6,y = 4}, function(self, mark, context)
+    if #G.jokers.cards > 0 then
+        if not mark.ability.joker_number then mark.ability.joker_number = pseudorandom("entr_envy_joker", 1, #G.jokers.cards) end
+        if context.retrigger_joker_check and context.other_card == G.jokers.cards[mark.ability.joker_number] then
+            return {
+                message = localize("k_again_ex"),
+                repetitions = mark.ability.count or 1,
+            }
+        end
+        if context.end_of_round then
+            mark.ability.joker_number = pseudorandom("entr_envy_joker", 1, #G.jokers.cards)
+        end
+    end
+end)
 local envy = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=6,y=4},
-    order = 6666,
+    order = 7607,
     key = "envy",
-    soul_set = spectral and "Rune" or nil,
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
     inversion = "c_entr_gebo",
     use = function()
@@ -47,21 +100,6 @@ local envy = {
         return false
     end
 }
-
-local envy_indicator = Entropy.create_mark("envy", 7051, {x = 6,y = 4}, function(self, mark, context)
-    if #G.jokers.cards > 0 then
-        if not mark.ability.joker_number then mark.ability.joker_number = pseudorandom("entr_envy_joker", 1, #G.jokers.cards) end
-        if context.retrigger_joker_check and context.other_card == G.jokers.cards[mark.ability.joker_number] then
-            return {
-                message = localize("k_again_ex"),
-                repetitions = mark.ability.count or 1,
-            }
-        end
-        if context.end_of_round then
-            mark.ability.joker_number = pseudorandom("entr_envy_joker", 1, #G.jokers.cards)
-        end
-    end
-end)
 
 local retriggers_ref = SMODS.calculate_retriggers
 SMODS.calculate_retriggers = function(card, context, _ret)
@@ -89,6 +127,7 @@ end
 
 return {
     items = {
+        decay, decay_indicator,
         envy, envy_indicator
     }
 }
