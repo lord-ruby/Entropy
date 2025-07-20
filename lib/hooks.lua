@@ -1092,7 +1092,7 @@ function G.UIDEF.use_and_sell_buttons(card)
               }},
           }}
     end
-    if card.area == G.pack_cards and G.pack_cards and not card.config.center.no_select and ((card.ability.set == "Command" or card.ability.set == "CBlind" or card.ability.set == "Fraud" or card.ability.set == "Omen" or card.config.center.key == "c_entr_flipside") or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front) and (card.ability.consumeable) then
+    if card.area == G.pack_cards and G.pack_cards and not card.config.center.no_select and ((SMODS.ConsumableTypes[card.config.center.set] and SMODS.ConsumableTypes[card.config.center.set].can_be_pulled) or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front) and (card.ability.consumeable) then
         return {
             n = G.UIT.ROOT,
             config = { padding = -0.1, colour = G.C.CLEAR },
@@ -1112,7 +1112,7 @@ function G.UIDEF.use_and_sell_buttons(card)
                         colour = G.C.UI.BACKGROUND_INACTIVE,
                         one_press = true,
                         button = "use_card",
-                        func = (card.ability.set == "Command" or card.ability.set == "CBlind" or card.ability.set == "Fraud" or card.ability.set == "Omen" or card.config.center.key == "c_entr_flipside") and "can_reserve_card" or "can_reserve_card_to_deck",
+                        func = ((SMODS.ConsumableTypes[card.config.center.set] and SMODS.ConsumableTypes[card.config.center.set].can_be_pulled) or card.config.center.key == "c_entr_flipside") and "can_reserve_card" or "can_reserve_card_to_deck",
                         handy_insta_action = 'use'
                     },
                     nodes = {

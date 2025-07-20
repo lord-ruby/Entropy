@@ -35,7 +35,8 @@ SMODS.ConsumableType({
 	collection_rows = { 5, 6 },
 	shop_rate = 0.0,
 	loc_txt = {},
-	default = "c_entr_master"
+	default = "c_entr_master",
+	can_be_pulled = true,
 })
 
 SMODS.ConsumableType({
@@ -57,7 +58,8 @@ SMODS.ConsumableType({
 	collection_rows = { 4, 5 },
 	shop_rate = 0.0,
 	loc_txt = {},
-	default = "c_entr_changeling"
+	default = "c_entr_changeling",
+	can_be_pulled = true,
 })
 
 SMODS.UndiscoveredSprite({
@@ -94,7 +96,8 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
 		collection_rows = { 4, 4 },
 		shop_rate = 0.0,
 		loc_txt = {},
-		default = "c_entr_memory_leak"
+		default = "c_entr_memory_leak",
+		can_be_pulled = true,
 	})
 	SMODS.UndiscoveredSprite({
 		key = "Command",
@@ -114,7 +117,8 @@ SMODS.ConsumableType({
 	collection_rows = { 6, 6 },
 	shop_rate = 0.0,
 	loc_txt = {},
-	default = "c_entr_envy"
+	default = "c_entr_envy",
+	can_be_pulled = true,
 })
 
 SMODS.ConsumableType{
@@ -125,6 +129,7 @@ SMODS.ConsumableType{
 	shop_rate = 0.0,
 	default = "c_entr_bl_small",
     hidden=true,
+	can_be_pulled = true,
 }
 
 SMODS.ObjectType({
