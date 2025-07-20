@@ -18,6 +18,42 @@ function Entropy.create_mark(key, order, pos, calculate, credits)
     }
 end
 
+local thorns_indicator = Entropy.create_mark("thorns", 7053, {x = 2, y = 4})
+local thorns = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=2,y=4},
+    order = 7603,
+    key = "thorns",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_thusisaz",
+    use = function(self, card)
+        local jokers = {}
+        for i, v in pairs(G.jokers.cards) do
+            if not v.edition then jokers[#jokers+1] = v end
+        end
+        if #jokers > 0 then
+            pseudoshuffle(jokers, pseudoseed("entr_thorns"))
+            for i = 1, math.min(2, #jokers) do
+                jokers[i]:set_edition(poll_edition("entr_thorns_edition", nil, nil, true))
+                jokers[i].ability.rental = true
+            end
+        end
+        Entropy.pact_mark("rune_entr_thorns")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function()
+        return false
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 local decay_indicator = Entropy.create_mark("decay", 7056, {x = 5, y = 4})
 local decay = {
     object_type = "Consumable",
@@ -55,6 +91,10 @@ local decay = {
     end,
     in_pool = function()
         return false
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
     end
 }
 
@@ -98,6 +138,10 @@ local envy = {
     end,
     in_pool = function()
         return false
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
     end
 }
 
@@ -127,6 +171,7 @@ end
 
 return {
     items = {
+        thorns, thorns_indicator,
         decay, decay_indicator,
         envy, envy_indicator
     }

@@ -1781,3 +1781,50 @@ function Entropy.randomise_once(card, types, seed)
         card:flip()
     end
 end
+
+function Entropy.is_in_shop(key, consumable)
+	local center = G.P_CENTERS[key]
+	if center.hidden or center.no_doe or center.no_collection then
+		return
+	elseif G.GAME.banned_keys[key] or not center.unlocked then
+		return
+	elseif center.set == "Joker" then
+		if type(center.rarity) == "number" and center.rarity <= 3 then
+			return center.unlocked or nil
+		end
+		local rare = ({
+			"Common",
+			"Uncommon",
+			"Rare",
+		})[center.rarity] or center.rarity
+		if
+			SMODS.Rarities[rare]
+			and (
+				SMODS.Rarities[rare].get_weight
+				or (SMODS.Rarities[rare].default_weight and SMODS.Rarities[rare].default_weight > 0)
+			)
+		then
+			return center.unlocked or nil
+		end
+		return nil
+	else
+		if consumable then
+			if center.set == "Tarot" then
+				return G.GAME.tarot_rate * (G.GAME.cry_percrate.tarot / 100) > 0 or nil
+			end
+			if center.set == "Planet" then
+				return G.GAME.planet_rate * (G.GAME.cry_percrate.planet / 100) > 0 or nil
+			end
+			if center.set == "Spectral" then
+				return G.GAME.spectral_rate > 0 or nil
+			end
+			local num = G.GAME.cry_percrate and G.GAME.cry_percrate[center.set:lower()] or 100
+			local val = G.GAME[center.set:lower() .. "_rate"] * ((num or 100) / 100)
+			return val > 0
+		end
+	end
+	if center.in_pool then
+		return center:in_pool()
+	end
+	return center.unlocked or nil
+end

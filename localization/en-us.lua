@@ -3286,6 +3286,12 @@ local decs = {
 				}
 			},
 			--pacts
+			rune_entr_thorns = {
+				name = "Mark of Thorns",
+				text = {
+					"Marked by {C:red}Thorns{}"
+				}
+			},
 			rune_entr_decay = {
 				name = "Mark of Decay",
 				text = {
@@ -3689,6 +3695,13 @@ local decs = {
 			},
 		},
 		Pact = {
+			c_entr_thorns = {
+				name = "Pact of Thorns",
+				text = {
+					"Apply {C:attention}Rental{} to {C:attention}2{} Random Jokers ",
+					"then give them {C:attention}Random{} Editions"
+				}
+			},
 			c_entr_decay = {
 				name = "Pact of Decay",
 				text = {
