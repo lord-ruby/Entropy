@@ -329,6 +329,11 @@ function Card:set_cost()
 	if self.edition and self.edition.key == "e_entr_neon" then
 		self.cost = self.cost * self.edition.cost_fac
 	end
+	if Entropy.has_rune("rune_entr_avarice") then
+	    local cost = 0
+        self.sell_cost = cost
+        self.sell_cost_label = self.facing == 'back' and '?' or number_format(self.sell_cost)
+	end
 end
 
 

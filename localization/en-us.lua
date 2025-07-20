@@ -3286,6 +3286,17 @@ local decs = {
 				}
 			},
 			--pacts
+			rune_entr_avarice = {
+				name = "Mark of Avarice",
+				text = {
+					{
+						"Marked by {C:red}Avarice{}"
+					},
+					{
+						"All sell values are {C:red}0{}"
+					}
+				}
+			},
 			rune_entr_thorns = {
 				name = "Mark of Thorns",
 				text = {
@@ -3695,10 +3706,19 @@ local decs = {
 			},
 		},
 		Pact = {
+			c_entr_avarice = {
+				name = "Pact of Avarice",
+				text = {
+					"Duplicated your highest {C:attention}Sell Value{}",
+					"Joker then set all {C:attention}Current{} and {C:attention}Future{}",
+					"sell values to {C:red}0{}",
+					"{C:inactive}(Must have room, Strips negative)"
+				}
+			},
 			c_entr_thorns = {
 				name = "Pact of Thorns",
 				text = {
-					"Apply {C:attention}Rental{} to {C:attention}2{} Random Jokers ",
+					"Apply {C:attention}Rental{} to {C:attention}2{} Random Jokers",
 					"then give them {C:attention}Random{} Editions"
 				}
 			},

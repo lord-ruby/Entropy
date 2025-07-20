@@ -18,6 +18,55 @@ function Entropy.create_mark(key, order, pos, calculate, credits)
     }
 end
 
+local avarice_indicator = Entropy.create_mark("avarice", 7051, {x = 0, y = 4})
+local avarice = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=0,y=4},
+    order = 7601,
+    key = "avarice",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_thusisaz",
+    use = function(self, card)
+        local h = G.jokers.cards[1]
+        if h then
+            for i, v in pairs(G.jokers.cards) do
+                if to_big(v.sell_cost) > to_big(h.sell_cost) then h = v end
+            end
+            if to_big(h.sell_cost) == to_big(0) then
+                h = pseudorandom_element(G.jokers.cards, pseudoseed("entr_avarice"))
+            end
+            if #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
+                local copy = copy_card(h)
+                h:add_to_deck()
+                if h.edition and h.edition.negative then
+                    h:set_edition()
+                end
+                G.jokers:emplace(copy)
+            end
+        end
+        Entropy.pact_mark("rune_entr_avarice")
+        if h then
+            for i, v in pairs(G.I.CARD) do
+                if v.set_cost then
+                    v:set_cost()
+                end
+            end
+        end
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function()
+        return false
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 local thorns_indicator = Entropy.create_mark("thorns", 7053, {x = 2, y = 4})
 local thorns = {
     object_type = "Consumable",
@@ -171,6 +220,7 @@ end
 
 return {
     items = {
+        avarice, avarice_indicator,
         thorns, thorns_indicator,
         decay, decay_indicator,
         envy, envy_indicator
