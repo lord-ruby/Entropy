@@ -53,12 +53,7 @@ local i = {
     "items/altpath/blinds",
     "items/misc/runes",
 
-    "compat/partners",
-    "compat/finity",
-    "compat/malverk",
-    "compat/cryptid",
-    "compat/multiplayer",
-    "compat/artbox"
+    "compat/compat_loader"
 }
 Entropy.load_files(i)
 SMODS.current_mod.optional_features = {

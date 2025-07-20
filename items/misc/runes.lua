@@ -239,6 +239,9 @@ function add_rune(_tag, no_copy)
     if not no_copy then
         SMODS.calculate_context({ entr_add_rune = true, rune = _tag })
     end
+    if G.runes_visible then
+        _tag.HUD_rune.states.visible = false
+    end
 end
 
 local tag_removeref = Tag.remove

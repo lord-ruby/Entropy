@@ -4022,7 +4022,23 @@ local decs = {
 					"booster pack"
 				}
 			}
-		}
+		},
+		TheFamily_Tab = {
+            entr_rune_tags = {
+                name = "Rune Tags",
+                text = {
+                    "Hide or Display rune tags"
+                }
+            }
+        },
+		TheFamily_Group = {
+            entr_misc_group = {
+                name = "Miscelaneous Items (Entropy)",
+                text = {
+                    "Toggles for various UI elements added by Entropy"
+                }
+            }
+        }
 	},
 	misc = {
 		tutorial = {
@@ -4245,6 +4261,8 @@ local decs = {
 			k_saved_just = "Not Just!",
 			b_on = "Enable",
 			b_off = "Disable",
+			b_enabled = "Enabled",
+			b_disabled = "Disabled",
 			b_cycle = "Cycle",
 			b_true_endless = "True Endless Mode",
 			k_entr_glitched = "Use new Glitched Shader (by cassknows)",
