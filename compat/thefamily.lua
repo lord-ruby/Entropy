@@ -17,12 +17,7 @@ if TheFamily then
                 v.states.visible = not G.runes_visible
             end
             play_sound('cardSlide1')
-            if self.card.children.popup then
-                self.card.children.popup:remove()
-                self.card.children.popup = nil
-                self.card.thefamily_popup_checked = nil
-                self:render_popup()
-            end
+            self:rerender_popup()
         end,
         can_highlight = function(self, card)
             return false
