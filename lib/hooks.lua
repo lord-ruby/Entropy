@@ -153,7 +153,7 @@ local set_debuffref = Card.set_debuff
 
 function Card:set_debuff(should_debuff)
     if (self.perma_debuff or self.ability.superego) and not self.dissolved then should_debuff = true end
-    if self.ability.entr_hotfix or G.GAME.nodebuff or (self.config.center.rarity == "entr_zenith" and not (G.GAME.blind and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three")) then should_debuff = false end
+    if self.ability.entr_hotfix or G.GAME.nodebuff then should_debuff = false end
     set_debuffref(self, should_debuff)
 end
 
@@ -3214,25 +3214,6 @@ function Blind:set_blind(...)
             return true
         end
     }))
-end
-
-local ref = Cryptid.pointergetblist
-function Cryptid.pointergetblist(target)
-    if next(SMODS.find_card("j_entr_ruby")) then
-        Cryptid.pointerblisttype = {
-            rarity = {
-                "entr_zenith"
-            }
-        }
-        local blist = {}
-        for i, v in pairs(Cryptid.pointerblist) do
-            if G.P_BLINDS[v] then
-                blist[#blist + 1] = v
-            end
-        end
-        Cryptid.pointerblist = blist
-    end
-    return ref(target)
 end
 
 if SMODS.Mods.Multipack and SMODS.Mods.Multipack.can_load then

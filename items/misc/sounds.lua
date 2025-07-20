@@ -1,10 +1,3 @@
--- SMODS.Sound({
--- 	key = "music_zenith",
--- 	path = "music_zenith.ogg",
--- 	select_music_track = function()
--- 		return G.GAME.Ruby and 10^300
--- 	end,
--- })
 SMODS.Sound({
 	key = "music_entropic",
 	path = "music_entropic.ogg",

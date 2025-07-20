@@ -81,29 +81,12 @@ if (SMODS.Mods["Cryptid"] or {}).can_load then
 			end
 		end,
 	}
-
-
-	local outopia = {
-		object_type = "Achievement",
-		key = "outopia",
-		order = 1000,
-		bypass_all_unlocked = true,
-		atlas = "entr_achievements",
-		pos = {x=1,y=1},
-		hidden_text = true,
-		unlock_condition = function(self, args)
-			if args.type == "zenith_ascension" then
-				return true
-			end
-		end,
-	}
 end
 
 return {
     items = {
         here_comes_the_sun,
         event_horizon,
-        outopia,
         acheros,
 		rift,
 		katevaino,

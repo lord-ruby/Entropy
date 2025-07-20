@@ -1,6 +1,5 @@
 if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
     Cryptid.pointerblistifytype("rarity", "entr_entropic")
-    Cryptid.pointerblistifytype("rarity", "entr_zenith")
     Cryptid.pointerblistify("c_entr_define")
     for i, v in pairs(G.P_BLINDS) do
         Cryptid.pointerblistify(i)

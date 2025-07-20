@@ -468,9 +468,9 @@ local decs = {
 			j_entr_ruby = {
 				name = "Ruby, Lord of Hope",
 				text = {
-					"{C:red}Removes{} {C:green}Pointers{} Restrictions",
-					"Create {C:attention}1{} {C:green}Pointer{} When Boss Blind is selected",
-					"{s:0.8,C:entr_zenith}Dont you know, hope is the strongest aspect{}"
+					"This Joker gives {X:mult,C:white}X#1#{} Mult",
+					"Whenever an {C:red}Inverted{} consumable is used",
+					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}"
 				}
 			},
 			j_entr_devilled_suns = {
@@ -4073,14 +4073,6 @@ local decs = {
 				}
 			}
 		},
-		DescriptionDummy = {
-			dd_entr_zenith_blind  = {
-                name="Zenith Blind",
-                text={
-                    "{C:red}Run.{}"
-                },
-            },
-		},
 		Partner = {
 			pnr_entr_parakmi = {
 				name = "Tyhaois",
@@ -4180,7 +4172,6 @@ local decs = {
 			ach_entr_event_horizon = "Event Horizon",
 			ach_entr_here_comes_the_sun = "Here comes The Sun",
 			ach_entr_megalyteri = "Megalyteri",
-			ach_entr_outopia = "Outopia",
 			ach_entr_acheros = "Acheros",
 			ach_entr_rift = "Rift",
 			ach_entr_katevaino = "Katevaino",
@@ -4190,7 +4181,6 @@ local decs = {
 			ach_entr_event_horizon = "Use define to turn Obelisk into Sob",
 			ach_entr_here_comes_the_sun = "Obtain a Sunny Joker",
 			ach_entr_megalyteri = "Reach {50000} on Dekatria",
-			ach_entr_outopia = "Obtain a zenith rarity Joker",
 			ach_entr_acheros = "Beat Ante 32s boss blind, Endless Entropy",
 			ach_entr_rift = "Beat Ante 8 on The Alternate Path",
 			ach_entr_katevaino = "Use Transcend on Parakmi",

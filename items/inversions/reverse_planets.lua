@@ -182,7 +182,6 @@ function Entropy.ReversePlanetUse(handname, card, amt)
     { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = "..." }
   )
   G.GAME.hands[handname].AscensionPower = to_big((G.GAME.hands[handname].AscensionPower or 0)) + to_big(level*amt) 
-  G.GAME.hands[handname].visible = true
   delay(1.0)
   G.E_MANAGER:add_event(Event({
     trigger = "after",
@@ -496,7 +495,6 @@ function Entropy.StarLuaSingle(self,card,area,copier)
     )
     for i, v in pairs(G.GAME.hands) do
       v.AscensionPower = (v.AscensionPower or 0) + card.ability.level
-      v.visible = true
     end
     delay(1.0)
     G.E_MANAGER:add_event(Event({
@@ -590,7 +588,6 @@ function Entropy.StarLuaBulk(self,card,area,copier,number)
     )
     for i, v in pairs(G.GAME.hands) do
       v.AscensionPower = (v.AscensionPower or 0) + card.ability.level*number*quota
-      v.visible = true
     end
     delay(1.0)
     G.E_MANAGER:add_event(Event({
@@ -684,7 +681,6 @@ function Entropy.StrangeSingle(self, card, area, copier,num)
     { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = number_format(G.GAME.hands[handname].AscensionPower or 0 + G.GAME.hands[handname].level or 0, 1000000) }
   )
   G.GAME.hands[handname].AscensionPower = (G.GAME.hands[handname].AscensionPower or 0) + G.GAME.strange_star*(num or 1)
-  G.GAME.hands[handname].visible = true
   delay(1.0)
   G.E_MANAGER:add_event(Event({
     trigger = "after",

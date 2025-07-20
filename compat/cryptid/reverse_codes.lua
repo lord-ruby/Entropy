@@ -682,34 +682,26 @@ local push = {
     },
     pos = {x=1,y=3},
     use = function(self, card, area, copier)
-        if not Entropy.CanCreateZenith() then
-            for i, v in pairs(G.jokers.cards) do
-                if not v.ability or (not SMODS.is_eternal(v) and not v.ability.cry_absolute) then
-                    G.jokers.cards[i]:start_dissolve()
-                end
+        for i, v in pairs(G.jokers.cards) do
+            if not v.ability or (not SMODS.is_eternal(v) and not v.ability.cry_absolute) then
+                G.jokers.cards[i]:start_dissolve()
             end
-            local rarity = Entropy.GetJokerSumRarity()
-            G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() 
-                local rare = ({
-                    [1] = "Common",
-                    [2] = "Uncommon",
-                    [3] = "Rare",
-                    [4] = "Legendary"
-                })[rarity] or rarity
-                local card = create_card("Joker", G.jokers, rare == "Legendary", rare, nil, nil, nil, "entr_beyond")
-                --create_card("Joker", G.jokers, nil, 2, nil, nil, nil, "entr_beyond")
-                card:add_to_deck()
-                G.jokers:emplace(card)
-                card:juice_up(0.3, 0.5)
-                return true
-            end}))
-        else    
-            for i, v in pairs(G.jokers.cards) do v:start_dissolve() end
-            local key = pseudorandom_element(Entropy.Zeniths, pseudoseed("zenith"))
-            add_joker(key):add_to_deck()
-            G.jokers.config.card_limit = 1
-            check_for_unlock({ type = "zenith_ascension" })
         end
+        local rarity = Entropy.GetJokerSumRarity()
+        G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() 
+            local rare = ({
+                [1] = "Common",
+                [2] = "Uncommon",
+                [3] = "Rare",
+                [4] = "Legendary"
+            })[rarity] or rarity
+            local card = create_card("Joker", G.jokers, rare == "Legendary", rare, nil, nil, nil, "entr_beyond")
+            --create_card("Joker", G.jokers, nil, 2, nil, nil, nil, "entr_beyond")
+            card:add_to_deck()
+            G.jokers:emplace(card)
+            card:juice_up(0.3, 0.5)
+            return true
+        end}))
     end,
     can_use = function(self, card)
         if G.jokers and #G.jokers.cards > 0 then
@@ -724,18 +716,12 @@ local push = {
         local mstart = {
             Entropy.randomchar({"(Current rarity: "})
         }
-        if Entropy.CanCreateZenith() then
-            for i = 0, 10 do
-                mstart[#mstart+1] = Entropy.randomchar(Entropy.stringsplit(Entropy.charset))
-            end
-        else
-            mstart[#mstart+1] = Entropy.randomchar({Entropy.GetJokerSumRarity(true) or "none"})
-        end
+        mstart[#mstart+1] = Entropy.randomchar({Entropy.GetJokerSumRarity(true) or "none"})
         mstart[#mstart+1] = Entropy.randomchar({")"})
         return {
             main_end = mstart,
             vars = {
-                Entropy.CanCreateZenith() and Entropy.srandom(10) or Entropy.GetJokerSumRarity(true),
+                Entropy.GetJokerSumRarity(true),
                 colours = {
                     {0.6969,0.6969,0.6969,1}
                 }

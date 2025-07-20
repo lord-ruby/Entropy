@@ -2192,6 +2192,42 @@ local debit_card = {
     }
 }
 
+local ruby = {
+    object_type = "Joker",
+    key = "ruby",
+    order = 300,
+    rarity = 4,
+    cost = 20,
+    atlas = "ruby_atlas",
+    pos = {x=0, y=0},
+    soul_pos = {x = 1, y = 0},
+    config = {
+        xmult = 1,
+        xmult_mod = 1.5
+    },
+    calculate = function(self, card, context)
+        if context.using_consumeable and Entropy.FlipsideInversions[context.consumeable.config.center.key] and not Entropy.FlipsidePureInversions[context.consumeable.config.center.key] then
+            card.ability.xmult = card.ability.xmult + card.ability.xmult_mod
+            return {
+                message = localize("k_upgrade_ex")
+            }
+        end
+        if context.joker_main then
+            return {
+                xmult = card.ability.xmult
+            }
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                number_format(card.ability.xmult_mod),
+                number_format(card.ability.xmult)
+            }
+        }
+    end
+}
+
 return {
     items = {
         surreal,
@@ -2236,6 +2272,7 @@ return {
         opal,
         inkbleed,
         roulette,
-        debit_card
+        debit_card,
+        ruby
     }
 }

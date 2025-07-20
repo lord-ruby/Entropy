@@ -711,19 +711,6 @@ function Entropy.GetRandomRarityCard(rare)
     return center
 end
 
-function Entropy.CanCreateZenith()
-    local _pool, _pool_key = get_current_pool("Joker", "cry_exotic", nil, "zenith")
-    for i, v in ipairs(_pool) do
-        if v ~= "UNAVAILABLE" and not Entropy.HasJoker(v) and v ~= "j_joker" then return false end
-    end
-
-    local _pool, _pool_key = get_current_pool("Joker", "entr_entropic", nil, "zenith")
-    for i, v in ipairs(_pool) do
-        if v ~= "UNAVAILABLE" and not Entropy.HasJoker(v) and v ~= "j_joker" then return false end
-    end
-    return to_big(G.GAME.dollars) > to_big(1e300):tetrate(2)
-end
-
 function Entropy.randomchar(arr)
     return {
         n = G.UIT.O,
