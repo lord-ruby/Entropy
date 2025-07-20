@@ -468,7 +468,7 @@ local decs = {
 			j_entr_ruby = {
 				name = "Ruby, Lord of Hope",
 				text = {
-					"This Joker gives {X:mult,C:white}X#1#{} Mult",
+					"This Joker gains {X:mult,C:white}X#1#{} Mult",
 					"Whenever an {C:red}Inverted{} consumable is used",
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}"
 				}
