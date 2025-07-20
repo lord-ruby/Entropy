@@ -3724,7 +3724,7 @@ local decs = {
 			c_entr_rage = {
 				name = "Pact of Rage",
 				text = {
-					"Randomly {C:red}destroy{} {C:red}20%{}",
+					"Randomly {C:red}destroy{} {C:attention}20%{}",
 					"of your {C:attention}entire{} Deck",
 					"{C:inactive}(Minimum of 5)"
 				}
