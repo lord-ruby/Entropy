@@ -3623,5 +3623,8 @@ function copy_card(old, new, ...)
     if G.deck and not G.SETTINGS.paused then
         SMODS.calculate_context{copying_card = true, original_card = old, new_card = copy}
     end
+    for i, v in pairs(G.play.cards) do
+        eval_card(v, {copying_card = true, original_card = old, new_card = copy})
+    end
     return copy
 end
