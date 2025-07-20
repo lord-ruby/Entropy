@@ -43,6 +43,7 @@ local i = {
     "items/inversions/reverse_tarots",
     "items/inversions/reverse_spectrals",
     "items/inversions/reverse_planets",
+    "items/inversions/reverse_runes",
     --"items/inversions/reverse_codes",
 
     "items/misc/blind_tokens",
@@ -70,4 +71,17 @@ Entropy.UpdateDailySeed()
 
 if Entropy.config.family_mode then
     Cryptid_config.family_mode = true
+end
+
+for i, category in pairs(Entropy.contents) do
+    table.sort(category, function(a, b) return a.order < b.order end)
+    for i2, item in pairs(category) do
+        if not SMODS[item.object_type] then Entropy.fucker = item.object_type
+        else
+            SMODS[item.object_type](item)
+            if item.init then item.init() end
+        end
+        item = nil
+    end
+    category = nil
 end

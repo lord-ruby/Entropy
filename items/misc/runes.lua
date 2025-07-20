@@ -23,13 +23,15 @@ SMODS.RuneTag = SMODS.Tag:extend{
     end,
     loc_vars = function(self, q, card)
         return {
-            key = Entropy.providence_ui_active() and card.key.."_providence" or card.key
+            key = Entropy.providence_ui_active(card) and card.key.."_providence" or card.key
         }
     end,
     no_tags = true
 }
 
-function Entropy.providence_ui_active()
+function Entropy.providence_ui_active(card)
+    if card and card.config and card.config.center and card.config.center.set == "Pact" then return end
+    if card and card.key and G.P_RUNES[card.key].no_providence then return end
     return (G.providence_temp and G.SETTINGS.paused) or G.GAME.providence
 end
 
@@ -389,11 +391,11 @@ function Entropy.create_rune(key, pos, indicator_key, order, credits, loc_vars, 
             if loc_vars then
                 return {
                     vars = loc_vars(self, q, card),
-                    key = Entropy.providence_ui_active() and "c_entr_"..key.."_providence" or "c_entr_"..key
+                    key = Entropy.providence_ui_active(card) and "c_entr_"..key.."_providence" or "c_entr_"..key
                 }
             end
             return {
-                key = Entropy.providence_ui_active() and "c_entr_"..key.."_providence" or "c_entr_"..key
+                key = Entropy.providence_ui_active(card) and "c_entr_"..key.."_providence" or "c_entr_"..key
             }
         end,
         can_use = function()

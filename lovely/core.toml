@@ -1466,7 +1466,7 @@ payload = '''
   local runes = {}
   for k, v in ipairs(G.GAME.runes) do
     if (type(v) == "table") and v.is and v:is(Tag) then 
-      local tagSer = v.key
+      local tagSer = {key = v.key, ability = v.ability}
       if tagSer then runes[k] = tagSer end
     end
   end

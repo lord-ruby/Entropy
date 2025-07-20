@@ -65,7 +65,8 @@ function Game:start_run(args)
             Event{
                 func = function()
                     for k, v in ipairs(tags) do
-                        local _tag = Tag(v)
+                        local _tag = Tag(type(v) == "table" and v.key or v)
+                        if type(v) == "table" then _tag.ability = v.ability or _tag.ability end
                         add_rune(_tag, nil, true)
                     end
                     return true

@@ -18,6 +18,15 @@ SMODS.UndiscoveredSprite({
 	py = 95,
 })
 
+SMODS.UndiscoveredSprite({
+	key = "Pact",
+	atlas = "undiscovered",
+	path = "undiscovered.png",
+	pos = { x = 5, y = 0 },
+	px = 71,
+	py = 95,
+})
+
 SMODS.ConsumableType({
 	object_type = "ConsumableType",
 	key = "Fraud",
@@ -96,6 +105,17 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
 		py = 95,
 	})
 end
+
+SMODS.ConsumableType({
+	object_type = "ConsumableType",
+	key = "Pact",
+	primary_colour = G.C.Entropy.Pact,
+	secondary_colour = G.C.Entropy.Pact,
+	collection_rows = { 6, 6 },
+	shop_rate = 0.0,
+	loc_txt = {},
+	default = "c_entr_envy"
+})
 
 SMODS.ConsumableType{
 	key = "CBlind",

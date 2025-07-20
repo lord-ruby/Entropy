@@ -3285,6 +3285,15 @@ local decs = {
 					"{C:inactive}(If Possible)"
 				}
 			},
+			--pacts
+			rune_entr_envy = {
+				name = "Mark of Envy",
+				text = {
+					"{C:red}Destroy{} a {C:attention}Random{} Joker",
+					"Retrigger a {C:attention}random{} Joker",
+					"which changes each round"
+				}
+			}
 		},
 		Rune = {
 			c_entr_fehu = {
@@ -3668,6 +3677,16 @@ local decs = {
 					"{X:purple,C:white,E:1}X5{} as much money"
 				}
 			},
+		},
+		Pact = {
+			c_entr_envy = {
+				name = "Pact of Envy",
+				text = {
+					"{C:red}Destroy{} a {C:attention}Random{} Joker",
+					"Retrigger a {C:attention}random{} Joker",
+					"which changes each round"
+				}
+			}
 		},
 		Other = {
 			cry_banana_booster = {
@@ -4305,6 +4324,9 @@ local decs = {
 			k_rune = "Rune",
 			k_rune_pack = "Rune Pack",
 			b_rune_cards = "Runes",
+			k_pact = "Pact",
+			k_pact_pack = "Devil Deal",
+			b_pact_cards = "Pacts",
 
 			cry_set_music = "Music",
 
