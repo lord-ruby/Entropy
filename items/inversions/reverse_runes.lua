@@ -62,6 +62,7 @@ local avarice = {
         if args.source == "twisted_card" then
             return false
         end
+        return true
     end,
     demicoloncompat = true,
     force_use = function(self, card)
@@ -95,10 +96,11 @@ local rage = {
     can_use = function()
         return true
     end,
-    in_pool = function()
+    in_pool = function(self, args)
         if args.source == "twisted_card" then
             return false
         end
+        return true
     end,
     demicoloncompat = true,
     force_use = function(self, card)
@@ -133,10 +135,11 @@ local thorns = {
     can_use = function()
         return true
     end,
-    in_pool = function()
+    in_pool = function(self, args)
         if args.source == "twisted_card" then
             return false
         end
+        return true
     end,
     demicoloncompat = true,
     force_use = function(self, card)
@@ -179,10 +182,11 @@ local decay = {
     can_use = function()
         return true
     end,
-    in_pool = function()
+    in_pool = function(self, args)
         if args.source == "twisted_card" then
             return false
         end
+        return true
     end,
     demicoloncompat = true,
     force_use = function(self, card)
@@ -228,10 +232,11 @@ local envy = {
     can_use = function()
         return true
     end,
-    in_pool = function()
+    in_pool = function(self, args)
         if args.source == "twisted_card" then
             return false
         end
+        return true
     end,
     demicoloncompat = true,
     force_use = function(self, card)

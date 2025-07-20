@@ -4046,7 +4046,7 @@ local decs = {
 				text = {
 					"Creates a {C:red}Pact{} Card",
 					"and {C:red}destroys{} itself",
-					"when {C:red}copied{} or {C:red}duplicated{}",
+					"when {C:attention}Copied{} or {C:attention}Duplicated{}",
 					"{C:inactive}(Must have room){}"
 				}
 			},
