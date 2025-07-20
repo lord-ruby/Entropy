@@ -96,7 +96,7 @@ local prismatic = {
 		if context.cardarea == G.play and context.main_scoring then
 			card.ability.extra.eemult = card.ability.extra.eemult + card.ability.extra.eemult_mod
 			return {
-				eemult = card.ability.extra.eemult
+				emult = card.ability.extra.eemult
 			}
 		end
 	end,
