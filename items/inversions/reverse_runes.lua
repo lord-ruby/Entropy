@@ -147,6 +147,45 @@ local thorns = {
     end
 }
 
+local chains_indicator = Entropy.create_mark("chains", 7055, {x = 4, y = 4}, function(self, rune, context)
+    if context.hand_drawn and not rune.ability.triggered then
+        local card = context.hand_drawn[1]
+        if card then
+            card.ability.eternal = true
+        end
+        rune.ability.triggered = true
+    end
+    if context.end_of_round then
+        rune.ability.triggered = nil
+    end
+end)
+local chains = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=4,y=4},
+    order = 7605,
+    key = "chains",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_raido",
+    use = function(self, card)
+        Entropy.pact_mark("rune_entr_chains")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 local decay_indicator = Entropy.create_mark("decay", 7056, {x = 5, y = 4})
 local decay = {
     object_type = "Consumable",
@@ -197,7 +236,7 @@ local decay = {
 local envy_indicator = Entropy.create_mark("envy", 7057, {x = 6,y = 4}, function(self, mark, context)
     if #G.jokers.cards > 0 then
         if not mark.ability.joker_number then mark.ability.joker_number = pseudorandom("entr_envy_joker", 1, #G.jokers.cards) end
-        if context.retrigger_joker_check and context.other_card == G.jokers.cards[mark.ability.joker_number] then
+        if context.retrigger_rune_check and context.other_card == G.jokers.cards[mark.ability.joker_number] then
             return {
                 message = localize("k_again_ex"),
                 repetitions = mark.ability.count or 1,
@@ -249,7 +288,7 @@ SMODS.calculate_retriggers = function(card, context, _ret)
     local retriggers = retriggers_ref(card, context, _ret)
     for _, rune in ipairs(G.GAME.runes or {}) do
         if G.P_RUNES[rune.key].calculate then
-            local eval, post = G.P_RUNES[rune.key]:calculate(rune, {retrigger_joker_check = true, other_card = card, other_context = context, other_ret = _ret})
+            local eval, post = G.P_RUNES[rune.key]:calculate(rune, {retrigger_rune_check = true, other_card = card, other_context = context, other_ret = _ret})
             if eval and eval.repetitions then
                 for i = 1, type(eval.repetitions) == "number" and eval.repetitions or 1 do
                     retriggers[#retriggers+1] = {
@@ -273,6 +312,7 @@ return {
         avarice, avarice_indicator,
         rage, rage_indicator,
         thorns, thorns_indicator,
+        chains, chains_indicator,
         decay, decay_indicator,
         envy, envy_indicator
     }

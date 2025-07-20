@@ -3628,3 +3628,35 @@ function copy_card(old, new, ...)
     end
     return copy
 end
+
+local old_smods_calculate_repetitions = SMODS.calculate_repetitions
+function SMODS.calculate_repetitions(card, context, reps)
+    -- hook for only calculating repetitions; all other contexts are handled by Back:trigger_effect
+    reps = old_smods_calculate_repetitions(card, context, reps)
+    local effect = Entropy.misc_calculations(nil, nil, context)
+    if effect and effect.repetitions then
+        for _=1, effect.repetitions do
+            effect.card = effect.card or G.deck.cards[1] or G.deck
+            reps[#reps+1] = {key = effect}
+        end
+    end
+
+    return reps
+end
+
+local old_smods_calculate_retriggers = SMODS.calculate_retriggers
+function SMODS.calculate_retriggers(card, context, _ret)
+    -- hook for only calculating retriggers; other contexts are handled by Back:trigger_effect
+    -- why tf is this coded this way sigh
+    local retriggers = old_smods_calculate_retriggers(card, context, _ret)
+
+    local effect = Entropy.misc_calculations(nil, nil, {retrigger_joker_check = true, other_card = card, other_context = context, other_ret = _ret})
+    if effect and effect.repetitions then
+        effect.retrigger_card = G.GAME.selected_back
+        effect.message_card = effect.message_card or G.deck.cards[1] or G.deck
+        effect.message = effect.message or (not effect.remove_default_message and localize('k_again_ex'))
+        retriggers[#retriggers+1] = effect
+    end
+
+    return retriggers
+end

@@ -3309,6 +3309,18 @@ local decs = {
 					"Marked by {C:red}Thorns{}"
 				}
 			},
+			rune_entr_chains = {
+				name = "Mark of Chains",
+				text = {
+					{
+						"Marked by {C:red}Chains{}"
+					},
+					{
+						"Retrigger all {C:attention}Eternal{} Playing Cards",
+						"The first {C:attention}drawn{} card each round becomes {C:attention}Eternal{}"
+					}
+				}
+			},
 			rune_entr_decay = {
 				name = "Mark of Decay",
 				text = {
@@ -3734,6 +3746,13 @@ local decs = {
 				text = {
 					"Apply {C:attention}Rental{} to {C:attention}2{} Random Jokers",
 					"then give them {C:attention}Random{} Editions"
+				}
+			},
+			c_entr_chains = {
+				name = "Pact of Chains",
+				text = {
+					"Retrigger all {C:attention}Eternal{} Playing Cards",
+					"The first {C:attention}drawn{} card each round becomes {C:attention}Eternal{}"
 				}
 			},
 			c_entr_decay = {
