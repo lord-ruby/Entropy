@@ -306,7 +306,7 @@ local entropy_card = {
 
 
 local kciroy = {
-    order = 02,
+    order = 402,
     object_type = "Joker",
     key = "kciroy",
     config = {
