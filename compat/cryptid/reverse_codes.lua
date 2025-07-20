@@ -377,7 +377,11 @@ local constant = {
                 copy_card(G.hand.highlighted[1],v)
             end
         end
-
+        for i, v in pairs(G.jokers.cards) do
+            if v.base.id == cards[1].base.id then
+                copy_card(G.hand.highlighted[1],v)
+            end
+        end
     end,
     can_use = function(self, card)
         return #Entropy.GetHighlightedCards({G.hand}, card, 1, 1) == 1
