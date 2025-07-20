@@ -3620,6 +3620,8 @@ end
 local copy_cardref = copy_card
 function copy_card(old, new, ...)
     local copy = copy_cardref(old, new, ...)
-    SMODS.calculate_context{copying_card = true, original_card = old, new_card = copy}
+    if G.deck and not G.SETTINGS.paused then
+        SMODS.calculate_context{copying_card = true, original_card = old, new_card = copy}
+    end
     return copy
 end
