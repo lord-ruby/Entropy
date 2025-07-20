@@ -37,8 +37,8 @@ target = "functions/state_events.lua"
 pattern = "add_round_eval_row({name = 'bottom', dollars = dollars})"
 position = "before"
 payload = '''
-local mult = G.GAME.providence and 2 or 1.5
-mult = mult * #Entropy.find_runes("rune_entr_uruz")
+local mult = G.GAME.providence and 1 or 0.5
+local true_mult = 1 + (mult * #Entropy.find_runes("rune_entr_uruz"))
 if to_big(mult) <= to_big(0) then mult = 1 end
 dollars = dollars * (G.GAME.InterferencePayoutMod or 1) * mult
 for i, v in pairs(Entropy.find_runes("rune_entr_uruz")) do
