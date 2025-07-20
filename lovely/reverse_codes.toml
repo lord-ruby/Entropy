@@ -39,8 +39,7 @@ position = "before"
 payload = '''
 local mult = G.GAME.providence and 1 or 0.5
 local true_mult = 1 + (mult * #Entropy.find_runes("rune_entr_uruz"))
-if to_big(mult) <= to_big(0) then mult = 1 end
-dollars = dollars * (G.GAME.InterferencePayoutMod or 1) * mult
+dollars = dollars * (G.GAME.InterferencePayoutMod or 1) * true_mult
 for i, v in pairs(Entropy.find_runes("rune_entr_uruz")) do
     G.E_MANAGER:add_event(Event{
         func = function()
