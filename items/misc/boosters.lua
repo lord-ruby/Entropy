@@ -187,6 +187,14 @@ function create_inverted_card(area, seed)
             return create_card(G.P_CENTERS[c].set, area or G.pack_cards, nil, nil, true, true, c)
         end
     end
+    local rune
+    if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
+    if G.GAME.entr_diviner then
+        if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
+    end
+    if rune then
+        return create_card("Pact", G.pack_cards, nil, nil, true, true, nil, "spe")
+    end
     return create_card("Twisted", area or G.pack_cards, nil, nil, true, true, nil, "twisted_card")
 end
 
