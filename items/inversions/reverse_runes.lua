@@ -67,6 +67,41 @@ local avarice = {
     end
 }
 
+local rage_indicator = Entropy.create_mark("rage", 7052, {x = 1, y = 4})
+local rage = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=1,y=4},
+    order = 7602,
+    key = "rage",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_uruz",
+    use = function(self, card)
+        local cards = {}
+        for i, v in pairs(G.playing_cards) do
+            cards[#cards+1] = v
+        end
+        if #cards > 0 then 
+            pseudoshuffle(cards, pseudoseed("entr_rage"))
+            for i = 1, math.max(math.floor(#cards/5), math.min(#cards, 5)) do
+                cards[i]:start_dissolve()
+            end
+        end
+        Entropy.pact_mark("rune_entr_rage")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function()
+        return false
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 local thorns_indicator = Entropy.create_mark("thorns", 7053, {x = 2, y = 4})
 local thorns = {
     object_type = "Consumable",
@@ -221,6 +256,7 @@ end
 return {
     items = {
         avarice, avarice_indicator,
+        rage, rage_indicator,
         thorns, thorns_indicator,
         decay, decay_indicator,
         envy, envy_indicator

@@ -3297,6 +3297,12 @@ local decs = {
 					}
 				}
 			},
+			rune_entr_rage = {
+				name = "Mark of Rage",
+				text = {
+					"Marked by {C:red}Rage{}"
+				}
+			},
 			rune_entr_thorns = {
 				name = "Mark of Thorns",
 				text = {
@@ -3713,6 +3719,14 @@ local decs = {
 					"Joker then set all {C:attention}Current{} and {C:attention}Future{}",
 					"sell values to {C:red}0{}",
 					"{C:inactive}(Must have room, Strips negative)"
+				}
+			},
+			c_entr_rage = {
+				name = "Pact of Rage",
+				text = {
+					"Randomly {C:red}destroy{} {C:red}20%{}",
+					"of your {C:attention}entire{} Deck",
+					"{C:inactive}(Minimum of 5)"
 				}
 			},
 			c_entr_thorns = {
