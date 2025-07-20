@@ -1483,6 +1483,7 @@ Entropy.ParakmiBlacklist.sleeve_casl_none = true
 Entropy.ChaosConversions.Command = "Twisted"
 Entropy.ChaosConversions.Star = "Twisted"
 Entropy.ChaosConversions.Omen = "Twisted"
+Entropy.ChaosConversions.Pact = "Twisted"
 local ref = create_card
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append, dont_calculate,...)
     if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi"))) and not forced_key then
@@ -3614,4 +3615,11 @@ function Card:open(...)
             return true
         end
     })
+end
+
+local copy_cardref = copy_card
+function copy_card(old, new, ...)
+    local copy = copy_cardref(old, new, ...)
+    SMODS.calculate_context{copying_card = true, original_card = old, new_card = copy}
+    return copy
 end

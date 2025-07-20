@@ -4041,6 +4041,15 @@ local decs = {
 					"{C:inactive}(Must have room){}"
 				}
 			},
+			entr_amber_seal = {
+				name = "Amber Seal",
+				text = {
+					"Creates a {C:red}Pact{} Card",
+					"and {C:red}destroys{} itself",
+					"when {C:red}copied{} or {C:red}duplicated{}",
+					"{C:inactive}(Must have room){}"
+				}
+			},
 			link = {
 				name = "Linked",
 				text = {
@@ -4420,6 +4429,7 @@ local decs = {
 			entr_verdant_seal = "Verdant Seal",
 			entr_cerulean_seal = "Cerulean Seal",
 			entr_ornate_seal = "Ornate Seal",
+			entr_amber_seal = "Amber Seal",
 		},
 		poker_hands = {
 			["entr_All"] = Cryptid_config.family_mode and "All" or "Literally Fucking Everything",

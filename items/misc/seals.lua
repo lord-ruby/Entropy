@@ -300,7 +300,7 @@ local cerulean = {
 local ornate = {
     dependencies = {
         items = {
-          "set_entr_inversions"
+          "set_entr_runes"
         }
     },
 	object_type = "Seal",
@@ -378,6 +378,57 @@ local ornate = {
     end,
 }
 
+local amber = {
+    dependencies = {
+        items = {
+            "set_entr_runes",
+            "set_entr_inversions"
+        }
+    },
+	object_type = "Seal",
+    order = 3009,
+    key="entr_amber",
+    atlas = "seals",
+    pos = {x=7,y=0},
+    badge_colour = HEX("db915b"),
+    calculate = function(self, card, context)
+        if context.copying_card and context.original_card == card then
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                blocking = false,
+                func = function()
+                    card:start_dissolve()
+                    return true
+                end
+            })
+            if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        SMODS.add_card{
+                            set="Pact",
+                            area = G.consumeables,
+                            key_append = "entr_amber"
+                        }
+                        G.GAME.consumeable_buffer = 0
+                        return true
+                    end
+                })
+                card.delay_dissolve = true
+                return {
+                    message = "+1 "..localize("k_pact"),
+                    colour = G.C.RED,
+                }
+            end
+        end
+    end,
+    draw = function(self, card, layer)
+		G.shared_seals["entr_amber"].role.draw_major = card
+        G.shared_seals["entr_amber"]:draw_shader('dissolve', nil, nil, nil, card.children.center)
+		G.shared_seals["entr_amber"]:draw_shader('voucher', nil, card.ARGS.send_to_shader, nil, card.children.center)
+    end,
+}
+
 return {
     items = {
         crimson,
@@ -386,6 +437,7 @@ return {
         pink,
         verdant,
         cerulean,
-        ornate
+        ornate,
+        amber
     }
 }
