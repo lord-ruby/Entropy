@@ -147,6 +147,48 @@ local thorns = {
     end
 }
 
+local denial_indicator = Entropy.create_mark("denial", 7054, {x = 3, y = 4})
+local denial = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=3,y=4},
+    order = 7604,
+    key = "denial",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_ansuz",
+    use = function(self, card)
+        if G.GAME.last_sold_card then
+            local area = G.consumeables
+            local buffer = G.GAME.consumeable_buffer
+            if G.P_CENTERS[G.GAME.last_sold_card].set == "Joker" then
+                area = G.jokers
+                buffer = G.GAME.joker_buffer
+            end
+            if #area.cards + buffer < area.config.card_limit then
+                SMODS.add_card{
+                    key = G.GAME.last_sold_card,
+                    area = area
+                }
+            end
+        end
+        Entropy.pact_mark("rune_entr_denial")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 local chains_indicator = Entropy.create_mark("chains", 7055, {x = 4, y = 4}, function(self, rune, context)
     if context.hand_drawn and not rune.ability.triggered then
         local card = context.hand_drawn[1]
@@ -312,6 +354,7 @@ return {
         avarice, avarice_indicator,
         rage, rage_indicator,
         thorns, thorns_indicator,
+        denial, denial_indicator,
         chains, chains_indicator,
         decay, decay_indicator,
         envy, envy_indicator

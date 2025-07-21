@@ -3317,6 +3317,12 @@ local decs = {
 					"Marked by {C:red}Thorns{}"
 				}
 			},
+			rune_entr_denial = {
+				name = "Mark of Denial",
+				text = {
+					"Marked by {C:red}Thorns{}"
+				}
+			},
 			rune_entr_chains = {
 				name = "Mark of Chains",
 				text = {
@@ -3754,6 +3760,13 @@ local decs = {
 				text = {
 					"Apply {C:attention}Rental{} to {C:attention}2{} Random Jokers",
 					"then give them {C:attention}Random{} Editions"
+				}
+			},
+			c_entr_denial = {
+				name = "Pact of Denial",
+				text = {
+					"Create a {C:attention}copy{} of the last {C:attention}sold{} card",
+					"{C:inactive}(Must have room){}"
 				}
 			},
 			c_entr_chains = {

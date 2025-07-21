@@ -1406,6 +1406,7 @@ end
 local card_sellref = Card.sell_card
 function Card:sell_card(...)
     self.dissolved = true
+    G.GAME.last_sold_card = self.config.center.key
     return card_sellref(self, ...)
 end
 
