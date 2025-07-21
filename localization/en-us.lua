@@ -966,6 +966,13 @@ local decs = {
 					"{C:inactive}(Currently {C:money}$#4#{C:inactive}){}"
                 },
             },
+			j_entr_birthday_card = {
+                name = "Birthday Card",
+                text = {
+                    "{X:mult,C:white}X#1#{} Mult if you have",
+					"atleast {C:attention}#2#{} held Consumables"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

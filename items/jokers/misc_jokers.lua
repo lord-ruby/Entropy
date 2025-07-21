@@ -2193,6 +2193,48 @@ local debit_card = {
     }
 }
 
+local birthday_card = {
+    order = 42,
+    object_type = "Joker",
+    key = "birthday_card",
+    rarity = 2,
+    cost = 6,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    eternal_compat = true,
+    pos = { x = 9, y = 6 },
+    atlas = "jokers",
+    config = {
+        xmult = 2,
+        consumables = 2
+    },
+    demicoloncompat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                number_format(card.ability.xmult),
+                number_format(card.ability.consumables),
+            }
+        }
+    end,
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.joker_main and #G.consumeables.cards >= card.ability.consumables then
+            return {
+                xmult = card.ability.xmult
+            }
+        end
+        if context.forcetrigger then
+            return {
+                xmult = card.ability.xmult
+            }
+        end
+    end,
+}
+
 local ruby = {
     object_type = "Joker",
     key = "ruby",
@@ -2274,6 +2316,7 @@ return {
         inkbleed,
         roulette,
         debit_card,
+        birthday_card,
         ruby
     }
 }
