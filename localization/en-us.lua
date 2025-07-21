@@ -973,6 +973,14 @@ local decs = {
 					"atleast {C:attention}#2#{} held Consumables"
                 },
             },
+			j_entr_sandpaper = {
+                name = "Sandpaper",
+                text = {
+                    "If played hand contains a {C:attention}Stone Card{}",
+					"{C:red}destroy{} all played {C:attention}Stone Cards{}",
+					"and create a {C:attention}random{} {C:purple}Rune Card{}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

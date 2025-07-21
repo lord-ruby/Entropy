@@ -2271,6 +2271,56 @@ local ruby = {
     end
 }
 
+local sandpaper = {
+    order = 43,
+    object_type = "Joker",
+    key = "sandpaper",
+    rarity = 2,
+    cost = 6,
+    dependencies = {
+        items = {
+            "set_entr_runes",
+        }
+    },
+    eternal_compat = true,
+    pos = { x = 0, y = 7 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.m_stone
+    end,
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.after then
+            local stones = {}
+            for i, v in pairs(G.play.cards) do
+                if v.config.center.key == "m_stone" then
+                    stones[#stones+1] = v
+                end
+            end
+            if #stones > 0 then
+                G.E_MANAGER:add_event(Event{
+                    trigger = "after",
+                    blocking = false,
+                    func = function()
+                        for i, v in pairs(stones) do v:start_dissolve(); v.ability.temporary2 = true end
+                        if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                            SMODS.add_card{
+                                set = "Rune",
+                                area = G.consumeables
+                            }
+                        end
+                        return true
+                    end
+                })
+                return {
+                    message = "+1 "..localize("k_rune")
+                }
+            end
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -2317,6 +2367,7 @@ return {
         roulette,
         debit_card,
         birthday_card,
-        ruby
+        ruby,
+        sandpaper
     }
 }
