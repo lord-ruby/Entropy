@@ -28,7 +28,7 @@ local avarice = {
     order = 7601,
     key = "avarice",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
-    inversion = "c_entr_thusisaz",
+    inversion = "c_entr_fehu",
     use = function(self, card)
         local h = G.jokers.cards[1]
         if h then
@@ -118,7 +118,7 @@ local thorns = {
     order = 7603,
     key = "thorns",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
-    inversion = "c_entr_thusisaz",
+    inversion = "c_entr_thurisaz",
     config = {
         extra = 2
     },
