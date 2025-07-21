@@ -330,6 +330,7 @@ function calculate_runes(context)
                         SMODS.calculate_individual_effect({[i2] = v2}, v, i2, v2, false)
                     end
                 end
+                SMODS.calculate_context({rune_triggered = true, rune = v})
                 v.triggered = true
             end
         end

@@ -2321,6 +2321,49 @@ local sandpaper = {
     end,
 }
 
+local purple_joker = {
+    order = 44,
+    object_type = "Joker",
+    key = "purple_joker",
+    rarity = 2,
+    cost = 6,
+    dependencies = {
+        items = {
+            "set_entr_runes",
+        }
+    },
+    eternal_compat = true,
+    pos = { x = 1, y = 7 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    config = {
+        xmult_mod = 0.2,
+        xmult = 1
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                number_format(card.ability.xmult_mod),
+                number_format(card.ability.xmult)
+            }
+        }
+    end,
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.rune_triggered and not context.repetition and not context.blueprint then
+            card.ability.xmult = card.ability.xmult + card.ability.xmult_mod
+            return {
+                message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.xmult }})
+            }
+        end
+        if context.joker_main or context.forcetrigger then
+            return {
+                xmult = card.ability.xmult
+            }
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -2368,6 +2411,7 @@ return {
         debit_card,
         birthday_card,
         ruby,
-        sandpaper
+        sandpaper,
+        purple_joker
     }
 }

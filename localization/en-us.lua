@@ -981,6 +981,14 @@ local decs = {
 					"and create a {C:attention}random{} {C:purple}Rune Card{}"
                 },
             },
+			j_entr_purple_joker = {
+                name = "Purple Joker",
+                text = {
+                    "This Joker gains {X:mult,C:white}X#1#{} Mult",
+					"whenever a {C:purple}Rune{} triggers",
+					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
