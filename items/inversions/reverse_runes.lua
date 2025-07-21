@@ -410,6 +410,78 @@ local youth = {
     end
 }
 
+local shards_indicator = Entropy.create_mark("shards", 7059, {x = 1,y = 5})
+local shards = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=1,y=5},
+    order = 7609,
+    key = "shards",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_haglaz",
+    loc_vars = function(self, q, card) q[#q+1] = G.P_CENTERS.e_entr_fractured end,
+    use = function(self, card)
+        local jokers = {}
+        for i, v in pairs(G.jokers.cards) do
+            if not v.edition or not v.edition.entr_fractured then jokers[#jokers+1] = v end
+        end
+        if #jokers > 0 then
+            local dcard = pseudorandom_element(jokers, pseudoseed("entr_shards"))
+            dcard:set_edition("e_entr_fractured")
+        end
+        Entropy.pact_mark("rune_entr_shards")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
+function Card:is_playing_card()
+    if not G.deck then return end
+    for i, v in pairs(G.playing_cards) do
+        if v == self then return true end
+    end
+end
+
+local start_dissolveref = Card.start_dissolve
+function Card:start_dissolve(...)
+    if Entropy.has_rune("rune_entr_shards") and pseudorandom("entr_shards") < 0.3 and self:is_playing_card() then
+        card_eval_status_text(
+            self,
+            "extra",
+            nil,
+            nil,
+            nil,
+            { message = localize("k_nope_ex"), colour = G.C.RED }
+        )
+        delay(1)
+        if self.area == G.play then
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                blocking = false,
+                func = function()
+                    G.play:remove_card(self)
+                    G.deck:emplace(self)
+                    return true
+                end
+            })
+        end
+    else
+        return start_dissolveref(self, ...)
+    end
+end
+
 return {
     items = {
         avarice, avarice_indicator,
@@ -419,6 +491,7 @@ return {
         chains, chains_indicator,
         decay, decay_indicator,
         envy, envy_indicator,
-        youth, youth_indicator
+        youth, youth_indicator,
+        shards, shards_indicator
     }
 }

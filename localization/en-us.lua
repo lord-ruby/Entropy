@@ -3359,6 +3359,18 @@ local decs = {
 					"Marked by {C:red}Youth{}"
 				}
 			},
+			rune_entr_shards = {
+				name = "Mark of Shards",
+				text = {
+					{
+						"Marked by {C:red}Shards{}"
+					},
+					{
+						"Playing card {C:red}destruction{}",
+						"may {C:red}fail{}"
+					}
+				}
+			},
 		},
 		Rune = {
 			c_entr_fehu = {
@@ -3805,7 +3817,15 @@ local decs = {
 					"A random Joker is {C:red}debuffed{}",
 					"for {C:attention}#2#{} round#<s>2#"
 				}
-			}
+			},
+			c_entr_shards = {
+				name = "Pact of Shards",
+				text = {
+					"Apply {C:dark_edition}Fractured{} to a",
+					"random Joker, {C:attention}Future{} playing card",
+					"destruction may {C:red}fail{}"
+				}
+			},
 		},
 		Other = {
 			cry_banana_booster = {
