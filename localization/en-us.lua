@@ -3353,6 +3353,12 @@ local decs = {
 					}
 				}
 			},
+			rune_entr_youth = {
+				name = "Mark of Youth",
+				text = {
+					"Marked by {C:red}Youth{}"
+				}
+			},
 		},
 		Rune = {
 			c_entr_fehu = {
@@ -3758,7 +3764,7 @@ local decs = {
 			c_entr_thorns = {
 				name = "Pact of Thorns",
 				text = {
-					"Apply {C:attention}Rental{} to {C:attention}2{} Random Jokers",
+					"Apply {C:attention}Rental{} to {C:attention}#1#{} Random Jokers",
 					"then give them {C:attention}Random{} Editions"
 				}
 			},
@@ -3780,8 +3786,8 @@ local decs = {
 			c_entr_decay = {
 				name = "Pact of Decay",
 				text = {
-					"{C:red}Remove{} {C:attention}1{} Level from {C:attention}2{} random hands",
-					"Your most played hand gains {C:attention}2{} Levels"
+					"{C:red}Remove{} {C:attention}#1#{} Level from {C:attention}#2#{} random hands",
+					"Your most played hand gains {C:attention}#3#{} Levels"
 				}
 			},
 			c_entr_envy = {
@@ -3790,6 +3796,14 @@ local decs = {
 					"{C:red}Destroy{} a {C:attention}Random{} Joker",
 					"Retrigger a {C:attention}random{} Joker",
 					"which changes each round"
+				}
+			},
+			c_entr_youth = {
+				name = "Pact of Youth",
+				text = {
+					"{C:attention}-#1#{} Ante",
+					"A random Joker is {C:red}debuffed{}",
+					"for {C:attention}#2#{} round#<s>2#"
 				}
 			}
 		},
@@ -3827,6 +3841,13 @@ local decs = {
 				text = {
 					"When this card is used",
 					"Also trigger {C:attention}#1#{}"
+				}
+			},
+			temporary_debuff_tooltip = {
+				name = "Temporary Debuff",
+				text = {
+					"Debuffed for the",
+					"next {C:attention}#1#{} rounds"
 				}
 			},
 			inversion_allowed = {
@@ -4436,7 +4457,8 @@ local decs = {
 
 			k_inactive = "Inactive!",
 			k_randomised = "Randomized!",
-			k_saved_algiz = "Saved by Algiz"
+			k_saved_algiz = "Saved by Algiz",
+			k_undebuffed_ex = "Undebuffed!"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

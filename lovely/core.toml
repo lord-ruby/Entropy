@@ -1120,11 +1120,14 @@ end
       info_queue[#info_queue+1] = {set="Other", key="no_downside"}
     end
   end
-if G.GAME.entr_echo and G.GAME.entr_echo[_c.key] then
+if G.GAME.entr_echo and G.GAME.entr_echo[_c.key] and first_pass then
   for i, v in pairs(G.GAME.entr_echo[_c.key]) do
     local other = G.P_CENTERS[v]
     info_queue[#info_queue+1] = {set="Other", key="echo_tooltip", vars = {G.localization.descriptions[other.set][other.key].name}}
   end
+end
+if card and card.ability and card.ability.debuff_timer and first_pass then
+  info_queue[#info_queue+1] = {set="Other", key="temporary_debuff_tooltip", vars = {card.ability.debuff_timer}}
 end
 '''
 match_indent = true

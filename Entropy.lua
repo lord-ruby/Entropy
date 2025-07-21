@@ -84,3 +84,9 @@ for i, category in pairs(Entropy.contents) do
     end
     category = nil
 end
+
+if Cryptid.misprintize_value_blacklist then
+    Cryptid.misprintize_value_blacklist.debuff_timer = false
+    Cryptid.misprintize_value_blacklist.superego_copies = false
+    Cryptid.misprintize_value_blacklist.entr_hotfix_rounds = false
+end

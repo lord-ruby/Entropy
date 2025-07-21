@@ -109,33 +109,58 @@ function end_round()
     G.GAME.round_resets.path_toggled = nil
     local remove_temp = {}
     for i, v in pairs({G.jokers, G.hand, G.consumeables, G.discard, G.deck}) do
-            for ind, card in pairs(v.cards) do
-                if card.ability then
-                    if card.ability.entr_hotfix then
-                        card.ability.entr_hotfix_rounds = (card.ability.entr_hotfix_rounds or 5) - 1
-                        if to_big(card.ability.entr_hotfix_rounds) <= to_big(0) then
-                            card.ability.entr_hotfix = false
-                            
-                            Cryptid.manipulate(card, {min=0.1, max=10})
-                        end
+        for ind, card in pairs(v.cards) do
+            if card.ability then
+                if card.ability.entr_hotfix then
+                    card.ability.entr_hotfix_rounds = (card.ability.entr_hotfix_rounds or 5) - 1
+                    if to_big(card.ability.entr_hotfix_rounds) <= to_big(0) then
+                        card.ability.entr_hotfix = false
+                        
+                        Cryptid.manipulate(card, {min=0.1, max=10})
                     end
-                    if card.ability.temporary or card.ability.temporary2 then
-                        if card.area ~= G.hand and card.area ~= G.play and card.area ~= G.jokers and card.area ~= G.consumeables then card.states.visible = false end
-                        card:remove_from_deck()
-                        card:start_dissolve()
-                        if card.ability.temporary then remove_temp[#remove_temp+1]=card end
-                    end
-                    if card.ability.entr_yellow_sign then card.ability.entr_yellow_sign = nil end
-                    if card.ability.superego then
-                        card.ability.superego_copies = (card.ability.superego_copies or 0) + 0.5
-                    end
-                    card.perma_debuff = nil
-                    if card.ability.entr_pseudorandom then
-                        card.ability.entr_pseudorandom = false
-                        card.ability.cry_rigged = false
+                end
+                if card.ability.temporary or card.ability.temporary2 then
+                    if card.area ~= G.hand and card.area ~= G.play and card.area ~= G.jokers and card.area ~= G.consumeables then card.states.visible = false end
+                    card:remove_from_deck()
+                    card:start_dissolve()
+                    if card.ability.temporary then remove_temp[#remove_temp+1]=card end
+                end
+                if card.ability.entr_yellow_sign then card.ability.entr_yellow_sign = nil end
+                if card.ability.superego then
+                    card.ability.superego_copies = (card.ability.superego_copies or 0) + 0.5
+                end
+                card.perma_debuff = nil
+                if card.ability.entr_pseudorandom then
+                    card.ability.entr_pseudorandom = false
+                    card.ability.cry_rigged = false
+                end
+                if card.ability.debuff_timer then
+                    card.ability.debuff_timer = card.ability.debuff_timer - 1
+                    if card.ability.debuff_timer <= 0 then
+                        card.ability.debuff_timer = nil
+                        card.ability.debuff_timer_max = nil
+                        card.debuff = false
+                        card_eval_status_text(
+                            card,
+                            "extra",
+                            nil,
+                            nil,
+                            nil,
+                            { message = localize("k_undebuffed_ex"), colour = G.C.RED }
+                        )
+                    else
+                        card_eval_status_text(
+                            card,
+                            "extra",
+                            nil,
+                            nil,
+                            nil,
+                            { message = number_format(card.ability.debuff_timer_max-card.ability.debuff_timer).."/"..number_format(card.ability.debuff_timer_max), colour = G.C.RED }
+                        )
                     end
                 end
             end
+        end
     end
     if #remove_temp > 0 then
         SMODS.calculate_context({remove_playing_cards = true, removed=remove_temp})
@@ -152,7 +177,7 @@ end
 local set_debuffref = Card.set_debuff
 
 function Card:set_debuff(should_debuff)
-    if (self.perma_debuff or self.ability.superego) and not self.dissolved then should_debuff = true end
+    if (self.perma_debuff or self.ability.superego or self.ability.debuff_timer) and not self.dissolved then should_debuff = true end
     if self.ability.entr_hotfix or G.GAME.nodebuff then should_debuff = false end
     set_debuffref(self, should_debuff)
 end

@@ -118,6 +118,10 @@ local thorns = {
     key = "thorns",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
     inversion = "c_entr_thusisaz",
+    config = {
+        extra = 2
+    },
+    loc_vars = function(self, q, card) return {vars = {card.ability.extra}} end,
     use = function(self, card)
         local jokers = {}
         for i, v in pairs(G.jokers.cards) do
@@ -125,7 +129,7 @@ local thorns = {
         end
         if #jokers > 0 then
             pseudoshuffle(jokers, pseudoseed("entr_thorns"))
-            for i = 1, math.min(2, #jokers) do
+            for i = 1, math.min(card.ability.extra, #jokers) do
                 jokers[i]:set_edition(poll_edition("entr_thorns_edition", nil, nil, true))
                 jokers[i].ability.rental = true
             end
@@ -239,6 +243,12 @@ local decay = {
     key = "decay",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
     inversion = "c_entr_kaunan",
+    config = {
+        level = 1,
+        hands = 2,
+        most_played = 2
+    },
+    loc_vars = function(self, q, card) return {vars = {card.ability.level, card.ability.hands, card.ability.most_played}} end,
     use = function(self, card)
         local hand = "High Card"
         for i, v in pairs(G.GAME.hands) do
@@ -248,9 +258,9 @@ local decay = {
         for i, v in pairs(G.GAME.hands) do
             if i ~= hand and v.visible and to_big(v.level) > to_big(0) then hands[#hands+1] = i end
         end
-        for i = 1, math.min(2, #hands) do
+        for i = 1, math.min(card.ability.hands, #hands) do
             local rhand = pseudorandom_element(hands, pseudoseed("entr_decay_hand"))
-            SMODS.smart_level_up_hand(card, rhand, false, -1)
+            SMODS.smart_level_up_hand(card, rhand, false, -card.ability.level)
             local ind
             for i, v in pairs(hands) do
                 if v == rhand then ind = i; break end
@@ -258,7 +268,7 @@ local decay = {
             table.remove(hands, ind)
         end
 
-        SMODS.smart_level_up_hand(card, "High Card", false, 2)
+        SMODS.smart_level_up_hand(card, "High Card", false, card.ability.most_played)
         Entropy.pact_mark("rune_entr_decay")
     end,
     can_use = function()
@@ -350,6 +360,56 @@ SMODS.calculate_retriggers = function(card, context, _ret)
     return retriggers
 end
 
+local youth_indicator = Entropy.create_mark("youth", 7058, {x = 0,y = 5})
+local youth = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=0,y=5},
+    order = 7608,
+    key = "youth",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_wunjo",
+    config = {
+        extra = 1,
+        rounds = 3
+    },
+    loc_vars = function(self, q, card) return {vars = {card.ability.extra, card.ability.rounds}} end,
+    use = function(self, card)
+        ease_ante(-card.ability.extra)
+        local jokers = {}
+        for i, v in pairs(G.jokers.cards) do
+            if not v.ability.debuff_timer then jokers[#jokers+1] = v end
+        end
+        local dcard = pseudorandom_element(jokers, pseudoseed("entr_youth"))
+        dcard.ability.debuff_timer = card.ability.rounds
+        dcard.ability.debuff_timer_max = card.ability.rounds
+        dcard:set_debuff(true)
+        card_eval_status_text(
+            dcard,
+            "extra",
+            nil,
+            nil,
+            nil,
+            { message = localize("k_debuffed"), colour = G.C.RED }
+        )
+        Entropy.pact_mark("rune_entr_youth")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 return {
     items = {
         avarice, avarice_indicator,
@@ -358,6 +418,7 @@ return {
         denial, denial_indicator,
         chains, chains_indicator,
         decay, decay_indicator,
-        envy, envy_indicator
+        envy, envy_indicator,
+        youth, youth_indicator
     }
 }
