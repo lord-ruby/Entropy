@@ -113,7 +113,7 @@ function Entropy.FlipThen(cardlist, func, before, after)
     end
 end
 
-function Entropy.SealSpectral(key, sprite_pos, seal,order, inversion, entr_credits)
+function Entropy.SealSpectral(key, sprite_pos, seal,order, inversion, entr_credits, atlas)
     return {
         dependencies = {
             items = {
@@ -126,7 +126,7 @@ function Entropy.SealSpectral(key, sprite_pos, seal,order, inversion, entr_credi
         key = key,
         set = "Omen",
         
-        atlas = "consumables",
+        atlas = atlas or "consumables",
         config = {
             highlighted = 1
         },

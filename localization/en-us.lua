@@ -2542,6 +2542,13 @@ local decs = {
 					"to a {C:attention}random{} {C:red}object{}"
 				}
 			},
+			c_entr_malediction = {
+				name = "Malediction",
+				text = {
+					"Add an {V:1}Amber Seal{}",
+					"to #1# selected card",
+				}
+			},
 		},
 		Tarot = {
 			c_entr_kiln = {

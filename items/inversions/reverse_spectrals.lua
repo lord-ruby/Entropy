@@ -1173,6 +1173,8 @@ local weld = {
     end
 }
 
+local malediction = Entropy.SealSpectral("malediction", {x=2,y=0}, "entr_amber", 2000+37, "c_entr_enchant", nil, "consumables2")
+
 return {
     items = {
         changeling,
@@ -1202,5 +1204,6 @@ return {
         purity,
         transcend,
         weld,
+        malediction
     }
 }
