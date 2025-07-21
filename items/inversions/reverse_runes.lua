@@ -158,7 +158,7 @@ local denial = {
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
     inversion = "c_entr_ansuz",
     use = function(self, card)
-        if G.GAME.last_sold_card then
+        if G.GAME.last_sold_card and not G.GAME.banned_keys[G.GAME.last_sold_card] then
             local area = G.consumeables
             local buffer = G.GAME.consumeable_buffer
             if G.P_CENTERS[G.GAME.last_sold_card].set == "Joker" then
