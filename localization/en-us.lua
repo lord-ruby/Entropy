@@ -3766,6 +3766,7 @@ local decs = {
 				name = "Pact of Denial",
 				text = {
 					"Create a {C:attention}copy{} of the last {C:attention}sold{} card",
+					"then {C:red}banish{} this card"
 					"{C:inactive}(Must have room){}"
 				}
 			},

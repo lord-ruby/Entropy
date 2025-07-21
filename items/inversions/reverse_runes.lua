@@ -171,6 +171,7 @@ local denial = {
                     area = area
                 }
             end
+            G.GAME.banned_keys[G.GAME.last_sold_card] = true
         end
         Entropy.pact_mark("rune_entr_denial")
     end,
