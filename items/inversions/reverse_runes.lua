@@ -14,7 +14,8 @@ function Entropy.create_mark(key, order, pos, calculate, credits)
         pos = pos,
         atlas = "rune_indicators",
         dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
-        calculate = calculate
+        calculate = calculate,
+        is_pact = true,
     }
 end
 

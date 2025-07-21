@@ -2364,6 +2364,53 @@ local purple_joker = {
     end,
 }
 
+function Entropy.sum_pacts()
+    local total = 0
+    for i, v in pairs(G.GAME.runes or {}) do
+        if G.P_RUNES[v.key].is_pact then
+            total = total + v.ability.count or 1
+        end
+    end
+    return total
+end
+
+local chalice_of_blood = {
+    order = 45,
+    object_type = "Joker",
+    key = "chalice_of_blood",
+    rarity = 3,
+    cost = 12,
+    dependencies = {
+        items = {
+            "set_entr_runes",
+            "set_entr_inversions"
+        }
+    },
+    eternal_compat = true,
+    pos = { x = 2, y = 7 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    config = {
+        xmult_mod = 0.75,
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                number_format(card.ability.xmult_mod),
+                number_format(1 + card.ability.xmult_mod * Entropy.sum_pacts())
+            }
+        }
+    end,
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.joker_main or context.forcetrigger then
+            return {
+                xmult = 1 + card.ability.xmult_mod * Entropy.sum_pacts()
+            }
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -2412,6 +2459,7 @@ return {
         birthday_card,
         ruby,
         sandpaper,
-        purple_joker
+        purple_joker,
+        chalice_of_blood
     }
 }

@@ -989,6 +989,14 @@ local decs = {
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}"
                 },
             },
+			j_entr_chalice_of_blood = {
+                name = "Chalice of Blood",
+                text = {
+                    "{X:mult,C:white}X#1#{} Mult per {C:red}Pact{}",
+					"card used this run",
+					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
