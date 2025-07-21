@@ -5,6 +5,7 @@ local i = {
     "compat/cryptid",
     "compat/multiplayer",
     "compat/artbox",
-    "compat/thefamily"
+    "compat/thefamily",
+    "compat/revosvault"
 }
 Entropy.load_files(i)

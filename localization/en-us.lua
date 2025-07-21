@@ -132,6 +132,14 @@ local decs = {
 			},
 		},
 		Joker = {
+			--Crossmod Jokers
+			j_entr_compositor = {
+				name = "Compositor",
+				text = {
+					"When {C:attention}Blind{} is selected","print a random {C:attention}Twisted Card{}"
+				}
+			},
+
 			j_cry_redeo = {
 				name = "Redeo",
 				text = {
