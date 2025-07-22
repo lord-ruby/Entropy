@@ -39,6 +39,15 @@ SMODS.ConsumableType({
 	can_be_pulled = true,
 })
 
+SMODS.UndiscoveredSprite({
+	key = "CBlind",
+	atlas = "undiscovered",
+	path = "undiscovered.png",
+	pos = { x = 999, y = 0 },
+	px = 71,
+	py = 95,
+})
+
 SMODS.ConsumableType({
 	object_type = "ConsumableType",
 	key = "Star",
