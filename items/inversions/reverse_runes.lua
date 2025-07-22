@@ -16,6 +16,7 @@ function Entropy.create_mark(key, order, pos, calculate, credits)
         dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
         calculate = calculate,
         is_pact = true,
+        no_providence = true
     }
 end
 
