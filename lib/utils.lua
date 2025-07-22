@@ -37,6 +37,10 @@ function Entropy.Inversion(card)
     return Entropy.FlipsideInversions[card.config.center.key]
 end
 
+function Entropy.is_inverted(card)
+    return Entropy.FlipsideInversions[card.config.center.key] and not Entropy.FlipsidePureInversions[card.config.center.key]
+end
+
 function Entropy.FlipThen(cardlist, func, before, after)
     if not Talisman or not Talisman.config_file.disable_anims then
         for i, v in ipairs(cardlist) do

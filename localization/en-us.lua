@@ -997,6 +997,14 @@ local decs = {
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}"
                 },
             },
+			j_entr_torn_photograph = {
+                name = "Torn Photograph",
+                text = {
+                    "This Joker gains {X:mult,C:white}X#1#{} Mult",
+					"whenever a {C:red}Twisted{} card is sold",
+					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

@@ -2411,6 +2411,50 @@ local chalice_of_blood = {
     end,
 }
 
+local torn_photograph = {
+    order = 46,
+    object_type = "Joker",
+    key = "torn_photograph",
+    rarity = 2,
+    cost = 8,
+    dependencies = {
+        items = {            
+            "set_entr_inversions"
+        }
+    },
+    eternal_compat = true,
+    pos = { x = 3, y = 7 },
+    pixel_size = { h = 95 / 1.2 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    config = {
+        xmult_mod = 0.2,
+        xmult = 1
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                number_format(card.ability.xmult_mod),
+                number_format(card.ability.xmult)
+            }
+        }
+    end,
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.selling_card and Entropy.is_inverted(context.card) and not context.blueprint and not context.repetition then
+            card.ability.xmult = card.ability.xmult + card.ability.xmult_mod
+            return {
+                message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.xmult }})
+            }
+        end
+        if context.joker_main or context.forcetrigger then
+            return {
+                xmult = card.ability.xmult
+            }
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -2460,6 +2504,7 @@ return {
         ruby,
         sandpaper,
         purple_joker,
-        chalice_of_blood
+        chalice_of_blood,
+        torn_photograph
     }
 }
