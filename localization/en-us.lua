@@ -3417,6 +3417,18 @@ local decs = {
 					}
 				}
 			},
+			rune_entr_desire = {
+				name = "Mark of Desire",
+				text = {
+					{
+						"Marked by {C:red}Desire{}"
+					},
+					{
+						"{C:attention}Booster Packs{} are",
+						"more {C:red}Expensive{}"
+					}
+				}
+			},
 		},
 		Rune = {
 			c_entr_fehu = {
@@ -3870,6 +3882,15 @@ local decs = {
 					"Apply {C:dark_edition}Fractured{} to a",
 					"random Joker, {C:attention}Future{} playing card",
 					"destruction may {C:red}fail{}"
+				}
+			},
+			c_entr_desire = {
+				name = "Pact of Desire",
+				text = {
+					"Create {C:attention}#1#{} random",
+					"{C:spectral}Spectral{} or {C:red}Omen{} cards",
+					"{C:attention}Booster Packs{} cost {C:money}50%{} more",
+					"{C:inactive}(Must have room){}"
 				}
 			},
 		},

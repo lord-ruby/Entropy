@@ -483,6 +483,58 @@ function Card:start_dissolve(...)
     end
 end
 
+local desire_indicator = Entropy.create_mark("desire", 7060, {x = 2, y = 5})
+local desire = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=2,y=5},
+    order = 7610,
+    key = "desire",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_naudiz",
+    config = {
+        create = 2
+    },
+    loc_vars = function(self, q, card) return {vars = {math.min(card.ability.create, 20)}} end,
+    use = function(self, card)
+        local cards = {}
+        for i, v in pairs(G.consumeables.cards) do if v ~= card or (card.edition and card.edition.card_limit) then cards[#cards+1] = v end end
+        for i = 1, math.min(card.ability.create, 20) do
+            local type = pseudorandom_element({"Spectral", "Omen"}, pseudoseed("entr_desire"))
+            if G.GAME.consumeable_buffer + #cards < G.consumeables.config.card_limit - (card.edition and card.edition.card_limit or 0) then
+                G.E_MANAGER:add_event(Event{
+                    trigger = "after",
+                    func = function()
+                        SMODS.add_card{
+                            area = G.consumeables,
+                            set = type
+                        }
+                        return true
+                    end
+                })
+                G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+            end
+        end
+        G.GAME.consumeable_buffer = 0
+        G.GAME.entr_booster_cost = (G.GAME.entr_booster_cost or 1) + 0.5
+        Entropy.pact_mark("rune_entr_desire")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 return {
     items = {
         avarice, avarice_indicator,
@@ -493,6 +545,7 @@ return {
         decay, decay_indicator,
         envy, envy_indicator,
         youth, youth_indicator,
-        shards, shards_indicator
+        shards, shards_indicator,
+        desire, desire_indicator
     }
 }

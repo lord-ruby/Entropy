@@ -334,6 +334,9 @@ function Card:set_cost()
         self.sell_cost = cost
         self.sell_cost_label = self.facing == 'back' and '?' or number_format(self.sell_cost)
 	end
+	if G.GAME.entr_booster_cost and self.config.center.set == "Booster" then
+		self.cost = self.cost * G.GAME.entr_booster_cost
+	end
 end
 
 
