@@ -743,13 +743,16 @@ local endless_entropy = {
     object_type = "Joker",
     key = "eecc",
     order = 10^300,
-    rarity = 4,
+    rarity = "entr_entropic",
     cost = 10,
     atlas = "ee_atlas",
     pos = {x=0, y=0},
     soul_pos = {x = 4, y = 3, extra = {x=0,y=1}},
     no_doe = true,
     no_collection = true,
+	in_pool = function()
+		return false
+	end
 }
 
 local alabaster = {
