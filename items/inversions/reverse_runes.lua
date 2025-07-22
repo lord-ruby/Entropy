@@ -61,7 +61,7 @@ local avarice = {
         return true
     end,
     in_pool = function(self, args)
-        if args.source == "twisted_card" then
+        if args and args.source == "twisted_card" then
             return false
         end
         return true
@@ -99,7 +99,7 @@ local rage = {
         return true
     end,
     in_pool = function(self, args)
-        if args.source == "twisted_card" then
+        if args and args.source == "twisted_card" then
             return false
         end
         return true
@@ -142,7 +142,7 @@ local thorns = {
         return true
     end,
     in_pool = function(self, args)
-        if args.source == "twisted_card" then
+        if args and args.source == "twisted_card" then
             return false
         end
         return true
@@ -185,7 +185,7 @@ local denial = {
         return true
     end,
     in_pool = function(self, args)
-        if args.source == "twisted_card" then
+        if args and args.source == "twisted_card" then
             return false
         end
         return true
@@ -224,7 +224,7 @@ local chains = {
         return true
     end,
     in_pool = function(self, args)
-        if args.source == "twisted_card" then
+        if args and args.source == "twisted_card" then
             return false
         end
         return true
@@ -277,7 +277,7 @@ local decay = {
         return true
     end,
     in_pool = function(self, args)
-        if args.source == "twisted_card" then
+        if args and args.source == "twisted_card" then
             return false
         end
         return true
@@ -327,7 +327,7 @@ local envy = {
         return true
     end,
     in_pool = function(self, args)
-        if args.source == "twisted_card" then
+        if args and args.source == "twisted_card" then
             return false
         end
         return true
@@ -401,7 +401,7 @@ local youth = {
         return true
     end,
     in_pool = function(self, args)
-        if args.source == "twisted_card" then
+        if args and args.source == "twisted_card" then
             return false
         end
         return true
@@ -438,7 +438,7 @@ local shards = {
         return true
     end,
     in_pool = function(self, args)
-        if args.source == "twisted_card" then
+        if args and args.source == "twisted_card" then
             return false
         end
         return true
@@ -525,7 +525,7 @@ local desire = {
         return true
     end,
     in_pool = function(self, args)
-        if args.source == "twisted_card" then
+        if args and args.source == "twisted_card" then
             return false
         end
         return true

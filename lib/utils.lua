@@ -1445,7 +1445,7 @@ function Entropy.GetPooledCenter(_type)
     --should pool be skipped with a forced key
     if not forced_key and soulable and (not G.GAME.banned_keys['c_soul']) then
         for _, v in ipairs(SMODS.Consumable.legendaries) do
-            if (_type == v.type.key or _type == v.soul_set) and not (G.GAME.used_jokers[v.key] and not next(find_joker("Showman")) and not v.can_repeat_soul) and (not v.in_pool or (type(v.in_pool) ~= "function") or v:in_pool()) then
+            if (_type == v.type.key or _type == v.soul_set) and not (G.GAME.used_jokers[v.key] and not next(find_joker("Showman")) and not v.can_repeat_soul) and (not v.in_pool or (type(v.in_pool) ~= "function") or v:in_pool({})) then
                                 if pseudorandom('soul_'..v.key.._type..G.GAME.round_resets.ante) > (1 - v.soul_rate) then
                                     if not G.GAME.banned_keys[v.key] then forced_key = v.key end
                                 end
@@ -1815,7 +1815,7 @@ function Entropy.is_in_shop(key, consumable)
 		end
 	end
 	if center.in_pool then
-		return center:in_pool()
+		return center:in_pool({})
 	end
 	return center.unlocked or nil
 end

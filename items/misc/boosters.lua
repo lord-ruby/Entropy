@@ -144,7 +144,7 @@ function Entropy.get_rare_inversion(seed)
     local pool = {}
     for i, k in pairs(Entropy.RareInversions) do
         local v = G.P_CENTERS[k]
-        if not (G.GAME.used_jokers[v.key] and not SMODS.showman(v.key) and not v.can_repeat_soul) and (not v.in_pool or (type(v.in_pool) ~= "function") or v:in_pool()) then
+        if not (G.GAME.used_jokers[v.key] and not SMODS.showman(v.key) and not v.can_repeat_soul) and (not v.in_pool or (type(v.in_pool) ~= "function") or v:in_pool({})) then
             pool[#pool+1] = k
         end
     end

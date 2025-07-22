@@ -1526,7 +1526,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
         if soulable and not forced_key and Entropy.has_rune("rune_entr_oss") then
             local valid = {}
             for _, v in ipairs(SMODS.Consumable.legendaries) do
-                if (_type == v.type.key or _type == v.soul_set) and not (G.GAME.used_jokers[v.key] and not SMODS.showman(v.key) and not v.can_repeat_soul) and (not v.in_pool or (type(v.in_pool) ~= "function") or v:in_pool()) then
+                if (_type == v.type.key or _type == v.soul_set) and not (G.GAME.used_jokers[v.key] and not SMODS.showman(v.key) and not v.can_repeat_soul) and (not v.in_pool or (type(v.in_pool) ~= "function") or v:in_pool({})) then
                     valid[#valid+1] = v
                 end
             end
@@ -2759,7 +2759,7 @@ function get_new_boss()
             if not v.boss then
     
             elseif v.in_pool and type(v.in_pool) == 'function' then
-                local res, options = v:in_pool()
+                local res, options = v:in_pool({})
                 if
                     (
                         ((G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2) ==
