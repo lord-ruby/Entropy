@@ -337,6 +337,9 @@ function Card:set_cost()
 	if G.GAME.entr_booster_cost and self.config.center.set == "Booster" then
 		self.cost = self.cost * G.GAME.entr_booster_cost
 	end
+	if G.GAME.modifiers.entr_platinum and self.config.center.set == "Joker" then
+		self.cost = math.floor(self.cost * G.GAME.modifiers.entr_platinum)
+	end
 end
 
 

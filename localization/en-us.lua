@@ -477,7 +477,7 @@ local decs = {
 				name = "Ruby, Lord of Hope",
 				text = {
 					"This Joker gains {X:mult,C:white}X#1#{} Mult",
-					"Whenever an {C:red}Inverted{} consumable is used",
+					"Whenever you Enter of Exit {C:attention}The Flipside{}",
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}"
 				}
 			},
@@ -2641,19 +2641,40 @@ local decs = {
 			},
 		},
 		Stake = {
-			stake_entr_entropic = {
-				name = "Entropic Stake",
-				colour = "Ascendant",
+			stake_entr_copper = {
+				name = "Copper Stake",
 				text = {
-					"{C:entr_entropic}Entropic{} Joker blind scaling",
-					"{C:red}always{} applies"
+					"{C:attention}Copied{} playing cards may become {C:red}Disavowed{}",
+					"{s:0.8}Applies all previous Stakes",
+				},
+			},
+			stake_entr_platinum = {
+				name = "Platinum Stake",
+				text = {
+					"Jokers cost {C:red}20%{} more",
+					"{s:0.8}Applies all previous Stakes",
+				},
+			},
+			stake_entr_meteorite = {
+				name = "Meteorite Stake",
+				text = {
+					"Hand leveling may {C:red}fail{}",
+					"{s:0.8}Applies all previous Stakes",
+				},
+			},
+			stake_entr_iridium = {
+				name = "Iridium Stake",
+				text = {
+					"Win Ante is {C:red}10{}",
+					"{s:0.8}Applies all previous Stakes",
+					"{s:0.7}Trans Rights",
 				},
 			},
 			stake_entr_zenith = {
 				name = "Zenith Stake",
-				colour = "Ascendant",
 				text = {
 					"{E:1,C:entr_zenith}All Blinds are Endless Entropy{}",
+					"{s:0.8}Applies all previous Stakes",
 				},
 			},
 		},
@@ -4133,20 +4154,44 @@ local decs = {
 					"Cannot be {C:attention}removed{} {C:red}ever{}"
 				}
 			},
-			entr_entropic_sticker = {
-                ['name'] = 'Entropic Sticker',
-                ['text'] = {
-                    [1] = 'Used this Joker',
-                    [2] = 'to win on {C:attention}Entropic',
-                    [3] = '{C:attention}Stake{} difficulty'
+			entr_copper_sticker = {
+                name = 'Copper Sticker',
+                text = {
+                    'Used this Joker',
+                    'to win on {C:attention}Copper',
+                    '{C:attention}Stake{} difficulty'
+                }
+            },
+			entr_platinum_sticker = {
+                name = 'Platinum Sticker',
+                text = {
+                    'Used this Joker',
+                    'to win on {C:attention}Platinum',
+                    '{C:attention}Stake{} difficulty'
+                }
+            },
+			entr_meteorite_sticker = {
+                name = 'Meteorite Sticker',
+                text = {
+                    'Used this Joker',
+                    'to win on {C:attention}Meteorite',
+                    '{C:attention}Stake{} difficulty'
+                }
+            },
+			entr_iridium_sticker = {
+                name = 'Iridium Sticker',
+                text = {
+                    'Used this Joker',
+                    'to win on {C:attention}Iridium',
+                    '{C:attention}Stake{} difficulty'
                 }
             },
 			entr_zenith_sticker = {
-                ['name'] = 'Zenith Sticker',
-                ['text'] = {
-                    [1] = 'Used this Joker',
-                    [2] = 'to win on {C:entr_zenith}Zenith',
-                    [3] = '{C:attention}Stake{} difficulty'
+                name = 'Zenith Sticker',
+                text = {
+                    'Used this Joker',
+                    'to win on {C:entr_zenith}Zenith',
+                    '{C:attention}Stake{} difficulty'
                 }
             },
 			entr_crimson_seal = {

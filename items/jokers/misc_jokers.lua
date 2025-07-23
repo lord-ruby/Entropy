@@ -2246,10 +2246,10 @@ local ruby = {
     soul_pos = {x = 1, y = 0},
     config = {
         xmult = 1,
-        xmult_mod = 1.5
+        xmult_mod = 2
     },
     calculate = function(self, card, context)
-        if context.using_consumeable and Entropy.FlipsideInversions[context.consumeable.config.center.key] and not Entropy.FlipsidePureInversions[context.consumeable.config.center.key] then
+        if context.entr_path_changed then
             card.ability.xmult = card.ability.xmult + card.ability.xmult_mod
             return {
                 message = localize("k_upgrade_ex")

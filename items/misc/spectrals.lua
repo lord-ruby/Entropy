@@ -27,6 +27,7 @@ local flipside = {
             card.ability.fromflipside = true
             card:set_ability(G.P_CENTERS[Entropy.Inversion(card)])
             card.ability.fromflipside = false
+            SMODS.calculate_context({entr_consumable_inverted = true, card = card})
         end)
     end,
     loc_vars = function(self, q, card)
