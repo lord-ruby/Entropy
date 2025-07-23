@@ -477,7 +477,7 @@ local decs = {
 				name = "Ruby, Lord of Hope",
 				text = {
 					"This Joker gains {X:mult,C:white}X#1#{} Mult",
-					"Whenever you Enter of Exit {C:attention}The Flipside{}",
+					"Whenever you Enter or Exit {C:attention}The Flipside{}",
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}"
 				}
 			},
