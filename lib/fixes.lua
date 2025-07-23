@@ -184,7 +184,7 @@ function SMODS.get_blind_amount(ante)
     }
     local a, b, c, d = amounts[8], amounts[8]/amounts[7], ante-8, 1 + 0.2*(ante-8)
     local amount = math.floor(a*(b + (b*k*c)^d)^c)
-    if (amount:lt(R.E_MAX_SAFE_INTEGER)) then
+    if ( to_big(amount) < to_big(R and R.E_MAX_SAFE_INTEGER or 9e15)) then
       local exponent = to_big(10)^(math.floor(amount:log10() - to_big(1))):to_number()
       amount = math.floor(amount / exponent):to_number() * exponent
     end
