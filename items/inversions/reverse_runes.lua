@@ -536,6 +536,111 @@ local desire = {
     end
 }
 
+local ice_indicator = Entropy.create_mark("ice", 7061, {x = 3, y = 5})
+local ice = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=3,y=5},
+    order = 7611,
+    key = "ice",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_isaz",
+    config = {
+        create = 2
+    },
+    loc_vars = function(self, q, card) return {vars = {math.min(card.ability.create, 20)}} end,
+    use = function(self, card)
+        local area
+		if G.STATE == G.STATES.HAND_PLAYED then
+			if not G.redeemed_vouchers_during_hand then
+				G.redeemed_vouchers_during_hand =
+					CardArea(G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, { type = "play", card_limit = 5 })
+			end
+			area = G.redeemed_vouchers_during_hand
+		else
+			area = G.play
+		end
+		for i = 1, math.min(card.ability.create, 20) do
+			local area
+			if G.STATE == G.STATES.HAND_PLAYED then
+				if not G.redeemed_vouchers_during_hand then
+					G.redeemed_vouchers_during_hand =
+						CardArea(G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, { type = "play", card_limit = 5 })
+				end
+				area = G.redeemed_vouchers_during_hand
+			else
+				area = G.play
+			end
+			local _pool = get_current_pool("Voucher", nil, nil, nil, true)
+			local center = pseudorandom_element(_pool, pseudoseed("entr_ice"))
+			local it = 1
+			while center == "UNAVAILABLE" do
+				it = it + 1
+				center = pseudorandom_element(_pool, pseudoseed("entr_ice_resample" .. it))
+			end
+			local card = create_card("Voucher", area, nil, nil, nil, nil, center)
+			card:start_materialize()
+			area:emplace(card)
+			card.cost = 0
+			card.shop_voucher = false
+			local current_round_voucher = G.GAME.current_round.voucher
+			card:redeem()
+			G.GAME.current_round.voucher = current_round_voucher
+			G.E_MANAGER:add_event(Event({
+				trigger = "after",
+				delay = 0,
+				func = function()
+					card:start_dissolve()
+					return true
+				end,
+			}))
+		end
+        Entropy.pact_mark("rune_entr_ice")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args and args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
+local level_up_handref = level_up_hand
+function level_up_hand(card, hand, ...)
+    if Entropy.has_rune("rune_entr_ice") then
+        local bhand = "High Card"
+        for i, v in pairs(G.GAME.hands) do
+            if to_big(v.level) > to_big(G.GAME.hands[bhand].level) then
+                bhand = i
+            end
+        end
+        if hand == bhand then
+            if card then
+                card_eval_status_text(
+                    card,
+                    "extra",
+                    nil,
+                    nil,
+                    nil,
+                    { message = localize("k_nope_ex"), colour = G.C.RED }
+                )
+            end
+        else
+            return level_up_handref(card, hand, ...)
+        end
+    else
+        return level_up_handref(card, hand, ...)
+    end
+end
+
 return {
     items = {
         avarice, avarice_indicator,
@@ -547,6 +652,7 @@ return {
         envy, envy_indicator,
         youth, youth_indicator,
         shards, shards_indicator,
-        desire, desire_indicator
+        desire, desire_indicator,
+        ice, ice_indicator
     }
 }

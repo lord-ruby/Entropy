@@ -3429,6 +3429,18 @@ local decs = {
 					}
 				}
 			},
+			rune_entr_ice = {
+				name = "Mark of Ice",
+				text = {
+					{
+						"Marked by {C:red}Ice{}"
+					},
+					{
+						"Your most {C:attention}levelled{} hand",
+						"{C:red}cannot{} change levels"
+					}
+				}
+			},
 		},
 		Rune = {
 			c_entr_fehu = {
@@ -3891,6 +3903,13 @@ local decs = {
 					"{C:spectral}Spectral{} or {C:red}Omen{} cards",
 					"{C:attention}Booster Packs{} cost {C:money}50%{} more",
 					"{C:inactive}(Must have room){}"
+				}
+			},
+			c_entr_ice = {
+				name = "Pact of Ice",
+				text = {
+					"Redeem {C:attention}#1#{} random {C:attention}Vouchers{}",
+					"Your most {C:attention}levelled{} hand {C:red}cannot{} change levels"
 				}
 			},
 		},
