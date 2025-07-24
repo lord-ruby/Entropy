@@ -468,9 +468,9 @@ local decs = {
 			j_entr_lotteryticket = {
 				name = "Lottery Ticket",
 				text = {
-					"Lose {C:gold}$#4#{} at the end of round",
-					"{C:green}#1# in #2#{} Chance to earn {C:gold}$#5#{}",
-					"{C:green}#1# in #3#{} Chance to earn {C:gold}$#6#{} instead"
+					"Lose {C:gold}$#5#{} at the end of round",
+					"{C:green}#1# in #2#{} Chance to earn {C:gold}$#6#{}",
+					"{C:green}#3# in #4#{} Chance to earn {C:gold}$#7#{} instead"
 				}
 			},
 			j_entr_ruby = {

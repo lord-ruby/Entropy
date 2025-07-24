@@ -522,12 +522,13 @@ local lotteryticket = {
     config = {extra = {odds = 5, odds2 = 5, lose=1, payoutsmall = 20, payoutlarge = 50}},
     loc_vars = function(self, info_queue, card)
         local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
-        local _, denominator2 = SMODS.get_probability_vars(card, 1, card.ability.extra.odds * card.ability.extra.odds2)
+        local numerator2, denominator2 = SMODS.get_probability_vars(card, 1, card.ability.extra.odds * card.ability.extra.odds2)
         return {
             vars = {
                 numerator,
                 denominator,
-               denominator2,
+                numerator2,
+                denominator2,
                 card.ability.extra.lose,
                 card.ability.extra.payoutsmall,
                 card.ability.extra.payoutlarge
@@ -535,21 +536,41 @@ local lotteryticket = {
         }
     end,
     calculate = function (self, card, context)
-        if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    if SMODS.pseudorandom_probability(card, 'lottery', 1, card.ability.extra.odds) then
-                        if SMODS.pseudorandom_probability(card, 'lottery', 1, card.ability.extra.odds) then
-                            ease_dollars(card.ability.extra.payoutlarge-card.ability.extra.lose)
-                        else
-                            ease_dollars(card.ability.extra.payoutsmall-card.ability.extra.lose)
-                        end
-                    else
-                        ease_dollars(-card.ability.extra.lose)
+        if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then            
+            if SMODS.pseudorandom_probability(card, 'lottery', 1, card.ability.extra.odds * card.ability.extra.odds2) then
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        ease_dollars(card.ability.extra.payoutlarge-card.ability.extra.lose)
+                        return true
                     end
-                    return true
-                end
-            }))
+                }))
+                return {
+                    message = localize("$")..number_format(card.ability.extra.payoutlarge),
+                    colour = G.C.GOLD
+                }
+            elseif SMODS.pseudorandom_probability(card, 'lottery', 1, card.ability.extra.odds) then
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        ease_dollars(card.ability.extra.payoutsmall-card.ability.extra.lose)
+                        return true
+                    end
+                }))
+                return {
+                    message = localize("$")..number_format(card.ability.extra.payoutsmall),
+                    colour = G.C.GOLD
+                }
+            else
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        ease_dollars(-card.ability.extra.lose)
+                        return true
+                    end
+                }))
+                return {
+                    message = localize("k_nope_ex"),
+                    colour = G.C.RED
+                }
+            end
         end
         if context.forcetrigger then
             ease_dollars(card.ability.extra.payoutlarge-card.ability.extra.lose)
