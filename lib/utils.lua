@@ -1322,7 +1322,7 @@ end
 G.FUNCS.start_challenge_run = function(e)
     if G.OVERLAY_MENU then G.FUNCS.exit_overlay_menu() end
     local seed = nil
-    for i, v in ipairs(G.CHALLENGES[e.config.id].rules.custom) do
+    for i, v in ipairs(G.CHALLENGES[e.config.id].rules and type(G.CHALLENGES[e.config.id].rules.custom) == "table" and G.CHALLENGES[e.config.id].rules.custom or {}) do
         if v.id == "entr_set_seed" then seed = v.value end
     end
     G.FUNCS.start_run(e, {stake = 1, challenge = G.CHALLENGES[e.config.id], seed =seed})
