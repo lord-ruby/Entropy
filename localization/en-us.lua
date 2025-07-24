@@ -1005,6 +1005,14 @@ local decs = {
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}"
                 },
             },
+			j_entr_chuckle_cola = {
+                name = "Chuckle Cola",
+                text = {
+                    "Multiply the {C:blue}Chips{} of {C:attention}scored{}",
+					"cards by {X:blue,C:white}X#1#{}, {C:red}Self Destructs{}",
+					"after {C:attention}#2#{} card#<s>2# scored"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

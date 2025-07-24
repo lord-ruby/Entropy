@@ -2463,6 +2463,79 @@ local torn_photograph = {
     end,
 }
 
+local chuckle_cola = {
+    order = 47,
+    object_type = "Joker",
+    key = "chuckle_cola",
+    rarity = 3,
+    cost = 8,
+    dependencies = {
+        items = {            
+            "set_entr_inversions"
+        }
+    },
+    eternal_compat = true,
+    pos = { x = 4, y = 7 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    config = {
+        triggers = 20,
+        xchip_mod = 2
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                number_format(card.ability.xchip_mod),
+                number_format(card.ability.triggers)
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play and not card.eaten then
+            card.ability.triggers = card.ability.triggers - 1
+            context.other_card.ability.bonus = (context.other_card.ability.bonus or 0) + context.other_card:get_chip_bonus() * (card.ability.xchip_mod - 1)
+            if card.ability.triggers <= 0 then
+                G.E_MANAGER:add_event(Event({
+					func = function()
+						play_sound("tarot1")
+						card.T.r = -0.2
+						card:juice_up(0.3, 0.4)
+						card.states.drag.is = true
+						card.children.center.pinch.x = true
+						G.E_MANAGER:add_event(Event({
+							trigger = "after",
+							delay = 0.3,
+							blockable = false,
+							func = function()
+								G.jokers:remove_card(card)
+								card:remove()
+								card = nil
+								return true
+							end,
+						}))
+						return true
+					end,
+				}))
+                card.eaten = true
+				return {
+					message = localize("k_eaten_ex"),
+					colour = G.C.FILTER,
+				}
+            else
+                return {
+                    message = localize("k_upgrade_ex"),
+                    colour = G.C.BLUE,
+                    card = context.other_card
+                }
+            end
+        end
+    end,
+    entr_credits = {
+        art = {"Lyman"},
+        idea = {"Lyman"}
+    }
+}
+
 return {
     items = {
         surreal,
@@ -2513,6 +2586,7 @@ return {
         sandpaper,
         purple_joker,
         chalice_of_blood,
-        torn_photograph
+        torn_photograph,
+        chuckle_cola
     }
 }
