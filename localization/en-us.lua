@@ -3506,6 +3506,18 @@ local decs = {
 					}
 				}
 			},
+			rune_entr_rebirth = {
+				name = "Mark of Rebirth",
+				text = {
+					{
+						"Marked by {C:red}Rebirth{}"
+					},
+					{
+						"Playing Cards are {C:attention}Duplicated{}",
+						"instead of being {C:red}Destroyed{}"
+					}
+				}
+			},
 		},
 		Rune = {
 			c_entr_fehu = {
@@ -3984,6 +3996,15 @@ local decs = {
 					"{C:red}All{} Consumables are {C:attention}Eternal{}"
 				}
 			},
+			c_entr_rebirth = {
+				name = "Pact of Rebirth",
+				text = {
+					"Playing Cards are {C:attention}Duplicated{}",
+					"instead of being {C:red}Destroyed{}",
+					"{C:blue}-#1#{} Hand Size"
+				}
+			},
+									
 		},
 		Other = {
 			cry_banana_booster = {

@@ -451,6 +451,7 @@ local shards = {
 
 function Card:is_playing_card()
     if not G.deck then return end
+    if (self.area == G.hand or self.area == G.play or self.area == G.discard) and (self.config.center.set == "Default" or self.config.center.set == "Enhanced") then return true end
     for i, v in pairs(G.playing_cards) do
         if v == self then return true end
     end
@@ -467,7 +468,6 @@ function Card:start_dissolve(...)
             nil,
             { message = localize("k_nope_ex"), colour = G.C.RED }
         )
-        delay(1)
         if self.area == G.play then
             G.E_MANAGER:add_event(Event{
                 trigger = "after",
@@ -479,11 +479,63 @@ function Card:start_dissolve(...)
                 end
             })
         end
+    elseif Entropy.has_rune("rune_entr_rebirth") and self:is_playing_card() then
+        card_eval_status_text(
+            self,
+            "extra",
+            nil,
+            nil,
+            nil,
+            { message = localize("k_duplicated_ex"), colour = G.C.RED }
+        )
+        local copy = copy_card(self)
+        copy:add_to_deck()
+        table.insert(G.playing_cards, copy)
+        G.hand:emplace(copy)
     else
         return start_dissolveref(self, ...)
     end
 end
 
+local shatter = Card.shatter
+function Card:shatter(...)
+    if Entropy.has_rune("rune_entr_shards") and pseudorandom("entr_shards") < 0.3 and self:is_playing_card() then
+        card_eval_status_text(
+            self,
+            "extra",
+            nil,
+            nil,
+            nil,
+            { message = localize("k_nope_ex"), colour = G.C.RED }
+        )
+        if self.area == G.play then
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                blocking = false,
+                func = function()
+                    G.play:remove_card(self)
+                    G.deck:emplace(self)
+                    return true
+                end
+            })
+        end
+    elseif Entropy.has_rune("rune_entr_rebirth") and self:is_playing_card() then
+        card_eval_status_text(
+            self,
+            "extra",
+            nil,
+            nil,
+            nil,
+            { message = localize("k_duplicated_ex"), colour = G.C.RED }
+        )
+        local copy = copy_card(self)
+        copy:add_to_deck()
+        table.insert(G.playing_cards, copy)
+        G.hand:emplace(copy)
+    else
+        return shatter(self, ...)
+    end
+end
 local desire_indicator = Entropy.create_mark("desire", 7060, {x = 2, y = 5})
 local desire = {
     object_type = "Consumable",
@@ -656,7 +708,7 @@ local gluttony = {
     },
     loc_vars = function(self, q, card) return {vars = {math.min(card.ability.slots, 20)}} end,
     use = function(self, card)
-        G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.slots
+        G.consumeables.config.card_limit = G.consumeables.config.card_limit + math.min(card.ability.slots, 20)
         for i, v in pairs(G.I.CARD) do
             if v.ability and v.ability.consumeable then v.ability.eternal = true end
         end
@@ -691,6 +743,39 @@ function Card:can_sell_card(context)
     return can_sellref(self, context)
 end
 
+local rebirth_indicator = Entropy.create_mark("rebirth", 7063, {x = 5, y = 5})
+local rebirth = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=5,y=5},
+    order = 7613,
+    key = "rebirth",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_ihwaz",
+    config = {
+        hand_size = 1
+    },
+    loc_vars = function(self, q, card) return {vars = {math.min(card.ability.hand_size, 1000)}} end,
+    use = function(self, card)
+        G.hand.config.card_limit = G.hand.config.card_limit - math.min(card.ability.hand_size, 1000)
+        Entropy.pact_mark("rune_entr_rebirth")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args and args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 return {
     items = {
         avarice, avarice_indicator,
@@ -704,6 +789,7 @@ return {
         shards, shards_indicator,
         desire, desire_indicator,
         ice, ice_indicator,
-        gluttony, gluttony_indicator
+        gluttony, gluttony_indicator,
+        rebirth, rebirth_indicator
     }
 }
