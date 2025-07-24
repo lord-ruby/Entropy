@@ -3512,6 +3512,8 @@ SMODS.Booster:take_ownership_by_kind('Celestial', {
 
 local get_probability_varsref = SMODS.get_probability_vars
 function SMODS.get_probability_vars(trigger_obj, base_numerator, base_denominator, identifier, from_roll)
+    if type(numerator) == "string" then numerator = 1 end
+    if type(denominator) == "string" then denominator = 1 end
     local numerator, denominator = get_probability_varsref(trigger_obj, base_numerator, base_denominator, identifier, from_roll)
     local any_active
     for i, v in pairs(SMODS.find_card("j_entr_d1")) do
