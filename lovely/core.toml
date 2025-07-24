@@ -1559,3 +1559,83 @@ payload = '''
             create_option_cycle({options = options, w = 4.5, cycle_shoulders = true, opt_callback = 'SMODS_card_collection_page', current_option = 1, colour = G.ACTIVE_MOD_UI and (G.ACTIVE_MOD_UI.ui_config or {}).collection_option_cycle_colour or G.C.RED, no_pips = true, focus_args = {snap_to = true, nav = 'wide'}})
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.name == 'The Wheel of Fortune' then"
+position = "before"
+payload = '''
+if self.ability.name == "The Hanged Man" then
+    for i = 1, #G.hand.highlighted do
+        if SMODS.is_eternal(G.hand.highlighted[i]) then return false end
+    end
+end
+if self.ability.name == "Death" then
+    local rightmost = G.hand.highlighted[1]
+    for i=1, #G.hand.highlighted-1 do if G.hand.highlighted[i].T.x > rightmost.T.x then rightmost = G.hand.highlighted[i] end end
+    for i=1, #G.hand.highlighted do if SMODS.is_eternal(G.hand.highlighted[i]) and rightmost ~= G.hand.highlighted[i] then return false end end
+end
+'''
+match_indent = true
+
+
+# Yellow Stake - Immolate can't be used on Eternal cards
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "for k, v in ipairs(G.hand.cards) do temp_hand[#temp_hand+1] = v end"
+position = "at"
+payload = '''
+for k, v in ipairs(G.hand.cards) do
+    if not SMODS.is_eternal(v) then
+        temp_hand[#temp_hand+1] = v
+    end
+end
+'''
+match_indent = true
+
+
+# Yellow Stake - Death can't modify Eternal cards (redundant, but may help if Death can be used on more cards)
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if G.hand.highlighted[i] ~= rightmost then"
+position = "at"
+payload = "if G.hand.highlighted[i] ~= rightmost and not SMODS.is_eternal(G.hand.highlighted[i]) then"
+match_indent = true
+
+
+# Yellow Stake - Trading Card can't destroy Eternals
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "G.GAME.current_round.discards_used <= 0 and #context.full_hand == 1 then"
+position = "at"
+payload = "G.GAME.current_round.discards_used <= 0 and #context.full_hand == 1 and not SMODS.is_eternal(context.other_card) then"
+match_indent = true
+
+
+# Yellow Stake - Sixth Sense can't destroy Eternals
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.name == 'Sixth Sense' and #context.full_hand == 1 and context.full_hand[1]:get_id() == 6 and G.GAME.current_round.hands_played == 0 then"
+position = "at"
+payload = "if self.ability.name == 'Sixth Sense' and #context.full_hand == 1 and context.full_hand[1]:get_id() == 6 and not SMODS.is_eternal(context.full_hand[1]) and G.GAME.current_round.hands_played == 0 then"
+match_indent = true
+
+
+# Yellow Stake - enhancement tarots don't remove stickers
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "perma_bonus = self.ability and self.ability.perma_bonus or 0,"
+position = "after"
+payload = '''
+eternal = self.ability and self.ability.eternal,
+perishable = self.ability and self.ability.perishable,
+perish_tally = self.ability and self.ability.perish_tally,
+rental = self.ability and self.ability.rental,
+'''
+match_indent = true

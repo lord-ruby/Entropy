@@ -641,6 +641,56 @@ function level_up_hand(card, hand, ...)
     end
 end
 
+local gluttony_indicator = Entropy.create_mark("gluttony", 7062, {x = 4, y = 5})
+local gluttony = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=4,y=5},
+    order = 7612,
+    key = "gluttony",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_jera",
+    config = {
+        slots = 2
+    },
+    loc_vars = function(self, q, card) return {vars = {math.min(card.ability.slots, 20)}} end,
+    use = function(self, card)
+        G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.slots
+        for i, v in pairs(G.I.CARD) do
+            if v.ability and v.ability.consumeable then v.ability.eternal = true end
+        end
+        Entropy.pact_mark("rune_entr_gluttony")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args and args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
+local set_abilityref = Card.set_ability
+function Card:set_abilityref(...)
+    set_abilityref(self, ...)
+    if self.ability.consumeable and Entropy.has_rune("rune_entr_gluttony") then
+        self.ability.eternal = true
+    end
+end
+
+local can_sellref = Card.can_sell_card
+function Card:can_sell_card(context)
+    if self.ability.eternal or SMODS.is_eternal(self, {from_sell = true}) then return false end
+    return can_sellref(self, context)
+end
+
 return {
     items = {
         avarice, avarice_indicator,
@@ -653,6 +703,7 @@ return {
         youth, youth_indicator,
         shards, shards_indicator,
         desire, desire_indicator,
-        ice, ice_indicator
+        ice, ice_indicator,
+        gluttony, gluttony_indicator
     }
 }

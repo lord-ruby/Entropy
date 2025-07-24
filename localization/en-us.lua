@@ -3495,6 +3495,17 @@ local decs = {
 					}
 				}
 			},
+			rune_entr_gluttony = {
+				name = "Mark of Gluttony",
+				text = {
+					{
+						"Marked by {C:red}Gluttony{}"
+					},
+					{
+						"{C:red}All{} Consumables are {C:attention}Eternal"
+					}
+				}
+			},
 		},
 		Rune = {
 			c_entr_fehu = {
@@ -3964,6 +3975,13 @@ local decs = {
 				text = {
 					"Redeem {C:attention}#1#{} random {C:attention}Vouchers{}",
 					"Your most {C:attention}levelled{} hand {C:red}cannot{} change levels"
+				}
+			},
+			c_entr_gluttony = {
+				name = "Pact of Gluttony",
+				text = {
+					"{C:attention}+#1#{} Consumable Slots",
+					"{C:red}All{} Consumables are {C:attention}Eternal{}"
 				}
 			},
 		},
