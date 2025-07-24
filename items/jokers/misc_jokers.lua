@@ -2609,7 +2609,7 @@ function Card:is_suit(suit, ...)
         self.antiderivative_bypass = nil
         return ret
     end
-    return is_suitref(self, ...)
+    return is_suitref(self, suit, ...)
 end
 
 if SpectrumAPI then
