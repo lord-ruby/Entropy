@@ -231,8 +231,8 @@ local ceramic = {
 						}
 						return true
 					end
-					card.ability.temporary2 = true
 				}))
+				card.ability.temporary2 = true
 			end
 			card.activated = true
 		end
@@ -307,8 +307,6 @@ local kiln = {
             }
         }
     end,
-    
-	
     entr_credits = {
         art = {"aduckted"}
     },

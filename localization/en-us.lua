@@ -3524,6 +3524,12 @@ local decs = {
 					"Marked by {C:red}Despair{}"
 				}
 			},
+			rune_entr_strength = {
+				name = "Mark of Strength",
+				text = {
+					"Marked by {C:red}Strength{}"
+				}
+			},
 		},
 		Rune = {
 			c_entr_fehu = {
@@ -4016,6 +4022,13 @@ local decs = {
 					"Enhance {C:attention}#1#{} random card#<s>1#",
 					"in your {C:attention}full deck{}, Debuff {C:attention}#2#%{} of",
 					"cards in your {C:attention}full deck{} for {C:attention}#3#{} rounds"
+				}
+			},	
+			c_entr_strength = {
+				name = "Pact of Strength",
+				text = {
+					"Copy your {C:attention}most played{} card {C:attention}#1#{} times",
+					"apply {C:attention}Rental{} to a random Joker"
 				}
 			},						
 		},

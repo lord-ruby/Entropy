@@ -830,6 +830,83 @@ local despair = {
     end
 }
 
+local play_ref = G.FUNCS.play_cards_from_highlighted
+G.FUNCS.play_cards_from_highlighted = function(e)
+    for i, v in pairs(G.hand.highlighted) do
+        v.ability.entr_times_played = (v.ability.entr_times_played or 0) + 1
+    end
+    play_ref(e)
+end
+
+local strength_indicator = Entropy.create_mark("strength", 7065, {x = 0, y = 6})
+local strength = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=0,y=6},
+    order = 7615,
+    key = "strength",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_algiz",
+    config = {
+        copies = 3
+    },
+    loc_vars = function(self, q, card) 
+        if not card.ability.rental then
+            q[#q+1] = {set="Other", key = "rental", vars = {5, 5}}
+        end
+        return {vars = {math.min(card.ability.copies, 100)}} 
+    end,
+    use = function(self, rcard)
+        local card
+        local cards = {}
+        for i, v in pairs(G.playing_cards) do
+            if not card or (v.ability.entr_times_played or 0) > (card.ability.entr_times_played or 0) then
+                if v.T then
+                    card = v
+                    cards[#cards+1] = v
+                end
+            end
+        end 
+        if not card then card = pseudorandom_element(cards, pseudoseed("entr_strength")) end
+        if card and card.T then
+            for i = 1, math.min(rcard.ability.copies, 100) do
+                card_eval_status_text(
+                    card,
+                    "extra",
+                    nil,
+                    nil,
+                    nil,
+                    { message = localize("k_duplicated_ex"), colour = G.C.RED }
+                )
+                local copy = copy_card(card)
+                copy:add_to_deck()
+                table.insert(G.playing_cards, copy)
+                G.hand:emplace(copy)
+            end
+        end
+        local joker = pseudorandom_element(G.jokers.cards, pseudoseed("entr_strength"))
+        if joker then
+            joker.ability.rental = true
+            joker:juice_up()
+        end
+        Entropy.pact_mark("rune_entr_strength")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args and args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 return {
     items = {
         avarice, avarice_indicator,
@@ -845,6 +922,7 @@ return {
         ice, ice_indicator,
         gluttony, gluttony_indicator,
         rebirth, rebirth_indicator,
-        despair, despair_indicator
+        despair, despair_indicator,
+        strength, strength_indicator
     }
 }
