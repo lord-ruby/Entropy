@@ -1030,6 +1030,14 @@ local decs = {
 					"to beat the {C:attention}Blind{}"
                 },
             },
+			j_entr_verbophobia = {
+                name = "Verbophobia",
+                text = {
+                    "The first {C:attention}5{} letter or lower",
+					"Word each round is {C:red}always{} counted",
+					"as a {C:attention}Valid{} Word"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
