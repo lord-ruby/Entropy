@@ -2557,6 +2557,141 @@ local chuckle_cola = {
     }
 }
 
+local antiderivative = {
+    order = 48,
+    object_type = "Joker",
+    key = "antiderivative",
+    rarity = 3,
+    cost = 10,
+    dependencies = {
+        items = {            
+            "set_entr_inversions"
+        }
+    },
+    eternal_compat = true,
+    pos = { x = 5, y = 7 },
+    atlas = "jokers",
+}
+
+function Entropy.get_suit_id(suit)
+    if suit == "Diamonds" then return 11 end
+    if suit == "Clubs" then return 12 end
+    if suit == "Hearts" then return 13 end
+    if suit == "Spades" then return 14 end
+    for i, v in pairs(SMODS.Suit.obj_buffer) do
+        if v == suit then return 15-i end 
+    end
+end
+
+local is_faceref = Card.is_face
+function Card:is_face(...)
+    if next(SMODS.find_card("j_entr_antiderivative")) then
+        local suit = self.base.suit
+        if suit == "Diamonds" or suit == "Clubs" or suit == "Hearts" then return true end
+    end
+    return is_faceref(self, ...)
+end
+
+local get_idref = Card.get_id
+function Card:get_id(...)
+    if not self.antiderivative_bypass and next(SMODS.find_card("j_entr_antiderivative")) then
+        if SMODS.has_no_suit(self) then return -9999 end
+        return Entropy.get_suit_id(self.base.suit)
+    end
+    return get_idref(self,...)
+end
+
+local is_suitref = Card.is_suit
+function Card:is_suit(suit, ...)
+    if next(SMODS.find_card("j_entr_antiderivative")) then
+        self.antiderivative_bypass = true
+        local ret = self:get_id() == Entropy.get_suit_id(suit)
+        self.antiderivative_bypass = nil
+        return ret
+    end
+    return is_suitref(self, ...)
+end
+
+if SpectrumAPI then
+    SMODS.PokerHandPart:take_ownership("spa_spectrum_part", {
+        func = function(hand)
+            if next(SMODS.find_card("j_entr_antiderivative")) then
+                local eligible_cards = {}
+                local suits = {}
+                local num_suits = 0
+                for i, card in ipairs(hand) do
+                    card.antiderivative_bypass = true
+                    if not suits[card:get_id()] and not SMODS.has_no_rank(card) then --card.ability.name ~= "Gold Card"
+                        suits[card:get_id()] = true
+                        num_suits = num_suits + 1
+                    end
+                    card.antiderivative_bypass = nil
+                    eligible_cards[#eligible_cards + 1] = card
+                end
+                local num = 5
+                if SpectrumAPI.configuration.misc.four_fingers_spectrums then
+                    num = SMODS.four_fingers() or 5
+                end
+                if num_suits >= num then
+                    return { eligible_cards }
+                end
+                return {}
+            else    
+                local eligible_cards = {}
+                local suits = {}
+                local num_suits = 0
+                for i, card in ipairs(hand) do
+                    if not suits[SpectrumAPI.get_suit(card)] and not SMODS.has_no_suit(card) then --card.ability.name ~= "Gold Card"
+                        suits[SpectrumAPI.get_suit(card)] = true
+                        num_suits = num_suits + 1
+                    end
+                    eligible_cards[#eligible_cards + 1] = card
+                end
+                local num = 5
+                if SpectrumAPI.configuration.misc.four_fingers_spectrums then
+                    num = SMODS.four_fingers() or 5
+                end
+                if num_suits >= num then
+                    return { eligible_cards }
+                end
+                return {}
+            end
+        end
+    }, true)
+end
+
+local get_flushref = get_flush
+function get_flush(hand)
+    if next(SMODS.find_card("j_entr_antiderivative")) then
+        local ret = {}
+        local four_fingers = SMODS.four_fingers()
+            local suits = {}
+            suits[#suits + 1] = 'cry_abstract'
+            
+            for i,v in pairs(SMODS.Rank.obj_table) do
+                suits[#suits + 1] = v.id
+            end
+        if #hand < four_fingers then return ret else
+        for j = 1, #suits do
+            local t = {}
+            local suit = suits[j]
+            local flush_count = 0
+            for i=1, #hand do
+                hand[i].antiderivative_bypass = true
+                if hand[i]:get_id() == suit and not SMODS.has_no_rank(hand[i]) then flush_count = flush_count + 1;  t[#t+1] = hand[i] end
+                hand[i].antiderivative_bypass = nil
+            end
+            if flush_count >= four_fingers then
+            table.insert(ret, t)
+            return ret
+            end
+        end
+        return {}
+        end
+    end
+    return get_flushref(hand)
+end
+
 return {
     items = {
         surreal,
@@ -2608,6 +2743,7 @@ return {
         purple_joker,
         chalice_of_blood,
         torn_photograph,
-        chuckle_cola
+        chuckle_cola,
+        antiderivative
     }
 }

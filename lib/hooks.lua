@@ -3687,3 +3687,44 @@ function SMODS.calculate_retriggers(card, context, _ret)
 
     return retriggers
 end
+
+local toggle_shopref = G.FUNCS.toggle_shop
+G.FUNCS.toggle_shop = function(e)
+    stop_use()
+    G.CONTROLLER.locks.toggle_shop = true
+    local check
+    for i, v in pairs(G.shop_jokers.cards) do
+        if v.facing == "back" then
+            G.E_MANAGER:add_event(Event{
+                func = function()
+                    v:flip()
+                    return true
+                end
+            })
+            check = true
+            card_eval_status_text(
+                v,
+                "extra",
+                nil,
+                nil,
+                nil,
+                { message = localize("k_nope_ex"), colour = G.C.RED }
+            )
+        end
+    end
+
+    
+    if check then
+        delay(2)
+        G.E_MANAGER:add_event(Event{
+            trigger = "after", 
+            blocking = false,
+            func = function()
+                toggle_shopref(e)
+                return true
+            end
+        })
+    else
+        toggle_shopref(e)
+    end
+end

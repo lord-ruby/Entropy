@@ -1013,6 +1013,15 @@ local decs = {
 					"after {C:attention}#2#{} card#<s>2# scored"
                 },
             },
+			j_entr_antiderivative = {
+                name = "Antiderivative",
+                text = {
+                    "{C:attention}Ranks{} and {C:attention}Suits{} are swapped",
+					"for {C:attention}Jokers{} and {C:attention}Poker Hand{} detection",
+					"{C:inactive,s:0.8}Spades, Hearts, Clubs, and Diamonds{}",
+					"{C:inactive,s:0.8}count as Ace, King, Queen, Jack respectively{}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
