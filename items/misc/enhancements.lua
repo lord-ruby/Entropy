@@ -202,6 +202,7 @@ local ceramic = {
 						}
 						card:juice_up(0.9, 0.9)
 						card:shatter()
+						card.ability.temporary2 = true
 						return true
 					end,
 				}))
@@ -211,6 +212,7 @@ local ceramic = {
 					func = function()
 						card:juice_up(0.9, 0.9)
 						card:shatter()
+						card.ability.temporary2 = true
 						return true
 					end,
 				}))
@@ -229,6 +231,7 @@ local ceramic = {
 						}
 						return true
 					end
+					card.ability.temporary2 = true
 				}))
 			end
 			card.activated = true
@@ -252,6 +255,7 @@ local ceramic = {
 						end
 					}))
 				end
+				card.ability.temporary2 = true
 				card.activated = true
 			end
 		end
