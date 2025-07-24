@@ -1026,7 +1026,7 @@ local decs = {
                 name = "Oops all e's!",
                 text = {
                     "Earn {C:money}$#1#{} at end of round if",
-					"you take {C:attention}more than {C:blue}1{} hand",
+					"you take {C:attention}more{} than {C:blue}1{} hand",
 					"to beat the {C:attention}Blind{}"
                 },
             },
@@ -3518,6 +3518,12 @@ local decs = {
 					}
 				}
 			},
+			rune_entr_despair = {
+				name = "Mark of Despair",
+				text = {
+					"Marked by {C:red}Despair{}"
+				}
+			},
 		},
 		Rune = {
 			c_entr_fehu = {
@@ -4004,7 +4010,14 @@ local decs = {
 					"{C:blue}-#1#{} Hand Size"
 				}
 			},
-									
+			c_entr_despair = {
+				name = "Pact of Despair",
+				text = {
+					"Enhance {C:attention}#1#{} random card#<s>1#",
+					"in your {C:attention}full deck{}, Debuff {C:attention}#2#%{} of",
+					"cards in your {C:attention}full deck{} for {C:attention}#3#{} rounds"
+				}
+			},						
 		},
 		Other = {
 			cry_banana_booster = {

@@ -776,6 +776,60 @@ local rebirth = {
     end
 }
 
+local despair_indicator = Entropy.create_mark("despair", 7064, {x = 6, y = 5})
+local despair = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=6,y=5},
+    order = 7614,
+    key = "despair",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_perthro",
+    config = {
+        percentage = 25,
+        rounds = 5
+    },
+    loc_vars = function(self, q, card) return {vars = {G.hand and G.hand.config.card_limit or 8, card.ability.percentage, card.ability.rounds}} end,
+    use = function(self, card)
+        local cards = {}
+        for i, v in pairs(G.playing_cards) do
+            cards[#cards+1] = v
+        end 
+        pseudoshuffle(cards, pseudoseed("entr_despair"))
+        for i = 1, math.min(G.hand.config.card_limit, #cards) do
+            local enhancement = pseudorandom_element(G.P_CENTER_POOLS["Enhanced"], pseudoseed("entr_despair")).key
+            while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
+                enhancement = pseudorandom_element(G.P_CENTER_POOLS["Enhanced"], pseudoseed("entr_despair")).key
+            end
+            cards[i]:flip()
+            cards[i]:set_ability(G.P_CENTERS[enhancement])
+            cards[i]:flip()
+        end
+        pseudoshuffle(cards, pseudoseed("entr_despair"))
+        for i = 1, math.floor(card.ability.percentage / 100 * #cards) do
+            local dcard = cards[i]
+            dcard.ability.debuff_timer = card.ability.rounds
+            dcard.ability.debuff_timer_max = card.ability.rounds
+            dcard:set_debuff(true)
+        end
+        Entropy.pact_mark("rune_entr_despair")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args and args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 return {
     items = {
         avarice, avarice_indicator,
@@ -790,6 +844,7 @@ return {
         desire, desire_indicator,
         ice, ice_indicator,
         gluttony, gluttony_indicator,
-        rebirth, rebirth_indicator
+        rebirth, rebirth_indicator,
+        despair, despair_indicator
     }
 }
