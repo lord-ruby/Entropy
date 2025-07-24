@@ -2692,6 +2692,46 @@ function get_flush(hand)
     return get_flushref(hand)
 end
 
+local alles = {
+    order = 49,
+    object_type = "Joker",
+    key = "alles",
+    rarity = 2,
+    cost = 6,
+    dependencies = {
+        items = {            
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        dollars = 8
+    },
+    eternal_compat = true,
+    pos = { x = 6, y = 7 },
+    pixel_size = {h = 46},
+    atlas = "jokers",
+    calculate = function(self, card, context)
+        if context.setting_blind then
+            card.ability.hands_played = nil
+        end
+        if context.before then
+            card.ability.hands_played = (card.ability.hands_played or 0) + 1
+        end
+    end,
+    calc_dollar_bonus = function(self, card)
+        if (card.ability.hands_played or 0) > 1 then
+            return card.ability.dollars
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                number_format(card.ability.dollars)
+            }
+        }
+    end
+}
+
 return {
     items = {
         surreal,
@@ -2744,6 +2784,7 @@ return {
         chalice_of_blood,
         torn_photograph,
         chuckle_cola,
-        antiderivative
+        antiderivative,
+        alles
     }
 }

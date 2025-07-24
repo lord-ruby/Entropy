@@ -1022,6 +1022,14 @@ local decs = {
 					"{C:inactive,s:0.8}count as Ace, King, Queen, Jack respectively{}"
                 },
             },
+			j_entr_alles = {
+                name = "Oops all e's!",
+                text = {
+                    "Earn {C:money}$#1#{} at end of round if",
+					"you take {C:attention}more than {C:blue}1{} hand",
+					"to beat the {C:attention}Blind{}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
