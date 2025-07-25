@@ -952,6 +952,48 @@ local darkness = {
     end
 }
 
+local freedom_indicator = Entropy.create_mark("darkness", 7067, {x = 2, y = 6})
+local freedom = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=2,y=6},
+    order = 7617,
+    key = "freedom",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_tiwaz",
+    loc_vars = function(self, q, card) 
+        return {
+            vars = {
+                number_format(card.ability.selection_limit),
+                number_format(card.ability.hand_size),
+            }
+        }
+    end,
+    config = {
+        selection_limit = 2,
+        hand_size = 2
+    },
+    use = function(self, rcard)
+        G.hand.config.card_limit = G.hand.config.card_limit - rcard.ability.hand_size
+        Entropy.ChangeFullCSL(rcard.ability.selection_limit)
+        Entropy.pact_mark("rune_entr_freedom")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args and args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 return {
     items = {
         avarice, avarice_indicator,
@@ -969,6 +1011,7 @@ return {
         rebirth, rebirth_indicator,
         despair, despair_indicator,
         strength, strength_indicator,
-        darkness, darkness_indicator
+        darkness, darkness_indicator,
+        freedom, freedom_indicator
     }
 }

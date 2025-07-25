@@ -3542,6 +3542,12 @@ local decs = {
 					}
 				}
 			},
+			rune_entr_freedom = {
+				name = "Mark of Freedom",
+				text = {
+					"Marked by {C:red}Freedom{}"
+				}
+			},
 		},
 		Rune = {
 			c_entr_fehu = {
@@ -4049,7 +4055,14 @@ local decs = {
 					"Apply {C:dark_edition}Negative{} to a random Joker",
 					"Playing cards may be drawn Face {C:red}Down{}"
 				}
-			},						
+			},	
+			c_entr_freedom = {
+				name = "Pact of Freedom",
+				text = {
+					"{C:attention}+#1#{} Card Selection Limit",
+					"{C:attention}-#2#{} Hand Size"
+				}
+			},					
 		},
 		Other = {
 			cry_banana_booster = {
