@@ -287,9 +287,8 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
         )
       then
         local value = G.P_CENTERS.v_observatory.config.extra
-        if not card.ability.immutable then card.ability.immutable = {} end
         return {
-          asc = to_big(value) ^ (card.ability.immutable.overflow_amount or 1),
+          asc = to_big(value) ^ (card.ability.overflow_amount or 1),
         }
       end
     end,
@@ -349,10 +348,9 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
       )
       and pseudorandom("starlua") < 0.25
     then
-    if not card.ability.immutable then card.ability.immutable = {} end
       local value = G.P_CENTERS.v_observatory.config.extra
       return {
-        asc = to_big(value) ^ (card.ability.immutable.overflow_amount or 1),
+        asc = to_big(value) ^ (card.ability.overflow_amount or 1),
       }
     end
   end
@@ -458,9 +456,8 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
         and context.joker_main
       then
         local value = G.P_CENTERS.v_observatory.config.extra
-        if not card.ability.immutable then card.ability.immutable = {} end
         return {
-          exp_asc = to_big(value) ^ (card.ability.immutable.overflow_amount or 1),
+          exp_asc = to_big(value) ^ (card.ability.overflow_amount or 1),
         }
       end
     end,
@@ -722,10 +719,9 @@ function Entropy.ReverseSuitCalc(self, card, context)
         context.scoring_name == v
       )
     then
-      if not card.ability.immutable then card.ability.immutable = {} end
       local value = G.P_CENTERS.v_observatory.config.extra
       return {
-        asc = to_big(value) ^ (card.ability.immutable.overflow_amount or 1),
+        asc = to_big(value) ^ (card.ability.overflow_amount or 1),
       }
     end
   end
