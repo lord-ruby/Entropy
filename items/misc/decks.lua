@@ -220,6 +220,39 @@ if CardSleeves then
       return {vars = {G.GAME.probabilities.normal or 1}}
     end
   }
+
+  CardSleeves.Sleeve {
+    key = "gemstone",
+    atlas = "sleeves",
+    pos = { x = 6, y = 0 },
+    calculate = function(self, back, context)
+      if context.using_consumeable and context.consumeable.config.center.set ~= "Rune" then
+          G.GAME.gemstone_amount = (G.GAME.gemstone_amount or 0) + 1
+          if G.GAME.gemstone_amount == 2 then
+            G.GAME.gemstone_amount = 0
+            G.E_MANAGER:add_event(Event{
+              func = function()
+                if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                  SMODS.add_card{
+                    set = "Rune",
+                    area = G.consumeables,
+                    key_append = "entr_gemstone_deck"
+                  }
+                end
+                return true
+              end
+            })
+            return {
+              message = "+1 "..localize("k_rune")
+            }
+          else
+            return {
+              message = G.GAME.gemstone_amount.."/2"
+            }
+          end
+      end
+    end
+    }
 end
 
 return {

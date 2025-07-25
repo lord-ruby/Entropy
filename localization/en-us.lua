@@ -1471,15 +1471,6 @@ local decs = {
 					"chips are lowered based on {X:dark_edition,C:white}Entropy{}"
 				}
 			},
-			sleeve_entr_butterfly = {
-				name = "Butterfly Sleeve",
-				text = {
-					"All {c:attention}Random{} outcomes",
-					"can affect eachother",
-					"Gain a {C:dark_edition}Negative{} {C:attention}Revert{}",
-					"when a Boss Blind is selected"
-				},
-			},
 			sleeve_entr_ambisinister = {
 				name = "Ambisinister Sleeve",
 				text = {
@@ -1504,6 +1495,15 @@ local decs = {
 					"Sold Jokers have a {C:green}#1# in 2{}",
 					"chance to still trigger"
 				}
+			},
+			sleeve_entr_gemstone  = {
+				name = "Gemstone Sleeve",
+				text = {
+					"Non Rune Consumables have a {C:green}1 in 3{}",
+					"chance to {C:red}fail{}, create a",
+					"random {C:purple}Rune Card{} every",
+					"{C:attention}2{} Non Rune Consumables used"
+				},
 			},
 		},
 		Fraud = {
