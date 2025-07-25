@@ -252,7 +252,7 @@ if CardSleeves then
           end
       end
     end
-    }
+  }
 end
 
 return {

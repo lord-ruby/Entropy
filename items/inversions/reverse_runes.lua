@@ -3,6 +3,7 @@ function Entropy.pact_mark(key)
         add_rune(Tag(key))
     end
     Entropy.has_rune(key).ability.count = (Entropy.has_rune(key).ability.count or 0) + 1
+    return Entropy.has_rune(key).ability.count
 end
 
 function Entropy.create_mark(key, order, pos, calculate, credits)
@@ -907,6 +908,50 @@ local strength = {
     end
 }
 
+local darkness_indicator = Entropy.create_mark("darkness", 7066, {x = 1, y = 6})
+local darkness = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=1,y=6},
+    order = 7616,
+    key = "darkness",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_sowilo",
+    loc_vars = function(self, q, card) 
+        if not card.ability.rental then
+            q[#q+1] = G.P_CENTERS.e_negative
+        end
+    end,
+    use = function(self, rcard)
+        local cards = {}
+        for i, v in pairs(G.jokers.cards) do
+            if not v.ediition or not v.edition.negative then
+                cards[#cards+1] = v
+            end
+        end 
+        local joker = pseudorandom_element(cards, pseudoseed("entr_strength"))
+        if joker then
+            joker:set_edition("e_negative")
+        end
+        local level = Entropy.pact_mark("rune_entr_darkness")
+        G.GAME.modifiers.flipped_cards = 5 / (level ^ 0.5)
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args and args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 return {
     items = {
         avarice, avarice_indicator,
@@ -923,6 +968,7 @@ return {
         gluttony, gluttony_indicator,
         rebirth, rebirth_indicator,
         despair, despair_indicator,
-        strength, strength_indicator
+        strength, strength_indicator,
+        darkness, darkness_indicator
     }
 }

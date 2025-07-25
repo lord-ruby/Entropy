@@ -3529,6 +3529,18 @@ local decs = {
 				text = {
 					"Marked by {C:red}Strength{}"
 				}
+			},			
+			rune_entr_darkness = {
+				name = "Mark of Darkness",
+				text = {
+					{
+						"Marked by {C:red}Darkness{}"
+					},
+					{
+						"Playing Cards may be",
+						"drawn Face {C:red}Down{}"
+					}
+				}
 			},
 		},
 		Rune = {
@@ -4029,6 +4041,13 @@ local decs = {
 				text = {
 					"Copy your {C:attention}most played{} card {C:attention}#1#{} times",
 					"apply {C:attention}Rental{} to a random Joker"
+				}
+			},	
+			c_entr_darkness = {
+				name = "Pact of Darkness",
+				text = {
+					"Apply {C:dark_edition}Negative{} to a random Joker",
+					"Playing cards may be drawn Face {C:red}Down{}"
 				}
 			},						
 		},
