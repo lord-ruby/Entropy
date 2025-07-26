@@ -393,6 +393,7 @@ local amber = {
     badge_colour = HEX("db915b"),
     calculate = function(self, card, context)
         if context.copying_card and context.original_card == card then
+            if not Entropy.has_rune("rune_entr_rebirth")
             G.E_MANAGER:add_event(Event{
                 trigger = "after",
                 blocking = false,

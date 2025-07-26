@@ -3578,6 +3578,8 @@ end
 
 local rate_ref = Cryptid.interest_rate
 function Cryptid.interest_rate()
+    local rate = Entropy.has_rune("rune_entr_loyalty") and 4
+    if rate then return rate end
 	return rate_ref and rate_ref() or G.GAME.modifiers.cry_interest_rate or 5
 end
 

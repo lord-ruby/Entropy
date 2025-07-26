@@ -310,19 +310,23 @@ function calculate_runes(context)
             if ret then
                 if ret.nope then
                     v:nope()
+                    v.triggered = true
                     if ret.func then ret.func() end
                 else 
                     if ret.func then   
                         v:yep("+", G.C.PURPLE, function()
+                            v.triggered = true
                             ret.func()
                             return true
                         end)
                     end
                 end
                 if ret.remove then
+                    v.triggered = true
                     v:rune_remove()
                 end
                 if ret.rune_break then
+                    v.triggered = true
                     break
                 end
                 for i2, v2 in pairs(ret) do
@@ -331,7 +335,6 @@ function calculate_runes(context)
                     end
                 end
                 SMODS.calculate_context({rune_triggered = true, rune = v})
-                v.triggered = true
             end
         end
     end

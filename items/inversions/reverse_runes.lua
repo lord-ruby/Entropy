@@ -926,7 +926,7 @@ local darkness = {
     use = function(self, rcard)
         local cards = {}
         for i, v in pairs(G.jokers.cards) do
-            if not v.ediition or not v.edition.negative then
+            if not v.edition or not v.edition.negative then
                 cards[#cards+1] = v
             end
         end 
@@ -1050,6 +1050,53 @@ local eternity = {
     end
 }
 
+local loyalty_indicator = Entropy.create_mark("loyalty", 7069, {x = 4, y = 6}, function(self, rune, context)
+    if not rune.ability.hand then rune.ability.hand = 0 end
+    if context.after and rune.ability.hand % 2 == 0 then
+        rune.ability.hand = rune.ability.hand + 1
+        attention_text({
+            scale = 1.4,
+            text = localize({ type = "variable", key = "a_xmult", vars = { 0.5 }}),
+            hold = 2,
+            align = "cm",
+            offset = { x = 0, y = -2.7 },
+            major = G.play,
+        })
+        return {
+            xmult_mod = 0.5,
+        }
+    elseif context.after then
+        rune.ability.hand = rune.ability.hand + 1
+    end
+end)
+local loyalty = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=4,y=6},
+    order = 7619,
+    key = "loyalty",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_ehwaz",
+    immutable = true,
+    use = function(self, rcard)
+        Entropy.pact_mark("rune_entr_loyalty")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args and args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 return {
     items = {
         avarice, avarice_indicator,
@@ -1069,6 +1116,7 @@ return {
         strength, strength_indicator,
         darkness, darkness_indicator,
         freedom, freedom_indicator,
-        eternity, eternity_indicator
+        eternity, eternity_indicator,
+        loyalty, loyalty_indicator
     }
 }

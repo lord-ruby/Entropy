@@ -94,7 +94,7 @@ local stillicidium = {
         end
         if (context.setting_blind and not context.blueprint and not card.getting_sliced) or context.forcetrigger then
 			card.gone = false
-			G.GAME.blind.chips = G.GAME.blind.chips * 0.6
+			G.GAME.blind.chips = G.GAME.blind.chips * 0.7
 			G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 			G.HUD_blind:recalculate()
 		end

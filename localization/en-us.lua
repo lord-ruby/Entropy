@@ -3563,6 +3563,18 @@ local decs = {
 					"Marked by {C:red}Eternity{}"
 				}
 			},
+			rune_entr_loyalty = {
+				name = "Mark of Loyalty",
+				text = {
+					{
+						"Marked by {C:red}Loyalty{}"
+					},
+					{
+						"Interest Rate is now every {C:money}$4{}",
+						"{X:mult,C:white}X0.5{} Mult every other hand"
+					}
+				}
+			},
 		},
 		Rune = {
 			c_entr_fehu = {
@@ -4084,6 +4096,13 @@ local decs = {
 					"{C:gold}+#1#{} Ascension Power to your",
 					"most {C:attention}played{} hand, A random",
 					"Joker becomes {C:attention}Eternal{}"
+				}
+			},	
+			c_entr_loyalty = {
+				name = "Pact of Loyalty",
+				text = {
+					"Interest Rate is now every {C:money}$4{}",
+					"{X:mult,C:white}X0.5{} Mult every other hand"
 				}
 			},				
 		},
