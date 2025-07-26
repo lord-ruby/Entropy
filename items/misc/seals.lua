@@ -393,15 +393,16 @@ local amber = {
     badge_colour = HEX("db915b"),
     calculate = function(self, card, context)
         if context.copying_card and context.original_card == card then
-            if not Entropy.has_rune("rune_entr_rebirth")
-            G.E_MANAGER:add_event(Event{
-                trigger = "after",
-                blocking = false,
-                func = function()
-                    card:start_dissolve()
-                    return true
-                end
-            })
+            if not Entropy.has_rune("rune_entr_rebirth") then
+                G.E_MANAGER:add_event(Event{
+                    trigger = "after",
+                    blocking = false,
+                    func = function()
+                        card:start_dissolve()
+                        return true
+                    end
+                })
+            end
             if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
                 G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
                 G.E_MANAGER:add_event(Event{
