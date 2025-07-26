@@ -2807,15 +2807,22 @@ function Card:set_ability(...)
                 end
             end
             if to_big(highest) > to_big(0) then
-                Cryptid.manipulate(self, {
-                    func = function(num, args, is_big, name)
-                        if to_big(num) <= to_big(1) then return num end
-                        local nnum = is_big and highest * math.floor(to_big(num) / highest) or (highest * math.floor(num / highest))
-                        if to_big(nnum) < to_big(num) then return nnum + highest end
-                        if to_big(nnum) < to_big(highest) then return highest end
-                        return nnum
-                    end,
-                    dont_stack = true
+                G.E_MANAGER:add_event(Event{
+                    trigger = "after",
+                    blocking = false,
+                    func = function()
+                        Cryptid.manipulate(self, {
+                            func = function(num, args, is_big, name)
+                                if to_big(num) <= to_big(1) then return num end
+                                local nnum = is_big and highest * math.floor(to_big(num) / highest) or (highest * math.floor(num / highest))
+                                if to_big(nnum) < to_big(num) then return nnum + highest end
+                                if to_big(nnum) < to_big(highest) then return highest end
+                                return nnum
+                            end,
+                            dont_stack = true
+                        })
+                        return true
+                    end
                 })
             end
         end
