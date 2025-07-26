@@ -1038,6 +1038,15 @@ local decs = {
 					"as a {C:attention}Valid{} Word"
                 },
             },
+			j_entr_feynman_point = {
+                name = "Feynman Point",
+                text = {
+                    "Round Joker {C:attention}decimals{} to",
+					"the next {X:dark_edition,C:white}#1#{} increasing",
+					"by {X:dark_edition,C:white}#2#{} whenever a",
+					"probability {C:green}succeeds{}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

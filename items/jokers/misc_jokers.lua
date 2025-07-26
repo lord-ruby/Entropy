@@ -2732,6 +2732,96 @@ local alles = {
     end
 }
 
+local feynman_point = {
+    order = 50,
+    object_type = "Joker",
+    key = "feynman_point",
+    rarity = 3,
+    cost = 8,
+    dependencies = {
+        items = {            
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        nearest = 0.1,
+        nearest_mod = 0.05
+    },
+    eternal_compat = true,
+    pos = { x = 7, y = 7 },
+    atlas = "jokers",
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                number_format(card.ability.nearest),
+                number_format(card.ability.nearest_mod)
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.pseudorandom_result and context.result and not context.blueprint and not context.repetition then
+            card.ability.nearest = card.ability.nearest + card.ability.nearest_mod
+            return {
+                message = localize("k_upgrade_ex"),
+                colour = G.C.GREEN
+            }
+        end
+    end
+}
+
+local calculate_jokerref = Card.calculate_joker
+function Card:calculate_joker(...)
+    local ret = calculate_jokerref(self, ...)
+    if next(SMODS.find_card("j_entr_feynman_point")) and self.config.center.key ~= "j_entr_feynman_point" then
+        local highest = 0
+        for i, v in pairs(SMODS.find_card("j_entr_feynman_point")) do
+            if to_big(v.ability.nearest) > to_big(highest) then
+                highest = v.ability.nearest
+            end
+        end
+        if to_big(highest) > to_big(0) then
+            Cryptid.manipulate(self, {
+                func = function(num, args, is_big, name)
+                    if to_big(num) <= to_big(1) then return num end
+                    local nnum = is_big and highest * math.floor(to_big(num) / highest) or (highest * math.floor(num / highest))
+                    if to_big(nnum) < to_big(num) then return nnum + highest end
+                    if to_big(nnum) < to_big(highest) then return highest end
+                    return nnum
+                end,
+                dont_stack = true
+            })
+        end
+    end
+    return ret
+end
+
+local set_abilityref = Card.set_ability
+function Card:set_ability(...)
+    set_abilityref(self, ...)
+    if self.config.center.set == "Joker" and self.config.center.key ~= "j_entr_feynman_point" then
+        if next(SMODS.find_card("j_entr_feynman_point")) then
+            local highest = 0
+            for i, v in pairs(SMODS.find_card("j_entr_feynman_point")) do
+                if to_big(v.ability.nearest) > to_big(highest) then
+                    highest = v.ability.nearest
+                end
+            end
+            if to_big(highest) > to_big(0) then
+                Cryptid.manipulate(self, {
+                    func = function(num, args, is_big, name)
+                        if to_big(num) <= to_big(1) then return num end
+                        local nnum = is_big and highest * math.floor(to_big(num) / highest) or (highest * math.floor(num / highest))
+                        if to_big(nnum) < to_big(num) then return nnum + highest end
+                        if to_big(nnum) < to_big(highest) then return highest end
+                        return nnum
+                    end,
+                    dont_stack = true
+                })
+            end
+        end
+    end
+end
+
 return {
     items = {
         surreal,
@@ -2785,6 +2875,7 @@ return {
         torn_photograph,
         chuckle_cola,
         antiderivative,
-        alles
+        alles,
+        feynman_point
     }
 }
