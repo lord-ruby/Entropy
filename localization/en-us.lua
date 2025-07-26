@@ -3548,6 +3548,12 @@ local decs = {
 					"Marked by {C:red}Freedom{}"
 				}
 			},
+			rune_entr_eternity = {
+				name = "Mark of Eternity",
+				text = {
+					"Marked by {C:red}Eternity{}"
+				}
+			},
 		},
 		Rune = {
 			c_entr_fehu = {
@@ -4062,7 +4068,15 @@ local decs = {
 					"{C:attention}+#1#{} Card Selection Limit",
 					"{C:attention}-#2#{} Hand Size"
 				}
-			},					
+			},	
+			c_entr_eternity = {
+				name = "Pact of Eternity",
+				text = {
+					"{C:gold}+#1#{} Ascension Power to your",
+					"most {C:attention}played{} hand, A random",
+					"Joker becomes {C:attention}Eternal{}"
+				}
+			},				
 		},
 		Other = {
 			cry_banana_booster = {

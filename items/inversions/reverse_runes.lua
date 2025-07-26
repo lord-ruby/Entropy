@@ -994,6 +994,62 @@ local freedom = {
     end
 }
 
+local eternity_indicator = Entropy.create_mark("eternity", 7068, {x = 3, y = 6})
+local eternity = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=3,y=6},
+    order = 7618,
+    key = "eternity",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_berkano",
+    loc_vars = function(self, q, card) 
+        return {
+            vars = {
+                number_format(card.ability.asc_power),
+            }
+        }
+    end,
+    config = {
+        asc_power = 4
+    },
+    use = function(self, rcard)
+        local cards = {}
+        for i, v in pairs(G.jokers.cards) do
+            if not SMODS.is_eternal(v) then
+                cards[#cards+1] = v
+            end
+        end 
+        local joker = pseudorandom_element(cards, pseudoseed("entr_strength"))
+        if joker then
+            joker.ability.eternal = true
+            joker:juice_up()
+        end
+        local hand = "High Card"
+        for i, v in pairs(G.GAME.hands) do
+            if v.played > G.GAME.hands[hand].played then
+                hand = i
+            end
+        end
+        Entropy.ReversePlanetUse(hand, rcard, rcard.ability.asc_power)
+        Entropy.pact_mark("rune_entr_eternity")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args and args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 return {
     items = {
         avarice, avarice_indicator,
@@ -1012,6 +1068,7 @@ return {
         despair, despair_indicator,
         strength, strength_indicator,
         darkness, darkness_indicator,
-        freedom, freedom_indicator
+        freedom, freedom_indicator,
+        eternity, eternity_indicator
     }
 }
