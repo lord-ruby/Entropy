@@ -122,14 +122,14 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     float res = (.5 + .5* cos( (sunny.x) * 2.612 + ( field + -.5 ) *3.14));
 
 
-	float sun1[3] = float[3](0.119, 1, 0.65);
+	float sun1[3] = float[3](0.119, 1.0, 0.65);
 	float sun2[3] = float[3](0.094, 0.91, 0.5);
-	float c0 = (sun1[0] + sun2[0])/2;
+	float c0 = (sun1[0] + sun2[0])/2.0;
 
-	float closestHue = ceil(mod(hsl.x - c0, 1) - 0.5);
-	float H2 = closestHue * sun2[0] + (1 - closestHue) * sun1[0];
-	float S2 = closestHue * sun2[1] + (1 - closestHue) * sun1[1];
-	float L2 = closestHue * sun2[2] + (1 - closestHue) * sun1[2];
+	float closestHue = ceil(mod(hsl.x - c0, 1.0) - 0.5);
+	float H2 = closestHue * sun2[0] + (1.0 - closestHue) * sun1[0];
+	float S2 = closestHue * sun2[1] + (1.0 - closestHue) * sun1[1];
+	float L2 = closestHue * sun2[2] + (1.0 - closestHue) * sun1[2];
 
 
 
@@ -138,15 +138,15 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	
 
 
-	float pulser = min(floor(mod(t2, 7)),1);
-	float pulseRise = pulser * (mod(t2, 7) - 1)/6;
-	float pulseDrop = (1 - pulser) * mod(-t2, 1);
-	float pulse = pow(pow(pulseRise, 4) + pow(pulseDrop, 4), 4);
+	float pulser = min(floor(mod(t2, 7.0)),1.0);
+	float pulseRise = pulser * (mod(t2, 7.0) - 1.0)/6.0;
+	float pulseDrop = (1.0 - pulser) * mod(-t2, 1.0);
+	float pulse = pow(pow(pulseRise, 4.0) + pow(pulseDrop, 4.0), 4.0);
 
 
 
-	float q3 = 2.0 * (floor(0.5 + t2/2.0) - floor(t2/2.0)) - 1;
-	float q4 = sin(t2 * (5 - 4 * pulse)/100) * sin((3.0 * t2/1.73 + 1.0 + field * 2)*4)/2.5;
+	float q3 = 2.0 * (floor(0.5 + t2/2.0) - floor(t2/2.0)) - 1.0;
+	float q4 = sin(t2 * (5.0 - 4.0 * pulse)/100.0) * sin((3.0 * t2/1.73 + 1.0 + field * 2.0)*4.0)/2.5;
 
 	vec4 pixel = Texel(texture, texture_coords);
 

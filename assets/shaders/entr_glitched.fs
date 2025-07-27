@@ -207,18 +207,18 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     vec4 pixel = Texel(texture, texture_coords);
 
-    float cx = uv_scaled_centered.x * 1;
-    float cy = uv_scaled_centered.y * 1;
+    float cx = uv_scaled_centered.x * 1.0;
+    float cy = uv_scaled_centered.y * 1.0;
 
-	float randnum = mod2(floor(4*t), 256)*mod2(floor(4*t), 27);
-	randnum = mod2(bitxor(pow(randnum, 3) - randnum + 3, 7 + floor(randnum/11)), 256);
-	randnum = mod2(randnum*123.54,0.1)*10;
+	float randnum = mod2(floor(4.0*t), 256.0)*mod2(floor(4.0*t), 27.0);
+	randnum = mod2(bitxor(pow(randnum, 3.0) - randnum + 3.0, 7.0 + floor(randnum/11.0)), 256.0);
+	randnum = mod2(randnum*123.54,0.1)*10.0;
 
 
 
     vec4 hsl = HSL(vec4(tex.r, tex.g, tex.b, tex.a));
 
-    float xorscale = 10;
+    float xorscale = 10.0;
 
     // |y| = 50, |x| = 50
 
@@ -232,23 +232,23 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     for(int i = 0; i < 5; i++)
     {     
-        randnum = bitxor(255*randnum + mod2(t,81), pow(randnum*(16-i), 2));
-        mbx = (cx - 25*sin(100/randnum)) * (1 + 2*(floor(cos(177/randnum + 1))));
-        mby = (cy - 25*cos(113/randnum + 1)) * (1 + 2*(floor(sin(221/randnum))));
-        offx = bitxor(255*randnum, pow(255*randnum,5) - 255*randnum);
-        offy = bitxor(255*randnum, pow(255*randnum,5) + 255*randnum);
-        offx /= 10;
-        offy /= 10;
+        randnum = bitxor(255.0*randnum + mod2(t,81.0), pow(randnum*(16.0-i), 2.0));
+        mbx = (cx - 25.0*sin(100.0/randnum)) * (1.0 + 2.0*(floor(cos(177.0/randnum + 1.0))));
+        mby = (cy - 25.0*cos(113.0/randnum + 1.0)) * (1.0 + 2.0*(floor(sin(221.0/randnum))));
+        offx = bitxor(255.0*randnum, pow(255.0*randnum,5.0) - 255.0*randnum);
+        offy = bitxor(255.0*randnum, pow(255.0*randnum,5.0) + 255.0*randnum);
+        offx /= 10.0;
+        offy /= 10.0;
         rectmask = (-mbx + abs(abs(mbx) + offx) - offx) - (mby - abs(abs(mby) - offy) + offy);
-        rmasksum *= -1 * min(0, max(-1, 5 - pow(rectmask, 2)));
+        rmasksum *= -1.0 * min(0.0, max(-1.0, 5.0 - pow(rectmask, 2.0)));
     }
 
-    float laddermask = pow(sin((23-20*randnum*randnum)*pow(sin(sin(cy*randnum) + pow(sin(cy*randnum),2)),2)),2) * rmasksum;
+    float laddermask = pow(sin((23.0-20.0*randnum*randnum)*pow(sin(sin(cy*randnum) + pow(sin(cy*randnum),2.0)),2.0)),2.0,) * rmasksum;
     
 
-	hsl.x += floor(randnum + 0.1) * rmasksum * 4 * randnum * (1 - laddermask);// * bitxor(cx * xorscale, cy * xorscale)/4;
-    hsl.y += laddermask * (1 + 2 * rmasksum); 
-    hsl.z += floor(randnum + 0.2) * (1 + rmasksum) * (1 - 1.5*hsl.z) * 0.1;
+	hsl.x += floor(randnum + 0.1) * rmasksum * 4.0 * randnum * (1.0 - laddermask);// * bitxor(cx * xorscale, cy * xorscale)/4;
+    hsl.y += laddermask * (1.0 + 2.0 * rmasksum); 
+    hsl.z += floor(randnum + 0.2) * (1.0 + rmasksum) * (1.0 - 1.5*hsl.z) * 0.1;
 
     tex.rgb = RGB(hsl).rgb;
 

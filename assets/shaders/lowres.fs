@@ -227,14 +227,14 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     hsl = RGBtoHSV(rgb);
 
-    hsl.y *= 2;
-    hsl.z = min(1, hsl.z*0.8);
+    hsl.y *= 2.0;
+    hsl.z = min(1.0, hsl.z*0.8);
 
     //hsl.x = floor(cx/3)/3;
     //hsl.z = (3 + hsl.z)/5;
-    hsl.z -= max(0, pow(sin(6.28*mod2(cx/9 + 0.25)), 4) - 0.2);
-    hsl.z -= max(0, pow(sin(6.28*mod2(cy/9 + 0.25)), 4) - 0.2);
-    hsl.z = max(hsl.z, 0);
+    hsl.z -= max(0.0, pow(sin(6.28*mod2(cx/9 + 0.25)), 4.0) - 0.2);
+    hsl.z -= max(0.0, pow(sin(6.28*mod2(cy/9 + 0.25)), 4.0) - 0.2);
+    hsl.z = max(hsl.z, 0.0);
     //hsl.z -= floor(mod2(cx/9 - 0.05) + 0.1);
     //hsl.z -= floor(mod2(cy/9 - 0.05) + 0.1);
     //hsl.y = (0.7 + hsl.y)/1.7;

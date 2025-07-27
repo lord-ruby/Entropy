@@ -237,8 +237,8 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     vec4 hsl = HSL(vec4(tex.r, tex.g, tex.b, tex.a));
     float t2 = mod2(t/7);
 
-    float cx = uv_scaled_centered.x / 3;
-    float cy = uv_scaled_centered.y / 3;
+    float cx = uv_scaled_centered.x / 3.0;
+    float cy = uv_scaled_centered.y / 3.0;
 
 
 
@@ -246,34 +246,34 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     int hcount = 17;
     float hscale = 0.8;
-    float h_intens = 32;
+    float h_intens = 32.0;
     float speed_extra = 0.9;
 
     // PARAMETERS HERE
 
 
 
-    float heart_list = 0;
+    float heart_list = 0.0;
 
     for(int i = 0; i < hcount; i++)
     {  
         float i2 = i * pow(hcount, -1);
         float hsize = inverf(mod2(t2 + i2));
-        float cx1 = hscale * 7.1 * sin(1 + 7 * i + floor(t/7 + i2));
-        float cy1 = hscale * 9.5 * sin(5 * i + floor(t/7 + i2));
-        float heart_opacity = clampf2(0.9 - pow(mod2(t2 + i2), 2)) - pow(2, -1000 * pow(mod2(t2 + i2), 2));
-        float t3 = speed_extra * (5*pow(mod2(t2 + i2), 2) - 10*(mod2(t2 + i2)) + 2 - pow(10*(mod2(t2 + i2)), 0.2));
+        float cx1 = hscale * 7.1 * sin(1 + 7.0 * i + floor(t/7.0 + i2));
+        float cy1 = hscale * 9.5 * sin(5.0 * i + floor(t/7.0 + i2));
+        float heart_opacity = clampf2(0.9 - pow(mod2(t2 + i2), 2.0)) - pow(2.0, -1000.0 * pow(mod2(t2 + i2), 2.0));
+        float t3 = speed_extra * (5.0*pow(mod2(t2 + i2), 2.0) - 10.0*(mod2(t2 + i2)) + 2.0 - pow(10.0*(mod2(t2 + i2)), 0.2));
 
-        heart_list += 2 * (heart_opacity) * (1 - clampf2(heartf(cx * hscale + cx1, -cy * hscale + cy1 + t3) - 1.4 * hsize + 1));
+        heart_list += 2.0 * (heart_opacity) * (1.0 - clampf2(heartf(cx * hscale + cx1, -cy * hscale + cy1 + t3) - 1.4 * hsize + 1.0));
     }
 
     hsl.x = 0.55 * 0.95 + hsl.x * 0.45;
     hsl.y = 0.55 * 1.00 + hsl.y * 0.45;
     hsl.z = 0.55 * 0.90 + hsl.z * 0.45;
 
-    hsl.x = (hsl.x + h_intens * 0.95 * heart_list)/(1 + h_intens * heart_list);
-    hsl.y = (hsl.y + h_intens * 0.9 * heart_list)/(1 + h_intens * heart_list);
-    hsl.z = (hsl.z + h_intens * 0.6 * heart_list)/(1 + h_intens * heart_list);
+    hsl.x = (hsl.x + h_intens * 0.95 * heart_list)/(1.0 + h_intens * heart_list);
+    hsl.y = (hsl.y + h_intens * 0.9 * heart_list)/(1.0 + h_intens * heart_list);
+    hsl.z = (hsl.z + h_intens * 0.6 * heart_list)/(1.0 + h_intens * heart_list);
 
 
     tex.rgb = RGB(hsl).rgb;

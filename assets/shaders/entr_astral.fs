@@ -204,15 +204,15 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
         cos(length(field_part1) / 19.483) + 
         sin(length(field_part2) / 33.155) * cos(field_part2.y / 15.73) +
         cos(length(field_part3) / 27.193) * sin(field_part3.x / 16.92) + 
-        sin(t + pow(pow(field_part3.x, 2) + 1, -1)) +
-        cos(field_part2.y/11.13 + pow(pow(1.4, field_part2.y) + 1, -1) * pow(1.4, field_part2.y) + t)
+        sin(t + pow(pow(field_part3.x, 2) + 1.0, -1.0)) +
+        cos(field_part2.y/11.13 + pow(pow(1.4, field_part2.y) + 1.0, -1.0) * pow(1.4, field_part2.y) + t)
         ))/2.;
 
 
     vec4 pixel = Texel(texture, texture_coords);
 
-    float cx = uv_scaled_centered.x * 15;
-    float cy = uv_scaled_centered.y * 15;
+    float cx = uv_scaled_centered.x * 15.0;
+    float cy = uv_scaled_centered.y * 15.0;
 
     vec4 hsl = HSL(vec4(tex.r, tex.g, tex.b, tex.a));
 
@@ -221,11 +221,11 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	q6 = q6*q6;
 	//q6 = q6*q6;
 	//q6 = q6*q6;
-	float q3 = 2.0 * (floor(0.5 + t2/2.0) - floor(t2/2.0)) - 1;
+	float q3 = 2.0 * (floor(0.5 + t2/2.0) - floor(t2/2.0)) - 1.0;
 	float q4 = sin((3.0 * t2/1.73 + 1.0 + field * 5.0))/2.5 + sin(3.0 * t2/2.63 + astral.y*4.0)/10.0 + 0.5;
-	float res = (q3*q6 - floor(q3*q6))*q4 + (1-(q3*q6 - floor(q3*q6)))*(1-q4);
+	float res = (q3*q6 - floor(q3*q6))*q4 + (1.0-(q3*q6 - floor(q3*q6)))*(1.0-q4);
 
-	hsl.z = min(1, 1.0*hsl.z + res*res*res*res*0.4);
+	hsl.z = min(1.0, 1.0*hsl.z + res*res*res*res*0.4);
 	float qalph = 0.7 + 0.3 * res*res;
     hsl.x = hsl.x * 0.1 + 0.75;
     hsl.y = max(hsl.y, 0.2)*1.1;

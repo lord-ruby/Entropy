@@ -210,19 +210,19 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     float cx = uv_scaled_centered.x * 1;
     float cy = uv_scaled_centered.y * 1;
 
-	float randnum = mod2(floor(4*t), 256)*mod2(floor(4*t), 27);
-	randnum = mod2(bitxor(pow(randnum, 3) - randnum + 3, 7 + floor(randnum/11)), 256);
-	randnum = mod2(randnum*123.54,0.1)*10;
+	float randnum = mod2(floor(4.0*t), 256.0)*mod2(floor(4.0*t), 27.0);
+	randnum = mod2(bitxor(pow(randnum, 3.0) - randnum + 3, 7 + floor(randnum/11.0)), 256.0);
+	randnum = mod2(randnum*123.54,0.1)*10.0;
 
     vec4 hsl = HSL(vec4(tex.r, tex.g, tex.b, tex.a));
 
     //hsl.z -= hsl.y/2;
     //hsl.y = 1- hsl.y;
     hsl.z = 1 - hsl.z;
-    hsl.x = floor(hsl.x*12)/12;
-    hsl.z = hsl.z * pow(hsl.y, 3);
+    hsl.x = floor(hsl.x*12.0)/12.0;
+    hsl.z = hsl.z * pow(hsl.y, 3.0);
     hsl.x = pow(hsl.x, 0.5);
-    hsl.z += hsl.x/4;
+    hsl.z += hsl.x/4.0;
     hsl.z *= 1.25 * pow(hsl.y, 0.75);
 
 

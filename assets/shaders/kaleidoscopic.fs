@@ -146,13 +146,13 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	float cordY = 0.14 * (uv_scaled_centered.y);
 	float kPX = sin(2.17*t)*0.7; 
 	float kPY = cos(3.61*t)*0.55;
-	float majorShift = 1.0/(1.0 + pow(2, mod(8.0 * t, 64) - 16)) + 1.0/(1.0 + pow(2, mod(-8.0 * t, 64) - 16));
-	float mS = 1 * majorShift;
+	float majorShift = 1.0/(1.0 + pow(2.0, mod(8.0 * t, 64.0) - 16.0)) + 1.0/(1.0 + pow(2.0, mod(-8.0 * t, 64.0) - 16.0));
+	float mS = 1.0 * majorShift;
 
 	float rotCX = cordX - kPX;
 	float rotCY = cordY - kPY;
 	
-	float center = pow(rotCX,2) + pow(rotCY,2);
+	float center = pow(rotCX,2.0) + pow(rotCY,2.0);
 
 	float rAN = t + mS;
 
@@ -160,21 +160,21 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	float newY = rotCY*cos(rAN) - rotCX*sin(rAN);
 
 	float newHue1 = 0.1 * (newX + newY);
-	newHue1 = floor(8 * newHue1)/11.1;
+	newHue1 = floor(8.0 * newHue1)/11.1;
 
-	newX = rotCX*cos(rAN + p23 - mS * 2 * pi) + rotCY*sin(rAN + p23 - mS * 2 * pi);
-	newY = rotCY*cos(rAN + p23 - mS * 2 * pi) - rotCX*sin(rAN + p23 - mS * 2 * pi);
+	newX = rotCX*cos(rAN + p23 - mS * 2.0 * pi) + rotCY*sin(rAN + p23 - mS * 2.0 * pi);
+	newY = rotCY*cos(rAN + p23 - mS * 2.0 * pi) - rotCX*sin(rAN + p23 - mS * 2.0 * pi);
 
 	float newHue2 = 0.1 * (newX + newY);
-	newHue2 = floor(8 * newHue2)/12.7;
+	newHue2 = floor(8.0 * newHue2)/12.7;
 	
-	newX = rotCX*cos(rAN - p23 + mS * 2 * pi) + rotCY*sin(rAN - p23 + mS * 2 * pi);
-	newY = rotCY*cos(rAN - p23 + mS * 2 * pi) - rotCX*sin(rAN - p23 + mS * 2 * pi);
+	newX = rotCX*cos(rAN - p23 + mS * 2.0 * pi) + rotCY*sin(rAN - p23 + mS * 2.0 * pi);
+	newY = rotCY*cos(rAN - p23 + mS * 2.0 * pi) - rotCX*sin(rAN - p23 + mS * 2.0 * pi);
 
 	float newHue3 = 0.1 * (newX + newY);
-	newHue3 = mS + floor(8 * newHue3)/9.6;
+	newHue3 = mS + floor(8.0 * newHue3)/9.6;
 
-	float totalHue = 1.77 * (1 - newHue1) * (1 - newHue2) * (1 - newHue3);
+	float totalHue = 1.77 * (1.0 - newHue1) * (1.0 - newHue2) * (1.0 - newHue3);
 
 	//float newcenter = pow(mod(newX, 1),2) + pow(mod(newY, 1),2);
 
