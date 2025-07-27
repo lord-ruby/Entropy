@@ -243,7 +243,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
         rmasksum *= -1.0 * min(0.0, max(-1.0, 5.0 - pow(rectmask, 2.0)));
     }
 
-    float laddermask = pow(sin((23.0-20.0*randnum*randnum)*pow(sin(sin(cy*randnum) + pow(sin(cy*randnum),2.0)),2.0)),2.0,) * rmasksum;
+    float laddermask = pow(sin((23.0-20.0*randnum*randnum)*pow(sin(sin(cy*randnum) + pow(sin(cy*randnum),2.0)),2.0)),2.0) * rmasksum;
     
 
 	hsl.x += floor(randnum + 0.1) * rmasksum * 4.0 * randnum * (1.0 - laddermask);// * bitxor(cx * xorscale, cy * xorscale)/4;
