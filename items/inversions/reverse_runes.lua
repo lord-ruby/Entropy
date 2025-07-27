@@ -1052,20 +1052,25 @@ local eternity = {
 
 local loyalty_indicator = Entropy.create_mark("loyalty", 7069, {x = 4, y = 6}, function(self, rune, context)
     if not rune.ability.hand then rune.ability.hand = 0 end
-    if context.after and rune.ability.hand % 2 == 0 then
+    if context.final_scoring_step and rune.ability.hand % 2 == 0 then
         rune.ability.hand = rune.ability.hand + 1
-        attention_text({
-            scale = 1.4,
-            text = localize({ type = "variable", key = "a_xmult", vars = { 0.5 }}),
-            hold = 2,
-            align = "cm",
-            offset = { x = 0, y = -2.7 },
-            major = G.play,
+        G.E_MANAGER:add_event(Event{
+            func = function()
+                attention_text({
+                    scale = 1.4,
+                    text = localize({ type = "variable", key = "a_xmult", vars = { 0.5 }}),
+                    hold = 2,
+                    align = "cm",
+                    offset = { x = 0, y = -2.7 },
+                    major = G.play,
+                })
+                return true
+            end
         })
         return {
-            xmult_mod = 0.5,
+            Xmult_mod = 0.5,
         }
-    elseif context.after then
+    elseif context.final_scoring_step then
         rune.ability.hand = rune.ability.hand + 1
     end
 end)
@@ -1097,6 +1102,61 @@ local loyalty = {
     end
 }
 
+local brimstone_indicator = Entropy.create_mark("brimstone", 7070, {x = 5, y = 6}, function(self, rune, context)
+    if context.final_scoring_step then
+        G.E_MANAGER:add_event(Event{
+            func = function()
+                attention_text({
+                    scale = 1.4,
+                    text = localize({ type = "variable", key = "a_xmult", vars = { 3.6 }}),
+                    hold = 2,
+                    align = "cm",
+                    offset = { x = 0, y = -2.7 },
+                    major = G.play,
+                })
+                return true
+            end
+        })
+        return {
+            Xmult_mod = 3.6,
+        }
+    end
+end)
+local brimstone = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=5,y=6},
+    order = 7620,
+    key = "brimstone",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_mannaz",
+    immutable = true,
+    config = {
+        hands = 1
+    },
+    loc_vars = function(self, q, card) return {vars = {card.ability.hands}} end,
+    use = function(self, card)
+        G.GAME.round_resets.hands = G.GAME.round_resets.hands - card.ability.hands
+        ease_hands_played(-card.ability.hands)
+        Entropy.pact_mark("rune_entr_brimstone")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args and args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
+
 return {
     items = {
         avarice, avarice_indicator,
@@ -1117,6 +1177,7 @@ return {
         darkness, darkness_indicator,
         freedom, freedom_indicator,
         eternity, eternity_indicator,
-        loyalty, loyalty_indicator
+        loyalty, loyalty_indicator,
+        brimstone, brimstone_indicator
     }
 }

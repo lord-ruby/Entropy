@@ -3575,6 +3575,17 @@ local decs = {
 					}
 				}
 			},
+			rune_entr_brimstone = {
+				name = "Mark of Brimstone",
+				text = {
+					{
+						"Marked by {C:red}Brimstone{}"
+					},
+					{
+						"{X:mult,C:white}X3.6{} Mult after hand played"
+					}
+				}
+			},
 		},
 		Rune = {
 			c_entr_fehu = {
@@ -4103,6 +4114,13 @@ local decs = {
 				text = {
 					"Interest Rate is now every {C:money}$4{}",
 					"{X:mult,C:white}X0.5{} Mult every other hand"
+				}
+			},
+			c_entr_brimstone = {
+				name = "Pact of Brimstone",
+				text = {
+					"{X:mult,C:white}X3.6{} Mult after hand played",
+					"{C:blue}-#1#{} Hands"
 				}
 			},				
 		},
