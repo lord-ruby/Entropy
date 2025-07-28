@@ -985,7 +985,6 @@ local phantom_shopper = {
         }
     },
     blueprint_compat = true,
-    eternal_compat = true,
     pos = { x = 3, y = 3 },
     atlas = "jokers",
     demicoloncompat = true,
@@ -1859,7 +1858,6 @@ local milk_chocolate = {
             "set_entr_misc_jokers",
         }
     },
-    eternal_compat = true,
     pos = { x = 3, y = 6 },
     atlas = "jokers",
     loc_vars = function(self, info_queue, card)
