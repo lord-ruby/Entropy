@@ -804,6 +804,12 @@ G.FUNCS.get_poker_hand_info = function(_cards)
 	return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
 end
 
+local never_scoresref = SMODS.never_scores
+function SMODS.never_scores(...)
+	if (next(SMODS.find_card("j_splash")) or SMODS.always_scores(...)) and Entropy.BlindIs("bl_entr_kappa") then return true end
+	return never_scoresref(...)
+end
+
 local lambda = {
 	dependencies = {
         items = {
