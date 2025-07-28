@@ -43,6 +43,12 @@ SMODS.Rarity {
 }
 
 SMODS.Rarity {
+    key = "zenith",
+    badge_colour = Entropy.zenith_gradient
+}
+
+
+SMODS.Rarity {
     key = "reverse_legendary",
     badge_colour = Entropy.reverse_legendary_gradient
 }

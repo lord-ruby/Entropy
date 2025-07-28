@@ -743,7 +743,7 @@ local endless_entropy = {
     object_type = "Joker",
     key = "eecc",
     order = 10^300,
-    rarity = "entr_entropic",
+    rarity = "entr_zenith",
     cost = 10,
     atlas = "ee_atlas",
     pos = {x=0, y=0},
