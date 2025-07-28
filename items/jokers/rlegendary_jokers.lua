@@ -33,10 +33,11 @@ local oekrep = {
                 while not Entropy.BoosterSets[set] and tries < 100 do
                     e = pseudorandom_element(G.consumeables.cards, pseudoseed("roekrep"))
                     set = e.config.center.set
+                    tries = tries + 1
                 end 
                 if Entropy.BoosterSets[set] then
                     local c = create_card("Booster", G.consumeables, nil, nil, nil, nil, key) 
-                    c:set_ability(G.P_CENTERS[Entropy.BoosterSets[set] or "p_standard_normal_1"])
+                    c:set_ability(G.P_CENTERS[Entropy.BoosterSets[set] or "p_standard_normal_1"] or G.P_CENTERS["p_standard_normal_1"])
                     c:add_to_deck()
                     c.T.w = c.T.w *  2.0/2.6
                     c.T.h = c.T.h *  2.0/2.6
