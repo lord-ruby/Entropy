@@ -2827,6 +2827,56 @@ function Card:set_ability(...)
     end
 end
 
+local neuroplasticity = {
+    order = 51,
+    object_type = "Joker",
+    key = "neuroplasticity",
+    rarity = 3,
+    cost = 10,
+    dependencies = {
+        items = {            
+            "set_entr_inversions"
+        }
+    },    
+    eternal_compat = true,
+    pos = { x = 2, y = 0 },
+    atlas = "placeholder",
+    add_to_deck = function(self, card, from_debuff)
+        if not G.GAME.randomised_hand_map then
+            local map = {}
+            local blacklist = {cry_Declare0 = true, cry_Declare1 = true, cry_Declare2 = true, cry_Clusterfuck = true, cry_WholeDeck = true}
+            for i, v in pairs(G.handlist) do
+                if not blacklist[v] then                    
+                    map[#map+1] = v
+                end
+            end
+            G.GAME.randomised_hand_map = {}
+            local map_shuffled = copy_table(map)
+            pseudoshuffle(map_shuffled, pseudoseed("entr_neuroplasticity"))
+            for i, v in pairs(map) do
+                G.GAME.randomised_hand_map[v] = map_shuffled[i]
+            end
+        end
+    end,
+    calculate = function(self, card, context)
+        if context.end_of_round then
+            local map = {}
+            local blacklist = {cry_Declare0 = true, cry_Declare1 = true, cry_Declare2 = true, cry_Clusterfuck = true, cry_WholeDeck = true}
+            for i, v in pairs(G.handlist) do
+                if not blacklist[v] then                    
+                    map[#map+1] = v
+                end
+            end
+            G.GAME.randomised_hand_map = {}
+            local map_shuffled = copy_table(map)
+            pseudoshuffle(map_shuffled, pseudoseed("entr_neuroplasticity"))
+            for i, v in pairs(map) do
+                G.GAME.randomised_hand_map[v] = map_shuffled[i]
+            end
+        end
+    end
+}
+
 return {
     items = {
         surreal,
@@ -2881,6 +2931,7 @@ return {
         chuckle_cola,
         antiderivative,
         alles,
-        feynman_point
+        feynman_point,
+        neuroplasticity
     }
 }

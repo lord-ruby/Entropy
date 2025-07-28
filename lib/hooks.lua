@@ -3337,6 +3337,15 @@ function evaluate_poker_hand(cards)
             end
         end
     end
+    if G.GAME.randomised_hand_map then
+        local results_copy = {}
+        for i, v in pairs(results) do
+            results_copy[i] = v
+        end
+        for i, v in pairs(G.GAME.randomised_hand_map) do
+            results[i] = results_copy[v]
+        end
+    end
     results.top = top
     return results
 end

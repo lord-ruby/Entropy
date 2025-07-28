@@ -1047,6 +1047,14 @@ local decs = {
 					"probability {C:green}succeeds{}"
                 },
             },
+			j_entr_neuroplasticity = {
+                name = "Neuroplasticity",
+                text = {
+                    "Poker hands Calculate",
+					"as a {C:attention}random{} Hand which",
+					"Shuffles {C:attention}every round{}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
