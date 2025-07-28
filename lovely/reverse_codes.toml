@@ -39,6 +39,9 @@ position = "before"
 payload = '''
 local mult = G.GAME.providence and 1 or 0.5
 local true_mult = 1 + (mult * #Entropy.find_runes("rune_entr_uruz"))
+if (G.GAME.round_resets.blind_states.Big == "Upcoming" or G.GAME.round_resets.blind_states.Big == "Select") and Entropy.has_rune("rune_entr_dreams") then
+    true_mult = 0
+end
 dollars = dollars * (G.GAME.InterferencePayoutMod or 1) * true_mult
 for i, v in pairs(Entropy.find_runes("rune_entr_uruz")) do
     G.E_MANAGER:add_event(Event{

@@ -1156,6 +1156,45 @@ local brimstone = {
     end
 }
 
+local dreams_indicator = Entropy.create_mark("dreams", 7071, {x = 6, y = 6})
+local dreams = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=6,y=6},
+    order = 7621,
+    key = "dreams",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_laguz",
+    immutable = true,
+    config = {
+        tags = 5
+    },
+    loc_vars = function(self, q, card) return {vars = {math.min(card.ability.tags, 20)}} end,
+    use = function(self, card)
+        for i = 1, math.min(card.ability.tags, 20) do
+            tag = Tag(get_next_tag_key())
+            add_tag(tag)
+        end
+        G.GAME.modifiers.no_blind_reward = G.GAME.modifiers.no_blind_reward or {}
+        G.GAME.modifiers.no_blind_reward.Small = true
+        Entropy.pact_mark("rune_entr_dreams")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args and args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 
 return {
     items = {
@@ -1178,6 +1217,7 @@ return {
         freedom, freedom_indicator,
         eternity, eternity_indicator,
         loyalty, loyalty_indicator,
-        brimstone, brimstone_indicator
+        brimstone, brimstone_indicator,
+        dreams, dreams_indicator
     }
 }

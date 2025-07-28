@@ -3586,6 +3586,17 @@ local decs = {
 					}
 				}
 			},
+			rune_entr_dreams = {
+				name = "Mark of Dreams",
+				text = {
+					{
+						"Marked by {C:red}Dreams{}"
+					},
+					{
+						"Small Blinds give no {C:attention}Reward{}"
+					}
+				}
+			},
 		},
 		Rune = {
 			c_entr_fehu = {
@@ -4122,7 +4133,14 @@ local decs = {
 					"{X:mult,C:white}X3.6{} Mult after hand played",
 					"{C:blue}-#1#{} Hands"
 				}
-			},				
+			},
+			c_entr_dreams = {
+				name = "Pact of Dreams",
+				text = {
+					"Add {C:attention}#1#{} Random Tags",
+					"Small Blinds give no {C:attention}Reward{}"
+				}
+			},			
 		},
 		Other = {
 			cry_banana_booster = {
