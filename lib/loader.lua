@@ -258,7 +258,7 @@ function SMODS.injectItems(...)
             return op
         end
         function get_chipmult_sum(chips, mult)
-            return Entropy.get_chipmult_score(chips, mult)
+            return to_big(Entropy.get_chipmult_score(chips, mult))
         end
 
         if MP then

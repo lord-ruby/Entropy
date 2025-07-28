@@ -1405,7 +1405,7 @@ function Entropy.get_chipmult_score(hand_chips, mult)
     elseif operator == -2 then hand_chips=to_big(mult); return hand_chips
     elseif operator == -1 then return to_big(hand_chips)+to_big(mult) 
     elseif operator == 0 then return to_big(hand_chips)*to_big(mult) end
-    local ret = (operator and to_big(hand_chips):arrow(operator, to_big(mult)) or to_big(hand_chips)*to_big(mult))
+    local ret = Big and (operator and to_big(hand_chips):arrow(operator, to_big(mult)) or to_big(hand_chips)*to_big(mult))
     Entropy.score_cache[number_format(hand_chips).."x"..number_format(mult)] = ret
     return ret
 end
