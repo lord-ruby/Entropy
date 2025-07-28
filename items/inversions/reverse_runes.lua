@@ -1195,6 +1195,52 @@ local dreams = {
     end
 }
 
+local energy_indicator = Entropy.create_mark("energy", 7072, {x = 0, y = 7})
+local energy = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=0,y=7},
+    order = 7622,
+    key = "energy",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_ingwaz",
+    immutable = true,
+    config = {
+        discards = 1
+    },
+    loc_vars = function(self, q, card) return {vars = {card.ability.discards}} end,
+    use = function(self, card)
+        for i, v in pairs(G.GAME.last_discarded or {}) do
+            v:set_edition(poll_edition("entr_energy", nil, true, true))
+        end
+        G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.discards
+        ease_discard(-card.ability.discards)
+        Entropy.pact_mark("rune_entr_dreams")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args and args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
+local discard_ref = G.FUNCS.discard_cards_from_highlighted
+G.FUNCS.discard_cards_from_highlighted = function(e, hook)
+    G.GAME.last_discarded = {}
+    for i, v in pairs(G.hand.highlighted) do
+        G.GAME.last_discarded[#G.GAME.last_discarded+1] = v
+    end
+    discard_ref(e, hook)
+end
 
 return {
     items = {
@@ -1218,6 +1264,7 @@ return {
         eternity, eternity_indicator,
         loyalty, loyalty_indicator,
         brimstone, brimstone_indicator,
-        dreams, dreams_indicator
+        dreams, dreams_indicator,
+        energy, energy_indicator
     }
 }

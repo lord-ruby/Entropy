@@ -3597,6 +3597,12 @@ local decs = {
 					}
 				}
 			},
+			rune_entr_energy = {
+				name = "Mark of Energy",
+				text = {
+					"Marked by {C:red}Energy{}"
+				}
+			},
 		},
 		Rune = {
 			c_entr_fehu = {
@@ -4139,6 +4145,13 @@ local decs = {
 				text = {
 					"Add {C:attention}#1#{} Random Tags",
 					"Small Blinds give no {C:attention}Reward{}"
+				}
+			},
+			c_entr_energy = {
+				name = "Pact of Energy",
+				text = {
+					"Apply random {C:dark_edition}Editions{} to last discarded hand",
+					"{C:red}-#1#{} Discard#<s>1#"
 				}
 			},			
 		},
