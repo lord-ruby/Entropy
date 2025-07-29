@@ -1242,6 +1242,64 @@ G.FUNCS.discard_cards_from_highlighted = function(e, hook)
     discard_ref(e, hook)
 end
 
+local blood_indicator = Entropy.create_mark("blood", 7073, {x = 1, y = 7})
+local blood = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=1,y=7},
+    order = 7623,
+    key = "blood",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_dagaz",
+    immutable = true,
+    config = {
+        random = 5
+    },
+    loc_vars = function(self, q, card) q[#q+1] = {set="Other",key="link", vars = {"[LINK_KEY]"}}; return {vars = {card.ability.random}} end,
+    use = function(self, card)
+        local cards = {}
+        for i, v in pairs(G.playing_cards) do
+            if v.base then cards[#cards+1] = v end
+        end
+        local linktxt
+        for i, v in pairs(cards) do
+            if v.ability.link then linktxt = v.ability.link end
+        end
+        linktxt = linktxt or Entropy.StringRandom(8)
+        pseudoshuffle(cards, pseudoseed("entr_blood"))
+        for i = 1, math.min(#cards, card.ability.random) do
+            local v = cards[i]
+            for i, v2 in pairs(G.hand.cards) do
+                if v2 ~= v and v.ability.link and v.ability.link == v2.ability.link then
+                    v2.ability.link = linktxt
+                end
+            end
+            for i, v2 in pairs(G.deck.cards) do
+                if v2 ~= v and v.ability.link and v.ability.link == v2.ability.link then
+                    v2.ability.link = linktxt
+                end
+            end
+            v.ability.link = linktxt
+            v:juice_up()
+        end
+        Entropy.pact_mark("rune_entr_blood")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args and args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 return {
     items = {
         avarice, avarice_indicator,
@@ -1265,6 +1323,7 @@ return {
         loyalty, loyalty_indicator,
         brimstone, brimstone_indicator,
         dreams, dreams_indicator,
-        energy, energy_indicator
+        energy, energy_indicator,
+        blood, blood_indicator
     }
 }

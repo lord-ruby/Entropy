@@ -3611,6 +3611,12 @@ local decs = {
 					"Marked by {C:red}Energy{}"
 				}
 			},
+			rune_entr_blood = {
+				name = "Blood of Energy",
+				text = {
+					"Marked by {C:red}Blood{}"
+				}
+			},
 		},
 		Rune = {
 			c_entr_fehu = {
@@ -4160,6 +4166,13 @@ local decs = {
 				text = {
 					"Apply random {C:dark_edition}Editions{} to last discarded hand",
 					"{C:red}-#1#{} Discard#<s>1#"
+				}
+			},	
+			c_entr_blood = {
+				name = "Pact of Blood",
+				text = {
+					"Randomly Link {C:attention}#1#{}",
+					"playing cards from your {C:attention}full deck{} together"
 				}
 			},			
 		},

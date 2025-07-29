@@ -373,6 +373,7 @@ local pact = {
         return #num <= card.ability.selected and #num > 0
 	end,
     loc_vars = function(self, q, card)
+        q[#q+1] = {set="Other",key="link", vars = {"[LINK_KEY]"}}
         return {
             vars = {
                 card.ability.selected
