@@ -32,20 +32,20 @@ local stillicidium = {
                             --G.jokers:emplace(c)
                             --v:start_dissolve()#
                             local v2 = G.jokers.cards[i]
-                            local index = ReductionIndex(v2, "Joker")-1
-                            while G.P_CENTER_POOLS["Joker"][index] and G.P_CENTER_POOLS["Joker"][index].no_doe or G.P_CENTER_POOLS["Joker"].no_collection do
+                            local index = ReductionIndex(v2, v2.config.center.set)-1
+                            while G.P_CENTER_POOLS[v2.config.center.set][index] and G.P_CENTER_POOLS[v2.config.center.set][index].no_doe or G.P_CENTER_POOLS[v2.config.center.set].no_collection do
                                 index = index - 1
                             end
                             if index < 1 then index = 1 end
-                            if G.P_CENTER_POOLS["Joker"][index] then
-                                key = G.P_CENTER_POOLS["Joker"][index].key
+                            if G.P_CENTER_POOLS[v2.config.center.set][index] then
+                                key = G.P_CENTER_POOLS[v2.config.center.set][index].key
                                 --local c = create_card("Joker", G.jokers, nil, nil, nil, nil, key) 
                                 --c:add_to_deck()    
                                 v2:start_dissolve()
                                 G.jokers:remove_from_highlighted(v2, true)
                                 local edition = v.edition
                                 local sticker = v.sticker
-                                v2 = create_card("Joker", G.jokers, nil, nil, nil, nil, key) 
+                                v2 = create_card(v2.config.center.set, G.jokers, nil, nil, nil, nil, key) 
                                 v2:set_card_area(G.jokers)
                                 v2:set_edition(edition)
                                 v2:add_to_deck()

@@ -810,8 +810,8 @@ local decrement = {
     pos = {x=3,y=3},
     use = function(self, card, area, copier)
         Entropy.FlipThen(Entropy.GetHighlightedCards({G.jokers}, card, 1, card.ability.extra), function(card)
-            local ind = ReductionIndex(card, "Joker")-1
-            while G.P_CENTER_POOLS["Joker"][ind] and G.P_CENTER_POOLS["Joker"][ind].no_doe or G.P_CENTER_POOLS["Joker"].no_collection do
+            local ind = ReductionIndex(card, v2.config.center.set)-1
+            while G.P_CENTER_POOLS[v2.config.center.set][ind] and G.P_CENTER_POOLS[v2.config.center.set][ind].no_doe or G.P_CENTER_POOLS[v2.config.center.set].no_collection do
                 ind = ind - 1
             end
             if ind < 1 then ind = 1 end
