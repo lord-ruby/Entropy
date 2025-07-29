@@ -172,6 +172,6 @@ end
 
 return {
     items = {
-        hyperbolic_chamber
+        (SMODS.Mods["Cryptid"] or {}).can_load and hyperbolic_chamber or nil
     }
 }

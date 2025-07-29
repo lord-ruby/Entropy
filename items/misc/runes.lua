@@ -352,7 +352,7 @@ end
 function Entropy.get_random_rune(seed, no_hidden)
     local runes = {}
     for i, v in pairs(G.P_RUNES) do
-        if not v.hidden or not no_hidden then
+        if (not v.hidden or not no_hidden) and not v.is_pact then
             runes[#runes+1]=v.key
         end
     end
