@@ -2603,7 +2603,7 @@ local is_suitref = Card.is_suit
 function Card:is_suit(suit, ...)
     if next(SMODS.find_card("j_entr_antiderivative")) then
         self.antiderivative_bypass = true
-        local ret = self:get_id() == Entropy.get_suit_id(suit)
+        local ret = type(self.get_id) == "function" and self:get_id() == Entropy.get_suit_id(suit) or nil
         self.antiderivative_bypass = nil
         return ret
     end
