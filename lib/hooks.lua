@@ -2309,9 +2309,9 @@ function get_blind_amount(ante)
         return 100 * (0.95^(-ante))
     end
     if (Entropy.config.ante_scaling and to_big(ante) > to_big(8) and #Cryptid.advanced_find_joker(nil, "entr_entropic", nil, nil, true) ~= 0) or G.GAME.modifiers.entropic then
-        return to_big(gba(actual)):tetrate(1 + ante/32)
+        return to_big(gba(to_number(actual))):tetrate(1 + ante/32)
     end
-    return gba(actual) or 100
+    return gba(to_number(actual)) or 100
 end
 function lerp(f1,f2,p)
     p = p * p
