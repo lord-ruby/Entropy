@@ -1242,16 +1242,18 @@ G.FUNCS.discard_cards_from_highlighted = function(e, hook)
     discard_ref(e, hook)
 end
 
-local blood_indicator = Entropy.create_mark("blood", 7073, {x = 1, y = 7})
+--pact of awakening here
+
+local blood_indicator = Entropy.create_mark("blood", 7074, {x = 1, y = 7})
 local blood = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=1,y=7},
-    order = 7623,
+    order = 7624,
     key = "blood",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
-    inversion = "c_entr_dagaz",
+    inversion = "c_entr_othila",
     immutable = true,
     config = {
         random = 5
