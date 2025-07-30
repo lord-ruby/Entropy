@@ -519,8 +519,8 @@ local caviar = {
         }
     },
     eternal_compat = true,
-    pos = {x = 3, y = 0},
-    atlas = "placeholder",
+    pos = {x = 8, y = 7},
+    atlas = "jokers",
     loc_vars = function(self, info_queue, card2)
         return {
             vars = {
