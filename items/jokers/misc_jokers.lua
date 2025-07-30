@@ -1980,8 +1980,8 @@ local fused_lens = {
         }
     },
     eternal_compat = true,
-    pos = { x = 1, y = 0 },
-    atlas = "placeholder",
+    pos = {x = 1, y = 8},
+    atlas = "jokers",
     config = {
         extra = {
             odds = 4

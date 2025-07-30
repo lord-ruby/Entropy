@@ -100,7 +100,7 @@ SMODS.PokerHandPart {
 			or card.config.center.overrides_base_rank 
 			or card.base.suit == "entr_nilsuit" 
 			or card.base.value == "entr_nilrank" 
-			or not suits[card.base.suit]
+			or (not suits[card.base.suit] and not SMODS.has_no_suit(card))
 			then --card.ability.name ~= "Gold Card"
                 eligible_cards[#eligible_cards+1] = card
 			end
