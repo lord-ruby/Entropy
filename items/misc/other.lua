@@ -112,9 +112,8 @@ SMODS.PokerHand{
 	example = {
 		{ "entr_nilsuit_K", true },
 		{ "entr_nilsuit_T", true },
-		{ "entr_nilsuit_7", true },
 		{ "H_entr_nilrank", true },
-		{ "entr_nilsuit_4", true },
+		{ "entr_nilsuit_7", true },
 		{ "entr_nilsuit_2", true },
 	},
 	evaluate = function(parts, hand)
