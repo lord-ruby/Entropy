@@ -2831,8 +2831,8 @@ local neuroplasticity = {
     order = 51,
     object_type = "Joker",
     key = "neuroplasticity",
-    rarity = 3,
-    cost = 10,
+    rarity = 2,
+    cost = 8,
     dependencies = {
         items = {            
             "set_entr_inversions"
