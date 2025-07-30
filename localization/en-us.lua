@@ -2607,6 +2607,14 @@ local decs = {
 					"to #1# selected card",
 				}
 			},
+			c_entr_serpents = {
+				name = "Pact of Serpents",
+				text = {
+					"Create a random {C:attention}Rare{} Consumable",
+					"{C:money}-$#1#{}",
+					"{C:inactive}(May overflow){}"
+				}
+			},
 		},
 		Tarot = {
 			c_entr_kiln = {
@@ -3612,9 +3620,22 @@ local decs = {
 				}
 			},
 			rune_entr_blood = {
-				name = "Blood of Energy",
+				name = "Blood of Blood",
 				text = {
 					"Marked by {C:red}Blood{}"
+				}
+			},
+			rune_entr_awakening = {
+				name = "Blood of Awakening",
+				text = {
+					"Marked by {C:red}Awakening{}"
+				}
+			},
+			rune_entr_serpents = {
+				name = "Mark of Serpents",
+				text = {
+					"Marked by {C:red}Serpents{}",
+					"{C:red,E:1,s:0.8}Your Fate is sealed{}"
 				}
 			},
 		},
@@ -4174,7 +4195,14 @@ local decs = {
 					"Randomly Link {C:attention}#1#{}",
 					"playing cards from your {C:attention}full deck{} together"
 				}
-			},			
+			},		
+			c_entr_awakening = {
+				name = "Pact of Awakening",
+				text = {
+					"Create a random {C:dark_edition}Negative{} Voucher",
+					"{C:attention}-#1#{} Shop Slot#<s>1#"
+				}
+			},
 		},
 		Other = {
 			cry_banana_booster = {
@@ -4301,6 +4329,15 @@ local decs = {
 				}
 			},
 			undiscovered_rune = {
+				name = "Not Discovered",
+				text = {
+					"Purchase or use",
+					"this card in an",
+					"unseeded run to",
+					"learn what it does",
+				},
+			},
+			undiscovered_pact = {
 				name = "Not Discovered",
 				text = {
 					"Purchase or use",

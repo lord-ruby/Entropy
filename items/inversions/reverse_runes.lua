@@ -1244,6 +1244,52 @@ end
 
 --pact of awakening here
 
+local awakening_indicator = Entropy.create_mark("awakening", 7073, {x = 2, y = 7})
+local awakening = {
+    object_type = "Consumable",
+    set = "Pact",
+    atlas = "rune_atlas",
+    pos = {x=2,y=7},
+    order = 7623,
+    key = "awakening",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_dagaz",
+    immutable = true,
+    config = {
+        shop_size = 1
+    },
+    loc_vars = function(self, q, card) q[#q + 1] = {key = 'e_negative_consumable', set = 'Edition', config = {extra = 1}}; return {vars = {card.ability.shop_size}} end,
+    use = function(self, card)
+        local mod = math.floor(card and card.ability.shop_size or 1)
+        G.E_MANAGER:add_event(Event({
+			func = function() --card slot
+				-- why is this in an event?
+				change_shop_size(-mod)
+				return true
+			end,
+		}))
+        local card = SMODS.add_card{
+            set = "Voucher",
+            area = G.consumeables
+        }
+        card:set_edition("e_negative")
+        Entropy.pact_mark("rune_entr_awakening")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args and args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 local blood_indicator = Entropy.create_mark("blood", 7074, {x = 1, y = 7})
 local blood = {
     object_type = "Consumable",
@@ -1302,6 +1348,51 @@ local blood = {
     end
 }
 
+local serpents_indicator = Entropy.create_mark("serpents", 7075, {x = 3, y = 7})
+local serpents = {
+    object_type = "Consumable",
+    set = "Omen",
+    atlas = "rune_atlas",
+    pos = {x=3,y=7},
+    order = 7625,
+    key = "serpents",
+    dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
+    inversion = "c_entr_oss",
+    immutable = true,
+    config = {
+        dollars = 10
+    },
+    loc_vars = function(self, q, card) return {vars = {card.ability.dollars}} end,
+    use = function(self, card)
+        ease_dollars(-card.ability.dollars)
+        local omens = {}
+        for i, v in pairs(G.P_CENTERS) do
+            if v.hidden and not v.no_collection and (not v.in_pool or v:in_pool({}) and v.key ~= "c_entr_serpents") then
+                omens[#omens+1] = v.key
+            end
+        end
+        local key = pseudorandom_element(omens, pseudoseed("entr_serpents"))
+        SMODS.add_card{
+            key = key,
+            area = G.consumeables
+        }
+        Entropy.pact_mark("rune_entr_serpents")
+    end,
+    can_use = function()
+        return true
+    end,
+    in_pool = function(self, args)
+        if args and args.source == "twisted_card" then
+            return false
+        end
+        return true
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 return {
     items = {
         avarice, avarice_indicator,
@@ -1326,6 +1417,8 @@ return {
         brimstone, brimstone_indicator,
         dreams, dreams_indicator,
         energy, energy_indicator,
-        blood, blood_indicator
+        blood, blood_indicator,
+        awakening, awakening_indicator,
+        serpents, serpents_indicator
     }
 }
