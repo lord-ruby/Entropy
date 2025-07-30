@@ -226,7 +226,7 @@ end
 local planets = {}
 local order = 0
 
-function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,level, name,set_badges,loc_vars,config, new_key, calc, art)
+function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,level, name,set_badges,loc_vars,config, new_key, calc, art, atlas)
   order = order + 1
   planets[#planets+1]={
     object_type="Consumable",
@@ -239,7 +239,7 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
         "set_entr_inversions"
       }
     },
-    atlas = "consumables",
+    atlas = atlas or "consumables",
     config = config or {
         level = level or 2,
         handname = handname
@@ -469,10 +469,13 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
   Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Kaikki", new_key = "kivi", sprite_pos={x=12,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"cry_Bulwark", "cry_Clusterfuck", "cry_UltPair"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
   Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="voxel", new_key = "chunk", sprite_pos={x=1,y=7},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"cry_Declare0", "cry_Declare1", "cry_Declare2"}}, loc_vars = Entropy.ChunkLocVars, calc=Entropy.ReverseSuitCalc}
 end
+Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="entr_derivative",key="wormhole",sprite_pos={x=4,y=0}, new_key="pocket_dimension", prefix = "entr", atlas = "consumables2", set_badges = function(self, card, badges)
+  badges[1] = create_badge(localize("k_spatial_anomaly"), get_type_colour(self or card.config, card), nil, 1.2)
+end}
 function Entropy.RegisterReversePlanets()
   Entropy.StarLocs = {}
     for i, v in pairs(Entropy.ReversePlanets) do
-		Entropy.RegisterReversePlanet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name,v.set_badges,v.loc_vars,v.config,v.new_key, v.calc, v.art)
+		Entropy.RegisterReversePlanet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name,v.set_badges,v.loc_vars,v.config,v.new_key, v.calc, v.art, v.atlas)
         planets[#planets].inversion = (v.prefix or "c_")..v.key
 	end
 end

@@ -85,8 +85,88 @@ SMODS.Sticker:take_ownership("cry_absolute", {
 	no_edeck = true
 }, true)
 
+SMODS.PokerHandPart {
+	key = "derivative_part",
+	func = function(hand)
+		local eligible_cards = {}
+		for i, card in ipairs(hand) do
+			if SMODS.has_no_suit(card) or card.config.center.key == "m_stone" or card.config.center.overrides_base_rank or card.base.suit == "entr_nilsuit" or card.base.value == "entr_nilrank" then --card.ability.name ~= "Gold Card"
+                eligible_cards[#eligible_cards+1] = card
+			end
+		end
+        local num = 5
+		if #eligible_cards >= num then
+			return { eligible_cards }
+		end
+		return {}
+	end,
+}
+
+SMODS.PokerHand{
+	key = "entr_derivative",
+	l_chips = 50,
+	l_mult = 3,
+	chips = 160,
+	mult = 16,
+	visible = false,
+	example = {
+		{ "entr_nilsuit_K", true },
+		{ "entr_nilsuit_T", true },
+		{ "entr_nilsuit_7", true },
+		{ "H_entr_nilrank", true },
+		{ "entr_nilsuit_4", true },
+		{ "entr_nilsuit_2", true },
+	},
+	evaluate = function(parts, hand)
+		if next(parts.entr_derivative_part) then
+			return { SMODS.merge_lists(parts.entr_derivative_part) }
+		end
+		return {}
+	end
+}
+
+local wormhole = {
+	dependencies = {
+		items = {
+			"set_entr_misc"
+		},
+	},
+	object_type = "Consumable",
+	set = "Planet",
+	key = "wormhole",
+	config = { hand_type = "entr_derivative", softlock = true },
+	pos = { x = 3, y = 0 },
+	order = 1,
+	atlas = "consumables2",
+	aurinko = true,
+	set_card_type_badge = function(self, card, badges)
+		badges[1] = create_badge(localize("k_spatial_anomaly"), get_type_colour(self or card.config, card), nil, 1.2)
+	end,
+	loc_vars = function(self, info_queue, center)
+		return {
+			vars = {
+				localize("entr_derivative", "poker_hands"),
+				G.GAME.hands["entr_derivative"].level,
+				G.GAME.hands["entr_derivative"].l_mult,
+				G.GAME.hands["entr_derivative"].l_chips,
+				colours = {
+					(
+						to_big(G.GAME.hands["entr_derivative"].level) == to_big(1) and G.C.UI.TEXT_DARK
+						or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands["entr_derivative"].level))]
+					),
+				},
+			},
+		}
+	end,
+	demicoloncompat = true,
+	force_use = function(self, card, area)
+		card:use_consumeable(area)
+	end,
+}
+
 return {
     items = {
-        aleph
+        aleph,
+		wormhole
     }
 }

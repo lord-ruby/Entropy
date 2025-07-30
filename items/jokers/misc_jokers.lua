@@ -2853,7 +2853,7 @@ local neuroplasticity = {
         }
     },    
     eternal_compat = true,
-    pos = { x = 2, y = 0 },
+    pos = { x = 1, y = 0 },
     atlas = "placeholder",
     add_to_deck = function(self, card, from_debuff)
         if not G.GAME.randomised_hand_map then
@@ -2887,6 +2887,78 @@ local neuroplasticity = {
             for i, v in pairs(map) do
                 G.GAME.randomised_hand_map[v] = map_shuffled[i]
             end
+        end
+    end
+}
+
+local dragonfruit = {
+    order = 52,
+    object_type = "Joker",
+    key = "dragonfruit",
+    rarity = 2,
+    cost = 6,
+    dependencies = {
+        items = {            
+            "set_entr_inversions"
+        }
+    },    
+    eternal_compat = true,
+    pos = { x = 1, y = 0 },
+    atlas = "placeholder",
+    config = {
+        left = 5,
+        left_mod = 1
+    },
+    pools = {Food = true},
+    add_to_deck = function(self, card, from_debuff)
+        Entropy.ChangeFullCSL(card.ability.left)
+    end,
+    remove_from_deck = function(self, card, from_debuff)
+        Entropy.ChangeFullCSL(card.ability.left)
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.left,
+                card.ability.left_mod
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.after and not context.repetition and not context.blueprint then
+            card.ability.left = card.ability.left - card.ability.left_mod
+            Entropy.ChangeFullCSL(- card.ability.left_mod)
+            if card.ability.left <= 0 then
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        play_sound("tarot1")
+                        card.T.r = -0.2
+                        card:juice_up(0.3, 0.4)
+                        card.states.drag.is = true
+                        card.children.center.pinch.x = true
+                        G.E_MANAGER:add_event(Event({
+                            trigger = "after",
+                            delay = 0.3,
+                            blockable = false,
+                            func = function()
+                                G.jokers:remove_card(card)
+                                card:remove()
+                                card = nil
+                                return true
+                            end,
+                        }))
+                        return true
+                    end,
+                }))
+                return {
+                    message = localize("k_eaten_ex"),
+                    colour = G.C.FILTER,
+                }
+            end
+            return {
+                message = "-"..number_format(card.ability.left_mod),
+                colour = G.C.RED,
+            }
         end
     end
 }
@@ -2946,6 +3018,7 @@ return {
         antiderivative,
         alles,
         feynman_point,
-        neuroplasticity
+        neuroplasticity,
+        dragonfruit
     }
 }

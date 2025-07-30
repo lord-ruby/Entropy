@@ -1055,6 +1055,14 @@ local decs = {
 					"Shuffles {C:attention}every round{}"
                 },
             },
+			j_entr_dragonfruit = {
+                name = "Dragonfruit",
+                text = {
+                    "{C:attention}+#1#{} Card Selection Limit",
+					"{C:attention}-#2#{} Card Selection Limit",
+					"after every played hand"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
@@ -1754,6 +1762,15 @@ local decs = {
 					"{C:inactive}(Currently {X:gold,C:white}#3#{C:inactive}",
 				},
 			},
+			c_entr_wormhole = {
+				name = "Wormhole",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){} Level up",
+					"{C:attention}#2#",
+					"{C:mult}+#3#{} Mult and",
+					"{C:chips}+#4#{} chip#<s>4#",
+				},
+			},
 		},
 		Voucher = {
 			v_entr_marked = {
@@ -2286,6 +2303,14 @@ local decs = {
 					"highest {C:gold}Ascension Power{}",
 					"{C:legendary,E:1}poker hand{}",
 				},
+			},
+			c_entr_pocket_dimension = {
+				name = "Pocket Dimension",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
 			},
 		},
 		Omen = {
@@ -4888,7 +4913,8 @@ local decs = {
 			k_inactive = "Inactive!",
 			k_randomised = "Randomized!",
 			k_saved_algiz = "Saved by Algiz",
-			k_undebuffed_ex = "Undebuffed!"
+			k_undebuffed_ex = "Undebuffed!",
+			k_spatial_anomaly = "Spatial Anomaly"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",
@@ -4930,6 +4956,7 @@ local decs = {
 			["entr-Straight_Flesh"] = "Straight Flesh",
 			["entr-Flesh_House"] = "Flesh House",
 			["entr-Flesh_Five"] = "Flesh Five",
+			["entr_derivative"] = "Derivative"
 		},
 		poker_hand_descriptions = {
 			entr_All = {
@@ -4938,6 +4965,9 @@ local decs = {
 				"plus an entire full set of Optics",
 				"and Nils, plus one Nil rank of each suit",
 				Cryptid_config.family_mode and "God is Dead" or "Fuck You, God is Dead",
+			},
+			entr_derivative = {
+				"5 Non-Standard Ranks or Suits"
 			}
 		},
 		challenge_names = {
