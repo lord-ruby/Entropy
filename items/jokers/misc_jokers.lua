@@ -2097,7 +2097,7 @@ local roulette = {
     },
     eternal_compat = true,
     pos = {x = 0, y = 8},
-    atlas = "placeholder",
+    atlas = "jokers",
     loc_vars = function(self, q, card)
         local num, denom = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
         return {
