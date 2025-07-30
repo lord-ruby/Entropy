@@ -265,6 +265,9 @@ function Entropy.HasJoker(key, checkdebuff)
     for i, v in ipairs(G.jokers and G.jokers.cards or {}) do
         if v.config.center.key == key and (not checkdebuff or not v.debuff) and not v.ability.turned_off then num = (num or 0) + 1 end
     end
+    for i, v in ipairs(G.butterfly_jokers and G.butterfly_jokers.cards or {}) do
+        if v.config.center.key == key and (not checkdebuff or not v.debuff) and not v.ability.turned_off then num = (num or 0) + 1 end
+    end
     return num
 end
 

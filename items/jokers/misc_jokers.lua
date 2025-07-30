@@ -2345,6 +2345,20 @@ local sandpaper = {
                 }
             end
         end
+        if context.forcetrigger then
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                blocking = false,
+                func = function()
+                    for i, v in pairs(stones) do v:start_dissolve(); v.ability.temporary2 = true end
+                    SMODS.add_card{
+                        set = "Rune",
+                        area = G.consumeables
+                    }
+                    return true
+                end
+            })
+        end
     end,
 }
 
