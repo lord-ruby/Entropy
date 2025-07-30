@@ -822,8 +822,7 @@ local apeirostemma = {
         if e == 2 then
             if context.joker_main then
                 for i, v in pairs(G.jokers.cards) do
-                    if SMODS.pseudorandom_probability(card, 'apeiro_dice_2', 1, card.ability.extra.odds)
-                        / card.ability.extra.odds and v ~= card then
+                    if SMODS.pseudorandom_probability(card, 'apeiro_dice_2', 1, card.ability.extra.odds) and v ~= card then
                         local results = Cryptid.forcetrigger(v, context)
                         if results then Entropy.EvaluateEffects(results, card) end
                     end
