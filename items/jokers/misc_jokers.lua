@@ -1894,8 +1894,8 @@ local insurance_fraud = {
         }
     },
     eternal_compat = true,
-    pos = { x = 1, y = 0 },
-    atlas = "placeholder",
+    pos = {x = 9, y = 7},
+    atlas = "jokers",
     demicoloncompat = true,
     calculate = function(self, card, context)
         if (context.selling_card and context.card.config.center.set == "Tarot") or context.forcetrigger then
