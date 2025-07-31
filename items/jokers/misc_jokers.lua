@@ -2515,6 +2515,7 @@ local chuckle_cola = {
         triggers = 20,
         xchip_mod = 2
     },
+    pools = {Food = true},
     loc_vars = function(self, q, card)
         return {
             vars = {
