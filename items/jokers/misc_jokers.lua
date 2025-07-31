@@ -2334,12 +2334,15 @@ local slipstream = {
         if context.joker_main or context.forcetrigger then
             for i, v in pairs(G.consumeables.cards) do
                 if v.config.center.set == "Omen" then 
-                    G.E_MANAGER:add_event(Event{
-                        func = function()
-                            card:juice_up()
-                            return true
-                        end
-                    })
+                    local num = v.getQty and v:getQty() or 1
+                    for i = 1, num do
+                        G.E_MANAGER:add_event(Event{
+                            func = function()
+                                card:juice_up()
+                                return true
+                            end
+                        })
+                    end
                     SMODS.calculate_effect({xmult = card.ability.xmult}, v)
                 end
             end
