@@ -2327,7 +2327,7 @@ local slipstream = {
                 })
                 G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
                 return {
-                    message = "+1"..localize("k_omen")
+                    message = "+1 "..localize("k_omen")
                 }
             end
         end
