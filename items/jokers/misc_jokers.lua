@@ -2326,10 +2326,10 @@ local slipstream = {
                     end
                 })
                 G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+                return {
+                    message = "+1"..localize("k_omen")
+                }
             end
-            return {
-                message = "+1"..localize("k_omen")
-            }
         end
         if context.joker_main or context.forcetrigger then
             for i, v in pairs(G.consumeables.cards) do
