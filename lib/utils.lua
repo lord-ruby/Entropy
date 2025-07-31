@@ -1826,7 +1826,7 @@ end
 function Entropy.misc_calculations(self, card, context)
     if context.repetition and context.cardarea == G.play then 
         local repetitions = 0
-        local chains_count = Entropy.has_rune("rune_entr_chains") and Entropy.has_rune("rune_entr_chains").ability.count or 1
+        local chains_count = Entropy.has_rune("rune_entr_chains") and Entropy.has_rune("rune_entr_chains").ability.count or 0
         if (SMODS.is_eternal(context.other_card) or context.other_card.ability.eternal) and chains_count > 0 then
             repetitions = repetitions + chains_count
         end
