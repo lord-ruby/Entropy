@@ -2948,7 +2948,10 @@ local neuroplasticity = {
                 G.GAME.randomised_hand_map[v] = map_shuffled[i]
             end
         end
-    end
+    end,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    }
 }
 
 local dragonfruit = {
