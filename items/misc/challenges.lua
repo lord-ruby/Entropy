@@ -76,6 +76,8 @@ function Game:start_run(args)
     end
     if not G.GAME.rune_rate then G.GAME.rune_rate = 0 end
     if G.GAME.cry_percrate and not G.GAME.cry_percrate["rune"] then G.GAME.cry_percrate["rune"] = 0 end
+    G.jokers.config.highlight_limit = 1e100
+    G.consumeables.config.highlight_limit = 1e100
 end
 
 local set_abilityref = Card.set_ability

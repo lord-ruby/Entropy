@@ -481,6 +481,14 @@ local decs = {
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}"
 				}
 			},
+			j_entr_slipstream = {
+				name = "Slipstream, Heir of Time",
+				text = {
+					"Create an {C:red}Omen{} card",
+					"when blind is selected",
+					"Held {C:red}Omens{} give {X:mult,C:white}X#1#{} Mult"
+				}
+			},
 			j_entr_devilled_suns = {
 				name = "Devilled Suns",
 				text = {

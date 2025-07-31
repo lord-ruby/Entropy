@@ -2298,6 +2298,60 @@ local ruby = {
     end
 }
 
+local slipstream = {
+    object_type = "Joker",
+    key = "slipstream",
+    order = 301,
+    rarity = 4,
+    cost = 20,
+    atlas = "ruby_atlas",
+    pos = {x=0, y=1},
+    soul_pos = {x = 1, y = 1},
+    config = {
+        xmult = 2,
+    },
+    calculate = function(self, card, context)
+        if context.setting_blind then
+            if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        G.GAME.consumeable_buffer = 0
+                        SMODS.add_card{
+                            set = "Omen",
+                            area = G.consumeables
+                        }         
+                        return true
+                    end
+                })
+                G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+            end
+            return {
+                message = "+1"..localize("k_omen")
+            }
+        end
+        if context.joker_main then
+            for i, v in pairs(G.consumeables.cards) do
+                if v.config.center.set == "Omen" then 
+                    G.E_MANAGER:add_event(Event{
+                        func = function()
+                            card:juice_up()
+                            return true
+                        end
+                    })
+                    SMODS.calculate_effect({xmult = card.ability.xmult}, v)
+                end
+            end
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                number_format(card.ability.xmult)
+            }
+        }
+    end
+}
+
 local sandpaper = {
     order = 43,
     object_type = "Joker",
@@ -2854,8 +2908,8 @@ local neuroplasticity = {
         }
     },    
     eternal_compat = true,
-    pos = { x = 1, y = 0 },
-    atlas = "placeholder",
+    pos = {x = 3, y = 8},
+    atlas = "jokers",
     add_to_deck = function(self, card, from_debuff)
         if not G.GAME.randomised_hand_map then
             local map = {}
@@ -3011,6 +3065,7 @@ return {
         debit_card,
         birthday_card,
         ruby,
+        slipstream,
         sandpaper,
         purple_joker,
         chalice_of_blood,
