@@ -3534,8 +3534,8 @@ function SMODS.get_probability_vars(trigger_obj, base_numerator, base_denominato
     if any_active then
         numerator = denominator
     end
-    if numerator < 0 then numerator = 0 end
-    if denominator < 1 then denominator = 1 end
+    if (numerator or -1) < 0 then numerator = 0 end
+    if (denominator or 0) < 1 then denominator = 1 end
     return numerator, denominator
 end
 

@@ -185,9 +185,11 @@ local pink = {
     badge_colour = HEX("cc48be"),
     calculate = function(self, card, context)
         if context.pre_discard and context.cardarea == G.hand and card.highlighted then
-            card.ability.temporary2 = true
-            card:remove_from_deck()
-            card:start_dissolve()
+            if not SMODS.is_eternal(card) then
+                card.ability.temporary2 = true
+                card:remove_from_deck()
+                card:start_dissolve()
+            end
             G.E_MANAGER:add_event(Event({
                 func = function()
                     if G.consumeables.config.card_count < G.consumeables.config.card_limit then
