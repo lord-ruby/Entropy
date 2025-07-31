@@ -2904,8 +2904,8 @@ local dragonfruit = {
         }
     },    
     eternal_compat = true,
-    pos = { x = 1, y = 0 },
-    atlas = "placeholder",
+    pos = {x = 2, y = 8},
+    atlas = "jokers",
     config = {
         left = 5,
         left_mod = 1
