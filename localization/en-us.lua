@@ -2753,6 +2753,14 @@ local decs = {
 					"{s:0.8}Applies all previous Stakes",
 				},
 			},
+			stake_entr_obsidian = {
+				name = "Obsidian Stake",
+				text = {
+					"Always obtain a {C:red}Curse{} when",
+					"defeating the Boss Blind",
+					"{s:0.8}Applies all previous Stakes",
+				},
+			},
 			stake_entr_iridium = {
 				name = "Iridium Stake",
 				text = {
@@ -4490,6 +4498,14 @@ local decs = {
                     '{C:attention}Stake{} difficulty'
                 }
             },
+			entr_obsidian_sticker = {
+                name = 'Obsidian Sticker',
+                text = {
+                    'Used this Joker',
+                    'to win on {C:attention}Obsidian',
+                    '{C:attention}Stake{} difficulty'
+                }
+            },
 			entr_iridium_sticker = {
                 name = 'Iridium Sticker',
                 text = {
@@ -4922,7 +4938,19 @@ local decs = {
 			k_randomised = "Randomized!",
 			k_saved_algiz = "Saved by Algiz",
 			k_undebuffed_ex = "Undebuffed!",
-			k_spatial_anomaly = "Spatial Anomaly"
+			k_spatial_anomaly = "Spatial Anomaly",
+
+			k_curse_blind = "Curse of The Blind",
+			k_curse_blind_desc = "Shop Cards may be Hidden",
+
+			k_curse_darkness = "Curse of Darkness",
+			k_curse_darkness_desc = "Booster Packs have Less Choices",
+
+			k_curse_lost = "Curse of The Lost",
+			k_curse_lost_desc = "No Small Blind",
+
+			k_curse_maze = "Curse of The Maze",
+			k_curse_maze_desc = "Blind order is Randomised"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

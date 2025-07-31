@@ -2163,6 +2163,17 @@ function create_UIBox_blind_select()
                 G.GAME.round_resets.blind_choices[i] = "bl_entr_endless_entropy_phase_one"
             end
         end
+        if G.GAME.curse == "entr_maze" and not G.GAME.entr_maze_applied then
+            local choices = {}
+            for i, v in pairs(G.GAME.round_resets.blind_choices) do
+                choices[#choices+1] = v
+            end
+            pseudoshuffle(choices, pseudoseed("entr_maze"))
+            G.GAME.round_resets.blind_choices.Small = choices[1]
+            G.GAME.round_resets.blind_choices.Big = choices[2]
+            G.GAME.round_resets.blind_choices.Boss = choices[3]
+            G.GAME.entr_maze_applied = true
+        end
         return uibox_ref()
     end
 end
@@ -3713,6 +3724,7 @@ G.FUNCS.toggle_shop = function(e)
                 end
             })
             check = true
+            delay(1)
             card_eval_status_text(
                 v,
                 "extra",
