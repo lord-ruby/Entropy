@@ -73,7 +73,7 @@ Entropy.RarityPoints = {
     ["cry_exotic"] = 700,
     ["entr_entropic"] = 2000,
 }
---higher rarities give less points so the diminisher is used in division
+--higher rarities give less points from editions so the diminisher is used in division
 Entropy.RarityDiminishers = {
     [1] = 1,
     [2] = 1.25,

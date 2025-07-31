@@ -236,21 +236,14 @@ SMODS.Atlas {
 
 SMODS.Atlas { 
     key = 'consumables2', 
-    path = 'second_consumables.png', --placeholder
+    path = 'second_consumables.png',
     px = 71, 
     py = 95 
 }
 
 SMODS.Atlas { 
     key = 'cry_banana', 
-    path = 'cry_banana.png', --placeholder
-    px = 71, 
-    py = 95 
-}
-
-SMODS.Atlas { 
-    key = 'cry_banana', 
-    path = 'cry_banana.png', --placeholder
+    path = 'cry_banana.png',
     px = 71, 
     py = 95 
 }
