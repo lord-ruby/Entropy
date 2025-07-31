@@ -2275,6 +2275,7 @@ local ruby = {
         xmult = 1,
         xmult_mod = 2
     },
+    demicoloncompat = true,
     calculate = function(self, card, context)
         if context.entr_path_changed then
             card.ability.xmult = card.ability.xmult + card.ability.xmult_mod
@@ -2282,7 +2283,7 @@ local ruby = {
                 message = localize("k_upgrade_ex")
             }
         end
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             return {
                 xmult = card.ability.xmult
             }
@@ -2310,6 +2311,7 @@ local slipstream = {
     config = {
         xmult = 2,
     },
+    demicoloncompat = true,
     calculate = function(self, card, context)
         if context.setting_blind then
             if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
@@ -2329,7 +2331,7 @@ local slipstream = {
                 message = "+1"..localize("k_omen")
             }
         end
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             for i, v in pairs(G.consumeables.cards) do
                 if v.config.center.set == "Omen" then 
                     G.E_MANAGER:add_event(Event{
