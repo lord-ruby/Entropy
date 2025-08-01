@@ -2846,7 +2846,7 @@ local feynman_point = {
 local calculate_jokerref = Card.calculate_joker
 function Card:calculate_joker(...)
     local ret = calculate_jokerref(self, ...)
-    if next(SMODS.find_card("j_entr_feynman_point")) and self.config.center.key ~= "j_entr_feynman_point" and not self.config.center.immutable then
+    if next(SMODS.find_card("j_entr_feynman_point")) and self.config.center.key ~= "j_entr_feynman_point" and not self.config.center.immutable and self.area == G.jokers then
         local highest = 0
         for i, v in pairs(SMODS.find_card("j_entr_feynman_point")) do
             if to_big(v.ability.nearest) > to_big(highest) then
