@@ -2860,7 +2860,8 @@ function Card:calculate_joker(...)
                     if to_big(nnum) < to_big(highest) then return highest end
                     return nnum
                 end,
-                dont_stack = true
+                dont_stack = true,
+                no_deck_effects = true
             })
         end
     end
@@ -2891,7 +2892,8 @@ function Card:set_ability(...)
                                 if to_big(nnum) < to_big(highest) then return highest end
                                 return nnum
                             end,
-                            dont_stack = true
+                            dont_stack = true,
+                            no_deck_effects = true
                         })
                         return true
                     end
