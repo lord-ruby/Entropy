@@ -2242,7 +2242,7 @@ local birthday_card = {
     demicoloncompat = true,
     calculate = function(self, card, context)
         if Overflow then
-            if context.joker_main and #G.consumeables:get_total_count() >= card.ability.consumables then
+            if context.joker_main and G.consumeables:get_total_count() >= card.ability.consumables then
                 return {
                     xmult = card.ability.xmult
                 }
