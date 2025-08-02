@@ -161,10 +161,12 @@ local lust = {
 local ref = Cryptid.reload_localization
 function Cryptid.reload_localization()
     SMODS.handle_loc_file(Entropy.path)
-    G.P_CENTERS.c_entr_lust.pos = {x=4,y=Cryptid_config.family_mode and 8 or 7}
-    for i, v in ipairs(G.I.CARD) do
-        if v.config.center_key == "c_entr_lust" then
-            v.children.center:set_sprite_pos({x=4,y=Cryptid_config.family_mode and 8 or 7})
+    if G.P_CENTERS.c_entr_lust then
+        G.P_CENTERS.c_entr_lust.pos = {x=4,y=Cryptid_config.family_mode and 8 or 7}
+        for i, v in ipairs(G.I.CARD) do
+            if v.config.center_key == "c_entr_lust" then
+                v.children.center:set_sprite_pos({x=4,y=Cryptid_config.family_mode and 8 or 7})
+            end
         end
     end
     if ref then
