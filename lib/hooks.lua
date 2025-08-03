@@ -2626,16 +2626,16 @@ function Entropy.GetRecipeResult(val,jokerrares,seed)
         [1]=0,
         [2]=6,
         [3]=12,
-        cry_epic=20,
+        cry_epic=(SMODS.Mods["Cryptid"] or {}).can_load and 20 or nil,
         [4]=30,
-        cry_exotic=45,
-        entr_entropic = 70
+        cry_exotic=(SMODS.Mods["Cryptid"] or {}).can_load and 45 or nil,
+        entr_entropic = (SMODS.Mods["Cryptid"] or {}).can_load and 70 or nil,
     }) do
-        if v > cost and val >= v then
+        if v >= cost and val >= v then
             rare = i;cost=v
         end
     end
-    return pseudorandom_element(jokerrares[rare], pseudoseed(seed))
+    return pseudorandom_element(jokerrares[rare] or {}, pseudoseed(seed)) or "j_joker"
 end
 function Entropy.ConcatStrings(tbl)
     local result = ""
