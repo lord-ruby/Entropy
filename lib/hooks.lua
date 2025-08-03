@@ -3180,7 +3180,7 @@ function CardArea:parse_highlighted()
         update_operator_display()
     else
         if G.PROFILES[G.SETTINGS.profile].cry_none then
-            G.GAME.hand_operator = G.GAME.hands["cry_None"].operator
+            G.GAME.hand_operator = G.GAME.hands["cry_None"] and G.GAME.hands["cry_None"].operator or 0
         else    
             G.GAME.hand_operator = 0
         end
