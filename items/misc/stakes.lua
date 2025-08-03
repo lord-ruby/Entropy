@@ -134,7 +134,7 @@ Entropy.curses = {
 }
 
 function Entropy.get_curse_rate()
-    if to_big(G.GAME.round_resets.ante) < to_big(8) then return false end
+    if to_big(G.GAME.round_resets.ante) < to_big(8) then return 0 end
     local key = G.GAME.selected_back and G.GAME.selected_back.effect.center.original_key
     local wins = G.PROFILES and G.SETTINGS.profile and G.PROFILES[G.SETTINGS.profile].deck_usage and G.PROFILES[G.SETTINGS.profile].deck_usage[key] and G.PROFILES[G.SETTINGS.profile].deck_usage[key].wins or {}
     if wins[8] ~= 0 then 
