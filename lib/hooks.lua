@@ -833,7 +833,42 @@ local G_UIDEF_use_and_sell_buttons_ref = G.UIDEF.use_and_sell_buttons
 function G.UIDEF.use_and_sell_buttons(card)
 	local abc = G_UIDEF_use_and_sell_buttons_ref(card)
 	-- Allow code cards to be reserved
-    if (card.ability.set == "Back" or card.ability.set == "Sleeve") then
+    if card.area == G.consumeables and (card.config.center.set == "Voucher" or card.ability.set == "Voucher") then
+        sell = {n=G.UIT.C, config={align = "cr"}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = 'sell'}, nodes={
+              {n=G.UIT.B, config = {w=0.1,h=0.6}},
+              {n=G.UIT.C, config={align = "tm"}, nodes={
+                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
+                  {n=G.UIT.T, config={text = localize('b_sell'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
+                }},
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                  {n=G.UIT.T, config={text = localize('$'),colour = G.C.WHITE, scale = 0.4, shadow = true}},
+                  {n=G.UIT.T, config={ref_table = card, ref_value = 'sell_cost_label',colour = G.C.WHITE, scale = 0.55, shadow = true}}
+                }}
+              }}
+            }},
+          }}
+        use = 
+        {n=G.UIT.C, config={align = "cr"}, nodes={
+          
+          {n=G.UIT.C, config={ref_table = card, align = "cr",maxw = 1.25, padding = 0.1, r=0.08, minw = 1.25, minh = (card.area and card.area.config.type == 'joker') and 0 or 1, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_voucher', func = 'can_open_voucher', handy_insta_action = 'use'}, nodes={
+            {n=G.UIT.B, config = {w=0.1,h=0.6}},
+            {n=G.UIT.T, config={text = localize('b_redeem'),colour = G.C.UI.TEXT_LIGHT, scale = 0.55, shadow = true}}
+          }}
+        }}
+        return {
+            n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
+              {n=G.UIT.C, config={padding = 0.15, align = 'cl'}, nodes={
+                {n=G.UIT.R, config={align = 'cl'}, nodes={
+                  sell
+                }},
+                {n=G.UIT.R, config={align = 'cl'}, nodes={
+                  use
+                }},
+              }},
+          }}
+    end
+    if (card.ability.set == "Back" or card.ability.set == "Sleeve" or card.config.center.set == "Back" or card.config.center.set == "Sleeve") then
         if card.area == G.hand or card.area == G.pack_cards then
         return  {
             n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
@@ -913,7 +948,6 @@ function G.UIDEF.use_and_sell_buttons(card)
               }},
           }}
     end
-
     if (card.area == G.hand and G.hand) then --Add a use button
 		if card.config.center.set == "Joker" then
 			return  {
@@ -940,41 +974,6 @@ function G.UIDEF.use_and_sell_buttons(card)
               }}
 		end
 	end
-    if ((card.area == G.consumeables or card.area == G.jokers) and G.consumeables) and card.config.center.set == "Voucher" then
-        sell = {n=G.UIT.C, config={align = "cr"}, nodes={
-            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = 'sell'}, nodes={
-              {n=G.UIT.B, config = {w=0.1,h=0.6}},
-              {n=G.UIT.C, config={align = "tm"}, nodes={
-                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
-                  {n=G.UIT.T, config={text = localize('b_sell'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
-                }},
-                {n=G.UIT.R, config={align = "cm"}, nodes={
-                  {n=G.UIT.T, config={text = localize('$'),colour = G.C.WHITE, scale = 0.4, shadow = true}},
-                  {n=G.UIT.T, config={ref_table = card, ref_value = 'sell_cost_label',colour = G.C.WHITE, scale = 0.55, shadow = true}}
-                }}
-              }}
-            }},
-          }}
-        use = 
-        {n=G.UIT.C, config={align = "cr"}, nodes={
-          
-          {n=G.UIT.C, config={ref_table = card, align = "cr",maxw = 1.25, padding = 0.1, r=0.08, minw = 1.25, minh = (card.area and card.area.config.type == 'joker') and 0 or 1, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_voucher', func = 'can_open_voucher', handy_insta_action = 'use'}, nodes={
-            {n=G.UIT.B, config = {w=0.1,h=0.6}},
-            {n=G.UIT.T, config={text = localize('b_redeem'),colour = G.C.UI.TEXT_LIGHT, scale = 0.55, shadow = true}}
-          }}
-        }}
-        return {
-            n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
-              {n=G.UIT.C, config={padding = 0.15, align = 'cl'}, nodes={
-                {n=G.UIT.R, config={align = 'cl'}, nodes={
-                  sell
-                }},
-                {n=G.UIT.R, config={align = 'cl'}, nodes={
-                  use
-                }},
-              }},
-          }}
-    end
     --let boosters not be recursive
     if (card.area == G.pack_cards and G.pack_cards) and card.config.center.set == "Booster" and not Entropy.ConsumablePackBlacklist[SMODS.OPENED_BOOSTER.config.center.key] then
         return  {
@@ -1888,7 +1887,7 @@ local set_abilityref = Card.set_ability
 function Card:set_ability(center, f, s)
     if type(center) == "string" then center = G.P_CENTERS[center] end
     if (self.config and self.config.center and self.config.center.key ~= "m_entr_disavowed" and (not self.entr_aleph or self.ability.bypass_aleph)) or G.SETTINGS.paused then
-        if center and Entropy.FlipsideInversions[center.key] and not G.SETTINGS.paused and (G.GAME.modifiers.entr_twisted or center.set == "Planet" and G.GAME.entr_princess) and not self.multiuse and not self.ability.fromflipside then
+        if center and Entropy.FlipsideInversions[center.key] and not G.SETTINGS.paused and (G.GAME.modifiers.entr_twisted or center.set == "Planet" and G.GAME.entr_princess) and not self.multiuse and (not self.ability or not self.ability.fromflipside) then
             set_abilityref(self, G.P_CENTERS[Entropy.FlipsideInversions[center.key]] or center, f, s)
         else    
             set_abilityref(self, center, f, s)

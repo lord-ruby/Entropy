@@ -189,6 +189,7 @@ if CardSleeves then
             local c = create_card("Spectral", G.consumeables, nil, nil, nil, nil, "c_entr_destiny") 
             c:set_edition("e_negative")
             c.ability.cry_absolute = true
+            c.ability.entr_aleph = true
             c:add_to_deck()
             G.consumeables:emplace(c)
             return true

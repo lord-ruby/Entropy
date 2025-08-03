@@ -150,6 +150,7 @@ Entropy.EnhancementPoints ={
     m_entr_dark = 8,
     m_cry_abstract=9.1,
     m_entr_prismatic = 20,
+    m_entr_ceramic = 6.5
 }
 Entropy.TMTrainerEffects = {}
 Entropy.TMTrainerScoring = {}
@@ -1703,3 +1704,16 @@ payload = '''
     G.GAME.hands[hand].chips = G.GAME.hands[hand].chips + G.GAME.hands[hand].l_chips * (amount or 1)
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+if self.ability.consumeable or self.ability.set == 'Joker' or (self.area and self.area == G.pack_cards) then
+'''
+position = "at"
+payload = '''
+if true then
+'''
+match_indent = true
+

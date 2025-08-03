@@ -532,7 +532,7 @@ end, func = function(self, card, area, copier, number)
   Entropy.ReversePlanetUse(hand, card, card.ability.amt + (G.GAME.entr_black_dwarf or 0))
 end, config = {amt = 1.25}, loc_vars = function(self, q, card) return {vars = {card.ability.amt + (G.GAME.entr_black_dwarf or 0)}} end}
 
-Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="",key="chrion",sprite_pos={x=2,y=2}, new_key="coatlicue", prefix = "entr", atlas = "consumables2", set_badges = function(self, card, badges)
+Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="",key="chiron",sprite_pos={x=2,y=2}, new_key="coatlicue", prefix = "entr", atlas = "consumables2", set_badges = function(self, card, badges)
   badges[1] = create_badge(localize("k_star_q"), get_type_colour(self or card.config, card), nil, 1.2)
 end, func = function(self, card, copier, area, number) 
   local hands = {}
@@ -577,7 +577,7 @@ function Entropy.RegisterReversePlanets()
   Entropy.StarLocs = {}
     for i, v in pairs(Entropy.ReversePlanets) do
 		Entropy.RegisterReversePlanet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name,v.set_badges,v.loc_vars,v.config,v.new_key, v.calc, v.art, v.atlas)
-        planets[#planets].inversion = (v.prefix or "c_")..v.key
+        planets[#planets].inversion = "c_"..((v.prefix and v.prefix.."_") or "")..v.key
 	end
 end
 
