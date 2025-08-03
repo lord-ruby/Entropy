@@ -1835,3 +1835,13 @@ function Entropy.misc_calculations(self, card, context)
         end
     end
 end
+
+if not Cryptid.reset_to_none then
+    function Cryptid.reset_to_none()
+        update_hand_text({ delay = 0 }, {
+            mult = 0,
+            chips = 0,
+            handname = "",
+        })
+    end
+end

@@ -344,6 +344,7 @@ function Entropy.bdwarf(self, card, area, copier, number)
   )
   G.GAME.entr_black_dwarf = (G.GAME.entr_black_dwarf or 0) + card.ability.bdwarf*number
   delay(1.6)
+  Cryptid.reset_to_none()
 end
 
 Entropy.ReversePlanets = {

@@ -101,7 +101,7 @@ local destiny = {
         if #remove > 0 then SMODS.calculate_context({remove_playing_cards = true, removed=remove}) end
         add_joker(Entropy.GetRecipe(G.hand.highlighted))
         if Entropy.DeckOrSleeve("crafting") then
-            if (card.ability.overflow_amount) then
+            if not (card.ability.overflow_amount) then
                 local card2 = copy_card(card)
                 card2.ability.cry_absolute = true
                 card2:set_edition("e_negative")

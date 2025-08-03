@@ -206,6 +206,7 @@ function Entropy.l_chipsmult(hand, card, l_chips, l_mult)
 		return true end 
 	}))
 	delay(1.3)
+	Cryptid.reset_to_none()
 end
 
 function Entropy.xl_chips(hand, card, l_chips)
@@ -230,6 +231,7 @@ function Entropy.xl_chips(hand, card, l_chips)
 		return true end 
 	}))
 	delay(1.3)
+	Cryptid.reset_to_none()
 end
 
 function Entropy.xl_mult(hand, card, l_mult)
@@ -254,6 +256,7 @@ function Entropy.xl_mult(hand, card, l_mult)
 		return true end 
 	}))
 	delay(1.3)
+	Cryptid.reset_to_none()
 end
 
 local tyche = {
