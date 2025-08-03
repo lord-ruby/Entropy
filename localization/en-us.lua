@@ -1779,6 +1779,50 @@ local decs = {
 					"{C:chips}+#4#{} chip#<s>4#",
 				},
 			},
+			c_entr_tyche = {
+				name = "Tyche",
+				text = {
+					"Level up the {C:blue}Chips{} and {C:red}Mult{}",
+					"per level of a {C:attention}random{} Poker Hand",
+					"{C:mult}+#2#{} Mult per level and",
+					"{C:chips}+#1#{} Chips per level"
+				},
+			},
+			c_entr_theia = {
+				name = "Theia",
+				text = {
+					"Level up the {C:blue}Chips{} and {C:red}Mult{}",
+					"per level of your {C:attention}highest{}",
+					"level Poker Hand",
+					"{C:mult}+#2#{} Mult per level and",
+					"{C:chips}+#1#{} Chips per level"
+				},
+			},
+			c_entr_chiron = {
+				name = "Chiron",
+				text = {
+					"Level up the {C:blue}Chips{} per level",
+					"of a {C:attention}random{} Poker Hand",
+					"{C:chips}X#1#{} Chips per level"
+				},
+			},
+			c_entr_neith = {
+				name = "Neith",
+				text = {
+					"Level up the {C:red}Mult{} per level",
+					"of a {C:attention}random{} Poker Hand",
+					"{C:mult}X#1#{} Mult per level"
+				},
+			},
+			c_entr_sputnik = {
+				name = "Sputnik I",
+				text = {
+					"Level up {C:attention}#1#{}",
+					"random Poker Hands",
+					"{C:mult}+???{} Mult and",
+					"{C:chips}+???{} chips",
+				},
+			},
 		},
 		Voucher = {
 			v_entr_marked = {
@@ -2318,6 +2362,45 @@ local decs = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
 					"{C:attention}#3#",
 					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_black_dwarf = {
+				name = "Black Dwarf",
+				text = {
+					"Level up {C:gold}Ascension Power{}",
+					"Per Level of all Poker Hands",
+					"{C:gold}+#1#{} Ascension Power"
+				}
+			},
+			c_entr_frozen_star = {
+				name = "Frozen Star",
+				text = {
+					"Level up your {C:attention}highest{} level",
+					"Poker Hand {C:gold}+#1#{} Ascension Power"
+				}
+			},
+			c_entr_coatlicue = {
+				name = "Coatlicue",
+				text = {
+					"Level up a {C:attention}random{} Poker Hands",
+					"{C:gold}Ascension Power{} by {C:attention}1/15{}th",
+					"of its {C:chips}Chips{} per Level"
+				}
+			},
+			c_entr_threefour = {
+				name = "34 Tauri",
+				text = {
+					"Level up a {C:attention}random{} Poker Hands",
+					"{C:gold}Ascension Power{} by {C:attention}1/2{}th",
+					"of its {C:mult}Mult{} per Level"
+				}
+			},
+			c_entr_fuzzball = {
+				name = "Fuzzball",
+				text = {
+					"Level up {C:attention}#1#{}",
+					"random Poker Hands",
+					"{C:gold}+#2#{} Ascension Power",
 				}
 			},
 		},
@@ -4950,7 +5033,13 @@ local decs = {
 			k_curse_lost_desc = "No Small Blind",
 
 			k_curse_maze = "Curse of The Maze",
-			k_curse_maze_desc = "Blind order is Randomised"
+			k_curse_maze_desc = "Blind order is Randomised",
+			k_level_chips = "Chips per Level",
+			k_level_mult = "Mult per Level",
+			k_level_asc = "Ascension Power per Level",
+			k_star_q = "Star?",
+			k_moon = "Moon",
+			k_satellite = "Satellite"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

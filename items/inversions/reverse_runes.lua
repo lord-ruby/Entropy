@@ -1007,7 +1007,7 @@ local eternity = {
     loc_vars = function(self, q, card) 
         return {
             vars = {
-                number_format(card.ability.asc_power),
+                number_format(card.ability.asc_power + (G.GAME.entr_black_dwarf or 0)),
             }
         }
     end,
@@ -1032,7 +1032,7 @@ local eternity = {
                 hand = i
             end
         end
-        Entropy.ReversePlanetUse(hand, rcard, rcard.ability.asc_power)
+        Entropy.ReversePlanetUse(hand, rcard, rcard.ability.asc_power + (G.GAME.entr_black_dwarf or 0))
         Entropy.pact_mark("rune_entr_eternity")
     end,
     can_use = function()
