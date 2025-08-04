@@ -2357,6 +2357,103 @@ local slipstream = {
     end
 }
 
+local cass = {
+    object_type = "Joker",
+    key = "cass",
+    order = 302,
+    rarity = 4,
+    cost = 20,
+    atlas = "ruby_atlas",
+    pos = {x=0, y=2},
+    soul_pos = {x = 1, y = 2},
+    config = {
+        hand_size = 0,
+        selection_limit = 0,
+        hands_discards = 0,
+        consumable_slots = 0,
+        shop_slots = 0,
+        mod = 0.5
+    },
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.using_consumeable and (context.consumeable.config.center.set == "Planet" or context.consumeable.config.center.set == "Star") then
+            local result = pseudorandom(pseudoseed("entr_cass"), 1, 5)
+            if result == 1 then
+                card.ability.hand_size = card.ability.hand_size + card.ability.mod
+                G.hand.config.card_limit = G.hand.config.card_limit + card.ability.mod
+            elseif result == 2 then
+                card.ability.selection_limit = card.ability.selection_limit + card.ability.mod
+                Entropy.ChangeFullCSL(card.ability.mod)
+            elseif result == 3 then 
+                card.ability.hands_discards = card.ability.hands_discards + card.ability.mod
+                G.GAME.round_resets.hands = G.GAME.round_resets.hands + card.ability.mod
+                ease_hands_played(card.ability.mod)
+                G.GAME.round_resets.discards = G.GAME.round_resets.discards + card.ability.mod
+                ease_discard(card.ability.mod)
+            elseif result == 4 then
+                card.ability.consumable_slots = card.ability.consumable_slots + card.ability.mod
+                G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.mod
+            elseif result == 5 then
+                card.ability.shop_slots = card.ability.shop_slots + card.ability.mod
+                G.E_MANAGER:add_event(Event({
+                    func = function() --card slot
+                        -- why is this in an event?
+                        change_shop_size(to_number(math.min(card.ability.mod, 10)))
+                        return true
+                    end,
+                }))
+            end
+            return {
+                message = localize("k_upgrade_ex")
+            }
+        end
+    end,
+    remove_from_deck = function(self, card)
+        G.hand.config.card_limit = G.hand.config.card_limit - card.ability.hand_size
+        Entropy.ChangeFullCSL(-card.ability.selection_limit)
+        G.GAME.round_resets.hands = G.GAME.round_resets.hands - card.ability.hands_discards
+        ease_hands_played(-card.ability.hands_discards)
+        G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.hands_discards
+        ease_discard(-card.ability.hands_discards)
+        G.consumeables.config.card_limit = G.consumeables.config.card_limit - card.ability.consumable_slots
+        G.E_MANAGER:add_event(Event({
+            func = function() --card slot
+                -- why is this in an event?
+                change_shop_size(-to_number(math.min(card.ability.shop_slots, 10)))
+                return true
+            end,
+        }))
+    end,
+    add_to_deck = function(self, card)
+        G.hand.config.card_limit = G.hand.config.card_limit + card.ability.hand_size
+        Entropy.ChangeFullCSL(card.ability.selection_limit)
+        G.GAME.round_resets.hands = G.GAME.round_resets.hands + card.ability.hands_discards
+        ease_hands_played(card.ability.hands_discards)
+        G.GAME.round_resets.discards = G.GAME.round_resets.discards + card.ability.hands_discards
+        ease_discard(card.ability.hands_discards)
+        G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.consumable_slots
+        G.E_MANAGER:add_event(Event({
+            func = function() --card slot
+                -- why is this in an event?
+                change_shop_size(to_number(math.min(card.ability.shop_slots, 10)))
+                return true
+            end,
+        }))
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                number_format(card.ability.hand_size),
+                number_format(card.ability.selection_limit),
+                number_format(card.ability.hands_discards),
+                number_format(card.ability.consumable_slots),
+                number_format(card.ability.shop_slots),
+                number_format(card.ability.mod),
+            }
+        }
+    end
+}
+
 local sandpaper = {
     order = 43,
     object_type = "Joker",
@@ -3078,6 +3175,7 @@ return {
         birthday_card,
         ruby,
         slipstream,
+        cass,
         sandpaper,
         purple_joker,
         chalice_of_blood,

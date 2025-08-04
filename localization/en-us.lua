@@ -489,6 +489,16 @@ local decs = {
 					"Held {C:red}Omens{} give {X:mult,C:white}X#1#{} Mult"
 				}
 			},
+			j_entr_cass = {
+				name = "Cassknows, Muse of Void",
+				text = {
+					"Add {C:attention}#6#{} to a random",
+					"stat when a {C:planet}Planet{} or {C:purple}Star{} card is used",
+					"{C:inactive}({C:blue}+#1#{C:inactive} Hand Size, {C:attention}+#2#{C:inactive} Card Selection Limit)",
+					"{C:inactive}({C:purple}+#3#{C:inactive} Hands and Discards)",
+					"{C:inactive}({C:dark_edition}+#4#{C:inactive} Consumable Slots, {C:attention}+#5#{C:inactive} Shop Slots)"
+				}
+			},
 			j_entr_devilled_suns = {
 				name = "Devilled Suns",
 				text = {

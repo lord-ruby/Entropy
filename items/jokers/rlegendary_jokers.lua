@@ -184,7 +184,7 @@ local teluobirt = {
             end
             if order > 1 then
                 return {
-                    message = localize("cry_again_q"),
+                    message = localize("k_again_ex"),
                     repetitions = order-1,
                     card = card,
                 }
