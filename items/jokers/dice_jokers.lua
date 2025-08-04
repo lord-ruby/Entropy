@@ -343,7 +343,7 @@ local D12 = {
     pools = {["Dice"] = true},
     calculate = function(self, card, context)
         if context.mod_probability and not context.blueprint and not context.repetition then
-            local count = #G.consumeables.cards
+            local count = Overflow and G.consumeables:get_total_count() or #G.consumeables.cards
             local num = context.numerator + count * card.ability.num_per
             return {
                 numerator = num,
