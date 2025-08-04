@@ -24,7 +24,9 @@ local pack = {
     group_key = "k_inverted_pack",
     cost = 4,
     draw_hand = true,
-    weight = 0.95,
+    get_weight = function()
+        return 0.95 * (G.GAME.entr_alt and 2 or 1)
+    end,
     hidden = true,
     kind = "Inverted",
     create_card = function (self, card, i) 
@@ -71,9 +73,11 @@ local jumbo = {
     group_key = "k_inverted_pack",
     cost = 6,
     draw_hand = true,
-    weight = 0.49,
     hidden = true,
     kind = "Inverted",
+    get_weight = function()
+        return 0.49 * (G.GAME.entr_alt and 2 or 1)
+    end,
     create_card = function (self, card, i) 
         return create_inverted_card()
     end,
@@ -118,7 +122,9 @@ local mega = {
     group_key = "k_inverted_pack",
     cost = 8,
     draw_hand = true,
-    weight = 0.2,
+    get_weight = function()
+        return 0.2 * (G.GAME.entr_alt and 2 or 1)
+    end,
     hidden = true,
     kind = "Inverted",
     create_card = function (self, card, i) 
