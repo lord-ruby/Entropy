@@ -362,7 +362,7 @@ local chiron = {
 	atlas = "consumables2",
 	aurinko = true,
 	config = {
-		xl_chips = 1.1,
+		xl_chips = 1.2,
 	},
 	loc_vars = function(self, q, card)
 		return {
@@ -405,7 +405,7 @@ local neith = {
 	atlas = "consumables2",
 	aurinko = true,
 	config = {
-		xl_mult = 1.1,
+		xl_mult = 1.2
 	},
 	loc_vars = function(self, q, card)
 		return {
