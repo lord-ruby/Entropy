@@ -1841,7 +1841,16 @@ if not Cryptid.reset_to_none then
         update_hand_text({ delay = 0 }, {
             mult = 0,
             chips = 0,
+            level = "",
             handname = "",
         })
     end
+end
+
+local reset_ref = Cryptid.reset_to_none
+function Cryptid.reset_to_none()
+    reset_ref()
+    update_hand_text({ delay = 0.1 }, {
+        level = "",
+    })
 end
