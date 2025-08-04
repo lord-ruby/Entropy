@@ -3750,3 +3750,13 @@ G.FUNCS.toggle_shop = function(e)
         toggle_shopref(e)
     end
 end
+
+local remove_ref = Card.remove_from_deck
+function Card:remove_from_deck()
+    if self.edition and self.edition.card_limit and self.added_to_deck then
+        if not self.ability.consumeable then
+            G.consumeables.config.card_limit = G.consumeables.config.card_limit - self.edition.card_limit
+        end
+    end
+    remove_ref(self)
+end
