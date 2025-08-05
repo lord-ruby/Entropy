@@ -150,39 +150,41 @@ function Blind:defeat(s)
     if G.GAME.blind_on_deck == "Boss" then
         G.GAME.curse_rate = (G.GAME.curse_rate_mod or Entropy.get_curse_rate()) * G.GAME.round_resets.ante
         if to_big(G.GAME.curse_rate_mod) < to_big(1) and to_big(G.GAME.round_resets.ante) < to_big(8) then G.GAME.curse_rate = 0 end
-        if pseudorandom("entr_curse") < G.GAME.curse_rate then
-            G.GAME.entr_maze_applied = nil
-            local curses = {}
-            for i, v in pairs(Entropy.curses) do
-                curses[#curses+1] = i
-            end
-            G.GAME.curse = pseudorandom_element(curses, pseudoseed("entr_curse"))
-            attention_text({
-                scale = 1,
-                text = localize(Entropy.curses[G.GAME.curse].key),
-                hold = 8,
-                align = "cm",
-                offset = { x = 0, y = -2.7 },
-                major = G.play,
-            })
-            attention_text({
-                scale = 0.7,
-                text = localize(Entropy.curses[G.GAME.curse].desc_key),
-                hold = 8,
-                align = "cm",
-                offset = { x = 0, y = -1.8 },
-                major = G.play,
-            })
-            if G.GAME.curse == "entr_lost" then
-                G.GAME.modifiers.cry_no_small_blind_last = G.GAME.modifiers.cry_no_small_blind
-                G.GAME.modifiers.cry_no_small_blind = true
+        if not (MP and MP.LOBBY and MP.LOBBY.code) then
+            if pseudorandom("entr_curse") < G.GAME.curse_rate then
+                G.GAME.entr_maze_applied = nil
+                local curses = {}
+                for i, v in pairs(Entropy.curses) do
+                    curses[#curses+1] = i
+                end
+                G.GAME.curse = pseudorandom_element(curses, pseudoseed("entr_curse"))
+                attention_text({
+                    scale = 1,
+                    text = localize(Entropy.curses[G.GAME.curse].key),
+                    hold = 8,
+                    align = "cm",
+                    offset = { x = 0, y = -2.7 },
+                    major = G.play,
+                })
+                attention_text({
+                    scale = 0.7,
+                    text = localize(Entropy.curses[G.GAME.curse].desc_key),
+                    hold = 8,
+                    align = "cm",
+                    offset = { x = 0, y = -1.8 },
+                    major = G.play,
+                })
+                if G.GAME.curse == "entr_lost" then
+                    G.GAME.modifiers.cry_no_small_blind_last = G.GAME.modifiers.cry_no_small_blind
+                    G.GAME.modifiers.cry_no_small_blind = true
+                else
+                    G.GAME.modifiers.cry_no_small_blind = G.GAME.modifiers.cry_no_small_blind_last
+                    G.GAME.modifiers.cry_no_small_blind_last = nil
+                end
             else
-                G.GAME.modifiers.cry_no_small_blind = G.GAME.modifiers.cry_no_small_blind_last
-                G.GAME.modifiers.cry_no_small_blind_last = nil
+                G.GAME.entr_maze_applied = nil
+                G.GAME.curse = nil
             end
-        else
-            G.GAME.entr_maze_applied = nil
-            G.GAME.curse = nil
         end
     end
 end
