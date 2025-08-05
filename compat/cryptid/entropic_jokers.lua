@@ -926,6 +926,104 @@ local apeirostemma = {
     end
 }
 
+
+local prismatikos = {
+    order = 613,
+    object_type = "Joker",
+    key = "prismatikos",
+    rarity = "entr_entropic",
+    cost = 150,
+    eternal_compat = true,
+    blueprint_compat = true,
+    dependencies = {
+        items = {
+            "set_entr_entropics"
+        }
+    },
+    soul_pos = { x = 5, y = 6, extra = { x = 4, y = 6 } },
+    pos = { x = 3, y = 6 },
+    atlas = "exotic_jokers",
+    calculate = function(self, card, context)
+        if context.individual and Entropy.DeckOrSleeve("doc") then
+            ease_entropy(2)
+        end
+        if context.joker_main then
+            local result = pseudorandom(pseudoseed("entr_prismatikos"), 1, 7)
+            if result == 1 then
+                local op = pseudorandom(pseudoseed("prismatikos_op"), -2, 1)
+                if op == -2 then return {eq_chips = pseudorandom("prismatikos_value", 100, 5000)} end
+                if op == -1 then return {chips = pseudorandom("prismatikos_value", 10, 1000)} end
+                if op == 0 then return {xchips = pseudorandom("prismatikos_value", 1, 100)} end
+                if op == 1 then return {echips = pseudorandom("prismatikos_value", 1, 10)} end
+            elseif result == 2 then
+                local op = pseudorandom(pseudoseed("prismatikos_op"), -2, 1)
+                if op == -2 then return {eq_mult = pseudorandom("prismatikos_value", 100, 5000)} end
+                if op == -1 then return {mult = pseudorandom("prismatikos_value", 10, 1000)} end
+                if op == 0 then return {xmult = pseudorandom("prismatikos_value", 1, 100)} end
+                if op == 1 then return {emult = pseudorandom("prismatikos_value", 1, 10)} end
+            elseif result == 3 then
+                local op = pseudorandom(pseudoseed("prismatikos_op"), -2, 0)
+                if op == -2 then return ease_dollars(pseudorandom("prismatikos_value", 1, 20)) end
+                if op == -1 then return ease_dollars(G.GAME.dollars * pseudorandom("prismatikos_value", 1, 5) - G.GAME.dollars) end
+                if op == 0 then return ease_dollars(pseudorandom("prismatikos_value", 10, 200) - G.GAME.dollars) end
+            elseif result == 4 then
+                local op = pseudorandom(pseudoseed("prismatikos_op"), -1, 1)
+                if op == -1 then return {plus_asc = pseudorandom("prismatikos_value", 1, 100)} end
+                if op == 0 then return {asc = pseudorandom("prismatikos_value", 1, 10)} end
+                if op == 1 then return {exp_asc = pseudorandom("prismatikos_value", 1, 4)} end
+            elseif result == 5 then
+                local mod = pseudorandom("prismatikos_value", 0, 2)
+                G.GAME.round_resets.hands = G.GAME.round_resets.hands + mod
+                ease_hands_played(mod)
+            elseif result == 6 then
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        SMODS.add_card{
+                            set = "Twisted",
+                            area = G.consumeables   
+                        }
+                        SMODS.add_card{
+                            set = "Twisted",
+                            area = G.consumeables   
+                        }
+                        return true
+                    end
+                })
+            elseif result == 7 then
+                card.ability.destroy_hand = true
+            elseif result == 8 then
+                for i, v in pairs(G.play.cards) do
+                    v:set_edition(poll_edition("prismatikos_edition", nil, true, true))
+                end
+            elseif result == 9 then
+                G.GAME.blind.chips = G.GAME.blind.chips * 0.9
+                G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+                G.HUD_blind:recalculate()
+            end
+        end
+        if context.after and card.ability.destroy_hand then
+            card.ability.destroy_hand = nil
+            for i, v in pairs(G.hand.cards) do
+                v:start_dissolve()
+                v.ability.temporary2 = true
+            end
+        end
+        if context.retrigger_joker_check then
+            if pseudorandom(pseudoseed("prismatikos_retrigger")) then
+                return {
+                    repetitions = pseudorandom("prismatikos_value", 1, 4),
+                    message = localize("k_again_ex")
+                }
+            end
+        end
+        if context.mod_probability then
+            return {
+                numerator = context.numerator * (pseudorandom(pseudoseed("prismatikos_value_prob") + 1))
+            }
+        end
+    end,
+}
+
 return {
     items = {
         epitachyno,
@@ -940,6 +1038,7 @@ return {
         ieros,
         exelixi,
         atomikos,
-        apeirostemma
+        apeirostemma,
+        prismatikos
     }
 }

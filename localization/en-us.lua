@@ -1081,6 +1081,16 @@ local decs = {
 					"after every played hand"
                 },
             },
+			j_entr_prismatikos = {
+                name = "Prismatikos",
+                text = {
+                    "Chooses an effect randomly when triggered",
+					"{X:chips,C:white}???{} Chips, {X:mult,C:white}???{} Mult, {X:money,C:white}???{} Ascension Power",
+					"{X:money,C:white}???{} Money, {X:blue,C:white}???{} Hands",
+					"Create {C:attention}2{} Twisted Cards, Played Hand gains random {C:dark_edition}Editions{}",
+					"{X:attention,C:white}X0.9{} Blind Size. ...",
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
