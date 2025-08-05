@@ -211,7 +211,7 @@ end
 
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, initial, delay)
-    if self.config.center.key ~= (G.P_CENTERS[center or ""] or center) and self.area == G.hand and G.hand then
+    if self.config and self.config.center and self.config.center.key ~= (G.P_CENTERS[center or ""] or center) and self.area == G.hand and G.hand then
         SMODS.calculate_context{enhancement_added = self.config.center.key, card=self}
     end
     local link = self and self.ability and self.ability.link
