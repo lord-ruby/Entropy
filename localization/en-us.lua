@@ -1882,6 +1882,13 @@ local decs = {
 					"Runes have {C:purple,E:1}Enhanced{} effects",
 				},
 			},
+			v_entr_ascension = {
+				name = "Ascensiom",
+				text = {
+					"Copy the {C:attention}First",
+					"used {C:purple}Rune{} each round"
+				},
+			},
 		},
 		Command = {
 			c_entr_memory_leak = {

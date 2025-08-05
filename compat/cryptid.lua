@@ -215,8 +215,41 @@ local containment = {
             art = {"Grahkon"}
         }
     }
+    local ascension = {
+        dependencies = {
+            items = {
+              "set_entr_vouchers",
+              "set_entr_runes",
+              "set_cry_tier3"
+            }
+        },
+        object_type = "Voucher",
+        order = -2000+5,
+        key = "ascension",
+        atlas = "vouchers",
+        pos = {x=2, y=1},
+        requires = {"v_entr_providence"},
+        calculate = function(self, card, context)
+            if context.end_of_round then card.ability.used = nil end
+            if context.using_consumeable and context.consumeable and (context.consumeable.config.center.set == "Rune" or context.consumeable.config.center.set == "Pact") and not card.ability.used then
+                local copy = copy_card(context.consumeable)
+                copy:add_to_deck()
+                G.consumeables:emplace(copy)
+                card.ability.used = true
+                card_eval_status_text(
+                    context.consumeable,
+                    "extra",
+                    nil,
+                    nil,
+                    nil,
+                    { message = localize("k_copied_ex"), colour = G.C.PURPLE }
+                )
+            end
+        end
+    }
     items[#items+1]=containment
     items[#items+1]=supersede
+    items[#items+1]=ascension
   return {
     items = items
   }
