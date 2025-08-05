@@ -828,6 +828,31 @@ G.FUNCS.sell_slot = function(e)
     G.jokers.config.card_limit = G.jokers.config.card_limit - 1
 end
 
+G.FUNCS.can_use_jestradiol = function(e)
+    if
+        to_big(e.config.ref_table.ability.left) > to_big(0)
+    then
+        e.config.colour = G.C.GREEN
+        e.config.button = "use_jestradiol"
+    else
+        e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+        e.config.button = nil
+    end
+end
+G.FUNCS.use_jestradiol = function(e)
+    local cards = {}
+    for i, v in pairs(G.hand.highlighted) do
+        if to_big(e.config.ref_table.ability.left) > to_big(0) then
+            cards[#cards+1] = v
+            e.config.ref_table.ability.left = e.config.ref_table.ability.left - 1
+        end
+    end
+    Entropy.FlipThen(cards, function(card)
+        SMODS.change_base(card, nil, "Queen")
+    end)
+    G.hand:unhighlight_all()
+end
+
 --som
 local G_UIDEF_use_and_sell_buttons_ref = G.UIDEF.use_and_sell_buttons
 function G.UIDEF.use_and_sell_buttons(card)
@@ -983,7 +1008,43 @@ function G.UIDEF.use_and_sell_buttons(card)
               }},
           }}
     end
-
+    if (card.area == G.jokers and G.jokers and card.config.center.key == "j_entr_jestradiol") and not card.debuff then
+        sell = {n=G.UIT.C, config={align = "cr"}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = 'sell'}, nodes={
+              {n=G.UIT.B, config = {w=0.1,h=0.6}},
+              {n=G.UIT.C, config={align = "tm"}, nodes={
+                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
+                  {n=G.UIT.T, config={text = localize('b_sell'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
+                }},
+                {n=G.UIT.R, config={align = "cm"}, nodes={
+                  {n=G.UIT.T, config={text = localize('$'),colour = G.C.WHITE, scale = 0.4, shadow = true}},
+                  {n=G.UIT.T, config={ref_table = card, ref_value = 'sell_cost_label',colour = G.C.WHITE, scale = 0.55, shadow = true}}
+                }}
+              }}
+            }},
+        }}
+        transition = {n=G.UIT.C, config={align = "cr"}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, button = 'use_jestradiol', func = 'can_use_jestradiol', handy_insta_action = 'use'}, nodes={
+              {n=G.UIT.B, config = {w=0.1,h=0.3}},
+              {n=G.UIT.C, config={align = "tm"}, nodes={
+                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
+                  {n=G.UIT.T, config={text = localize('b_transition'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
+                }},
+              }}
+            }},
+        }}
+        return {
+            n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
+              {n=G.UIT.C, config={padding = 0, align = 'cl'}, nodes={
+                {n=G.UIT.R, config={align = 'cl'}, nodes={
+                  sell
+                }},
+                {n=G.UIT.R, config={align = 'cl'}, nodes={
+                  transition
+                }},
+            }},
+        }}
+    end
     if (card.area == G.jokers and G.jokers and card.config.center.key == "j_entr_akyros") and not card.debuff then
         sell = {n=G.UIT.C, config={align = "cr"}, nodes={
             {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = 'sell'}, nodes={

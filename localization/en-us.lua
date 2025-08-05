@@ -1091,6 +1091,14 @@ local decs = {
 					"{X:attention,C:white}X0.9{} Blind Size. ...",
                 },
             },
+			j_entr_jestradiol = {
+                name = "Jestradiol",
+                text = {
+                    "Use this Joker to turn up to {C:attention}#1#{}",
+					"selected cards into {C:attention}Queens{}",
+					"gains {C:attention}#2#{} use when defeating a Blind"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
@@ -4962,6 +4970,7 @@ local decs = {
 			b_reference_cards = "Reference Jokers",
 			b_buy_slot = "+Joker Slot",
 			b_sell_slot = "-Joker Slot",
+			b_transition = "Transition",
 			
 			b_cant_reroll="Dont even try",
 

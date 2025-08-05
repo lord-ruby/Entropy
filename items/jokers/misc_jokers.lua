@@ -3129,6 +3129,44 @@ local dragonfruit = {
     end
 }
 
+
+local jestradiol = {
+    order = 53,
+    object_type = "Joker",
+    key = "jestradiol",
+    rarity = 2,
+    cost = 6,
+    dependencies = {
+        items = {            
+            "set_entr_inversions"
+        }
+    },    
+    eternal_compat = true,
+    pos = {x = 4, y = 8},
+    atlas = "jokers",
+    config = {
+        left = 3,
+        left_mod = 1
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.left,
+                card.ability.left_mod
+            }
+        }
+    end,
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.repetition and not context.blueprint and not context.individual) or context.forcetrigger then
+            card.ability.left = card.ability.left + card.ability.left_mod
+            return {
+                message = "+"..number_format(card.ability.left_mod)
+            }
+        end
+    end
+}
+
 return {
     items = {
         surreal,
@@ -3187,6 +3225,7 @@ return {
         alles,
         feynman_point,
         neuroplasticity,
-        dragonfruit
+        dragonfruit,
+        jestradiol
     }
 }
