@@ -245,7 +245,10 @@ local containment = {
                     { message = localize("k_copied_ex"), colour = G.C.PURPLE }
                 )
             end
-        end
+        end,
+        entr_credits = {
+            art = {"Lil. Mr. Slipstream"}
+        }
     }
     items[#items+1]=containment
     items[#items+1]=supersede
