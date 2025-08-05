@@ -363,7 +363,7 @@ Entropy.ReversePlanets = {
 }
 -- putting this here its easier because of how dumb the system is
 if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="planetlua",sprite_pos={x=8,y=2}, new_key="starlua", prefix = "c_cry_",config = {
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="planetlua",sprite_pos={x=8,y=2}, new_key="starlua", prefix = "cry",config = {
     level = 2,
     odds = 5
   },
@@ -400,26 +400,26 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
     end
   end
   }
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="cry_Bulwark", new_key = "dyson_swarm", key="asteroidbelt",sprite_pos={x=12,y=1},prefix = "c_cry_",set_badges = function(self, card, badges)
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="cry_Bulwark", new_key = "dyson_swarm", key="asteroidbelt",sprite_pos={x=12,y=1},prefix = "cry",set_badges = function(self, card, badges)
     badges[1] = create_badge(localize("k_planet_dyson_swarm"), get_type_colour(self or card.config, card), nil, 1.2)
   end, art="Binary"}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="cry_Clusterfuck", new_key = "dark_matter", key="void",sprite_pos={x=11,y=1},prefix = "c_cry_",set_badges = function(self, card, badges)
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="cry_Clusterfuck", new_key = "dark_matter", key="void",sprite_pos={x=11,y=1},prefix = "cry",set_badges = function(self, card, badges)
     badges[1] = create_badge("", get_type_colour(self or card.config, card), nil, 1.2)
   end, art="Binary"}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="cry_UltPair", key="marsmoons", new_key = "binarystars", sprite_pos={x=6,y=2},prefix = "c_cry_",set_badges = function(self, card, badges)
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="cry_UltPair", key="marsmoons", new_key = "binarystars", sprite_pos={x=6,y=2},prefix = "cry",set_badges = function(self, card, badges)
     badges[1] = create_badge(localize("k_planet_binary_star"), get_type_colour(self or card.config, card), nil, 1.2)
   end, art="Binary"}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="cry_None", key="nibiru", new_key = "deadcore", sprite_pos={x=11,y=2},prefix = "c_cry_",set_badges = function(self, card, badges)
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="cry_None", key="nibiru", new_key = "deadcore", sprite_pos={x=11,y=2},prefix = "cry",set_badges = function(self, card, badges)
     
 		if badges[1] and badges[1].remove then
 			badges[1]:remove()
 		end
 		badges[1] = nil
   end}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="cry_WholeDeck", key="universe", new_key = "multiverse", sprite_pos={x=7,y=2},prefix = "c_cry_",set_badges = function(self, card, badges)
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="cry_WholeDeck", key="universe", new_key = "multiverse", sprite_pos={x=7,y=2},prefix = "cry",set_badges = function(self, card, badges)
     badges[1] = create_badge(localize("k_planet_multiverse"), get_type_colour(self or card.config, card), nil, 1.2)
   end}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="nstar", new_key = "strange_star", sprite_pos={x=9,y=2},prefix = "c_cry_",
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="nstar", new_key = "strange_star", sprite_pos={x=9,y=2},prefix = "cry",
   loc_vars = function(self,q,card) 
     return {
       vars = {
@@ -433,7 +433,7 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
   end,
   calc = function() end, art="Binary"
   }
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="sunplanet", new_key = "nemesis", sprite_pos={x=10,y=2},prefix = "c_cry_", config = {extra = 0.1},
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="sunplanet", new_key = "nemesis", sprite_pos={x=10,y=2},prefix = "cry", config = {extra = 0.1},
     loc_vars = function(self,q,card) 
       local levelone = (G.GAME.nemesislevel and G.GAME.nemesislevel or 0) + 1
       local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
@@ -507,12 +507,12 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
       end
     end,
   }
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Timantii", new_key = "jatka", sprite_pos={x=8,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"High Card", "Pair", "Two Pair"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Klubi", new_key = "rouva", sprite_pos={x=9,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Three of a Kind", "Straight", "Flush"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Sydan", new_key = "paras", sprite_pos={x=10,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Full House", "Four of a Kind", "Straight Flush"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Lapio", new_key = "assa", sprite_pos={x=11,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Five of a Kind", "Flush House", "Flush Five"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Kaikki", new_key = "kivi", sprite_pos={x=12,y=3},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"cry_Bulwark", "cry_Clusterfuck", "cry_UltPair"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="voxel", new_key = "chunk", sprite_pos={x=1,y=7},prefix = "c_cry_", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"cry_Declare0", "cry_Declare1", "cry_Declare2"}}, loc_vars = Entropy.ChunkLocVars, calc=Entropy.ReverseSuitCalc}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Timantii", new_key = "jatka", sprite_pos={x=8,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"High Card", "Pair", "Two Pair"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Klubi", new_key = "rouva", sprite_pos={x=9,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Three of a Kind", "Straight", "Flush"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Sydan", new_key = "paras", sprite_pos={x=10,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Full House", "Four of a Kind", "Straight Flush"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Lapio", new_key = "assa", sprite_pos={x=11,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Five of a Kind", "Flush House", "Flush Five"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Kaikki", new_key = "kivi", sprite_pos={x=12,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"cry_Bulwark", "cry_Clusterfuck", "cry_UltPair"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="voxel", new_key = "chunk", sprite_pos={x=1,y=7},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"cry_Declare0", "cry_Declare1", "cry_Declare2"}}, loc_vars = Entropy.ChunkLocVars, calc=Entropy.ReverseSuitCalc}
 end
 Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="entr_derivative",key="wormhole",sprite_pos={x=4,y=0}, new_key="pocket_dimension", prefix = "entr", atlas = "consumables2", set_badges = function(self, card, badges)
   badges[1] = create_badge(localize("k_spatial_anomaly"), get_type_colour(self or card.config, card), nil, 1.2)
