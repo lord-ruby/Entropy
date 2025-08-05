@@ -278,7 +278,7 @@ function SMODS.injectItems(...)
                 end
             end
             sendDebugMessage("Entropy compatibility detected", "MULTIPLAYER")
-            MP.DECK.ban_card("j_entr_ruby")
+            --MP.DECK.ban_card("j_entr_ruby")
             MP.DECK.ban_card("c_entr_new")
             for i, b in pairs(SMODS.Consumable.obj_table) do
                 if b.set == "CBlind" then

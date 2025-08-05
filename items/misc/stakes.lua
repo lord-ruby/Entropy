@@ -149,6 +149,7 @@ function Blind:defeat(s)
     dft(self, s)
     if G.GAME.blind_on_deck == "Boss" then
         G.GAME.curse_rate = (G.GAME.curse_rate_mod or Entropy.get_curse_rate()) * G.GAME.round_resets.ante
+        if to_big(G.GAME.curse_rate_mod) < to_big(1) and to_big(G.GAME.round_resets.ante) < to_big(8) then G.GAME.curse_rate = 0 end
         if pseudorandom("entr_curse") < G.GAME.curse_rate then
             G.GAME.entr_maze_applied = nil
             local curses = {}
