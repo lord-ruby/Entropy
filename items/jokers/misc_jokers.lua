@@ -2354,7 +2354,8 @@ local slipstream = {
                 number_format(card.ability.xmult)
             }
         }
-    end
+    end,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}}
 }
 
 local cass = {
@@ -2451,7 +2452,8 @@ local cass = {
                 number_format(card.ability.mod),
             }
         }
-    end
+    end,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}}
 }
 
 local sandpaper = {
