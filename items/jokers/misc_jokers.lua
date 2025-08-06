@@ -3158,7 +3158,7 @@ local jestradiol = {
     end,
     demicoloncompat = true,
     calculate = function(self, card, context)
-        if (context.end_of_round and not context.repetition and not context.blueprint and not context.individual) or context.forcetrigger then
+        if (context.end_of_round and not context.repetition and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss") or context.forcetrigger then
             card.ability.left = card.ability.left + card.ability.left_mod
             return {
                 message = "+"..number_format(card.ability.left_mod)

@@ -1096,7 +1096,7 @@ local decs = {
                 text = {
                     "Use this Joker to turn up to {C:attention}#1#{}",
 					"selected cards into {C:attention}Queens{}",
-					"gains {C:attention}#2#{} use when defeating a Blind"
+					"gains {C:attention}#2#{} use when defeating a Boss Blind"
                 },
             },
 		},
