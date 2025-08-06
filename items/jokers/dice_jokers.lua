@@ -72,7 +72,7 @@ local D6 = {
     demicoloncompat = true,
     loc_vars = function(self, q, card) return {vars = {number_format(card.ability.numerator),number_format(card.ability.numerator_mod)}} end,
     calculate = function(self, card, context)
-        if context.pseudorandom_result and not context.blueprint and not context.repetition then
+        if context.pseudorandom_result and not context.blueprint then
             if context.result then
                 card.ability.numerator = 0
                 if to_big(card.ability.numerator) > to_big(0) then
@@ -297,7 +297,7 @@ local D10 = {
     },
     pools = {["Dice"] = true},
     calculate = function(self, card, context)
-        if context.mod_probability and not context.blueprint and not context.repetition then
+        if context.mod_probability and not context.blueprint then
             local n_mod = pseudorandom("d10_n", card.ability.min_n*100, card.ability.max_n*100)/100
             local d_mod = pseudorandom("d10_d", card.ability.min_d*100, card.ability.max_d*100)/100
             local num = context.numerator + n_mod

@@ -536,7 +536,7 @@ local lotteryticket = {
         }
     end,
     calculate = function (self, card, context)
-        if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then            
+        if context.end_of_round and not context.individual and not context.blueprint then            
             if SMODS.pseudorandom_probability(card, 'lottery', 1, card.ability.extra.odds * card.ability.extra.odds2) then
                 G.E_MANAGER:add_event(Event({
                     func = function()
@@ -2549,7 +2549,7 @@ local purple_joker = {
     end,
     demicoloncompat = true,
     calculate = function(self, card, context)
-        if context.rune_triggered and not context.repetition and not context.blueprint then
+        if context.rune_triggered and not context.blueprint then
             card.ability.xmult = card.ability.xmult + card.ability.xmult_mod
             return {
                 message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.xmult }})
@@ -2640,7 +2640,7 @@ local torn_photograph = {
     end,
     demicoloncompat = true,
     calculate = function(self, card, context)
-        if context.selling_card and Entropy.is_inverted(context.card) and not context.blueprint and not context.repetition then
+        if context.selling_card and Entropy.is_inverted(context.card) and not context.blueprint then
             card.ability.xmult = card.ability.xmult + card.ability.xmult_mod
             return {
                 message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.xmult }})
@@ -2930,7 +2930,7 @@ local feynman_point = {
         }
     end,
     calculate = function(self, card, context)
-        if context.pseudorandom_result and context.result and not context.blueprint and not context.repetition then
+        if context.pseudorandom_result and context.result and not context.blueprint then
             if not context.trigger_obj or (context.trigger_obj.config.center or {}).key ~= "j_cry_boredom" then
                 card.ability.nearest = card.ability.nearest + card.ability.nearest_mod
                 return {
@@ -3158,13 +3158,13 @@ local jestradiol = {
     end,
     demicoloncompat = true,
     calculate = function(self, card, context)
-        if (context.end_of_round and not context.repetition and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss") or context.forcetrigger then
+        if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss") or context.forcetrigger then
             card.ability.left = card.ability.left + card.ability.left_mod
             return {
                 message = "+"..number_format(card.ability.left_mod)
             }
         end
-    end
+    end,
 }
 
 return {

@@ -226,7 +226,7 @@ local anaptyxi = {
         }
     end,
     calculate = function(self, card, context)
-        if (context.end_of_round and not context.individual and not context.repetition and not context.blueprint)
+        if (context.end_of_round and not context.individual and not context.blueprint)
             or context.forcetrigger then
             card.ability.extra.scale = card.ability.extra.scale + card.ability.extra.scale_mod
             return {
