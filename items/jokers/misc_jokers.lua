@@ -442,7 +442,7 @@ local rusty_shredder = {
     end,
     entr_credits = {
         idea = {"cassknows"},
-        art = {"Moth"}
+        art = {"LFMoth"}
     }
 }
 
