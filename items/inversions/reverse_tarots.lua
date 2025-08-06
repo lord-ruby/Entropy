@@ -809,7 +809,7 @@ local statue = {
         }
     end,
     entr_credits = {
-        art = {"LFmoth"}
+        art = {"LFMoth"}
     },
     demicoloncompat = true,
     force_use = function(self, card)
@@ -1095,7 +1095,7 @@ local mountain = {
         }
     end,
     entr_credits = {
-        art = {"LFmoth"}
+        art = {"LFMoth"}
     },
     demicoloncompat = true,
     force_use = function(self, card)

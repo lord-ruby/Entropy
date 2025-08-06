@@ -36,7 +36,7 @@ local scenic_route = {
     end,
     entr_credits = {
         idea = {"cassknows"},
-        art = {"LFmoth"}
+        art = {"LFMoth"}
     }
 }
 
