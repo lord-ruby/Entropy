@@ -442,7 +442,7 @@ local rusty_shredder = {
     end,
     entr_credits = {
         idea = {"cassknows"},
-        art = {"lfmoth"}
+        art = {"LFmoth"}
     }
 }
 
@@ -1527,7 +1527,7 @@ local grotesque_joker = {
     end,
     entr_credits = {
         idea = {"crabus"},
-        art = {"Lfmoth", "Lil. Mr. Slipstream"}
+        art = {"LFmoth", "Lil. Mr. Slipstream"}
     }
 }
 
@@ -2070,7 +2070,7 @@ local inkbleed = {
     pos = { x = 7, y = 6 },
     atlas = "jokers",
     entr_credits = {
-        art = {"Lfmoth"}
+        art = {"LFmoth"}
     }
 }
 

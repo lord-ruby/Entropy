@@ -208,7 +208,7 @@ local solar = {
 	end,
 	shiny_atlas = "entr_shiny_tags",
 	entr_credits = {
-		art = {"Grakhon"}
+		art = {"Grahkon"}
 	}
 }
 
@@ -753,7 +753,7 @@ local neon_asc = Entropy.EditionTag("e_entr_neon", "neon", true, {x=7,y=4},18.33
 local lowres_asc = Entropy.EditionTag("e_entr_lowres", "lowres", true, {x=7,y=3},18.66)
 local sunny_asc = Entropy.EditionTag("e_entr_sunny", "sunny", true, {x=6,y=4},19)
 local solar_asc = Entropy.EditionTag("e_entr_solar", "solar", true, {x=1,y=3},20, {
-	art = {"Grakhon"}
+	art = {"Grahkon"}
 })
 local fractured_asc = Entropy.EditionTag("e_entr_fractured", "fractured", true, {x=6,y=5},20.5)
 local freaky_asc = Entropy.EditionTag("e_entr_freaky", "freaky", true, {x=7,y=5},20.75)
