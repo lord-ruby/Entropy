@@ -207,7 +207,7 @@ local entropyTabs = function()
 						["AnnieTheEagle"]=true, 
 						["WhoNeedsAUsrName"]=true, 
 						["wingedcatgirl"]=true, 
-						["Lilly Felli"]=true, 
+						["Lily Felli"]=true, 
 						["gemstonez"]=true, 
 						["triple6lexi"]=true
 					},
