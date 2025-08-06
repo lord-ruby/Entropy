@@ -1177,7 +1177,7 @@ function G.UIDEF.use_and_sell_buttons(card)
               }},
           }}
     end
-    if card.area == G.pack_cards and G.pack_cards and not card.config.center.no_select and ((SMODS.ConsumableTypes[card.config.center.set] and SMODS.ConsumableTypes[card.config.center.set].can_be_pulled) or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front) and (card.ability.consumeable) then
+    if card.area == G.pack_cards and G.pack_cards and not card.config.center.no_select and ((SMODS.ConsumableTypes[card.config.center.set] and SMODS.ConsumableTypes[card.config.center.set].can_be_pulled or card.config.center.can_be_pulled) or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front) and (card.ability.consumeable) then
         return {
             n = G.UIT.ROOT,
             config = { padding = -0.1, colour = G.C.CLEAR },
@@ -3753,10 +3753,9 @@ function SMODS.calculate_repetitions(card, context, reps)
     return reps
 end
 
+--partially taken from card sleeves
 local old_smods_calculate_retriggers = SMODS.calculate_retriggers
 function SMODS.calculate_retriggers(card, context, _ret)
-    -- hook for only calculating retriggers; other contexts are handled by Back:trigger_effect
-    -- why tf is this coded this way sigh
     local retriggers = old_smods_calculate_retriggers(card, context, _ret)
 
     local effect = Entropy.misc_calculations(nil, nil, {retrigger_joker_check = true, other_card = card, other_context = context, other_ret = _ret})

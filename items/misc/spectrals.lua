@@ -36,7 +36,8 @@ local flipside = {
                 card.ability.select,
             }
         }
-    end
+    end,
+    can_be_pulled = true
 }
 
 local shatter = {
