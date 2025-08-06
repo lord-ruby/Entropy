@@ -486,17 +486,11 @@ local akyros = {
     atlas = "exotic_jokers",
     loc_vars = function(self, info_queue, card)
         if G.jokers then
-            --this much money is bad for balancing but idk what to do about it??
-            local ratio = 2-(#G.jokers.cards/G.jokers.config.card_limit)
-            local amount = {math.max(-1+math.floor(math.log(G.jokers.config.card_limit/10)), -1), card.ability.base*ratio}
-            local fac = (1/(1.05)) ^ 3.75
-            if to_big(fac) > to_big(2) then fac = 2 end
-            amount[2] = amount[2]*fac+1
             return {
                 vars = {
                     card.ability.buycost,
                     card.ability.sellcost,
-                    Entropy.FormatArrowMult(0, amount[2])
+                    number_format(G.jokers.config.card_limit-#G.jokers.cards)
                 }
             }
         end
@@ -504,27 +498,12 @@ local akyros = {
             vars = {
                 card.ability.buycost,
                 card.ability.sellcost,
-                "+15"
+                "+5"
             }
         }
     end,
-    calculate = function(self, card, context)
-        if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
-            local ratio = 2-(#G.jokers.cards/G.jokers.config.card_limit)
-            local amount = {0, card.ability.base*ratio}
-            local fac = (1/(amount[1]+1.05)) ^ 3.75
-            if to_big(fac) > to_big(2) then fac = 2 end
-            amount[2] = amount[2]*fac+1
-            local actual = 0
-            if amount[1] <= -0.9 then 
-                actual = (G.GAME.dollars + amount[2]) - G.GAME.dollars
-            elseif amount[1] <= 0.1 then 
-                actual = (G.GAME.dollars * amount[2]) - G.GAME.dollars
-            else
-                actual = (to_big(G.GAME.dollars):arrow(amount[1],to_big(amount[2]))) - G.GAME.dollars
-            end
-            ease_dollars(actual)
-        end
+    calculate_dollar_bonus = function()
+        return G.jokers.config.card_limit-#G.jokers.cards
     end,
 	entr_credits = {
         art = {"Lil. Mr. Slipstream"}

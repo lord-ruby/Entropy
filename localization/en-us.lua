@@ -331,9 +331,9 @@ local decs = {
 				text = {
 					"Joker slots can be {C:attention}bought{}",
 					"for {C:gold}$#1#{} and {C:attention}sold{} for {C:gold}$#2#{}",
-					"Gain money based on how many",
-					"empty Joker slots you have",
-					"{C:inactive}(Currently{} {X:gold,C:white}#3#{}{C:inactive}){}"
+					"Gain money at end of round based on how",
+					"many empty Joker slots you have",
+					"{C:inactive}(Currently{} {C:money}#3#{}{C:inactive}){}"
 				}
 			},
 			j_entr_dni = {
@@ -4950,6 +4950,11 @@ local decs = {
 			k_entr_faster_ante_scaling = "Scale Blind scores quicker if you have an Entropic Joker",
 			k_entr_entropic_music = "Entropic Jokers (Joker in Greek by gemstonez)",
 			k_entr_blind_tokens = "Enable Blind Tokens",
+			k_credits = "Credits",
+			k_code = "Code",
+			k_idea = "Ideas",
+			k_art = "Art",
+			k_music = "Music",
 
 			k_star = "Star",
 			b_star_cards = "Star Cards",	

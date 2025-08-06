@@ -95,6 +95,49 @@ G.FUNCS.update_inversion_queue = function(e)
 	Entropy.config.inversion_queues = e.to_key
 end
 
+function Entropy.generate_credits_nodes(table, type)
+	local code_nodes = {
+		{
+			n = G.UIT.R,
+			config = { align = "cm" },
+			nodes = {
+				{
+					n = G.UIT.O,
+					config = {
+						object = DynaText({
+							string = localize("k_"..type),
+							colours = { G.C.IMPORTANT },
+							shadow = true,
+							scale = 0.7,
+						}),
+					},
+				},
+			},
+		},
+	}
+	for i, v in pairs(table) do
+		code_nodes[#code_nodes + 1] = 
+		{
+			n = G.UIT.R,
+			config = { align = "cm" },
+			nodes = {
+				{
+					n = G.UIT.O,
+					config = {
+						object = DynaText({
+							string = i,
+							colours = { G.C.WHITE },
+							shadow = true,
+							scale = 0.4,
+						}),
+					},
+				},
+			},
+		}
+	end
+	return { n = G.UIT.C, config = { align = "tm", padding = 0 }, nodes = code_nodes }
+end
+
 local entropyTabs = function()
 	return {
 		{
@@ -126,6 +169,62 @@ local entropyTabs = function()
 					end,
 				})
 				config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { settings } }
+				entr_nodes[#entr_nodes + 1] = config
+				return {
+					n = G.UIT.ROOT,
+					config = {
+						emboss = 0.05,
+						minh = 6,
+						r = 0.1,
+						minw = 10,
+						align = "cm",
+						padding = 0.2,
+						colour = G.C.BLACK,
+					},
+					nodes = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = entr_nodes },
+				}
+			end,
+		},
+		{
+			label = localize("k_credits"),
+			tab_definition_function = function()
+				entr_nodes = {
+					{
+						n = G.UIT.R,
+						config = { align = "cm" },
+						nodes = {
+						},
+					},
+				}
+				local credits = {
+					art = {},
+					idea = {},
+					code = {
+						["lord.ruby"]=true, 
+						["cassknows"]=true, 
+						["SleepyG11"]=true, 
+						["hayaunderscore"]=true, 
+						["AnnieTheEagle"]=true, 
+						["WhoNeedsAUsrName"]=true, 
+						["wingedcatgirl"]=true, 
+						["Lilly Felli"]=true, 
+						["gemstonez"]=true, 
+						["triple6lexi"]=true
+					},
+					music = {gemstonez=true}
+				}
+				for i, v in pairs(G.P_CENTERS) do if v.entr_credits then
+					if v.entr_credits.idea then for i, v in pairs(v.entr_credits.idea) do credits.idea[v] = true end end
+					if v.entr_credits.art then for i, v in pairs(v.entr_credits.art) do credits.art[v] = true end end
+					if v.entr_credits.code then for i, v in pairs(v.entr_credits.code) do credits.code[v] = true end end
+				end end
+				settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
+
+				config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { settings } }
+				entr_nodes[#entr_nodes+1] = Entropy.generate_credits_nodes(credits.code, "code", entr_nodes)
+				entr_nodes[#entr_nodes+1] = Entropy.generate_credits_nodes(credits.idea, "idea", entr_nodes)
+				entr_nodes[#entr_nodes+1] = Entropy.generate_credits_nodes(credits.art, "art", entr_nodes)
+				entr_nodes[#entr_nodes+1] = Entropy.generate_credits_nodes(credits.music, "music", entr_nodes)
 				entr_nodes[#entr_nodes + 1] = config
 				return {
 					n = G.UIT.ROOT,
