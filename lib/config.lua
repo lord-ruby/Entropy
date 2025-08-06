@@ -181,7 +181,7 @@ local entropyTabs = function()
 						padding = 0.2,
 						colour = G.C.BLACK,
 					},
-					nodes = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = entr_nodes },
+					nodes = entr_nodes,
 				}
 			end,
 		},

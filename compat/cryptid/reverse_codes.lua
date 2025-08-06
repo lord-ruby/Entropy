@@ -1785,8 +1785,8 @@ local transpile = {
         }
     end,
     entr_credits = {
-        art = {"Grakhon"},
-        idea = {"Grakhon"}
+        art = {"Grahkon"},
+        idea = {"Grahkon"}
     },
     demicoloncompat = true,
     force_use = function(self, card)

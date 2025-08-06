@@ -433,7 +433,7 @@ local metamorphosis = {
         end
     end,
     entr_credits = {
-        art = {"Lfmoth"}
+        art = {"LFMoth"}
     }
 }
 

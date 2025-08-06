@@ -1069,7 +1069,7 @@ local imp = {
     
 	
     entr_credits = {
-        art = {"Lfmoth"}
+        art = {"LFmoth"}
     },
     demicoloncompat = true,
     force_use = function(self, card)
@@ -1126,7 +1126,7 @@ local integrity = {
         self:use(card)
     end,
     entr_credits = {
-        art = {"Lfmoth"}
+        art = {"LFmoth"}
     }
 }
 
@@ -1185,7 +1185,7 @@ local mallet = {
         self:use(card)
     end,
     entr_credits = {
-        art = {"Lfmoth"}
+        art = {"LFmoth"}
     }
 }
 
