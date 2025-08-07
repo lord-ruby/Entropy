@@ -1073,7 +1073,11 @@ end
 local manipulate = Cryptid.manipulate
 function Cryptid.manipulate(card, ...)
     if card and not card.ability.entr_pure then
-        return manipulate(card, ...)
+        local ret = manipulate(card, ...)
+        if card.edition and card.edition.card_limit then 
+            card.area.config.card_limit = card.area.config.card_limit + card.edition.card_limit
+        end
+        return ret
     end
 end
 
