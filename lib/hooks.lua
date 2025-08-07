@@ -3820,3 +3820,12 @@ function Card:remove_from_deck()
     end
     remove_ref(self)
 end
+
+local defeat_ref = Blind.defeat
+function Blind:defeat(silent, ...)
+    if G.GAME.blind_on_deck == "Boss" then
+        G.GAME.round_resets.blind_states.Boss = "Defeated"
+    end
+    local ret = defeat_ref(self, silent, ...)
+    return ret
+end

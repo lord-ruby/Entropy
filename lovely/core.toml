@@ -1747,13 +1747,40 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
-target = '''engine/ui.lua'''
+target = '''functions/state_events.lua'''
 pattern = '''
-if self.config.colour[4] > 0.01 then
+if G.GAME.round_resets.ante == G.GAME.win_ante and G.GAME.blind:get_type() == 'Boss' then
 '''
 position = "at"
 payload = '''
-if not self.config.colour then self.config.colour = G.C.DYN_UI.BOSS_DARK end
-if self.config.colour[4] > 0.01 then
+if G.GAME.round_resets.ante == G.GAME.win_ante and G.GAME.blind_on_deck == "Boss" then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+if G.GAME.blind:get_type() == 'Boss' then
+  local _handname, _played, _order = 'High Card', -1, 100
+'''
+position = "at"
+payload = '''
+if G.GAME.blind_on_deck == "Boss" then
+  local _handname, _played, _order = 'High Card', -1, 100
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+if G.GAME.blind:get_type() == 'Boss' then
+  G.GAME.voucher_restock = nil
+'''
+position = "at"
+payload = '''
+if G.GAME.blind_on_deck == "Boss" then
+  G.GAME.voucher_restock = nil
 '''
 match_indent = true
