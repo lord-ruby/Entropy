@@ -137,11 +137,7 @@ function Entropy.get_curse_rate()
     if to_big(G.GAME.round_resets.ante) <= to_big(8) then return 0 end
     local key = G.GAME.selected_back and G.GAME.selected_back.effect.center.original_key
     local wins = G.PROFILES and G.SETTINGS.profile and G.PROFILES[G.SETTINGS.profile].deck_usage and G.PROFILES[G.SETTINGS.profile].deck_usage[key] and G.PROFILES[G.SETTINGS.profile].deck_usage[key].wins or {}
-    if wins[8] and wins[8] >= 0 then 
-        return 0.1 + (G.GAME.entr_alt and 0.05 or 0)
-    else    
-        return 0.04 + (G.GAME.entr_alt and 0.06 or 0)
-    end
+    return 0.04 + (G.GAME.entr_alt and 0.06 or 0)
 end
 
 local dft = Blind.defeat
