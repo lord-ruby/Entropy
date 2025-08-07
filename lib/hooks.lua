@@ -3783,7 +3783,7 @@ G.FUNCS.toggle_shop = function(e)
                 end
             })
             check = true
-            delay(1)
+            delay(2)
             card_eval_status_text(
                 v,
                 "extra",
