@@ -3814,7 +3814,7 @@ end
 local remove_ref = Card.remove_from_deck
 function Card:remove_from_deck()
     if self.edition and self.edition.card_limit and self.added_to_deck then
-        if not self.ability.consumeable then
+        if not self.ability.consumeable and self.area == G.consumeables then
             G.consumeables.config.card_limit = G.consumeables.config.card_limit - self.edition.card_limit
         end
     end
