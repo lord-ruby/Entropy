@@ -7,6 +7,7 @@ local i = {
     "compat/artbox",
     "compat/thefamily",
     "compat/revosvault",
-    "compat/aikoshen"
+    "compat/aikoshen",
+    "compat/tspectrals"
 }
 Entropy.load_files(i)

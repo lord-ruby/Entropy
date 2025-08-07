@@ -43,3 +43,24 @@ local function action_remove_phantom(key)
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS TSpectrals "main.lua"]'''
+pattern = '''
+    textures = {
+        'tspa_spectral',
+        'tspa_boosters',
+        'tspa_tags',
+        'tspa_deck',
+        'tspa_joker',
+'''
+position = "after"
+payload = '''
+"entr_entrspecs",
+"entr_entrspecs2",
+"entr_entrrunes",
+'''
+match_indent = true
+
+
