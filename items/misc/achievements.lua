@@ -38,6 +38,19 @@ local joy_to_the_world = {
 	end,
 }
 
+local suburban_jungle = {
+	object_type = "Achievement",
+	key = "suburban_jungle",
+	order = 4,
+	bypass_all_unlocked = true,
+	atlas = "entr_achievements",
+	unlock_condition = function(self, args)
+        if args.type == "suburban_jungle" then
+		    return true
+        end
+	end,
+}
+
 if (SMODS.Mods["Cryptid"] or {}).can_load then
 	local event_horizon = {
 		object_type = "Achievement",
@@ -90,6 +103,7 @@ return {
         acheros,
 		rift,
 		katevaino,
-		joy_to_the_world
+		joy_to_the_world,
+		suburban_jungle
     }
 }
