@@ -244,3 +244,4 @@ local entropyTabs = function()
 	}
 end
 SMODS.current_mod.extra_tabs = entropyTabs
+SMODS.scale_card = SMODS.scale_card or function() end
