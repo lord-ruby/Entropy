@@ -150,10 +150,17 @@ local eternal_D6 = {
                 })
             else
                 card.ability.numerator = card.ability.numerator + card.ability.numerator_mod
-                return {
-                    message = "+"..number_format(card.ability.numerator_mod),
-                    colour = G.C.GREEN
-                }
+                local msg = SMODS.scale_card(card, {
+                    ref_table = card.ability,
+                    ref_value = "numerator",
+                    scalar_value = "numerator_mod"
+                })
+                if not msg or type(msg) == "string" then
+                    return {
+                        message = msg or "+"..number_format(card.ability.numerator_mod),
+                        colour = G.C.GREEN
+                    }
+                end
             end
         end
         if context.mod_probability and context.trigger_obj ~= card  and not context.blueprint and not context.repetition then
@@ -166,10 +173,17 @@ local eternal_D6 = {
         end
         if context.forcetrigger then
             card.ability.numerator = card.ability.numerator + card.ability.numerator_mod
-            return {
-                message = "+"..number_format(card.ability.numerator_mod),
-                colour = G.C.GREEN
-            }
+            local msg = SMODS.scale_card(card, {
+                ref_table = card.ability,
+                ref_value = "numerator",
+                scalar_value = "numerator_mod"
+            })
+            if not msg or type(msg) == "string" then
+                return {
+                    message = msg or "+"..number_format(card.ability.numerator_mod),
+                    colour = G.C.GREEN
+                }
+            end
         end
     end,
 }

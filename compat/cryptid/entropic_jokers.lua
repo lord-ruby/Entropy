@@ -236,8 +236,18 @@ local anaptyxi = {
         end
         return nil, nil
     end,
-	cry_scale_mod = function(self, card, joker, orig_scale_scale, true_base, orig_scale_base, new_scale_base)
-        if joker.config.center.key == "j_entr_anaptyxi" or joker.config.center.name == "cry-Scalae" then return end
+    calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
+		if not G.GAME.cryptid_base_scales then
+			G.GAME.cryptid_base_scales = {}
+		end
+		if not G.GAME.cryptid_base_scales[other.config.center.key] then
+			G.GAME.cryptid_base_scales[other.config.center.key] = {}
+		end
+		if not G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] then
+			G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] = current_scalar
+		end
+		local true_base = G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value]
+		local orig_scale_scale = current_scaling
         local new_scale = lenient_bignum(
             to_big(true_base)
                 * (
@@ -276,13 +286,11 @@ local anaptyxi = {
                 v.ability.extra.odds = to_number(v.ability.extra.odds)
             end
         end
-        return new_scale
+        return {
+			scalar_value = new_scale,
+			message = localize("k_upgrade_ex"),
+		}
 	end,
-    cry_double_scale_info = function(self, card, dbl_info)
-        dbl_info.base = { { "extra", "scale" } }
-        dbl_info.scaler = { { "extra", "scale_mod" } }
-        dbl_info.scaler_base = dbl_info.scaler_base or { card.ability.extra.shadow_scale_mod }
-    end,
     entr_credits = {
         art = {"Lil. Mr. Slipstream"}
     }
@@ -602,13 +610,27 @@ local ieros = {
         if context.buying_card and not context.retrigger_joker then
 			if context.card.ability.set == "Joker" then
                 card.ability.e_chips = card.ability.e_chips + (Entropy.ReverseRarityChecks[context.card.config.center.rarity] or 0)/20.0
-                return {
-                    message = "Upgraded",
-                }
+                local msg = SMODS.scale_card(card, {
+                    ref_table = card.ability,
+                    ref_value = "e_chips",
+                    scalar_table = {increase = (Entropy.ReverseRarityChecks[1] or 0)/20.0},
+                    scalar_value = "increase"
+                })
+                if not msg or type(msg) == "string" then
+                    return {
+                        message = msg or localize("k_upgraded_ex"),
+                    }
+                end
             end
         end
         if context.forcetrigger then
             card.ability.e_chips = card.ability.e_chips + (Entropy.ReverseRarityChecks[1] or 0)/20.0
+            local msg = SMODS.scale_card(card, {
+                ref_table = card.ability,
+                ref_value = "e_chips",
+                scalar_table = {increase = (Entropy.ReverseRarityChecks[1] or 0)/20.0},
+                scalar_value = "increase"
+            })
         end
         if context.joker_main or context.forcetrigger then
             return {
@@ -812,14 +834,21 @@ local apeirostemma = {
             if context.joker_main or context.forcetrigger then
                 if #G.play.cards == 3 or context.forcetrigger then
                     card.ability.extra.ee_chips = card.ability.extra.ee_chips + card.ability.extra.ee_chips_mod
-                    card_eval_status_text(
-                        card,
-                        "extra",
-                        nil,
-                        nil,
-                        nil,
-                        { message = localize("k_upgrade_ex") }
-                    )
+                    local msg = SMODS.scale_card(card, {
+                        ref_table = card.ability,
+                        ref_value = "ee_chips",
+                        scalar_value = "ee_chips_mod"
+                    })
+                    if not msg or type(msg) == "string" then
+                        card_eval_status_text(
+                            card,
+                            "extra",
+                            nil,
+                            nil,
+                            nil,
+                            { message = localize("k_upgrade_ex") }
+                        )
+                    end
                 end
                 return {
                     e_chips = card.ability.extra.ee_chips
