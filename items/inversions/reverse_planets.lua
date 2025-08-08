@@ -100,7 +100,7 @@ function Entropy.ReverseSuitUse(self, card, area, copier, num)
   }
   for i, v in pairs(handnames) do
     if not declare[v] or G.GAME.hands[v].declare_cards then
-      Entropy.ReversePlanetUse(v, card, (card.ability.level + (G.GAME.entr_black_dwarf or 0)) * num)
+      Entropy.ReversePlanetUse(v, card, (card.ability.level + (G.GAME.entr_black_dwarf or 0)) * (num or 1))
     end
   end
 end
