@@ -846,7 +846,7 @@ local dating_simbo = {
                     end
                 }))
                 card.ability.chips = card.ability.chips + math.max(context.destroying_card.base.nominal + (context.destroying_card.ability.bonus or 0), 0)
-                SMODS.scale_card(card, {ref_table = "ability", ref_value = "chips", scalar_table = context.destroying_card.base, scalr_value = "nominal"})
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "chips", scalar_table = context.destroying_card.base, scalr_value = "nominal"})
                 return { remove = not SMODS.is_eternal(context.destroying_card) }
             end
         end
@@ -914,7 +914,7 @@ local sweet_tooth = {
                     { message = localize("k_upgrade_ex"), colour = G.C.FILTER }
                 )
                 card.ability.chips = to_big(card.ability.chips) ^ to_big(card.ability.chip_exp)
-                SMODS.scale_card(card, {ref_table = "ability", ref_value = "chips", scalar_value = "chip_exp", operation = "^"})
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "chips", scalar_value = "chip_exp", operation = "^"})
             end
         end
 	end,
@@ -1073,7 +1073,7 @@ local sunny_side_up = {
         if context.joker_main or context.forcetrigger then
             local asc = card.ability.asc
             card.ability.asc = card.ability.asc - card.ability.asc_mod
-            SMODS.scale_card(card, {ref_table = "ability", ref_value = "asc", scalar_value = "asc_mod", operation = "-"})
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "asc", scalar_value = "asc_mod", operation = "-"})
             if to_big(card.ability.asc) > to_big(0) then
                 return {
                     plus_asc = asc
@@ -1391,14 +1391,14 @@ local crimson_flask = {
     calculate = function(self, card, context)
         if context.joker_debuffed or context.forcetrigger then
             card.ability.xmult = card.ability.xmult + card.ability.xmult_joker
-            SMODS.scale_card(card, {ref_table = "ability", ref_value = "xmult", scalar_value = "xmult_joker"})
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "xmult", scalar_value = "xmult_joker"})
             return {
                 message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.xmult }})
             }
         end
         if context.debuffed_card_drawn or context.forcetrigger then
             card.ability.xmult = card.ability.xmult + card.ability.xmult_card
-            SMODS.scale_card(card, {ref_table = "ability", ref_value = "xmult", scalar_value = "xmult_card"})
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "xmult", scalar_value = "xmult_card"})
             return {
                 message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.xmult }})
             }
@@ -1495,7 +1495,7 @@ local grotesque_joker = {
             for i, v in pairs(context.removed) do
                 if v.config.center.key == "m_entr_flesh" then
                     card.ability.xchips = card.ability.xchips + card.ability.xchips_mod
-                    SMODS.scale_card(card, {ref_table = "ability", ref_value = "xchips", scalar_value = "xchips_mod"})
+                    SMODS.scale_card(card, {ref_table = card.ability, ref_value = "xchips", scalar_value = "xchips_mod"})
                     card_eval_status_text(
                         card,
                         "extra",
@@ -1509,7 +1509,7 @@ local grotesque_joker = {
         end
         if context.forcetrigger then
             card.ability.xchips = card.ability.xchips + card.ability.xchips_mod
-            SMODS.scale_card(card, {ref_table = "ability", ref_value = "xchips", scalar_value = "xchips_mod"})
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "xchips", scalar_value = "xchips_mod"})
             card_eval_status_text(
                 card,
                 "extra",
@@ -1521,7 +1521,7 @@ local grotesque_joker = {
         end
         if context.enhancement_added == "m_entr_flesh" or context.forcetrigger then
             card.ability.xmult = card.ability.xmult + card.ability.xmult_mod
-            SMODS.scale_card(card, {ref_table = "ability", ref_value = "xmult", scalar_value = "xmult_mod"})
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "xmult", scalar_value = "xmult_mod"})
             return {
                 message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.xmult }})
             }
@@ -2197,7 +2197,7 @@ local debit_card = {
             while to_big(card.ability.current_spent) >= to_big(card.ability.needed) do
                 card.ability.current_spent = card.ability.current_spent - card.ability.needed
                 card.ability.current = card.ability.current + card.ability.amount
-                SMODS.scale_card(card, {ref_table = "ability", ref_value = "current", scalar_value = "amount"})
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "current", scalar_value = "amount"})
                 check = true
             end
             if check then
@@ -2288,7 +2288,7 @@ local ruby = {
     calculate = function(self, card, context)
         if context.entr_path_changed then
             card.ability.xmult = card.ability.xmult + card.ability.xmult_mod
-            SMODS.scale_card(card, {ref_table = "ability", ref_value = "xmult", scalar_value = "xmult_mod"})
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "xmult", scalar_value = "xmult_mod"})
             return {
                 message = localize("k_upgrade_ex")
             }
@@ -2391,26 +2391,26 @@ local cass = {
             local result = pseudorandom(pseudoseed("entr_cass"), 1, 5)
             if result == 1 then
                 card.ability.hand_size = card.ability.hand_size + card.ability.mod
-                SMODS.scale_card(card, {ref_table = "ability", ref_value = "hand_size", scalar_value = "mod"})
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "hand_size", scalar_value = "mod"})
                 G.hand.config.card_limit = G.hand.config.card_limit + card.ability.mod
             elseif result == 2 then
                 card.ability.selection_limit = card.ability.selection_limit + card.ability.mod
-                SMODS.scale_card(card, {ref_table = "ability", ref_value = "selection_limit", scalar_value = "mod"})
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "selection_limit", scalar_value = "mod"})
                 Entropy.ChangeFullCSL(card.ability.mod)
             elseif result == 3 then 
                 card.ability.hands_discards = card.ability.hands_discards + card.ability.mod
-                SMODS.scale_card(card, {ref_table = "ability", ref_value = "hands_discards", scalar_value = "mod"})
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "hands_discards", scalar_value = "mod"})
                 G.GAME.round_resets.hands = G.GAME.round_resets.hands + card.ability.mod
                 ease_hands_played(card.ability.mod)
                 G.GAME.round_resets.discards = G.GAME.round_resets.discards + card.ability.mod
                 ease_discard(card.ability.mod)
             elseif result == 4 then
                 card.ability.consumable_slots = card.ability.consumable_slots + card.ability.mod
-                SMODS.scale_card(card, {ref_table = "ability", ref_value = "consumable_slots", scalar_value = "mod"})
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "consumable_slots", scalar_value = "mod"})
                 G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.mod
             elseif result == 5 then
                 card.ability.shop_slots = card.ability.shop_slots + card.ability.mod
-                SMODS.scale_card(card, {ref_table = "ability", ref_value = "shop_slots", scalar_value = "mod"})
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "shop_slots", scalar_value = "mod"})
                 G.E_MANAGER:add_event(Event({
                     func = function() --card slot
                         -- why is this in an event?
@@ -2566,7 +2566,7 @@ local purple_joker = {
     calculate = function(self, card, context)
         if context.rune_triggered and not context.blueprint then
             card.ability.xmult = card.ability.xmult + card.ability.xmult_mod
-            SMODS.scale_card(card, {ref_table = "ability", ref_value = "xmult", scalar_value = "xmult_mod"})
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "xmult", scalar_value = "xmult_mod"})
             return {
                 message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.xmult }})
             }
@@ -2658,7 +2658,7 @@ local torn_photograph = {
     calculate = function(self, card, context)
         if context.selling_card and Entropy.is_inverted(context.card) and not context.blueprint then
             card.ability.xmult = card.ability.xmult + card.ability.xmult_mod
-            SMODS.scale_card(card, {ref_table = "ability", ref_value = "xmult", scalar_value = "xmult_mod"})
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "xmult", scalar_value = "xmult_mod"})
             return {
                 message = localize({ type = "variable", key = "a_xmult", vars = { card.ability.xmult }})
             }
@@ -2950,7 +2950,7 @@ local feynman_point = {
         if context.pseudorandom_result and context.result and not context.blueprint then
             if not context.trigger_obj or (context.trigger_obj.config.center or {}).key ~= "j_cry_boredom" then
                 card.ability.nearest = card.ability.nearest + card.ability.nearest_mod
-                SMODS.scale_card(card, {ref_table = "ability", ref_value = "nearest", scalar_value = "nearest_mod"})
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "nearest", scalar_value = "nearest_mod"})
                 return {
                     message = localize("k_upgrade_ex"),
                     colour = G.C.GREEN
@@ -3111,7 +3111,7 @@ local dragonfruit = {
     calculate = function(self, card, context)
         if context.after and not context.repetition and not context.blueprint then
             card.ability.left = card.ability.left - card.ability.left_mod
-            SMODS.scale_card(card, {ref_table = "ability", ref_value = "left", scalar_value = "left_mod", operation = "-"})
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", operation = "-"})
             Entropy.ChangeFullCSL(- card.ability.left_mod)
             if card.ability.left <= 0 then
                 G.E_MANAGER:add_event(Event({
@@ -3179,7 +3179,7 @@ local jestradiol = {
     calculate = function(self, card, context)
         if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss") or context.forcetrigger then
             card.ability.left = card.ability.left + card.ability.left_mod
-            SMODS.scale_card(card, {ref_table = "ability", ref_value = "left", scalar_value = "left_mod"})
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod"})
             return {
                 message = "+"..number_format(card.ability.left_mod)
             }
