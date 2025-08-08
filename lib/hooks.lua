@@ -3814,7 +3814,7 @@ function Blind:defeat(silent, ...)
     return ret
 end
 
-for i, v in pairs(SMODS.JimboQuips) do
+for i, v in pairs(SMODS.JimboQuips or {}) do
     if not v.extra or not v.extra.center or v.extra.center == "j_joker" then
         local extra = copy_table(v.extra)
         extra = extra or {}
