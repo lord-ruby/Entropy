@@ -322,7 +322,7 @@ local solar_dagger = {
                         return true
                     end,
                 }))
-                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "plus_asc", scalar_table = {sell_cost = sliced_card.sell_cost * 0.1} scalar_value = "sell_cost"})
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "plus_asc", scalar_table = {sell_cost = sliced_card.sell_cost * 0.1}, scalar_value = "sell_cost"})
             end
         end
         if context.joker_main then
@@ -2191,8 +2191,8 @@ local debit_card = {
     end,
     demicoloncompat = true,
     calculate = function(self, card, context)
-        if context.ease_dollars and to_big(context.ease_dollars) < to_big(0) and not context.blueprint then
-            card.ability.current_spent = card.ability.current_spent - context.ease_dollars
+        if context.money_altered and to_big(context.amount) < to_big(0) and not context.blueprint and context.from_shop then
+            card.ability.current_spent = card.ability.current_spent - context.amount
             local check 
             while to_big(card.ability.current_spent) >= to_big(card.ability.needed) do
                 card.ability.current_spent = card.ability.current_spent - card.ability.needed

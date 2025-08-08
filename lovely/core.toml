@@ -430,7 +430,7 @@ pattern = "SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC
 position = "after"
 payload = '''
 if ((Cryptid_config and Cryptid_config.menu) or false) then
-	SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, (G.GAME.EECardCharacter and G.P_CENTERS.j_entr_eecc or G.P_CENTERS.j_entr_surreal_joker),{bypass_discovery_center = true, bypass_discovery_ui = true})
+	SC = Card(G.ROOM.T.w/2 - SC_scale*G.CARD_W/2, 10. + G.ROOM.T.h/2 - SC_scale*G.CARD_H/2, SC_scale*G.CARD_W, SC_scale*G.CARD_H, G.P_CARDS.empty, (G.P_CENTERS.j_entr_surreal_joker),{bypass_discovery_center = true, bypass_discovery_ui = true})
 end
 '''
 match_indent = true
@@ -440,7 +440,7 @@ match_indent = true
 target = "card_character.lua"
 pattern = 'self.children.card = Card(self.T.x, self.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, args.center or G.P_CENTERS.j_jolly, {bypass_discovery_center = true})'
 position = "at"
-payload = 'self.children.card = Card(self.T.x, self.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, args.center or (G.GAME.EECardCharacter and G.P_CENTERS.j_entr_eecc or G.P_CENTERS.j_entr_surreal_joker), {bypass_discovery_center = true})'
+payload = 'self.children.card = Card(self.T.x, self.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, args.center or (G.P_CENTERS.j_entr_surreal_joker), {bypass_discovery_center = true})'
 match_indent = true
 
 [[patches]]
@@ -499,12 +499,12 @@ pattern = "if SMODS.saved then game_over = false end"
 position = "at"
 payload = '''
 if Entropy.IsEE() then
+    G.GAME.EECardCharacter = true
     if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" then
       if to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then return end
       game_over = true
     end
     if SMODS.saved then
-      G.GAME.EECardCharacter = true
       G.GAME.EERevived = true
       G.STATE = G.STATES.GAME_OVER
       if not G.GAME.won and not G.GAME.seeded and not G.GAME.challenge then 
@@ -567,14 +567,13 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "game.lua"
-pattern = '''Jimbo:add_speech_bubble('lq_'..math.random(1,10), nil, {quip = true})'''
+pattern = '''local quip, extra = SMODS.quip("loss")'''
 position = "at"
 payload = '''
-local text = (G.GAME.EECardCharacter and 'lq_ee_' or 'lq_')..math.random(1,10)
-if G.GAME.EERevived then text = "lq_ee_revived" end
-Jimbo:add_speech_bubble(text, nil, {quip = true})
-G.GAME.EECardCharacter = nil
-G.GAME.EERevived = nil
+local text = "loss"
+if G.GAME.EECardCharacter then text = "ee_loss" end
+if G.GAME.EERevived then text = "ee_revived" end
+local quip, extra = SMODS.quip(text)
 '''
 match_indent = true
 
@@ -1782,5 +1781,30 @@ position = "at"
 payload = '''
 if G.GAME.blind_on_deck == "Boss" then
   G.GAME.voucher_restock = nil
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/game_object.lua"]'''
+pattern = '''
+if not (self.type == "win" or self.type == 'loss') then
+    sendWarnMessage(("Invalid type on JimboQuote %s. Value must be 'win' or 'loss'"):format(self.key:lower()), self.set)
+    return
+end
+'''
+position = "at"
+payload = '''
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+if not (quip_type == 'win' or quip_type == 'loss') then return nil end
+'''
+position = "at"
+payload = '''
 '''
 match_indent = true

@@ -3522,16 +3522,6 @@ function Cryptid.handle_other_localizations()
 	SMODS.handle_loc_file(Entropy.path)
 end
 
-if not SMODS.get_probability_vars then
-    SMODS.get_probability_vars = function(card, n, d)
-        return card.ability.cry_rigged and d or n, d
-    end
-    SMODS.pseudorandom_probability = function(card, seed, n, d)
-        if card.ability.cry_rigged then return true end
-        return pseudorandom(seed) < n * G.GAME.probabilities.normal / d
-    end
-end
-
 SMODS.Booster:take_ownership_by_kind('Arcana', {
 	create_card = function(self, card, i)
         local rune
@@ -3648,12 +3638,6 @@ function Card:get_id(...)
         if id ~= get_idref(self, ...) then return 15 end
     end
     return id
-end
-
-local ed = ease_dollars
-function ease_dollars(mod, x)
-    ed(mod, x)
-    SMODS.calculate_context{ ease_dollars = mod }
 end
 
 local rate_ref = Cryptid.interest_rate
@@ -3828,4 +3812,15 @@ function Blind:defeat(silent, ...)
     end
     local ret = defeat_ref(self, silent, ...)
     return ret
+end
+
+for i, v in pairs(SMODS.JimboQuips) do
+    if not v.extra or not v.extra.center or v.extra.center == "j_joker" then
+        local extra = copy_table(v.extra)
+        extra = extra or {}
+        extra.center = "j_entr_surreal_joker"
+        SMODS.JimboQuip:take_ownership(v.key, {
+            extra = extra
+        }, true)
+    end
 end

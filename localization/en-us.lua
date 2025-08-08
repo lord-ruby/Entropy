@@ -5146,70 +5146,70 @@ local decs = {
 			ch_c_entr_set_seed = {"Set Seed: #1#"}
 		},
 		quips={
-			lq_ee_1={
+			entr_lq_ee_1={
                 "Skill Issue"
             },
-            lq_ee_2={
+            entr_lq_ee_2={
                 "If you wish",
 				"to defeat me,",
 				"you must train",
 				"for 1000 years!"
             },
-            lq_ee_3={
+            entr_lq_ee_3={
                 "Should have",
 				"held R!"
             },
-            lq_ee_4={
+            entr_lq_ee_4={
                 "And in the end",
 				"everything succumbs",
 				"to entropy..."
             },
-            lq_ee_5={
+            entr_lq_ee_5={
                 "Looks like you",
 				"werent entropic",
 				"enough!"
             },
-            lq_ee_6={
+            entr_lq_ee_6={
                 "Maybe you should",
 				"have gotten a",
 				"few more retriggers!"
             },
-            lq_ee_7={
+            entr_lq_ee_7={
                 "Maybe try adding",
 				"a few other mods!"
             },
-            lq_ee_8={
+            entr_lq_ee_8={
                 "Dont cry, its",
 				"just a game...",
             },
-            lq_ee_9={
+            entr_lq_ee_9={
                 "Were you even",
 				"trying?"
             },
-			lq_ee_10={
+			entr_lq_ee_10={
                 "Maybe you should",
 				"stop trying to",
 				"beat me!"
             },
-			lq_ee_revived = {
+			entr_lq_ee_revived = {
 				"Did you really",
 				"think that would",
 				"work?"
 			},
-			wq_ee_1={
+			entr_wq_ee_1={
                 "Huh?",
             },
-            wq_ee_2={
+            entr_wq_ee_2={
                 "What!?"
             },
-            wq_ee_3={
+            entr_wq_ee_3={
                 "How..."
             },
-            wq_ee_4={
+            entr_wq_ee_4={
                 "Reveal your",
 				"secrets!"
             },
-            wq_ee_5={
+            entr_wq_ee_5={
                 "Well that was",
 				"entropious!"
             },

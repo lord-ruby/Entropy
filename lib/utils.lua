@@ -936,23 +936,17 @@ function Entropy.WinEE()
                 blocking = false,
                 func = (function()
                     if G.OVERLAY_MENU and G.OVERLAY_MENU:get_UIE_by_ID('jimbo_spot') then 
-                        G.GAME.EECardCharacter = true
-                        Jimbo = Card_Character({x = 0, y = 5, center = G.P_CENTERS.eecc})
+                        local quip, extra = SMODS.quip("ee_win")
+                        extra.x = 0
+                        extra.y = 5
+                        Jimbo = Card_Character(extra)
                         local spot = G.OVERLAY_MENU:get_UIE_by_ID('jimbo_spot')
                         spot.config.object:remove()
                         spot.config.object = Jimbo
                         Jimbo.ui_object_updated = true
-                        G.GAME.EECardCharacter =  nil
-                        Jimbo:add_speech_bubble('wq_ee_'..math.random(1,5), nil, {quip = true})
+                        Jimbo:add_speech_bubble(quip, nil, {quip = true})
                         Jimbo:say_stuff(5)
-                        if G.F_JAN_CTA then 
-                            G.E_MANAGER:add_event(Event({
-                                func = function()
-                                    Jimbo:add_button(localize('b_wishlist'), 'wishlist_steam', G.C.DARK_EDITION, nil, true, 1.6)
-                                    return true
-                                end}))
-                        end
-                        end
+                    end
                     return true
                 end)
             }))
