@@ -1891,7 +1891,7 @@ local decs = {
 				},
 			},
 			v_entr_ascension = {
-				name = "Ascensiom",
+				name = "Ascension",
 				text = {
 					"Copy the {C:attention}First",
 					"used {C:purple}Rune{} each round"
@@ -5230,6 +5230,14 @@ local decs = {
 			entr_lq_4 = {
 				"Better luck",
 				"next time"
+			},
+
+			entr_wq_1 = {
+				"You really are",
+				"something huh?"
+			},
+			entr_wq_2 = {
+
 			}
 		}
 	},
