@@ -5215,6 +5215,22 @@ local decs = {
                 "Well that was",
 				"entropious!"
             },
+
+			entr_lq_1 = {
+				"Look like fate",
+				"caught up to you."
+			},
+			entr_lq_2 = {
+				"An inevitability."
+			},
+			entr_lq_3 = {
+				"Just one",
+				"more run"
+			},
+			entr_lq_4 = {
+				"Better luck",
+				"next time"
+			}
 		}
 	},
 }

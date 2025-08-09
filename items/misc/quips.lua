@@ -29,4 +29,13 @@ if SMODS.JimboQuip then
             if type == "ee_revived" then return true, {override_base_checks = true} end
         end
     }
+
+    for i=1,4 do
+        SMODS.JimboQuip{
+            key = "lq_"..tostring(i),
+            type = 'loss',
+            extra = {center = "j_entr_surreal_joker"},
+        }
+    end
 end
+
