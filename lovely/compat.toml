@@ -121,11 +121,13 @@ match_indent = true
 [patches.pattern]
 target = "card.lua"
 pattern = '''if center.consumeable then
-	self.ability.consumeable = center.config'''
-position = "after"
+	self.ability.consumeable = center.config
+'''
+position = "before"
 payload = '''
-else
+if not center.consumeable then
 	self.ability.consumeable = nil
+end
  '''
 match_indent = true
 
@@ -171,8 +173,8 @@ target = "functions/UI_definitions.lua"
 pattern = '''name_from_rows(AUT.name, is_playing_card and G.C.WHITE or nil),'''
 position = "at"
 payload = '''
-AUT.ccd and name_from_rows(AUT.ccd.name, G.C.WHITE) or nil,
-AUT.ccd and desc_from_rows(AUT.ccd.main) or nil,
+not (SMODS.Mods["Cryptid"] or {}).can_load and AUT.ccd and name_from_rows(AUT.ccd.name, G.C.WHITE) or nil,
+not (SMODS.Mods["Cryptid"] or {}).can_load and AUT.ccd and desc_from_rows(AUT.ccd.main) or nil,
 name_from_rows(AUT.name, is_playing_card and G.C.WHITE or nil),
 '''
 match_indent = true
@@ -184,7 +186,7 @@ target = "card.lua"
 pattern = '''return generate_card_ui(self.config.center, nil, loc_vars, card_type, badges, hide_desc, main_start, main_end, self)'''
 position = "before"
 payload = '''
-if card_type ~= 'Default' and card_type ~= 'Enhanced' and self.playing_card then
+if card_type ~= 'Default' and card_type ~= 'Enhanced' and self.playing_card and not (SMODS.Mods["Cryptid"] or {}).can_load then
 	loc_vars = loc_vars or {}
 	loc_vars.ccd = {
 		playing_card = not not self.base.colour, value = self.base.value, suit = self.base.suit, colour = self.base.colour,
@@ -202,7 +204,7 @@ target = "functions/common_events.lua"
 pattern = '''local loc_vars = {}'''
 position = "before"
 payload = '''
-if specific_vars and specific_vars.ccd then
+if specific_vars and specific_vars.ccd and not (SMODS.Mods["Cryptid"] or {}).can_load then
 	full_UI_table.ccd = {name = {}, main = {}}
 	localize{type = 'other', key = 'playing_card', set = 'Other', nodes = full_UI_table.ccd.name, vars = {localize(specific_vars.ccd.value, 'ranks'), localize(specific_vars.ccd.suit, 'suits_plural'), colours = {specific_vars.ccd.colour}}}
 	full_UI_table.ccd.name = full_UI_table.ccd.name[1]
@@ -215,5 +217,6 @@ if specific_vars and specific_vars.ccd then
 end
 '''
 match_indent = true
+
 
 
