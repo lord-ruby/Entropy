@@ -3624,7 +3624,7 @@ end
 
 local has_no_suitref = SMODS.has_no_suit
 function SMODS.has_no_suit(card, bypass)
-    if next(SMODS.find_card("j_entr_opal"))  and not bypass then
+    if next(SMODS.find_card("j_entr_opal")) and not bypass then
         return false
     end
     if card.base.suit == "entr_nilsuit" then return true end
