@@ -2304,7 +2304,7 @@ local ruby = {
     demicoloncompat = true,
     blueprint_compat = true,
     calculate = function(self, card, context)
-        if context.entr_path_changed then
+        if context.entr_path_changed and not context.blueprint then
             card.ability.xmult = card.ability.xmult + card.ability.xmult_mod
             local msg = SMODS.scale_card(card, {ref_table = card.ability, ref_value = "xmult", scalar_value = "xmult_mod"})
             if not msg or type(msg) == "string" then
