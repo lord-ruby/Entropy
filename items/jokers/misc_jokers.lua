@@ -2302,6 +2302,7 @@ local ruby = {
         xmult_mod = 2
     },
     demicoloncompat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if context.entr_path_changed then
             card.ability.xmult = card.ability.xmult + card.ability.xmult_mod
