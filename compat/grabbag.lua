@@ -69,7 +69,9 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         end,
         loc_vars = function(self, q, card)
             return {
-                math.min(card.ability.create, 100)
+                vars = {
+                    math.min(card.ability.create, 100)
+                }
             }
         end,
         demicoloncompat = true,

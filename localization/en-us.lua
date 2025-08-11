@@ -2778,7 +2778,7 @@ local decs = {
 				name = "Dream",
 				text = {
 					"Draw {C:attention}#1#{} random",
-					"{C:attention}Enhanced{} {C:purple}Eyes{}",
+					"{C:attention}Enhanced{} {C:purple}Eye#<s>1#{}",
 					"to hand"
 				}
 			},
