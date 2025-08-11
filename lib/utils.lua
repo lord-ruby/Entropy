@@ -1818,7 +1818,8 @@ function Entropy.is_in_shop(key, consumable)
 	return center.unlocked or nil
 end
 
-function Entropy.misc_calculations(self, card, context)
+function Entropy.misc_calculations(self, context)
+    if not context then return end
     if context.repetition and context.cardarea == G.play then 
         local repetitions = 0
         local chains_count = Entropy.has_rune("rune_entr_chains") and Entropy.has_rune("rune_entr_chains").ability.count or 0
