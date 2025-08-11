@@ -4750,7 +4750,8 @@ local decs = {
 				name = "Mini Seal",
 				text = {
 					"{C:green}#1# in #2#{} chance to",
-					"{C:red}destroy{} {C:attention}adjacent{} cards after socring"
+					"{C:red}destroy{} {C:attention}adjacent{} cards",
+					"after scoring"
 				}
 			},
 			entr_sharp_seal = {
@@ -4758,7 +4759,7 @@ local decs = {
 				text = {
 					"{C:green}#1# in #2#{} chance to",
 					"upgrade this cards {C:attention}Enhancement{}",
-					"when scored"
+					"before scoring"
 				}
 			},
 			entr_vantablack_seal = {
