@@ -254,6 +254,12 @@ SMODS.Atlas {
     px = 71, 
     py = 95 
 }
+SMODS.Atlas { 
+    key = 'crossmod_consumables', 
+    path = 'crossmod/crossmod_consumables.png',
+    px = 71, 
+    py = 95 
+}
 
 SMODS.Atlas { 
     key = 'entr_stake_stickers', 

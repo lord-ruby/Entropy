@@ -2766,6 +2766,43 @@ local decs = {
 					"{C:inactive}(May overflow){}"
 				}
 			},
+
+			c_entr_splinter = {
+				name = "Splinter",
+				text = {
+					"One {C:attention}random{} card in full deck",
+					"becomes a random {C:attention}Shattered{} Joker"
+				}
+			},
+			c_entr_dream = {
+				name = "Dream",
+				text = {
+					"Draw {C:attention}#1#{} random",
+					"{C:attention}Enhanced{} {C:purple}Eyes{}",
+					"to hand"
+				}
+			},
+			c_entr_void = {
+				name = "Void",
+				text = {
+					"Add a {V:1}Mini Seal{}",
+					"to #1# selected card",
+				}
+			},
+			c_entr_sharpen = {
+				name = "Sharpen",
+				text = {
+					"Add a {V:1}Sharp Seal{}",
+					"to #1# selected card",
+				}
+			},
+			c_entr_singularity = {
+				name = "Singularity",
+				text = {
+					"Add an {V:1}Vantablack Seal{}",
+					"to #1# selected card",
+				}
+			},
 		},
 		Tarot = {
 			c_entr_kiln = {
@@ -4709,6 +4746,28 @@ local decs = {
 					"{C:inactive}(Must have room){}"
 				}
 			},
+			entr_mini_seal = {
+				name = "Mini Seal",
+				text = {
+					"{C:green}#1# in #2#{} chance to",
+					"{C:red}destroy{} {C:attention}adjacent{} cards after socring"
+				}
+			},
+			entr_sharp_seal = {
+				name = "Sharp Seal",
+				text = {
+					"{C:green}#1# in #2#{} chance to",
+					"upgrade this cards {C:attention}Enhancement{}",
+					"when scored"
+				}
+			},
+			entr_vantablack_seal = {
+				name = "Vantablack Seal",
+				text = {
+					"{C:attention}+1{} Card Selection Limit",
+					"when highlighted"
+				}
+			},
 			link = {
 				name = "Linked",
 				text = {
@@ -5117,6 +5176,9 @@ local decs = {
 			entr_cerulean_seal = "Cerulean Seal",
 			entr_ornate_seal = "Ornate Seal",
 			entr_amber_seal = "Amber Seal",
+			entr_mini_seal = "Mini Seal",
+			entr_sharp_seal = "Sharp Seal",
+			entr_vantablack_seal = "Vantablack Seal",
 		},
 		poker_hands = {
 			["entr_All"] = Cryptid_config.family_mode and "All" or "Literally Fucking Everything",

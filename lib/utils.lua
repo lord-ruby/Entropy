@@ -117,7 +117,7 @@ function Entropy.FlipThen(cardlist, func, before, after)
     end
 end
 
-function Entropy.SealSpectral(key, sprite_pos, seal,order, inversion, entr_credits, atlas)
+function Entropy.SealSpectral(key, sprite_pos, seal,order, inversion, entr_credits, atlas, q_vars)
     return {
         dependencies = {
             items = {
@@ -143,7 +143,7 @@ function Entropy.SealSpectral(key, sprite_pos, seal,order, inversion, entr_credi
             return #cards > 0 and #cards <= card.ability.highlighted
         end,
         loc_vars = function(self, q, card)
-            q[#q+1] = {key = seal.."_seal", set="Other"}
+            q[#q+1] = {key = seal.."_seal", set="Other", vars = q_vars}
             return {
                 vars = {
                     card.ability.highlighted,
