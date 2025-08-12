@@ -4929,7 +4929,7 @@ local decs = {
 			ach_entr_rift = "Beat Ante 8 on The Alternate Path",
 			ach_entr_katevaino = "Use Transcend on Parakmi",
 			ach_entr_joy_to_the_world = "Have the Wunjo Rune create another Wunjo Rune",
-			ach_entr_suburban_jungle = "Play a Full House whilst holding: Ruby, Slipstream, or Cassknows"
+			ach_entr_suburban_jungle = "Play a Full House whilst holding: Ruby, Slipstream, or Cassknows",
 			ach_entr_f_x= "Play a Derivate whilst holding Antiderivative"
 		},
 		suits_plural = {
