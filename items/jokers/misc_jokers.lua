@@ -3249,7 +3249,7 @@ local penny = {
                 scalar_value = "mod"  
             })
             return {
-                message = localize("k_upgrade_ex")
+                message = localize("k_upgrade_ex"),
                 chips = context.forcetrigger and card.ability.extra.chips or nil
             }
         end
