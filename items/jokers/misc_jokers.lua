@@ -2376,6 +2376,7 @@ local slipstream = {
                     SMODS.calculate_effect({xmult = card.ability.xmult}, v)
                 end
             end
+            return nil, true
         end
     end,
     loc_vars = function(self, q, card)
