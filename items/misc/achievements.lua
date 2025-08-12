@@ -64,6 +64,54 @@ local f_x = {
 	end,
 }
 
+local c_sharp = {
+	object_type = "Achievement",
+	key = "c_sharp",
+	order = 1000,
+	bypass_all_unlocked = true,
+	atlas = "entr_achievements",
+	pos = {x=1,y=1},
+	unlock_condition = function(self, args)
+        if args.type == "entr_all_unlocked" then
+		    return true
+        end
+	end,
+}
+
+function Entropy.total_completions()
+	local total
+	local u_ds
+	for i, v in pairs(G.P_CENTERS) do
+		if not v.original_mod or v.original_mod.id == "entr" then
+			total = total + 1
+			u_ds = u_ds + (v.discovered and v.unlocked and 1 or 0)
+		end
+	end
+	for i, v in pairs(G.P_BLINDS) do
+		if not v.original_mod or v.original_mod.id == "entr" then
+			total = total + 1
+			u_ds = u_ds + (v.discovered and v.unlocked and 1 or 0)
+		end
+	end
+	for i, v in pairs(G.P_TAGS) do
+		if not v.original_mod or v.original_mod.id == "entr" then
+			total = total + 1
+			u_ds = u_ds + (v.discovered and v.unlocked and 1 or 0)
+		end
+	end
+	return u_ds, total
+end
+
+local discover_ref = discover_card
+function discover_card(card, ...)
+	discover_ref(card, ...)
+	local u, t = Entropy.total_completions()
+	if u >= t then
+		check_for_unlock({type = "entr_all_unlocked"})
+	end
+end
+
+
 if (SMODS.Mods["Cryptid"] or {}).can_load then
 	local event_horizon = {
 		object_type = "Achievement",
@@ -117,6 +165,7 @@ return {
 		rift,
 		katevaino,
 		joy_to_the_world,
-		suburban_jungle
+		suburban_jungle,
+		f_x
     }
 }
