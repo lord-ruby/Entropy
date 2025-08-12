@@ -95,6 +95,7 @@ SMODS.PokerHandPart {
 			Hearts = true,
 			Clubs = true
 		}
+		local stones = 0
 		for i, card in ipairs(hand) do
 			if SMODS.has_no_suit(card) or card.config.center.key == "m_stone" 
 			or card.config.center.overrides_base_rank 
@@ -104,7 +105,11 @@ SMODS.PokerHandPart {
 			then --card.ability.name ~= "Gold Card"
                 eligible_cards[#eligible_cards+1] = card
 			end
+			if (SMODS.Mods["Cryptid"] or {}).can_load and card.config.center.key == "m_stone" then
+				stones = stones + 1
+			end
 		end
+		if stones >= 5 then return {} end
         local num = 5
 		if #eligible_cards >= num then
 			return { eligible_cards }
