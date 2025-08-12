@@ -990,8 +990,8 @@ local berkano_indicator = {
     atlas = "rune_indicators",
     dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
-        if context.remove_playing_cards or (context.destroy_card and (context.destroy_card.area == G.hand or context.destroy_card.area == G.play)) then
-            local card = context.removed and context.removed[1] or context.destroy_card
+        if context.remove_playing_cards then
+            local card = context.removed and context.removed[1]
             if card then
                 return {
                     func = function()

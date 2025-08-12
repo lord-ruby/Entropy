@@ -79,8 +79,8 @@ local c_sharp = {
 }
 
 function Entropy.total_completions()
-	local total
-	local u_ds
+	local total = 0
+	local u_ds = 0
 	for i, v in pairs(G.P_CENTERS) do
 		if not v.original_mod or v.original_mod.id == "entr" then
 			total = total + 1
@@ -166,6 +166,7 @@ return {
 		katevaino,
 		joy_to_the_world,
 		suburban_jungle,
-		f_x
+		f_x,
+		c_sharp
     }
 }
