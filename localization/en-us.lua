@@ -1099,6 +1099,14 @@ local decs = {
 					"gains {C:attention}#2#{} use when defeating a Boss Blind"
                 },
             },
+			j_entr_penny = {
+                name = "Lost Penny",
+                text = {
+                    "{C:blue}+#1#{} Chips",
+					"{C:dark_edition}Doubles{} when Boss Blind",
+					"is defeated"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

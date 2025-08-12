@@ -3204,7 +3204,7 @@ local jestradiol = {
     end,
     demicoloncompat = true,
     calculate = function(self, card, context)
-        if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss") or context.forcetrigger then
+        if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition) or context.forcetrigger then
             card.ability.left = card.ability.left + card.ability.left_mod
             local msg = SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod"})
             if not msg or type(msg) == "string" then
@@ -3212,6 +3212,51 @@ local jestradiol = {
                     message = msg or "+"..number_format(card.ability.left_mod)
                 }
             end
+        end
+    end,
+}
+
+local penny = {
+    order = 54,
+    object_type = "Joker",
+    key = "penny",
+    rarity = 3,
+    cost = 10,   
+    eternal_compat = true,
+    pos = {x = 5, y = 8},
+    atlas = "jokers",
+    config = {
+        extra = {
+            chips = 8
+        }
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.extra.chips
+            }
+        }
+    end,
+    pixel_size = { w = 32, h = 32 },
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition) or context.forcetrigger then
+            card.ability.extra.chips = to_big(card.ability.extra.chips) * 2
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "chips",
+                scalar_table = {mod = 2},
+                scalar_value = "mod"  
+            })
+            return {
+                message = localize("k_upgrade_ex")
+                chips = context.forcetrigger and card.ability.extra.chips or nil
+            }
+        end
+        if context.joker_main then
+            return {
+                chips = card.ability.extra.chips
+            }
         end
     end,
 }
@@ -3276,5 +3321,6 @@ return {
         neuroplasticity,
         dragonfruit,
         jestradiol,
+        penny
     }
 }
