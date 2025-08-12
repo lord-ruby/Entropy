@@ -2872,7 +2872,7 @@ function get_new_boss()
         else
             _, boss = pseudorandom_element(eligible_bosses, pseudoseed('boss'))
         end
-        if not boss then return get_bossref() end
+        if not boss or Cryptid.enabled("set_entr_altpath") ~= true then return get_bossref() end
         G.GAME.bosses_used[boss] = (G.GAME.bosses_used[boss] or 0) + 1
         return boss
     end
