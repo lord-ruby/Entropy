@@ -3186,12 +3186,7 @@ local jestradiol = {
     object_type = "Joker",
     key = "jestradiol",
     rarity = 2,
-    cost = 6,
-    dependencies = {
-        items = {            
-            "set_entr_inversions"
-        }
-    },    
+    cost = 6,   
     eternal_compat = true,
     pos = {x = 4, y = 8},
     atlas = "jokers",
@@ -3280,6 +3275,6 @@ return {
         feynman_point,
         neuroplasticity,
         dragonfruit,
-        jestradiol
+        jestradiol,
     }
 }
