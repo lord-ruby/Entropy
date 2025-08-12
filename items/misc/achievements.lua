@@ -51,6 +51,19 @@ local suburban_jungle = {
 	end,
 }
 
+local f_x = {
+	object_type = "Achievement",
+	key = "f_x",
+	order = 5,
+	bypass_all_unlocked = true,
+	atlas = "entr_achievements",
+	unlock_condition = function(self, args)
+        if args.type == "anti_derivative" then
+		    return true
+        end
+	end,
+}
+
 if (SMODS.Mods["Cryptid"] or {}).can_load then
 	local event_horizon = {
 		object_type = "Achievement",

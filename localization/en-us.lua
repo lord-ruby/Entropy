@@ -4918,7 +4918,8 @@ local decs = {
 			ach_entr_rift = "Rift",
 			ach_entr_katevaino = "Katevaino",
 			ach_entr_joy_to_the_world = "Joy To The World",
-			ach_entr_suburban_jungle = "Suburban Jungle"
+			ach_entr_suburban_jungle = "Suburban Jungle",
+			ach_entr_f_x = "f(x)"
 		},
 		achievement_descriptions = {
 			ach_entr_event_horizon = "Use define to turn Obelisk into Sob",
@@ -4929,6 +4930,7 @@ local decs = {
 			ach_entr_katevaino = "Use Transcend on Parakmi",
 			ach_entr_joy_to_the_world = "Have the Wunjo Rune create another Wunjo Rune",
 			ach_entr_suburban_jungle = "Play a Full House whilst holding: Ruby, Slipstream, or Cassknows"
+			ach_entr_f_x= "Play a Derivate whilst holding Antiderivative"
 		},
 		suits_plural = {
 			entr_nilsuit = "Nil",

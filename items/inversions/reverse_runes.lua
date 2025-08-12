@@ -840,6 +840,10 @@ G.FUNCS.play_cards_from_highlighted = function(e)
     if text == "Full House" and (next(SMODS.find_card("j_entr_ruby") or next(SMODS.find_card("j_entr_slipstream"))) or next(SMODS.find_card("j_entr_cassknows"))) then
         check_for_unlock({type = "suburban_jungle"})
     end
+    local text = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
+    if text == "entr_derivative" and next(SMODS.find_card("j_entr_antiderivative")) then
+        check_for_unlock({type = "anti_derivative"})
+    end
     play_ref(e)
 end
 
