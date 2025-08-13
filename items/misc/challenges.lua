@@ -172,8 +172,60 @@ if not (SMODS.Mods["Cryptid"] or {}).can_load then
     })
 end
 
+local lifelight = {
+    object_type = "Challenge",
+	key = "lifelight",
+	order = 2,
+	restrictions = {
+		banned_cards = {
+			{ id = "c_strength" },
+		},
+	},
+    jokers = {
+		{ id = "j_entr_jestradiol", stickers = { "entr_aleph" } },
+        { id = "j_shoot_the_moon", stickers = { "entr_aleph" } },
+	},
+	deck = {
+		type = "Challenge Deck",
+	},
+}
+
+local vesuvius = {
+    object_type = "Challenge",
+	key = "vesuvius",
+	order = 3,
+    jokers = {
+		{ id = "j_burnt", stickers = { "entr_aleph" } },
+        { id = "j_entr_fused_lens", stickers = { "entr_aleph" } },
+	},
+	deck = {
+		type = "Challenge Deck",
+	},
+    rules = {
+        custom = {
+			{ id = "entr_no_planets" },
+        }
+	},
+    restrictions = {
+       banned_cards = {
+            {id = "p_celestial_normal_1"},
+            {id = "p_celestial_normal_2"},
+            {id = "p_celestial_jumbo_1"},
+            {id = "p_celestial_jumbo_2"},
+            {id = "p_celestial_mega_1"},
+            {id = "p_celestial_mega_2"},
+            {id = "c_high_priestess"},
+        }
+    },
+    apply = function()
+        G.GAME.planet_rate = 0
+    end
+}
+
 return {
     items = {
+        lifelight,
+        vesuvius,
         (SMODS.Mods["Cryptid"] or {}).can_load and hyperbolic_chamber or nil
     }
 }

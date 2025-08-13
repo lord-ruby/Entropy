@@ -5214,10 +5214,13 @@ local decs = {
 			}
 		},
 		challenge_names = {
+			c_entr_lifelight = "Lifelight",
+			c_entr_vesuvius = "Vesuvius",
 			c_entr_hyperbolic_chamber = "Hyperbolic Hell-Tier Chamber",
 			c_entr_daily = "Daily Challenge"
 		},
 		v_text = {
+			ch_c_entr_no_planets = { "No Planets in the Shop" },
 			ch_c_entr_starting_ante_mten = { "Start on Ante -10" },
 			ch_c_entr_reverse_redeo = { "Invert Redeo's ante change" },
 			ch_c_entr_set_seed = {"Set Seed: #1#"}
@@ -5314,7 +5317,7 @@ local decs = {
 			entr_wq_2 = {
 				"The power of entropy",
 				"shines within you"
-			}
+			},
 			entr_wq_3 = {
 				"I was right to",
 				"believe in you"
