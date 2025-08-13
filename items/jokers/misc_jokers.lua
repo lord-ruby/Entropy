@@ -609,10 +609,10 @@ local devilled_suns = {
         }
     end,
     calculate = function (self, card, context)
-        if (context.individual and context.other_card.config.center.key == "m_gold") or context.forcetrigger then
+        if (context.individual and context.other_card.config.center.key == "m_gold" and context.cardarea == G.play) or context.forcetrigger then
             local sunnys = 0
             for i, v in pairs(G.jokers.cards) do
-                if v:is_sunny() then sunnys = sunnys + 1 end
+                if v:is_sunny() and v ~= card then sunnys = sunnys + 1 end
             end
             return {
                 plus_asc = card.ability.base + card.ability.per_sunny * sunnys
