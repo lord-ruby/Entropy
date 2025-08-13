@@ -3486,6 +3486,35 @@ local arbitration = {
     end,
 }
 
+local masterful_gambit = {
+    order = 60,
+    object_type = "Joker",
+    key = "masterful_gambit",
+    rarity = 1,
+    cost = 4,   
+    eternal_compat = true,
+    pos = {x = 2, y = 9},
+    atlas = "jokers",
+    config = {
+        dollars = 2
+    },
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if (context.joker_main and #G.play.cards == 1) or context.forcetrigger then
+            return {
+                dollars = card.ability.dollars
+            }
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.dollars
+            }
+        }
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -3552,6 +3581,7 @@ return {
         abacus,
         matryoshka_dolls,
         menger_sponge,
-        arbitration
+        arbitration,
+        masterful_gambit
     }
 }

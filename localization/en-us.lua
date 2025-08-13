@@ -1159,6 +1159,14 @@ local decs = {
 					"{C:inactive}(Must have room)"
                 },
             },
+			j_entr_masterful_gambit = {
+                name = "Masterful Gambit",
+                text = {
+                    "Earn {C:money}$#1#{}",
+					"if played hand contains",
+					"{C:attention}only{} a single card"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
