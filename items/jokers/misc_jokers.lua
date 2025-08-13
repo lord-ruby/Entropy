@@ -598,7 +598,7 @@ local devilled_suns = {
     pos = { x = 1, y = 2 },
     atlas = "jokers",
     pools = { ["Sunny"] = true, ["Meme"] = true},
-    config = { base = 2, per_sunny = 2},
+    config = { base = 1, per_sunny = 1},
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue+1] = G.P_CENTERS.e_entr_sunny
         return {
@@ -609,13 +609,13 @@ local devilled_suns = {
         }
     end,
     calculate = function (self, card, context)
-        if context.joker_main or context.forcetrigger then
-            local num = card.ability.base
+        if (context.individual and context.other_card.config.center.key == "m_gold") or context.forcetrigger then
+            local sunnys = 0
             for i, v in pairs(G.jokers.cards) do
-                if v:is_sunny() then num = num + card.ability.per_sunny end
+                if v:is_sunny() then sunnys = sunnys + 1 end
             end
             return {
-                plus_asc = num
+                plus_asc = card.ability.base + card.ability.per_sunny * sunnys
             }
         end
     end,
@@ -631,7 +631,7 @@ local eden = {
     key = "eden",
     name="entr-eden",
     config = {
-        asc=5
+        asc=3
     },
     rarity = 2,
     cost = 4,

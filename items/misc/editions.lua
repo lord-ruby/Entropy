@@ -9,7 +9,7 @@ local solar = {
     key="solar",
     shader="solar",
     config = {
-        sol = 1.4
+        sol = 1.25
     },
 	sound = {
 		sound = "entr_e_solar",
@@ -126,7 +126,7 @@ local sunny = {
     key="sunny",
     shader="sunny",
     config = {
-        sol = 4
+        sol = 2
     },
 	extra_cost = 4,
 	sound = {

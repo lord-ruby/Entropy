@@ -502,8 +502,9 @@ local decs = {
 			j_entr_devilled_suns = {
 				name = "Devilled Suns",
 				text = {
+					"Gold Cards Give",
 					"{C:gold}+#1#{} Ascension Power",
-					"{C:gold}+#2#{} more for every",
+					"and {C:gold}+#2#{} more for every",
 					"{C:dark_edition}Sunny{} Joker owned"
 				}
 			},
@@ -1372,7 +1373,7 @@ local decs = {
 				text = {
 					"#1# in 2 chance for",
 					"scored cards to become",
-					"flickering"
+					"disavowed"
 				}
 			},
 			bl_entr_omega = {

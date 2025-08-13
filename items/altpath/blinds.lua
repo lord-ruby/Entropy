@@ -1247,7 +1247,7 @@ local psi = {
 		if context.individual and context.cardarea == G.play and context.other_card and not G.GAME.blind.disabled then
 			if pseudorandom("psi_blind") < G.GAME.probabilities.normal / 2 then
 				Entropy.FlipThen({context.other_card}, function(card)
-					SMODS.Stickers.cry_flickering:apply(card, true)
+					card:set_ability(G.P_CENTERS.m_entr_disavowed)
 				end)
 			end
 		end
