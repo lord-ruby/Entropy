@@ -3290,6 +3290,32 @@ local slothful_joker = {
     end,
 }
 
+local radar = {
+    order = 56,
+    object_type = "Joker",
+    key = "radar",
+    rarity = 1,
+    cost = 6,   
+    eternal_compat = true,
+    pos = {x = 7, y = 8},
+    atlas = "jokers",
+    config = {
+        dollar_mult = 1
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.dollar_mult,
+                card.ability.dollar_mult * Entropy.played_hands(5)
+            }
+        }
+    end,
+    demicoloncompat = true,
+    calc_dollar_bonus = function(self, card)
+        return card.ability.dollar_mult * Entropy.played_hands(5)
+    end
+}
+
 return {
     items = {
         surreal,
@@ -3351,6 +3377,7 @@ return {
         dragonfruit,
         jestradiol,
         penny,
-        slothful_joker
+        slothful_joker,
+        radar
     }
 }

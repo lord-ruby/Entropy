@@ -1114,6 +1114,15 @@ local decs = {
                     "{C:mult}+#1#{} Mult when scored",
                 },
             },
+			j_entr_radar = {
+                name = "Radar",
+                text = {
+                    "Earn {C:money}$#1#{} for each",
+					"Poker Hand played more than",
+					"{C:attention}5{} times, at end of round",
+					"{C:inactive}(Currently {C:money}$#2#{C:inactive})"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

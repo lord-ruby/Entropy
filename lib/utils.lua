@@ -1857,3 +1857,13 @@ function Entropy.true_suitless(card)
     or card.base.suit == "entr_nilsuit" 
     or card.base.value == "entr_nilrank" then return true end
 end
+
+function Entropy.played_hands(threshold)
+    local total = 0
+    for i, v in pairs(G.GAME.hands or {}) do
+        if to_big(v.played) > to_big(threshold) then
+            total = total + 1
+        end
+    end
+    return total
+end
