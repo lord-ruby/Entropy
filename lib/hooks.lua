@@ -327,9 +327,10 @@ function SMODS.create_mod_badges(obj, badges)
 		if obj.entr_credits.art or obj.entr_credits.code or obj.entr_credits.idea or obj.entr_credits.custom then
 			local scale_fac = {}
 			local min_scale_fac = 1
-			local strings = { "Entropy" }
+			local strings = { Entropy.display_name }
 			for _, v in ipairs({ "idea", "art", "code" }) do
 				if obj.entr_credits[v] then
+					if type(obj.entr_credits[v]) == "string" then obj.entr_credits[v] = {obj.entr_credits[v]} end
 					for i = 1, #obj.entr_credits[v] do
 						strings[#strings + 1] =
 							localize({ type = "variable", key = "cry_" .. v, vars = { obj.entr_credits[v][i] } })[1]
@@ -349,7 +350,7 @@ function SMODS.create_mod_badges(obj, badges)
 					string = strings[i],
 				}
 			end
-			local cry_badge = {
+			local entr_badge = {
 				n = G.UIT.R,
 				config = { align = "cm" },
 				nodes = {
@@ -386,18 +387,10 @@ function SMODS.create_mod_badges(obj, badges)
 					},
 				},
 			}
-			local function eq_col(x, y)
-				for i = 1, 4 do
-					if x[i] ~= y[i] then
-						return false
-					end
-				end
-				return true
-			end
-			for i = 1, #badges do
-				if eq_col(badges[i].nodes[1].config.colour, HEX("FE0001")) then
+			for i = 1, #badges do	
+				if badges[i].nodes[1].nodes[2].config.object.string == Entropy.display_name then --this was meant to be a hex code but it just doesnt work for like no reason so its hardcoded
 					badges[i].nodes[1].nodes[2].config.object:remove()
-					badges[i] = cry_badge
+					badges[i] = entr_badge
 					break
 				end
 			end

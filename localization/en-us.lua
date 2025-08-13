@@ -5200,7 +5200,10 @@ local decs = {
 		v_dictionary = {
 			card_art = "Card Art: #1#",
 			shader = "Shader: #1#",
-			wish = "Wish: #1#"
+			wish = "Wish: #1#",
+			cry_art = { "Art: #1#" },
+			cry_code = { "Code: #1#" },
+			cry_idea = { "Idea: #1#" },
 		},
 		labels = {
 			banana = "Banana",

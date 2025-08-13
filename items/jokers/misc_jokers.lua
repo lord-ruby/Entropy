@@ -3385,7 +3385,9 @@ local matryoshka_dolls = {
             end
         end
     end,
-    entr_credits = {idea = {"Corobo"}}
+    entr_credits = {
+        idea = {"Corobo"}
+    }
 }
 
 return {

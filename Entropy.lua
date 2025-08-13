@@ -57,6 +57,7 @@ local i = {
     "compat/compat_loader"
 }
 Entropy.load_files(i)
+Entropy.display_name = SMODS.current_mod.display_name
 SMODS.current_mod.optional_features = {
 	retrigger_joker = true,
 }
