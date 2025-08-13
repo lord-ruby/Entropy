@@ -1179,7 +1179,7 @@ local phi = {
 			[9]=true
 			
 		}
-        if not allowed[card.base.id] and card.area == G.hand then
+        if not allowed[card.base.id] and card.base.id and card:is_playing_card() then
             return true
         end
         return false
