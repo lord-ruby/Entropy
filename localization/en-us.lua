@@ -1107,6 +1107,13 @@ local decs = {
 					"is defeated"
                 },
             },
+			j_entr_slothful_joker = {
+                name = "Slothful Joker",
+                text = {
+                    "Played {C:purple}suitless{} cards give",
+                    "{C:mult}+#1#{} Mult when scored",
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

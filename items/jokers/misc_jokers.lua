@@ -89,7 +89,7 @@ local recursive_joker = {
     config = {
         used_this_round = false
     },
-    rarity = 2,
+    rarity = 1,
     cost = 4,
     
     dependencies = {
@@ -3261,6 +3261,35 @@ local penny = {
     end,
 }
 
+local slothful_joker = {
+    order = 55,
+    object_type = "Joker",
+    key = "slothful_joker",
+    rarity = 1,
+    cost = 5,   
+    eternal_compat = true,
+    pos = {x = 6, y = 8},
+    atlas = "jokers",
+    config = {
+        smult = 3
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.smult
+            }
+        }
+    end,
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if (context.individual and Entropy.true_suitless(context.other_card) and context.cardarea == G.play) or context.forcetrigger then
+            return {
+                mult = card.ability.smult
+            }
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -3321,6 +3350,7 @@ return {
         neuroplasticity,
         dragonfruit,
         jestradiol,
-        penny
+        penny,
+        slothful_joker
     }
 }

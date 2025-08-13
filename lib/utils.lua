@@ -1850,3 +1850,10 @@ function Cryptid.reset_to_none()
         level = "",
     })
 end
+
+function Entropy.true_suitless(card)
+    if SMODS.has_no_suit(card) or card.config.center.key == "m_stone" 
+    or card.config.center.overrides_base_rank 
+    or card.base.suit == "entr_nilsuit" 
+    or card.base.value == "entr_nilrank" then return true end
+end
