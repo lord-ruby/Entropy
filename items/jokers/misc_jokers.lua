@@ -3390,6 +3390,58 @@ local matryoshka_dolls = {
     }
 }
 
+local menger_sponge = {
+    order = 59,
+    object_type = "Joker",
+    key = "menger_sponge",
+    rarity = 1,
+    cost = 6,   
+    eternal_compat = true,
+    pos = {x = 0, y = 9},
+    atlas = "jokers",
+    config = {
+        chips = 10,
+        chips_mod = 3,
+        base_chips = 10
+    },
+    demicoloncompat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.chips,
+                card.ability.chips_mod
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main or context.forcetrigger then
+            local chips = card.ability.chips
+            SMODS.scale_card(card, {
+                ref_table = card.ability,
+                ref_value = "chips",
+                scalar_value = "chips_mod",
+                operation = "X"
+            })
+            return {
+                chips = card.ability.chips
+            }
+        end
+        if (context.end_of_round and not context.individual and not context.repetition) then
+            if G.GAME.blind_on_deck == "Boss" then
+                card.ability.chips = card.ability.base_chips
+                return {
+                    message = localize("k_reset")
+                }
+            else    
+                card.ability.chips = card.ability.chips * card.ability.chips_mod
+                return {
+                    message = localize("k_upgrade_ex")
+                }
+            end
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -3454,6 +3506,7 @@ return {
         slothful_joker,
         radar,
         abacus,
-        matryoshka_dolls
+        matryoshka_dolls,
+        menger_sponge
     }
 }

@@ -1142,6 +1142,14 @@ local decs = {
 					"{C:inactive}(Must have room)"
                 },
             },
+			j_entr_menger_sponge = {
+                name = "Menger Sponge",
+                text = {
+                    "{C:blue}+#1#{} Chips",
+					"Multiplies by {X:attention,C:white}X#2#{} at end of round",
+					"{C:red}Resets{} when the Boss Blind is defeated"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
