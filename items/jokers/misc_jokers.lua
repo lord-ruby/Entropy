@@ -3332,7 +3332,7 @@ local abacus = {
     calculate = function(self, card, context)
         if (context.individual and context.other_card.base.nominal and to_big(context.other_card.base.nominal) > to_big(0) and context.cardarea == G.play) or context.forcetrigger then
             local id = context.other_card:get_id()
-            if id <= 10 or id >= 14 and not SMODS.has_no_rank(context.other_card) then
+            if id <= 10 or id > 14 and not SMODS.has_no_rank(context.other_card) then
                 return {
                     mult = math.ceil(context.other_card.base.nominal / 2)
                 }

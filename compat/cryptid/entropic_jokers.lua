@@ -29,7 +29,7 @@ local epitachyno = {
                 local exp = card.ability.extra
 			    --local card = G.jokers.cards[i]
                 if not Card.no(G.jokers.cards[i], "immutable", true) and (G.jokers.cards[i].config.center.key ~= "j_entr_epitachyno") then
-                    Cryptid.manipulate(G.jokers.cards[i], { value = {arrows = 1, height = exp}, type = "hyper" })
+                    Cryptid.manipulate(G.jokers.cards[i], { value = exp, type = "^" })
                     check = true
                 end
 			    if check then
