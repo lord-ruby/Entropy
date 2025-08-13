@@ -3458,6 +3458,7 @@ local arbitration = {
     },
     demicoloncompat = true,
     loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.c_judgement
         q[#q+1] = G.P_CENTERS.m_glass
     end,
     calculate = function(self, card, context)
