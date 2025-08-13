@@ -73,6 +73,7 @@ local rend = {
         return #cards > 0 and #cards <= card.ability.select
     end,
     loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.m_entr_flesh
         return {
             vars = {
                 card.ability.select
