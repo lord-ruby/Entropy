@@ -1132,6 +1132,16 @@ local decs = {
 					"base {C:blue}chips{} as {C:red}mult{}"
                 },
             },
+			j_entr_matryoshka_dolls = {
+                name = "Matryoshka Dolls",
+                text = {
+                    "{C:red}+#1#{} Mult",
+					"When Blind is selected",
+					"create a {C:attention}copy{} of this Joker",
+					"with {C:red}1{} fewer mult",
+					"{C:inactive}(Must have room)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

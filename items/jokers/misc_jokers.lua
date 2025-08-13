@@ -3341,6 +3341,53 @@ local abacus = {
     end
 }
 
+local matryoshka_dolls = {
+    order = 58,
+    object_type = "Joker",
+    key = "matryoshka_dolls",
+    rarity = 1,
+    cost = 6,   
+    eternal_compat = true,
+    pos = {x = 9, y = 8},
+    atlas = "jokers",
+    config = {
+        mult = 4
+    },
+    demicoloncompat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.mult
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main or context.forcetrigger then
+            return {
+                mult = card.ability.mult
+            }
+        end
+        if context.setting_blind then
+            if G.GAME.joker_buffer + #G.jokers.cards < G.jokers.config.card_limit then
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        local ncard = SMODS.add_card{
+                            key = "j_entr_matryoshka_dolls",
+                            area = G.jokers
+                        }
+                        ncard.ability.mult = card.ability.mult - 1
+                        G.GAME.joker_buffer = nil
+                        return true
+                    end
+                })
+                G.GAME.joker_buffer = G.GAME.joker_buffer + 1
+                return nil, true
+            end
+        end
+    end,
+    entr_credits = {idea = {"Corobo"}}
+}
+
 return {
     items = {
         surreal,
@@ -3404,6 +3451,7 @@ return {
         penny,
         slothful_joker,
         radar,
-        abacus
+        abacus,
+        matryoshka_dolls
     }
 }
