@@ -5179,7 +5179,13 @@ local decs = {
 			k_level_asc = "Ascension Power per Level",
 			k_star_q = "Star?",
 			k_moon = "Moon",
-			k_satellite = "Satellite"
+			k_satellite = "Satellite",
+
+			k_joker_in_greek = "Jokers in Greek",
+			k_mirrored_in_crimson = "Mirrored in Crimson",
+			k_freebird = "Freebird",
+			k_portal_reference = "The Part Where She Kills You",
+			k_entropy_is_endless = "Entropy Is Endless"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",
