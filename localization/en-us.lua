@@ -1150,6 +1150,15 @@ local decs = {
 					"{C:red}Resets{} when the Boss Blind is defeated"
                 },
             },
+			j_entr_arbitration = {
+                name = "Arbitration",
+                text = {
+                    "Create a {C:attention}Judgement{}",
+					"when a {C:attention}Glass Card{}",
+					"is destroyed",
+					"{C:inactive}(Must have room)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

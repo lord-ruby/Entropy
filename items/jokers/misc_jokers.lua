@@ -3376,7 +3376,7 @@ local matryoshka_dolls = {
                             area = G.jokers
                         }
                         ncard.ability.mult = card.ability.mult - 1
-                        G.GAME.joker_buffer = nil
+                        G.GAME.joker_buffer = 0
                         return true
                     end
                 })
@@ -3438,6 +3438,49 @@ local menger_sponge = {
                     message = localize("k_upgrade_ex")
                 }
             end
+        end
+    end,
+}
+
+local arbitration = {
+    order = 60,
+    object_type = "Joker",
+    key = "arbitration",
+    rarity = 1,
+    cost = 5,   
+    eternal_compat = true,
+    pos = {x = 1, y = 9},
+    atlas = "jokers",
+    config = {
+        chips = 10,
+        chips_mod = 3,
+        base_chips = 10
+    },
+    demicoloncompat = true,
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.m_glass
+    end,
+    calculate = function(self, card, context)
+        if context.remove_playing_cards or context.forcetrigger then
+            local glasses = 0
+            for k, v in ipairs(context.removed) do
+                if v.shattered then
+                    if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
+                        G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+                        G.E_MANAGER:add_event(Event{
+                            func = function()
+                                SMODS.add_card{
+                                    area = G.consumeables,
+                                    key = "c_judgement"
+                                }
+                                G.GAME.consumeable_buffer = 0
+                                return true
+                            end
+                        })
+                    end
+                end
+            end
+            return nil, true
         end
     end,
 }
@@ -3507,6 +3550,7 @@ return {
         radar,
         abacus,
         matryoshka_dolls,
-        menger_sponge
+        menger_sponge,
+        arbitration
     }
 }
