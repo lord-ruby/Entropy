@@ -37,5 +37,12 @@ if SMODS.JimboQuip then
             extra = {center = "j_entr_surreal_joker"},
         }
     end
+    for i=1,4 do
+        SMODS.JimboQuip{
+            key = "wq_"..tostring(i),
+            type = 'win',
+            extra = {center = "j_entr_surreal_joker"},
+        }
+    end
 end
 

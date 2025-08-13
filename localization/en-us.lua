@@ -5312,7 +5312,16 @@ local decs = {
 				"something huh?"
 			},
 			entr_wq_2 = {
-
+				"The power of entropy",
+				"shines within you"
+			}
+			entr_wq_3 = {
+				"I was right to",
+				"believe in you"
+			},
+			ente_wq_4 = {
+				"Good Job now do",
+				"Iridium Stake"
 			}
 		}
 	},
