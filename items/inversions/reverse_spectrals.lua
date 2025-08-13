@@ -1071,10 +1071,10 @@ function Cryptid.misprintize(card, ...)
 end
 
 local manipulate = Cryptid.manipulate
-function Cryptid.manipulate(card, ...)
+function Cryptid.manipulate(card, args)
     if card and not card.ability.entr_pure then
-        local ret = manipulate(card, ...)
-        if card.edition and card.edition.card_limit and card.area then 
+        local ret = manipulate(card, args)
+        if card.edition and card.edition.card_limit and card.area and not args.bypass_checks and not args.no_deck_effects then 
             card.area.config.card_limit = card.area.config.card_limit + card.edition.card_limit
         end
         return ret
