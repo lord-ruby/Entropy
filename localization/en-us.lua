@@ -1123,6 +1123,14 @@ local decs = {
 					"{C:inactive}(Currently {C:money}$#2#{C:inactive})"
                 },
             },
+			j_entr_abacus = {
+                name = "Abacus",
+                text = {
+                    "Scored number cards give",
+					"one half of their",
+					"base {C:blue}chips{} as {C:red}mult{}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

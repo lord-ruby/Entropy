@@ -3316,6 +3316,31 @@ local radar = {
     end
 }
 
+local abacus = {
+    order = 57,
+    object_type = "Joker",
+    key = "abacus",
+    rarity = 1,
+    cost = 5,   
+    eternal_compat = true,
+    pos = {x = 8, y = 8},
+    atlas = "jokers",
+    config = {
+        dollar_mult = 1
+    },
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if (context.individual and context.other_card.base.nominal and to_big(context.other_card.base.nominal) > to_big(0) and context.cardarea == G.play) or context.forcetrigger then
+            local id = context.other_card:get_id()
+            if id <= 10 or id >= 14 then
+                return {
+                    mult = math.ceil(context.other_card.base.nominal / 2)
+                }
+            end
+        end
+    end
+}
+
 return {
     items = {
         surreal,
@@ -3378,6 +3403,7 @@ return {
         jestradiol,
         penny,
         slothful_joker,
-        radar
+        radar,
+        abacus
     }
 }
