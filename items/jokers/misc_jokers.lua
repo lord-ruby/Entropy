@@ -312,10 +312,10 @@ local solar_dagger = {
                 if v == card and G.jokers.cards[i+1] and not SMODS.is_eternal(G.jokers.cards[i+1]) then check = i+1 end
             end
             if check then
+                local sliced_card = G.jokers.cards[check]
+                sliced_card.getting_sliced = true
                 G.E_MANAGER:add_event(Event({
                     func = function()
-                        local sliced_card = G.jokers.cards[check]
-                        sliced_card.getting_sliced = true
                         card.ability.x_asc =
                             lenient_bignum(to_big(card.ability.x_asc) + sliced_card.sell_cost * 0.1)
                         card:juice_up(0.8, 0.8)
