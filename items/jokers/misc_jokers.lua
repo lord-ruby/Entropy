@@ -3521,6 +3521,37 @@ local masterful_gambit = {
     end,
 }
 
+local fourty_benadryls = {
+    order = 61,
+    object_type = "Joker",
+    key = "fourty_benadryls",
+    rarity = 1,
+    cost = 5,   
+    eternal_compat = true,
+    pos = {x = 3, y = 9},
+    atlas = "jokers",
+    config = {
+        chip_mod = 15
+    },
+    pixel_size = { h = 95 / 1.2 },
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.joker_main or context.forcetrigger then
+            return {
+                chips = card.ability.chip_mod * G.GAME.round_resets.ante
+            }
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.chip_mod,
+                card.ability.chip_mod * G.GAME.round_resets.ante
+            }
+        }
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -3588,6 +3619,7 @@ return {
         matryoshka_dolls,
         menger_sponge,
         arbitration,
-        masterful_gambit
+        masterful_gambit,
+        fourty_benadryls
     }
 }

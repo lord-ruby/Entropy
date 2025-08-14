@@ -1167,6 +1167,14 @@ local decs = {
 					"{C:attention}only{} a single card"
                 },
             },
+			j_entr_fourty_benadryls = {
+                name = "Fourty Benadryls",
+                text = {
+                    "{C:blue}+#1#{} Chip#<s>1#",
+					"for each ante",
+					"{C:inactive}(Currently: {C:blue}#2#{C:inactive} Chip#<s>2#)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
