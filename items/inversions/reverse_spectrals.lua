@@ -602,7 +602,6 @@ local charm = {
     dependencies = {
         items = {
           "set_entr_inversions",
-          "e_cry_astral"
         }
     },
     object_type = "Consumable",
@@ -620,7 +619,7 @@ local charm = {
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
         for i, v in pairs(Entropy.GetHighlightedCards({G.jokers}, card2, 1, card2.ability.select)) do
-            v:set_edition("e_cry_astral")
+            v:set_edition("e_entr_kaleidoscopic")
             v.ability.eternal = true
 
         end
@@ -642,7 +641,7 @@ local charm = {
         return #cards <= card.ability.select and #cards > 0
 	end,
     loc_vars = function(self, q, card)
-        q[#q+1] = G.P_CENTERS.e_cry_astral
+        q[#q+1] = G.P_CENTERS.e_entr_kaleidoscopic
         q[#q+1] = {key="eternal",set="Other"}
         return {
             vars = {
