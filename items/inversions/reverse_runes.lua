@@ -452,6 +452,7 @@ local shards = {
 
 function Card:is_playing_card()
     if not G.deck then return end
+    if self.area == G.play and self.ability.consumeable then return end
     if (self.area == G.hand or self.area == G.play or self.area == G.discard) and (self.config.center.set == "Default" or self.config.center.set == "Enhanced") then return true end
     for i, v in pairs(G.playing_cards) do
         if v == self then return true end
