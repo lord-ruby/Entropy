@@ -3083,6 +3083,12 @@ local neuroplasticity = {
             end
         end
     end,
+    remove_from_deck = function(self, card)
+        for i,v in pairs(SMODS.find_card("j_entr_neuroplasticity")) do
+            if v ~= card then return end
+        end
+        G.GAME.randomised_hand_map = {}
+    end,
     calculate = function(self, card, context)
         if context.end_of_round then
             local map = {}
