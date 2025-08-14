@@ -222,10 +222,27 @@ local vesuvius = {
     end
 }
 
+local hyperaccelerated_bongcloud_opening = {
+    object_type = "Challenge",
+	key = "hyperaccelerated_bongcloud_opening",
+	order = 3,
+    jokers = {
+		{ id = "j_entr_masterful_gambit", stickers = { "entr_aleph" } },
+        { id = "j_entr_masterful_gambit", stickers = { "entr_aleph" } },
+        { id = "j_entr_masterful_gambit", stickers = { "entr_aleph" } },
+        { id = "j_entr_masterful_gambit", stickers = { "entr_aleph" } },
+	},
+	deck = {
+		type = "Challenge Deck",
+	},
+}
+
+
 return {
     items = {
         lifelight,
         vesuvius,
+        hyperaccelerated_bongcloud_opening,
         (SMODS.Mods["Cryptid"] or {}).can_load and hyperbolic_chamber or nil
     }
 }

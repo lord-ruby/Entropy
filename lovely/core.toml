@@ -1809,3 +1809,32 @@ position = "at"
 payload = '''
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "if v.eternal then card:set_eternal(true) end"
+position = "before"
+payload = '''
+if v.stickers then
+	for i, _v in ipairs(v.stickers) do
+		SMODS.Stickers[_v]:apply(card, true)
+	end
+end
+'''
+match_indent = true
+
+# same deal for actual game
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "if v.eternal then _joker:set_eternal(true) end"
+position = "before"
+payload = '''
+if v.stickers then
+	for i, _v in ipairs(v.stickers) do
+		SMODS.Stickers[_v]:apply(_joker, true)
+	end
+end
+'''
+match_indent = true

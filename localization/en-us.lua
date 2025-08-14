@@ -5285,6 +5285,7 @@ local decs = {
 		challenge_names = {
 			c_entr_lifelight = "Lifelight",
 			c_entr_vesuvius = "Vesuvius",
+			c_entr_hyperaccelerated_bongcloud_opening = "Hyperaccelerated Bongcloud Opening",
 			c_entr_hyperbolic_chamber = "Hyperbolic Hell-Tier Chamber",
 			c_entr_daily = "Daily Challenge"
 		},
