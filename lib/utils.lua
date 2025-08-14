@@ -313,7 +313,7 @@ function Entropy.RandomForcetrigger(card, num,context)
 					local results = Cryptid.forcetrigger(v, context)
 					if results then
 						for i, v2 in pairs(results) do
-							for i2, result in pairs(v2) do
+							for i2, result in pairs(type(v2) == "table" and v2 or {}) do
                                 SMODS.calculate_individual_effect({[i2] = result}, card, i2, result, false)
 							end
 						end
@@ -330,7 +330,7 @@ function Entropy.RandomForcetrigger(card, num,context)
 					local results = eval_card(v, {cardarea=G.play,main_scoring=true, forcetrigger=true, individual=true})
 					if results then
 						for i, v2 in pairs(results) do
-							for i2, result in pairs(v2) do
+							for i2, result in pairs(type(v2) == "table" and v2 or {}) do
                                 SMODS.calculate_individual_effect({[i2] = result}, card, i2, result, false)
 							end
 						end
@@ -338,7 +338,7 @@ function Entropy.RandomForcetrigger(card, num,context)
 					local results = eval_card(v, {cardarea=G.hand,main_scoring=true, forcetrigger=true, individual=true})
 					if results then
 						for i, v2 in pairs(results) do
-							for i2, result in pairs(v2) do
+							for i2, result in pairs(type(v2) == "table" and v2 or {}) do
                                 SMODS.calculate_individual_effect({[i2] = result}, card, i2, result, false)
 							end
 						end
