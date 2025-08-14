@@ -1851,3 +1851,16 @@ if not self.ability.entr_aleph then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''
+-- context.final_scoring_step calculations
+SMODS.calculate_context({full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, final_scoring_step = true})
+'''
+position = 'before'
+payload = '''
+local text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta = Entropy.evaluate_play_misc(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
+'''
+match_indent = true

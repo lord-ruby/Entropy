@@ -109,29 +109,28 @@ local gamma = {
     in_pool = function()
         return G.GAME.entr_alt
     end,
-	calculate = function(self, blind, context)
-		if context.after and not G.GAME.blind.disabled then
-            local suits = {}
-            local discovered = 0
-			for i, v in ipairs(G.play.cards) do
-				if v.config.center.key == "m_cry_abstract" then
-					if not suits["abstract"] then
-						suits["abstract"] = true
-						discovered = discovered + 1
-					end
-				else
-					if not suits[v.base.suit] then
-						suits[v.base.suit] = true
-						discovered = discovered + 1
-					end
+	modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
+		local suits = {}
+		local discovered = 0
+		for i, v in ipairs(G.play.cards) do
+			if v.config.center.key == "m_cry_abstract" then
+				if not suits["abstract"] then
+					suits["abstract"] = true
+					discovered = discovered + 1
+				end
+			else
+				if not suits[v.base.suit] then
+					suits[v.base.suit] = true
+					discovered = discovered + 1
 				end
 			end
-            discovered = math.max(discovered, 2)
-            G.GAME.current_round.current_hand.mult = G.GAME.current_round.current_hand.mult * (1-1/discovered)
-            update_hand_text({delay = 0}, {mult = G.GAME.current_round.current_hand.mult})
-            G.GAME.blind.triggered = true
 		end
-	end,
+		local suits_unused = #SMODS.Suit.obj_buffer -1 - discovered
+		G.GAME.blind.triggered = true
+		if suits_unused > 1 then
+			return mult * (1/suits_unused), hand_chips, true
+		end
+	end
 }
 
 local delta = {
@@ -159,9 +158,7 @@ local delta = {
 	calculate = function(self, blind, context)
     end
 }
-local eval_ref = evaluate_play_main
-function evaluate_play_main (text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
-    local text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta = eval_ref(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
+function Entropy.evaluate_play_misc(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
     if Entropy.BlindIs("bl_entr_delta") and G.GAME.round_resets.hands > G.GAME.current_round.hands_left and not G.GAME.blind.disabled then
         local used = G.GAME.round_resets.hands - G.GAME.current_round.hands_left
         used = math.max(used,2)
