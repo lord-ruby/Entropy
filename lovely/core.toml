@@ -1838,3 +1838,16 @@ if v.stickers then
 end
 '''
 match_indent = true
+
+# remove eternal badge
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.eternal then badges[#badges + 1] = 'eternal' end"
+position = "at"
+payload = '''
+if not self.ability.entr_aleph then
+	if self.ability.eternal then badges[#badges + 1] = 'eternal' end
+end
+'''
+match_indent = true
