@@ -3134,7 +3134,7 @@ local dragonfruit = {
         Entropy.ChangeFullCSL(card.ability.left)
     end,
     remove_from_deck = function(self, card, from_debuff)
-        Entropy.ChangeFullCSL(card.ability.left)
+        Entropy.ChangeFullCSL(-card.ability.left)
     end,
     loc_vars = function(self, q, card)
         return {
