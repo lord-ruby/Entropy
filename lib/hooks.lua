@@ -182,19 +182,6 @@ function Card:set_debuff(should_debuff)
     set_debuffref(self, should_debuff)
 end
 
-local ref = evaluate_play_final_scoring
-function evaluate_play_final_scoring(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
-    local text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta = ref(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
-    G.E_MANAGER:add_event(Event({
-      trigger = 'after',
-      	func = (function()
-            update_operator_display()
-        return true end)
-    }))
-    
-    return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
-end
-
 create_UIBox_your_collection_seals = function()
     return SMODS.card_collection_UIBox(G.P_CENTER_POOLS.Seal, {6,6}, {
         snap_back = true,
@@ -1750,12 +1737,6 @@ function G.FUNCS.get_poker_hand_info(_cards)
 			loc_disp_text = localize(disp_text, "poker_hands")
         end
     end
-    if not G.GAME.hands[text] or not G.GAME.hands[text].operator then
-        if not G.GAME.paya_operator or G.GAME.paya_operator == 0 then
-            G.GAME.hand_operator = 0
-        end
-        update_operator_display()
-    end
     return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
 
@@ -2891,21 +2872,6 @@ function Blind:debuff_hand(cards, hand, handname, check)
     end
 end
 
-local ref = G.FUNCS.evaluate_play
-G.FUNCS.evaluate_play = function(e)
-    local refe = ref(e)
-    G.E_MANAGER:add_event(Event({
-        trigger="after",
-        func = function()
-            G.GAME.asc_power_hand = nil
-            update_hand_text_random({delay = 0}, {chips=0, mult=0, handname = "", level=""})
-            update_operator_display()
-            return true
-        end
-    }))
-    return refe
-end
-
 local ref = copy_card
 function copy_card(old, new, ...)
     if not new or (not new.entr_aleph) then
@@ -3224,20 +3190,6 @@ function evaluate_poker_hand(hand)
     return results
 end
 
-local parse_ref = CardArea.parse_highlighted
-function CardArea:parse_highlighted()
-    parse_ref(self)
-    local text,disp_text,poker_hands = G.FUNCS.get_poker_hand_info(self.highlighted)
-    if G.GAME.hands[text] and G.GAME.hands[text].operator then
-        G.GAME.old_operator = SMODS.get_scoring_calculation()
-        SMODS.set_scoring_calculation(G.GAME.hands[text].operator)
-    elseif G.GAME.old_operator then
-        SMODS.set_scoring_calculation(G.GAME.old_operator)
-        G.GAME.old_operator = nil
-    end
-end
-
-
 local ref = create_shop_card_ui
 function create_shop_card_ui(card, type, area)
     if card.config.center.set == "Back" or card.config.center.set == "Sleeve" then
@@ -3288,18 +3240,6 @@ function create_shop_card_ui(card, type, area)
     else
         ref(card, type, area)
     end
-end
-
-local set_blindref = Blind.set_blind
-function Blind:set_blind(...)
-    set_blindref(self, ...)
-    update_operator_display()
-    G.E_MANAGER:add_event(Event({
-        func = function()
-            update_operator_display()
-            return true
-        end
-    }))
 end
 
 if SMODS.Mods.Multipack and SMODS.Mods.Multipack.can_load then
@@ -3410,9 +3350,40 @@ function evaluate_poker_hand(cards)
     return results
 end
 
+local parse_ref = CardArea.parse_highlighted
+function CardArea:parse_highlighted()
+    parse_ref(self)
+    local text,disp_text,poker_hands = G.FUNCS.get_poker_hand_info(self.highlighted)
+    if G.GAME.hands[text] and G.GAME.hands[text].operator then
+        G.GAME.old_operator = G.GAME.current_scoring_calculation_key or "multiply"
+        SMODS.set_scoring_calculation(G.GAME.hands[text].operator)
+    elseif G.GAME.old_operator then
+        SMODS.set_scoring_calculation(G.GAME.old_operator)
+        G.GAME.old_operator = nil
+    end
+end
+
+local ref = SMODS.set_scoring_calculation
+function SMODS.set_scoring_calculation(key, ...)
+    G.GAME.current_scoring_calculation_key = key
+    return ref(key, ...)
+end
+
 local play_ref = G.FUNCS.evaluate_play
 G.FUNCS.evaluate_play = function(e)
+    local old_op = G.GAME.old_operator
     play_ref(e)
+    G.GAME.old_op = old_op
+    G.E_MANAGER:add_event(Event{
+        func = function()
+            if G.GAME.old_operator then
+                SMODS.set_scoring_calculation(G.GAME.old_operator)
+                G.GAME.old_operator = nil
+            end
+            return true
+        end,
+        trigger = "after"
+    })
     G.GAME.overload = nil
     G.E_MANAGER:add_event(Event{
         trigger = "after",
