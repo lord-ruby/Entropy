@@ -1645,15 +1645,13 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
-target = "functions/common_events.lua"
+target = '''=[SMODS _ "src/game_object.lua"]'''
 pattern = '''
-    G.GAME.hands[hand].mult = math.max(G.GAME.hands[hand].s_mult + G.GAME.hands[hand].l_mult*(G.GAME.hands[hand].level - 1), 1)
-    G.GAME.hands[hand].chips = math.max(G.GAME.hands[hand].s_chips + G.GAME.hands[hand].l_chips*(G.GAME.hands[hand].level - 1), 0)
+hand[self.key] = math.max(hand['s_'..self.key] + hand['l_'..self.key]*(hand.level - 1), 0)
 '''
 position = "at"
 payload = '''
-    G.GAME.hands[hand].mult = G.GAME.hands[hand].mult + G.GAME.hands[hand].l_mult * (amount or 1)
-    G.GAME.hands[hand].chips = G.GAME.hands[hand].chips + G.GAME.hands[hand].l_chips * (amount or 1)
+hand[self.key] = math.max(hand[self.key] + hand['l_'..self.key]*amount)
 '''
 match_indent = true
 
