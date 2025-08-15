@@ -3552,6 +3552,76 @@ local fourty_benadryls = {
     end,
 }
 
+local red_fourty = {
+    order = 62,
+    object_type = "Joker",
+    key = "red_fourty",
+    rarity = 1,
+    cost = 6,   
+    eternal_compat = true,
+    pos = {x = 4, y = 9},
+    atlas = "jokers",
+    config = {
+        mult = 20,
+        mult_mod = 2
+    },
+    demicoloncompat = true,
+    blueprint_compat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.mult,
+                card.ability.mult_mod
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.money_altered and context.from_shop and to_big(context.amount) < to_big(0) then
+            card.ability.mult = card.ability.mult - card.ability.mult_mod
+            local msg = SMODS.scale_card(card, {ref_table = card.ability, ref_value = "mult", scalar_value = "mult_mod", operation = "-"})
+            Entropy.ChangeFullCSL(- card.ability.mult_mod)
+            if card.ability.mult <= 0 then
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        play_sound("tarot1")
+                        card.T.r = -0.2
+                        card:juice_up(0.3, 0.4)
+                        card.states.drag.is = true
+                        card.children.center.pinch.x = true
+                        G.E_MANAGER:add_event(Event({
+                            trigger = "after",
+                            delay = 0.3,
+                            blockable = false,
+                            func = function()
+                                G.jokers:remove_card(card)
+                                card:remove()
+                                card = nil
+                                return true
+                            end,
+                        }))
+                        return true
+                    end,
+                }))
+                return {
+                    message = localize("k_eaten_ex"),
+                    colour = G.C.FILTER,
+                }
+            end
+            if not msg or type(msg) == "string" then
+                return {
+                    message = msg or "-"..number_format(card.ability.mult_mod),
+                    colour = G.C.RED,
+                }
+            end
+        end
+        if context.joker_main then
+            return {
+                mult = card.ability.mult
+            }
+        end
+    end
+}
+
 return {
     items = {
         surreal,
@@ -3620,6 +3690,7 @@ return {
         menger_sponge,
         arbitration,
         masterful_gambit,
-        fourty_benadryls
+        fourty_benadryls,
+        red_fourty
     }
 }

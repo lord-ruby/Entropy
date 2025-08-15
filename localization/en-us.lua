@@ -1175,6 +1175,14 @@ local decs = {
 					"{C:inactive}(Currently: {C:blue}#2#{C:inactive} Chip#<s>2#)"
                 },
             },
+			j_entr_red_fourty = {
+                name = "Red-40",
+                text = {
+                    "{C:red}+#1#{} Mult",
+					"{C:red}-#2#{} Mult when",
+					"spending money in The Shop"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
