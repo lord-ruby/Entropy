@@ -1649,6 +1649,7 @@ local nucleotide = {
                     G.hand:emplace(new_card)
                     table.insert(G.playing_cards, new_card)
                     card:start_dissolve()
+                    card.ability.temporary2 = true
                     return true
                 end
             }))
@@ -3728,6 +3729,6 @@ return {
         masterful_gambit,
         fourty_benadryls,
         red_fourty,
-        promotion
+        promotion,
     }
 }
