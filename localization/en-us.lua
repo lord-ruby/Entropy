@@ -1200,6 +1200,14 @@ local decs = {
 					"end of round"
                 },
             },
+			j_entr_girldinner = {
+                name = "Girldinner",
+                text = {
+                    "The first scored {C:attention}Queen{}",
+					"each round gives {C:mult}+#1#{} Mult",
+					"and {C:blue}+#2#{} Chips"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

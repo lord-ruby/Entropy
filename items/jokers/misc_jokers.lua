@@ -3699,6 +3699,44 @@ local offbrand = {
     end
 }
 
+local girldinner = {
+    order = 65,
+    object_type = "Joker",
+    key = "girldinner",
+    rarity = 1,
+    cost = 4,   
+    eternal_compat = true,
+    pos = {x = 8, y = 9},
+    atlas = "jokers",
+    config = {
+        mult = 3,
+        chips = 40
+    },
+    pools = {["Food"] = true},
+    demicoloncompat = true,
+    blueprint_compat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.mult,
+                card.ability.chips
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play and context.other_card:get_id() == 12 and (not card.ability.used or card.ability.used == context.other_card) then
+            card.ability.used = context.other_card
+            return {
+                mult = card.ability.mult,
+                chips = card.ability.chips
+            }
+        end
+        if (context.end_of_round and not context.individual and not context.repetition) then
+            card.ability.used = nil
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -3770,6 +3808,7 @@ return {
         fourty_benadryls,
         red_fourty,
         promotion,
-        offbrand
+        offbrand,
+        girldinner
     }
 }
