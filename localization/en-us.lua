@@ -1183,6 +1183,15 @@ local decs = {
 					"spending money in The Shop"
                 },
             },
+			j_entr_promotion = {
+                name = "Promotion",
+                text = {
+                    "Create a {C:attention}random{} Booster Pack",
+					"in the Consumables tray when",
+					"The Boss Blind is defeated",
+					"{C:inactive}(Must have room)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

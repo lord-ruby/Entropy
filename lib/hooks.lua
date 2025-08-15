@@ -448,7 +448,7 @@ end
 
 G.FUNCS.can_open_booster = function(e)
     if
-        G.STATE ~= G.STATES.SMODS_BOOSTER_OPENED
+        G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.SHOP
     then
         e.config.colour = G.C.GREEN
         e.config.button = "open_booster"

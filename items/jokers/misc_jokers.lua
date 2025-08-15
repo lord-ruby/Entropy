@@ -3621,6 +3621,43 @@ local red_fourty = {
     end
 }
 
+local promotion = {
+    order = 63,
+    object_type = "Joker",
+    key = "promotion",
+    rarity = 1,
+    cost = 6,   
+    eternal_compat = true,
+    pos = {x = 5, y = 9},
+    atlas = "jokers",
+    config = {
+        mult = 20,
+        mult_mod = 2
+    },
+    demicoloncompat = true,
+    blueprint_compat = true,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.individual and not context.repetition) or context.forcetrigger then
+            if G.GAME.blind_on_deck == "Boss" or context.forcetrigger then
+                if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
+                    G.E_MANAGER:add_event(Event{
+                        func = function()
+                            SMODS.add_card{
+                                set = "Booster",
+                                area = G.consumeables
+                            }
+                            G.GAME.consumeable_buffer = 0
+                            return true
+                        end
+                    })
+                    G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+                end
+                return nil, true
+            end
+        end
+    end
+}
+
 return {
     items = {
         surreal,
@@ -3690,6 +3727,7 @@ return {
         arbitration,
         masterful_gambit,
         fourty_benadryls,
-        red_fourty
+        red_fourty,
+        promotion
     }
 }
