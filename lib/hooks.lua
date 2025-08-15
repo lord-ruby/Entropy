@@ -1373,11 +1373,11 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
     end
 end
 for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'eq_chips', 'Eqchips_mod', 'xlog_chips'}) do
-    table.insert(SMODS.scoring_parameter_keys, v)
+    table.insert(SMODS.scoring_parameter_keys or SMODS.calculation_keys or {}, v)
 end
 for _, v in ipairs({'asc', 'asc_mod', 'plus_asc', 'plusasc_mod', 'exp_asc', 'exp_asc_mod', 'x_asc',
                     'hyper_asc', 'hyper_asc_mod', 'hyperasc', 'hyperasc_mod'}) do
-    table.insert(SMODS.other_calculation_keys, v)
+    table.insert(SMODS.other_calculation_keys or SMODS.calculation_keys or {}, v)
 end
 
 local entr_define_dt = 0
@@ -3366,7 +3366,9 @@ end
 local ref = SMODS.set_scoring_calculation
 function SMODS.set_scoring_calculation(key, ...)
     G.GAME.current_scoring_calculation_key = key
-    return ref(key, ...)
+    if ref then
+        return ref(key, ...)
+    end
 end
 
 local play_ref = G.FUNCS.evaluate_play
