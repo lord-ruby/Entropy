@@ -3579,7 +3579,6 @@ local red_fourty = {
         if context.money_altered and context.from_shop and to_big(context.amount) < to_big(0) then
             card.ability.mult = card.ability.mult - card.ability.mult_mod
             local msg = SMODS.scale_card(card, {ref_table = card.ability, ref_value = "mult", scalar_value = "mult_mod", operation = "-"})
-            Entropy.ChangeFullCSL(- card.ability.mult_mod)
             if card.ability.mult <= 0 then
                 G.E_MANAGER:add_event(Event({
                     func = function()
