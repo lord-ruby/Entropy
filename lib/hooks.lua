@@ -1277,22 +1277,18 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         return ret
     end
     if (key == 'eq_mult' or key == 'Eqmult_mod') then 
-        local e = card_eval_status_text
-        card_eval_status_text = function() end
-        scie(effect, scored_card, "Xmult_mod", 0, from_edition)
-        scie(effect, scored_card, "mult_mod", amount, from_edition)
-        card_eval_status_text = e
+        local mult = SMODS.Scoring_Parameters["mult"]
+        mult.current = amount
+        update_hand_text({delay = 0}, {mult = mult.current})
         if not Talisman or not Talisman.config_file.disable_anims then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent)
         end
         return true
     end
     if (key == 'eq_chips' or key == 'Eqchips_mod') then 
-        local e = card_eval_status_text
-        card_eval_status_text = function() end
-        scie(effect, scored_card, "Xchip_mod", 0, from_edition)
-        scie(effect, scored_card, "chip_mod", amount, from_edition)
-        card_eval_status_text = e
+        local chips = SMODS.Scoring_Parameters["chips"]
+        chips.current = amount
+        update_hand_text({delay = 0}, {chips = chips.current})
         if not Talisman or not Talisman.config_file.disable_anims then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'chips', amount, percent, nil, nil, "="..amount.. " Chips", G.C.BLUE)
         end
@@ -1376,21 +1372,25 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         card_eval_status_text = e
         if not Talisman or not Talisman.config_file.disable_anims then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, Entropy.FormatArrowMult(amount[1], amount[2]).." Asc", G.C.GOLD, "entr_e_solar", 0.6)
-        end
+        end 
         return true
     end
     if key == 'xlog_chips' then
-        hand_chips = mod_chips(hand_chips * math.max(math.log(to_big(hand_chips) < to_big(0) and 1 or hand_chips, amount), 1))
-        update_hand_text({delay = 0}, {chips = hand_chips, mult = mult})
+        local chips = SMODS.Scoring_Parameters["chips"]
+        chips.current = mod_chips(chips.current * math.max(math.log(to_big(chips.current) < to_big(0) and 1 or chips.current, amount), 1))
+        update_hand_text({delay = 0}, {chips = chips.current})
         if not Talisman or not Talisman.config_file.disable_anims then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'chips', 1, percent, nil, nil, "Chips Xlog(Chips)", G.C.BLUE, "entr_e_rizz", 0.6)
         end
         return true
     end
 end
-for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'asc', 'asc_mod', 'plus_asc', 'plusasc_mod', 'exp_asc', 'exp_asc_mod', 'eq_chips', 'Eqchips_mod', 'xlog_chips', 'x_asc',
+for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'eq_chips', 'Eqchips_mod', 'xlog_chips'}) do
+    table.insert(SMODS.scoring_parameter_keys, v)
+end
+for _, v in ipairs({'asc', 'asc_mod', 'plus_asc', 'plusasc_mod', 'exp_asc', 'exp_asc_mod', 'x_asc',
                     'hyper_asc', 'hyper_asc_mod', 'hyperasc', 'hyperasc_mod'}) do
-    table.insert(SMODS.calculation_keys, v)
+    table.insert(SMODS.other_calculation_keys, v)
 end
 
 local entr_define_dt = 0
@@ -3229,15 +3229,11 @@ function CardArea:parse_highlighted()
     parse_ref(self)
     local text,disp_text,poker_hands = G.FUNCS.get_poker_hand_info(self.highlighted)
     if G.GAME.hands[text] and G.GAME.hands[text].operator then
-        G.GAME.hand_operator = G.GAME.hands[text].operator
-        update_operator_display()
-    else
-        if G.PROFILES[G.SETTINGS.profile].cry_none then
-            G.GAME.hand_operator = G.GAME.hands["cry_None"] and G.GAME.hands["cry_None"].operator or 0
-        else    
-            G.GAME.hand_operator = 0
-        end
-        update_operator_display()
+        G.GAME.old_operator = SMODS.get_scoring_calculation()
+        SMODS.set_scoring_calculation(G.GAME.hands[text].operator)
+    elseif G.GAME.old_operator then
+        SMODS.set_scoring_calculation(G.GAME.old_operator)
+        G.GAME.old_operator = nil
     end
 end
 

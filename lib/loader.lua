@@ -258,29 +258,6 @@ function SMODS.injectItems(...)
             end,
         })
         SMODS.ObjectTypes.BlindTokens:inject()
-        local orig_final = get_final_operator
-        function get_final_operator()
-            local op = 0
-            if G.GAME.hand_operator then
-                op = op + G.GAME.hand_operator
-            end
-            if orig_final then
-                op = op + orig_final() - 1
-            end
-            if G.GAME.paya_operator then
-                op = op + G.GAME.paya_operator
-            end
-            if ast_get_final_operator then
-                op = op + ast_get_final_operator()
-            end
-            if get_score_operator then
-                op = op + get_score_operator()
-            end
-            return op
-        end
-        function get_chipmult_sum(chips, mult)
-            return to_big(Entropy.get_chipmult_score(chips, mult))
-        end
 
         if MP then
             function MP.DECK.ban_card(card_id)
@@ -334,32 +311,6 @@ function SMODS.injectItems(...)
         SMODS.ObjectTypes.Twisted:inject()
         SMODS.ObjectTypes.Sunny:inject()
 
-        --this has to be moved here for compatibility
-        function update_operator_display()
-            local aoperator = get_final_operator()
-            local colours = {
-                [-1] = HEX("a26161"),
-                [0] = G.C.RED,
-                [1] = G.C.EDITION,
-                [2] = G.C.CRY_ASCENDANT,
-                [3] = G.C.CRY_EXOTIC,
-                [4] = Entropy.entropic_gradient
-            }
-            local txt = Entropy.FormatArrowMult(aoperator, "")
-            local operator = G.HUD:get_UIE_by_ID('chipmult_op')
-            if operator then
-                operator.config.text = txt
-                operator.config.text_drawable:set(txt)
-                if aoperator > 1 and aoperator < 6 then
-                    operator.config.scale = 0.3 + 0.5 / aoperator
-                else
-                    operator.config.scale = 0.8
-                end
-                local col = colours[math.min(math.max(aoperator, -1), 4)]
-                operator.UIBox:recalculate()
-                operator.config.colour = col
-            end
-        end
         G.entr_hooked = true
         SMODS.ObjectTypes.Dice:inject()
         if (SMODS.Mods["Cryptid"] or {}).can_load then

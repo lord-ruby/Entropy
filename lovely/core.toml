@@ -1197,54 +1197,6 @@ position = "at"
 payload = '''draw_card(G.hand, Entropy.BlindIs("bl_entr_cassandra") and G.deck or G.discard, i*100/highlighted_count, 'down', false, G.hand.highlighted[i])'''
 match_indent = true
 
-[[patches]]
-[patches.pattern]
-target = "functions/UI_definitions.lua"
-pattern = '''{n=G.UIT.T, config={text = "X", lang = G.LANGUAGES['en-us'], scale = scale*2, colour = G.C.UI_MULT, shadow = true}},'''
-position = "at"
-payload = '''{n=G.UIT.T, config={id = "chipmult_op", text = "X", lang = G.LANGUAGES['en-us'], scale = scale*2, colour = G.C.UI_MULT, shadow = true}},'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
-pattern = "if hand_chips*mult > 0 then"
-position = "at"
-payload = "if Entropy.get_chipmult_score(hand_chips, mult) > to_big(0) then"
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = "functions/state_events.lua"
-pattern = "if to_big(hand_chips)*mult > to_big(0) then"
-position = "at"
-payload = "if to_big(Entropy.get_chipmult_score(hand_chips, mult)) > to_big(0) then"
-match_indent = true
-
-[[patches]]
-[patches.regex]
-target = "functions/state_events.lua"
-pattern = '''hand_chips\*mult'''
-position = "at"
-payload = '''Entropy.get_chipmult_score(hand_chips, mult)'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = "functions/misc_functions.lua"
-pattern = "G.ARGS.score_intensity.earned_score = G.GAME.current_round.current_hand.chips*G.GAME.current_round.current_hand.mult"
-position = "at"
-payload = '''
-local bigzero = to_big(0)
-if not G.GAME.blind or to_big(G.GAME.blind.chips or 0) <= bigzero then
-	G.ARGS.score_intensity.earned_score = 0
-else
-	G.ARGS.score_intensity.earned_score = to_number(math.min(Entropy.get_chipmult_score(G.GAME.current_round.current_hand.chips, G.GAME.current_round.current_hand.mult), 1e300))
-end
-bigzero = nil
-'''
-match_indent = true
-
 
 [[patches]]
 [patches.pattern]

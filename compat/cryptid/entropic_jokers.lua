@@ -749,7 +749,7 @@ local atomikos = {
     end,
     add_to_deck = function()
         if not G.GAME.atomikos_deleted then
-            G.GAME.hands["High Card"].operator = 1
+            G.GAME.hands["High Card"].operator = "exponent"
             G.GAME.atomikos_deleted = {}
         end
     end,
