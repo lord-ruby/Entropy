@@ -3568,6 +3568,7 @@ local red_fourty = {
     },
     demicoloncompat = true,
     blueprint_compat = true,
+    pools = {["Food"] = true},
     loc_vars = function(self, q, card)
         return {
             vars = {
@@ -3659,6 +3660,45 @@ local promotion = {
     end
 }
 
+local offbrand = {
+    order = 64,
+    object_type = "Joker",
+    key = "offbrand",
+    rarity = 1,
+    cost = 6,   
+    eternal_compat = true,
+    pos = {x = 7, y = 9},
+    atlas = "jokers",
+    config = {
+        mult = 6,
+        dollars = 6
+    },
+    pools = {["Food"] = true},
+    demicoloncompat = true,
+    blueprint_compat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.mult,
+                card.ability.dollars
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main or context.forcetrigger then
+            if context.forcetrigger then
+                ease_dollars(card.ability.dollars)
+            end
+            return {
+                mult = -card.ability.mult
+            }
+        end
+    end,
+    calc_dollar_bonus = function(self, card)
+        return card.ability.dollars
+    end
+}
+
 return {
     items = {
         surreal,
@@ -3730,5 +3770,6 @@ return {
         fourty_benadryls,
         red_fourty,
         promotion,
+        offbrand
     }
 }

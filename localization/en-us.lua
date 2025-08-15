@@ -1192,6 +1192,14 @@ local decs = {
 					"{C:inactive}(Must have room)"
                 },
             },
+			j_entr_offbrand = {
+                name = "Offbrand",
+                text = {
+                    "{C:red}-#1#{} Mult",
+					"Earn {C:money}$#2#{} at",
+					"end of round"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
