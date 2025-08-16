@@ -57,6 +57,7 @@ pattern = '''
 position = "at"
 payload = '''
         mult = mod_mult(Cryptid.ascend(G.GAME.hands[text].mult))
+        SMODS.Scoring_Parameters.mult.current = mult
 '''
 match_indent = true
 
@@ -70,6 +71,7 @@ pattern = '''
 position = "at"
 payload = '''
         hand_chips = mod_chips(Cryptid.ascend(G.GAME.hands[text].chips))
+        SMODS.Scoring_Parameters.chips.current = hand_chips
 '''
 match_indent = true
 
