@@ -65,7 +65,6 @@ local rend = {
     use = function(self, card)
         Entropy.FlipThen(Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select), function(card)
             card:set_ability(G.P_CENTERS.m_entr_flesh)
-            SMODS.calculate_context{enhancement_added = "m_entr_flesh", card=card}
         end)
     end,
     can_use = function(self, card)

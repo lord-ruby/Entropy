@@ -1424,15 +1424,6 @@ function CardArea:emplace(card, ...)
     return cardarea_emplaceref(self, card, ...)
 end
 
-local use_cardref = G.FUNCS.use_card
-G.FUNCS.use_card = function(e, mute, nosave, amt)
-    local ret = use_cardref(e, mute, nosave, amt)
-    local card = e.config.ref_table
-    if card.ability.set == 'Enhanced' or card.ability.set == 'Default' then
-        SMODS.calculate_context{enhancement_added = card.config.center.key, card=card}
-    end
-    return ret
-end
 local grotesque_joker = {
     order = 27,
     object_type = "Joker",
@@ -1474,7 +1465,7 @@ local grotesque_joker = {
         if context.forcetrigger then
             SMODS.scale_card(card, {ref_table = card.ability, ref_value = "xchips", scalar_value = "xchips_mod", message_key = "a_xchips", message_colour = G.C.BLUE})
         end
-        if context.enhancement_added == "m_entr_flesh" or context.forcetrigger then
+        if (context.setting_ability and not context.unchanged and context.new == "m_entr_flesh") or context.forcetrigger then
             SMODS.scale_card(card, {ref_table = card.ability, ref_value = "xmult", scalar_value = "xmult_mod", message_key = "a_xmult", message_colour = G.C.RED})
         end
         if context.joker_main or context.forcetrigger then
@@ -2433,7 +2424,7 @@ local crabus = {
                 card:set_ability(G.P_CENTERS.m_entr_dark)
             end)
         end
-        if context.enhancement_added == "m_entr_dark" then
+        if context.setting_ability and not context.unchanged and context.new == "m_entr_dark" then
             SMODS.scale_card(card, {
                 ref_table = card.ability,
                 ref_value = "x_chips",

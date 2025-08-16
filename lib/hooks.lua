@@ -198,9 +198,6 @@ end
 
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, initial, delay)
-    if self.config and self.config.center and self.config.center.key ~= (G.P_CENTERS[center or ""] or center) and self.area == G.hand and G.hand then
-        SMODS.calculate_context{enhancement_added = self.config.center.key, card=self}
-    end
     local link = self and self.ability and self.ability.link
     if (self.config and self.config.center ~= "m_entr_disavowed" and (not self.entr_aleph or self.ability.bypass_aleph)) or G.SETTINGS.paused then
         set_abilityref(self, center, initial, delay)
@@ -2870,19 +2867,6 @@ function Blind:debuff_hand(cards, hand, handname, check)
     else
         return debuff_handref(self, cards, hand, handname, check)
     end
-end
-
-local ref = copy_card
-function copy_card(old, new, ...)
-    if not new or (not new.entr_aleph) then
-        local card = ref(old, new, ...)
-        card.ability.bypass_aleph = nil
-        if G.hand and old.area == G.hand then
-            SMODS.calculate_context{enhancement_added = card.config.center.key, card=card}
-        end
-        return card
-    end
-    return new
 end
 
 if Entropy.config.omega_aleph then
