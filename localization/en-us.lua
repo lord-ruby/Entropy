@@ -499,6 +499,16 @@ local decs = {
 					"{C:inactive}({C:dark_edition}+#4#{C:inactive} Consumable Slots, {C:attention}+#5#{C:inactive} Shop Slots)"
 				}
 			},
+			j_entr_crabus = {
+				name = "Crabus, Heir of Doom",
+				text = {
+					"Unscoring cards become {C:attention}Dark Cards{}",
+					"{C:attention}Dark Cards{} scale when played",
+					"This Joker gains {X:chips,C:white}X#1#{} chips",
+					"whenever a {C:attention}Dark Card{} is added",
+					"{C:inactive}(Currently: {X:chips,C:white}X#2#{C:inactive} Chips)"
+				}
+			},
 			j_entr_devilled_suns = {
 				name = "Devilled Suns",
 				text = {

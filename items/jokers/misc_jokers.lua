@@ -2409,6 +2409,79 @@ local cass = {
     entr_credits = {art = {"Lil. Mr. Slipstream"}}
 }
 
+local crabus = {
+    object_type = "Joker",
+    key = "crabus",
+    order = 303,
+    rarity = 4,
+    cost = 20,
+    atlas = "ruby_atlas",
+    pos = {x=0, y=3},
+    soul_pos = {x = 1, y = 3},
+    config = {
+        x_chips = 1,
+        x_chips_mod = 0.05
+    },
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.before and not context.repetition and not context.blueprint then
+            local cards = {}
+            for i, v in pairs(context.full_hand) do
+                if not SMODS.in_scoring(v, context.scoring_hand) then cards[#cards+1] = v end
+            end
+            Entropy.FlipThen(cards, function(card)
+                card:set_ability(G.P_CENTERS.m_entr_dark)
+            end)
+        end
+        if context.enhancement_added == "m_entr_dark" then
+            SMODS.scale_card(card, {
+                ref_table = card.ability,
+                ref_value = "x_chips",
+                scalar_value = "x_chips_mod"
+            })
+        end
+        if context.individual and context.cardarea == G.play and SMODS.has_enhancement(context.other_card, "m_entr_dark") then
+			local cards = {}
+			local suits = {}
+			for i, v in ipairs(G.play.cards) do
+				if v.config.center.key == "m_cry_abstract" or v.config.center.key == "m_stone" or v.config.center.key == "m_wild" then
+					if not suits[v.config.center.key] then
+						suits[v.config.center.key] = true
+						cards[#cards+1]=true
+					end
+				else
+					if not suits[v.base.suit] then
+						suits[v.base.suit] = true
+						cards[#cards+1]=true
+					end
+				end
+			end
+			for i, v in ipairs(cards) do
+				card_eval_status_text(
+					context.other_card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_upgrade_ex"), colour = G.C.GREEN }
+				)
+				context.other_card.ability.xchips = context.other_card.ability.xchips + context.other_card.ability.xchip_mod
+				delay(0.3)
+			end
+        end
+        if context.joker_main then return {x_chips = card.ability.x_chips} end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                number_format(card.ability.x_chips_mod),
+                number_format(card.ability.x_chips),
+            }
+        }
+    end,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}}
+}
+
 local sandpaper = {
     order = 43,
     object_type = "Joker",
@@ -3727,6 +3800,7 @@ return {
         ruby,
         slipstream,
         cass,
+        crabus,
         sandpaper,
         purple_joker,
         chalice_of_blood,
