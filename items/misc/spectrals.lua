@@ -121,7 +121,7 @@ local destiny = {
     end,
     no_doe = true,
     in_pool = function()
-        return false
+        return not Entropy.DeckOrSleeve("crafting")
     end,
     weight = 0
 }

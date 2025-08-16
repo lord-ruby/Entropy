@@ -202,24 +202,26 @@ function Card:set_ability(center, initial, delay)
     if (self.config and self.config.center ~= "m_entr_disavowed" and (not self.entr_aleph or self.ability.bypass_aleph)) or G.SETTINGS.paused then
         set_abilityref(self, center, initial, delay)
     end
-    self.ability.link = link
-    if link and not initial then
-        for i, v in pairs(G.hand.cards) do
-            if v.ability.link == link then
-                set_abilityref(v, center, initial, delay)
-                v.ability.link = link 
+    if self.ability then
+        self.ability.link = link
+        if link and not initial then
+            for i, v in pairs(G.hand.cards) do
+                if v.ability.link == link then
+                    set_abilityref(v, center, initial, delay)
+                    v.ability.link = link 
+                end
             end
-        end
-        for i, v in pairs(G.discard.cards) do
-            if v.ability.link == link then
-                set_abilityref(v, center, initial, delay)
-                v.ability.link = link 
+            for i, v in pairs(G.discard.cards) do
+                if v.ability.link == link then
+                    set_abilityref(v, center, initial, delay)
+                    v.ability.link = link 
+                end
             end
-        end
-        for i, v in pairs(G.deck.cards) do
-            if v.ability.link == link then
-                set_abilityref(v, center, initial, delay) 
-                v.ability.link = link
+            for i, v in pairs(G.deck.cards) do
+                if v.ability.link == link then
+                    set_abilityref(v, center, initial, delay) 
+                    v.ability.link = link
+                end
             end
         end
     end
