@@ -3646,7 +3646,7 @@ local recycling_bin = {
     loc_vars = function(self, q, card)
         return {
             vars = {
-                card.ability.mult_mod
+                card.ability.mult_mod,
                 card.ability.mult,
             }
         }
