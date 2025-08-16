@@ -3751,6 +3751,68 @@ local recycling_bin = {
     }
 }
 
+local gold_bar = {
+    order = 66,
+    object_type = "Joker",
+    key = "gold_bar",
+    rarity = 1,
+    cost = 6,   
+    eternal_compat = true,
+    pos = {x = 0, y = 10},
+    atlas = "jokers",
+    config = {
+        dollars = 8,
+        dollars_mod = 1
+    },
+    demicoloncompat = true,
+    blueprint_compat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.dollars,
+                card.ability.dollars_mod,
+            }
+        }
+    end,
+    calc_dollar_bonus = function(self, card)
+        local dollars = card.ability.dollars
+        SMODS.scale_card(card, {
+            ref_table = card.ability,
+            ref_value = "dollars",
+            scalar_value = "dollars_mod",
+            operation = "-",
+            scaling_message = {
+                message = dollars == card.ability.dollars_mod and localize("k_eaten_ex") or "-"..number_format(card.ability.dollars_mod),
+                colour = dollars >= card.ability.dollars_mod and G.C.RED or G.C.FILTER
+            }
+        })
+        if to_big(card.ability.dollars) <= 0 then
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    play_sound("tarot1")
+                    card.T.r = -0.2
+                    card:juice_up(0.3, 0.4)
+                    card.states.drag.is = true
+                    card.children.center.pinch.x = true
+                    G.E_MANAGER:add_event(Event({
+                        trigger = "after",
+                        delay = 0.3,
+                        blockable = false,
+                        func = function()
+                            G.jokers:remove_card(card)
+                            card:remove()
+                            card = nil
+                            return true
+                        end,
+                    }))
+                    return true
+                end,
+            }))
+        end
+        return dollars
+    end
+}
+
 return {
     items = {
         surreal,
@@ -3825,6 +3887,7 @@ return {
         promotion,
         offbrand,
         girldinner,
-        recycling_bin
+        recycling_bin,
+        gold_bar
     }
 }

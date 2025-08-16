@@ -1227,6 +1227,13 @@ local decs = {
 					"{C:inactive}(Currently: {C:red}#2#{C:inactive} Mult)"
                 },
             },
+			j_entr_gold_bar = {
+                name = "Gold Bar",
+                text = {
+                    "Earn {C:money}$#1#{} at end of round",
+					"decreases by {C:red}$#2#{} when triggered"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

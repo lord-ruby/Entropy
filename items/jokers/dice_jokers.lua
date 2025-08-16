@@ -153,8 +153,10 @@ local eternal_D6 = {
                     ref_table = card.ability,
                     ref_value = "numerator",
                     scalar_value = "numerator_mod",
-                    scaling_message = "+"..number_format(card.ability.numerator_mod),
-                    message_colour = G.C.GREEN
+                    scaling_message = {
+                        message = "+"..number_format(card.ability.numerator_mod),
+                        colour = G.C.GREEN
+                    }
                 })
             end
         end
@@ -171,8 +173,10 @@ local eternal_D6 = {
                 ref_table = card.ability,
                 ref_value = "numerator",
                 scalar_value = "numerator_mod",
-                scaling_message = "+"..number_format(card.ability.numerator_mod),
-                message_colour = G.C.GREEN
+                scaling_message = {
+                    message = "+"..number_format(card.ability.numerator_mod),
+                    colour = G.C.GREEN
+                }
             })
         end
     end,
