@@ -2981,6 +2981,14 @@ function end_round()
     else    
         end_roundref()
     end
+    if G.GAME.earl_hands then
+        G.GAME.round_resets.hands = G.GAME.round_resets.hands + G.GAME.earl_hands
+        ease_hands_played(G.GAME.earl_hands)
+    end
+    if G.GAME.earl_discards then
+        G.GAME.round_resets.discards = G.GAME.round_resets.discards + G.GAME.earl_discards
+        ease_discard(G.GAME.earl_discards)
+    end
 end
 
 local generate_uiref = generate_card_ui
@@ -3740,4 +3748,32 @@ for i, v in pairs(SMODS.JimboQuips or {}) do
             extra = extra
         }, true)
     end
+end
+
+--Init stuff at the start of the game
+local gigo = Game.init_game_object
+function Game:init_game_object()
+	local g = gigo(self)
+	g.jokers_sold = {}
+	return g
+end
+
+
+local sell_card_stuff = Card.sell_card
+function Card:sell_card()
+	if self.config.center.set == "Joker" then
+		if not (SMODS.Mods["Cryptid"] or {}).can_load then
+			local contained = false
+			for _, v in ipairs(G.GAME.jokers_sold) do
+				if v == self.config.center.key then
+					contained = true
+					break
+				end
+			end
+			if not contained then
+				table.insert(G.GAME.jokers_sold, self.config.center.key)
+			end
+		end
+	end
+	sell_card_stuff(self)
 end

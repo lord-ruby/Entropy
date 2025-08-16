@@ -109,7 +109,8 @@ local inscribe = {
     use = function(self, card2, area, copier)
         Entropy.FlipThen(Entropy.FilterTable(G.hand.cards, function(card) return not card:is_face() and card.base.value ~= "Ace" end), function(card, area)
             card.base.nominal = card.base.nominal * card2.ability.chipmult
-            card.perma_debuff = true
+            card.ability.debuff_timer = 1
+            card.ability.debuff_timer_max = 1
             card:set_debuff(true)
         end)
     end,
@@ -199,7 +200,8 @@ local ward = {
     inversion = "c_wraith",
     atlas = "consumables",
     config = {
-        sellmult = 2
+        sellmult = 2,
+        rounds = 1
     },
 	pos = {x=11,y=4},
     --soul_pos = { x = 5, y = 0},
@@ -209,14 +211,8 @@ local ward = {
             if not SMODS.is_eternal(v) and not v.ability.cry_absolute then
                 local joker = G.jokers.cards[i]
                 total = total + joker.cost
-                G.E_MANAGER:add_event(Event({
-                    trigger = "after",
-                    delay = 0.1,
-                    func = function()
-                        joker:start_dissolve()
-                        return true
-                    end
-                }))
+                joker.ability.debuff_timer = card.ability.rounds
+                joker.ability.debuff_timer_max = card.ability.rounds
             end
         end
         ease_dollars(total * card.ability.sellmult)
@@ -227,7 +223,8 @@ local ward = {
     loc_vars = function(self, q, card)
         return {
             vars = {
-                card.ability.sellmult
+                card.ability.sellmult,
+                card.ability.rounds
             }
         }
     end,
@@ -621,18 +618,6 @@ local charm = {
             v:set_edition("e_entr_kaleidoscopic")
             v.ability.eternal = true
 
-        end
-        local joker = nil
-        local tries = 100
-        if #G.jokers.cards > 1 then
-            while (joker == nil or SMODS.is_eternal(joker) or joker.ability.cry_absolute) and tries > 0 do
-                joker = pseudorandom_element(G.jokers.cards, pseudoseed("charm"))
-                tries = tries - 1
-            end
-        end
-        if joker then
-            joker:start_dissolve()
-            G.GAME.banned_keys[joker.config.center.key] = true
         end
     end,
     can_use = function(self, card)

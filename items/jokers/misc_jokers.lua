@@ -3778,7 +3778,7 @@ local gold_bar = {
                 colour = dollars >= card.ability.dollars_mod and G.C.RED or G.C.FILTER
             }
         })
-        if to_big(card.ability.dollars) <= 0 then
+        if to_big(card.ability.dollars) <= to_big(0) then
             G.E_MANAGER:add_event(Event({
                 func = function()
                     play_sound("tarot1")

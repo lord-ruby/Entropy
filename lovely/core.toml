@@ -67,11 +67,11 @@ Entropy.RarityPoints = {
     [1] = 1, --common
     [2] = 3, --uncommon
     [3] = 8, --rare
-    ["cry_epic"] = 30,
-    [4] = 200, --legendary
-    ["entr_reverse_legendary"] = 400,
-    ["cry_exotic"] = 700,
-    ["entr_entropic"] = 2000,
+    ["cry_epic"] = 24,
+    [4] = 62, --legendary
+    ["entr_reverse_legendary"] = 130,
+    ["cry_exotic"] = 400,
+    ["entr_entropic"] = 1000,
 }
 --higher rarities give less points from editions so the diminisher is used in division
 Entropy.RarityDiminishers = {

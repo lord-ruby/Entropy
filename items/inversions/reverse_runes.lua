@@ -1270,13 +1270,7 @@ local awakening = {
     loc_vars = function(self, q, card) q[#q + 1] = {key = 'e_negative_consumable', set = 'Edition', config = {extra = 1}}; return {vars = {card.ability.shop_size}} end,
     use = function(self, card)
         local mod = math.floor(card and card.ability.shop_size or 1)
-        G.E_MANAGER:add_event(Event({
-			func = function() --card slot
-				-- why is this in an event?
-				change_shop_size(-mod)
-				return true
-			end,
-		}))
+        SMODS.change_booster_limit(-mod)
         local card = SMODS.add_card{
             set = "Voucher",
             area = G.consumeables

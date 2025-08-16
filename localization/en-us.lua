@@ -1750,7 +1750,7 @@ local decs = {
 				text = {
 					"Multiply #1# selected card#<s>1#",
 					"values by {C:attention}#2#{} then",
-					"apply Banana"
+					"debuff it for {C:attention}#3#{} rounds"
 				}
 			},
 			c_entr_scar = {
@@ -1764,9 +1764,9 @@ local decs = {
 			c_entr_dagger = {
 				name = "The Dagger",
 				text = {
-					"Destroy {C:attention}#1#{} selected Joker#<s>1#",
-					"and add {X:dark_edition,C:white}X#2#{} the sell value",
-					"to your {C:attention}most played{} hand's mult"
+					"Destroy {C:attention}#1#{} selected Playing Card#<s>1#",
+					"and add {X:dark_edition,C:white}X#2#{} the chips",
+					"to your {C:attention}most played{} hand's chips"
 				}
 			},
 			c_entr_penumbra = {
@@ -1796,7 +1796,7 @@ local decs = {
 				name = "The Feud",
 				text = {
 					"Select {C:attentiom}#1#{} card#<s>1#",
-					"Add the {C:attention}right{} cards {C:blue}chips{}",
+					"Add {X:chips,C:white}X#3#{} the {C:attention}right{} cards {C:blue}chips{}",
 					"to the {C:attention}left{} card then",
 					"{C:attention}destroy{} the right card#<s>2#"
 				}
@@ -1820,9 +1820,10 @@ local decs = {
 			c_entr_earl = {
 				name = "The Earl",
 				text = {
-					"Distribute your money equally",
-					"between {C:blue}Hands{} and {C:red}Discards{}",
-					"{C:inactive}(Max of{} {C:gold}$#1#{}{C:inactive})"
+					"Lose all but {C:attention}1{}",
+					"Discard and Hand for the next round",
+					"Gain {C:money}Money{} based on how many taken",
+					"{C:inactive}(Currently: {C:money}$#1#{C:inactive})"
 				}
 			},
 			c_entr_mason = {
@@ -2698,7 +2699,7 @@ local decs = {
 					"Multiply the {C:attention}base{} Chips",
 					"of number cards in hand by {X:chips,C:white}X#1#{}",
 					"then {C:attention}debuff{} all number cards",
-					"in hand"
+					"in hand for 1 round"
 				}
 			},
 			c_entr_siphon = {
@@ -2720,8 +2721,8 @@ local decs = {
 			c_entr_ward = {
 				name = "Ward",
 				text = {
-					"Destroy {C:attention}all{} Jokers then",
-					"Give {X:gold,C:white}X#1#{} their buy",
+					"Debuff {C:attention}all{} Jokers for {C:attention}#2#{} rounds",
+					"then give {X:gold,C:white}X#1#{} their buy",
 					"value in dollars"
 				}
 			},
@@ -2771,10 +2772,8 @@ local decs = {
 			c_entr_charm = {
 				name = "Charm",
 				text = {
-					"Apply {C:attention}Astral{} and",
-					"{C:attention}Eternal{} to a selected",
-					"Joker then {C:attention}Banish{}",
-					"a random other Joker",
+					"Apply {C:attention}Kaleidoscopic{} and",
+					"{C:attention}Eternal{} to a selected Joker",
 				}
 			},
 			c_entr_entropy = {
@@ -4531,7 +4530,7 @@ local decs = {
 				name = "Pact of Awakening",
 				text = {
 					"Create a random {C:dark_edition}Negative{} Voucher",
-					"{C:attention}-#1#{} Shop Slot#<s>1#"
+					"{C:attention}-#1#{} sBooster Pack Slot#<s>1#"
 				}
 			},
 		},

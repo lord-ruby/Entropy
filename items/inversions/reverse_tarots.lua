@@ -222,7 +222,7 @@ local servant = {
     },
     config = {
         select = 1,
-        create = 1
+        create = 2
     },
     inversion = "c_emperor",
     pos = {x=4, y = 0},
@@ -353,6 +353,7 @@ local feud = {
     },
     config = {
         select = 2,
+        chip_mult = 2
     },
     inversion = "c_lovers",
     pos = {x=6, y = 0},
@@ -368,10 +369,11 @@ local feud = {
                 new_card:start_dissolve()
             end
         end
+        local mult = card.ability.chip_mult
         Entropy.FlipThen(cards, function(card)
-            card.base.nominal = card.base.nominal + chips
+            card.base.nominal = card.base.nominal + chips * mult
             if to_big(bonus_chips) > to_big(0) then
-                card.ability.bonus = bonus_chips
+                card.ability.bonus = card.ability.bonus + bonus_chips * mult
             end
 
         end)
@@ -386,6 +388,7 @@ local feud = {
             vars = {
                 card.ability.select,
                 to_big(card.ability.select) > to_big(2) and 2 or 1,
+                card.ability.chip_mult
             }
         }
     end,
@@ -478,7 +481,7 @@ local dagger = {
     inversion = "c_justice",
     pos = {x=8, y = 0},
     use = function(self, card2, area, copier)
-        local cards = Entropy.GetHighlightedCards({G.jokers}, card2, 1, card2.ability.select)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select)
         local total = 0
         local _hand, _tally = nil, -1
 		for k, v in ipairs(G.handlist) do
@@ -488,7 +491,7 @@ local dagger = {
 			end
 		end
         for i, card in ipairs(cards) do
-            total = total + card.sell_cost * card2.ability.sellmult
+            total = total + card.base.nominal + (card.ability.bonus or 0)
         end
         Entropy.FlipThen(cards, function(card)
             if not SMODS.is_eternal(card) then
@@ -502,7 +505,7 @@ local dagger = {
           { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
           { mult = 0, chips = 0, handname = "", level = "" }
         )
-        G.GAME.hands[_hand].mult = G.GAME.hands[_hand].mult + total
+        G.GAME.hands[_hand].chips = G.GAME.hands[_hand].chips + total
     end,
     can_use = function(self, card)
         local cards = Entropy.GetHighlightedCards({G.jokers}, card, 1, card.ability.select)
@@ -544,19 +547,24 @@ local earl = {
     inversion = "c_hermit",
     pos = {x=9, y = 0},
     use = function(self, card2, area, copier)
-        local half = to_number(math.min(G.GAME.dollars, 20)) / 2
-        ease_hands_played(half)
-        ease_discard(half)
-        G.GAME.earl_amount = (G.GAME.earl_amount or 0) + half
-        ease_dollars(-(half*2))
+        local hands_taken = G.GAME.round_resets.hands - 1
+        local discards_taken = G.GAME.round_resets.discards - 1
+        ease_hands_played(-hands_taken)
+        ease_discard(-discards_taken)
+        G.GAME.round_resets.hands = 1
+        G.GAME.round_resets.discards = 1
+        G.GAME.earl_hands = hands_taken
+        G.GAME.earl_discards = discards_taken
+        ease_dollars((hands_taken + discards_taken) * 3)
     end,
     can_use = function(self, card)
-        return to_big(G.GAME.dollars) > to_big(0) and G.STATE == G.STATES.SELECTING_HAND
+        return true
 	end,
     loc_vars = function(self, q, card)
         return {
             vars = {
-                card.ability.max
+                card.ability.max,
+                (G.GAME.round_resets.hands + G.GAME.round_resets.discards) * 3
             }
         }
     end,
@@ -662,25 +670,27 @@ local endurance = {
     },
     config = {
         select = 1,
-        factor = 1.5
+        factor = 1.5,
+        rounds = 3
     },
     pos = {x=1,y=1},
     inversion = "c_strength",
     use = function(self, card2)
         local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card2, 1, card2.ability.select)
         for i, card in pairs(cards) do
-            card.ability.banana = true
+            card.ability.debuff_timer = card2.ability.rounds
+            card.ability.debuff_timer_max = card2.ability.rounds
             if not Card.no(card, "immutable", true) then
                 Cryptid.manipulate(card, { value=card2.ability.factor })
             end
             card:juice_up()
-
         end
     end,
     bulk_use = function(self,card2,area,copier,amt)
         local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, card.ability.select)
         for i, card in pairs(cards) do
-            card.ability.banana = true
+            card.ability.debuff_timer = card2.ability.rounds
+            card.ability.debuff_timer_max = card2.ability.rounds
             if not Card.no(card, "immutable", true) then
                 Cryptid.manipulate(card, { value=card2.ability.factor^to_big(amt) })
             end
@@ -693,11 +703,11 @@ local endurance = {
         return num > 0 and num <= card.ability.select
     end,
     loc_vars = function(self, q, card)
-        q[#q+1] = {key = "banana", set="Other", vars = {5, 5}}
         return {
             vars = {
                 card.ability.select,
-                card.ability.factor
+                card.ability.factor,
+                card.ability.rounds
             }
         }
     end,
@@ -923,7 +933,7 @@ local village = {
         }
     },
     config = {
-        chips=10
+        chips=15
     },
     pos = {x=6,y=1},
     inversion = "c_tower",
