@@ -528,7 +528,7 @@ local lotteryticket = {
         }
     end,
     calculate = function (self, card, context)
-        if context.end_of_round and not context.individual and not context.blueprint then            
+        if context.end_of_round and not context.individual and not context.blueprint and not context.repetition then            
             if SMODS.pseudorandom_probability(card, 'lottery', 1, card.ability.extra.odds * card.ability.extra.odds2) then
                 G.E_MANAGER:add_event(Event({
                     func = function()
