@@ -3764,6 +3764,7 @@ local gold_bar = {
         dollars = 8,
         dollars_mod = 1
     },
+    pools = {["Food"] = true},
     demicoloncompat = true,
     blueprint_compat = true,
     loc_vars = function(self, q, card)
