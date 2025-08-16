@@ -4530,7 +4530,7 @@ local decs = {
 				name = "Pact of Awakening",
 				text = {
 					"Create a random {C:dark_edition}Negative{} Voucher",
-					"{C:attention}-#1#{} sBooster Pack Slot#<s>1#"
+					"{C:attention}-#1#{} Booster Pack Slot#<s>1#"
 				}
 			},
 		},

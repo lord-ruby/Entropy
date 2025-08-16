@@ -1144,8 +1144,6 @@ local forgiveness = {
         local num = G.GAME.jokers_sold and #G.GAME.jokers_sold or 0
         return num > 0
     end,
-    
-	
     entr_credits = {
         idea = {"cassknows"},
         art = {"Ein13"}

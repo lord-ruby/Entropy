@@ -1177,7 +1177,7 @@ local dreams = {
     inversion = "c_entr_laguz",
     immutable = true,
     config = {
-        tags = 5
+        tags = 6
     },
     loc_vars = function(self, q, card) return {vars = {math.min(card.ability.tags, 20)}} end,
     use = function(self, card)
