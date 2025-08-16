@@ -286,8 +286,8 @@ local anaptyxi = {
                 v.ability.extra.odds = to_number(v.ability.extra.odds)
             end
         end
+        args.scalar_table[args.scalar_value] = new_scale
         return {
-			scalar_value = new_scale,
 			message = localize("k_upgrade_ex"),
 		}
 	end,
@@ -609,23 +609,16 @@ local ieros = {
     calculate = function(self, card, context)
         if context.buying_card and not context.retrigger_joker then
 			if context.card.ability.set == "Joker" then
-                card.ability.e_chips = card.ability.e_chips + (Entropy.ReverseRarityChecks[context.card.config.center.rarity] or 0)/20.0
-                local msg = SMODS.scale_card(card, {
+                SMODS.scale_card(card, {
                     ref_table = card.ability,
                     ref_value = "e_chips",
                     scalar_table = {increase = (Entropy.ReverseRarityChecks[1] or 0)/20.0},
                     scalar_value = "increase"
                 })
-                if not msg or type(msg) == "string" then
-                    return {
-                        message = msg or localize("k_upgraded_ex"),
-                    }
-                end
             end
         end
         if context.forcetrigger then
-            card.ability.e_chips = card.ability.e_chips + (Entropy.ReverseRarityChecks[1] or 0)/20.0
-            local msg = SMODS.scale_card(card, {
+            SMODS.scale_card(card, {
                 ref_table = card.ability,
                 ref_value = "e_chips",
                 scalar_table = {increase = (Entropy.ReverseRarityChecks[1] or 0)/20.0},
