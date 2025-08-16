@@ -1208,6 +1208,15 @@ local decs = {
 					"and {C:blue}+#2#{} Chips"
                 },
             },
+			j_entr_recycling_bin = {
+                name = "Recycling Bin",
+                text = {
+                    "This Joker gains {C:red}+#1#{} Mult",
+					"per each {C:attention}discarded{} card and",
+					"{C:red}resets{} at the end of round",
+					"{C:inactive}(Currently: {C:red}#2#{C:inactive} Mult)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

@@ -3621,6 +3621,61 @@ local girldinner = {
             card.ability.used = nil
         end
     end,
+    entr_credits = {
+        idea = {
+            "casknows"
+        }
+    }
+}
+
+local recycling_bin = {
+    order = 66,
+    object_type = "Joker",
+    key = "recycling_bin",
+    rarity = 1,
+    cost = 5,   
+    eternal_compat = true,
+    pos = {x = 9, y = 9},
+    atlas = "jokers",
+    config = {
+        mult = 0,
+        mult_mod = 1
+    },
+    demicoloncompat = true,
+    blueprint_compat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.mult_mod
+                card.ability.mult,
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.discard then
+            SMODS.scale_card(card, {
+                ref_table = card.ability,
+                ref_value = "mult",
+                scalar_value = "mult_mod",
+                message_key = "a_mult",
+                message_colour = G.C.RED
+            })
+        end
+        if context.joker_main or context.forcetrigger then
+            return {
+                mult = card.ability.mult,
+            }
+        end
+        if (context.end_of_round and not context.individual and not context.repetition) then
+            card.ability.mult = 0
+            return {
+                message = localize("k_reset")
+            }
+        end
+    end,
+    entr_credits = {
+        idea = {"Youh !"}
+    }
 }
 
 return {
@@ -3695,6 +3750,7 @@ return {
         red_fourty,
         promotion,
         offbrand,
-        girldinner
+        girldinner,
+        recycling_bin
     }
 }
