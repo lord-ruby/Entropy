@@ -1257,7 +1257,8 @@ local decs = {
                 text = {
                     "Sell this card to",
 					"create a free",
-					"{C:attention}Blind Token{}"
+					"{C:attention}Blind Token{}",
+					"{C:inactive}(Must have room)"
                 },
             },
 		},
