@@ -848,7 +848,7 @@ G.FUNCS.play_cards_from_highlighted = function(e)
     play_ref(e)
     G.E_MANAGER:add_event(Event{
         trigger = "after",
-        blocking = false
+        blocking = false,
         func = function()
             G.GAME.asc_power_hand = 0
             return true
