@@ -42,7 +42,7 @@ if Partner_API then
     local gcp = get_current_pool
     function get_current_pool(_type, _rarity, _legendary, _append, override_equilibrium_effect)
         local equib = G.GAME.modifiers.cry_equilibrium
-        if G.GAME.viewed_partner and G.GAME.viewed_partner.name == "Parakmi Partner" and Entropy.HasJoker("j_entr_parakmi", true) then
+        if G.GAME.viewed_partner and G.GAME.viewed_partner.name == "Parakmi Partner" and next(SMODS.find_card("j_entr_parakmi")) then
             G.GAME.modifiers.cry_equilibrium = true
         end
         local ret, ret2 = gcp(_type, _rarity, _legendary, _append, override_equilibrium_effect)

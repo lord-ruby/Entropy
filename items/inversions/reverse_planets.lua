@@ -167,7 +167,7 @@ function Entropy.ChunkLocVars(self, q, card, instant, noengulf)
 end
 
 function Entropy.ReversePlanetUse(handname, card, amt)
-  if Entropy.HasJoker("j_entr_strawberry_pie",true) and handname ~= "High Card" then
+  if next(SMODS.find_card("j_entr_strawberry_pie")) and handname ~= "High Card" then
     handname = "High Card"
   end
   if not card then card = {ability={level=1}} end
@@ -441,7 +441,7 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
         planetcolourone = G.C.UI.TEXT_DARK
       end
       local str = "X("..((G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1.25).."^"..(G.GAME.nemesisnumber and G.GAME.nemesisnumber > 0 and G.GAME.nemesisnumber+1 or "").."asc)"
-      if G.jokers and Entropy.HasJoker("j_entr_helios") then
+      if G.jokers and next(SMODS.find_card("j_entr_helios")) then
           str = "^("..((G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1.75).."X"..(G.GAME.nemesisnumber and G.GAME.nemesisnumber > 0 and G.GAME.nemesisnumber+1 or "").."asc)"
       end
       return {

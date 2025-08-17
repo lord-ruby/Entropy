@@ -18,7 +18,7 @@ SMODS.Sound({
 	key = "music_freebird",
 	path = "music_freebird.ogg",
 	select_music_track = function()
-		return Entropy.HasJoker("j_entr_antireal") and Entropy.config.freebird and 10^200
+		return next(SMODS.find_card("j_entr_antireal")) and Entropy.config.freebird and 10^200
 	end,
 })
 SMODS.Sound({

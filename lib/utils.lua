@@ -256,26 +256,6 @@ function Entropy.FormatDollarValue(val)
         return "-"..localize("$")..(-val)
     end
 end
-function Entropy.Pseudorandom(seed, min, max)
-    return math.floor(pseudorandom(seed)*(max-min)+0.5)+min
-end
-
-function Entropy.HasJoker(key, checkdebuff)
-    local num = nil
-    for i, v in ipairs(G.jokers and G.jokers.cards or {}) do
-        if v.config.center.key == key and (not checkdebuff or not v.debuff) and not v.ability.turned_off then num = (num or 0) + 1 end
-    end
-    for i, v in ipairs(G.butterfly_jokers and G.butterfly_jokers.cards or {}) do
-        if v.config.center.key == key and (not checkdebuff or not v.debuff) and not v.ability.turned_off then num = (num or 0) + 1 end
-    end
-    return num
-end
-
-function Entropy.HasConsumable(key)
-    for i, v in pairs(G.consumeables.cards) do if v.config.center.key == key then return true end end
-    if G.pack_cards then for i, v in pairs(G.pack_cards.cards or {}) do if v.config.center.key == key then return true end end end
-    for i, v in pairs(G.hand.cards) do if v.config.center.key == key then return true end end
-end
 
 function Entropy.InTable(table, val)
     for i, v in ipairs(table) do if v == val then return true end end

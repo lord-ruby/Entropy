@@ -1508,7 +1508,7 @@ end
 
 local ref = level_up_hand
 function level_up_hand(card, hand, instant, amount, ...)
-    if Entropy.HasJoker("j_entr_strawberry_pie",true) and hand ~= "High Card" then
+    if next(SMODS.find_card("j_entr_strawberry_pie")) and hand ~= "High Card" then
         hand = "High Card"
     end
     local val = ref(card,hand,instant,amount, ...)
@@ -1687,7 +1687,7 @@ function Cryptid.ascend(num, curr2) -- edit this function at your leisure
     if Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled then
         curr2 = curr2 * (Entropy.IsEE() and -0.25 or -1)
     end
-    if Entropy.HasJoker("j_entr_helios", true) then
+    if next(SMODS.find_card("j_entr_helios")) then
         local curr = 1
         for i, v in pairs(G.jokers.cards) do
             if not v.debuff and v.config.center.key == "j_entr_helios" and to_big(v.ability.extra):gt(curr) then
@@ -1703,7 +1703,7 @@ end
 local pokerhandinforef = G.FUNCS.get_poker_hand_info
 function G.FUNCS.get_poker_hand_info(_cards)
     G.GAME.current_round.current_hand.cry_asc_num = 0
-    if Entropy.HasJoker("j_entr_helios", true) or (Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled) then G.GAME.used_vouchers.v_cry_hyperspacetether = true end
+    if next(SMODS.find_card("j_entr_helios")) or (Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled) then G.GAME.used_vouchers.v_cry_hyperspacetether = true end
     local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
     if text and G.GAME.badarg and G.GAME.badarg[text] and text ~= "NULL" then
         G.boss_throw_hand = true
@@ -1750,7 +1750,7 @@ SMODS.Consumable:take_ownership('cry_sunplanet', -- object key (class prefix not
                 planetcolourone = G.C.UI.TEXT_DARK
             end
             local str = "X("..((G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1.25).."^asc)"
-            if G.jokers and Entropy.HasJoker("j_entr_helios") then
+            if G.jokers and next(SMODS.find_card("j_entr_helios")) then
                 str = "^("..((G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1.75).."Xasc)"
             end
             return {
@@ -1770,7 +1770,7 @@ local ease_anteref = ease_ante
 function ease_ante(mod)
     local mult = 1
     if to_big(mod) ~= to_big(0) then
-        if Entropy.HasJoker("j_entr_xekanos", true) then
+        if next(SMODS.find_card("j_entr_xekanos")) then
             for i, v in pairs(G.jokers.cards) do
                 if v.config.center.key == "j_entr_xekanos" and not v.debuff and not v.ability.turned_off and not G.GAME.modifiers.ReverseRedeo then
                     mult = mult * to_number(-v.ability.ante_mod)
@@ -1798,17 +1798,17 @@ end
 
 local is_jollyref = Card.is_jolly
 function Card:is_jolly()
-	if Entropy.HasJoker("j_entr_dekatria",true) then return true end
+	if next(SMODS.find_card("j_entr_dekatria")) then return true end
     return is_jollyref(self)
 end
 
 
 local ref = Tag.init
 function Tag:init(_tag, for_collection, _blind_type, ...)
-    if Entropy.HasJoker("j_entr_exousia",true) and Entropy.AscendedTags[_tag] and not for_collection then 
+    if next(SMODS.find_card("j_entr_exousia")) and Entropy.AscendedTags[_tag] and not for_collection then 
         _tag = Entropy.AscendedTags[_tag]
         local procs = 1
-        while pseudorandom("exousia") < 0.1 and procs < Entropy.HasJoker("j_entr_exousia",true) and Entropy.AscendedTags[_tag] and not for_collection do
+        while pseudorandom("exousia") < 0.1 and procs < #SMODS.find_card("j_entr_exousia") and Entropy.AscendedTags[_tag] and not for_collection do
             _tag = Entropy.AscendedTags[_tag]
         end
     end
@@ -2616,7 +2616,7 @@ local ref = update_hand_text
 
 function update_hand_text(config, vals)
     if not G.GAME.current_round.current_hand.cry_asc_num_text then G.GAME.current_round.current_hand.cry_asc_num_text = '' end
-    if (type(vals.mult) == "number" or type(vals.mult) == "table") and Entropy.HasJoker("j_entr_tesseract",true) and math.abs(to_big(vals.mult)) > to_big(0.001) then
+    if (type(vals.mult) == "number" or type(vals.mult) == "table") and next(SMODS.find_card("j_entr_tesseract")) and math.abs(to_big(vals.mult)) > to_big(0.001) then
         local total_angle = 0
         for i, v in pairs(G.jokers.cards) do
             if v.config.center.key == "j_entr_tesseract" then
@@ -2628,7 +2628,7 @@ function update_hand_text(config, vals)
         local str = Entropy.WhatTheFuck(base, vals.mult)
         vals.mult = str
     end
-    if (type(vals.chips) == "number" or type(vals.chips) == "table") and Entropy.HasJoker("j_entr_tesseract",true) and math.abs(to_big(vals.chips)) > to_big(0.001) then
+    if (type(vals.chips) == "number" or type(vals.chips) == "table") and next(SMODS.find_card("j_entr_tesseract")) and math.abs(to_big(vals.chips)) > to_big(0.001) then
         local total_angle = 0
         for i, v in pairs(G.jokers.cards) do
             if v.config.center.key == "j_entr_tesseract" then
