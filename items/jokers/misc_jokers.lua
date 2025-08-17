@@ -3924,6 +3924,42 @@ local blind_collectible_pack = {
     }
 }
 
+local prayer_card = {
+    order = 70,
+    object_type = "Joker",
+    key = "prayer_card",
+    rarity = 1,
+    cost = 6,   
+    eternal_compat = true,
+    pos = {x = 4, y = 10},
+    atlas = "jokers",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    config = {
+        amount = 100
+    },
+    calculate = function(self, card, context)
+        if context.setting_blind or context.forcetrigger then
+            card.gone = false
+			G.GAME.blind.chips = G.GAME.blind.chips - card.ability.amount * G.GAME.round_resets.ante
+			G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+			G.HUD_blind:recalculate()
+            return nil, true
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.amount,
+                card.ability.amount * G.GAME.round_resets.ante
+            }
+        }
+    end,
+    entr_credits = {
+        idea = {"crabus"}
+    }
+}
+
 return {
     items = {
         surreal,
@@ -4002,6 +4038,7 @@ return {
         gold_bar,
         scribbled_joker,
         jokers_against_humanity,
-        blind_collectible_pack
+        blind_collectible_pack,
+        prayer_card
     }
 }

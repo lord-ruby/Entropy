@@ -1261,6 +1261,14 @@ local decs = {
 					"{C:inactive}(Must have room)"
                 },
             },
+			j_entr_prayer_card = {
+                name = "Prayer Card",
+                text = {
+                    "{C:attention}-#1#{} Blind Requirement",
+					"for each ante",
+					"{C:inactive}(Currently: {C:attention}#2#{C:inactive})"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
