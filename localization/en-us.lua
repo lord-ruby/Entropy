@@ -1252,6 +1252,14 @@ local decs = {
 					"{C:red}+#2#{} Mult"
                 },
             },
+			j_entr_blind_collectible_pack = {
+                name = "Blind Collectible Pack",
+                text = {
+                    "Sell this card to",
+					"create a free",
+					"{C:attention}Blind Token{}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
