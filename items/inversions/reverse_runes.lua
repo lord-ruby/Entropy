@@ -846,6 +846,14 @@ G.FUNCS.play_cards_from_highlighted = function(e)
         check_for_unlock({type = "anti_derivative"})
     end
     play_ref(e)
+    G.E_MANAGER:add_event(Event{
+        trigger = "after",
+        blocking = false
+        func = function()
+            G.GAME.asc_power_hand = 0
+            return true
+        end
+    })
 end
 
 local strength_indicator = Entropy.create_mark("strength", 7065, {x = 0, y = 6})

@@ -1293,10 +1293,10 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
                 return true
             end
         }))
-        card_eval_status_text = function() end
-        scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
-        scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
-        card_eval_status_text = e
+        local chips = SMODS.Scoring_Parameters["chips"]
+        chips.current = chips.current * Cryptid.ascend(1, G.GAME.asc_power_hand - orig)
+        local mult = SMODS.Scoring_Parameters["mult"]
+        mult.current = mult.current * Cryptid.ascend(1, G.GAME.asc_power_hand - orig)
         if not Talisman or not Talisman.config_file.disable_anims then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "X"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
         end
@@ -1312,10 +1312,10 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
                 return true
             end
         }))
-        card_eval_status_text = function() end
-        scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
-        scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
-        card_eval_status_text = e
+        local chips = SMODS.Scoring_Parameters["chips"]
+        chips.current = chips.current * Cryptid.ascend(1, G.GAME.asc_power_hand - orig)
+        local mult = SMODS.Scoring_Parameters["mult"]
+        mult.current = mult.current * Cryptid.ascend(1, G.GAME.asc_power_hand - orig)
         if not Talisman or not Talisman.config_file.disable_anims then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, (to_big(amount) < to_big(0) and "" or "+")..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
         end
@@ -1333,10 +1333,10 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
                 end
             }))
         end
-        card_eval_status_text = function() end
-        scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
-        scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
-        card_eval_status_text = e
+        local chips = SMODS.Scoring_Parameters["chips"]
+        chips.current = chips.current * Cryptid.ascend(1, G.GAME.asc_power_hand - orig)
+        local mult = SMODS.Scoring_Parameters["mult"]
+        mult.current = mult.current * Cryptid.ascend(1, G.GAME.asc_power_hand - orig)
         if not Talisman or not Talisman.config_file.disable_anims then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "^"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
         end
@@ -1354,10 +1354,10 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
                 end
             }))
         end
-        card_eval_status_text = function() end
-        scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
-        scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
-        card_eval_status_text = e
+        local chips = SMODS.Scoring_Parameters["chips"]
+        chips.current = chips.current * Cryptid.ascend(1, G.GAME.asc_power_hand - orig)
+        local mult = SMODS.Scoring_Parameters["mult"]
+        mult.current = mult.current * Cryptid.ascend(1, G.GAME.asc_power_hand - orig)
         if not Talisman or not Talisman.config_file.disable_anims then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, Entropy.FormatArrowMult(amount[1], amount[2]).." Asc", G.C.GOLD, "entr_e_solar", 0.6)
         end 
