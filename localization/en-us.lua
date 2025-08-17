@@ -5078,7 +5078,7 @@ local decs = {
 			entr_nilrank = "Nil"
 		},
 		dictionary = {
-
+			cry_demicolon = "Demitrigger!",
 			k_ee_hand_1 = "When hand is played, a random card becomes sunny",
 			k_ee_hand_2 = "Cards cannot be debuffed",
 			k_ee_hand_3 = "X1.666 All Joker values when hand played",

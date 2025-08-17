@@ -95,3 +95,6 @@ end
 SMODS.current_mod.calculate = function(self, context)
     return Entropy.misc_calculations(self, context)
 end
+if G.P_CENTERS.e_negative then
+    G.P_CENTERS.e_negative.no_doe = true
+end

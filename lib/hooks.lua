@@ -512,6 +512,7 @@ G.FUNCS.can_open_voucher = function(e)
     e.config.button = "open_voucher"
 end
 G.FUNCS.open_voucher = function(e)
+    local state = G.STATE
     local c1 = e.config.ref_table
     c1.cost = 0
     local area = c1.area
@@ -543,6 +544,7 @@ G.FUNCS.open_voucher = function(e)
         area:emplace(c2)
 
     end
+    G.STATE = state
 end
 
 G.FUNCS.can_reserve_booster = function(e)

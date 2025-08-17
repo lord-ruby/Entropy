@@ -16,7 +16,7 @@ local changeling = {
     use = function(self, card)
         local cards = {}
         for i, v in pairs(G.hand.cards) do cards[#cards+1]=v end
-        pseudoshuffle(cards, pseudoseed('immolate'))
+        pseudoshuffle(cards, pseudoseed('changeling'))
         local actual = {}
         for i = 1, card.ability.random do
             actual[i] = cards[i]
