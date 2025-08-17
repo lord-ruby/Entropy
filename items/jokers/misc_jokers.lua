@@ -3846,6 +3846,51 @@ local scribbled_joker = {
     }
 }
 
+local jokers_against_humanity = {
+    order = 68,
+    object_type = "Joker",
+    key = "jokers_against_humanity",
+    rarity = 1,
+    cost = 5,   
+    eternal_compat = true,
+    pos = {x = 2, y = 10},
+    atlas = "jokers",
+    config = {
+        chips = 15,
+        mult = 2
+    },
+    demicoloncompat = true,
+    blueprint_compat = true,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {set = "Other", key = "eternal"}
+        return {
+            vars = {
+                card.ability.chips,
+                card.ability.mult
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play then
+            if not card.ability.used then
+                context.other_card.ability.eternal = true
+                context.other_card:juice_up()
+                card.ability.used = true
+            end
+            return {
+                chips = card.ability.chips,
+                mult = card.ability.mult
+            }
+        end
+        if context.after then
+            card.ability.used = nil
+        end
+    end,
+    entr_credits = {
+        idea = {"crabus"}
+    }
+}
+
 return {
     items = {
         surreal,
@@ -3922,6 +3967,7 @@ return {
         girldinner,
         recycling_bin,
         gold_bar,
-        scribbled_joker
+        scribbled_joker,
+        jokers_against_humanity
     }
 }

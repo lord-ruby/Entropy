@@ -1242,6 +1242,16 @@ local decs = {
 					"an {C:attention}Enhanced{} card"
                 },
             },
+			j_entr_jokers_against_humanity = {
+                name = "Jokers Against Humanity",
+                text = {
+                    "First scored card each",
+					"hand becomes {C:attention}Eternal{}",
+					"Scored {C:attention}Eternal{} Cards give",
+					"{C:blue}+#1#{} Chips and",
+					"{C:red}+#2#{} Mult"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
