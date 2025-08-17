@@ -3877,10 +3877,12 @@ local jokers_against_humanity = {
                 context.other_card:juice_up()
                 card.ability.used = true
             end
-            return {
-                chips = card.ability.chips,
-                mult = card.ability.mult
-            }
+            if context.other_card.ability.eternal then
+                return {
+                    chips = card.ability.chips,
+                    mult = card.ability.mult
+                }
+            end
         end
         if context.after then
             card.ability.used = nil
