@@ -8,7 +8,7 @@ priority = -1
 target = "functions/common_events.lua"
 pattern = 'if card and card.playing_card then SMODS.drawn_cards[#SMODS.drawn_cards+1] = card end'
 position = "after"
-payload = '''if card and card.playing_card and ext(SMODS.find_card("j_entr_jokerinyellow")) then
+payload = '''if card and card.playing_card and next(SMODS.find_card("j_entr_jokerinyellow")) then
                 for i, v in pairs(G.jokers.cards) do
                     if v.config.center.key == "j_entr_jokerinyellow" then
                         if SMODS.pseudorandom_probability(v, 'kiy', 1, v.ability.extra.odds) then

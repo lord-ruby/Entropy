@@ -1234,6 +1234,14 @@ local decs = {
 					"decreases by {C:red}$#2#{} when triggered"
                 },
             },
+			j_entr_scribbled_joker = {
+                name = "Scribbled Joker",
+                text = {
+                    "{C:blue}+#1#{} Chips",
+					"if scored hand contains",
+					"an {C:attention}Enhanced{} card"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

@@ -3743,7 +3743,7 @@ local recycling_bin = {
 }
 
 local gold_bar = {
-    order = 66,
+    order = 67,
     object_type = "Joker",
     key = "gold_bar",
     rarity = 1,
@@ -3803,6 +3803,47 @@ local gold_bar = {
         end
         return dollars
     end
+}
+
+local scribbled_joker = {
+    order = 68,
+    object_type = "Joker",
+    key = "scribbled_joker",
+    rarity = 1,
+    cost = 5,   
+    eternal_compat = true,
+    pos = {x = 1, y = 10},
+    atlas = "jokers",
+    config = {
+        chips = 60
+    },
+    demicoloncompat = true,
+    blueprint_compat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.chips
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main or context.forcetrigger then
+            local enhanced = 0
+            for i, v in pairs(context.full_hand) do
+                if SMODS.in_scoring(v, context.scoring_hand) and v.config.center.set == "Enhanced" then
+                    enhanced = enhanced + 1
+                end
+            end
+            if enhanced > 0 or context.forcetrigger then
+                return {
+                    chips = card.ability.chips
+                }
+            end
+        end
+    end,
+    entr_credits = {
+        idea = {"crabus"}
+    }
 }
 
 return {
@@ -3880,6 +3921,7 @@ return {
         offbrand,
         girldinner,
         recycling_bin,
-        gold_bar
+        gold_bar,
+        scribbled_joker
     }
 }
