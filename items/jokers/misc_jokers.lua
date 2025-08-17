@@ -3891,6 +3891,39 @@ local jokers_against_humanity = {
     }
 }
 
+local blind_collectible_pack = {
+    order = 69,
+    object_type = "Joker",
+    key = "blind_collectible_pack",
+    rarity = 1,
+    cost = 6,   
+    eternal_compat = true,
+    pos = {x = 3, y = 10},
+    atlas = "jokers",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    calculate = function(self, card, context)
+        if context.selling_self or context.forcetrigger then
+            if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
+                G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        SMODS.add_card{
+                            set = "CBlind",
+                            area = G.consumeables
+                        }
+                        G.GAME.consumeable_buffer = 0
+                        return true
+                    end
+                })
+            end
+        end
+    end,
+    entr_credits = {
+        idea = {"crabus"}
+    }
+}
+
 return {
     items = {
         surreal,
@@ -3968,6 +4001,7 @@ return {
         recycling_bin,
         gold_bar,
         scribbled_joker,
-        jokers_against_humanity
+        jokers_against_humanity,
+        blind_collectible_pack
     }
 }
