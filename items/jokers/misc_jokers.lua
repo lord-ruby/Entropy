@@ -3962,6 +3962,45 @@ local prayer_card = {
     }
 }
 
+local desert = {
+    order = 71,
+    object_type = "Joker",
+    key = "desert",
+    rarity = 1,
+    cost = 6,   
+    eternal_compat = true,
+    pos = {x = 5, y = 10},
+    atlas = "jokers",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    config = {
+        asc = 0,
+        asc_mod = 0.05
+    },
+    calculate = function(self, card, context)
+        if context.before and #G.play.cards == 1 then
+            SMODS.scale_card(card, {
+                ref_table = card.ability,
+                ref_value = "asc",
+                scalar_value = "asc_mod"
+            })
+        end
+        if context.joker_main then
+            return {
+                plus_asc = card.ability.asc
+            }
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.asc_mod,
+                card.ability.asc
+            }
+        }
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -4041,6 +4080,7 @@ return {
         scribbled_joker,
         jokers_against_humanity,
         blind_collectible_pack,
-        prayer_card
+        prayer_card,
+        desert
     }
 }

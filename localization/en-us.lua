@@ -1269,6 +1269,15 @@ local decs = {
 					"{C:inactive}(Currently: {C:attention}#2#{C:inactive})"
                 },
             },
+			j_entr_desert = {
+                name = "Desert",
+                text = {
+                    "This Joker gains {C:gold}+#1#{}",
+					"Ascension Power if played hand",
+					"contains exactly {C:attention}1{} Card",
+					"{C:inactive}(Currently: {C:gold}#2#{C:inactive})"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
