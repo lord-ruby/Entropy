@@ -1275,7 +1275,16 @@ local decs = {
                     "This Joker gains {C:gold}+#1#{}",
 					"Ascension Power if played hand",
 					"contains exactly {C:attention}1{} Card",
-					"{C:inactive}(Currently: {C:gold}#2#{C:inactive})"
+					"{C:inactive}(Currently: {C:gold}#2#{C:inactive} Ascension Power)"
+                },
+            },
+			j_entr_rugpull = {
+                name = "Rugpull",
+                text = {
+                    "Earn no Payout",
+					"{X:attention,C:white}X#1#{} The Payout amount",
+					"is added to this Jokers",
+					"{C:attention}sell value{} instead"
                 },
             },
 		},

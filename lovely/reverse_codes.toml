@@ -42,7 +42,24 @@ local true_mult = 1 + (mult * #Entropy.find_runes("rune_entr_uruz"))
 if (G.GAME.round_resets.blind_states.Big == "Upcoming" or G.GAME.round_resets.blind_states.Big == "Select") and Entropy.has_rune("rune_entr_dreams") then
     true_mult = 0
 end
-dollars = dollars * (G.GAME.InterferencePayoutMod or 1) * true_mult
+local rugpull_mult = 1
+if next(SMODS.find_card("j_entr_rugpull")) then
+    rugpull_mult = 0
+    for i, v in pairs(SMODS.find_card("j_entr_rugpull")) do
+        SMODS.scale_card(v, {
+            ref_table = v.ability,
+            ref_value = "extra_value",
+            scalar_table = {extra = dollars * (G.GAME.InterferencePayoutMod or 1) * true_mult * v.ability.multiplier},
+            scalar_value = "extra",
+            scaling_message = {
+                message = localize('k_val_up'),
+                colour = G.C.MONEY
+            }
+        })
+        v:set_cost()
+    end
+end
+dollars = dollars * (G.GAME.InterferencePayoutMod or 1) * true_mult * rugpull_mult
 for i, v in pairs(Entropy.find_runes("rune_entr_uruz")) do
     G.E_MANAGER:add_event(Event{
         func = function()

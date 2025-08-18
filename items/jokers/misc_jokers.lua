@@ -4001,6 +4001,27 @@ local desert = {
     end,
 }
 
+local rugpull = {
+    order = 72,
+    object_type = "Joker",
+    key = "rugpull",
+    rarity = 1,
+    cost = 4,   
+    eternal_compat = true,
+    pos = {x = 6, y = 10},
+    atlas = "jokers",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    config = {
+        multiplier = 1.1
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {card.ability.multiplier}
+        }
+    end
+}
+
 return {
     items = {
         surreal,
@@ -4081,6 +4102,7 @@ return {
         jokers_against_humanity,
         blind_collectible_pack,
         prayer_card,
-        desert
+        desert,
+        rugpull
     }
 }
