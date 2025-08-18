@@ -465,11 +465,11 @@ local iota = {
 
 			--add new debuffs
 			for _, v in ipairs(G.playing_cards) do
-				self:debuff_card(v)
+				if self:recalc_debuff(v, true) then v:set_debuff(true) end
 			end
 			for _, v in ipairs(G.jokers.cards) do
 				if not reset then
-					self:debuff_card(v, true)
+					if self:recalc_debuff(v, true) then v:set_debuff(true) end
 				end
 			end
 		end

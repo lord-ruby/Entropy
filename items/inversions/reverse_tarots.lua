@@ -508,7 +508,7 @@ local dagger = {
         G.GAME.hands[_hand].chips = G.GAME.hands[_hand].chips + total
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.jokers}, card, 1, card.ability.select)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
         local num = #cards
         return num > 0 and num <= card.ability.select
 	end,
