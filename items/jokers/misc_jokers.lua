@@ -4013,7 +4013,7 @@ local rugpull = {
     demicoloncompat = true,
     blueprint_compat = true,
     config = {
-        multiplier = 1.1
+        multiplier = 1.2
     },
     loc_vars = function(self, q, card)
         return {
