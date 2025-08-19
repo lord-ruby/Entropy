@@ -3169,9 +3169,26 @@ local jestradiol = {
     demicoloncompat = true,
     calculate = function(self, card, context)
         if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition) or context.forcetrigger then
-            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = "+"..number_format(card.ability.left_mod)})
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
         end
     end,
+    use_key = "b_transition",
+    can_use = function(self, card)
+        return to_big(card.ability.left) > to_big(0)
+    end,
+    use = function(self, card)
+        local cards = {}
+        for i, v in pairs(G.hand.highlighted) do
+            if to_big(card.ability.left) > to_big(0) then
+                cards[#cards+1] = v
+                card.ability.left = card.ability.left - 1
+            end
+        end
+        Entropy.FlipThen(cards, function(card)
+            SMODS.change_base(card, nil, "Queen")
+        end)
+        G.hand:unhighlight_all()
+    end
 }
 
 local penny = {
@@ -4022,6 +4039,40 @@ local rugpull = {
     end
 }
 
+local grape_juice = {
+    order = 73,
+    object_type = "Joker",
+    key = "grape_juice",
+    rarity = 1,
+    cost = 6,   
+    eternal_compat = true,
+    pos = {x = 7, y = 10},
+    atlas = "jokers",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    config = {
+        left = 3,
+        left_mod = 1
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {card.ability.left, card.ability.left_mod}
+        }
+    end,
+    can_use = function(self, card) return to_big(card.ability.left) > 0 and #G.hand.cards > 0 end,
+    use = function(self, card)
+        card.ability.left = card.ability.left - 1
+        local card = pseudorandom_element(G.hand.cards, pseudoseed("entr_grape_juice"))
+        local enhancement = pseudorandom_element({"m_bonus", "m_wild", "m_mult"}, pseudoseed("entr_grape_juice"))
+        Entropy.FlipThen({card}, function(card) card:set_ability(G.P_CENTERS[enhancement]) end)
+    end,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition) or context.forcetrigger then
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -4103,6 +4154,7 @@ return {
         blind_collectible_pack,
         prayer_card,
         desert,
-        rugpull
+        rugpull,
+        grape_juice
     }
 }

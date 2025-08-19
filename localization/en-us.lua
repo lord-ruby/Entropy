@@ -1107,7 +1107,7 @@ local decs = {
                 text = {
                     "Use this Joker to turn up to {C:attention}#1#{}",
 					"selected cards into {C:attention}Queens{}",
-					"gains {C:attention}#2#{} use when defeating a Boss Blind"
+					"gains {C:attention}#2#{} use#<s>2# when defeating a Boss Blind"
                 },
             },
 			j_entr_penny = {
@@ -1285,6 +1285,16 @@ local decs = {
 					"{X:attention,C:white}X#1#{} The Payout amount",
 					"is added to this Jokers",
 					"{C:attention}sell value{} instead"
+                },
+            },
+			j_entr_grape_juice = {
+                name = "Grape Juice",
+                text = {
+                    "Use this Joker to",
+					"turn a random card held in hand",
+					"into a {C:attention}Bonus{}, {C:attention}Mult{}, or {C:attention}Wild{} card",
+					"gains {C:attention}#2#{} use#<s>2# when defeating a Boss Blind",
+					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
                 },
             },
 		},

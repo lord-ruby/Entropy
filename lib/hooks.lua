@@ -809,29 +809,26 @@ G.FUNCS.sell_slot = function(e)
     G.jokers.config.card_limit = G.jokers.config.card_limit - 1
 end
 
-G.FUNCS.can_use_jestradiol = function(e)
+G.FUNCS.can_use_joker = function(e)
+    local center = e.config.ref_table.config.center
     if
-        to_big(e.config.ref_table.ability.left) > to_big(0)
+        center.can_use and center:can_use(e.config.ref_table) and not G.CONTROLLER.locked
     then
         e.config.colour = G.C.GREEN
-        e.config.button = "use_jestradiol"
+        e.config.button = "use_joker"
     else
         e.config.colour = G.C.UI.BACKGROUND_INACTIVE
         e.config.button = nil
     end
 end
-G.FUNCS.use_jestradiol = function(e)
-    local cards = {}
-    for i, v in pairs(G.hand.highlighted) do
-        if to_big(e.config.ref_table.ability.left) > to_big(0) then
-            cards[#cards+1] = v
-            e.config.ref_table.ability.left = e.config.ref_table.ability.left - 1
-        end
+G.FUNCS.use_joker = function(e)
+    local int = G.TAROT_INTERRUPT
+    G.TAROT_INTERRUPT = true
+    local center = e.config.ref_table.config.center
+    if center.use then
+        center:use(e.config.ref_table)
     end
-    Entropy.FlipThen(cards, function(card)
-        SMODS.change_base(card, nil, "Queen")
-    end)
-    G.hand:unhighlight_all()
+    G.TAROT_INTERRUPT = int
 end
 
 --som
@@ -989,7 +986,7 @@ function G.UIDEF.use_and_sell_buttons(card)
               }},
           }}
     end
-    if (card.area == G.jokers and G.jokers and card.config.center.key == "j_entr_jestradiol") and not card.debuff then
+    if (card.area == G.jokers and G.jokers and card.config.center.use) and not card.debuff then
         sell = {n=G.UIT.C, config={align = "cr"}, nodes={
             {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = 'sell'}, nodes={
               {n=G.UIT.B, config = {w=0.1,h=0.6}},
@@ -1005,11 +1002,11 @@ function G.UIDEF.use_and_sell_buttons(card)
             }},
         }}
         transition = {n=G.UIT.C, config={align = "cr"}, nodes={
-            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, button = 'use_jestradiol', func = 'can_use_jestradiol', handy_insta_action = 'use'}, nodes={
+            {n=G.UIT.C, config={ref_table = card, align = "cm",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, button = 'use_joker', func = 'can_use_joker', handy_insta_action = 'use'}, nodes={
               {n=G.UIT.B, config = {w=0.1,h=0.3}},
               {n=G.UIT.C, config={align = "tm"}, nodes={
                 {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
-                  {n=G.UIT.T, config={text = localize('b_transition'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
+                  {n=G.UIT.T, config={text = localize(card.config.center.use_key or "b_use"),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
                 }},
               }}
             }},
