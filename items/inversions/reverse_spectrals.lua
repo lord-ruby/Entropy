@@ -25,7 +25,7 @@ local changeling = {
             card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("changeling_edition"), function(e)
                 return G.GAME.banned_keys[e.key] or e.no_doe
             end).key)
-            SMODS.change_base(card, nil, pseudorandom_element({"King", "Queen", "Jack"}, pseudoseed("changeling_rank")))
+            SMODS.change_base(card, nil, pseudorandom_element({"King", "Queen", "Jack"}, pseudoseed("changeling_rank")), nil)
         end)
     end,
     can_use = function()
@@ -684,7 +684,7 @@ local entropy = {
             card:set_edition(edition)
             card:set_ability(G.P_CENTERS[enhancement])
             card:set_seal(seal)
-            SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("entropy")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("entropy")))
+            Entropy.randomize_rank_suit(card, true, true, "entropy")
 
         end)
     end,
@@ -956,9 +956,7 @@ local regenerate = {
                 if i ~= "absolute" then card.ability[i] = nil end
             end
             if card.base.suit == "entr_nilsuit" or card.base.value == "entr_nilrank" then
-                SMODS.change_base(card, card.base.suit == "entr_nilsuit" and pseudorandom({"Spades","Clubs","Hearts","Diamonds"}, pseudoseed("regenerate")),
-                    card.base.value == "entr_nilrank" and pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("regenerate"))
-                )
+                Entropy.randomize_rank_suit(card, true, true, "regenerate")
             end
 
         end)

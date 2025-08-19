@@ -1736,9 +1736,25 @@ function Entropy.randomise_once(card, types, seed)
     end
     if mtype == "Base" then
         card:flip()
-        SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed(seed or "ihwaz")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("entropy")))
+        Entropy.randomize_rank_suit(card, true, true, seed or "ihwaz")
         card:flip()
     end
+end
+
+function Entropy.randomize_rank_suit(card, rank, suit, seed)
+    local ranks = {}
+    local suits = {}
+    if rank then
+        for i, v in pairs(SMODS.Ranks) do
+            if not v.in_pool or v:in_pool({}) then ranks[#ranks+1] = i end
+        end
+    end
+    if suit then
+        for i, v in pairs(SMODS.Suits) do
+            if not v.in_pool or v:in_pool({}) then suits[#suits+1] = i end
+        end
+    end
+    SMODS.change_base(card, pseudorandom_element(suits, pseudoseed(seed)),pseudorandom_element(ranks, pseudoseed(seed)), nil)
 end
 
 function Entropy.is_in_shop(key, consumable)

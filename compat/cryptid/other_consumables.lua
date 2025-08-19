@@ -179,7 +179,7 @@ local fusion = {
             if sel then
                 local enhancement_type = sel.ability and sel.ability.set or sel.config.center.set
                 if sel.area == G.hand then
-                    SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("fusion")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("fusion")))
+                    Entropy.randomize_rank_suit(card, true, true, "fusion")
                     card:set_ability(G.P_CENTERS.c_base)
                 else
                     local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("fusion")).key

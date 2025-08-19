@@ -309,9 +309,7 @@ local heretic = {
                 card:set_ability(G.P_CENTERS[enhancement])
             end
             if modification == "Suit" or modification == "Rank" then
-                local suit = modification == "Suit" and pseudorandom_element({"Spades", "Hearts", "Clubs", "Diamonds"}, pseudoseed("heretic_suit"))
-                local rank = modification == "Rank" and pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("heretic_rank"))
-                SMODS.change_base(card, suit, rank)
+                Entropy.randomize_rank_suit(card, modification == "Suit", modification == "Rank", "heretic")
             end
 
         end)

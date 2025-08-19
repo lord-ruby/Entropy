@@ -475,8 +475,7 @@ local nyctophobia = {
                                 set = "Enhanced",
                                 key = "m_entr_dark"
                             }
-                            SMODS.change_base(card, pseudorandom_element({"Spades", "Clubs", "Diamonds", "Hearts"}, pseudoseed("nyctophobia_suit")),
-                            pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("nyctophobia_rank")))
+                            Entropy.randomize_rank_suit(card, true, true, "nyctophobia")
                             G.hand:emplace(card)
                             table.insert(G.playing_cards, card)
                         end
@@ -486,8 +485,7 @@ local nyctophobia = {
                                 set = "Enhanced",
                                 key = "m_entr_dark"
                             }
-                            SMODS.change_base(card, pseudorandom_element({"Spades", "Clubs", "Diamonds", "Hearts"}, pseudoseed("nyctophobia_suit")),
-                            pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("nyctophobia_rank")))
+                            Entropy.randomize_rank_suit(card, true, true, "nyctophobia")
                             G.hand:emplace(card)
                             table.insert(G.playing_cards, card)
                         end

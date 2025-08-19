@@ -845,7 +845,7 @@ local ihwaz_indicator = {
                             card:set_edition(edition)
                             card:set_ability(G.P_CENTERS[enhancement])
                             card:set_seal(seal)
-                            SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("ihwaz")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("entropy")))
+                            Entropy.randomize_rank_suit(card, true, true, "ihwaz")
                             card:flip()
                         else
                             Entropy.randomise_once(card)

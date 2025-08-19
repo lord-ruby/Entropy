@@ -3167,7 +3167,7 @@ G.FUNCS.draw_from_deck_to_hand = function(e)
                     set = "Enhanced",
                     area = G.hand
                   }
-                SMODS.change_base(card,pseudorandom_element({"Spades","Hearts","Clubs","Diamonds"}, pseudoseed("pandora")),pseudorandom_element({"2", "3", "4", "5", "6", "7", "8", "9", "10", "Ace", "King", "Queen", "Jack"}, pseudoseed("pandora")))
+                Entropy.randomize_rank_suit(card, true, true, "pandora")
                 card.ability.temporary = true
                 G.hand:emplace(card)
             end
