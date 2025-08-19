@@ -25,7 +25,7 @@ local pack = {
     cost = 4,
     draw_hand = true,
     get_weight = function()
-        return 0.95 * (G.GAME.entr_alt and 2 or 1)
+        return 0.5 * (G.GAME.entr_alt and 2 or 1)
     end,
     hidden = true,
     kind = "Inverted",
@@ -76,7 +76,7 @@ local jumbo = {
     hidden = true,
     kind = "Inverted",
     get_weight = function()
-        return 0.49 * (G.GAME.entr_alt and 2 or 1)
+        return 0.3 * (G.GAME.entr_alt and 2.25 or 1)
     end,
     create_card = function (self, card, i) 
         return create_inverted_card()
@@ -123,7 +123,7 @@ local mega = {
     cost = 8,
     draw_hand = true,
     get_weight = function()
-        return 0.2 * (G.GAME.entr_alt and 2 or 1)
+        return 0.2 * (G.GAME.entr_alt and 2.5 or 1)
     end,
     hidden = true,
     kind = "Inverted",
