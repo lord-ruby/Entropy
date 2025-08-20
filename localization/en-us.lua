@@ -1304,6 +1304,15 @@ local decs = {
 					"give {C:blue}+#1#{} Chips"
                 },
             },
+			j_entr_otherworldly_joker = {
+                name = "Otherworldly Joker",
+                text = {
+                    "Create a {C:red}Twisted{} Card",
+					"when any {C:attention}Booster Pack{}",
+					"is skipped",
+					"{C:inactive}(Must have room){}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
@@ -5208,6 +5217,7 @@ local decs = {
 			b_omen_cards = "Omen Cards",
 
 			a_eqmult = { "Mult = #1#" },
+			a_twisted = {"+#1# Twisted Cards"},
 
 			k_inverted = "Inverted",
 			k_inverted_pack = "Twisted Pack",

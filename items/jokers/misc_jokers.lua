@@ -4121,6 +4121,39 @@ local petrichor = {
     end,
 }
 
+local otherworldly_joker = {
+    order = 75,
+    object_type = "Joker",
+    key = "otherworldly_joker",
+    rarity = 1,
+    cost = 5,   
+    eternal_compat = true,
+    pos = {x = 9, y = 10},  
+    atlas = "jokers",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    calculate = function(self, card, context)
+        if (context.skipping_booster) or context.forcetrigger then
+            if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        SMODS.add_card{
+                            area = G.consumeables,
+                            set = "Twisted"
+                        }
+                        return true
+                    end
+                })
+                G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+            end
+            return {
+                message = localize({ type = "variable", key = "a_twisted", vars = { 1 } }),
+                colour = G.C.RED
+            }
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -4204,6 +4237,7 @@ return {
         desert,
         rugpull,
         grape_juice,
-        petrichor
+        petrichor,
+        otherworldly_joker
     }
 }
