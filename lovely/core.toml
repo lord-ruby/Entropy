@@ -1680,34 +1680,6 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
-target = '''=[SMODS _ "src/overrides.lua"]'''
-pattern = '''
-		if self.ability.consumeable and self.area == G.consumeables then
-			G.consumeables.config.card_limit = G.consumeables.config.card_limit - self.edition.card_limit
-'''
-position = "at"
-payload = '''
-		if self.area == G.consumeables then
-			G.consumeables.config.card_limit = G.consumeables.config.card_limit - self.edition.card_limit
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = '''=[SMODS _ "src/overrides.lua"]'''
-pattern = '''
-			if self.ability.consumeable then
-				G.consumeables.config.card_limit = G.consumeables.config.card_limit + self.edition.card_limit
-'''
-position = "at"
-payload = '''
-		if self.area == G.consumeables then
-			G.consumeables.config.card_limit = G.consumeables.config.card_limit + self.edition.card_limit
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
 target = '''functions/state_events.lua'''
 pattern = '''
 if G.GAME.round_resets.ante == G.GAME.win_ante and G.GAME.blind:get_type() == 'Boss' then
