@@ -4093,7 +4093,7 @@ local petrichor = {
         }
     end,
     calculate = function(self, card, context)
-        if (context.individual and context.cardarea == G.play and not SMODS.in_scoring(context.other_card, context.scoring_hand)) or context.forcetrigger then
+        if (context.individual and context.cardarea == "unscored" and not SMODS.in_scoring(context.other_card, context.scoring_hand)) or context.forcetrigger then
             return {
                 chips = card.ability.chips
             }
