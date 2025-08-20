@@ -1313,6 +1313,14 @@ local decs = {
 					"{C:inactive}(Must have room){}"
                 },
             },
+			j_entr_error = {
+                name = "ERROR",
+                text = {
+                    "Calculated Effects are",
+					"slightly {C:attention}offset{}",
+					"{C:inactive,S:0.8}(Ex. {C:blue}+30{C:inactive} Chips or {X:red,C:white}X2{C:inactive} Mult)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

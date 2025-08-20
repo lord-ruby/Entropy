@@ -4155,6 +4155,19 @@ local otherworldly_joker = {
     end,
 }
 
+local error_joker = {
+    order = 76,
+    object_type = "Joker",
+    key = "error",
+    rarity = 1,
+    cost = 4,   
+    eternal_compat = true,
+    pos = {x = 0, y = 11},  
+    atlas = "jokers",
+    demicoloncompat = true,
+    blueprint_compat = true,
+}
+
 return {
     items = {
         surreal,
@@ -4239,6 +4252,7 @@ return {
         rugpull,
         grape_juice,
         petrichor,
-        otherworldly_joker
+        otherworldly_joker,
+        error_joker
     }
 }
