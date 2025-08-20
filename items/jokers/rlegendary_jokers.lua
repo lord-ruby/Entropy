@@ -46,7 +46,7 @@ local oekrep = {
                     c:set_edition("e_negative")
                     c.RPerkeoPack = true
                     G.consumeables:align_cards()
-                    G.consumables:handle_card_limit(1)
+                    G.consumeables:handle_card_limit(1)
                 end
             end
         end

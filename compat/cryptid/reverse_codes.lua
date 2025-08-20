@@ -1769,7 +1769,7 @@ local transpile = {
     },
     use = function(self, card, area, copier)
         G.jokers:handle_card_limit(card.ability.jokerslots)
-        G.consumables:handle_card_limit(card.ability.consumableslots)
+        G.consumeables:handle_card_limit(card.ability.consumableslots)
         G.hand:handle_card_limit(card.ability.handsize)
     end,
     can_use = function(self, card)

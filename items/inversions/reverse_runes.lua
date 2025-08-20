@@ -710,7 +710,7 @@ local gluttony = {
     },
     loc_vars = function(self, q, card) return {vars = {math.min(card.ability.slots, 20)}} end,
     use = function(self, card)
-        G.consumables:handle_card_limit(math.min(card.ability.slots, 20))
+        G.consumeables:handle_card_limit(math.min(card.ability.slots, 20))
         for i, v in pairs(G.I.CARD) do
             if v.ability and v.ability.consumeable then v.ability.eternal = true end
         end

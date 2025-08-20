@@ -2327,7 +2327,7 @@ local cass = {
     calculate = function(self, card, context)
         if context.using_consumeable and (context.consumeable.config.center.set == "Planet" or context.consumeable.config.center.set == "Star") then
             card.ability.mod = math.min(card.ability.mod, 20)
-            local result = pseudorandom(pseudoseed("entr_cass"), 1, 6)
+            local result = 6--pseudorandom(pseudoseed("entr_cass"), 1, 6)
             if result == 1 then
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "hand_size", scalar_value = "mod"})
                 G.hand:handle_card_limit(card.ability.hand_size)
@@ -2344,14 +2344,14 @@ local cass = {
                 ease_discard(card.ability.mod)
             elseif result == 5 then
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "consumable_slots", scalar_value = "mod"})
-                G.consumables:handle_card_limit(card.ability.consumable_slots)
+                G.consumeables:handle_card_limit(card.ability.consumable_slots)
             elseif result == 6 then
-                if to_big(card.ability.shop_slots) < to_big(10) then
+                if to_big(card.ability.shop_slots) < to_big(4) then
                     SMODS.scale_card(card, {ref_table = card.ability, ref_value = "shop_slots", scalar_value = "mod"})
-                    if to_big(card.ability.shop_slots) > to_big(10) then
-                        card.ability.shop_slots = 10
+                    if to_big(card.ability.shop_slots) > to_big(4) then
+                        card.ability.shop_slots = 4
                     else
-                        local diff = math.min(card.ability.mod, 10-card.ability.mod)
+                        local diff = math.min(card.ability.mod, 4-card.ability.mod)
                         G.E_MANAGER:add_event(Event({
                             func = function() --card slot
                                 -- why is this in an event?
@@ -2375,7 +2375,7 @@ local cass = {
             G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.discards
             ease_discard(-card.ability.discards)
         end
-        G.consumables:handle_card_limit(-card.ability.consumable_slots)        
+        G.consumeables:handle_card_limit(-card.ability.consumable_slots)        
         G.E_MANAGER:add_event(Event({
             func = function() --card slot
                 -- why is this in an event?
@@ -2395,7 +2395,7 @@ local cass = {
             G.GAME.round_resets.discards = G.GAME.round_resets.discards + card.ability.discards
             ease_discard(card.ability.discards)
         end
-        G.consumables:handle_card_limit(card.ability.consumable_slots)
+        G.consumeables:handle_card_limit(card.ability.consumable_slots)
         G.E_MANAGER:add_event(Event({
             func = function() --card slot
                 -- why is this in an event?
