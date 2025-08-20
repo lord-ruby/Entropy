@@ -492,11 +492,11 @@ local decs = {
 			j_entr_cass = {
 				name = "Cassknows, Muse of Void",
 				text = {
-					"Add {C:attention}#6#{} to a random",
+					"Add {C:attention}#7#{} to a random",
 					"stat when a {C:planet}Planet{} or {C:purple}Star{} card is used",
 					"{C:inactive}({C:blue}+#1#{C:inactive} Hand Size, {C:attention}+#2#{C:inactive} Card Selection Limit)",
-					"{C:inactive}({C:purple}+#3#{C:inactive} Hands and Discards)",
-					"{C:inactive}({C:dark_edition}+#4#{C:inactive} Consumable Slots, {C:attention}+#5#{C:inactive} Shop Slots)"
+					"{C:inactive}({C:blue}+#3#{C:inactive} Hands and {C:red}+#4#{} Discards)",
+					"{C:inactive}({C:dark_edition}+#5#{C:inactive} Consumable Slots, {C:attention}+#6#{C:inactive} Shop Slots)"
 				}
 			},
 			j_entr_crabus = {

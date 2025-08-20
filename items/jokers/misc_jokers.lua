@@ -2317,7 +2317,8 @@ local cass = {
     config = {
         hand_size = 0,
         selection_limit = 0,
-        hands_discards = 0,
+        hands = 0,
+        discards = 0,
         consumable_slots = 0,
         shop_slots = 0,
         mod = 0.5
@@ -2325,7 +2326,8 @@ local cass = {
     demicoloncompat = true,
     calculate = function(self, card, context)
         if context.using_consumeable and (context.consumeable.config.center.set == "Planet" or context.consumeable.config.center.set == "Star") then
-            local result = pseudorandom(pseudoseed("entr_cass"), 1, 5)
+            card.ability.mod = math.min(card.ability.mod, 20)
+            local result = pseudorandom(pseudoseed("entr_cass"), 1, 6)
             if result == 1 then
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "hand_size", scalar_value = "mod"})
                 G.hand.config.card_limit = G.hand.config.card_limit + card.ability.mod
@@ -2333,15 +2335,17 @@ local cass = {
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "selection_limit", scalar_value = "mod"})
                 Entropy.ChangeFullCSL(card.ability.mod)
             elseif result == 3 then 
-                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "hands_discards", scalar_value = "mod"})
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "hands", scalar_value = "mod"})
                 G.GAME.round_resets.hands = G.GAME.round_resets.hands + card.ability.mod
                 ease_hands_played(card.ability.mod)
+            elseif result == 4 then
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "discards", scalar_value = "mod"})
                 G.GAME.round_resets.discards = G.GAME.round_resets.discards + card.ability.mod
                 ease_discard(card.ability.mod)
-            elseif result == 4 then
+            elseif result == 5 then
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "consumable_slots", scalar_value = "mod"})
                 G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.mod
-            elseif result == 5 then
+            elseif result == 6 then
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "shop_slots", scalar_value = "mod"})
                 G.E_MANAGER:add_event(Event({
                     func = function() --card slot
@@ -2356,10 +2360,14 @@ local cass = {
     remove_from_deck = function(self, card)
         G.hand.config.card_limit = G.hand.config.card_limit - card.ability.hand_size
         Entropy.ChangeFullCSL(-card.ability.selection_limit)
-        G.GAME.round_resets.hands = G.GAME.round_resets.hands - card.ability.hands_discards
-        ease_hands_played(-card.ability.hands_discards)
-        G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.hands_discards
-        ease_discard(-card.ability.hands_discards)
+        if to_big(card.ability.hands) > to_big(0) then
+            G.GAME.round_resets.hands = G.GAME.round_resets.hands - card.ability.hands
+            ease_hands_played(-card.ability.hands)
+        end
+        if to_big(card.ability.discards) > to_big(0) then
+            G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.discards
+            ease_discard(-card.ability.discards)
+        end
         G.consumeables.config.card_limit = G.consumeables.config.card_limit - card.ability.consumable_slots
         G.E_MANAGER:add_event(Event({
             func = function() --card slot
@@ -2372,10 +2380,14 @@ local cass = {
     add_to_deck = function(self, card)
         G.hand.config.card_limit = G.hand.config.card_limit + card.ability.hand_size
         Entropy.ChangeFullCSL(card.ability.selection_limit)
-        G.GAME.round_resets.hands = G.GAME.round_resets.hands + card.ability.hands_discards
-        ease_hands_played(card.ability.hands_discards)
-        G.GAME.round_resets.discards = G.GAME.round_resets.discards + card.ability.hands_discards
-        ease_discard(card.ability.hands_discards)
+        if to_big(card.ability.hands) > to_big(0) then
+            G.GAME.round_resets.hands = G.GAME.round_resets.hands + card.ability.hands
+            ease_hands_played(card.ability.hands)
+        end
+        if to_big(card.ability.discards) > to_big(0) then
+            G.GAME.round_resets.discards = G.GAME.round_resets.discards + card.ability.discards
+            ease_discard(card.ability.discards)
+        end
         G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.consumable_slots
         G.E_MANAGER:add_event(Event({
             func = function() --card slot
@@ -2390,10 +2402,11 @@ local cass = {
             vars = {
                 number_format(card.ability.hand_size),
                 number_format(card.ability.selection_limit),
-                number_format(card.ability.hands_discards),
+                number_format(card.ability.hands),
+                number_format(card.ability.discards),
                 number_format(card.ability.consumable_slots),
                 number_format(card.ability.shop_slots),
-                number_format(card.ability.mod),
+                number_format(math.min(card.ability.mod, 20)),
             }
         }
     end,
@@ -4093,7 +4106,7 @@ local petrichor = {
         }
     end,
     calculate = function(self, card, context)
-        if (context.individual and context.cardarea == "unscored" ) or context.forcetrigger then
+        if (context.individual and context.cardarea == "unscored") or context.forcetrigger then
             return {
                 chips = card.ability.chips
             }
