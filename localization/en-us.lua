@@ -1297,6 +1297,13 @@ local decs = {
 					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
                 },
             },
+			j_entr_petrichor = {
+                name = "Petrichor",
+                text = {
+                    "Non-Scored Cards",
+					"give {C:blue}+#1#{} Chips"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

@@ -4073,6 +4073,34 @@ local grape_juice = {
     end,
 }
 
+local petrichor = {
+    order = 74,
+    object_type = "Joker",
+    key = "petrichor",
+    rarity = 1,
+    cost = 5,   
+    eternal_compat = true,
+    pos = {x = 8, y = 10},  
+    atlas = "jokers",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    config = {
+        chips = 25
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {card.ability.chips}
+        }
+    end,
+    calculate = function(self, card, context)
+        if (context.individual and context.cardarea == G.play and not SMODS.in_scoring(context.other_card, context.scoring_hand)) or context.forcetrigger then
+            return {
+                chips = card.ability.chips
+            }
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -4155,6 +4183,7 @@ return {
         prayer_card,
         desert,
         rugpull,
-        grape_juice
+        grape_juice,
+        petrichor
     }
 }
