@@ -496,8 +496,9 @@ local dagger = {
                 card:start_dissolve()
             end
         end)
-        delay(0.6)
-        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { mult = "+"..total, handname = localize(_hand, "poker_hands") })
+        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = G.GAME.hands[_hand].level, mult = Entropy.ascend_hand(G.GAME.hands[_hand].mult, _hand), chips = Entropy.ascend_hand(G.GAME.hands[_hand].chips, _hand), handname = localize(_hand, "poker_hands"), StatusText = true })
+        delay(1.6)
+        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { chips = "+"..total, handname = localize(_hand, "poker_hands"), StatusText = true })
         delay(2.6)
         update_hand_text(
           { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },

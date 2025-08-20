@@ -122,16 +122,27 @@ Entropy.RareInversions = {
 }
 Entropy.FixedRecipes = {
     c_basec_basec_basec_basec_base = "j_joker",
-    m_steelm_steelm_steelm_steelm_steel = "j_cry_clockwork",
-    m_goldm_goldm_goldm_goldm_gold = "j_ticket",
     m_cry_echom_cry_echom_cry_echom_cry_echom_cry_abstract = "j_cry_spectrogram",
     m_cry_lightm_cry_lightm_cry_lightm_cry_lightm_cry_light = "j_entr_sunny_joker",
     m_cry_lightm_cry_lightm_cry_lightm_entr_fleshm_entr_flesh = "j_entr_dr_sunshine",
-    m_entr_fleshm_entr_fleshm_entr_fleshm_entr_fleshm_entr_flesh = "j_entr_metanoia",
     m_cry_lightm_cry_lightm_cry_lightm_cry_lightm_gold = "j_entr_devilled_suns",
     c_basec_basec_basem_multm_mult = "j_jolly",
     c_basec_basec_basem_steelm_steel = "j_steel_joker",
-
+    m_bonusm_bonusm_bonusm_bonusm_bonus = "j_banner",
+    m_multm_multm_multm_multm_mult = "j_misprint",
+    m_wildm_wildm_wildm_wildm_wild = "j_ancient",
+    m_glassm_glassm_glassm_glassm_glass = "j_glass",
+    m_steelm_steelm_steelm_steelm_steel = "j_steel",
+    m_stonem_stonem_stonem_stonem_stone = "j_paved",
+    m_goldm_goldm_goldm_goldm_gold = "j_ticket",
+    m_luckym_luckym_luckym_luckym_lucky = "j_lucky_cat",
+    m_entr_fleshm_entr_fleshm_entr_fleshm_entr_fleshm_entr_flesh = "j_entr_grotesque_joker",
+    m_entr_disavowedm_entr_disavowedm_entr_disavowedm_entr_disavowedm_entr_disavowed = "j_entr_tesseract",
+    m_entr_darkm_entr_darkm_entr_darkm_entr_darkm_entr_dark = "j_entr_crabus",
+    m_entr_ceramicm_entr_ceramicm_entr_ceramicm_entr_ceramicm_entr_ceramic = "j_entr_memento_mori",
+    c_basec_basec_basec_basem_entr_disavowed = "j_entr_surreal_joker",
+    c_basem_multm_multm_multm_mult = "j_entr_red_fourty",
+    c_basem_bonusm_bonusm_multm_mult = "j_entr_purple_joker",
 }
 Entropy.EnhancementPoints ={
     m_entr_disavowed=0,
