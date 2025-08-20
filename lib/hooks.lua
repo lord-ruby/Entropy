@@ -473,9 +473,6 @@ G.FUNCS.open_booster = function(e)
         G.blind_select:remove()
         G.blind_prompt_box:remove()
     end
-    if c1.edition and c1.edition.negative and c1.area == G.consumeables then
-        G.consumeables.config.card_limit = G.consumeables.config.card_limit - 1
-    end
     e.config.ref_table.cost = 0
     e.config.ref_table:open()
     if c1.ability.cry_multiuse and to_big(c1.ability.cry_multiuse) > to_big(1) then
@@ -629,8 +626,8 @@ G.FUNCS.buy_deckorsleeve = function(e)
             G.GAME.round_resets.discards = G.GAME.round_resets.discards + v 
             ease_discard(v)
         end
-        if i == "joker_slot" then G.jokers.config.card_limit = G.jokers.config.card_limit + v end
-        if i == "hand_size" then G.hand.config.card_limit = G.hand.config.card_limit + v end
+        if i == "joker_slot" then G.jokers:handle_card_limit(v) end
+        if i == "hand_size" then G.hand:handle_card_limit(v) end
         if i == "dollars" then ease_dollars(v) end
     end
     if c1.config and c1.config.center and c1.config.center.config and c1.config.center.config then
@@ -789,7 +786,7 @@ end
 G.FUNCS.buy_slot = function(e)
     local c1 = e.config.ref_table
     ease_dollars(-e.config.ref_table.ability.buycost)
-    G.jokers.config.card_limit = G.jokers.config.card_limit + 1
+    G.jokers:handle_card_limit(1)
 end
 
 G.FUNCS.can_sell_slot = function(e)
@@ -806,7 +803,7 @@ end
 G.FUNCS.sell_slot = function(e)
     local c1 = e.config.ref_table
     ease_dollars(e.config.ref_table.ability.sellcost)
-    G.jokers.config.card_limit = G.jokers.config.card_limit - 1
+    G.jokers:handle_card_limit(-1)
 end
 
 G.FUNCS.can_use_joker = function(e)
@@ -1432,7 +1429,7 @@ function Game:update(dt)
         local slots_diff = (G.jokers.config.card_limit - #G.jokers.cards) - Entropy.last_slots
         local csl_diff = (G.hand.config.highlighted_limit) - Entropy.last_csl
         if csl_diff ~= 0 then
-            G.jokers.config.card_limit = G.jokers.config.card_limit + csl_diff
+            G.jokers:handle_card_limit(csl_diff)
         end
         if slots_diff ~= 0 then
             G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + slots_diff

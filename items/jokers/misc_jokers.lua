@@ -2330,7 +2330,7 @@ local cass = {
             local result = pseudorandom(pseudoseed("entr_cass"), 1, 6)
             if result == 1 then
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "hand_size", scalar_value = "mod"})
-                G.hand.config.card_limit = G.hand.config.card_limit + card.ability.mod
+                G.hand:handle_card_limit(card.ability.hand_size)
             elseif result == 2 then
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "selection_limit", scalar_value = "mod"})
                 Entropy.ChangeFullCSL(card.ability.mod)
@@ -2344,21 +2344,28 @@ local cass = {
                 ease_discard(card.ability.mod)
             elseif result == 5 then
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "consumable_slots", scalar_value = "mod"})
-                G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.mod
+                G.consumables:handle_card_limit(card.ability.consumable_slots)
             elseif result == 6 then
-                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "shop_slots", scalar_value = "mod"})
-                G.E_MANAGER:add_event(Event({
-                    func = function() --card slot
-                        -- why is this in an event?
-                        change_shop_size(to_number(math.min(card.ability.mod, 10)))
-                        return true
-                    end,
-                }))
+                if to_big(card.ability.shop_slots) < to_big(10) then
+                    SMODS.scale_card(card, {ref_table = card.ability, ref_value = "shop_slots", scalar_value = "mod"})
+                    if to_big(card.ability.shop_slots) > to_big(10) then
+                        card.ability.shop_slots = 10
+                    else
+                        local diff = math.min(card.ability.mod, 10-card.ability.mod)
+                        G.E_MANAGER:add_event(Event({
+                            func = function() --card slot
+                                -- why is this in an event?
+                                change_shop_size(to_number(math.min(diff, 20)))
+                                return true
+                            end,
+                        }))
+                    end
+                end
             end
         end
     end,
-    remove_from_deck = function(self, card)
-        G.hand.config.card_limit = G.hand.config.card_limit - card.ability.hand_size
+    remove_from_deck = function(self, card)        
+        G.hand:handle_card_limit(-card.ability.hand_size)
         Entropy.ChangeFullCSL(-card.ability.selection_limit)
         if to_big(card.ability.hands) > to_big(0) then
             G.GAME.round_resets.hands = G.GAME.round_resets.hands - card.ability.hands
@@ -2368,7 +2375,7 @@ local cass = {
             G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.discards
             ease_discard(-card.ability.discards)
         end
-        G.consumeables.config.card_limit = G.consumeables.config.card_limit - card.ability.consumable_slots
+        G.consumables:handle_card_limit(-card.ability.consumable_slots)        
         G.E_MANAGER:add_event(Event({
             func = function() --card slot
                 -- why is this in an event?
@@ -2378,7 +2385,7 @@ local cass = {
         }))
     end,
     add_to_deck = function(self, card)
-        G.hand.config.card_limit = G.hand.config.card_limit + card.ability.hand_size
+        G.hand:handle_card_limit(card.ability.hand_size)
         Entropy.ChangeFullCSL(card.ability.selection_limit)
         if to_big(card.ability.hands) > to_big(0) then
             G.GAME.round_resets.hands = G.GAME.round_resets.hands + card.ability.hands
@@ -2388,11 +2395,11 @@ local cass = {
             G.GAME.round_resets.discards = G.GAME.round_resets.discards + card.ability.discards
             ease_discard(card.ability.discards)
         end
-        G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.consumable_slots
+        G.consumables:handle_card_limit(card.ability.consumable_slots)
         G.E_MANAGER:add_event(Event({
             func = function() --card slot
                 -- why is this in an event?
-                change_shop_size(to_number(math.min(card.ability.shop_slots, 10)))
+                change_shop_size(to_number(math.min(card.ability.shop_slots, 20)))
                 return true
             end,
         }))

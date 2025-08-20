@@ -443,7 +443,7 @@ local ichor = {
         end), pseudoseed("ichor"))
         joker:start_dissolve()
         G.GAME.banned_keys[joker.config.center.key] = true
-        G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.num
+        G.jokers:handle_card_limit(card.ability.num)
         eval_card(joker, {banishing_card = true, banisher = card, card = joker, cardarea = joker.area})
     end,
     can_use = function(self, card)
@@ -1057,7 +1057,7 @@ function Cryptid.manipulate(card, args)
     if card and not card.ability.entr_pure then
         local ret = manipulate(card, args)
         if card.edition and card.edition.card_limit and card.area and not args.bypass_checks and not args.no_deck_effects then 
-            card.area.config.card_limit = card.area.config.card_limit + card.edition.card_limit
+            card.area:handle_card_limit(card.edition.card_limit)
         end
         return ret
     end

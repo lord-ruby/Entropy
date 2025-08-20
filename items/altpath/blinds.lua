@@ -66,23 +66,23 @@ local beta = {
 			context.after
 			and not G.GAME.blind.disabled
 		then
-            G.hand.config.card_limit = G.hand.config.card_limit - 1
+            G.hand:handle_card_limit(-1)
             G.GAME.beta_modifer = (G.GAME.beta_modifer or 0) + 1
             G.GAME.blind.triggered = true
 		end
     end,
     defeat = function()
         if not G.GAME.blind.disabled then
-            G.hand.config.card_limit = G.hand.config.card_limit + G.GAME.beta_modifer
+            G.hand:handle_card_limit(G.GAME.beta_modifer)
             G.GAME.beta_modifer = nil
         end
     end,
     disable = function()
-        G.hand.config.card_limit = G.hand.config.card_limit + G.GAME.beta_modifer
+		G.hand:handle_card_limit(G.GAME.beta_modifer)
         G.GAME.beta_modifer = nil
     end,
     set_blind = function()
-        G.hand.config.card_limit = G.hand.config.card_limit - 1
+        G.hand:handle_card_limit(-1)
         G.GAME.beta_modifer = (G.GAME.beta_modifer or 0) + 1
     end
 }
@@ -1492,19 +1492,19 @@ local labyrinth = {
         return G.GAME.entr_alt
     end,
 	set_blind = function()
-		G.hand.config.card_limit = G.hand.config.card_limit + 3
+		G.hand:handle_card_limit(3)
 		Entropy.ChangeFullCSL(1)
 		G.GAME.blind.cards = {}
 	end,
 	defeat = function()
 		if not G.GAME.blind.disabled then
-			G.hand.config.card_limit = G.hand.config.card_limit - 3
+			G.hand:handle_card_limit(-3)
 			Entropy.ChangeFullCSL(-1)
 			for i, v in ipairs(G.GAME.blind.cards) do v.ability.forced_selection = nil end
 		end
 	end,
 	disable = function()
-		G.hand.config.card_limit = G.hand.config.card_limit - 3
+		G.hand:handle_card_limit(-3)
 		Entropy.ChangeFullCSL(-1)
 		for i, v in ipairs(G.GAME.blind.cards) do v.ability.forced_selection = nil end
 	end

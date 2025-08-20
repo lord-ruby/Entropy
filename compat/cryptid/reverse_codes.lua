@@ -1353,7 +1353,7 @@ local ctrl_x = {
                 create_shop_card_ui(card, G.GAME.ControlXCard.set, G.GAME.ControlXCardArea)
             end
             if G.GAME.ControlXCardArea == G.shop_jokers or G.GAME.ControlXCardArea == G.shop_vouchers then
-                G.GAME.ControlXCardArea.config.card_limit = G.GAME.ControlXCardArea.config.card_limit + 1
+                G.GAME.ControlXCardArea:handle_card_limit(1)
             end
             G.GAME.ControlXCard = nil
             G.GAME.ControlXCardArea = nil
@@ -1768,9 +1768,9 @@ local transpile = {
         consumableslots = 2
     },
     use = function(self, card, area, copier)
-        G.jokers.config.card_limit = G.jokers.config.card_limit + card.ability.jokerslots
-        G.consumeables.config.card_limit = G.consumeables.config.card_limit + card.ability.consumableslots
-        G.hand.config.card_limit = G.hand.config.card_limit + card.ability.handsize
+        G.jokers:handle_card_limit(card.ability.jokerslots)
+        G.consumables:handle_card_limit(card.ability.consumableslots)
+        G.hand:handle_card_limit(card.ability.handsize)
     end,
     can_use = function(self, card)
         return G.jokers and G.jokers.config.card_limit > 0

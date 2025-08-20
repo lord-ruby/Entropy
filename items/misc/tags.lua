@@ -482,7 +482,7 @@ local voucher = {
 				G.ARGS.voucher_tag = G.ARGS.voucher_tag or {}
 				local voucher_key = Cryptid.next_tier3_key(true)
 				G.ARGS.voucher_tag[voucher_key] = true
-				G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
+				G.shop_vouchers:handle_card_limit(1)
 				local card = Card(
 					G.shop_vouchers.T.x + G.shop_vouchers.T.w / 2,
 					G.shop_vouchers.T.y,
@@ -604,7 +604,7 @@ local better_voucher = {
 				G.ARGS.voucher_tag = G.ARGS.voucher_tag or {}
 				local voucher_key = Cryptid.next_tier3_key(true)
 				G.ARGS.voucher_tag[voucher_key] = true
-				G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
+				G.shop_vouchers:handle_card_limit(1)
 				local card = Card(
 					G.shop_vouchers.T.x + G.shop_vouchers.T.w / 2,
 					G.shop_vouchers.T.y,
@@ -653,7 +653,7 @@ local better_voucher = {
 
 				local voucher_key = Cryptid.next_tier3_key(true)
 				G.ARGS.voucher_tag[voucher_key] = true
-				G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
+				G.shop_vouchers:handle_card_limit(1)
 				local card = Card(
 					G.shop_vouchers.T.x + G.shop_vouchers.T.w / 2,
 					G.shop_vouchers.T.y,

@@ -710,7 +710,7 @@ local gluttony = {
     },
     loc_vars = function(self, q, card) return {vars = {math.min(card.ability.slots, 20)}} end,
     use = function(self, card)
-        G.consumeables.config.card_limit = G.consumeables.config.card_limit + math.min(card.ability.slots, 20)
+        G.consumables:handle_card_limit(math.min(card.ability.slots, 20))
         for i, v in pairs(G.I.CARD) do
             if v.ability and v.ability.consumeable then v.ability.eternal = true end
         end
@@ -760,7 +760,7 @@ local rebirth = {
     },
     loc_vars = function(self, q, card) return {vars = {math.min(card.ability.hand_size, 1000)}} end,
     use = function(self, card)
-        G.hand.config.card_limit = G.hand.config.card_limit - math.min(card.ability.hand_size, 1000)
+        G.hand:handle_card_limit(- math.min(card.ability.hand_size, 1000))
         Entropy.pact_mark("rune_entr_rebirth")
     end,
     can_use = function()
@@ -999,7 +999,7 @@ local freedom = {
         hand_size = 2
     },
     use = function(self, rcard)
-        G.hand.config.card_limit = G.hand.config.card_limit - rcard.ability.hand_size
+        G.hand:handle_card_limit(-rcard.ability.hand_size)
         Entropy.ChangeFullCSL(rcard.ability.selection_limit)
         Entropy.pact_mark("rune_entr_freedom")
     end,
