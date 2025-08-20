@@ -5216,9 +5216,6 @@ local decs = {
 			k_omen_pack = "Omen Pack",
 			b_omen_cards = "Omen Cards",
 
-			a_eqmult = { "Mult = #1#" },
-			a_twisted = {"+#1# Twisted Cards"},
-
 			k_inverted = "Inverted",
 			k_inverted_pack = "Twisted Pack",
 			k_voucher_pack = "Voucher Pack",
@@ -5375,6 +5372,8 @@ local decs = {
 			cry_art = { "Art: #1#" },
 			cry_code = { "Code: #1#" },
 			cry_idea = { "Idea: #1#" },
+			a_eqmult = { "Mult = #1#" },
+			a_twisted = {"+#1# Twisted"},
 		},
 		labels = {
 			banana = "Banana",
