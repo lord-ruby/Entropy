@@ -4141,6 +4141,7 @@ local otherworldly_joker = {
                             area = G.consumeables,
                             set = "Twisted"
                         }
+                        G.GAME.consumeable_buffer = 0
                         return true
                     end
                 })
