@@ -41,7 +41,8 @@ function Entropy.is_inverted(card)
     return Entropy.FlipsideInversions[card.config.center.key] and not Entropy.FlipsidePureInversions[card.config.center.key]
 end
 
-function Entropy.inversion_queue(card, _c, info_queue)
+function Entropy.inversion_queue(card, _c, first_pass)
+    local info_queue = {}
     if Entropy.Inversion(card) and first_pass and Entropy.show_flipside(card, _c) and Entropy.config.inversion_queues > 1 then 
         if _c.key ~= "c_entr_flipside" then
           local inversion = G.P_CENTERS[(Entropy.FlipsideInversions[_c.key] or (_c.ability and Entropy.FlipsideInversions[_c.ability.name]))] 
@@ -53,6 +54,7 @@ function Entropy.inversion_queue(card, _c, info_queue)
           info_queue[#info_queue+1] = {key = "inversion_allowed", set = "Other", vars = {"???"}}
         end
     end
+    return info_queue
 end
 
 function Entropy.FlipThen(cardlist, func, before, after)

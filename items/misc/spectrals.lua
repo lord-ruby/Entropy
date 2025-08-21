@@ -12,14 +12,14 @@ local flipside = {
     },
     set = "Spectral",
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.consumeables, G.hand, G.pack_cards, G.shop_jokers, G.shop_vouchers, G.shop_booster, G.jokers}, card, 1, card.ability.select)
+        local cards = Entropy.GetHighlightedCards({{cards = G.I.CARD}}, card, 1, card.ability.select)
         cards = Entropy.FilterTable(cards, function(card)
             return Entropy.Inversion(card)
         end)
         return #cards > 0 and #cards <= card.ability.select
     end,
     use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.consumeables, G.hand, G.pack_cards, G.shop_jokers, G.shop_vouchers, G.shop_booster, G.jokers}, card, 1, card.ability.select)
+        local cards = Entropy.GetHighlightedCards({{cards = G.I.CARD}}, card, 1, card.ability.select)
         local actual = Entropy.FilterTable(cards, function(card)
             return Entropy.Inversion(card)
         end)

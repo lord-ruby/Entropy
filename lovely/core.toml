@@ -1112,7 +1112,11 @@ target = "functions/common_events.lua"
 pattern = 'for _, v in ipairs(info_queue) do'
 position = "before"
 payload = '''
-  Entropy.inversion_queues(card, _c, info_queue)
+  if card and card.config and card.config.center then
+    for i, v in pairs(Entropy.inversion_queue(card, _c, first_pass)) do
+      info_queue[#info_queue + 1] = v
+    end
+  end
   if Entropy.DeckOrSleeve("doc") then
     if _c.key == "c_entr_beyond" then
       info_queue[#info_queue+1] = {set="Other", key="no_downside_cond"}
