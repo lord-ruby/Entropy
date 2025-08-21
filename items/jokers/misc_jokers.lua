@@ -1060,27 +1060,7 @@ local sunny_side_up = {
                     plus_asc = asc
                 }
             else    
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						play_sound("tarot1")
-						card.T.r = -0.2
-						card:juice_up(0.3, 0.4)
-						card.states.drag.is = true
-						card.children.center.pinch.x = true
-						G.E_MANAGER:add_event(Event({
-							trigger = "after",
-							delay = 0.3,
-							blockable = false,
-							func = function()
-								G.jokers:remove_card(card)
-								card:remove()
-								card = nil
-								return true
-							end,
-						}))
-						return true
-					end,
-                }))
+				SMODS.destroy_cards(card, nil, nil, true)
             end
         end
 	end,
@@ -1135,27 +1115,7 @@ local sunflower_seeds = {
                 Entropy.FlipThen({jcard}, function(card)
                     card:set_edition("e_entr_sunny")
                 end)
-                G.E_MANAGER:add_event(Event({
-					func = function()
-						play_sound("tarot1")
-						card.T.r = -0.2
-						card:juice_up(0.3, 0.4)
-						card.states.drag.is = true
-						card.children.center.pinch.x = true
-						G.E_MANAGER:add_event(Event({
-							trigger = "after",
-							delay = 0.3,
-							blockable = false,
-							func = function()
-								G.jokers:remove_card(card)
-								card:remove()
-								card = nil
-								return true
-							end,
-						}))
-						return true
-					end,
-				}))
+                SMODS.destroy_cards(card, nil, nil, true)
 				return {
 					message = localize("k_eaten_ex"),
 					colour = G.C.FILTER,
@@ -2721,27 +2681,7 @@ local chuckle_cola = {
             card.ability.triggers = card.ability.triggers - 1
             context.other_card.ability.bonus = (context.other_card.ability.bonus or 0) + context.other_card:get_chip_bonus() * (card.ability.xchip_mod - 1)
             if card.ability.triggers <= 0 then
-                G.E_MANAGER:add_event(Event({
-					func = function()
-						play_sound("tarot1")
-						card.T.r = -0.2
-						card:juice_up(0.3, 0.4)
-						card.states.drag.is = true
-						card.children.center.pinch.x = true
-						G.E_MANAGER:add_event(Event({
-							trigger = "after",
-							delay = 0.3,
-							blockable = false,
-							func = function()
-								G.jokers:remove_card(card)
-								card:remove()
-								card = nil
-								return true
-							end,
-						}))
-						return true
-					end,
-				}))
+                SMODS.destroy_cards(card, nil, nil, true)
                 card.eaten = true
 				return {
 					message = localize("k_eaten_ex"),
@@ -3131,27 +3071,7 @@ local dragonfruit = {
             SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", operation = "-", no_message = true})
             Entropy.ChangeFullCSL(- card.ability.left_mod)
             if card.ability.left <= 0 then
-                G.E_MANAGER:add_event(Event({
-                    func = function()
-                        play_sound("tarot1")
-                        card.T.r = -0.2
-                        card:juice_up(0.3, 0.4)
-                        card.states.drag.is = true
-                        card.children.center.pinch.x = true
-                        G.E_MANAGER:add_event(Event({
-                            trigger = "after",
-                            delay = 0.3,
-                            blockable = false,
-                            func = function()
-                                G.jokers:remove_card(card)
-                                card:remove()
-                                card = nil
-                                return true
-                            end,
-                        }))
-                        return true
-                    end,
-                }))
+                SMODS.destroy_cards(card, nil, nil, true)
                 return {
                     message = localize("k_eaten_ex"),
                     colour = G.C.FILTER,
@@ -3572,27 +3492,7 @@ local red_fourty = {
         if context.money_altered and context.from_shop and to_big(context.amount) < to_big(0) then
             SMODS.scale_card(card, {ref_table = card.ability, ref_value = "mult", scalar_value = "mult_mod", operation = "-", no_message = true})
             if card.ability.mult <= 0 then
-                G.E_MANAGER:add_event(Event({
-                    func = function()
-                        play_sound("tarot1")
-                        card.T.r = -0.2
-                        card:juice_up(0.3, 0.4)
-                        card.states.drag.is = true
-                        card.children.center.pinch.x = true
-                        G.E_MANAGER:add_event(Event({
-                            trigger = "after",
-                            delay = 0.3,
-                            blockable = false,
-                            func = function()
-                                G.jokers:remove_card(card)
-                                card:remove()
-                                card = nil
-                                return true
-                            end,
-                        }))
-                        return true
-                    end,
-                }))
+                SMODS.destroy_cards(card, nil, nil, true)
                 return {
                     message = localize("k_eaten_ex"),
                     colour = G.C.FILTER,
@@ -3820,27 +3720,7 @@ local gold_bar = {
             }
         })
         if to_big(card.ability.dollars) <= to_big(0) then
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    play_sound("tarot1")
-                    card.T.r = -0.2
-                    card:juice_up(0.3, 0.4)
-                    card.states.drag.is = true
-                    card.children.center.pinch.x = true
-                    G.E_MANAGER:add_event(Event({
-                        trigger = "after",
-                        delay = 0.3,
-                        blockable = false,
-                        func = function()
-                            G.jokers:remove_card(card)
-                            card:remove()
-                            card = nil
-                            return true
-                        end,
-                    }))
-                    return true
-                end,
-            }))
+            SMODS.destroy_cards(card, nil, nil, true)
         end
         return dollars
     end

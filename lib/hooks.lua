@@ -3651,7 +3651,7 @@ end
 
 local is_eternalref = SMODS.is_eternal
 function SMODS.is_eternal(c, ...)
-    if c.ability.entr_aleph then return true end
+    if c and c.ability and c.ability.entr_aleph then return true end
     return is_eternalref(c, ...)
 end
 
