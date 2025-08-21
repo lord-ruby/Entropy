@@ -677,8 +677,8 @@ local endurance = {
     use = function(self, card2)
         local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card2, 1, card2.ability.select)
         for i, card in pairs(cards) do
-            card.ability.debuff_timer = card2.ability.rounds
-            card.ability.debuff_timer_max = card2.ability.rounds
+            card.ability.debuff_timer = (card.ability.debuff_timer or 0) + card2.ability.rounds
+            card.ability.debuff_timer_max = (card.ability.debuff_timer_max or 0) + card2.ability.rounds
             if not Card.no(card, "immutable", true) then
                 Cryptid.manipulate(card, { value=card2.ability.factor })
             end
@@ -688,8 +688,8 @@ local endurance = {
     bulk_use = function(self,card2,area,copier,amt)
         local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, card.ability.select)
         for i, card in pairs(cards) do
-            card.ability.debuff_timer = card2.ability.rounds
-            card.ability.debuff_timer_max = card2.ability.rounds
+            card.ability.debuff_timer = (card.ability.debuff_timer or 0) + card2.ability.rounds
+            card.ability.debuff_timer_max = (card.ability.debuff_timer_max or 0) + card2.ability.rounds
             if not Card.no(card, "immutable", true) then
                 Cryptid.manipulate(card, { value=card2.ability.factor^to_big(amt) })
             end
