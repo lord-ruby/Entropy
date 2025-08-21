@@ -1152,7 +1152,7 @@ function G.UIDEF.use_and_sell_buttons(card)
               }},
           }}
     end
-    if card.area == G.pack_cards and G.pack_cards and not card.config.center.no_select and ((SMODS.ConsumableTypes[card.config.center.set] and SMODS.ConsumableTypes[card.config.center.set].can_be_pulled or card.config.center.can_be_pulled) or (not SMODS.OPENED_BOOSTER or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front)) and (card.ability.consumeable) then
+    if card.config.center.use and card.area == G.pack_cards and G.pack_cards and not card.config.center.no_select and ((SMODS.ConsumableTypes[card.config.center.set] and SMODS.ConsumableTypes[card.config.center.set].can_be_pulled or card.config.center.can_be_pulled) or (not SMODS.OPENED_BOOSTER or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front)) and (card.ability.consumeable) then
         return {
             n = G.UIT.ROOT,
             config = { padding = -0.1, colour = G.C.CLEAR },
@@ -1165,21 +1165,21 @@ function G.UIDEF.use_and_sell_buttons(card)
                         padding = 0.1,
                         align = "bm",
                         minw = 0.5 * card.T.w - 0.15,
-                        minh = 0.7 * card.T.h,
+                        minh = 0.1 * card.T.h or 0.7 * card.T.h,
                         maxw = 0.7 * card.T.w - 0.15,
                         hover = true,
                         shadow = true,
                         colour = G.C.UI.BACKGROUND_INACTIVE,
                         one_press = true,
                         button = "use_card",
-                        func = ((SMODS.ConsumableTypes[card.config.center.set] and SMODS.ConsumableTypes[card.config.center.set].can_be_pulled) or card.config.center.key == "c_entr_flipside") and "can_reserve_card" or "can_reserve_card_to_deck",
+                        func = card:is_playing_card() and "can_reserve_card_to_deck" or "can_reserve_card",
                         handy_insta_action = 'use'
                     },
                     nodes = {
                         {
                             n = G.UIT.T,
                             config = {
-                                text = card.ability.set == "Command" and localize("b_pull")  or localize("b_select"),
+                                text = card.ability.set == "Command" and localize("b_pull") or localize("b_select"),
                                 colour = G.C.UI.TEXT_LIGHT,
                                 scale = 0.55,
                                 shadow = true,
