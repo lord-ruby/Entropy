@@ -2998,6 +2998,14 @@ function end_round()
         G.GAME.round_resets.discards = G.GAME.round_resets.discards + G.GAME.earl_discards
         ease_discard(G.GAME.earl_discards)
     end
+    if G.GAME.candle_hand_size then 
+        G.hand:handle_card_limit(-G.GAME.candle_hand_size)
+        G.GAME.candle_hand_size = nil
+    end
+    if G.GAME.vanish_selection_limit then
+        Entropy.ChangeFullCSL(-G.GAME.vanish_selection_limit)
+        G.GAME.vanish_selection_limit = nil
+    end
 end
 
 local generate_uiref = generate_card_ui

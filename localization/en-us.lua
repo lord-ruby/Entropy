@@ -3025,6 +3025,170 @@ local decs = {
 				}
 			},
 		},
+		Transient = {
+			c_entr_cage = {
+				name = "Cage",
+				text = {
+					"Apply {C:attention}Temporary{} to",
+					"{C:attention}#1#{} Selected Card#<s>1#",
+					"Then change their suit into the",
+					"{C:attention}leftmost{} Selected Card's suit"
+				}
+			},
+			c_entr_implode = {
+				name = "Implode",
+				text = {
+					"Apply {C:attention}Temporary{} to",
+					"{C:attention}#1#{} Selected Card#<s>1#",
+					"Then turn them into {C:attention}Ace of Nils{}"
+				}
+			},
+			c_entr_meteor = {
+				name = "Meteor",
+				text = {
+					"Apply {C:attention}Temporary{} to",
+					"{C:attention}#1#{} random Card#<s>1# in hand",
+					"Then give them {C:purple}Sapphire{} Seals"
+				}
+			},
+			c_entr_concentrate = {
+				name = "Concentrate",
+				text = {
+					"Apply {C:attention}Temporary{} to",
+					"{C:attention}All{} Selected Cards",
+					"Then copy them to hand"
+				}
+			},
+			c_entr_pyrite = {
+				name = "Pyrite",
+				text = {
+					"Apply {C:attention}Temporary{} to",
+					"{C:attention}#1#{} Selected Card#<s>1#",
+					"Then turn them into {C:attention}Gold Cards{}"
+				}
+			},
+			c_entr_set = {
+				name = "Set",
+				text = {
+					"Apply {C:attention}Temporary{} to",
+					"{C:attention}#1#{} Selected Card#<s>1#",
+					"Then change their rank into the",
+					"{C:attention}leftmost{} Selected Card's rank"
+				}
+			},
+			c_entr_trickster = {
+				name = "Trickster",
+				text = {
+					"Apply {C:attention}Temporary{} to",
+					"{C:attention}#1#{} Selected Card#<s>1#",
+					"Then turn them into a",
+					"random {C:red}Rare{} {C:attention}Joker{}"
+				}
+			},
+			c_entr_sundial = {
+				name = "Sundial",
+				text = {
+					"Apply {C:attention}Temporary{} to",
+					"{C:attention}#1#{} Selected Card#<s>1#",
+					"Then turn them into {C:attention}Glass Cards{}"
+				}
+			},
+			c_entr_candle = {
+				name = "Candle",
+				text = {
+					"{C:attention}+#1#{} Hand Size",
+					"for this Blind"
+				}
+			},
+			c_entr_faith = {
+				name = "Faith",
+				text = {
+					"Apply {C:attention}Temporary{} to",
+					"{C:attention}#1#{} Selected Card#<s>1#",
+					"Then turn them into {C:attention}Lucky Cards{}"
+				}
+			},
+			c_entr_oasis = {
+				name = "Oasis",
+				text = {
+					"Apply {C:attention}Temporary{} to",
+					"A Selected Card then",
+					"Copy it {C:attention}#1#{} times"
+				}
+			},
+			c_entr_ragtag = {
+				name = "Ragtag",
+				text = {
+					"Apply {C:attention}Temporary{} to",
+					"{C:attention}#1#{} Selected Card#<s>1#",
+					"Then turn them into a",
+					"random {C:blue}Common{} {C:attention}Joker{}"
+				}
+			},
+			c_entr_burn = {
+				name = "Burn",
+				text = {
+					"Apply {C:attention}Temporary{} to",
+					"{C:attention}#1#{} random Card#<s>1# in hand",
+					"Then give them {C:purple}Pink{} Seals"
+				}
+			},
+			c_entr_escape = {
+				name = "Escape",
+				text = {
+					"Apply {C:attention}Temporary{} to",
+					"{C:attention}#1#{} random Card#<s>1# in hand",
+					"Then randomize them"
+				}
+			},
+			c_entr_decay = {
+				name = "Decay",
+				text = {
+					"Apply {C:attention}Temporary{} to",
+					"{C:attention}#1#{} Selected Card#<s>1#",
+					"Then turn them into {C:attention}Steel Cards{}"
+				}
+			},
+			c_entr_visage = {
+				name = "Visage",
+				text = {
+					"Apply {C:attention}Temporary{} to",
+					"{C:attention}#1#{} Selected Card#<s>1#",
+					"Then turn them into {C:attention}Stone Cards{}"
+				}
+			},
+			c_entr_nebula = {
+				name = "Nebula",
+				text = {
+					"Create {C:attention}#1#{} Random",
+					"{C:attention}Temporary{} Blind Tokens"
+				}
+			},
+			c_entr_essence = {
+				name = "Essence",
+				text = {
+					"Apply {C:attention}Temporary{} to",
+					"{C:attention}#1#{} Selected Card#<s>1#",
+					"Then turn them into {C:attention}Random{}",
+					"suited Kings"
+				}
+			},
+			c_entr_manifest = {
+				name = "Manifest",
+				text = {
+					"{C:attention}+#1#{} Selection Limit",
+					"for this Blind"
+				}
+			},
+			c_entr_hope = {
+				name = "Hope",
+				text = {
+					"Apply {C:attention}Temporary{} to",
+					"{C:attention}#1#{} random Card#<s>1# in hand",
+					"Then give them {V:1}Silver{} Seals"
+				}
+			},
+		},
 		Tarot = {
 			c_entr_kiln = {
 				name = "Kiln",
@@ -4799,6 +4963,15 @@ local decs = {
 					"learn what it does",
 				},
 			},
+			undiscovered_transient = {
+				name = "Not Discovered",
+				text = {
+					"Purchase or use",
+					"this card in an",
+					"unseeded run to",
+					"learn what it does",
+				},
+			},
 			entr_pinned = {
 				name = "Invariant",
 				text = {
@@ -5213,16 +5386,16 @@ local decs = {
 			k_entr_reverse_legendary = "Legendary?",
 			k_entr_zenith = "Zenith",
 			k_fraud = "Fraud",
-			k_fraud_pack = "Fraud Pack",
 			b_fraud_cards = "Fraud Cards",
 
 			k_command = "Command",
-			k_command_pack = "Command Pack",
 			b_command_cards = "Command Cards",
 
 			k_omen = "Omen",
-			k_omen_pack = "Omen Pack",
 			b_omen_cards = "Omen Cards",
+
+			k_transient = "Transient",
+			b_transient_cards = "Transient Cards",
 
 			k_inverted = "Inverted",
 			k_inverted_pack = "Twisted Pack",
