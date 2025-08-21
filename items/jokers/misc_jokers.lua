@@ -2266,7 +2266,8 @@ local slipstream = {
                         G.GAME.consumeable_buffer = 0
                         SMODS.add_card{
                             set = "Omen",
-                            area = G.consumeables
+                            area = G.consumeables,
+                            key_append = "entr_slipstream"
                         }         
                         return true
                     end
@@ -2529,7 +2530,8 @@ local sandpaper = {
                         if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
                             SMODS.add_card{
                                 set = "Rune",
-                                area = G.consumeables
+                                area = G.consumeables,
+                                key_append = "entr_sandpaper"
                             }
                         end
                         return true
@@ -2548,7 +2550,8 @@ local sandpaper = {
                     for i, v in pairs(stones) do v:start_dissolve(); v.ability.temporary2 = true end
                     SMODS.add_card{
                         set = "Rune",
-                        area = G.consumeables
+                        area = G.consumeables,
+                        key_append = "entr_sandpaper"
                     }
                     return true
                 end
@@ -3633,7 +3636,8 @@ local promotion = {
                         func = function()
                             SMODS.add_card{
                                 set = "Booster",
-                                area = G.consumeables
+                                area = G.consumeables,
+                                key_append = "entr_promotion"
                             }
                             G.GAME.consumeable_buffer = 0
                             return true
@@ -3949,7 +3953,8 @@ local blind_collectible_pack = {
                     func = function()
                         SMODS.add_card{
                             set = "CBlind",
-                            area = G.consumeables
+                            area = G.consumeables,
+                            key_append = "entr_bcp"
                         }
                         G.GAME.consumeable_buffer = 0
                         return true
@@ -4139,7 +4144,8 @@ local otherworldly_joker = {
                     func = function()
                         SMODS.add_card{
                             area = G.consumeables,
-                            set = "Twisted"
+                            set = "Twisted",
+                            key_append = "entr_otherworldly"
                         }
                         G.GAME.consumeable_buffer = 0
                         return true
