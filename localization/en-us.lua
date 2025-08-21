@@ -1321,6 +1321,14 @@ local decs = {
 					"{C:inactive,S:0.8}(Ex. {C:blue}+30{C:inactive} Chips or {X:red,C:white}X2{C:inactive} Mult)"
                 },
             },
+			j_entr_thirteen_of_stars = {
+                name = "Thirteen of Stars",
+                text = {
+                    "Gives {C:attention}Half{} the",
+					"played Poker Hands {C:purple}Level{}",
+					"as {C:gold}Ascension Power{}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

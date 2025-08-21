@@ -4054,6 +4054,29 @@ local error_joker = {
     blueprint_compat = true,
 }
 
+local thirteen_of_stars = {
+    order = 77,
+    object_type = "Joker",
+    key = "thirteen_of_stars",
+    rarity = 1,
+    cost = 5,   
+    eternal_compat = true,
+    pos = {x = 1, y = 11},  
+    atlas = "jokers",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    calculate = function(self, card, context)
+        if (context.joker_main) or context.forcetrigger then
+            local text = G.FUNCS.get_poker_hand_info(G.play.cards)
+            if text and G.GAME.hands[text] then
+                return {
+                    plus_asc = G.GAME.hands[text].level/2
+                }
+            end
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -4139,6 +4162,7 @@ return {
         grape_juice,
         petrichor,
         otherworldly_joker,
-        error_joker
+        error_joker,
+        thirteen_of_stars
     }
 }
