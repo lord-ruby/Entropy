@@ -775,7 +775,7 @@ local isaz_indicator = {
                         card.cost = card.cost / 2
                     end
                     card:start_materialize()
-                    G.shop_vouchers:handle_card_limit(1)
+                    G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
                     return true
                 end,
             }

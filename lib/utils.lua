@@ -481,7 +481,6 @@ function Entropy.RareTag(rarity, key, ascendant, colour, pos, fac, legendary,ord
         dependencies = {
           items = {
             "set_entr_tags",
-            "j_entr_exousia"
           }
         },
         shiny_atlas="entr_shiny_asc_tags",
@@ -526,7 +525,6 @@ function Entropy.EditionTag(edition, key, ascendant, pos,order, credits)
         dependencies = {
             items = {
                 "set_entr_tags",
-                "j_entr_exousia"
             }
         },
         order = order,

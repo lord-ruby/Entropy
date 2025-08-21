@@ -3373,7 +3373,7 @@ local decs = {
 				},
 			},
 			tag_entr_kaleidoscopic = {
-				name = "kaleidoscopic Tag",
+				name = "Kaleidoscopic Tag",
 				text = { 
 					"Next base Edition shop",
 					"Joker is free and",
@@ -3406,8 +3406,12 @@ local decs = {
 				text = { "Gives {C:attention}#1#{} copies of the", "next selected Tag", "{C:inactive}(Copying tags excluded){}" },
 			},
 			tag_entr_ascendant_voucher = {
-				name = "{C:gold}Golden Voucher Tag{}",
+				name = "{C:gold}Voucher Tag{}",
 				text = { "Adds one Tier {C:attention}3{} Voucher", "to the next shop" },
+			},
+			tag_entr_ascendant_voucher_cryptidless = {
+				name = "{C:gold}Voucher Tag{}",
+				text = { "Adds {C:attention}Two{} Vouchers", "to the next shop" },
 			},
 			tag_entr_ascendant_better_voucher = {
 				name = "{C:gold}Pristine Voucher Tag{}",

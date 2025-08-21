@@ -405,7 +405,6 @@ SMODS.Atlas {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	shiny_atlas="entr_shiny_ascendant_tags",
@@ -463,7 +462,6 @@ local voucher = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 9,
@@ -482,7 +480,7 @@ local voucher = {
 				G.ARGS.voucher_tag = G.ARGS.voucher_tag or {}
 				local voucher_key = Cryptid.next_tier3_key(true)
 				G.ARGS.voucher_tag[voucher_key] = true
-				G.shop_vouchers:handle_card_limit(1)
+				G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
 				local card = Card(
 					G.shop_vouchers.T.x + G.shop_vouchers.T.w / 2,
 					G.shop_vouchers.T.y,
@@ -529,6 +527,56 @@ local voucher = {
 				end
 				G.shop_vouchers:emplace(card)
 				G.ARGS.voucher_tag = nil
+				G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
+				return true
+			end)
+			tag.triggered = true
+		end
+	end,
+	shiny_atlas = "entr_shiny_asc_tags",
+}
+
+local cryptidless_voucher = {
+	object_type = "Tag",
+    dependencies = {
+    	items = {
+        	"set_entr_tags",
+        }
+    },
+	order = 9,
+	shiny_atlas="entr_shiny_ascendant_tags",
+	key = "ascendant_voucher",
+	atlas = "ascendant_tags",
+	pos = {x=6,y=0},
+	config = { type = "voucher_add" },
+	in_pool = function() return false end or nil,
+	loc_vars = function(self, info_queue)
+		return { vars = { (SMODS.Mods["Tier3Sub"] and 4 or 3) }, key = "tag_entr_ascendant_voucher_cryptidless" }
+	end,
+	apply = function(self, tag, context)
+		if context.type == "voucher_add" then
+			tag:yep("+", G.C.SECONDARY_SET.Voucher, function()
+				for i = 1, 2 do
+					G.ARGS.voucher_tag = G.ARGS.voucher_tag or {}
+					local voucher_key = SMODS.get_next_vouchers()[1]
+					G.ARGS.voucher_tag[voucher_key] = true
+					G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
+					local card = Card(
+						G.shop_vouchers.T.x + G.shop_vouchers.T.w / 2,
+						G.shop_vouchers.T.y,
+						G.CARD_W,
+						G.CARD_H,
+						G.P_CARDS.empty,
+						G.P_CENTERS[voucher_key],
+						{ bypass_discovery_center = true, bypass_discovery_ui = true }
+					)
+					Cryptid.manipulate(card)
+					create_shop_card_ui(card, "Voucher", G.shop_vouchers)
+					card:start_materialize()
+					G.shop_vouchers:emplace(card)
+					G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
+					G.ARGS.voucher_tag = nil
+				end
 				return true
 			end)
 			tag.triggered = true
@@ -542,7 +590,6 @@ local saint =  {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 10,
@@ -585,7 +632,6 @@ local better_voucher = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 11,
@@ -604,7 +650,7 @@ local better_voucher = {
 				G.ARGS.voucher_tag = G.ARGS.voucher_tag or {}
 				local voucher_key = Cryptid.next_tier3_key(true)
 				G.ARGS.voucher_tag[voucher_key] = true
-				G.shop_vouchers:handle_card_limit(1)
+				G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
 				local card = Card(
 					G.shop_vouchers.T.x + G.shop_vouchers.T.w / 2,
 					G.shop_vouchers.T.y,
@@ -653,7 +699,7 @@ local better_voucher = {
 
 				local voucher_key = Cryptid.next_tier3_key(true)
 				G.ARGS.voucher_tag[voucher_key] = true
-				G.shop_vouchers:handle_card_limit(1)
+				G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
 				local card = Card(
 					G.shop_vouchers.T.x + G.shop_vouchers.T.w / 2,
 					G.shop_vouchers.T.y,
@@ -722,7 +768,6 @@ local infdiscard = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 18,
@@ -765,7 +810,6 @@ local cat_asc = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 21,
@@ -798,7 +842,6 @@ local dog_asc = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 22,
@@ -832,7 +875,6 @@ local canvas = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 23,
@@ -871,7 +913,6 @@ local unbounded = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 24,
@@ -927,7 +968,6 @@ local unbounded_pack = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 94,
@@ -1015,7 +1055,6 @@ local ejoker = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 25,
@@ -1073,7 +1112,6 @@ local universal = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 26,
@@ -1114,7 +1152,6 @@ local ebundle = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 27,
@@ -1161,7 +1198,6 @@ local twisted = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 28,
@@ -1215,7 +1251,6 @@ local stock = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 29,
@@ -1245,7 +1280,6 @@ local blind = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 29,
@@ -1298,7 +1332,6 @@ local blind_pack = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 95,
@@ -1347,7 +1380,6 @@ local reference = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 30,
@@ -1401,7 +1433,6 @@ local reference_pack = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 96,
@@ -1452,7 +1483,6 @@ local cavendish = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 31,
@@ -1489,7 +1519,6 @@ local credit = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 32,
@@ -1533,7 +1562,6 @@ local topup = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 33,
@@ -1569,7 +1597,6 @@ local better_topup = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 34,
@@ -1605,7 +1632,6 @@ local booster = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 35,
@@ -1637,7 +1663,6 @@ local effarcire = {
     dependencies = {
     	items = {
         	"set_entr_tags",
-            "j_entr_exousia"
         }
     },
 	order = 36,
@@ -1667,7 +1692,6 @@ local asc_arcane = {
 	dependencies = {
 	  items = {
 		"set_entr_tags",
-		"j_entr_exousia"
 	  }
 	},
 	atlas = "ascendant_tags",
@@ -1703,48 +1727,48 @@ return {
 		rare,
 		epic,
 		legendary,
-		exotic,
-		entropic,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or exotic,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or entropic,
 		negative,
 		poly,
 		foil,
 		holo,
-		glass,
-		m,
-		gold,
-		blur,
-		glitched,
-		mosaic,
-		astral,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or glass,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or m,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or gold,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or blur,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or glitched,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or mosaic,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or astral,
 		solar_asc,
-		voucher,
-		saint,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and cryptidless_voucher or voucher,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or saint,
 		copying,
-		better_voucher,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or better_voucher,
 		infdiscard,
-		cat_asc,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or cat_asc,
 		dog_asc,
-		canvas,
-		unbounded,
-		unbounded_pack,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or canvas,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or unbounded,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or unbounded_pack,
 		ejoker,
 		universal,
-		ebundle,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or ebundle,
 		twisted,
 		stock,
 		blind,
 		blind_pack,
-		reference,
-		reference_pack,
-		cavendish,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or reference,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or reference_pack,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or cavendish,
 		credit,
 		topup,
-		better_topup,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or better_topup,
 		booster,
 		effarcire,
 		sunny_asc,
 		fractured_asc,
-		oversat,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or oversat,
 		freaky,
 		freaky_asc,
 		neon_asc,
