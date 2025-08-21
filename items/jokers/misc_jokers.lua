@@ -4070,7 +4070,7 @@ local thirteen_of_stars = {
             local text = G.FUNCS.get_poker_hand_info(G.play.cards)
             if text and G.GAME.hands[text] then
                 return {
-                    plus_asc = G.GAME.hands[text].level/2
+                    plus_asc = G.GAME.hands[text].level/4
                 }
             end
         end
