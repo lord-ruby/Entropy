@@ -1329,6 +1329,20 @@ local decs = {
 					"as {C:gold}Ascension Power{}"
                 },
             },
+			j_entr_diode_red = {
+                name = "LED (Red)",
+                text = {
+                    "{C:red}+#1#{} Mult",
+					"{C:inactive,S:0.8}Switches after hand played"
+                },
+            },
+			j_entr_diode_blue = {
+                name = "LED (Blue)",
+                text = {
+                    "{C:blue}+#1#{} Chips",
+					"{C:inactive,S:0.8}Switches after hand played"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

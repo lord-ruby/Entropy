@@ -4077,6 +4077,46 @@ local thirteen_of_stars = {
     end,
 }
 
+local diode = {
+    order = 78,
+    object_type = "Joker",
+    key = "diode",
+    rarity = 1,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 2, y = 11},  
+    atlas = "jokers",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    config = {
+        mult = 6,
+        chips = 40
+    },
+    calculate = function(self, card, context)
+        if context.after then
+            card.ability.blue = not card.ability.blue
+            return {
+                message = localize("k_switch_ex"),
+                colour = G.C.dark_edition
+            }
+        end
+        if (context.joker_main) or context.forcetrigger then
+            return {
+                chips = card.ability.blue and card.ability.chips or nil,
+                mult = not card.ability.blue and card.ability.mult or nil
+            }
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.blue and card.ability.chips or card.ability.mult
+            },
+            key = card.ability.blue and "j_entr_diode_blue" or "j_entr_diode_red"
+        }
+    end
+}
+
 return {
     items = {
         surreal,
@@ -4163,6 +4203,7 @@ return {
         petrichor,
         otherworldly_joker,
         error_joker,
-        thirteen_of_stars
+        thirteen_of_stars,
+        diode
     }
 }
