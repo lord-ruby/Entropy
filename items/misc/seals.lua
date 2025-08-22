@@ -439,8 +439,8 @@ return {
         sapphire,
         silver,
         pink,
-        verdant,
-        cerulean,
+        not (SMODS.Mods["Cryptid"] or {}).can_load and {} or verdant,
+        not (SMODS.Mods["Cryptid"] or {}).can_load and {} or cerulean,
         ornate,
         amber
     }
