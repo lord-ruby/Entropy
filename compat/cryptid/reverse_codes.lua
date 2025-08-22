@@ -305,13 +305,11 @@ local rr = {
     },
 	object_type = "Blind",
     order = 4200,
-	name = "entr-red",
 	key = "red",
 	pos = { x = 0, y = 0 },
 	atlas = "blinds",
 	boss_colour = HEX("FF0000"),
     mult=1,
-    boss = {min=1,max=9999},
     dollars = 3,
     in_pool = function(self) return false end
 }

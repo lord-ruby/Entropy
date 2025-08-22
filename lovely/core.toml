@@ -1791,3 +1791,33 @@ payload = '''
 local text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta = Entropy.evaluate_play_misc(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
 '''
 match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+pattern = '''
+if v.boss.showdown then
+'''
+position = 'at'
+payload = '''
+if v.boss and v.boss.showdown then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''
+elseif G.GAME.round_resets.blind == G.P_BLINDS.bl_big then
+   G.GAME.round_resets.blind_states.Big = 'Defeated'
+else
+'''
+position = 'at'
+payload = '''
+elseif G.GAME.round_resets.blind == G.P_BLINDS.bl_big then
+   G.GAME.round_resets.blind_states.Big = 'Defeated'
+elseif G.GAME.blind_on_deck ~= "Red" then
+'''
+match_indent = true
+
