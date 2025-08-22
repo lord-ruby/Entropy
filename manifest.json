@@ -1,7 +1,7 @@
 {
     "name": "Entropy",
     "id": "entr",
-    "version": "1.0.0~alpha",
+    "version": "1.0.0",
     "website_url": "",
     "description": "A chaotic Balatro mod",
     "prefix": "entr",
