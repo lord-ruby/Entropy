@@ -158,3 +158,12 @@ SMODS.ObjectType({
 		self:inject_card(G.P_CENTERS.j_oops)
 	end,
 })
+
+SMODS.UndiscoveredSprite({
+	key = "CBlind",
+	atlas = "undiscovered",
+	path = "undiscovered.png",
+	pos = { x = 999, y = 999 },
+	px = 71,
+	py = 95,
+})
