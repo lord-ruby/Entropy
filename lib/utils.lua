@@ -1883,3 +1883,7 @@ function Entropy.calculate_ratios(incl_vanilla, only_vanilla)
     end
     print("total: "..total)
 end
+
+function Entropy.return_to_deck()
+    return Entropy.BlindIs("bl_entr_cassandra") or Entropy.BlindIs("bl_entr_pi")
+end
