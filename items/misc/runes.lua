@@ -764,18 +764,7 @@ local isaz_indicator = {
         if context.starting_shop then
             return {
                 func = function()
-                    local card = SMODS.add_card{
-                        set = "Voucher",
-                        area = G.shop_vouchers,
-                        key_append = "entr_isaz"
-                    }
-                    Cryptid.manipulate(card)
-                    create_shop_card_ui(card, "Voucher", G.shop_vouchers)
-                    if G.GAME.providence then
-                        card.cost = card.cost / 2
-                    end
-                    card:start_materialize()
-                    G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
+                    SMODS.add_voucher_to_shop(nil, true)
                     return true
                 end,
             }

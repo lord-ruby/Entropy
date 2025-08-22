@@ -3785,3 +3785,23 @@ function Card:sell_card()
 	end
 	sell_card_stuff(self)
 end
+
+
+--backwards compat
+function SMODS.add_voucher_to_shop(key, dont_save)
+    if key then assert(G.P_CENTERS[key], "Invalid voucher key: "..key) else
+        key = get_next_voucher_key()
+        if not dont_save then
+            G.GAME.current_round.voucher.spawn[key] = true
+            G.GAME.current_round.voucher[#G.GAME.current_round.voucher + 1] = key
+        end
+    end
+    local card = Card(G.shop_vouchers.T.x + G.shop_vouchers.T.w/2,
+        G.shop_vouchers.T.y, G.CARD_W, G.CARD_H, G.P_CARDS.empty, G.P_CENTERS[key],{bypass_discovery_center = true, bypass_discovery_ui = true})
+        card.shop_voucher = true
+        create_shop_card_ui(card, 'Voucher', G.shop_vouchers)
+        card:start_materialize()
+        G.shop_vouchers:emplace(card)
+        G.shop_vouchers.config.card_limit = #G.shop_vouchers.cards
+        return card
+end

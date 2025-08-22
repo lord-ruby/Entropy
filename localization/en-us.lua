@@ -5570,7 +5570,9 @@ local decs = {
 			k_mirrored_in_crimson = "Mirrored in Crimson",
 			k_freebird = "Freebird",
 			k_portal_reference = "The Part Where She Kills You",
-			k_entropy_is_endless = "Entropy Is Endless"
+			k_entropy_is_endless = "Entropy Is Endless",
+
+			k_switch_ex = "Switch!"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

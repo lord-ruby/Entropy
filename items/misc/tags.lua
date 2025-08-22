@@ -477,57 +477,7 @@ local voucher = {
 	apply = function(self, tag, context)
 		if context.type == "voucher_add" then
 			tag:yep("+", G.C.SECONDARY_SET.Voucher, function()
-				G.ARGS.voucher_tag = G.ARGS.voucher_tag or {}
-				local voucher_key = Cryptid.next_tier3_key(true)
-				G.ARGS.voucher_tag[voucher_key] = true
-				G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
-				local card = Card(
-					G.shop_vouchers.T.x + G.shop_vouchers.T.w / 2,
-					G.shop_vouchers.T.y,
-					G.CARD_W,
-					G.CARD_H,
-					G.P_CARDS.empty,
-					G.P_CENTERS[voucher_key],
-					{ bypass_discovery_center = true, bypass_discovery_ui = true }
-				)
-				Cryptid.manipulate(card)
-				create_shop_card_ui(card, "Voucher", G.shop_vouchers)
-				card:start_materialize()
-				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
-					card:set_edition(nil, true)
-				elseif G.GAME.modifiers.cry_force_random_edition then
-					local edition = Cryptid.poll_random_edition()
-					card:set_edition(edition, true)
-				end
-
-				if G.GAME.modifiers.cry_force_sticker == "eternal" or G.GAME.modifiers.cry_sticker_sheet_plus then
-					card:set_eternal(true)
-					card.ability.eternal = true
-				end
-				if G.GAME.modifiers.cry_force_sticker == "perishable" or G.GAME.modifiers.cry_sticker_sheet_plus then
-					card:set_perishable(true)
-					card.ability.perishable = true
-				end
-				if G.GAME.modifiers.cry_force_sticker == "rental" or G.GAME.modifiers.cry_sticker_sheet_plus then
-					card:set_rental(true)
-					card.ability.rental = true
-				end
-				if G.GAME.modifiers.cry_force_sticker == "pinned" or G.GAME.modifiers.cry_sticker_sheet_plus then
-					card.pinned = true
-				end
-				if G.GAME.modifiers.cry_force_sticker == "banana" or G.GAME.modifiers.cry_sticker_sheet_plus then
-					card.ability.banana = true
-				end
-				if G.GAME.modifiers.cry_sticker_sheet_plus then
-					if G.GAME.modifiers.cry_sticker_sheet then
-						for k, v in pairs(SMODS.Stickers) do
-							v:set_sticker(card, true)
-						end
-					end
-				end
-				G.shop_vouchers:emplace(card)
-				G.ARGS.voucher_tag = nil
-				G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
+				SMODS.add_voucher_to_shop(Cryptid.next_tier3_key(true), true)
 				return true
 			end)
 			tag.triggered = true
@@ -557,25 +507,7 @@ local cryptidless_voucher = {
 		if context.type == "voucher_add" then
 			tag:yep("+", G.C.SECONDARY_SET.Voucher, function()
 				for i = 1, 2 do
-					G.ARGS.voucher_tag = G.ARGS.voucher_tag or {}
-					local voucher_key = SMODS.get_next_vouchers()[1]
-					G.ARGS.voucher_tag[voucher_key] = true
-					G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
-					local card = Card(
-						G.shop_vouchers.T.x + G.shop_vouchers.T.w / 2,
-						G.shop_vouchers.T.y,
-						G.CARD_W,
-						G.CARD_H,
-						G.P_CARDS.empty,
-						G.P_CENTERS[voucher_key],
-						{ bypass_discovery_center = true, bypass_discovery_ui = true }
-					)
-					Cryptid.manipulate(card)
-					create_shop_card_ui(card, "Voucher", G.shop_vouchers)
-					card:start_materialize()
-					G.shop_vouchers:emplace(card)
-					G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
-					G.ARGS.voucher_tag = nil
+					SMODS.add_voucher_to_shop(nil, true)
 				end
 				return true
 			end)
@@ -647,106 +579,8 @@ local better_voucher = {
 	apply = function(self, tag, context)
 		if context.type == "voucher_add" then
 			tag:yep("+", G.C.SECONDARY_SET.Voucher, function()
-				G.ARGS.voucher_tag = G.ARGS.voucher_tag or {}
-				local voucher_key = Cryptid.next_tier3_key(true)
-				G.ARGS.voucher_tag[voucher_key] = true
-				G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
-				local card = Card(
-					G.shop_vouchers.T.x + G.shop_vouchers.T.w / 2,
-					G.shop_vouchers.T.y,
-					G.CARD_W,
-					G.CARD_H,
-					G.P_CARDS.empty,
-					G.P_CENTERS[voucher_key],
-					{ bypass_discovery_center = true, bypass_discovery_ui = true }
-				)
-				Cryptid.manipulate(card)
-				create_shop_card_ui(card, "Voucher", G.shop_vouchers)
-				card:start_materialize()
-				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
-					card:set_edition(nil, true)
-				elseif G.GAME.modifiers.cry_force_random_edition then
-					local edition = Cryptid.poll_random_edition()
-					card:set_edition(edition, true)
-				end
-
-				if G.GAME.modifiers.cry_force_sticker == "eternal" or G.GAME.modifiers.cry_sticker_sheet_plus then
-					card:set_eternal(true)
-					card.ability.eternal = true
-				end
-				if G.GAME.modifiers.cry_force_sticker == "perishable" or G.GAME.modifiers.cry_sticker_sheet_plus then
-					card:set_perishable(true)
-					card.ability.perishable = true
-				end
-				if G.GAME.modifiers.cry_force_sticker == "rental" or G.GAME.modifiers.cry_sticker_sheet_plus then
-					card:set_rental(true)
-					card.ability.rental = true
-				end
-				if G.GAME.modifiers.cry_force_sticker == "pinned" or G.GAME.modifiers.cry_sticker_sheet_plus then
-					card.pinned = true
-				end
-				if G.GAME.modifiers.cry_force_sticker == "banana" or G.GAME.modifiers.cry_sticker_sheet_plus then
-					card.ability.banana = true
-				end
-				if G.GAME.modifiers.cry_sticker_sheet_plus then
-					if G.GAME.modifiers.cry_sticker_sheet then
-						for k, v in pairs(SMODS.Stickers) do
-							v:set_sticker(card, true)
-						end
-					end
-				end
-				G.shop_vouchers:emplace(card)
-
-				local voucher_key = Cryptid.next_tier3_key(true)
-				G.ARGS.voucher_tag[voucher_key] = true
-				G.shop_vouchers.config.card_limit = G.shop_vouchers.config.card_limit + 1
-				local card = Card(
-					G.shop_vouchers.T.x + G.shop_vouchers.T.w / 2,
-					G.shop_vouchers.T.y,
-					G.CARD_W,
-					G.CARD_H,
-					G.P_CARDS.empty,
-					G.P_CENTERS[voucher_key],
-					{ bypass_discovery_center = true, bypass_discovery_ui = true }
-				)
-				Cryptid.manipulate(card)
-				create_shop_card_ui(card, "Voucher", G.shop_vouchers)
-				card:start_materialize()
-				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
-					card:set_edition(nil, true)
-				elseif G.GAME.modifiers.cry_force_random_edition then
-					local edition = Cryptid.poll_random_edition()
-					card:set_edition(edition, true)
-				end
-
-				if G.GAME.modifiers.cry_force_sticker == "eternal" or G.GAME.modifiers.cry_sticker_sheet_plus then
-					card:set_eternal(true)
-					card.ability.eternal = true
-				end
-				if G.GAME.modifiers.cry_force_sticker == "perishable" or G.GAME.modifiers.cry_sticker_sheet_plus then
-					card:set_perishable(true)
-					card.ability.perishable = true
-				end
-				if G.GAME.modifiers.cry_force_sticker == "rental" or G.GAME.modifiers.cry_sticker_sheet_plus then
-					card:set_rental(true)
-					card.ability.rental = true
-				end
-				if G.GAME.modifiers.cry_force_sticker == "pinned" or G.GAME.modifiers.cry_sticker_sheet_plus then
-					card.pinned = true
-				end
-				if G.GAME.modifiers.cry_force_sticker == "banana" or G.GAME.modifiers.cry_sticker_sheet_plus then
-					card.ability.banana = true
-				end
-				if G.GAME.modifiers.cry_sticker_sheet_plus then
-					if G.GAME.modifiers.cry_sticker_sheet then
-						for k, v in pairs(SMODS.Stickers) do
-							v:set_sticker(card, true)
-						end
-					end
-				end
-				G.shop_vouchers:emplace(card)
-
-				G.ARGS.voucher_tag = nil
+				SMODS.add_voucher_to_shop(Cryptid.next_tier3_key(true), true)
+				SMODS.add_voucher_to_shop(Cryptid.next_tier3_key(true), true)
 				return true
 			end)
 			tag.triggered = true
