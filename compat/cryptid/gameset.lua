@@ -74,11 +74,13 @@ G.FUNCS.cry_intro_part = function(_part)
 			{ shader = "dissolve", shadow_height = 0.05 },
 			{ shader = "dissolve" },
 		})
-		local madnessSprite = Sprite(0, 0, 1, 1, G.ASSET_ATLAS["cry_gameset"], { x = 2, y = 0 })
-		madnessSprite:define_draw_steps({
-			{ shader = "dissolve", shadow_height = 0.05 },
-			{ shader = "dissolve" },
-		})
+		if Cryptid_config and Cryptid_config.madness_enabled then
+			local madnessSprite = Sprite(0, 0, 1, 1, G.ASSET_ATLAS["cry_gameset"], { x = 2, y = 0 })
+			madnessSprite:define_draw_steps({
+				{ shader = "dissolve", shadow_height = 0.05 },
+				{ shader = "dissolve" },
+			})
+		end
 		--TODO: localize
 		G.modestBtn = create_UIBox_character_button_with_sprite({
 			sprite = modestSprite,
@@ -96,20 +98,22 @@ G.FUNCS.cry_intro_part = function(_part)
 			colour = G.C.RED,
 			maxw = 3,
 		})
-		G.madnessBtn = create_UIBox_character_button_with_sprite({
-			sprite = madnessSprite,
-			button = localize("entr_gameset_madness"),
-			id = "madness",
-			func = "cry_madness",
-			colour = Entropy.entropic_gradient,
-			maxw = 3,
-		})
+			if Cryptid_config and Cryptid_config.madness_enabled then
+			G.madnessBtn = create_UIBox_character_button_with_sprite({
+				sprite = madnessSprite,
+				button = localize("entr_gameset_madness"),
+				id = "madness",
+				func = "cry_madness",
+				colour = Entropy.entropic_gradient,
+				maxw = 3,
+			})
+		end
 		local gamesetUI = create_UIBox_generic_options({
 			infotip = false,
 			contents = {
 				G.modestBtn,
 				G.mainlineBtn,
-				G.madnessBtn,
+				Cryptid_config and Cryptid_config.madness_enabled and G.madnessBtn or {},
 			},
 			back_label = "Confirm",
 			back_colour = G.C.BLUE,
@@ -120,7 +124,7 @@ G.FUNCS.cry_intro_part = function(_part)
 			blocking = false,
 			blockable = false,
 			func = function()
-				G.madnessBtn.config.colour = Entropy.entropic_gradient
+				if G.madnessBtn then G.madnessBtn.config.colour = Entropy.entropic_gradient end
 				return true
 			end,
 		}))
@@ -157,7 +161,7 @@ G.FUNCS.cry_intro_part = function(_part)
 		local desc_length = { --number of times Jolly Joker speaks for each gameset
 			modest = 2,
 			mainline = 3,
-			madness = 3,
+			madness = 4,
 		}
 		G.E_MANAGER:clear_queue("tutorial")
 		if G.OVERLAY_TUTORIAL.content then
@@ -192,14 +196,14 @@ end
 G.FUNCS.cry_modest = function(e)
 	G.modestBtn.config.colour = G.C.CRY_SELECTED
 	G.mainlineBtn.config.colour = G.C.RED
-	G.madnessBtn.config.colour = Entropy.entropic_gradient
+	if G.madnessBtn then G.madnessBtn.config.colour = Entropy.entropic_gradient end
 	G.FUNCS.cry_intro_part("modest")
 	G.selectedGameset = "modest"
 end
 G.FUNCS.cry_mainline = function(e)
 	G.modestBtn.config.colour = G.C.GREEN
 	G.mainlineBtn.config.colour = G.C.CRY_SELECTED
-	G.madnessBtn.config.colour = Entropy.entropic_gradient
+	if G.madnessBtn then G.madnessBtn.config.colour = Entropy.entropic_gradient end
 	G.FUNCS.cry_intro_part("mainline")
 	G.selectedGameset = "mainline"
 end

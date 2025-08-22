@@ -4117,6 +4117,42 @@ local diode = {
     end
 }
 
+local prismatic_shard = {
+    order = 79,
+    object_type = "Joker",
+    key = "prismatic_shard",
+    rarity = 1,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 0, y = 0},
+    soul_pos = {x = 0, y = 1},
+    atlas = "prismatic_shard",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    config = {
+        mult = 2,
+        chips = 10,
+        plus_asc = 0.25
+    },
+    calculate = function(self, card, context)
+        if (context.individual and context.cardarea == G.play) or context.forcetrigger then
+            local etype = pseudorandom_element({"mult", "chips", "plus_asc"}, pseudoseed("prismatic_shard"))
+            return {
+                [etype] = card.ability[etype]
+            }
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.mult,
+                card.ability.chips,
+                card.ability.plus_asc
+            }
+        }
+    end
+}
+
 return {
     items = {
         surreal,
@@ -4204,6 +4240,7 @@ return {
         otherworldly_joker,
         error_joker,
         thirteen_of_stars,
-        diode
+        diode,
+        prismatic_shard
     }
 }

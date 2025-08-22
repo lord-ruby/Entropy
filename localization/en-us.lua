@@ -1343,6 +1343,15 @@ local decs = {
 					"{C:inactive,S:0.8}Switches after hand played"
                 },
             },
+			j_entr_prismatic_shard = {
+                name = "Prismatic Shard",
+                text = {
+                    "Scored Cards give",
+					"{C:mult}+#1#{} Mult,",
+					"{C:blue}+#2#{} Chips, or",
+					"{C:gold}+#3#{} Ascension Power"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

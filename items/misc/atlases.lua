@@ -267,3 +267,10 @@ SMODS.Atlas {
     px = 71, 
     py = 95 
 }
+
+SMODS.Atlas { 
+    key = 'prismatic_shard', 
+    path = 'prismatic_shard.png', 
+    px = 71, 
+    py = 95 
+}

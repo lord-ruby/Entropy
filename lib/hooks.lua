@@ -1392,6 +1392,7 @@ local entr_define_dt = 0
 local entr_antireal_dt = 0
 local entr_xekanos_dt = 0
 local bdt = 0
+local entr_prismatic_dt = 0
 local update_ref = Game.update
 Entropy.last_csl = nil
 Entropy.last_slots = nil
@@ -1414,10 +1415,19 @@ function Game:update(dt)
         G.STATE_COMPLETE = false
     end
     entr_define_dt = entr_define_dt + dt
+    entr_prismatic_dt = entr_prismatic_dt + dt
     if G.P_CENTERS and G.P_CENTERS.c_entr_define and entr_define_dt > 0.5 then
 		entr_define_dt = 0
 		local pointerobj = G.P_CENTERS.c_entr_define
 		pointerobj.pos.x = (pointerobj.pos.x == 4) and 5 or 4
+	end
+    if G.P_CENTERS and G.P_CENTERS.j_entr_prismatic_shard and entr_prismatic_dt > 0.05 then
+		entr_prismatic_dt = 0
+		local pointerobj = G.P_CENTERS.j_entr_prismatic_shard
+		pointerobj.pos.x = pointerobj.pos.x + 1
+        if pointerobj.pos.x > 10 then
+            pointerobj.pos.x = 0
+        end
 	end
     entr_antireal_dt = entr_antireal_dt + dt
     if G.P_CENTERS and G.P_CENTERS.j_entr_antireal and entr_antireal_dt > 0.05 then
