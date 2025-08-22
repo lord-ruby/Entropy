@@ -159,7 +159,9 @@ local delta = {
     end
 }
 function Entropy.evaluate_play_misc(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
-    if Entropy.BlindIs("bl_entr_delta") and G.GAME.round_resets.hands > G.GAME.current_round.hands_left and not G.GAME.blind.disabled then
+	local mult = SMODS.Scoring_Parameters["mult"].current
+	local hand_chips = SMODS.Scoring_Parameters["chips"].current
+    if Entropy.BlindIs("bl_entr_delta") and to_big(G.GAME.round_resets.hands) > to_big(G.GAME.current_round.hands_left) and not G.GAME.blind.disabled then
         local used = G.GAME.round_resets.hands - G.GAME.current_round.hands_left
         used = math.max(used,2)
         mult = mult / used
@@ -189,6 +191,12 @@ function Entropy.evaluate_play_misc(text, disp_text, poker_hands, scoring_hand, 
         update_hand_text({delay=0}, {mult=mult})
         delay(0.4)
     end
+	if Entropy.BlindIs("bl_entr_omicron") and to_big(G.GAME.round_resets.hands) <= to_big(G.GAME.current_round.hands_left) and not G.GAME.blind.disabled then
+		mult = 0
+		hand_chips = 0
+	end
+	SMODS.Scoring_Parameters["mult"]:modify(mult - SMODS.Scoring_Parameters["mult"].current)
+	SMODS.Scoring_Parameters["chips"]:modify(hand_chips - SMODS.Scoring_Parameters["chips"].current)
     return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
 end
 
@@ -836,8 +844,8 @@ local lambda = {
 		if context.after and not G.GAME.blind.disabled then
 			local _, _, _, hand = G.FUNCS.get_poker_hand_info(G.play.cards)
 			Entropy.FlipThen(hand, function(card)
-				card.ability.perishable = true
-				card.ability.perish_tally = 5
+				card.ability.debuff_timer = 5
+				card.ability.debuff_timer_max = 5
 			end)
 			delay(0.5)
 		end
@@ -944,8 +952,8 @@ local omicron = {
     },
 	object_type = "Blind",
     order = 1000+15,
-	name = "entr-xi",
-	key = "xi",
+	name = "entr-omicron",
+	key = "omicron",
 	pos = { x = 0, y = 14 },
 	atlas = "altblinds",
 	boss_colour = HEX("907c7c"),
@@ -958,14 +966,6 @@ local omicron = {
     in_pool = function()
         return G.GAME.entr_alt
     end,
-	calculate = function(self, blind, context)
-		if context.after and not G.GAME.blind.played then
-			Entropy.FlipThen(G.play.cards, function(card)
-				card.ability.eternal = true
-			end)
-			G.GAME.blind.played = true
-		end
-	end
 }
 
 local pi = {

@@ -1497,7 +1497,8 @@ local decs = {
 			bl_entr_lambda = {
 				name = "Lambda",
 				text = {
-					"Scored cards become perishable"
+					"Scored cards become",
+					"debuffed for 5 rounds"
 				}
 			},
 			bl_entr_mu = {
@@ -1525,14 +1526,14 @@ local decs = {
 				name = "Omicron",
 				text = {
 					"First played hand",
-					"becomes eternal"
+					"gives no Score"
 				}
 			},
 			bl_entr_pi = {
 				name = "Pi",
 				text = {
 					"Discarded cards",
-					"become perishable"
+					"return to Deck"
 				}
 			},
 			bl_entr_rho = {
