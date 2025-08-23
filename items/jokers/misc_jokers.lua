@@ -2288,7 +2288,7 @@ local cass = {
     calculate = function(self, card, context)
         if context.using_consumeable and (context.consumeable.config.center.set == "Planet" or context.consumeable.config.center.set == "Star") then
             card.ability.mod = math.min(card.ability.mod, 20)
-            local result = 6--pseudorandom(pseudoseed("entr_cass"), 1, 6)
+            local result = pseudorandom(pseudoseed("entr_cass"), 1, 6)
             if result == 1 then
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "hand_size", scalar_value = "mod"})
                 G.hand:handle_card_limit(card.ability.hand_size)
