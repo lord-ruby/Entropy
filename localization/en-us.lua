@@ -2673,7 +2673,7 @@ local decs = {
 				name = "Coatlicue",
 				text = {
 					"Level up a {C:attention}random{} Poker Hands",
-					"{C:gold}Ascension Power{} by {C:attention}1/15{}th",
+					"{C:gold}Ascension Power{} by {C:attention}1/20{}th",
 					"of its {C:chips}Chips{} per Level"
 				}
 			},
@@ -2681,7 +2681,7 @@ local decs = {
 				name = "34 Tauri",
 				text = {
 					"Level up a {C:attention}random{} Poker Hands",
-					"{C:gold}Ascension Power{} by {C:attention}1/2{}th",
+					"{C:gold}Ascension Power{} by {C:attention}1/3{}th",
 					"of its {C:mult}Mult{} per Level"
 				}
 			},

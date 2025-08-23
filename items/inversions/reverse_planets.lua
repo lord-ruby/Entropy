@@ -241,7 +241,7 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
     },
     atlas = atlas or "consumables",
     config = config or {
-        level = level or 2,
+        level = level or 1,
         handname = handname
     },
     cost = cost,
@@ -364,7 +364,7 @@ Entropy.ReversePlanets = {
 -- putting this here its easier because of how dumb the system is
 if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
   Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="planetlua",sprite_pos={x=8,y=2}, new_key="starlua", prefix = "cry",config = {
-    level = 2,
+    level = 1,
     odds = 5
   },
   loc_vars = function(self,q,card) 
@@ -530,7 +530,7 @@ end, func = function(self, card, area, copier, number)
     end
   end
   Entropy.ReversePlanetUse(hand, card, card.ability.amt + (G.GAME.entr_black_dwarf or 0))
-end, config = {amt = 1.25}, loc_vars = function(self, q, card) return {vars = {card.ability.amt + (G.GAME.entr_black_dwarf or 0)}} end}
+end, config = {amt = 0.75}, loc_vars = function(self, q, card) return {vars = {card.ability.amt + (G.GAME.entr_black_dwarf or 0)}} end}
 
 Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="",key="chiron",sprite_pos={x=2,y=2}, new_key="coatlicue", prefix = "entr", atlas = "consumables2", set_badges = function(self, card, badges)
   badges[1] = create_badge(localize("k_star_q"), get_type_colour(self or card.config, card), nil, 1.2)
@@ -542,7 +542,7 @@ end, func = function(self, card, copier, area, number)
     end
   end
   local hand = pseudorandom_element(hands, pseudoseed("entr_coatlicue"))
-  Entropy.ReversePlanetUse(hand, card, G.GAME.hands[hand].l_chips / 15 + (G.GAME.entr_black_dwarf or 0))
+  Entropy.ReversePlanetUse(hand, card, G.GAME.hands[hand].l_chips / 25 + (G.GAME.entr_black_dwarf or 0))
 end, config = {bdwarf = 0.5}, loc_vars = function(self, q, card) return {vars = {card.ability.bdwarf}} end}
 
 Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="",key="neith",sprite_pos={x=3,y=2}, new_key="threefour", prefix = "entr", atlas = "consumables2", set_badges = function(self, card, badges)
@@ -555,7 +555,7 @@ end, func = function(self, card, copier, area, number)
     end
   end
   local hand = pseudorandom_element(hands, pseudoseed("entr_threefour"))
-  Entropy.ReversePlanetUse(hand, card, G.GAME.hands[hand].l_mult / 2 + (G.GAME.entr_black_dwarf or 0))
+  Entropy.ReversePlanetUse(hand, card, G.GAME.hands[hand].l_mult / 3 + (G.GAME.entr_black_dwarf or 0))
 end, config = {bdwarf = 0.5}, loc_vars = function(self, q, card) return {vars = {card.ability.bdwarf}} end}
 
 Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="",key="sputnik",sprite_pos={x=4,y=2}, new_key="fuzzball", prefix = "entr", atlas = "consumables2", set_badges = function(self, card, badges)
