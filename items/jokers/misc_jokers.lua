@@ -3964,7 +3964,7 @@ local grape_juice = {
             vars = {card.ability.left, card.ability.left_mod}
         }
     end,
-    can_use = function(self, card) return to_big(card.ability.left) > 0 and #G.hand.cards > 0 end,
+    can_use = function(self, card) return to_big(card.ability.left) > to_big(0) and #G.hand.cards > 0 end,
     use = function(self, card)
         card.ability.left = card.ability.left - 1
         local card = pseudorandom_element(G.hand.cards, pseudoseed("entr_grape_juice"))
