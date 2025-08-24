@@ -1693,7 +1693,7 @@ end
 function Cryptid.ascend(num, curr2) -- edit this function at your leisure
     G.GAME.sunnumber = G.GAME.sunnumber or {}
     local snum
-    if type(G.GAME.sunnumber) == "table" then num = G.GAME.sunnumber.not_modest or 0 
+    if type(G.GAME.sunnumber) == "table" then snum = G.GAME.sunnumber.not_modest or 0 
     else snum = G.GAME.sunnumber end
     curr2 =
         curr2 or
