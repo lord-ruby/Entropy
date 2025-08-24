@@ -1691,6 +1691,7 @@ function create_shop_card_ui(card, type, area)
 end
 
 function Cryptid.ascend(num, curr2) -- edit this function at your leisure
+    G.GAME.sunnumber = G.GAME.sunnumber or {}
     curr2 =
         curr2 or
         ((G.GAME.current_round.current_hand.cry_asc_num or 0) + (G.GAME.asc_power_hand or 0)) *
@@ -1711,9 +1712,9 @@ function Cryptid.ascend(num, curr2) -- edit this function at your leisure
                 curr = v.ability.extra + 0.4
             end
         end
-        return num ^ (to_big((1.75 + (G.GAME.sunnumber or 0))) * (to_big((curr2) * curr)))
+        return num ^ (to_big((1.75 + (G.GAME.sunnumber.not_modest or 0))) * (to_big((curr2) * curr)))
     else
-        return num * (to_big((1.25 + (G.GAME.sunnumber or 0))) ^ to_big(curr2))
+        return num * (to_big((1.25 + (G.GAME.sunnumber.not_modest or 0))) ^ to_big(curr2))
     end
 end
 
