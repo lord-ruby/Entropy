@@ -3800,4 +3800,4 @@ function Card:sell_card()
 		end
 	end
 	sell_card_stuff(self)
-end
+end 

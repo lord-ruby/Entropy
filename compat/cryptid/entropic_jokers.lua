@@ -801,15 +801,15 @@ local apeirostemma = {
                 local cons = pseudorandom_element(consumables, pseudoseed("apeiro_dice_1_consumable"))
                 if joker then
                     local jc = copy_card(joker)
-                    jc:set_edition("e_negative")
                     jc:add_to_deck()
                     G.jokers:emplace(jc)
+                    jc:set_edition("e_negative")
                 end
                 if cons then
                     local cc = copy_card(cons)
-                    cc:set_edition("e_negative")
                     cc:add_to_deck()
                     G.consumeables:emplace(cc)
+                    cc:set_edition("e_negative")
                 end
             end
         end

@@ -87,9 +87,9 @@ if FinisherBossBlindStringMap then
                 for i, v in ipairs(G.play.cards) do
                     local card2 = copy_card(v)
                     card2.ability.banana = true
-                    card2:set_edition("e_negative")
                     card2:add_to_deck()
                     G.hand:emplace(card2)
+                    card2:set_edition("e_negative")
                     table.insert(G.playing_cards, card2)
                 end
             end

@@ -273,8 +273,8 @@ local cerulean = {
             for i = 1, 3 do
                     local c = create_card("Consumables", G.consumeables, nil, nil, nil, nil, key) 
                     c:add_to_deck()
-                    c:set_edition("e_negative")
                     G.consumeables:emplace(c)
+                    c:set_edition("e_negative")
                 end
             for i, v in pairs(scoring_hand) do
                 v.ability.temporary2 = true
@@ -292,8 +292,8 @@ local cerulean = {
             for i = 1, 3 do
                 local c = create_card("Consumables", G.consumeables, nil, nil, nil, nil, key) 
                 c:add_to_deck()
-                c:set_edition("e_negative")
                 G.consumeables:emplace(c)
+                c:set_edition("e_negative")
             end
         end
     end,

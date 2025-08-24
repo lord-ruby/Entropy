@@ -424,10 +424,10 @@ local rusty_shredder = {
             for i, v in pairs(G.hand.highlighted) do
                 if SMODS.pseudorandom_probability(card, 'rusty_shredder', 1, card.ability.extra.odds) then
                     local c = copy_card(v)
-                    c:set_edition("e_negative")
                     c.ability.temporary = true
                     c:add_to_deck()
                     G.hand:emplace(c)
+                    c:set_edition("e_negative")
                 end
             end
         end

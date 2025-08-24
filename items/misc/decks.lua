@@ -60,12 +60,12 @@ local destiny = {
       trigger = 'after',
       func = function()
         local c = create_card("Spectral", G.consumeables, nil, nil, nil, nil, "c_entr_destiny") 
-        c:set_edition("e_negative")
         c.ability.cry_absolute = true
         c.ability.entr_aleph = true
         c.ability.eternal = true
         c:add_to_deck()
         G.consumeables:emplace(c)
+        c:set_edition("e_negative")
         return true
       end}))
   end,
@@ -189,12 +189,12 @@ if CardSleeves then
           trigger = 'after',
           func = function()
             local c = create_card("Spectral", G.consumeables, nil, nil, nil, nil, "c_entr_destiny") 
-            c:set_edition("e_negative")
             c.ability.cry_absolute = true
             c.ability.entr_aleph = true
             c.ability.eternal = true
             c:add_to_deck()
             G.consumeables:emplace(c)
+            c:set_edition("e_negative")
             return true
           end}))
       end

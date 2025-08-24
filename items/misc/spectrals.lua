@@ -105,9 +105,9 @@ local destiny = {
             if not (card.ability.overflow_amount) then
                 local card2 = copy_card(card)
                 card2.ability.cry_absolute = true
-                card2:set_edition("e_negative")
                 card2:add_to_deck()
                 G.consumeables:emplace(card2)
+                card2:set_edition("e_negative")
             end
         end
     end,
