@@ -218,9 +218,9 @@ function Entropy.ReversePlanetUse(handname, card, amt)
     { mult = 0, chips = 0, handname = "", level = "" }
   )
   delay(1)
+  G.hand:parse_highlighted()
   G.GAME.current_round.current_hand.cry_asc_num = 0
   G.GAME.current_round.current_hand.cry_asc_num_text = ""
-  G.hand:parse_highlighted()
 end
 
 local planets = {}

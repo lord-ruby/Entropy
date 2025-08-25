@@ -9,6 +9,18 @@ priority = 0
 # golden text
 [[patches]]
 [patches.pattern]
+target = '''=[SMODS _ "src/ui.lua"]'''
+pattern = '''
+ {n=G.UIT.O, config={id = 'hand_name', func = 'hand_text_UI_set',object = DynaText({string = {{ref_table = G.GAME.current_round.current_hand, ref_value = "handname_text"}}, colours = {G.C.UI.TEXT_LIGHT}, shadow = true, float = true, scale = scale*1.4})}},
+'''
+position = "after"
+payload = '''
+not (SMODS.Mods["Cryptid"] or {}).can_load and {n=G.UIT.O, config={id = 'cry_asc', func = 'cry_asc_UI_set',object = DynaText({string = {{ref_table = G.GAME.current_round.current_hand, ref_value = "cry_asc_num_text"}}, colours = {G.C.GOLD}, shadow = true, float = true, scale = scale*1})}} or nil,
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
 target = "functions/UI_definitions.lua"
 pattern = '''
 {n=G.UIT.O, config={id = 'hand_name', func = 'hand_text_UI_set',object = DynaText({string = {{ref_table = G.GAME.current_round.current_hand, ref_value = "handname_text"}}, colours = {G.C.UI.TEXT_LIGHT}, shadow = true, float = true, scale = scale*1.4})}},
