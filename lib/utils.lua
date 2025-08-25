@@ -1887,3 +1887,11 @@ end
 function Entropy.return_to_deck()
     return Entropy.BlindIs("bl_entr_cassandra") or Entropy.BlindIs("bl_entr_pi")
 end
+
+function Entropy.get_bg_colour()
+    if TDECKS then
+        local ret = TDECKS.get_bg_colour()
+        if ret then return ret end
+    end
+    return G.GAME.entr_alt and G.C.ALTBG or G.C.BLIND['Small']
+end

@@ -188,7 +188,7 @@ local trapezium = {
 			and context.cardarea == G.hand
 			and context.other_card.edition
 			and context.other_card.edition.retrig
-			and not context.end_of_round)
+			and not context.end_of_round and not context.repetition)
 		then
 			if context.other_card.debuff then
 				return {

@@ -16,7 +16,7 @@ local scenic_route = {
     demicoloncompat = true,
     loc_vars = function(self, q, card) q[#q+1] = G.P_CENTERS.c_entr_new end,
     calculate = function(self, card, context)
-        if (context.end_of_round and not context.individual and G.GAME.blind.boss and G.GAME.blind.config.blind.key ~= "bl_entr_red") or context.forcetrigger then
+        if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition and G.GAME.blind.config.blind.key ~= "bl_entr_red")  or context.forcetrigger then
             G.E_MANAGER:add_event(Event({
                 func = function()
                     if G.consumeables.config.card_count < G.consumeables.config.card_limit then
@@ -104,7 +104,7 @@ local solarflare = {
 			and context.cardarea == G.hand
 			and context.other_card.edition
 			and context.other_card.edition.key == "e_entr_solar"
-			and not context.end_of_round)
+			and not context.end_of_round and not context.repetition)
 		then
 			if context.other_card.debuff then
 				return {
