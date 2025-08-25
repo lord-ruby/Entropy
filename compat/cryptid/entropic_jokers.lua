@@ -75,7 +75,7 @@ local helios = {
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                1.75 + ((G.GAME.sunnumber or 0)),
+                1.75 + ((G.GAME.sunnumber and G.GAME.sunnumber.not_modest or 0)),
                 (card.ability.extra or 1.1) + 0.4
             },
         }

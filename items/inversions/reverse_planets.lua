@@ -440,9 +440,9 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
       if levelone == 1 then
         planetcolourone = G.C.UI.TEXT_DARK
       end
-      local str = "X("..((G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1.25).."^"..(G.GAME.nemesisnumber and G.GAME.nemesisnumber > 0 and G.GAME.nemesisnumber+1 or "").."asc)"
+      local str = "X("..((G.GAME.sunnumber and G.GAME.sunnumber.not_modest or 0) + 1.25).."^"..(G.GAME.nemesisnumber and G.GAME.nemesisnumber > 0 and G.GAME.nemesisnumber+1 or "").."asc)"
       if G.jokers and next(SMODS.find_card("j_entr_helios")) then
-          str = "^("..((G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1.75).."X"..(G.GAME.nemesisnumber and G.GAME.nemesisnumber > 0 and G.GAME.nemesisnumber+1 or "").."asc)"
+          str = "^("..((G.GAME.sunnumber and G.GAME.sunnumber.not_modest or 0) + 1.75).."X"..(G.GAME.nemesisnumber and G.GAME.nemesisnumber > 0 and G.GAME.nemesisnumber+1 or "").."asc)"
       end
       return {
         vars = {
