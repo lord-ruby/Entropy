@@ -2044,15 +2044,6 @@ local decs = {
 			}
 		},
 		Planet = {
-			c_cry_sunplanet = {
-				name = "Sol",
-				text = {
-					"{S:0.8}({S:0.8,V:1}lvl.#1#{S:0.8}){}",
-					"Increase power of",
-					"{C:attention}Ascended{} hands by {X:gold,C:white}#2#{}",
-					"{C:inactive}(Currently {X:gold,C:white}#3#{C:inactive}",
-				},
-			},
 			c_entr_wormhole = {
 				name = "Wormhole",
 				text = {

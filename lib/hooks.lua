@@ -1762,31 +1762,6 @@ function G.FUNCS.get_poker_hand_info(_cards)
     return text, loc_disp_text, poker_hands, scoring_hand, disp_text
 end
 
-SMODS.Consumable:take_ownership('cry_sunplanet', -- object key (class prefix not required)
-    {
-        loc_vars = function(self, q, card)
-            local levelone = (G.GAME.sunlevel and G.GAME.sunlevel or 0) + 1
-            local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
-            if levelone == 1 then
-                planetcolourone = G.C.UI.TEXT_DARK
-            end
-            local str = "X("..((G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1.25).."^asc)"
-            if G.jokers and next(SMODS.find_card("j_entr_helios")) then
-                str = "^("..((G.GAME.sunnumber and G.GAME.sunnumber or 0) + 1.75).."Xasc)"
-            end
-            return {
-                vars = {
-                    (G.GAME.sunlevel or 0) + 1,
-                    card.ability.extra or 0.05,
-                    str,
-                    colours = { planetcolourone },
-                },
-            }
-        end
-    },
-    true
-)
-
 local ease_anteref = ease_ante
 function ease_ante(mod)
     local mult = 1
