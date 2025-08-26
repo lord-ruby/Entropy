@@ -89,19 +89,13 @@ SMODS.PokerHandPart {
 	key = "derivative_part",
 	func = function(hand)
 		local eligible_cards = {}
-		local suits = {
-			Diamonds = true,
-			Spades = true,
-			Hearts = true,
-			Clubs = true
-		}
 		local stones = 0
 		for i, card in ipairs(hand) do
 			if SMODS.has_no_suit(card) or card.config.center.key == "m_stone" 
 			or card.config.center.overrides_base_rank 
 			or card.base.suit == "entr_nilsuit" 
 			or card.base.value == "entr_nilrank" 
-			or not suits[card.base.suit]
+			or SMODS.has_no_rank(card)
 			then --card.ability.name ~= "Gold Card"
                 eligible_cards[#eligible_cards+1] = card
 			end
