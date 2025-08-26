@@ -507,12 +507,12 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
       end
     end,
   }
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Timantii", new_key = "jatka", sprite_pos={x=8,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"High Card", "Pair", "Two Pair"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Klubi", new_key = "rouva", sprite_pos={x=9,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Three of a Kind", "Straight", "Flush"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Sydan", new_key = "paras", sprite_pos={x=10,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Full House", "Four of a Kind", "Straight Flush"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Lapio", new_key = "assa", sprite_pos={x=11,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"Five of a Kind", "Flush House", "Flush Five"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Kaikki", new_key = "kivi", sprite_pos={x=12,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"cry_Bulwark", "cry_Clusterfuck", "cry_UltPair"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="voxel", new_key = "chunk", sprite_pos={x=1,y=7},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=2,handnames = {"cry_Declare0", "cry_Declare1", "cry_Declare2"}}, loc_vars = Entropy.ChunkLocVars, calc=Entropy.ReverseSuitCalc}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Timantii", new_key = "jatka", sprite_pos={x=8,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=1,handnames = {"High Card", "Pair", "Two Pair"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Klubi", new_key = "rouva", sprite_pos={x=9,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=1,handnames = {"Three of a Kind", "Straight", "Flush"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Sydan", new_key = "paras", sprite_pos={x=10,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=1,handnames = {"Full House", "Four of a Kind", "Straight Flush"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Lapio", new_key = "assa", sprite_pos={x=11,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=1,handnames = {"Five of a Kind", "Flush House", "Flush Five"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Kaikki", new_key = "kivi", sprite_pos={x=12,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=1,handnames = {"cry_Bulwark", "cry_Clusterfuck", "cry_UltPair"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="voxel", new_key = "chunk", sprite_pos={x=1,y=7},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=1,handnames = {"cry_Declare0", "cry_Declare1", "cry_Declare2"}}, loc_vars = Entropy.ChunkLocVars, calc=Entropy.ReverseSuitCalc}
 end
 Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="entr_derivative",key="wormhole",sprite_pos={x=4,y=0}, new_key="pocket_dimension", prefix = "entr", atlas = "consumables2", set_badges = function(self, card, badges)
   badges[1] = create_badge(localize("k_spatial_anomaly"), get_type_colour(self or card.config, card), nil, 1.2)
@@ -571,7 +571,7 @@ end, func = function(self, card, area, copier, number)
   for i = 1, math.min(card.ability.hands, #hands) do
     Entropy.ReversePlanetUse(hands[i], card, card.ability.amt + (G.GAME.entr_black_dwarf or 0))
   end
-end, config = {amt = 2, hands = 3}, loc_vars = function(self, q, card) return {vars = {card.ability.hands, card.ability.amt + (G.GAME.entr_black_dwarf or 0)}} end}
+end, config = {amt = 1, hands = 3}, loc_vars = function(self, q, card) return {vars = {card.ability.hands, card.ability.amt + (G.GAME.entr_black_dwarf or 0)}} end}
 
 function Entropy.RegisterReversePlanets()
   Entropy.StarLocs = {}
