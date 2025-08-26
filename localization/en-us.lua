@@ -888,7 +888,7 @@ local decs = {
 				name = "D7",
 				text = {
 					"{C:green}#1# in #2#{} chance to",
-					"Retigger each {C:green}Probability{}",
+					"Retrigger each {C:green}Probability{}",
 					"based {C:attention}Joker{} and {C:attention}Enhancement{}"
 				}
 			},
