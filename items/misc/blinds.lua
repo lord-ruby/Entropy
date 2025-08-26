@@ -799,6 +799,20 @@ function Card:highlight(is_highlighted)
 	highlight_ref(self, is_highlighted)
 end
 
+if not (SMODS.Mods["Cryptid"] or {}).can_load then
+	local er = end_round
+	function end_round()
+		er()
+		for i = 1, #G.jokers.cards do
+			if G.jokers.cards[i].config.cry_multiply then
+				m = G.jokers.cards[i].config.cry_multiply
+				Cryptid.manipulate(G.jokers.cards[i], { value = 1 / m })
+				G.jokers.cards[i].config.cry_multiply = nil
+			end
+		end
+	end
+end
+
 return {
 	items = {
 		sun,
