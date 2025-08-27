@@ -170,7 +170,7 @@ function end_round()
     end
     G.E_MANAGER:add_event(Event({
         trigger = 'immediate',
-        func = (function() G.GAME.current_round.current_hand.cry_asc_num = 0;G.GAME.current_round.current_hand.cry_asc_num_text = '';return true end)
+        func = (function() G.GAME.asc_power_hand = 0; G.GAME.current_round.current_hand.cry_asc_num = 0;G.GAME.current_round.current_hand.cry_asc_num_text = '';return true end)
       }))
 end
 
@@ -1294,9 +1294,10 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         local orig = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num)
         G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 1) + G.GAME.current_round.current_hand.cry_asc_num) * to_big(amount)
         if G.GAME.current_round.current_hand.cry_asc_num == 0 then G.GAME.current_round.current_hand.cry_asc_num = 1 end
+        local text = G.GAME.asc_power_hand
         G.E_MANAGER:add_event(Event({
             func = function()
-                G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (to_big(G.GAME.asc_power_hand)) .. ")" 
+                G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(text) < to_big(0) and " (" or " (+") .. (to_big(text)) .. ")" 
                 return true
             end
         }))
@@ -1313,9 +1314,10 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         local e = card_eval_status_text
         local orig = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num)
         G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num) + to_big(amount)
+        local text = G.GAME.asc_power_hand
         G.E_MANAGER:add_event(Event({
             func = function()
-                G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (to_big(G.GAME.asc_power_hand)) .. ")" 
+                G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(text) < to_big(0) and " (" or " (+") .. (to_big(text)) .. ")" 
                 return true
             end
         }))
@@ -1332,14 +1334,13 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         local e = card_eval_status_text
         local orig = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num)
         G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num) ^ to_big(amount)
-        if G.GAME.asc_power_hand ~= 0 then 
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (to_big(G.GAME.asc_power_hand)) .. ")"
-                    return true 
-                end
-            }))
-        end
+        local text = G.GAME.asc_power_hand
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(text) < to_big(0) and " (" or " (+") .. (to_big(text)) .. ")" 
+                return true
+            end
+        }))
         card_eval_status_text = function() end
         scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
@@ -1353,14 +1354,13 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         local e = card_eval_status_text
         local orig = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num)
         G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num):arrow(amount[1], amount[2])
-        if G.GAME.asc_power_hand ~= 0 then 
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (to_big(G.GAME.asc_power_hand)) .. ")"
-                    return true 
-                end
-            }))
-        end
+        local text = G.GAME.asc_power_hand
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(text) < to_big(0) and " (" or " (+") .. (to_big(text)) .. ")" 
+                return true
+            end
+        }))
         card_eval_status_text = function() end
         scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
@@ -3354,6 +3354,7 @@ end
 
 local parse_ref = CardArea.parse_highlighted
 function CardArea:parse_highlighted()
+    G.GAME.asc_power_hand = 0
     parse_ref(self)
     local text,disp_text,poker_hands = G.FUNCS.get_poker_hand_info(self.highlighted)
     if G.GAME.hands[text] and G.GAME.hands[text].operator then
