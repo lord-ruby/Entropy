@@ -10,7 +10,7 @@
     "priority": 666,
     "badge_colour": "FE0001",
     "dependencies": [
-        "Steamodded",
+        "Steamodded (>=1.0.0~BETA-0827)",
         "Cryptlib"
     ],
     "conflicts": [
