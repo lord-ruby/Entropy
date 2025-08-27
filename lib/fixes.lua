@@ -411,6 +411,6 @@ end
 
 local mod_chips_ref = mod_chips
 function mod_chips(_chips)
-  if _chips then return mod_mult_ref(_chips) end
+  if _chips then return mod_chips_ref(_chips) end
   return 1
 end
