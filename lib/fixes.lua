@@ -402,3 +402,15 @@ SMODS.Booster:take_ownership("p_cry_code_mega_1", {
     return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program_1")
   end
 }, true)
+
+local mod_mult_ref = mod_mult
+function mod_mult(_mult)
+  if _mult then return mod_mult_ref(_mult) end
+  return 1
+end
+
+local mod_chips_ref = mod_chips
+function mod_chips(_chips)
+  if _chips then return mod_mult_ref(_chips) end
+  return 1
+end
