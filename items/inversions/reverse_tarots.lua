@@ -188,8 +188,8 @@ local princess = {
     use = function(self, card, area, copier)
         G.GAME.entr_princess = true
         for i, v in ipairs(G.I.CARD) do
-            if v.config and v.config.center and v.config.center.set == "Planet" and Entropy.FlipsideInversions[v.config.center.key] then
-                v:set_ability(G.P_CENTERS[Entropy.FlipsideInversions[v.config.center.key]])
+            if v.config and v.config.center and v.config.center.set == "Planet" and Entropy.Inversion(v.config.center) then
+                v:set_ability(G.P_CENTERS[Entropy.Inversion(v.config.center)])
             end
         end
     end,
@@ -229,8 +229,8 @@ local servant = {
     use = function(self, card, area, copier)
         local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card, 1, card.ability.select)
         for i, v in pairs(cards) do
-            if Entropy.FlipsideInversions[v.config.center.key] then
-                local set = G.P_CENTERS[Entropy.FlipsideInversions[v.config.center.key]].set
+            if Entropy.Inversion(v.config.center) then
+                local set = G.P_CENTERS[Entropy.Inversion(v.config.center)].set
                 for i = 1, card.ability.create do
                     G.E_MANAGER:add_event(Event({
                         func = function()
@@ -251,7 +251,7 @@ local servant = {
     can_use = function(self, card)
         local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card, 1, card.ability.select)
         local num = #cards
-        return num > 0 and num <= card.ability.select and Entropy.TableAny(cards, function(value) return Entropy.FlipsideInversions[value.config.center.key] end)
+        return num > 0 and num <= card.ability.select and Entropy.TableAny(cards, function(value) return Entropy.Inversion(value.config.center) end)
 	end,
     loc_vars = function(self, q, card)
         return {
