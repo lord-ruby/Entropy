@@ -1827,9 +1827,9 @@ function Card:set_ability(center, initial, delay_sprites)
     if G.SETTINGS.paused then
         matref(self, center, initial, delay_sprites)
     else
-        if self.config and self.config.center and Entropy.FlipsideInversions and Entropy.FlipsideInversions[self.config.center.key]
+        if self.config and self.config.center and Entropy.FlipsideInversions and not Entropy.is_inverted(center)
         and pseudorandom("marked") < 0.10 and G.GAME.Marked and G.STATE == G.STATES.SHOP and (not self.area or not self.area.config.collection) then
-            matref(self, G.P_CENTERS[Entropy.FlipsideInversions[self.config.center.key]], initial, delay_sprites)
+            matref(self, G.P_CENTERS[Entropy.Inversion(center)], initial, delay_sprites)
         elseif self.config and self.config.center
         and pseudorandom("trump_card") < 0.10 and G.GAME.TrumpCard and G.STATE == G.STATES.SMODS_BOOSTER_OPENED
         and TrumpCardAllow[center.set] and (not self.area or not self.area.config.collection) then
@@ -1868,7 +1868,7 @@ G.FUNCS.use_card = function(e, mute, nosave)
     local card = e.config.ref_table
     card.ability.bypass_aleph = true
     ref(e, mute, nosave)
-    if Entropy.FlipsideInversions[card.config.center.key] and not Entropy.FlipsidePureInversions[card.config.center.key] and not card.config.center.hidden then
+    if Entropy.is_inverted(card.config.center) and not card.config.center.hidden then
         G.GAME.last_inversion = {
             key = card.config.center.key,
             set = card.config.center.set
@@ -1919,8 +1919,12 @@ local set_abilityref = Card.set_ability
 function Card:set_ability(center, f, s)
     if type(center) == "string" then center = G.P_CENTERS[center] end
     if (self.config and self.config.center and self.config.center.key ~= "m_entr_disavowed" and (not self.entr_aleph or self.ability.bypass_aleph)) or G.SETTINGS.paused then
-        if center and Entropy.FlipsideInversions[center.key] and not G.SETTINGS.paused and (G.GAME.modifiers.entr_twisted or center.set == "Planet" and G.GAME.entr_princess) and not self.multiuse and (not self.ability or not self.ability.fromflipside) then
-            set_abilityref(self, G.P_CENTERS[Entropy.FlipsideInversions[center.key]] or center, f, s)
+        if center and Entropy.Inversion(center) and not G.SETTINGS.paused and (G.GAME.modifiers.entr_twisted or center.set == "Planet" and G.GAME.entr_princess) and not self.multiuse and (not self.ability or not self.ability.fromflipside) then
+            if Entropy.allow_spawning(center) and Entropy.allow_spawning(G.P_CENTERS[Entropy.Inversion(center)]) then
+                set_abilityref(self, G.P_CENTERS[Entropy.Inversion(center)] or center, f, s)
+            else
+                set_abilityref(self, Entropy.GetPooledCenter(G.P_CENTERS[Entropy.Inversion(center)].set), f, s)
+            end
         else    
             set_abilityref(self, center, f, s)
         end
@@ -1936,7 +1940,7 @@ end
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, ...)
     if type(center) == "string" then center = G.P_CENTERS[center] end
-    if center and Entropy.FlipsideInversions[center.key] and not Entropy.FlipsidePureInversions[center.key] and G.GAME.next_inversions_prophecy and not G.SETTINGS.paused then
+    if center and Entropy.is_inverted(center) and G.GAME.next_inversions_prophecy and not G.SETTINGS.paused then
         set_abilityref(self, G.P_CENTERS[G.GAME.next_inversions_prophecy], ...)
         G.GAME.inversions_prophecy_counter = (G.GAME.inversions_prophecy_counter or 2) - 1
     else
@@ -1954,7 +1958,7 @@ G.FUNCS.use_card = function(e, mute, nosave)
 	if card.config.center.set ~= "Booster" and Entropy.DeckOrSleeve("doc") then
     local num = 1
     for i, v in pairs(G.GAME.entr_bought_decks or {}) do if v == "b_entr_doc" or v == "sleeve_entr_doc" then num = num + 1 end end
-		if Entropy.FlipsideInversions[card.config.center.key] and not Entropy.FlipsidePureInversions[card.config.center.key] then
+		if Entropy.is_inverted(card.config.center) then
 			ease_entropy(2*num*Entropy.DeckOrSleeve("doc"))
 		else
 			ease_entropy(1*num*Entropy.DeckOrSleeve("doc"))
