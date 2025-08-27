@@ -845,22 +845,8 @@ G.FUNCS.play_cards_from_highlighted = function(e)
     if text == "entr_derivative" and next(SMODS.find_card("j_entr_antiderivative")) then
         check_for_unlock({type = "anti_derivative"})
     end
+    G.GAME.asc_power_hand = 0
     play_ref(e)
-    G.E_MANAGER:add_event(Event{
-        trigger = "after",
-        blocking = false,
-        func = function()
-            G.E_MANAGER:add_event(Event{
-                trigger = "after",
-                blocking = false,
-                func = function()
-                    G.GAME.asc_power_hand = 0
-                    return true
-                end
-            })
-            return true
-        end
-    })
 end
 
 local strength_indicator = Entropy.create_mark("strength", 7065, {x = 0, y = 6})
