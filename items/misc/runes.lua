@@ -301,7 +301,7 @@ end
 local tr = Tag.remove
 function Tag:remove()
 	tr(self)
-	if #G.HUD_tags >= 13 then
+	if #G.HUD_tags >= 6 then
 		for i = 2, #G.HUD_tags do
 			G.HUD_tags[i].config.offset.y = 0.9 - 0.9 * 6 / #G.HUD_tags
 		end
