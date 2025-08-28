@@ -1287,6 +1287,7 @@ local omega = {
 					func = function()
 						G.GAME.blind.chips = G.GAME.blind.chips * 2
 						G.GAME.blind:juice_up()
+						G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 						G.HUD_blind:recalculate()
 						return true
 					end

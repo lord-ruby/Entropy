@@ -717,7 +717,7 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         },
         object_type = "Consumable",
         order = 3014,
-        key = "decay",
+        key = "gbdecay",
         set = "Transient",
         inversion = "c_gb_rust",
         atlas = "crossmod_consumables",

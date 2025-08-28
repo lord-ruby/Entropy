@@ -216,7 +216,7 @@ function add_rune(_tag, no_copy)
         }},
         config = {
           align = G.HUD_runes[1] and 'bm' or 'tri',
-          offset = G.HUD_runes[1] and {x=0,y=0} or {x=1.7,y=0},
+          offset = G.HUD_runes[1] and {x=0,y=0} or {x=1,y=0},
           major = G.HUD_runes[1] and G.HUD_runes[#G.HUD_runes] or G.ROOM_ATTACH}
     }
     discover_card(G.P_RUNES[_tag.key])
@@ -230,9 +230,9 @@ function add_rune(_tag, no_copy)
     _tag.HUD_rune = G.HUD_runes[#G.HUD_runes]
     _tag.HUD_tag = _tag.HUD_rune
     _tag.is_rune = true
-    if #G.HUD_runes > 13 then
+    if #G.HUD_runes > 6 then
 		for i = 2, #G.HUD_runes do
-			G.HUD_runes[i].config.offset.y = -0.9 + 0.9 * (13 / #G.HUD_runes)
+			G.HUD_runes[i].config.offset.y = -0.9 + 0.9 * (6 / #G.HUD_runes)
 		end
 	end
     if G.P_RUNES[_tag.key] and G.P_RUNES[_tag.key].add_to_deck then
@@ -282,12 +282,32 @@ function Tag:rune_remove()
     end
     self.HUD_rune:remove()
 
-    if #G.HUD_runes >= 13 then
+    if #G.HUD_runes >= 6 then
 		for i = 2, #G.HUD_runes do
-			G.HUD_runes[i].config.offset.y = -0.9 + 0.9 * 13 / #G.HUD_runes
+			G.HUD_runes[i].config.offset.y = -0.9 + 0.9 * 6 / #G.HUD_runes
 		end
 	end
 end
+local at = add_tag
+function add_tag(tag, from_skip, no_copy)
+	at(tag)
+	if #G.HUD_tags > 6 then
+		for i = 2, #G.HUD_tags do
+			G.HUD_tags[i].config.offset.y = 0.9 - 0.9 * 6 / #G.HUD_tags
+		end
+	end
+end
+
+local tr = Tag.remove
+function Tag:remove()
+	tr(self)
+	if #G.HUD_tags >= 6 then
+		for i = 2, #G.HUD_tags do
+			G.HUD_tags[i].config.offset.y = 0.9 - 0.9 * 6 / #G.HUD_tags
+		end
+	end
+end
+
 function Tag:remove_rune_from_game()
     local tag_key = nil
     for k, v in pairs(G.GAME.runes) do
