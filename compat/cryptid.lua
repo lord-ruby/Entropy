@@ -18,7 +18,6 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
         "compat/cryptid/reverse_codes",
         "compat/cryptid/other_consumables",
         "compat/cryptid/misc_jokers",
-        "compat/cryptid/gameset"
     }
     local items = Entropy.collect_files(files)
 
