@@ -3164,7 +3164,7 @@ local decs = {
 					"Then randomize them"
 				}
 			},
-			c_entr_decay = {
+			c_entr_gbdecay = {
 				name = "Decay",
 				text = {
 					"Apply {C:attention}Temporary{} to",
