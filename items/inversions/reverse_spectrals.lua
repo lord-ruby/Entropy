@@ -213,6 +213,7 @@ local ward = {
                 total = total + joker.cost
                 joker.ability.debuff_timer = card.ability.rounds
                 joker.ability.debuff_timer_max = card.ability.rounds
+                joker:set_debuff(true)
             end
         end
         ease_dollars(total * card.ability.sellmult)
