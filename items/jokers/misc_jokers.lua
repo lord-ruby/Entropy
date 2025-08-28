@@ -3334,12 +3334,6 @@ local menger_sponge = {
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
             local chips = card.ability.chips
-            SMODS.scale_card(card, {
-                ref_table = card.ability,
-                ref_value = "chips",
-                scalar_value = "chips_mod",
-                operation = "X"
-            })
             return {
                 chips = card.ability.chips
             }
@@ -3351,7 +3345,12 @@ local menger_sponge = {
                     message = localize("k_reset")
                 }
             else    
-                card.ability.chips = card.ability.chips * card.ability.chips_mod
+                SMODS.scale_card(card, {
+                    ref_table = card.ability,
+                    ref_value = "chips",
+                    scalar_value = "chips_mod",
+                    operation = "X"
+                })
                 return {
                     message = localize("k_upgrade_ex")
                 }
