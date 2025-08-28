@@ -682,6 +682,7 @@ local endurance = {
             if not Card.no(card, "immutable", true) then
                 Cryptid.manipulate(card, { value=card2.ability.factor })
             end
+            card:set_debuff(true)
             card:juice_up()
         end
     end,
@@ -693,8 +694,8 @@ local endurance = {
             if not Card.no(card, "immutable", true) then
                 Cryptid.manipulate(card, { value=card2.ability.factor^to_big(amt) })
             end
+            card:set_debuff(true)
             card:juice_up()
-
         end
     end,
     can_use = function(self, card)
