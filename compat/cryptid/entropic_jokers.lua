@@ -260,18 +260,18 @@ local anaptyxi = {
                     ) ^ to_big(card.ability.extra.scale_base)
                 )
         )
-        if not Cryptid.is_card_big(joker) and to_big(new_scale) >= to_big(1e300) then
+        if not Cryptid.is_card_big(other) and to_big(new_scale) >= to_big(1e300) then
             new_scale = 1e300
         end
         if number_format(to_big(new_scale)) == "Infinity" then 
-            if  not Cryptid.is_card_big(joker) then
+            if  not Cryptid.is_card_big(other) then
                 new_scale = 1e300 
             else
                 new_scale = to_big(1e300)
             end
         end
         for i, v in pairs(G.jokers.cards) do
-            if not Card.no(v, "immutable", true) and v ~= card and v ~= joker then
+            if not Card.no(v, "immutable", true) and v ~= card and v ~= other then
                 Cryptid.manipulate(v, { value = to_big(card.ability.extra.scale)*to_big(new_scale), type="+"})
                 card_eval_status_text(
                     v,
