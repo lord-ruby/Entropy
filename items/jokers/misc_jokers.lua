@@ -1847,7 +1847,7 @@ local free_samples = {
         }
     },
     loc_vars = function(self, q, card)
-        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card and card.ability.extra and card.ability.extra.odds or 4)
         return {vars = {
             numerator,
             denominator,
