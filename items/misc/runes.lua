@@ -266,7 +266,7 @@ function Tag:rune_remove()
         if G.HUD_runes and G.HUD_runes[HUD_tag_key+1] then
             if HUD_tag_key == 1 then
                 G.HUD_runes[HUD_tag_key+1]:set_alignment({type = 'tri',
-                offset = {x=1.7,y=0},
+                offset = {x=1,y=0},
                 xy_bond = 'Weak',
                 major = G.ROOM_ATTACH})
             else
