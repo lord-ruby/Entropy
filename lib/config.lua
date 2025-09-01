@@ -48,6 +48,12 @@ local entrConfigTab = function()
 		ref_value = "family_mode",
 		callback = Cryptid.reload_localization,
 	})
+	entr_nodes[#entr_nodes + 1] = create_toggle({
+		label = localize("curses_enabled"),
+		active_colour = HEX("40c76d"),
+		ref_table = Entropy.config,
+		ref_value = "curses_enabled",
+	})
 	if SMODS.Mods["Cryptid"] and SMODS.Mods["Cryptid"].can_load then
 		entr_nodes[#entr_nodes + 1] = create_toggle({
 			label = localize("k_entr_faster_ante_scaling"),

@@ -6,4 +6,5 @@ return {
 	["override_glitched"] = true,
 	["omega_aleph"] = false,
 	["inversion_queues"] = 2,
+	["curses_enabled"] = true
 }
