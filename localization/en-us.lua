@@ -5523,6 +5523,7 @@ local decs = {
 			flipside_full = 'Full',
 			
 			flipside_info = 'Inversion display when holding Flipside',
+			curses_enabled = "Enable Curses outside of Obsidian Stake",
 
 			b_stat_CBlind = "Blind Token",
 			b_stat_Fraud = "Fraud",
