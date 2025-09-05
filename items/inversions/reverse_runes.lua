@@ -962,7 +962,7 @@ local darkness = {
     end
 }
 
-local freedom_indicator = Entropy.create_mark("darkness", 7067, {x = 2, y = 6})
+local freedom_indicator = Entropy.create_mark("freedom", 7067, {x = 2, y = 6})
 local freedom = {
     object_type = "Consumable",
     set = "Pact",
@@ -1226,7 +1226,7 @@ local energy = {
         end
         G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.discards
         ease_discard(-card.ability.discards)
-        Entropy.pact_mark("rune_entr_dreams")
+        Entropy.pact_mark("rune_entr_energy")
     end,
     can_use = function()
         return true
