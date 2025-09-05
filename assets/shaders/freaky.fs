@@ -161,9 +161,12 @@ vec4 HSVtoRGB(vec4 hsv) {
 
 float bitxor(float val1, float val2)
 {
-	float outp = 0;
-	for(int i = 1; i < 9; i++) outp += floor(mod(mod(floor(val1*pow(2,-i)),pow(2,i))+mod(floor(val2*pow(2,-i)),pow(2,i)),2))*pow(2,i);
-	return outp/256;
+	float outp = 0.;
+	for(int i = 1; i < 9; i++) {
+        float i_float = float(i);
+        outp += floor(mod(mod(floor(val1*pow(2.,-i_float)),pow(2.,i_float))+mod(floor(val2*pow(2.,-i_float)),pow(2.,i_float)),2.))*pow(2.,i_float);
+    } 
+	return outp/256.;
 }
 
 float mod2(float val1, float mod1)
@@ -175,30 +178,30 @@ float mod2(float val1, float mod1)
 
 float mod2(float val1)
 {
-    return(mod2(val1, 1));
+    return(mod2(val1, 1.));
 }
 
 float clampf(float val1)
 {
-    return(max(0, min(1, ceil(val1))));
+    return(max(0., min(1., ceil(val1))));
 }
 
 float clampf2(float val1)
 {
-    return(max(0, min(1, val1)));
+    return(max(0., min(1., val1)));
 }
 
 float heartf(float xcoord, float ycoord)
 {
-    float temp1 = 0;
-    temp1 += pow(xcoord, 2);
-    temp1 += pow(1.6 * ycoord - pow(abs(xcoord), 0.5), 2);
+    float temp1 = 0.;
+    temp1 += pow(xcoord, 2.);
+    temp1 += pow(1.6 * ycoord - pow(abs(xcoord), 0.5), 2.);
     return(temp1);
 }
 
 float inverf(float val1)
 {
-    return(val1 + pow(val1, 5) * pow(14 - 14*pow(val1, 2), -1));
+    return(val1 + pow(val1, 5.) * pow(14. - 14.*pow(val1, 2.), -1.));
 }
 
 
@@ -235,7 +238,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     vec4 pixel = Texel(texture, texture_coords);
     vec4 hsl = HSL(vec4(tex.r, tex.g, tex.b, tex.a));
-    float t2 = mod2(t/7);
+    float t2 = mod2(t/7.);
 
     float cx = uv_scaled_centered.x / 3.0;
     float cy = uv_scaled_centered.y / 3.0;
@@ -257,10 +260,12 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     for(int i = 0; i < hcount; i++)
     {  
-        float i2 = i * pow(hcount, -1);
+        float h_float = float(hcount);
+        float i_float = float(i);
+        float i2 = i_float * pow(h_float, -1.);
         float hsize = inverf(mod2(t2 + i2));
-        float cx1 = hscale * 7.1 * sin(1 + 7.0 * i + floor(t/7.0 + i2));
-        float cy1 = hscale * 9.5 * sin(5.0 * i + floor(t/7.0 + i2));
+        float cx1 = hscale * 7.1 * sin(1. + 7.0 * i_float + floor(t/7.0 + i2));
+        float cy1 = hscale * 9.5 * sin(5.0 * i_float + floor(t/7.0 + i2));
         float heart_opacity = clampf2(0.9 - pow(mod2(t2 + i2), 2.0)) - pow(2.0, -1000.0 * pow(mod2(t2 + i2), 2.0));
         float t3 = speed_extra * (5.0*pow(mod2(t2 + i2), 2.0) - 10.0*(mod2(t2 + i2)) + 2.0 - pow(10.0*(mod2(t2 + i2)), 0.2));
 
@@ -285,14 +290,13 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     float res = (.5 + .5* cos( (freaky.x) * 2.612 + ( field + -.5 ) *3.14));
     vec4 textp = RGB(hsl);
     tex.rgb = textp.rgb;
-	return dissolve_mask(tex*colour, texture_coords, uv);
+    return dissolve_mask(tex*colour, texture_coords, uv);
 }
 
 extern MY_HIGHP_OR_MEDIUMP vec2 mouse_screen_pos;
 extern MY_HIGHP_OR_MEDIUMP float hovering;
 extern MY_HIGHP_OR_MEDIUMP float screen_scale;
 
-#ifdef VERTEX
 vec4 position( mat4 transform_projection, vec4 vertex_position )
 {
     if (hovering <= 0.){
@@ -305,4 +309,3 @@ vec4 position( mat4 transform_projection, vec4 vertex_position )
 
     return transform_projection * vertex_position + vec4(0,0,0,scale);
 }
-#endif

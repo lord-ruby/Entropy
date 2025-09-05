@@ -93,11 +93,11 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     );
     noise = fract(sin(noise) * 0.0); //143758.5453);
     
-    vec2 offset = 1/image_details*vec2(1,0);
+    vec2 offset = 1.0/image_details*vec2(1.0,0.0);
     vec4 tex = Texel(texture, texture_coords);
     tex.r = Texel(texture,texture_coords+offset).r;
     tex.rgb += vec3(0.0,-0.1,0.2)-solar.x*0.1;
-    tex.rgb += max(0, pow(noise.x*noise.y,8));
+    tex.rgb += max(0.0, pow(noise.x*noise.y,8.0));
 	number low = min(tex.r, min(tex.g, tex.b));
     number high = max(tex.r, max(tex.g, tex.b));
 	number delta = high - low;
@@ -125,14 +125,14 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	q6 = q6*q6;
 	q6 = q6*q6;
 
-	float q3 = 2.0 * (floor(0.5 + t2/2.0) - floor(t2/2.0)) - 1;
+	float q3 = 2.0 * (floor(0.5 + t2/2.0) - floor(t2/2.0)) - 1.0;
 	float q4 = sin((3.0 * t2/1.73 + 1.0 + field * 5.0)*1.5)/2.5 + sin(13.0 * t2/2.63 + solar.x*4.0)/10.0 + 0.5; // wavey stuff
-	float res = (q3*q6 - floor(q3*q6))*q4 + (1-(q3*q6 - floor(q3*q6)))*(1-q4); // transparency
+	float res = (q3*q6 - floor(q3*q6))*q4 + (1.-(q3*q6 - floor(q3*q6)))*(1.-q4); // transparency
 
     hsl.x = 0.08;
 	hsl.y = 0.7;
 	hsl.z = (0.8*hsl.z + res*res*0.2) * (0.3 + uv.y);
-	float qalph = 0.66 + res/3;
+	float qalph = 0.66 + res/3.;
 
     tex.rgb = RGB(hsl).rgb;
 

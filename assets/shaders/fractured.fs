@@ -111,11 +111,11 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     );
     noise = fract(sin(noise) * 0.0); //143758.5453);
     
-    vec2 offset = 1/image_details*vec2(1,0);
+    vec2 offset = 1./image_details*vec2(1,0);
     vec4 tex = Texel(texture, texture_coords);
     tex.r = Texel(texture,texture_coords+offset).r;
     tex.rgb += vec3(0.0,-0.1,0.2)-fractured.x*0.1;
-    tex.rgb += max(0, pow(noise.x*noise.y,8));
+    tex.rgb += max(0., pow(noise.x*noise.y,8.));
 	number low = min(tex.r, min(tex.g, tex.b));
     number high = max(tex.r, max(tex.g, tex.b));
 	number delta = high - low;
@@ -158,11 +158,11 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
 	float t2 = t/250.0; // animation speed
 	const int TileC = 40; // tile count
-	float fracOff = 10; //offset of fractures
+	float fracOff = 10.; //offset of fractures
 
 
-	float light = 0;
-	float uvScale = 3;
+	float light = 0.;
+	float uvScale = 3.;
 
 	float cX = uv_scaled_centered.x * 0.05 * uvScale;
 	float cY = uv_scaled_centered.y * 0.05 * uvScale; 
@@ -171,22 +171,23 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	float pointPlats[TileC];
 
     for(int i=0; i<TileC; i += 2){
-   		
-		pointCenters[i][0] = pow(1.73 * (2.0 + sin(3.38 * (0.3 + i/3.0) * (0.17 + i))), -1) * cos(t2 + 11.0 * i);
-    	pointCenters[i][1] = pow(1.17 * (2.0 + cos(2.11 * (0.3 + i/5.0) * (0.31 + i))), -1) * sin(t2 + 7.0 * i + 2.0);
+   		float i_float = float(i);
+		pointCenters[i][0] = pow(1.73 * (2.0 + sin(3.38 * (0.3 + i_float/3.0) * (0.17 + i_float))), -1.) * cos(t2 + 11.0 * i_float);
+    	pointCenters[i][1] = pow(1.17 * (2.0 + cos(2.11 * (0.3 + i_float/5.0) * (0.31 + i_float))), -1.) * sin(t2 + 7.0 * i_float + 2.0);
 		float vecSize = pointCenters[i][0]*pointCenters[i][0] + pointCenters[i][1]*pointCenters[i][1];
 		pointCenters[i][0] = pointCenters[i][0] / (vecSize + 0.1);
 		pointCenters[i][1] = pointCenters[i][1] / (vecSize + 0.1);
 		pointPlats[i] = 0.0;
 	}
 
-	    for(int i=0; i<TileC; i += 2){
-		float rescale = mod(i, 5) - 1.0;
+	for(int i=0; i<TileC; i += 2){
+		float i_float = float(i);
+		float rescale = mod(i_float, 5.) - 1.0;
 		rescale = max(0.0, rescale);
 		rescale = min(1.0, rescale);
-		rescale = 2.8*rescale + 0.2 + sin(i + t2 + 0.11)*0.3;
-   		pointCenters[i+1][0] = pointCenters[i][0]*rescale + sin(i + 0.1)/8;
-    	pointCenters[i+1][1] = pointCenters[i][1]*rescale + cos(i + 0.1)/8;
+		rescale = 2.8*rescale + 0.2 + sin(i_float + t2 + 0.11)*0.3;
+   		pointCenters[i+1][0] = pointCenters[i][0]*rescale + sin(i_float + 0.1)/8.;
+    	pointCenters[i+1][1] = pointCenters[i][1]*rescale + cos(i_float + 0.1)/8.;
 		pointPlats[i] = 0.0;
 	}
 
@@ -195,7 +196,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	}
 
 	for(int i=0; i<TileC; i++){
-		pointPlats[i] = floor(0.001 + (1/(1 + pow(pointCenters[i][0] - cX, 2.0) + pow(pointCenters[i][1] - cY, 2.0)))/light);
+		pointPlats[i] = floor(0.001 + (1./(1. + pow(pointCenters[i][0] - cX, 2.0) + pow(pointCenters[i][1] - cY, 2.0)))/light);
 	}
 
 	float col = 0.0;
@@ -203,12 +204,14 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	float ShiftX = 0.0;
 	float ShiftY = 0.0;
 
-	for(int i=0; i<TileC; i++){
+	for(int i=0; i < TileC; i++){
+		float i_float = float(i);
+		float TileC_float = float(TileC);
 		float dist = pow(pointCenters[i][0], 2.0) + pow(pointCenters[i][1], 2.0);
-		col += min(1.0, pointPlats[i]) * i/TileC;
+		col += min(1.0, pointPlats[i]) * i_float/TileC_float;
 		qalph += min(1.0, pointPlats[i]) * pow(dist, 0.75);
-		ShiftX += min(1.0, pointPlats[i]) * pointCenters[i][0]/(1.0 + pow(pointCenters[i][0], 2)) * sin(0.23 * i + 0.31 - t2/51.0);
-		ShiftY += min(1.0, pointPlats[i]) * pointCenters[i][1]/(1.0 + pow(pointCenters[i][1], 2)) * cos(0.17 * i + 0.81 + t2/12.0);
+		ShiftX += min(1.0, pointPlats[i]) * pointCenters[i][0]/(1.0 + pow(pointCenters[i][0], 2.)) * sin(0.23 * i_float + 0.31 - t2/51.0);
+		ShiftY += min(1.0, pointPlats[i]) * pointCenters[i][1]/(1.0 + pow(pointCenters[i][1], 2.)) * cos(0.17 * i_float + 0.81 + t2/12.0);
 	}
 
 	hsl.y += 0.33;
