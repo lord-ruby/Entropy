@@ -161,9 +161,12 @@ vec4 HSVtoRGB(vec4 hsv) {
 
 float bitxor(float val1, float val2)
 {
-	float outp = 0;
-	for(int i = 1; i < 9; i++) outp += floor(mod(mod(floor(val1*pow(2,-i)),pow(2,i))+mod(floor(val2*pow(2,-i)),pow(2,i)),2))*pow(2,i);
-	return outp/256;
+	float outp = 0.;
+	for(int i = 1; i < 9; i++) {
+        float i_float = float(i);
+        outp += floor(mod(mod(floor(val1*pow(2.,-i_float)),pow(2.,i_float))+mod(floor(val2*pow(2.,-i_float)),pow(2.,i_float)),2.))*pow(2.,i_float);
+    } 
+	return outp/256.;
 }
 
 float mod2(float val1, float mod1)
@@ -207,18 +210,18 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     vec4 pixel = Texel(texture, texture_coords);
 
-    float cx = uv_scaled_centered.x * 1;
-    float cy = uv_scaled_centered.y * 1;
+    float cx = uv_scaled_centered.x * 1.;
+    float cy = uv_scaled_centered.y * 1.;
 
 	float randnum = mod2(floor(4.0*t), 256.0)*mod2(floor(4.0*t), 27.0);
-	randnum = mod2(bitxor(pow(randnum, 3.0) - randnum + 3, 7 + floor(randnum/11.0)), 256.0);
+	randnum = mod2(bitxor(pow(randnum, 3.0) - randnum + 3., 7. + floor(randnum/11.0)), 256.0);
 	randnum = mod2(randnum*123.54,0.1)*10.0;
 
     vec4 hsl = HSL(vec4(tex.r, tex.g, tex.b, tex.a));
 
     //hsl.z -= hsl.y/2;
     //hsl.y = 1- hsl.y;
-    hsl.z = 1 - hsl.z;
+    hsl.z = 1. - hsl.z;
     hsl.x = floor(hsl.x*12.0)/12.0;
     hsl.z = hsl.z * pow(hsl.y, 3.0);
     hsl.x = pow(hsl.x, 0.5);

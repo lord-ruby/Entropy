@@ -122,18 +122,22 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     float res = (.5 + .5* cos( (sunny.x) * 2.612 + ( field + -.5 ) *3.14));
 
 
-	float sun1[3] = float[3](0.119, 1.0, 0.65);
-	float sun2[3] = float[3](0.094, 0.91, 0.5);
-	float c0 = (sun1[0] + sun2[0])/2.0;
+	float sun1_1 = 0.119;
+	float sun1_2 = 1.0;
+	float sun1_3 = 0.65;
+	float sun2_1 = 0.094;
+	float sun2_2 = 0.91;
+	float sun2_3 = 0.5;
+	float c0 = (sun1_1 + sun2_1)/2.0;
 
 	float closestHue = ceil(mod(hsl.x - c0, 1.0) - 0.5);
-	float H2 = closestHue * sun2[0] + (1.0 - closestHue) * sun1[0];
-	float S2 = closestHue * sun2[1] + (1.0 - closestHue) * sun1[1];
-	float L2 = closestHue * sun2[2] + (1.0 - closestHue) * sun1[2];
+	float H2 = closestHue * sun2_1 + (1.0 - closestHue) * sun1_1;
+	float S2 = closestHue * sun2_2 + (1.0 - closestHue) * sun1_2;
+	float L2 = closestHue * sun2_3 + (1.0 - closestHue) * sun1_3;
 
 
 
-	float t2 = t/8;
+	float t2 = t/8.;
 
 	
 
@@ -150,9 +154,9 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
 	vec4 pixel = Texel(texture, texture_coords);
 
-	hsl.x = hsl.x * pulse + (1 - pulse) * H2;
-	hsl.y = hsl.y * pulse + (1 - pulse) * (S2 + q4/7);
-	hsl.z = hsl.z * pulse + (1 - pulse) * (L2 + q4/12);
+	hsl.x = hsl.x * pulse + (1. - pulse) * H2;
+	hsl.y = hsl.y * pulse + (1. - pulse) * (S2 + q4/7.);
+	hsl.z = hsl.z * pulse + (1. - pulse) * (L2 + q4/12.);
 
 
     tex.rgb = RGB(hsl).rgb;

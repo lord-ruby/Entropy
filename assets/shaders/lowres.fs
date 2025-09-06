@@ -161,11 +161,13 @@ vec4 HSVtoRGB(vec4 hsv) {
 
 float bitxor(float val1, float val2)
 {
-	float outp = 0;
-	for(int i = 1; i < 9; i++) outp += floor(mod(mod(floor(val1*pow(2,-i)),pow(2,i))+mod(floor(val2*pow(2,-i)),pow(2,i)),2))*pow(2,i);
-	return outp/256;
+	float outp = 0.;
+	for(int i = 1; i < 9; i++) {
+        float i_float = float(i);
+        outp += floor(mod(mod(floor(val1*pow(2.,-i_float)),pow(2.,i_float))+mod(floor(val2*pow(2.,-i_float)),pow(2.,i_float)),2.))*pow(2.,i_float);
+    } 
+	return outp/256.;
 }
-
 float mod2(float val1, float mod1)
 {
     val1 /= mod1;
@@ -220,9 +222,9 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     vec4 rgb = HSVtoRGB(hsl);
 
     
-    rgb.r = rgb.r * (0.0 + floor(mod2(cx/9 + 0.0000) + 0.3333));
-    rgb.g = rgb.g * (0.0 + 0.7 * floor(mod2(cx/9 + 0.3333) + 0.3333));
-    rgb.b = rgb.b * (0.0 + floor(mod2(cx/9 + 0.6667) + 0.3333));
+    rgb.r = rgb.r * (0.0 + floor(mod2(cx/9. + 0.0000) + 0.3333));
+    rgb.g = rgb.g * (0.0 + 0.7 * floor(mod2(cx/9. + 0.3333) + 0.3333));
+    rgb.b = rgb.b * (0.0 + floor(mod2(cx/9. + 0.6667) + 0.3333));
 
 
     hsl = RGBtoHSV(rgb);
@@ -232,8 +234,8 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     //hsl.x = floor(cx/3)/3;
     //hsl.z = (3 + hsl.z)/5;
-    hsl.z -= max(0.0, pow(sin(6.28*mod2(cx/9 + 0.25)), 4.0) - 0.2);
-    hsl.z -= max(0.0, pow(sin(6.28*mod2(cy/9 + 0.25)), 4.0) - 0.2);
+    hsl.z -= max(0.0, pow(sin(6.28*mod2(cx/9. + 0.25)), 4.0) - 0.2);
+    hsl.z -= max(0.0, pow(sin(6.28*mod2(cy/9. + 0.25)), 4.0) - 0.2);
     hsl.z = max(hsl.z, 0.0);
     //hsl.z -= floor(mod2(cx/9 - 0.05) + 0.1);
     //hsl.z -= floor(mod2(cy/9 - 0.05) + 0.1);

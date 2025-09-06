@@ -161,9 +161,12 @@ vec4 HSVtoRGB(vec4 hsv) {
 
 float bitxor(float val1, float val2)
 {
-	float outp = 0;
-	for(int i = 1; i < 9; i++) outp += floor(mod(mod(floor(val1*pow(2,-i)),pow(2,i))+mod(floor(val2*pow(2,-i)),pow(2,i)),2))*pow(2,i);
-	return outp/256;
+	float outp = 0.;
+	for(int i = 1; i < 9; i++) {
+        float i_float = float(i);
+        outp += floor(mod(mod(floor(val1*pow(2.,-i_float)),pow(2.,i_float))+mod(floor(val2*pow(2.,-i_float)),pow(2.,i_float)),2.))*pow(2.,i_float);
+    }
+	return outp/256.;
 }
 
 float mod2(float val1, float mod1)
@@ -226,13 +229,14 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     float mby;
     float offx;
     float offy;
-    float rmasksum = -1;
-    float rectmask = 1;
-    t = floor(t/4);
+    float rmasksum = -1.;
+    float rectmask = 1.;
+    t = floor(t/4.);
 
     for(int i = 0; i < 5; i++)
     {     
-        randnum = bitxor(255.0*randnum + mod2(t,81.0), pow(randnum*(16.0-i), 2.0));
+        float i_float = float(i);
+        randnum = bitxor(255.0*randnum + mod2(t,81.0), pow(randnum*(16.0-i_float), 2.0));
         mbx = (cx - 25.0*sin(100.0/randnum)) * (1.0 + 2.0*(floor(cos(177.0/randnum + 1.0))));
         mby = (cy - 25.0*cos(113.0/randnum + 1.0)) * (1.0 + 2.0*(floor(sin(221.0/randnum))));
         offx = bitxor(255.0*randnum, pow(255.0*randnum,5.0) - 255.0*randnum);
@@ -259,7 +263,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     float res = (.5 + .5* cos( (entr_glitched.x) * 2.612 + ( field + -.5 ) *3.14));
     vec4 textp = RGB(hsl);
     tex.rgb = textp.rgb;
-	return dissolve_mask(tex*colour, texture_coords, uv);
+    return dissolve_mask(tex*colour, texture_coords, uv);
 }
 
 extern MY_HIGHP_OR_MEDIUMP vec2 mouse_screen_pos;

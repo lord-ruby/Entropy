@@ -108,11 +108,11 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     );
     noise = fract(sin(noise) * 0.0); //143758.5453);
     
-    vec2 offset = 1/image_details*vec2(1,0);
+    vec2 offset = 1./image_details*vec2(1.,0);
     vec4 tex = Texel(texture, texture_coords);
     tex.r = Texel(texture,texture_coords+offset).r;
     tex.rgb += vec3(0.0,-0.1,0.2)-kaleidoscopic.x*0.1;
-    tex.rgb += max(0, pow(noise.x*noise.y,8));
+    tex.rgb += max(0., pow(noise.x*noise.y,8.));
 	number low = min(tex.r, min(tex.g, tex.b));
     number high = max(tex.r, max(tex.g, tex.b));
 	number delta = high - low;
