@@ -382,7 +382,7 @@ local D100 = {
     },
     pools = {["Dice"] = true},
     calculate = function(self, card, context)
-        if context.mod_probability and context.trigger_obj and not context.blueprint and not context.repetition then
+        if context.mod_probability and context.trigger_obj and not context.blueprint and not context.repetition and context.trigger_obj.ability then
             local num = context.numerator * (context.trigger_obj.ability.immutable and context.trigger_obj.ability.immutable.d100_modifier or 1)
             local denom = context.denominator * (context.trigger_obj.ability.immutable and context.trigger_obj.ability.immutable.d100_d_modifier or 1)
             return {
