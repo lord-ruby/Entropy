@@ -237,24 +237,24 @@ local anaptyxi = {
         return nil, nil
     end,
     calc_scaling = function(self, card, other, current_scaling, current_scalar, args)
-		if not G.GAME.cryptid_base_scales then
-			G.GAME.cryptid_base_scales = {}
+		-- store original scaling rate
+		if not other.ability.cry_scaling_info then
+			other.ability.cry_scaling_info = {
+				[args.scalar_value] = current_scalar
+			}
+		elseif not other.ability.cry_scaling_info[args.scalar_value] then
+			other.ability.cry_scaling_info[args.scalar_value] = current_scalar
 		end
-		if not G.GAME.cryptid_base_scales[other.config.center.key] then
-			G.GAME.cryptid_base_scales[other.config.center.key] = {}
-		end
-		if not G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] then
-			G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value] = current_scalar
-		end
-		local true_base = G.GAME.cryptid_base_scales[other.config.center.key][args.scalar_value]
-		local orig_scale_scale = current_scaling
+
+        -- joker scaling stuff
+		local original_scalar = other.ability.cry_scaling_info[args.scalar_value]
         local new_scale = lenient_bignum(
-            to_big(true_base)
+            to_big(original_scalar)
                 * (
                     (
                         1
                         + (
-                            (to_big(orig_scale_scale) / to_big(true_base))
+                            (to_big(current_scaling) / to_big(original_scalar))
                             ^ (to_big(1) / to_big(card.ability.extra.scale_base))
                         )
                     ) ^ to_big(card.ability.extra.scale_base)
@@ -287,9 +287,9 @@ local anaptyxi = {
             end
         end
         args.scalar_table[args.scalar_value] = new_scale
-        return {
-			message = localize("k_upgrade_ex"),
-		}
+		return {
+            message = localize("k_upgrade_ex"),
+        }
 	end,
     entr_credits = {
         art = {"Lil. Mr. Slipstream"}
