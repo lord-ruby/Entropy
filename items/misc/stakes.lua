@@ -187,8 +187,8 @@ function Blind:defeat(s)
 end
 
 local ccfs = create_card_for_shop
-function create_card_for_shop(area)
-    local card = ccfs(area)
+function create_card_for_shop(...)
+    local card = ccfs(...)
     if G.GAME.curse == "entr_blind" then
         if pseudorandom("entr_blind_curse") < 0.5 then
             card.cry_flipped = true
