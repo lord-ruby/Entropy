@@ -217,7 +217,7 @@ local entropyTabs = function()
 						["gemstonez"]=true, 
 						["triple6lexi"]=true
 					},
-					music = {gemstonez=true}
+					music = {gemstonez=true, MilkyP = true}
 				}
 				for i, v in pairs(G.P_CENTERS) do if v.entr_credits then
 					if v.entr_credits.idea then for i, v in pairs(v.entr_credits.idea) do credits.idea[v] = true end end
