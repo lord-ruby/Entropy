@@ -1557,11 +1557,13 @@ local echo = {
         if not G.GAME.entr_echo then
             G.GAME.entr_echo = {}
         end
-        G.GAME.entr_echo[cards[1].config.center.key] = G.GAME.entr_echo[cards[1].config.center.key] or {}
-        G.GAME.entr_echo[cards[1].config.center.key][#G.GAME.entr_echo[cards[1].config.center.key]+1] = cards[2].config.center.key
-        
-        G.GAME.entr_echo[cards[2].config.center.key] = G.GAME.entr_echo[cards[2].config.center.key] or {}
-        G.GAME.entr_echo[cards[2].config.center.key][#G.GAME.entr_echo[cards[2].config.center.key]+1] = cards[1].config.center.key
+        if #cards >= 2 then
+            G.GAME.entr_echo[cards[1].config.center.key] = G.GAME.entr_echo[cards[1].config.center.key] or {}
+            G.GAME.entr_echo[cards[1].config.center.key][#G.GAME.entr_echo[cards[1].config.center.key]+1] = cards[2].config.center.key
+
+            G.GAME.entr_echo[cards[2].config.center.key] = G.GAME.entr_echo[cards[2].config.center.key] or {}
+            G.GAME.entr_echo[cards[2].config.center.key][#G.GAME.entr_echo[cards[2].config.center.key]+1] = cards[1].config.center.key
+        end
     end,
     can_use = function(self, card)
         local cards = Cryptid.get_highlighted_cards({G.consumeables, G.shop_jokers, G.shop_vouchers, G.shop_booster, G.pack_cards}, card, 2,2, function(card)
