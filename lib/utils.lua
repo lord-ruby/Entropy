@@ -1904,3 +1904,8 @@ function Entropy.allow_spawning(center)
     end
     return true
 end
+
+function Entropy.get_reroll_height()
+    if HotPotato then return 1.04 end
+    return Entropy.CanSwitchAltPath() and 1 or 1.6
+end
