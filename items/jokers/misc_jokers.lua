@@ -314,7 +314,7 @@ local solar_dagger = {
                         return true
                     end,
                 }))
-                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "plus_asc", scalar_table = {sell_cost = sliced_card.sell_cost * 0.1}, scalar_value = "sell_cost"})
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "x_asc", scalar_table = {sell_cost = sliced_card.sell_cost * 0.1}, scalar_value = "sell_cost"})
             end
         end
         if context.joker_main then
