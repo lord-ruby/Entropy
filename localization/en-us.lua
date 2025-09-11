@@ -445,6 +445,13 @@ local decs = {
 					"when this Joker is {C:red}banished{}"
 				}
 			},
+			j_entr_chocolate_egg_cryptidless = {
+				name = "Chocolate Egg",
+				text = {
+					"Create a random {C:dark_edition}Sunny{} {C:red}Rare{} Joker",
+					"when this joker is destroyed",
+				}
+			},
 			j_entr_antireal = {
 				name = "Antireal Joker",
 				text = {
