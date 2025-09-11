@@ -2324,7 +2324,7 @@ end
 local create_cardref = create_card_for_shop
 function create_card_for_shop(area)
     local card = create_cardref(area)
-    if card.ability.set == "Joker" and next(SMODS.find_card("j_entr_ieros")) then
+    if card and card.ability.set == "Joker" and next(SMODS.find_card("j_entr_ieros")) then
         for i, v2 in pairs(G.jokers.cards) do
             if v2.config.center.key == "j_entr_ieros" then
                 while pseudorandom("ieros") < 0.33 do

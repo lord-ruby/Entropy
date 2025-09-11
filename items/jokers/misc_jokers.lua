@@ -314,7 +314,7 @@ local solar_dagger = {
                         return true
                     end,
                 }))
-                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "plus_asc", scalar_table = {sell_cost = sliced_card.sell_cost * 0.1}, scalar_value = "sell_cost"})
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "x_asc", scalar_table = {sell_cost = sliced_card.sell_cost * 0.1}, scalar_value = "sell_cost"})
             end
         end
         if context.joker_main then
@@ -467,7 +467,7 @@ local chocolate_egg = {
                 { message = localize("entr_opened"), colour = G.C.GREEN }
             )
             card.ability.no_destroy = true
-            local c = create_card("Joker", G.jokers, nil, "cry_epic")
+            local c = create_card("Joker", G.jokers, nil, (SMODS.Mods["Cryptid"] or {}).can_load and "cry_epic" or 3)
             c:add_to_deck()
             G.jokers:emplace(c)
             c:set_edition("e_entr_sunny")
@@ -491,7 +491,12 @@ local chocolate_egg = {
     entr_credits = {
         idea = {"cassknows"},
         art = {"missingnumber"}
-    }
+    },
+    loc_vars = function()
+        return {
+            key = (SMODS.Mods["Cryptid"] or {}).can_load and "j_entr_chocolate_egg" or "j_entr_chocolate_egg_cryptidless"
+        }
+    end
 }
 
 local lotteryticket = {
