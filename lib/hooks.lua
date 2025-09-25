@@ -1397,6 +1397,13 @@ local update_ref = Game.update
 Entropy.last_csl = nil
 Entropy.last_slots = nil
 local cdt = 0
+local eedt = 0
+local p_s = false
+
+Entropy.ee_faces[#Entropy.ee_faces+1] = {pos = {y = 11, x = 0}}
+Entropy.ee_faces[#Entropy.ee_faces+1] = {pos = {y = 12, x = 0}}
+Entropy.ee_faces[#Entropy.ee_faces+1] = {pos = {y = 13, x = 0}}
+
 function Game:update(dt)
     if entr_xekanos_dt > 0.05 then
         entr_xekanos_dt = 0
@@ -1471,6 +1478,31 @@ function Game:update(dt)
         Entropy.last_csl = nil
         Entropy.last_slots = nil
         cdt = 0
+    end
+
+    if G.GAME.blind and (Entropy.BlindIs("bl_entr_endless_entropy_phase_one") 
+    or Entropy.BlindIs("bl_entr_endless_entropy_phase_two") 
+    or Entropy.BlindIs("bl_entr_endless_entropy_phase_three") 
+    or Entropy.BlindIs("bl_entr_endless_entropy_phase_four"))
+    then
+        eedt = eedt - dt
+        if eedt <= 0 then
+            p_s = not p_s
+            if p_s then
+                local atlas = "entr_blinds"
+                G.GAME.blind.children.animatedSprite:set_sprite_pos(G.GAME.blind.config.blind.pos)
+                G.GAME.blind.children.animatedSprite.atlas = G.ANIMATION_ATLAS[atlas]
+                G.GAME.blind.children.animatedSprite:reset()
+                eedt = 0.8 + math.random() * 0.7
+            else
+                local elem = pseudorandom_element(Entropy.ee_faces, pseudoseed("asdkljasdkjlasdk;j"))
+                atlas = elem.atlas or "entr_blinds"
+                G.GAME.blind.children.animatedSprite:set_sprite_pos(elem.pos)
+                G.GAME.blind.children.animatedSprite.atlas = G.ANIMATION_ATLAS[atlas]
+                G.GAME.blind.children.animatedSprite:reset()
+                eedt = math.random() * 0.4 + 0.1
+            end
+        end
     end
 end
 

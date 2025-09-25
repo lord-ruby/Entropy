@@ -1412,7 +1412,7 @@ local decs = {
 				text = {
 					"All you know shall crumble,",
 					"Dust to dust.",
-					"(Joker values decay over time)"
+					"(Jokers and hand levels removed)"
 				}
 			},
 			bl_entr_endless_entropy_phase_three = {

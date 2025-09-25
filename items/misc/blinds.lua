@@ -214,7 +214,7 @@ local phase1 = {
 	key = "endless_entropy_phase_one",
 	pos = { x = 0, y = 6 },
 	atlas = "blinds",
-	boss_colour = HEX("6d1414"),
+	boss_colour = HEX("000000"),
     mult=2,
 	no_ee = true,
     dollars = 8,
@@ -257,7 +257,7 @@ local phase2 = {
 	key = "endless_entropy_phase_three",
 	pos = { x = 0, y = 7 },
 	atlas = "blinds",
-	boss_colour = HEX("6d1414"),
+	boss_colour = HEX("000000"),
     mult=3,
 	no_ee = true,
     dollars = 8,
@@ -290,7 +290,7 @@ local phase3 = {
 	key = "endless_entropy_phase_two",
 	pos = { x = 0, y = 8 },
 	atlas = "blinds",
-	boss_colour = HEX("6d1414"),
+	boss_colour = HEX("000000"),
     mult=1,
 	no_ee = true,
     dollars = 8,
@@ -315,9 +315,57 @@ local phase3 = {
 				math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
 			)
 			G.FUNCS.draw_from_discard_to_deck()
+			G.jokers:load(G.GAME.EE_JOKERS)
+			G.GAME.hands = copy_table(G.GAME.EE_HANDS)
+			G.GAME.EE_HANDS = nil
+			G.GAME.EE_JOKERS = nil
 		end
 	end,
 	set_blind = function()
+		G.GAME.EE_JOKERS = G.jokers:save()
+		G.GAME.EE_HANDS = copy_table(G.GAME.hands)
+		for i, v in pairs(G.GAME.hands) do
+			v.mult = v.s_mult
+			v.chips = v.s_chips
+			v.level = 1
+			G.GAME.hands[i] = v
+		end
+		G.E_MANAGER:add_event(Event{
+			func = function()
+				for i, v in pairs(G.jokers.cards) do
+					local c = v
+					G.E_MANAGER:add_event(Event{
+						trigger = "after",
+						delay = 0.15 * G.SETTINGS.GAMESPEED,	
+						func = function()
+							c:juice_up()
+							c.debuff = true
+							play_sound("multhit1")
+							return true
+						end
+					})
+				end
+				G.E_MANAGER:add_event(Event{
+					trigger = "after",
+					delay = 0.4 * G.SETTINGS.GAMESPEED,
+					func = function()
+						for i, v in pairs(G.jokers.cards) do
+							v:start_dissolve()
+						end
+						play_sound("glass6")
+						return true
+					end
+				})
+				G.E_MANAGER:add_event(Event{
+					trigger = "after",
+					func = function()
+						save_run()
+						return true
+					end
+				})
+				return true
+			end
+		})
 		G.GAME.blind.chips = G.GAME.blind.chips ^ 1.25
 	end
 }
@@ -333,7 +381,7 @@ local phase4 = {
 	key = "endless_entropy_phase_four",
 	pos = { x = 0, y = 9 },
 	atlas = "blinds",
-	boss_colour = HEX("6d1414"),
+	boss_colour = HEX("000000"),
     mult=1,
 	no_ee = true,
     dollars = 8,

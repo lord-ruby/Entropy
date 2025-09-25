@@ -10,6 +10,7 @@ pattern = '''function love.load()'''
 position = "before"
 payload = '''
 Entropy = {}
+Entropy.ee_faces = {}
 Entropy.AltBlinds = {}
 Entropy.FlipsideInversions = {}
 Entropy.FlipsidePureInversions = {}
@@ -325,9 +326,14 @@ position = "after"
 payload = '''
 elseif self.exponent[2] > 0 then
     local initial = to_big(get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling)
-    initial = Big:create(initial)
-    initial = initial:arrow(self.exponent[1], self.exponent[2])
-    self.chips = initial
+    if Big then
+      initial = Big:create(initial)
+      initial = initial:arrow(self.exponent[1], self.exponent[2])
+      self.chips = initial
+    else
+      initial = initial ^ self.exponent[2]
+      self.chips = initial
+    end
 end
 '''
 match_indent = true
@@ -353,7 +359,11 @@ position = "after"
 payload = '''
 if blind_choice.config.exponent then
       local initial = get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling
-      initial = initial:arrow(blind_choice.config.exponent[1], blind_choice.config.exponent[2])
+      if Big then
+        initial = initial:arrow(blind_choice.config.exponent[1], blind_choice.config.exponent[2])
+      else
+        initial = initial ^ blind_choice.config.exponent[2]
+      end
       blind_amt = initial
 end
 '''

@@ -2118,7 +2118,9 @@ local debit_card = {
         end
     end,
     calc_dollar_bonus = function(self, card)
-        return card.ability.current
+        if to_big(card.ability.current) > to_big(0) then
+            return card.ability.current
+        end
     end,
     entr_credits = {
         art = {"Lil. Mr. Slipstream"}
