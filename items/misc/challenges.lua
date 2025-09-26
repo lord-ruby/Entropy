@@ -78,6 +78,37 @@ function Game:start_run(args)
     if G.GAME.cry_percrate and not G.GAME.cry_percrate["rune"] then G.GAME.cry_percrate["rune"] = 0 end
     G.jokers.config.highlighted_limit = 1e100
     G.consumeables.config.highlighted_limit = 1e100
+    if G.SPLASH_EE and not Entropy.IsEE() then
+        G.SPLASH_EE:remove()
+        G.SPLASH_EE = nil
+    end
+    if Entropy.IsEE() then
+        if not G.SPLASH_EE then
+            G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
+        end
+        G.E_MANAGER:add_event(Event{
+            trigger = "after",
+            blocking = false,
+            blockable = false,
+            delay = 1 * G.SETTINGS.GAMESPEED,
+            func = function()
+                G.GAME.EE_FADE = 0
+                G.SPLASH_EE:define_draw_steps({{
+                    shader = 'entr_entropic_vortex',
+                    send = {
+                        {name = 'time', ref_table = G.TIMERS, ref_value = 'REAL'},
+                        {name = 'vort_speed', val = 1},
+                        {name = 'colour_1', ref_table = G.C, ref_value = 'BLUE'},
+                        {name = 'colour_2', ref_table = G.C, ref_value = 'WHITE'},
+                        {name = 'mid_flash', val = 0},
+                        {name = 'transgender', ref_table = G.GAME, ref_value = "EE_FADE"},
+                        {name = 'vort_offset', val = (2*90.15315131*os.time())%100000},
+                    }}}
+                )
+                return true
+            end
+        })
+    end
 end
 
 local set_abilityref = Card.set_ability

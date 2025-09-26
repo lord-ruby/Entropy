@@ -10,6 +10,7 @@ extern MY_HIGHP_OR_MEDIUMP vec4 colour_1;
 extern MY_HIGHP_OR_MEDIUMP vec4 colour_2;
 extern MY_HIGHP_OR_MEDIUMP number mid_flash;
 extern MY_HIGHP_OR_MEDIUMP number vort_offset;
+extern MY_HIGHP_OR_MEDIUMP float transgender;
 
 #define PIXEL_SIZE_FAC 700.
 #define BLACK 0.6*vec4(79./255.,99./255., 103./255., 1./0.6)
@@ -52,5 +53,6 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     MY_HIGHP_OR_MEDIUMP vec4 ret_col = colour_1*c1p + colour_2*c2p + vec4(cb*BLACK.rgb, cb*colour_1.a);
     MY_HIGHP_OR_MEDIUMP number mod_flash = max(mid_flash*0.8, max(c1p, c2p)*5. - 4.4) + mid_flash*max(c1p, c2p);
     float dist = (uv.x)*(uv.x)+(uv.y)*(uv.y);
-    return ret_col*(0.15 - mod_flash) + mod_flash*vec4(1.5, .2, .55, 1.)*1.7*((sin(dist/10. + time/2.)+3.)/2.);
+    ret_col.a = transgender;
+    return ret_col*(0.15 - mod_flash) + mod_flash*vec4(1.5, .2, .55, transgender)*1.7*((sin(dist/10. + time/2.)+3.)/2.);
 }
