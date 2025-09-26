@@ -299,9 +299,6 @@ local phase3 = {
 		max = 32,
 	},
 	no_disable=true,
-	exponent = {
-		1, 1.25
-	},
 	in_pool = function() return false end,
 	next_phase = "bl_entr_endless_entropy_phase_four",
 	calculate = function(self, blind, context)
@@ -366,7 +363,7 @@ local phase3 = {
 				return true
 			end
 		})
-		G.GAME.blind.chips = G.GAME.blind.chips ^ 1.25
+		G.GAME.blind.chips = 900
 	end
 }
 
