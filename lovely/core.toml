@@ -1830,3 +1830,33 @@ elseif G.GAME.round_resets.blind == G.P_BLINDS.bl_big then
 elseif G.GAME.blind_on_deck ~= "Red" then
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'game.lua'
+pattern = '''
+    if G.SPLASH_BACK then
+        if G.debug_background_toggle then
+            love.graphics.clear({0,1,0,1})
+        else
+            love.graphics.push()
+            G.SPLASH_BACK:translate_container()
+            G.SPLASH_BACK:draw()
+            love.graphics.pop()
+        end
+    end
+'''
+position = 'after'
+payload = '''
+    if G.SPLASH_EE then
+        if G.debug_background_toggle then
+            
+        else
+            love.graphics.push()
+            G.SPLASH_EE:translate_container()
+            G.SPLASH_EE:draw()
+            love.graphics.pop()
+        end
+    end
+'''
+match_indent = true

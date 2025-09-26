@@ -1485,6 +1485,8 @@ function Game:update(dt)
     or Entropy.BlindIs("bl_entr_endless_entropy_phase_three") 
     or Entropy.BlindIs("bl_entr_endless_entropy_phase_four"))
     then
+        G.GAME.EE_FADE = G.GAME.EE_FADE or 0
+        G.GAME.EE_FADE = G.GAME.EE_FADE + dt * 0.5
         eedt = eedt - dt
         if eedt <= 0 then
             p_s = not p_s
@@ -1503,6 +1505,12 @@ function Game:update(dt)
                 eedt = math.random() * 0.4 + 0.1
             end
         end
+    end
+    if G.GAME.EE_R then
+        if G.GAME.EE_FADE > 10 then
+            G.GAME.EE_FADE = 10
+        end
+        G.GAME.EE_FADE = G.GAME.EE_FADE - dt * 3
     end
 end
 
@@ -2462,18 +2470,6 @@ function Game:update(dt)
 	upd(self, dt)
 	cdt = cdt + dt
 	if cdt > 0.01 then
-		if G.jokers and G.GAME.blind and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_two" then
-			local dtmod = math.min(G.SETTINGS.GAMESPEED, 4)/2+0.5
-			ee2dt = ee2dt + dt*dtmod
-			if ee2dt > 1 then
-				for i, v in pairs(G.jokers.cards) do
-					if not Card.no(G.jokers.cards[i], "immutable", true) then
-						Cryptid.manipulate(G.jokers.cards[i], { value=0.975 })
-					end
-				end
-				ee2dt = ee2dt - 1
-			end
-		end
 		if G.jokers and G.GAME.blind and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" then
 			G.HUD_blind:get_UIE_by_ID("score_at_least").config.text = localize("ph_blind_score_less_than")
 			for i, v in pairs(G.jokers.cards) do
@@ -2993,7 +2989,7 @@ end
 local end_roundref = end_round
 function end_round()
     if Entropy.IsEE() and not (G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_four") then
-		if (G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips)) or to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) then
+		if (G.GAME.blind and G.GAME.blind.config and ((G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips)) or (G.GAME.blind.config.blind.key ~= "bl_entr_endless_entropy_phase_three" and to_big(G.GAME.chips) >= to_big(G.GAME.blind.chips)))) then
 			G.GAME.chips = 0
 			G.GAME.round_resets.lost = true
 			G.E_MANAGER:add_event(Event({

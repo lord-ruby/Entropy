@@ -203,6 +203,12 @@ local comet = {
 -- 	bl_mf_psychic_dx = true,
 -- 	bl_mf_hook_dx = true,
 -- }
+
+SMODS.Shader({
+    key="entropic_vortex",
+    path="splash.fs"
+})
+
 local phase1 = {
 	dependencies = {
         items = {
@@ -244,6 +250,35 @@ local phase1 = {
 			}))
 		end
 	end,
+	set_blind = function()
+		G.GAME.EE_R = nil
+		if not G.SPLASH_EE then
+			G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
+			G.GAME.EE_FADE = 0
+			G.E_MANAGER:add_event(Event{
+				trigger = "after",
+				blocking = false,
+				blockable = false,
+				delay = 1 * G.SETTINGS.GAMESPEED,
+				func = function()
+					G.GAME.EE_FADE = 0
+					G.SPLASH_EE:define_draw_steps({{
+						shader = 'entr_entropic_vortex',
+						send = {
+							{name = 'time', ref_table = G.TIMERS, ref_value = 'REAL'},
+							{name = 'vort_speed', val = 1},
+							{name = 'colour_1', ref_table = G.C, ref_value = 'BLUE'},
+							{name = 'colour_2', ref_table = G.C, ref_value = 'WHITE'},
+							{name = 'mid_flash', val = 0},
+							{name = 'transgender', ref_table = G.GAME, ref_value = "EE_FADE"},
+							{name = 'vort_offset', val = (2*90.15315131*os.time())%100000},
+						}}}
+					)
+					return true
+				end
+			})
+		end
+	end
 }
 
 local phase2 = {
@@ -274,8 +309,34 @@ local phase2 = {
 	collection_loc_vars = function(self)
 		return { vars = { localize("entr_nadir_placeholder") } }
 	end,
-	setting_blind = function()
-		G.GAME.round_resets.lost = false
+	set_blind = function()
+		G.GAME.EE_R = nil
+		if not G.SPLASH_EE then
+			G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
+			G.GAME.EE_FADE = 0
+			G.E_MANAGER:add_event(Event{
+				trigger = "after",
+				blocking = false,
+				blockable = false,
+				delay = 1 * G.SETTINGS.GAMESPEED,
+				func = function()
+					G.GAME.EE_FADE = 0
+					G.SPLASH_EE:define_draw_steps({{
+						shader = 'entr_entropic_vortex',
+						send = {
+							{name = 'time', ref_table = G.TIMERS, ref_value = 'REAL'},
+							{name = 'vort_speed', val = 1},
+							{name = 'colour_1', ref_table = G.C, ref_value = 'BLUE'},
+							{name = 'colour_2', ref_table = G.C, ref_value = 'WHITE'},
+							{name = 'mid_flash', val = 0},
+							{name = 'transgender', ref_table = G.GAME, ref_value = "EE_FADE"},
+							{name = 'vort_offset', val = (2*90.15315131*os.time())%100000},
+						}}}
+					)
+					return true
+				end
+			})
+		end
 	end
 }
 
@@ -364,6 +425,35 @@ local phase3 = {
 			end
 		})
 		G.GAME.blind.chips = 900
+		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+		G.HUD_blind:recalculate()
+		G.GAME.EE_R = nil
+		if not G.SPLASH_EE then
+			G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
+			G.GAME.EE_FADE = 0
+			G.E_MANAGER:add_event(Event{
+				trigger = "after",
+				blocking = false,
+				blockable = false,
+				delay = 1 * G.SETTINGS.GAMESPEED,
+				func = function()
+					G.GAME.EE_FADE = 0
+					G.SPLASH_EE:define_draw_steps({{
+						shader = 'entr_entropic_vortex',
+						send = {
+							{name = 'time', ref_table = G.TIMERS, ref_value = 'REAL'},
+							{name = 'vort_speed', val = 1},
+							{name = 'colour_1', ref_table = G.C, ref_value = 'BLUE'},
+							{name = 'colour_2', ref_table = G.C, ref_value = 'WHITE'},
+							{name = 'mid_flash', val = 0},
+							{name = 'transgender', ref_table = G.GAME, ref_value = "EE_FADE"},
+							{name = 'vort_offset', val = (2*90.15315131*os.time())%100000},
+						}}}
+					)
+					return true
+				end
+			})
+		end
 	end
 }
 
@@ -388,7 +478,7 @@ local phase4 = {
 		max = 32,
 	},
 	exponent = {
-		1, 2.5
+		1, 1.5
 	},
 	in_pool = function() return false end,
 	calculate = function(self, blind, context)
@@ -400,7 +490,6 @@ local phase4 = {
 		end
 	end,
 	set_blind = function(self, reset, silent)
-		G.GAME.blind.chips = G.GAME.blind.chips ^ 2.5
 		for k, _ in pairs(Entropy.GetEEBlinds()) do
 			s = G.P_BLINDS[k]
 			if s.set_blind then
@@ -489,6 +578,33 @@ local phase4 = {
 				end
 			end
 		end
+		G.GAME.EE_R = nil
+		if not G.SPLASH_EE then
+			G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
+			G.GAME.EE_FADE = 0
+			G.E_MANAGER:add_event(Event{
+				trigger = "after",
+				blocking = false,
+				blockable = false,
+				delay = 1 * G.SETTINGS.GAMESPEED,
+				func = function()
+					G.GAME.EE_FADE = 0
+					G.SPLASH_EE:define_draw_steps({{
+						shader = 'entr_entropic_vortex',
+						send = {
+							{name = 'time', ref_table = G.TIMERS, ref_value = 'REAL'},
+							{name = 'vort_speed', val = 1},
+							{name = 'colour_1', ref_table = G.C, ref_value = 'BLUE'},
+							{name = 'colour_2', ref_table = G.C, ref_value = 'WHITE'},
+							{name = 'mid_flash', val = 0},
+							{name = 'transgender', ref_table = G.GAME, ref_value = "EE_FADE"},
+							{name = 'vort_offset', val = (2*90.15315131*os.time())%100000},
+						}}}
+					)
+					return true
+				end
+			})
+		end
 	end,
 	defeat = function(self, silent)
 		for k, _ in pairs(Entropy.GetEEBlinds()) do
@@ -505,6 +621,20 @@ local phase4 = {
 		end
 		G.GAME.EEBuildup = false
 		check_for_unlock({ type = "beat_ee" })
+
+		G.GAME.EE_R = true
+		G.E_MANAGER:add_event(Event{
+			blocking = false,
+			blockable = false,
+			func = function()
+				if not G.GAME.EE_FADE or not G.SPLASH_EE then return end
+				if G.GAME.EE_FADE <= 0 and G.SPLASH_EE then
+					G.SPLASH_EE:remove()
+					G.SPLASH_EE = nil
+					return true
+				end
+			end
+		})
 	end,
 	press_play = function(self)
 		for k, _ in pairs(Entropy.GetEEBlinds()) do
