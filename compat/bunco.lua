@@ -2,7 +2,7 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
 
     --TODO: make this not crash the game lmao
     --Also not too fond of this name feel free to change it
-    local rectification = {
+    local disturbance = {
         dependencies = {
             items = {
                 "set_entr_inversions",
@@ -10,7 +10,7 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
         },
         object_type = "Consumable",
         order = -900 + 34,
-        key = "rectification",
+        key = "disturbance",
         set = "Fraud",
 
         inversion = "c_bunc_adjustment",
@@ -95,7 +95,7 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
         end
     }
 
-    local symphony = {
+    local muse = {
         dependencies = {
             items = {
                 "set_entr_inversions",
@@ -103,7 +103,7 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
         },
         object_type = "Consumable",
         order = -900 + 36,
-        key = "symphony",
+        key = "muse",
         set = "Fraud",
 
         inversion = "c_bunc_art",
@@ -148,7 +148,7 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
         end
     }
 
-    local microcosm = {
+    local garden = {
         dependencies = {
             items = {
                 "set_entr_inversions",
@@ -156,7 +156,7 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
         },
         object_type = "Consumable",
         order = -900 + 37,
-        key = "microcosm",
+        key = "garden",
         set = "Fraud",
 
         inversion = "c_bunc_universe",
@@ -258,7 +258,7 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
         end
     }
 
-    local metropolis = {
+    local wastes = {
         dependencies = {
             items = {
                 "set_entr_inversions",
@@ -266,7 +266,7 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
         },
         object_type = "Consumable",
         order = -900 + 39,
-        key = "metropolis",
+        key = "wastes",
         set = "Fraud",
 
         inversion = "c_bunc_abyss",
@@ -315,12 +315,12 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
 
     return {
         items = {
-            rectification,
+            disturbance,
             avarice,
-            symphony,
-            microcosm,
+            muse,
+            garden,
             desert,
-            metropolis
+            wastes
         }
     }
 end

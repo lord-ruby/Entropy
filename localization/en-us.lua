@@ -2049,9 +2049,8 @@ local decs = {
 					"between {C:attention}other{} cards held in hand"
 				}
 			},
-			--Not too fond of this name feel free to change it
-			c_entr_rectification = {
-				name = "The Rectification",
+			c_entr_disturbance = {
+				name = "The Disturbance",
 				text = {
 					"Banish {C:attention}#1#{} selected card#<s>1#",
 					"Without {C:attention}destroying{} them"
@@ -2063,16 +2062,16 @@ local decs = {
 					"Immediately open {C:attention}#1#{} Standard Packs"
 				}
 			},
-			c_entr_symphony = {
-				name = "The Symphony",
+			c_entr_muse = {
+				name = "The Muse",
 				text = {
 					"{C:attention}Link together{} any",
 					"#1# selected cards"
 				}
 			},
 			--Description feels awkwardly worded.
-			c_entr_microcosm = {
-				name = "The Microcosm",
+			c_entr_garden = {
+				name = "The Garden",
 				text = {
 					"{C:attention} Randomize{} the rank and suit of {C:attention}#1#{} cards",
 					"all into the same rank and suit"
@@ -2086,8 +2085,8 @@ local decs = {
 					"{C:blue}+#4#{} Chips"
 				}
 			},
-			c_entr_metropolis = {
-				name = "The Metropolis",
+			c_entr_wastes = {
+				name = "The Wastes",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
 					"{C:attention}Halberds",
