@@ -1136,7 +1136,7 @@ function Entropy.LevelSuit(suit, card, amt, chips_override)
             return true 
         end 
     }))
-    update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { chips="+"..number_format((10 or chips_override)*amt), StatusText = true })
+    update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { chips="+"..number_format((chips_override or 10)*amt), StatusText = true })
     G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
             play_sound('tarot1')
             if card then card:juice_up(0.8, 0.5) end
