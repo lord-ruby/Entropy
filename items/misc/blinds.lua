@@ -424,7 +424,7 @@ local phase3 = {
 				return true
 			end
 		})
-		G.GAME.blind.chips = 900
+		G.GAME.blind.chips = 10000
 		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 		G.HUD_blind:recalculate()
 		G.GAME.EE_R = nil

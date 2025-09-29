@@ -2481,6 +2481,9 @@ function Game:update(dt)
                 end
             end
         end
+        if G.jokers and G.GAME.blind and (G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_two" or G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_four") then
+            G.HUD_blind:get_UIE_by_ID("score_at_least").config.text = localize("ph_blind_score_more_than")
+        end
 		cdt = 0
 	end
 end
