@@ -4159,6 +4159,72 @@ local prismatic_shard = {
     end
 }
 
+function Entropy.trigger_enhancement(enh, card)
+    if G.P_CENTERS[enh].demicoloncompat then
+        return G.P_CENTERS[enh]:calculate(card, {forcetrigger = true})
+    end
+    local lucky = {}
+    if SMODS.pseudorandom_probability(card, 'entr_chameleon', 1, 5) then
+        lucky.mult = 20
+    end
+    if SMODS.pseudorandom_probability(card, 'entr_chameleon', 1, 15) then
+        lucky.money = 20
+    end
+    local funcs = {
+        m_mult = {mult = 4},
+        m_bonus = {chips = 30},
+        m_glass = {xmult = 2},
+        m_steel = {xmult = 1.5},
+        m_stone = {chips = 50},
+        m_gold = {money=3},
+        m_lucky = lucky
+    }
+    if funcs[enh] then
+        return funcs[enh]
+    end
+end
+
+function Entropy.get_chameleon()
+    local enhs = {}
+    for i, v in pairs(G.P_CENTER_POOLS.Enhanced) do
+        if not v.original_mod or v.demicoloncompat then
+            if v.key ~= "m_wild" then
+                enhs[#enhs+1] = v.key
+            end
+        end
+    end
+    return pseudorandom_element(enhs, pseudoseed("entr_chameleon_enh"))
+end
+
+local chameleon = {
+    order = 80,
+    object_type = "Joker",
+    key = "chameleon",
+    rarity = 1,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 0, y = 0},
+    atlas = "placeholder",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    calculate = function(self, card, context)
+        if context.joker_main then
+            local rand = Entropy.get_chameleon()
+            return Entropy.trigger_enhancement(rand)
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.mult,
+                card.ability.chips,
+                card.ability.plus_asc
+            }
+        }
+    end
+}
+
+
 return {
     items = {
         surreal,
@@ -4247,6 +4313,7 @@ return {
         error_joker,
         thirteen_of_stars,
         diode,
-        prismatic_shard
+        prismatic_shard,
+        chameleon
     }
 }

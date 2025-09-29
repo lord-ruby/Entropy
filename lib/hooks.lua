@@ -2230,7 +2230,10 @@ function create_UIBox_blind_select()
             if to_big(G.GAME.round_resets.ante) < to_big(32) then G.GAME.EEBeaten = false end
             if G.GAME.EEBuildup or (to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) then
                 G.GAME.round_resets.blind_choices.Boss = "bl_entr_endless_entropy_phase_one"
+                G.GAME.round_resets.blind_choices.Small = "bl_entr_void"
+                G.GAME.round_resets.blind_choices.Big = "bl_entr_void"
                 G.GAME.EEBuildup = true
+                ease_background_colour{new_colour = HEX("5f5f5f"), contrast = 3}
             end
         end
         if G.GAME.modifiers.zenith then

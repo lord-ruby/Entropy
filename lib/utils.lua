@@ -783,8 +783,7 @@ end
 
 function Entropy.CanEeSpawn()
     if MP and MP.LOBBY and MP.LOBBY.code then return false end
-    return (SMODS.Mods["Cryptid"] or {}).can_load and Talisman 
-    and Cryptid.enabled("bl_entr_endless_entropy_phase_one")
+    return Cryptid.enabled("bl_entr_endless_entropy_phase_one")
     and Cryptid.enabled("bl_entr_endless_entropy_phase_two")
     and Cryptid.enabled("bl_entr_endless_entropy_phase_three")
     and Cryptid.enabled("bl_entr_endless_entropy_phase_four")

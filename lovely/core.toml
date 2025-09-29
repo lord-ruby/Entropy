@@ -1860,3 +1860,15 @@ payload = '''
     end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+if G.GAME.modifiers.no_blind_reward and G.GAME.modifiers.no_blind_reward[type] then _reward = nil end
+'''
+position = 'after'
+payload = '''
+if (G.GAME.modifiers.no_blind_reward and G.GAME.modifiers.no_blind_reward[type]) or ((type == "Big" or type == "Small") and G.GAME.EEBuildup) then _reward = nil end
+'''
+match_indent = true

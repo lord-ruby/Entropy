@@ -988,6 +988,41 @@ if not (SMODS.Mods["Cryptid"] or {}).can_load then
 	end
 end
 
+local ease_bg_cref = ease_background_colour_blind
+function ease_background_colour_blind(state, blind_override)
+	if G.GAME.EEBuildup and not Entropy.IsEE() then
+		ease_background_colour{new_colour = HEX("5f5f5f"), contrast = 3}
+	else
+		return ease_bg_cref(state, blind_override)
+	end
+end
+
+local ease_bg_c_ref = ease_background_colour
+function ease_background_colour(tbl,...)
+	if G.GAME.EEBuildup and not Entropy.IsEE() then
+		ease_bg_c_ref{new_colour = HEX("5f5f5f"), contrast = 3}
+	else
+		return ease_bg_c_ref(tbl,...)
+	end
+end
+
+local void = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+	object_type = "Blind",
+    order = 0,
+	key = "void",
+	pos = { x = 0, y = 14 },
+	atlas = "blinds",
+	boss_colour = HEX("494949"),
+    mult=1,
+    dollars = 0,
+    in_pool = function(self) return false end
+}
+
 return {
 	items = {
 		sun,
@@ -1000,6 +1035,7 @@ return {
 		phase3,
 		phase4,
 		endless_entropy,
-		alabaster
+		alabaster,
+		void
 	}
 }
