@@ -1359,10 +1359,23 @@ local decs = {
 					"{C:gold}+#3#{} Ascension Power"
                 },
             },
+			j_entr_chameleon = {
+                name = "Chameleon",
+                text = {
+                    "Scores as a",
+					"Random {C:attention}Enhancement{}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
 				name = "Red Room",
+				text = {
+					"???"
+				}
+			},
+			bl_entr_void = {
+				name = "???",
 				text = {
 					"???"
 				}

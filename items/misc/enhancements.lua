@@ -32,16 +32,10 @@ local flesh = {
             card:start_dissolve()
 			SMODS.calculate_context({remove_playing_cards = true, removed={card}})
         end
-		if context.forcetrigger then
-			card.ability.temporary2 = true
-			card:remove_from_deck()
-            card:start_dissolve()
-			SMODS.calculate_context({remove_playing_cards = true, removed={card}})
-		end
 	end,
 	entr_credits = {
 		art = {"Lil. Mr. Slipstream"}
-	}
+	},
 }
 local disavowed = {
 	dependencies = {
@@ -58,7 +52,7 @@ local disavowed = {
 	no_doe = true,
 	set_ability = function(self,card) 
 		card.ability.disavow = true
-	end
+	end,
 }
 
 local prismatic = {
@@ -161,7 +155,13 @@ local dark = {
 				xchips = card.ability.xchips
 			}
 		end
+		if context.forcetrigger then
+			return {
+				xchips = 1.5
+			}
+		end
 	end,
+	demicoloncompat = true
 }
 
 local ceramic = {
@@ -259,10 +259,24 @@ local ceramic = {
 				card.activated = true
 			end
 		end
-	end,
+		if context.forcetrigger then
+			G.E_MANAGER:add_event(Event({
+				trigger = "immediate",
+				func = function()
+					SMODS.add_card{
+						area=G.consumeables,
+						set = "Consumeables",
+						key_append = "entr_ceramic"
+					}
+					return true
+				end
+			}))
+		end
+	end,	
 	entr_credits = {
 		art = {"gudusername_53951"}
-	}
+	},
+	demicoloncompat = true
 }
 
 local is_suitref = Card.is_suit
