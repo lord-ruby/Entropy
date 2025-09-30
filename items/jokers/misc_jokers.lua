@@ -4224,6 +4224,50 @@ local chameleon = {
     end
 }
 
+local thanatophobia = {
+    order = 81,
+    object_type = "Joker",
+    key = "thanatophobia",
+    rarity = 1,
+    cost = 7,
+    eternal_compat = true,
+    pos = {x = 0, y = 0},
+    atlas = "placeholder",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    calculate = function(self, card, context)
+        if context.joker_main or context.forcetrigger then
+            if G.GAME.accumulated_sell_value then
+                return {
+                    mult = G.GAME.accumulated_sell_value
+                }
+            end
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                G.GAME.accumulated_sell_value or 0
+            }
+        }
+    end
+}
+
+local start_dissolveref = Card.start_dissolve
+function Card:start_dissolve(...)
+    if self.config and self.config.center and self.config.center.set == "Joker" and G.jokers then
+        G.GAME.accumulated_sell_value = (G.GAME.accumulated_sell_value or 0) + self.sell_cost / 2
+    end
+    return start_dissolveref(self, ...)
+end
+
+local destroy_cardsref = SMODS.destroy_cards
+function SMODS.destroy_cards(c, ...)
+    if c.config and c.config.center and c.config.center.set == "Joker" and G.jokers then
+        G.GAME.accumulated_sell_value = (G.GAME.accumulated_sell_value or 0) + c.sell_cost / 2
+    end
+    return destroy_cardsref(c, ...)
+end
 
 return {
     items = {
@@ -4314,6 +4358,7 @@ return {
         thirteen_of_stars,
         diode,
         prismatic_shard,
-        chameleon
+        chameleon,
+        thanatophobia
     }
 }

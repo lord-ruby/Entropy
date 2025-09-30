@@ -1366,6 +1366,14 @@ local decs = {
 					"Random {C:attention}Enhancement{}"
                 },
             },
+			j_entr_thanatophobia = {
+                name = "Thanatophobia",
+                text = {
+                    "Gives half of the {C:attention}sell value{} of all",
+					"sold or destroyed {C:attention}Jokers{} as mult",
+					"{C:inactive}(Currently: {C:mult}+#1#{C:inactive})"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
