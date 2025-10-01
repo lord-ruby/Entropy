@@ -1374,6 +1374,15 @@ local decs = {
 					"{C:inactive}(Currently: {C:mult}+#1#{C:inactive})"
                 },
             },
+			j_entr_redkey= {
+                name = "Red Key",
+                text = {
+					"Use this Joker to add an {C:attention}extra{} ",
+					"{C:red}Red Room{} Blind",
+					"gains {C:attention}#2#{} use#<s>2# when defeating a Boss Blind",
+					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
