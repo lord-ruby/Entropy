@@ -4269,6 +4269,44 @@ function SMODS.destroy_cards(c, ...)
     return destroy_cardsref(c, ...)
 end
 
+local redkey = {
+    order = 82,
+    object_type = "Joker",
+    key = "redkey",
+    rarity = 2,
+    cost = 8,
+    eternal_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    config = {
+        left = 3,
+        left_mod = 1
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {card.ability.left, card.ability.left_mod}
+        }
+    end,
+    can_use = function(self, card) return to_big(card.ability.left) > to_big(0) and not G.GAME.round_resets.red_room and G.blind_select end,
+    use = function(self, card)
+        card.ability.left = card.ability.left - 1
+        G.GAME.round_resets.red_room = true
+        G.GAME.round_resets.blind_states['Red'] = "Select"
+        if G.blind_select then        
+            G.blind_select:remove()
+            G.blind_prompt_box:remove()
+            G.STATE_COMPLETE = false
+        end
+    end,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition) or context.forcetrigger then
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -4359,6 +4397,7 @@ return {
         diode,
         prismatic_shard,
         chameleon,
-        thanatophobia
+        thanatophobia,
+        redkey
     }
 }

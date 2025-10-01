@@ -1023,6 +1023,23 @@ local void = {
     in_pool = function(self) return false end
 }
 
+local rr = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+	object_type = "Blind",
+    order = 4200,
+	key = "red",
+	pos = { x = 0, y = 0 },
+	atlas = "blinds",
+	boss_colour = HEX("FF0000"),
+    mult=1,
+    dollars = 3,
+    in_pool = function(self) return false end
+}
+
 return {
 	items = {
 		sun,
@@ -1036,6 +1053,7 @@ return {
 		phase4,
 		endless_entropy,
 		alabaster,
-		void
+		void,
+		rr
 	}
 }
