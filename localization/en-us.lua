@@ -1408,6 +1408,16 @@ local decs = {
 					"scoring card"
                 },
             },
+			j_entr_captcha = {
+                name = "Captcha",
+                text = {
+					"Use this Joker to apply a random",
+					"{C:attention}Joker{}, {C:attention}Consumable{}, {C:attention}Booster Pack{} or {C:attention}Voucher{}",
+					"as an Enhancement to a {C:attention}Random{} Card held in hand",
+					"gains {C:attention}#2#{} use#<s>2# when defeating a Blind",
+					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
