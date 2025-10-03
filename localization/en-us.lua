@@ -1392,6 +1392,14 @@ local decs = {
 					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
                 },
             },
+			j_entr_car_battery = {
+                name = "Car Battery",
+                text = {
+					"Useable {C:attention}Jokers{} and {C:attention}Consumables{}",
+					"Gain {C:attention}#1#{} extra use",
+					"When defeating a Boss Blind",
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
@@ -4859,6 +4867,12 @@ local decs = {
 			},
 		},
 		Other = {
+			cry_multiuse = {
+				name = "m",
+				text = {
+					"{C:inactive}Multiuse: ({V:1}#1#{C:inactive} remaining)",
+				},
+			},
 			cry_banana_booster = {
 				name = "Banana",
 				text = {

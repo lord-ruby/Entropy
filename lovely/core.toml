@@ -1872,3 +1872,89 @@ payload = '''
 if (G.GAME.modifiers.no_blind_reward and G.GAME.modifiers.no_blind_reward[type]) or ((type == "Big" or type == "Small") and G.GAME.EEBuildup) then _reward = nil end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''if main_end then'''
+position = "before"
+payload = '''
+if cfg and cfg.cry_multiuse then
+	local loc = {}
+	localize{type = 'other', key = 'cry_multiuse', nodes = loc, vars = {cfg.cry_multiuse, colours = {get_type_colour(cfg, card)}}}
+	desc_nodes[#desc_nodes+1] = loc[1]
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''if cfg and cfg.cry_multiuse then
+	local loc = {}
+	localize{type = 'other', key = 'cry_multiuse', nodes = loc, vars = {cfg.cry_multiuse}}
+	desc_nodes[#desc_nodes+1] = loc[1]
+end'''
+position = "at"
+payload = '''
+
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''if (prev_state == G.STATES.TAROT_PACK or prev_state == G.STATES.PLANET_PACK or'''
+position = "before"
+payload = '''
+if cry_muse and not (SMODS.Mods["Cryptid"] or {}).can_load then
+	card.ability.cry_multiuse = card.ability.cry_multiuse - 1
+	card.ability.extra_value = -1 * math.max(1, math.floor(card.cost/2))
+	card:set_cost()
+	delay(0.4)
+
+	-- i make my own card eval status text :D
+
+	card:juice_up()
+	play_sound('generic1')
+	attention_text({
+		text = format_ui_value(card.ability.cry_multiuse),
+		scale = 1.1,
+		hold = 0.6,
+		major = card,
+		backdrop_colour = G.C.SET[card.config.center.set],
+		align = 'bm',
+		offset = {x = 0, y = 0.2}
+	})
+
+	delay(0.8)
+ 	if card.playing_card then
+		draw_card(G.play, G.hand, 1, 'up', true, card, nil, true)
+ 	elseif not G.GAME.modifiers.cry_beta then
+		if to_big(#G.consumeables.cards) < to_big(G.consumeables.config.card_limit) then
+			draw_card(G.play, G.consumeables, 1, 'up', true, card, nil, true)
+		else card:start_dissolve()
+		end
+  	else
+		if to_big(#G.jokers.cards) < to_big(G.jokers.config.card_limit) then
+			draw_card(G.play, G.jokers, 1, 'up', true, card, nil, true)
+		else card:start_dissolve()
+		end
+    end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''if card.area and (not nc or card.area == G.pack_cards) then card.area:remove_card(card) end'''
+position = "before"
+payload = '''
+local cry_muse = false
+if card.ability.cry_multiuse and not (card.ability.cry_multiuse <= 1) then
+	cry_muse = true
+	dont_dissolve = true
+end
+'''
+match_indent = true

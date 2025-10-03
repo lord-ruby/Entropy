@@ -4395,6 +4395,62 @@ local polaroid = {
     end,
 }
 
+function Entropy.overclock(v, card)
+    if v.config.center.use or v.ability.consumeable then
+        if v.ability.consumeable then
+            v.ability.cry_multiuse = v.ability.cry_multiuse or 1
+            SMODS.scale_card(v, {
+                ref_table = v.ability, 
+                ref_value = "cry_multiuse", 
+                scalar_table = card.ability,
+                scalar_value = "uses_mod", 
+                scaling_message = {message = "+"..number_format(card.ability.uses_mod)}
+            })
+        elseif v.ability.left and v.ability.left_mod then
+            SMODS.scale_card(v, {
+                ref_table = v.ability, 
+                ref_value = "left", 
+                scalar_table = card.ability,
+                scalar_value = "uses_mod", 
+                scaling_message = {message = "+"..number_format(card.ability.uses_mod)}
+            })
+        end
+    end
+end
+
+local car_battery = {
+    order = 84,
+    object_type = "Joker",
+    key = "car_battery",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 4, y = 11},
+    atlas = "jokers",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    config = {
+        uses_mod = 1
+    },
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition) or context.forcetrigger then
+            for i, v in pairs(G.jokers.cards) do
+                Entropy.overclock(v, card)
+            end
+            for i, v in pairs(G.consumeables.cards) do
+                Entropy.overclock(v, card)
+            end
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.uses_mod
+            }
+        }
+    end
+}
+
 return {
     items = {
         surreal,
@@ -4487,6 +4543,7 @@ return {
         chameleon,
         thanatophobia,
         redkey,
-        polaroid
+        polaroid,
+        car_battery
     }
 }
