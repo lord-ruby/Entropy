@@ -4307,6 +4307,94 @@ local redkey = {
     end,
 }
 
+function Entropy.get_by_sortid(id)
+    for i, v in pairs(G.jokers.cards) do
+        if v.sort_id == id then return v end
+    end
+end
+
+local polaroid = {
+    order = 83,
+    object_type = "Joker",
+    key = "polaroid",
+    rarity = 3,
+    cost = 10,
+    eternal_compat = true,
+    pos = {x = 3, y = 11},
+    atlas = "jokers",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    config = {
+        target = -1,
+        left = 1,
+        left_mod = 1
+    },
+    can_use = function(self, card) return #Entropy.GetHighlightedCards({G.jokers}, card, 1, 1) > 0 and card.ability.left > 0 end,
+    use = function(self, card)
+        card.ability.left = card.ability.left - 1
+        local cards = Entropy.GetHighlightedCards({G.jokers}, card, 1, 1)
+        for i, v in pairs(cards) do
+            card.ability.target = v.sort_id
+        end
+        card:juice_up()
+        play_sound("entr_polaroid")
+    end,
+    loc_vars = function(self, q, card)
+        local other_joker = G.jokers and Entropy.get_by_sortid(card.ability.target)
+        local compatible = other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat
+        local main_end = {
+            {
+                n = G.UIT.C,
+                config = { align = "bm", minh = 0.4 },
+                nodes = {
+                    {
+                        n = G.UIT.C,
+                        config = {
+                            ref_table = card,
+                            align = "m",
+                            colour = compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8)
+                                or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8),
+                            r = 0.05,
+                            padding = 0.06,
+                        },
+                        nodes = {
+                            {
+                                n = G.UIT.T,
+                                config = {
+                                    text = " "
+                                        .. (compatible and localize { type = 'name_text', set = other_joker.config.center.set, key = other_joker.config.center.key } or localize("k_incompatible"))
+                                        .. " ",
+                                    colour = G.C.UI.TEXT_LIGHT,
+                                    scale = 0.32 * 0.8,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        }
+        return {
+            vars = {
+                card.ability.left,
+                card.ability.left_mod
+            },
+            main_end = main_end
+        }
+    end,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and not context.repetition) or context.forcetrigger then
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
+        end
+        if card.ability.target > -1 then 
+            local target = Entropy.get_by_sortid(card.ability.target)
+            if target then
+                local ret = SMODS.blueprint_effect(card, target, context)
+                return ret
+            end
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -4398,6 +4486,7 @@ return {
         prismatic_shard,
         chameleon,
         thanatophobia,
-        redkey
+        redkey,
+        polaroid
     }
 }

@@ -1383,6 +1383,15 @@ local decs = {
 					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
                 },
             },
+			j_entr_polaroid = {
+                name = "Polaroid",
+                text = {
+					"Use this Joker to copy another {C:attention}Jokers{}",
+					"abilities until next used",
+					"gains {C:attention}#2#{} use#<s>2# when defeating a Blind",
+					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
