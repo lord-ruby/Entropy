@@ -1400,6 +1400,14 @@ local decs = {
 					"When defeating a Boss Blind",
                 },
             },
+			j_entr_chair = {
+                name = "Chair",
+                text = {
+					"If Played hand is {C:attention}Three of a Kind",
+					"Apply {C:attention}Freaky{} to the {C:attention}third{}",
+					"scoring card"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

@@ -4451,6 +4451,32 @@ local car_battery = {
     end
 }
 
+local chair = {
+    order = 85,
+    object_type = "Joker",
+    key = "chair",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 5, y = 11},
+    atlas = "jokers",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    config = {
+        uses_mod = 1
+    },
+    calculate = function(self, card, context)
+        if (context.before and context.scoring_name == "Three of a Kind") then
+            if #context.scoring_hand > 2 then
+                context.scoring_hand[3]:set_edition("e_entr_freaky")
+            end
+        end
+    end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.e_entr_freaky
+    end
+}
+
 return {
     items = {
         surreal,
@@ -4544,6 +4570,7 @@ return {
         thanatophobia,
         redkey,
         polaroid,
-        car_battery
+        car_battery,
+        chair
     }
 }
