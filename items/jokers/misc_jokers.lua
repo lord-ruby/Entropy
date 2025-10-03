@@ -4477,6 +4477,49 @@ local chair = {
     end
 }
 
+local captcha = {
+    order = 86,
+    object_type = "Joker",
+    key = "captcha",
+    rarity = 2,
+    cost = 8,
+    eternal_compat = true,
+    pos = {x = 6, y = 11},
+    atlas = "jokers",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    config = {
+        left = 1,
+        left_mod = 1
+    },
+    can_use = function(self, card) return G.hand and #G.hand.cards > 0 and card.ability.left > 0 end,
+    use = function(self, card)
+        card.ability.left = card.ability.left - 1
+        local cards = {}
+        for i, v in pairs(G.hand.cards) do
+            if v ~= card then cards[#cards+1] = v end 
+        end
+        pseudoshuffle(cards, pseudoseed("entr_captcha"))
+        Entropy.FlipThen({cards[1]}, function(c)
+            c:set_ability(Entropy.GetPooledCenter(Entropy.GetRandomSet()))
+        end)
+        card:juice_up()
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.left,
+                card.ability.left_mod
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and not context.repetition) or context.forcetrigger then
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -4571,6 +4614,7 @@ return {
         redkey,
         polaroid,
         car_battery,
-        chair
+        chair,
+        captcha
     }
 }
