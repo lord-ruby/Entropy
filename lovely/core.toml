@@ -1958,3 +1958,52 @@ if card.ability.cry_multiuse and not (card.ability.cry_multiuse <= 1) then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = SMODS.Rarity:get_rarity_badge(card.config.center.rarity) end'''
+position = "at"
+payload = '''
+if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then 
+  local rarity = card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]].rarity or card.config.center.rarity
+  card_type = SMODS.Rarity:get_rarity_badge(rarity) 
+end
+'''
+match_indent = true 
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''local card = create_card(v.type, area, nil, nil, nil, nil, nil, 'sho')'''
+position = "at"
+payload = '''
+local card = create_card(v.type, area, nil, nil, nil, nil, nil, 'sho')
+if G.GAME.modifiers.glitched_items and not (v.type == "Default" or v.type == "Enhanced") then
+  local gc = {card.config.center.key}
+  for i = 1, G.GAME.modifiers.glitched_items - 1 do
+    gc[#gc+1] = Entropy.GetPooledCenter(v.type).key
+  end
+  card.ability.glitched_crown = gc
+end
+'''
+match_indent = true 
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''pack_cards[i] = card'''
+position = "after"
+payload = '''
+if G.GAME.modifiers.glitched_items and not (card.config.center.set == "Default" or card.config.center.set == "Enhanced") then
+  local gc = {card.config.center.key}
+  for i = 1, G.GAME.modifiers.glitched_items - 1 do
+    gc[#gc+1] = Entropy.GetPooledCenter(card.config.center.set).key
+  end
+  G.E_MANAGER:add_event(Event({trigger = 'after', blockable = false, blocking = false, func = function()
+    card.ability.glitched_crown = gc
+    return true
+  end}))
+end
+'''
+match_indent = true 

@@ -2990,6 +2990,10 @@ function CardArea:emplace(card, location, stay_flipped)
     if self == G.consumeables then
         calculate_runes({consumable_emplaced = true, consumeable=card})
     end
+    if card.ability.glitched_crown and self.config.type ~= "shop" then
+        card:set_ability(G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]])
+        card.ability.glitched_crown = nil
+    end
 end
 
 local end_roundref = end_round

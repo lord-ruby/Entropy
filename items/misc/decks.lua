@@ -152,6 +152,70 @@ local gemstone = {
   end
 }
 
+local update_ref = Card.update
+function Card:update(dt, ...)
+    if self.ability.glitched_crown then
+        self.glitched_dt = (self.glitched_dt or 0) + dt
+        if self.glitched_dt > 3 / #self.ability.glitched_crown then
+            self.glitched_dt = 0
+            self.glitched_index = 1 + (self.glitched_index or 1)
+            if self.glitched_index > #self.ability.glitched_crown then self.glitched_index = 1 end
+            local _center = G.P_CENTERS[self.ability.glitched_crown[self.glitched_index]]
+            self.children.center.atlas = G.ASSET_ATLAS[(_center.atlas or (_center.set == 'Joker' or _center.consumeable or _center.set == 'Voucher') and _center.set) or 'centers']
+            self.children.center:set_sprite_pos(_center.pos)
+            if self.states.hover.is then
+                self:stop_hover()
+                self:hover()
+            end
+        end
+    end
+    return update_ref(self, dt, ...)
+end
+
+local generate_UIBox_ability_tableref = Card.generate_UIBox_ability_table
+function Card:generate_UIBox_ability_table(vars_only)
+    if self.ability.glitched_crown then
+        local a = self.ability
+        local conf = self.config.center
+        local center = G.P_CENTERS[self.ability.glitched_crown[self.glitched_index]]
+        self.ability = center.config
+        self.config.center = center
+        self.ability.name = center.name
+        self.ability.set = center.set
+        local ret = generate_UIBox_ability_tableref(self, vars_only)
+        self.ability = a
+        self.config.center = conf
+        return ret
+    else
+        return generate_UIBox_ability_tableref(self, vars_only)
+    end
+end
+
+local get_type_colourref = get_type_colour
+function get_type_colour(_c, card)
+    if card.ability.glitched_crown then
+        return get_type_colourref(G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]], card)
+    end
+    return get_type_colourref(_c, card)
+end
+
+local corrupted = {
+  object_type = "Back",
+  order = 7006,
+  dependencies = {
+    items = {
+      "set_entr_decks"
+    }
+  },
+  config = { },
+  key = "corrupted",
+  pos = { x = 4, y = 0 },
+  atlas = "decks",
+  apply = function()
+    G.GAME.modifiers.glitched_items = 3
+  end
+}
+
 if CardSleeves then
     CardSleeves.Sleeve {
       key = "twisted",
@@ -267,6 +331,7 @@ return {
       destiny,
       ambisinister,
       butterfly,
-      gemstone
+      gemstone,
+      corrupted
     }
   }

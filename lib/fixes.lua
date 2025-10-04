@@ -414,3 +414,11 @@ function mod_chips(_chips)
   if _chips then return mod_chips_ref(_chips) end
   return 1
 end
+
+local copy_tableref = copy_table
+function copy_table(tbl, iter, ...)
+  iter = iter or 100
+  if iter > 0 then
+    return copy_tableref(tbl, iter - 1, ...)
+  end
+end
