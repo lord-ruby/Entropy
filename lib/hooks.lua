@@ -3484,6 +3484,7 @@ function Entropy.GetDummy(center, area, self)
         added_to_deck = added_to_deck,
         cost = self.cost,
         sell_cost = self.sell_cost,
+        eligible_strength_jokers = {}
     }
     for i, v in pairs(self) do
         if type(v) == "function" and i ~= "flip_side" then

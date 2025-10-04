@@ -3167,12 +3167,6 @@ local penny = {
     calculate = function(self, card, context)
         if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition) or context.forcetrigger then
             card.ability.extra.chips = to_big(card.ability.extra.chips) * 2
-            SMODS.scale_card(card, {
-                ref_table = card.ability.extra,
-                ref_value = "chips",
-                scalar_table = {mod = 2},
-                scalar_value = "mod"  
-            })
             return {
                 message = localize("k_upgrade_ex"),
                 chips = context.forcetrigger and card.ability.extra.chips or nil
@@ -4433,7 +4427,7 @@ local car_battery = {
         uses_mod = 1
     },
     calculate = function(self, card, context)
-        if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition) or context.forcetrigger then
+        if (context.end_of_round and not context.individual and G.GAME.blind_on_deck == "Boss") or context.forcetrigger then
             for i, v in pairs(G.jokers.cards) do
                 Entropy.overclock(v, card)
             end
