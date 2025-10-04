@@ -155,19 +155,36 @@ local gemstone = {
 local update_ref = Card.update
 function Card:update(dt, ...)
     if self.ability.glitched_crown then
-        self.glitched_dt = (self.glitched_dt or 0) + dt
-        if self.glitched_dt > 3 / #self.ability.glitched_crown then
-            self.glitched_dt = 0
-            self.glitched_index = 1 + (self.glitched_index or 1)
-            if self.glitched_index > #self.ability.glitched_crown then self.glitched_index = 1 end
-            local _center = G.P_CENTERS[self.ability.glitched_crown[self.glitched_index]]
-            self.children.center.atlas = G.ASSET_ATLAS[(_center.atlas or (_center.set == 'Joker' or _center.consumeable or _center.set == 'Voucher') and _center.set) or 'centers']
-            self.children.center:set_sprite_pos(_center.pos)
-            if self.states.hover.is then
-                self:stop_hover()
-                self:hover()
-            end
+      if not self.glitched_dt then
+        local soul_layer
+        for i, v in pairs(self.ability.glitched_crown) do
+          if G.P_CENTERS[v].soul_pos then soul_layer = true end
         end
+        if soul_layer and not self.children.floating_sprite then
+          local _center = G.P_CENTERS[self.ability.glitched_crown[1]]
+          self.children.floating_sprite = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center[G.SETTINGS.colourblind_option and 'hc_atlas' or 'lc_atlas'] or _center.atlas or _center.set], self.config.center.soul_pos or {x=9999,y=9999})
+          self.children.floating_sprite.role.draw_major = self
+          self.children.floating_sprite.states.hover.can = false
+          self.children.floating_sprite.states.click.can = false
+        end
+      end
+      self.glitched_dt = (self.glitched_dt or 0) + dt
+      if self.glitched_dt > 3 / #self.ability.glitched_crown then
+          self.glitched_dt = 0
+          self.glitched_index = 1 + (self.glitched_index or 1)
+          if self.glitched_index > #self.ability.glitched_crown then self.glitched_index = 1 end
+          local _center = G.P_CENTERS[self.ability.glitched_crown[self.glitched_index]]
+          self.children.center.atlas = G.ASSET_ATLAS[(_center.atlas or (_center.set == 'Joker' or _center.consumeable or _center.set == 'Voucher') and _center.set) or 'centers']
+          self.children.center:set_sprite_pos(_center.pos)
+          if self.children.floating_sprite then
+            self.children.floating_sprite.atlas = G.ASSET_ATLAS[_center[G.SETTINGS.colourblind_option and 'hc_atlas' or 'lc_atlas'] or _center.atlas or _center.set]
+            self.children.floating_sprite:set_sprite_pos(_center.soul_pos or {x=9999,y=9999})
+          end
+          if self.states.hover.is then
+              self:stop_hover()
+              self:hover()
+          end
+      end
     end
     return update_ref(self, dt, ...)
 end
