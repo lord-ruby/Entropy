@@ -1418,6 +1418,14 @@ local decs = {
 					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
                 },
             },
+			j_entr_deck_enlargement_pills = {
+                name = "Deck Enlargement Pills",
+                text = {
+					"After {C:attention}#1#{} {C:inactive}[#2#]{} Rounds",
+					"sell this card to",
+					"{C:attention}Apply{} a random {C:attention}Deck's{} Effects"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
@@ -1831,6 +1839,13 @@ local decs = {
 					"{C:attention}2{} Non Rune Consumables used"
 				}
 			},
+			b_entr_corrupted = {
+				name = "Corrupted Deck",
+				text =  {
+					"{C:attention}Jokers{} and {C:attention}Consumables{}",
+					"Cycle between {C:attention}3{} options"
+				}
+			},
 		},
 		Sleeve = {
 			sleeve_entr_twisted = {
@@ -2227,7 +2242,7 @@ local decs = {
 				name = "Trump Card",
 				text = {
 					"{C:red}Flipside{} can appear in",
-					"{C:attention}Celestial{}, {C:attention}Arcana{}, and {C:attention}Program{} Packs",
+					"{C:attention}Celestial{} and {C:attention}Arcana{} Packs",
 				},
 			},
 			v_entr_supersede = {

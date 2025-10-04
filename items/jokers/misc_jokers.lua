@@ -4520,6 +4520,134 @@ local captcha = {
     end,
 }
 
+function Card:redeem_deck()
+    if self.ability.set == "Back" or self.ability.set == "Sleeve" then
+        stop_use()
+        if not self.config.center.discovered then
+            discover_card(self.config.center)
+        end
+        --G.STATE = G.STATES.SMODS_REDEEM_VOUCHER
+
+        self.states.hover.can = false
+        local top_dynatext = nil
+        local bot_dynatext = nil
+        
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                top_dynatext = DynaText({string = localize{type = 'name_text', set = self.config.center.set, key = self.config.center.key}, colours = {G.C.WHITE}, rotate = 1,shadow = true, bump = true,float=true, scale = 0.9, pop_in = 0.6/G.SPEEDFACTOR, pop_in_rate = 1.5*G.SPEEDFACTOR})
+                bot_dynatext = DynaText({string = localize('k_redeemed_ex'), colours = {G.C.WHITE}, rotate = 2,shadow = true, bump = true,float=true, scale = 0.9, pop_in = 1.4/G.SPEEDFACTOR, pop_in_rate = 1.5*G.SPEEDFACTOR, pitch_shift = 0.25})
+                self:juice_up(0.3, 0.5)
+                play_sound('card1')
+                play_sound('coin1')
+                self.children.top_disp = UIBox{
+                    definition =    {n=G.UIT.ROOT, config = {align = 'tm', r = 0.15, colour = G.C.CLEAR, padding = 0.15}, nodes={
+                                        {n=G.UIT.O, config={object = top_dynatext}}
+                                    }},
+                    config = {align="tm", offset = {x=0,y=0},parent = self}
+                }
+                self.children.bot_disp = UIBox{
+                        definition =    {n=G.UIT.ROOT, config = {align = 'tm', r = 0.15, colour = G.C.CLEAR, padding = 0.15}, nodes={
+                                            {n=G.UIT.O, config={object = bot_dynatext}}
+                                        }},
+                        config = {align="bm", offset = {x=0,y=0},parent = self}
+                    }
+            return true end }))
+        if self.cost ~= 0 then
+            ease_dollars(-self.cost)
+            inc_career_stat('c_shop_dollars_spent', self.cost)
+        end
+        --G.GAME.current_round.voucher = nil
+
+
+        delay(0.6)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 2.6, func = function()
+            top_dynatext:pop_out(4)
+            bot_dynatext:pop_out(4)
+            return true end }))
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.5, func = function()
+            self.children.top_disp:remove()
+            self.children.top_disp = nil
+            self.children.bot_disp:remove()
+            self.children.bot_disp = nil
+        return true end }))
+
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.5, func = function()
+            G.FUNCS.buy_deckorsleeve{
+                config = {
+                    ref_table = self
+                }
+            }
+        return true end }))
+
+    end
+end
+
+local deck_enlargment_pills = {
+    order = 87,
+    object_type = "Joker",
+    key = "deck_enlargement_pills",
+    rarity = 3,
+    cost = 10,
+    eternal_compat = true,
+    pos = {x = 2, y = 0},
+    atlas = "placeholder",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    config = {
+        rounds = 2,
+        max_rounds = 2
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.max_rounds,
+                card.ability.rounds
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and not context.repetition) or context.forcetrigger then
+            card.ability.rounds = card.ability.rounds - 1
+            if to_big(card.ability.rounds) <= to_big(0) then
+                card.ability.rounds = 0
+                if not card.ability.juiced then
+                    local eval = function(card) return true end
+                    juice_card_until(card, eval, true)
+                    card.ability.juiced = true
+                end
+            end
+            return {
+                message = to_big(card.ability.rounds) > to_big(0) and number_format(card.ability.max_rounds - card.ability.rounds).."/"..number_format(card.ability.max_rounds)
+                or localize("k_active_ex")
+            }
+        end
+        if (context.selling_self and to_big(card.ability.rounds) <= to_big(0)) or context.forcetrigger then
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                func = function()
+            
+                    local area
+                    if G.STATE == G.STATES.HAND_PLAYED then
+                        if not G.redeemed_vouchers_during_hand then
+                            G.redeemed_vouchers_during_hand =
+                                CardArea(G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, { type = "play", card_limit = 5 })
+                        end
+                        area = G.redeemed_vouchers_during_hand
+                    else
+                        area = G.play
+                    end
+            
+                    local card = create_card("Back", G.play, nil, nil, nil, nil, nil, "entr_large_deck")
+                    card:add_to_deck()
+                    area:emplace(card)
+                    card.cost = 0
+                    card:redeem_deck()
+                    return true
+                end
+            })
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -4615,6 +4743,7 @@ return {
         polaroid,
         car_battery,
         chair,
-        captcha
+        captcha,
+        deck_enlargment_pills
     }
 }
