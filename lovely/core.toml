@@ -2007,3 +2007,15 @@ if G.GAME.modifiers.glitched_items and not (card.config.center.set == "Default" 
 end
 '''
 match_indent = true 
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+if self.ability.consumeable.mod_num >= #G.hand.highlighted and #G.hand.highlighted >= (self.ability.consumeable.min_highlighted or 1) then'''
+position = "at"
+payload = '''
+
+if (self.ability.consumeable.max_highlighted or 9999) >= #G.hand.highlighted and #G.hand.highlighted >= (self.ability.consumeable.min_highlighted or 1) then
+'''
+match_indent = true 

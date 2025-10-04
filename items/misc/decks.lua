@@ -193,10 +193,46 @@ end
 
 local get_type_colourref = get_type_colour
 function get_type_colour(_c, card)
-    if card.ability.glitched_crown then
+    if card.ability and card.ability.glitched_crown then
         return get_type_colourref(G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]], card)
     end
     return get_type_colourref(_c, card)
+end
+
+local can_use_ref = G.FUNCS.can_use_consumeable
+G.FUNCS.can_use_consumeable = function(e)
+  local card = e.config.ref_table
+  if card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]] then
+    if Card.can_use_consumeable(Entropy.GetDummy(G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]], card.area, card)) then
+      e.config.colour = G.C.RED
+      e.config.button = 'use_card'
+    else
+      e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+      e.config.button = nil
+    end
+  else
+    can_use_ref(e)
+  end
+end
+
+local buy_and_use_ref = G.FUNCS.can_buy_and_use
+G.FUNCS.can_buy_and_use = function(e)
+  local card = e.config.ref_table
+  if card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]] then
+    if (((e.config.ref_table.cost > G.GAME.dollars - G.GAME.bankrupt_at) and (e.config.ref_table.cost > 0)) or (not Card.can_use_consumeable(Entropy.GetDummy(G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]], card.area, card)))) then
+        e.UIBox.states.visible = false
+        e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+        e.config.button = nil
+    else
+        if e.config.ref_table.highlighted then
+          e.UIBox.states.visible = true
+        end
+        e.config.colour = G.C.SECONDARY_SET.Voucher
+        e.config.button = 'buy_from_shop'
+    end
+  else  
+    buy_and_use_ref(e)
+  end
 end
 
 local corrupted = {
