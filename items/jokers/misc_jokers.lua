@@ -4642,6 +4642,51 @@ local deck_enlargment_pills = {
     end,
 }
 
+local photocopy = {
+    order = 88,
+    object_type = "Joker",
+    key = "photocopy",
+    rarity = 2,
+    cost = 7,
+    eternal_compat = true,
+    pos = {x = 8, y = 11},
+    atlas = "jokers",
+}
+
+function Entropy.most_common_card()
+    local ranks = {}
+    local suits = {}
+    for i, v in pairs(G.playing_cards) do
+        ranks[v.base.value] = (ranks[v.base.value] or 0) + 1
+        suits[v.base.suit] = (suits[v.base.suit] or 0) + 1
+    end
+    local r = {}
+    local s = {}
+    for i, v in pairs(ranks) do r[#r+1] = {rank = i, num = v} end
+    for i, v in pairs(suits) do s[#s+1] = {suit = i, num = v} end
+    table.sort(r, function(a, b) return a.num > b.num end)
+    table.sort(s, function(a, b) return a.num > b.num end)
+    return {
+        id = r[1].rank,
+        suit = s[1].suit
+    }
+end
+
+SMODS.Booster:take_ownership_by_kind("Standard", {
+    create_card = function(self, card, i)
+        card = create_card((pseudorandom(pseudoseed('stdset'..G.GAME.round_resets.ante)) > 0.6) and "Enhanced" or "Base", G.pack_cards, nil, nil, nil, true, nil, 'sta')
+        local edition_rate = 2
+        local edition = poll_edition('standard_edition'..G.GAME.round_resets.ante, edition_rate, true)
+        card:set_edition(edition)
+        card:set_seal(SMODS.poll_seal({mod = 10}), true, true)
+        if next(SMODS.find_card("j_entr_photocopy")) and i == 1 then
+            local most_common = Entropy.most_common_card()
+            SMODS.change_base(card, most_common.suit, most_common.id)
+        end
+        return card
+    end
+})
+
 return {
     items = {
         surreal,
@@ -4738,6 +4783,7 @@ return {
         car_battery,
         chair,
         captcha,
-        deck_enlargment_pills
+        deck_enlargment_pills,
+        photocopy
     }
 }

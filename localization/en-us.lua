@@ -1426,6 +1426,14 @@ local decs = {
 					"{C:attention}Apply{} a random {C:attention}Deck's{} Effects"
                 },
             },
+			j_entr_photocopy = {
+                name = "Photocopy",
+                text = {
+					"The first card in {C:attention}Standard Packs{}",
+					"always has your most common",
+					"{C:attention}Suit{} and {C:attention}Rank{}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
