@@ -1995,6 +1995,10 @@ end
 local use_cardref = G.FUNCS.use_card
 G.FUNCS.use_card = function(e, mute, nosave)
 	local card = e.config.ref_table
+    if card.ability.glitched_crown then
+        card:set_ability(G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]])
+        card.ability.glitched_crown = nil
+    end
 	if card.config.center.set ~= "Booster" and Entropy.DeckOrSleeve("doc") then
     local num = 1
     for i, v in pairs(G.GAME.entr_bought_decks or {}) do if v == "b_entr_doc" or v == "sleeve_entr_doc" then num = num + 1 end end
@@ -3472,9 +3476,14 @@ function Entropy.GetDummy(center, area, self)
             local ret = Card.use_consumeable(self, ...)
             self.bypass_echo = nil
         end,
+        can_use_consumeable = function(self, ...)
+            return Card.can_use_consumeable(self, ...)
+        end,
         original_card = self,
         area = area,
         added_to_deck = added_to_deck,
+        cost = self.cost,
+        sell_cost = self.sell_cost,
     }
     for i, v in pairs(self) do
         if type(v) == "function" and i ~= "flip_side" then
