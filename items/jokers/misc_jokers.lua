@@ -4427,7 +4427,7 @@ local car_battery = {
         uses_mod = 1
     },
     calculate = function(self, card, context)
-        if (context.end_of_round and not context.individual and G.GAME.blind_on_deck == "Boss") or context.forcetrigger then
+        if (context.end_of_round and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition) or context.forcetrigger then
             for i, v in pairs(G.jokers.cards) do
                 Entropy.overclock(v, card)
             end

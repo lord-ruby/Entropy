@@ -990,14 +990,6 @@ local pi = {
     in_pool = function()
         return G.GAME.entr_alt
     end,
-	calculate = function(self, blind, context)
-		if context.pre_discard then
-			Entropy.FlipThen(G.hand.highlighted, function(card)
-				card.ability.perishable = true
-				card.ability.perish_tally = 5
-			end)
-		end
-	end
 }
 
 local rho = {
