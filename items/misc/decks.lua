@@ -191,7 +191,7 @@ end
 
 local generate_UIBox_ability_tableref = Card.generate_UIBox_ability_table
 function Card:generate_UIBox_ability_table(vars_only)
-    if self.ability.glitched_crown then
+    if self.ability.glitched_crown and G.P_CENTERS[self.ability.glitched_crown[self.glitched_index]] then
         local a = self.ability
         local conf = self.config.center
         local center = G.P_CENTERS[self.ability.glitched_crown[self.glitched_index]]
