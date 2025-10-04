@@ -835,7 +835,8 @@ local quasar = {
             return true
           end,
         }))
-        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+"..G.GAME.hands[ind].level..card.ability.level*amt })
+        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+"..(to_big(G.GAME.hands[ind].level) * to_big(amt) * to_big(card.ability.level)
+        delay(1.0)) })
         delay(2.6)
         update_hand_text(
           { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
