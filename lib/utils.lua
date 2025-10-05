@@ -1874,9 +1874,11 @@ function Entropy.calculate_ratios(incl_vanilla, only_vanilla)
     local rarities = {}
     for i, v in pairs(G.P_CENTER_POOLS.Joker) do
         if (not only_vanilla and v.original_mod and v.original_mod.id == "entr") or (incl_vanilla and not v.original_mod) then
-            total = total + 1
-            if not rarities[v.rarity] then rarities[v.rarity] = 0 end
-            rarities[v.rarity] = rarities[v.rarity] + 1
+                if not v.no_collection then
+                total = total + 1
+                if not rarities[v.rarity] then rarities[v.rarity] = 0 end
+                rarities[v.rarity] = rarities[v.rarity] + 1
+            end
         end
     end
     for i, v in pairs(rarities) do
