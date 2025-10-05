@@ -382,6 +382,249 @@ local kciroy = {
         end
     end
 }
+
+local ybur = {
+    order = 403,
+    object_type = "Joker",
+    key = "ybur",
+    config = {
+        e_chips = 1,
+        e_chips_mod = 0.05,
+        active = true
+    },
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    rarity = "entr_reverse_legendary",
+    cost = 20,
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = {x=2, y=0},
+    soul_pos = {x = 1, y = 0},
+    atlas = "ruby_atlas",
+    demicoloncompat=true,
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                card.ability.e_chips,
+                card.ability.e_chips_mod,
+                card.ability.active and localize("k_active") or localize("k_inactive")
+            },
+        }
+    end,
+    calculate = function (self, card, context)
+        if context.game_over and card.ability.active then
+            card.ability.active = false
+            SMODS.scale_card(card, {
+                ref_table = card.ability,
+                ref_value = "e_chips",
+                scalar_value = "e_chips_mod",
+                scaling_message = {
+                    message = localize({
+                        type = "variable",
+                        key = "a_powchips",
+                        vars = { card.ability.e_chips },
+                    }),
+                    colour = { 0.8, 0.45, 0.85, 1 }
+                }
+            })
+            return {
+                saved = localize(pseudorandom("ybur") < 0.5 and "k_saved_heroic" or "k_saved_just")
+            }
+        end
+        if context.joker_main or context.forcetrigger then
+            if to_big(card.ability.e_chips) ~= to_big(1) then
+                return {
+                    echips = card.ability.e_chips,
+                }
+            end
+        end
+        if context.skip_blind and not context.blueprint and not context.repetition then
+            card.ability.active = false
+            return {
+                message = localize("k_inactive")
+            }
+        end
+        if (context.end_of_round and not context.individual and not context.repetition) then
+            if G.GAME.blind_on_deck == "Boss" then
+                card.ability.active = true
+                return {
+                    message = localize("k_reset")
+                }
+            end
+        end
+    end
+}
+
+local zelavi = {
+    order = 404,
+    object_type = "Joker",
+    key = "zelavi",
+    config = {
+        x_chips = 1,
+        x_chips_mod = 0.2
+    },
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    rarity = "entr_reverse_legendary",
+    cost = 20,
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = {x=2, y=1},
+    soul_pos = {x = 3, y = 1},
+    atlas = "ruby_atlas",
+    demicoloncompat=true,
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue+1] = G.P_CENTERS.p_spectral_mega_1
+        return {
+            vars = {
+                card.ability.x_chips,
+                card.ability.x_chips_mod
+            },
+        }
+    end,
+    calculate = function (self, card, context)
+        if context.open_booster and context.card.config.center.kind == "Spectral" then
+            SMODS.scale_card(card, {
+                ref_table = card.ability,
+                ref_value = "x_chips",
+                scalar_value = "x_chips_mod",
+            })
+        end
+        if context.joker_main or context.forcetrigger then
+            if to_big(card.ability.x_chips) ~= to_big(1) then
+                return {
+                    xchips = card.ability.x_chips,
+                }
+            end
+        end
+        if context.starting_shop then
+            if G.shop_booster.cards[1] then
+                G.shop_booster.cards[1]:set_ability(G.P_CENTERS.p_spectral_mega_1)
+            end
+        end
+    end
+}
+
+function Entropy.missing_ranks()
+    local ranks = {}
+    for i, v in pairs(SMODS.Ranks) do
+        if not v.original_mod and not v.mod then ranks[v.id] = 0 end
+    end
+    for i, v in pairs(G.playing_cards) do
+        if ranks[v.base.id] then
+            ranks[v.base.id] = ranks[v.base.id] + 1
+        end
+    end
+    local total = 0
+    for i, v in pairs(ranks) do
+        if v == 0 then total = total + 1 end
+    end
+    return total
+end
+
+local ssac = {
+    order = 405,
+    object_type = "Joker",
+    key = "ssac",
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    rarity = "entr_reverse_legendary",
+    cost = 20,
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = {x=2, y=2},
+    soul_pos = {x = 1, y = 2},
+    atlas = "ruby_atlas",
+    demicoloncompat=true,
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+                Entropy.missing_ranks()
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main then
+            for i = 1, Entropy.missing_ranks() do
+                local j_r = Cryptid.forcetrigger(G.jokers.cards[#G.jokers.cards], context)
+                local c_r = G.consumeables.cards[#G.consumeables.cards] and Cryptid.forcetrigger(G.consumeables.cards[#G.consumeables.cards], context) or {}
+                local v = G.play.cards[#G.play.cards]
+                if G.play.cards then
+                    local results = eval_card(v, {cardarea=G.play,main_scoring=true, forcetrigger=true, individual=true})
+                    if results then
+                        for i, v2 in pairs(results) do
+                            for i2, result in pairs(type(v2) == "table" and v2 or {}) do
+                                SMODS.calculate_individual_effect({[i2] = result}, card, i2, result, false)
+                            end
+                        end
+                    end
+                    local results = eval_card(v, {cardarea=G.hand,main_scoring=true, forcetrigger=true, individual=true})
+                    if results then
+                        for i, v2 in pairs(results) do
+                            for i2, result in pairs(type(v2) == "table" and v2 or {}) do
+                                SMODS.calculate_individual_effect({[i2] = result}, card, i2, result, false)
+                            end
+                        end
+                    end
+                end
+                for i, v in pairs(j_r) do
+                    SMODS.calculate_individual_effect(j_r, card, i, v, false)
+                end
+                for i, v in pairs(c_r) do
+                    SMODS.calculate_individual_effect(j_r, card, i, v, false)
+                end
+            end
+        end
+    end
+}
+
+local axeh = {
+    order = 407,
+    object_type = "Joker",
+    key = "axeh",
+    config = {
+        asc_mod = 3
+    },
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+    rarity = "entr_reverse_legendary",
+    cost = 20,
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = {x=2, y=4},
+    soul_pos = {x = 1, y = 4},
+    atlas = "ruby_atlas",
+    demicoloncompat=true,
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue+1] = G.P_CENTERS.j_entr_sunny_joker
+        return {
+            vars = {
+                card.ability.asc_mod
+            },
+        }
+    end,
+    add_to_deck = function(self, card, from_debuff) 
+        if not from_debuff then
+            SMODS.add_card{
+                area = G.jokers,
+                key = "j_entr_sunny_joker"
+            }
+        end
+    end
+}
+
 return {
     items = {
         oekrep,
@@ -389,6 +632,11 @@ return {
         teluobirt,
         oinac,
         kciroy,
+        ybur,
+        ssac,
+        zelavi,
+        --crabus
+        axeh,
         SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load and entropy_card or nil, --lazy so this goes here
     }
 }

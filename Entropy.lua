@@ -10,6 +10,7 @@ local i = {
     "lib/loader",
     "lib/ui",
     "lib/fixes",
+    "lib/ascended",
 
     "items/misc/atlases",
     "items/misc/rarities",

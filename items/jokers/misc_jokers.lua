@@ -788,7 +788,7 @@ local skullcry = {
             end
             return {
                 message = localize('k_saved_ex'),
-                saved = "k_saved_skullcry",
+                saved = localize("k_saved_skullcry"),
                 colour = G.C.RED
             }
         end
@@ -2459,6 +2459,37 @@ local crabus = {
         }
     end,
     entr_credits = {art = {"Lil. Mr. Slipstream"}}
+}
+
+local hexa = {
+    object_type = "Joker",
+    key = "hexa",
+    order = 304,
+    rarity = 4,
+    cost = 20,
+    atlas = "ruby_atlas",
+    pos = {x=0, y=4},
+    soul_pos = {x = 1, y = 4},
+    config = {
+        asc_fac = 3,
+        csl = 3
+    },
+    demicoloncompat = true,
+    add_to_deck = function(self, card)
+        Entropy.ChangeFullCSL(card.ability.csl)
+    end,
+    remove_from_deck = function(self, card)
+        Entropy.ChangeFullCSL(-card.ability.csl)
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            key = (SMODS.Mods["Cryptid"] or {}).can_load and "j_entr_hexa_cryptid" or nil,
+            vars = {
+                number_format(card.ability.csl)
+            }
+        }
+    end,
+    entr_credits = {art = {"HexaCryonic"}}
 }
 
 local sandpaper = {
@@ -4197,8 +4228,8 @@ local chameleon = {
     rarity = 1,
     cost = 6,
     eternal_compat = true,
-    pos = {x = 0, y = 0},
-    atlas = "placeholder",
+    pos = {x = 9, y = 11},
+    atlas = "jokers",
     demicoloncompat = true,
     blueprint_compat = true,
     calculate = function(self, card, context)
@@ -4215,7 +4246,10 @@ local chameleon = {
                 card.ability.plus_asc
             }
         }
-    end
+    end,
+    entr_credits = {
+        art = {"LFMoth"}
+    }
 }
 
 local thanatophobia = {
@@ -4225,8 +4259,8 @@ local thanatophobia = {
     rarity = 1,
     cost = 7,
     eternal_compat = true,
-    pos = {x = 0, y = 0},
-    atlas = "placeholder",
+    pos = {x = 0, y = 12},
+    atlas = "jokers",
     demicoloncompat = true,
     blueprint_compat = true,
     calculate = function(self, card, context)
@@ -4245,6 +4279,9 @@ local thanatophobia = {
             }
         }
     end
+    entr_credits = {
+        art = {"LFMoth"}
+    }
 }
 
 local start_dissolveref = Card.start_dissolve
@@ -4737,6 +4774,7 @@ return {
         slipstream,
         cass,
         crabus,
+        hexa,
         sandpaper,
         purple_joker,
         chalice_of_blood,

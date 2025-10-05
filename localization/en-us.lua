@@ -1434,6 +1434,62 @@ local decs = {
 					"{C:attention}Suit{} and {C:attention}Rank{}"
                 },
             },
+
+			j_entr_hexa = {
+                name = "HexaCryonic, Witch of Light",
+                text = {
+					"Extra played cards provide",
+					"{C:gold}+3{} Ascension Power",
+					"{C:attention}+3{} Card Selection Limit"
+                },
+            },
+			j_entr_hexa_cryptid = {
+                name = "HexaCryonic, Knight of Mind",
+                text = {
+					"Extra played cards provide {X:gold,C:white}X3{}",
+					"as much Ascension Power",
+					"{C:attention}+#1#{} Card Selection Limit"
+                },
+            },
+
+			j_entr_ybur = {
+                name = "Ybur",
+                text = {
+					"Prevents Death once per Ante",
+					"if no blinds were skipped",
+					"This Joker gains {X:dark_edition,C:white}^#2#{} Chips",
+					"when death is prevented",
+					"{C:inactive}(Currently: {X:dark_edition,C:white}^#1#{C:inactive} Chips, #3#)"
+                },
+            },
+			j_entr_zelavi = {
+                name = "Zelavi",
+                text = {
+					"This Joker gains {X:blue,C:white}X#2#{} Chips",
+					"whenever a {C:spectral}Spectral Pack{} is opened",
+					"Each shop always contains a {C:spectral}Mega Spectral Pack{}",
+					"{C:inactive}(Currently: {X:blue,C:white}X#1#{C:inactive} Chips)"
+                },
+            },
+			j_entr_ssac = {
+                name = "Swonkssac",
+                text = {
+					"{C:attention}Forcetrigger{} the Rightmost",
+					"{C:attention}Joker{}, {C:attention}Playing Card{}, and {C:attention}Consumable{}",
+					"once for every Base Rank missing in the deck",
+					"{C:inactive}(Currently: {C:attention}#1#{C:inactive})"
+                },
+            },
+			--r_crabus
+			j_entr_axeh = {
+                name = "CinoyrcAxeh",
+                text = {
+					"Creates a {C:attention}Sunny Joker{}",
+					"when obtained",
+					"{X:gold,C:white}X#1#{} to all sources",
+					"of Ascension Power"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
