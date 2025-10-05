@@ -4278,7 +4278,7 @@ local thanatophobia = {
                 G.GAME.accumulated_sell_value or 0
             }
         }
-    end
+    end,
     entr_credits = {
         art = {"LFMoth"}
     }

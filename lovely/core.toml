@@ -1966,7 +1966,7 @@ pattern = '''if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rar
 position = "at"
 payload = '''
 if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then 
-  local rarity = card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]].rarity or card.config.center.rarity
+  local rarity = card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]] and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]].rarity or card.config.center.rarity
   card_type = SMODS.Rarity:get_rarity_badge(rarity) 
 end
 '''
@@ -2017,5 +2017,28 @@ position = "at"
 payload = '''
 
 if (self.ability.consumeable.max_highlighted or 9999) >= #G.hand.highlighted and #G.hand.highlighted >= (self.ability.consumeable.min_highlighted or 1) then
+'''
+match_indent = true 
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+local temp_pool =   (self.ability.name == 'The Wheel of Fortune' and self.eligible_strength_jokers) or 
+                            ((self.ability.name == 'Ectoplasm' or self.ability.name == 'Hex') and self.eligible_editionless_jokers) or {}'''
+position = "at"
+payload = '''
+
+local temp_pool =   (self.ability.name == 'The Wheel of Fortune' and self.eligible_strength_jokers) or 
+                            (self.eligible_editionless_jokers)
+
+if not temp_pool then
+    temp_pool = {}
+    for i, v in pairs(G.jokers.cards) do
+        if not v.edition then
+            temp_pool[#temp_pool+1] = v
+        end
+    end
+end
 '''
 match_indent = true 

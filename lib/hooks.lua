@@ -2501,7 +2501,7 @@ function Game:update(dt)
             end
         end
         if G.jokers and G.GAME.blind and (G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_two" or G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_four") then
-            G.HUD_blind:get_UIE_by_ID("score_at_least").config.text = localize("ph_blind_score_more_than")
+            G.HUD_blind:get_UIE_by_ID("score_at_least").config.text = localize("ph_blind_score_at_least")
         end
 		cdt = 0
 	end
@@ -3396,6 +3396,12 @@ function Entropy.GetDummy(center, area, self)
     local abil = copy_table(center.config)
     abil.consumeable = copy_table(abil)
     abil.name = center.name or center.key
+    local eligible_editionless_jokers = {}
+    for i, v in pairs(G.jokers.cards) do
+        if not v.edition then
+            eligible_editionless_jokers[#eligible_editionless_jokers+1] = v
+        end
+    end
     local tbl = {
         ability = abil,
         config = {
@@ -3426,7 +3432,8 @@ function Entropy.GetDummy(center, area, self)
         added_to_deck = added_to_deck,
         cost = self.cost,
         sell_cost = self.sell_cost,
-        eligible_strength_jokers = {}
+        eligible_strength_jokers = eligible_editionless_jokers,
+        eligible_editionless_jokers = eligible_editionless_jokers
     }
     for i, v in pairs(self) do
         if type(v) == "function" and i ~= "flip_side" then
