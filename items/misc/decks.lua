@@ -210,7 +210,7 @@ end
 
 local get_type_colourref = get_type_colour
 function get_type_colour(_c, card)
-    if card.ability and card.ability.glitched_crown then
+    if card.ability and card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]] then
         return get_type_colourref(G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]], card)
     end
     return get_type_colourref(_c, card)
