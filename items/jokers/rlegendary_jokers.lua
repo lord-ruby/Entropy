@@ -384,7 +384,7 @@ local kciroy = {
 }
 
 local ybur = {
-    order = 403,
+    order = 405,
     object_type = "Joker",
     key = "ybur",
     config = {
@@ -459,7 +459,7 @@ local ybur = {
 }
 
 local zelavi = {
-    order = 404,
+    order = 406,
     object_type = "Joker",
     key = "zelavi",
     config = {
@@ -529,7 +529,7 @@ function Entropy.missing_ranks()
 end
 
 local ssac = {
-    order = 405,
+    order = 407,
     object_type = "Joker",
     key = "ssac",
     dependencies = {
@@ -588,7 +588,7 @@ local ssac = {
 }
 
 local axeh = {
-    order = 407,
+    order = 409,
     object_type = "Joker",
     key = "axeh",
     config = {
