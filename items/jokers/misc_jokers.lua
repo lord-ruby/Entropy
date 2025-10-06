@@ -4743,8 +4743,11 @@ local enlightenment = {
     rarity = 2,
     cost = 6,
     eternal_compat = true,
-    pos = {x = 1, y = 0},
-    atlas = "placeholder",
+    pos = {x = 1, y = 12},
+    atlas = "jokers",
+    entr_credits = {
+        art = {"LFMoth"}
+    }
 }
 
 return {
