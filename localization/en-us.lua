@@ -1481,7 +1481,15 @@ local decs = {
 					"{C:inactive}(Currently: {C:attention}#1#{C:inactive})"
                 },
             },
-			--r_crabus
+			j_entr_subarc = {
+                name = "Subarc",
+                text = {
+					"{C:attention}Retriggered{} Playing Card Editions are",
+					"Upgraded to {C:attention}Sunny{} and then {C:attention}Solar{}",
+					"Retriggered {C:attention}Solar{} cards gain",
+					"{X:gold,C:white}X#1#{} Ascension Power"
+                },
+            },
 			j_entr_axeh = {
                 name = "CinoyrcAxeh",
                 text = {
