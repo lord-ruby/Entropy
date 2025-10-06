@@ -4631,8 +4631,8 @@ local deck_enlargment_pills = {
     rarity = 3,
     cost = 10,
     eternal_compat = true,
-    pos = {x = 2, y = 0},
-    atlas = "placeholder",
+    pos = {x = 2, y = 12},
+    atlas = "jokers",
     demicoloncompat = true,
     blueprint_compat = true,
     config = {
@@ -4750,6 +4750,35 @@ local enlightenment = {
     }
 }
 
+local black_rose_green_sun = {
+    order = 90,
+    object_type = "Joker",
+    key = "black_rose_green_sun",
+    rarity = 1,
+    cost = 5,
+    eternal_compat = true,
+    blueprint_compat = true,
+    pos = {x = 0, y = 0},
+    atlas = "placeholder",
+    config = {
+        asc_pow = 0.05
+    },
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.hand and (context.other_card:is_suit("Spades") or context.other_card:is_suit("Clubs")) then
+            return {
+                plus_asc = card.ability.asc_pow
+            }
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.asc_pow
+            }
+        }
+    end
+}
+
 return {
     items = {
         surreal,
@@ -4849,6 +4878,7 @@ return {
         captcha,
         deck_enlargment_pills,
         photocopy,
-        enlightenment
+        enlightenment,
+        black_rose_green_sun
     }
 }
