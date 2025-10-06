@@ -347,7 +347,7 @@ local decs = {
 			j_entr_strawberry_pie = {
 				name = "Strawberry Pie",
 				text = {
-					"{C:green}#1# in #2#{} chance for"
+					"{C:green}#1# in #2#{} chance for",
 					"Other hand level-ups to be",
 					"redirected to {C:attention}High Card{}",
 				}
@@ -1489,6 +1489,16 @@ local decs = {
 					"when obtained",
 					"{X:gold,C:white}X#1#{} to all sources",
 					"of Ascension Power"
+                },
+            },
+
+			j_entr_enlightenment = {
+                name = "Enlightenment",
+                text = {
+					"Allows {C:attention}The Fool{} to copy",
+					"any {C:red}Non Inverted{} or {C:red}Hidden{} Consumable or Booster Pack",
+					"Allows {C:red}The Master{} to copy",
+					"{C:red}Twisted Packs{}"
                 },
             },
 		},
