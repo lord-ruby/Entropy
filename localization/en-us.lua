@@ -3072,6 +3072,7 @@ local decs = {
 					"convert the {C:attention}left{} Joker",
 					"into the {C:attention}right{} Joker",
 					"then {C:attention}strip{} its edition",
+					"and debuff it for {C:attention}#2#{} rounds"
 				}
 			},
 			c_entr_charm = {
