@@ -358,6 +358,7 @@ G.FUNCS.can_reserve_card = function(e)
     if
         #G.consumeables.cards
         < G.consumeables.config.card_limit + (Cryptid.safe_get(c1, "edition", "negative") and 1 or 0)
+        and Entropy.can_be_pulled(c1)
     then
         e.config.colour = G.C.GREEN
         e.config.button = "reserve_card"

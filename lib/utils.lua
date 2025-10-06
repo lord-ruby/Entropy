@@ -1910,3 +1910,21 @@ function Entropy.get_reroll_height()
     if HotPotato then return 1.04 end
     return Entropy.CanSwitchAltPath() and 1 or 1.6
 end
+
+function Entropy.can_be_pulled(card)
+    local center = card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]] or card.config.center
+    return not center.no_select and (SMODS.ConsumableTypes[center.set] and SMODS.ConsumableTypes[center.set].can_be_pulled or center.can_be_pulled) and not center.hidden
+end
+
+function Entropy.needs_pull_button(card)
+    local center = card.config.center
+    if not center.no_select and (SMODS.ConsumableTypes[center.set] and SMODS.ConsumableTypes[center.set].can_be_pulled or center.can_be_pulled) and not center.hidden then
+        return true
+    end
+    for i, v in pairs(card.ability.glitched_crown or {}) do
+        local center = G.P_CENTERS[v]
+        if center and not center.no_select and (SMODS.ConsumableTypes[center.set] and SMODS.ConsumableTypes[center.set].can_be_pulled or center.can_be_pulled) and not center.hidden then
+            return true
+        end
+    end
+end
