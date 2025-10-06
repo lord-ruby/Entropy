@@ -262,11 +262,14 @@ local corrupted = {
   },
   config = { },
   key = "corrupted",
-  pos = { x = 4, y = 0 },
+  pos = { x = 7, y = 0 },
   atlas = "decks",
   apply = function()
     G.GAME.modifiers.glitched_items = 3
-  end
+  end,
+  entr_credits = {
+    art = {"LFMoth"}
+  }
 }
 
 if CardSleeves then
