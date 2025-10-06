@@ -516,7 +516,7 @@ function Entropy.missing_ranks()
     for i, v in pairs(SMODS.Ranks) do
         if not v.original_mod and not v.mod then ranks[v.id] = 0 end
     end
-    for i, v in pairs(G.playing_cards) do
+    for i, v in pairs(G.playing_cards or {}) do
         if ranks[v.base.id] then
             ranks[v.base.id] = ranks[v.base.id] + 1
         end

@@ -1509,6 +1509,14 @@ local decs = {
 					"{C:red}Twisted Packs{}"
                 },
             },
+			j_entr_black_rose_green_sun = {
+                name = "Black Rose, Green Sun",
+                text = {
+					"{C:spades}Spades{} and {C:clubs}Clubs{}",
+					"held in hand give",
+					"{C:gold}+#1#{} Ascension Power"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
