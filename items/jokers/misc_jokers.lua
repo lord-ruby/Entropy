@@ -77,7 +77,7 @@ local strawberry_pie = {
     config = {
         num = 2,
         denom = 3
-    }
+    },
     blueprint_compat = false,
     eternal_compat = true,
     pos = { x = 2, y = 1 },
@@ -4736,6 +4736,17 @@ SMODS.Booster:take_ownership_by_kind("Standard", {
     end
 })
 
+local enlightenment = {
+    order = 89,
+    object_type = "Joker",
+    key = "enlightenment",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+}
+
 return {
     items = {
         surreal,
@@ -4834,6 +4845,7 @@ return {
         chair,
         captcha,
         deck_enlargment_pills,
-        photocopy
+        photocopy,
+        enlightenment
     }
 }

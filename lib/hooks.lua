@@ -1924,20 +1924,31 @@ G.FUNCS.use_card = function(e, mute, nosave)
     local card = e.config.ref_table
     card.ability.bypass_aleph = true
     ref(e, mute, nosave)
-    if Entropy.is_inverted(card.config.center) and not card.config.center.hidden then
-        G.GAME.last_inversion = {
-            key = card.config.center.key,
-            set = card.config.center.set
-        }
-    end
-    if card.config.center.set == "Fraud" and (card.config.center.key ~= "c_entr_prophecy" or not G.GAME.last_fraud) then
-        G.GAME.last_fraud = {
-            key = card.config.center.key,
-            set = card.config.center.set
-        }
-    end
-    G.GAME.entr_used_cards = G.GAME.entr_used_cards or {}
-    G.GAME.entr_used_cards[card.config.center.key] = (G.GAME.entr_used_cards[card.config.center.key] or 0) + 1
+    G.E_MANAGER:add_event(Event{
+        trigger = "after",
+        delay = 2,
+        blocking = false,
+        blockable = true,
+        func = function()
+        if Entropy.is_inverted(card.config.center) and not card.config.center.hidden then
+                G.GAME.last_inversion = {
+                    key = card.config.center.key,
+                    set = card.config.center.set
+                }
+            elseif not card.config.center.hidden and next(SMODS.find_card("j_entr_enlightenment")) then
+                G.GAME.last_tarot_planet = card.config.center.key
+            end
+            if card.config.center.set == "Fraud" and (card.config.center.key ~= "c_entr_prophecy" or not G.GAME.last_fraud) then
+                G.GAME.last_fraud = {
+                    key = card.config.center.key,
+                    set = card.config.center.set
+                }
+            end
+            G.GAME.entr_used_cards = G.GAME.entr_used_cards or {}
+            G.GAME.entr_used_cards[card.config.center.key] = (G.GAME.entr_used_cards[card.config.center.key] or 0) + 1
+            return true
+        end
+    })
 end
 
 local main_ref = evaluate_play_main
@@ -3662,6 +3673,17 @@ end
 
 local open_ref = Card.open
 function Card:open(...)
+    if next(SMODS.find_card("j_entr_enlightenment")) then
+        if self.config.center.kind == "Inverted" then
+            G.GAME.last_inversion = {
+                key = self.config.center.key,
+                set = self.config.center.set
+            }
+        else
+            G.GAME.last_tarot_planet = self.config.center.key
+            print(G.GAME.last_tarot_planet)
+        end
+    end
     open_ref(self, ...)
     G.E_MANAGER:add_event(Event{
         trigger = "after",
@@ -3782,3 +3804,53 @@ function Card:sell_card()
 	end
 	sell_card_stuff(self)
 end 
+
+SMODS.Consumable:take_ownership("fool", {
+    loc_vars = function(self, info_queue, card)
+        local fool_c = G.GAME.last_tarot_planet and G.P_CENTERS[G.GAME.last_tarot_planet] or nil
+        local last_tarot_planet = fool_c and localize { type = 'name_text', key = fool_c.key, set = fool_c.set == "Booster" and "Other" or fool_c.set } or
+            localize('k_none')
+        local colour = (not fool_c or fool_c.name == 'The Fool') and G.C.RED or G.C.GREEN
+
+        if not (not fool_c or fool_c.name == 'The Fool') then
+            info_queue[#info_queue + 1] = fool_c
+        end
+
+        local main_end = {
+            {
+                n = G.UIT.C,
+                config = { align = "bm", padding = 0.02 },
+                nodes = {
+                    {
+                        n = G.UIT.C,
+                        config = { align = "m", colour = colour, r = 0.05, padding = 0.05 },
+                        nodes = {
+                            { n = G.UIT.T, config = { text = ' ' .. last_tarot_planet .. ' ', colour = G.C.UI.TEXT_LIGHT, scale = 0.3, shadow = true } },
+                        }
+                    }
+                }
+            }
+        }
+
+        return { vars = { last_tarot_planet }, main_end = main_end }
+    end,
+    use = function(self, card, area, copier)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'after',
+            delay = 0.4,
+            func = function()
+                if G.consumeables.config.card_limit > #G.consumeables.cards then
+                    play_sound('timpani')
+                    SMODS.add_card({ key = G.GAME.last_tarot_planet, area = G.consumeables })
+                    card:juice_up(0.3, 0.5)
+                end
+                return true
+            end
+        }))
+        delay(0.6)
+    end,
+    can_use = function(self, card)
+        return G.consumeables.config.card_limit > #G.consumeables.cards and G.GAME.last_tarot_planet and
+            G.GAME.last_tarot_planet ~= 'c_fool'
+    end
+})
