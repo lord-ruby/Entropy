@@ -74,12 +74,24 @@ local strawberry_pie = {
             "set_entr_misc_jokers"
         }
     },
+    config = {
+        num = 2,
+        denom = 3
+    }
     blueprint_compat = false,
     eternal_compat = true,
     pos = { x = 2, y = 1 },
     atlas = "jokers",
     demicoloncompat = true,
     pools = { ["Food"] = true },
+    loc_vars = function(self, q, card)
+        local n, d = SMODS.get_probability_vars(card, card.ability.num, card.ability.denom, "entr_strawberry")
+        return {
+            vars {
+                n, d
+            }
+        }
+    end
 }
 
 local recursive_joker = {
@@ -4162,8 +4174,8 @@ local prismatic_shard = {
     blueprint_compat = true,
     config = {
         mult = 2,
-        chips = 10,
-        plus_asc = 0.25
+        chips = 8,
+        plus_asc = 0.15
     },
     calculate = function(self, card, context)
         if (context.individual and context.cardarea == G.play) or context.forcetrigger then
