@@ -557,6 +557,7 @@ local crypt = {
     atlas = "consumables",
     config = {
         select = 2,
+        rounds = 3,
     },
 	pos = {x=9,y=5},
     --soul_pos = { x = 5, y = 0},
@@ -571,6 +572,8 @@ local crypt = {
             if v ~= joker then            
                 copy_card(joker, v)
                 v:set_edition()
+                v.ability.debuff_timer = card2.ability.rounds
+                v.ability.debuff_timer_max = card2.ability.rounds
             end
         end)
 
@@ -583,6 +586,7 @@ local crypt = {
         return {
             vars = {
                 card.ability.select,
+                card.ability.rounds
             }
         }
     end,
