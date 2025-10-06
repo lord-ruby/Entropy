@@ -22,7 +22,15 @@ local master = {
         return G.GAME.last_inversion
 	end,
     loc_vars = function(self, q, card)
-        card.ability.last_inversion = G.GAME.last_inversion and G.GAME.last_inversion.set and G.localization.descriptions[G.GAME.last_inversion.set][G.GAME.last_inversion.key].name or "None"
+        card.ability.last_inversion = G.GAME.last_inversion and G.GAME.last_inversion.set and G.localization.descriptions[G.GAME.last_inversion.set] and G.localization.descriptions[G.GAME.last_inversion.set][G.GAME.last_inversion.key].name or localize('k_none')
+        if G.GAME.last_inversion and card.ability.last_inversion == localize('k_none') then
+            local nodes = {}
+            localize{type = 'name', set = "Other", key = G.GAME.last_inversion.key, nodes = nodes}
+            if not nodes[1] then
+                localize{type = 'name', set = "Other", key = string.gsub(G.GAME.last_inversion.key, "_[0-9]*$", ""), nodes = nodes}
+            end
+            card.ability.last_inversion = nodes[1][1].nodes[1].config.object.string
+        end
         return {
             main_end = (card.area and (card.area == G.consumeables or card.area == G.pack_cards or card.area == G.hand or card.area == G.shop_jokers or card.area == G.shop_booster or card.area == G.shop_vouchers)) and {
 				{
