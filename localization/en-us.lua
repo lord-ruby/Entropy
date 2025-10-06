@@ -1496,8 +1496,8 @@ local decs = {
                 name = "Enlightenment",
                 text = {
 					"Allows {C:attention}The Fool{} to copy",
-					"any {C:red}Non Inverted{} or {C:red}Hidden{} Consumable or Booster Pack",
-					"Allows {C:red}The Master{} to copy",
+					"any {C:red}Non Inverted{} or {C:red}Hidden{} Consumable",
+					"or Booster Pack. Allows {C:red}The Master{} to copy",
 					"{C:red}Twisted Packs{}"
                 },
             },
