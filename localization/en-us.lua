@@ -347,7 +347,8 @@ local decs = {
 			j_entr_strawberry_pie = {
 				name = "Strawberry Pie",
 				text = {
-					"Other hand level-ups are",
+					"{C:green}#1# in #2#{} chance for"
+					"Other hand level-ups to be",
 					"redirected to {C:attention}High Card{}",
 				}
 			},

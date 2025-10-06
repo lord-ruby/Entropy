@@ -1578,7 +1578,11 @@ end
 local ref = level_up_hand
 function level_up_hand(card, hand, instant, amount, ...)
     if next(SMODS.find_card("j_entr_strawberry_pie")) and hand ~= "High Card" then
-        hand = "High Card"
+        for i, v in pairs(SMODS.find_card("j_entr_strawberry_pie")) do
+            if SMODS.pseudorandom_probability(v, v.ability.num, v.ability.denom, "entr_strawberry") then
+                hand = "High Card"
+            end
+        end 
     end
     local val = ref(card,hand,instant,amount, ...)
     return val
