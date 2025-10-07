@@ -1,7 +1,7 @@
 if (SMODS.Mods["Bunco"] or {}).can_load then
 
-    --TODO: make this not crash the game lmao
-    --Also not too fond of this name feel free to change it
+    --TODO: commented out because banishing playing cards is a fuck. Somebody else's problem.
+    --[[
     local disturbance = {
         dependencies = {
             items = {
@@ -17,7 +17,7 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
 
         atlas = "crossmod_consumables",
         config = {
-            select = 2
+            select = 3
         },
         pos = {x=8,y=0},
         use = function(self, card2)
@@ -53,9 +53,11 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
             self:use(card)
         end
     }
+    ]]--
 
-    --TODO: make this open regular size boosters instead of megas. Also make it directly open the pack instead of giving tags.
-    --This is a dumb workaround because idk how the hell i'd make it instantly open the pack rn.
+
+    --TODO: commented out because boosters that come from a consumable are a fuck, especially with multiple at once. Somebody else's problem.
+    --[[
     local avarice = {
         dependencies = {
             items = {
@@ -76,13 +78,32 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
         pos = {x=10,y=0},
         use = function(self, card)
             for i = 1, math.min(card.ability.boosters, 20) do
-                tag = Tag("tag_standard")
-                add_tag(tag)
+                G.E_MANAGER:add_event(Event({
+                    trigger = "before",
+                    blocking = false,
+                    func = function()
+                        if ((G.STATE == G.STATES.SMODS_BOOSTER_OPENED) or G.pack_cards) then return false end
+                        local key = "p_standard_normal_1"
+                        local booster = Card(
+                                G.play.T.x + G.play.T.w / 2 - G.CARD_W * 1.27 / 2,
+                                G.play.T.y + G.play.T.h / 2 - G.CARD_H * 1.27 / 2,
+                                G.CARD_W * 1.27,
+                                G.CARD_H * 1.27,
+                                G.P_CARDS.empty,
+                                G.P_CENTERS[key],
+                                { bypass_discovery_center = true, bypass_discovery_ui = true }
+                        )
+                        booster.cost = 0
+                        booster.from_tag = true
+                        G.FUNCS.use_card({ config = { ref_table = booster } })
+                        booster:start_materialize()
+                        return true
+                    end,
+                }))
             end
-
         end,
         can_use = function(self, card)
-            return true
+            return not (G.STATE == G.STATES.SMODS_BOOSTER_OPENED)
         end,
         loc_vars = function(self, q, card) return {vars = {math.min(card.ability.boosters, 20)}} end,
         entr_credits = {
@@ -94,6 +115,7 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
             self:use(card)
         end
     }
+    ]]--
 
     local muse = {
         dependencies = {
@@ -315,8 +337,8 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
 
     return {
         items = {
-            disturbance,
-            avarice,
+            --disturbance,
+            --avarice,
             muse,
             garden,
             desert,
