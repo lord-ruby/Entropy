@@ -4764,7 +4764,7 @@ local black_rose_green_sun = {
         asc_pow = 0.05
     },
     calculate = function(self, card, context)
-        if context.individual and context.cardarea == G.hand and (context.other_card:is_suit("Spades") or context.other_card:is_suit("Clubs")) then
+        if context.individual and context.cardarea == G.hand and (context.other_card:is_suit("Spades") or context.other_card:is_suit("Clubs")) and not context.end_of_round then
             return {
                 plus_asc = card.ability.asc_pow
             }
