@@ -3859,7 +3859,7 @@ SMODS.Consumable:take_ownership("fool", {
         delay(0.6)
     end,
     can_use = function(self, card)
-        local fac = card.area == G.consumeables and (-1 or 0)
+        local fac = card.area == G.consumeables and -1 or 0
         return G.consumeables.config.card_limit > #G.consumeables.cards + fac and G.GAME.last_tarot_planet and
             G.GAME.last_tarot_planet ~= 'c_fool'
     end
