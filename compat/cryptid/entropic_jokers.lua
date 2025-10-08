@@ -1025,6 +1025,41 @@ local prismatikos = {
     end,
 }
 
+local heimartai = {
+    order = 614,
+    object_type = "Joker",
+    key = "heimartai",
+    rarity = "entr_entropic",
+    cost = 150,
+    eternal_compat = true,
+    blueprint_compat = true,
+    dependencies = {
+        items = {
+            "set_entr_entropics"
+        }
+    },
+    soul_pos = { x = 5, y = 6, extra = { x = 4, y = 6 } },
+    pos = { x = 3, y = 6 },
+    atlas = "exotic_jokers",
+    config = {
+        echips = 1
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.echips
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main then
+            return {
+                echips = card.ability.echips
+            }
+        end
+    end
+}
+
 return {
     items = {
         epitachyno,
@@ -1040,6 +1075,7 @@ return {
         exelixi,
         atomikos,
         apeirostemma,
-        prismatikos
+        prismatikos,
+        heimartai
     }
 }

@@ -3601,22 +3601,31 @@ function SMODS.pseudorandom_probability(trigger_obj, seed, base_numerator, base_
         local res = probability_ref(trigger_obj, seed, base_numerator, base_denominator, identifier) 
         if res then return res end
     end
-    -- non versimile entropic code
-    -- if true then
-    --     local res = probability_ref(trigger_obj, seed, base_numerator, base_denominator, identifier) 
-    --     while not res do
-    --         res = probability_ref(trigger_obj, seed, base_numerator, base_denominator, identifier) 
-    --         card_eval_status_text(
-    --             trigger_obj,
-    --             "extra",
-    --             nil,
-    --             nil,
-    --             nil,
-    --             { message = not res and localize("k_again_ex") or "Success!", colour = G.C.GREEN }
-    --         )
-    --     end
-    --     return res
-    -- end
+    if next(SMODS.find_card("j_entr_heimartai")) then
+        local res = probability_ref(trigger_obj, seed, base_numerator, base_denominator, identifier) 
+        local rolls = 1
+        while not res do
+            res = probability_ref(trigger_obj, seed, base_numerator, base_denominator, identifier) 
+            card_eval_status_text(
+                trigger_obj,
+                "extra",
+                nil,
+                nil,
+                nil,
+                { message = not res and localize("k_again_ex") or "Success!", colour = G.C.GREEN }
+            )
+            rolls = rolls + 1
+        end
+        for i, v in pairs(SMODS.find_card("j_entr_heimartai")) do
+            SMODS.scale_card(v, {
+                ref_table = v.ability,
+                ref_value = "echips",
+                scalar_table = {val = rolls / base_denominator},
+                scalar_value = "val"
+            })
+        end
+        return res
+    end
     return probability_ref(trigger_obj, seed, base_numerator, base_denominator, identifier)
 end
 
