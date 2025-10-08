@@ -1517,6 +1517,25 @@ local decs = {
 					"{C:gold}+#1#{} Ascension Power"
                 },
             },
+
+			j_entr_heimartai = {
+                name = "Heimartai",
+                text = {
+                    "Probabilities are {C:attention}retriggered{}",
+					"until they {C:green}succeed{}",
+					"gain {X:dark_edition,C:white}^Chips{} equal to the {C:attention}number of rolls{}",
+					"divided by the {C:green}probabilities denominator{}",
+					"{C:inactive}(Currently: {X:dark_edition,C:white}^#1#{C:inactive} Chips)"
+                },
+            },
+			j_entr_jack_off = {
+                name = "Jack-Off",
+                text = {
+                    "Scored {C:attention}Jacks{} discard",
+					"a {C:attention}random{} card held",
+					"in hand"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

@@ -4779,6 +4779,38 @@ local black_rose_green_sun = {
     end
 }
 
+
+local jack_off = {
+    order = 91,
+    object_type = "Joker",
+    key = "jack_off",
+    rarity = 1,
+    cost = 7,
+    eternal_compat = true,
+    blueprint_compat = true,
+    pos = {x = 0, y = 0},
+    atlas = "placeholder",
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play and (context.other_card:get_id() == SMODS.Ranks.Jack.id) then
+            local any_selected = nil
+            local _cards = {}
+            for _, playing_card in ipairs(G.hand.cards) do
+                if not playing_card.highlighted then
+                    _cards[#_cards + 1] = playing_card
+                end
+            end
+            if G.hand.cards[1] then
+                local selected_card, card_index = pseudorandom_element(_cards, 'jacking_off')
+                G.hand:add_to_highlighted(selected_card, true)
+                table.remove(_cards, card_index)
+                any_selected = true
+                play_sound('card1', 1)
+            end
+            if any_selected then G.FUNCS.discard_cards_from_highlighted(nil, true) end
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -4879,6 +4911,7 @@ return {
         deck_enlargment_pills,
         photocopy,
         enlightenment,
-        black_rose_green_sun
+        black_rose_green_sun,
+        jack_off
     }
 }
