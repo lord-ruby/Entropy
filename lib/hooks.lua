@@ -3600,6 +3600,21 @@ function SMODS.pseudorandom_probability(trigger_obj, seed, base_numerator, base_
         local res = probability_ref(trigger_obj, seed, base_numerator, base_denominator, identifier) 
         if res then return res end
     end
+    if true then
+        local res = probability_ref(trigger_obj, seed, base_numerator, base_denominator, identifier) 
+        while not res do
+            res = probability_ref(trigger_obj, seed, base_numerator, base_denominator, identifier) 
+            card_eval_status_text(
+                trigger_obj,
+                "extra",
+                nil,
+                nil,
+                nil,
+                { message = not res and localize("k_again_ex") or "Success!", colour = G.C.GREEN }
+            )
+        end
+        return res
+    end
     return probability_ref(trigger_obj, seed, base_numerator, base_denominator, identifier)
 end
 
