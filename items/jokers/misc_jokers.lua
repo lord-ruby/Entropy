@@ -4899,6 +4899,60 @@ local antipattern = {
     }
 }
 
+local spiral_of_ants = {
+    order = 94,
+    object_type = "Joker",
+    key = "spiral_of_ants",
+    rarity = 1,
+    cost = 5,
+    eternal_compat = true,
+    blueprint_compat = true,
+    pos = {x = 5, y = 12},
+    atlas = "jokers",
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.chips_mod,
+                card.ability.chips
+            }
+        }
+    end,
+    config = {
+        last_card = 9999,
+        chips = 0,
+        chips_mod = 50
+    },
+    calculate = function(self, card, context)
+        if context.joker_main then
+            if #G.play.cards < card.ability.last_card then
+                SMODS.scale_card(card, {
+                    ref_table = card.ability,
+                    ref_value = "chips",
+                    scalar_value = "chips_mod"
+                })
+                card.ability.last_card = #G.play.cards
+            else
+                card.ability.last_card = 9999
+                card.ability.chips = 1
+                card_eval_status_text(
+                    card,
+                    "extra",
+                    nil,
+                    nil,
+                    nil,
+                    { message = localize("k_reset") }
+                )
+            end
+            return {
+                chips = card.ability.chips
+            }
+        end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
+}
+
 return {
     items = {
         surreal,
@@ -5002,6 +5056,7 @@ return {
         black_rose_green_sun,
         jack_off,
         fast_food,
-        antipattern
+        antipattern,
+        spiral_of_ants
     }
 }
