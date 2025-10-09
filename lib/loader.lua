@@ -283,6 +283,8 @@ function SMODS.injectItems(...)
                 end
             end
             MP.DECK.ban_card("j_entr_xekanos")
+            MP.DECK.ban_card("j_entr_prayer_card")
+            MP.DECK.ban_card("c_entr_raido")
         end
         for i, v in pairs(G.P_CENTERS) do
             if v.inversion then 

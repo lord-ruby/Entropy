@@ -377,6 +377,15 @@ if CardSleeves then
       end
     end
   }
+
+  CardSleeves.Sleeve {
+    key = "corrupted",
+    atlas = "sleeves",
+    pos = { x = 7, y = 0 },
+    apply = function()
+      G.GAME.modifiers.glitched_items = (G.GAME.modifiers.glitched_items or 0) + 2
+    end,
+  }
 end
 
 return {
