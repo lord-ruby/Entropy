@@ -4856,9 +4856,11 @@ local antipattern = {
     pos = {x = 4, y = 12},
     atlas = "jokers",
     loc_vars = function(self, q, card)
-        return vars = {
-            card.ability.xchips_mod,
-            card.ability.xchips
+        return {
+            vars = {
+                card.ability.xchips_mod,
+                card.ability.xchips
+            }
         }
     end,
     config = {
