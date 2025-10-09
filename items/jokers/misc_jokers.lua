@@ -4811,6 +4811,92 @@ local jack_off = {
     end,
 }
 
+local fast_food = {
+    order = 92,
+    object_type = "Joker",
+    key = "fast_food",
+    rarity = 2,
+    cost = 7,
+    eternal_compat = true,
+    blueprint_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+    loc_vars = function(self, q, card)
+        q[#q+1] = {set = "Other", key = "perishable", vars = {5, 5}}
+    end,
+    calculate = function(self, card, context)
+        if context.setting_blind or context.forcetrigger then
+            if G.GAME.joker_buffer + #G.jokers.cards < G.jokers.config.card_limit then
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        local ncard = SMODS.add_card{
+                            set = "Food",
+                            area = G.jokers
+                        }
+                        ncard:set_perishable(true)
+                        G.GAME.joker_buffer = 0
+                        return true
+                    end
+                })
+                G.GAME.joker_buffer = G.GAME.joker_buffer + 1
+                return nil, true
+            end
+        end
+    end,
+}
+
+local antipattern = {
+    order = 93,
+    object_type = "Joker",
+    key = "antipattern",
+    rarity = 2,
+    cost = 7,
+    eternal_compat = true,
+    blueprint_compat = true,
+    pos = {x = 4, y = 12},
+    atlas = "jokers",
+    loc_vars = function(self, q, card)
+        return vars = {
+            card.ability.xchips_mod,
+            card.ability.xchips
+        }
+    end,
+    config = {
+        hand_pairs = {
+
+        },
+        last_hand = "",
+        xchips = 1,
+        xchips_mod = 0.2
+    },
+    calculate = function(self, card, context)
+        if context.joker_main then
+            if card.ability.last_hand ~= "" then
+                local pair = {last_hand, context.scoring_name}
+                local scale = true
+                for i, v in pairs(card.ability.hand_pairs) do
+                    if v[1] == pair[1] and v[2] == pair[2] then scale = false; break end
+                end
+                if scale then
+                    SMODS.scale_card(card, {
+                        ref_table = card.ability,
+                        ref_value = "xchips",
+                        scalar_value = "xchips_mod"
+                    })
+                    card.ability.hand_pairs[#card.ability.hand_pairs+1] = pair
+                end
+            end
+            card.ability.last_hand = context.scoring_name
+            return {
+                xchips = card.ability.xchips
+            }
+        end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
+}
+
 return {
     items = {
         surreal,
@@ -4912,6 +4998,8 @@ return {
         photocopy,
         enlightenment,
         black_rose_green_sun,
-        jack_off
+        jack_off,
+        fast_food,
+        antipattern
     }
 }
