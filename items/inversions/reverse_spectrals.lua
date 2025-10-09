@@ -671,10 +671,7 @@ local entropy = {
             local edition = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
                 return G.GAME.banned_keys[e.key] or e.no_doe
             end).key
-            local enhancement_type = pseudorandom_element({"Enhanced","Enhanced","Enhanced","Joker","Consumable","Voucher","Booster"}, pseudoseed("entropy"))
-            if enhancement_type == "Consumable" then
-                enhancement_type = pseudorandom_element({"Tarot","Planet","Spectral","Code","Star","Omen","Command"}, pseudoseed("entropy"))
-            end
+            local enhancement_type = pseudorandom_element({"Enhanced","Enhanced","Enhanced","Joker","Consumeables","Voucher","Booster"}, pseudoseed("entropy"))
             local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("entropy")).key
             while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] or (enhancement_type == "Joker" and SMODS.Rarities[G.P_CENTERS[enhancement].rarity]
                 and (
