@@ -123,7 +123,7 @@ local eternal_D6 = {
         numerator = 0,
         numerator_mod = 1,
         extra = {
-            odds = 3
+            odds = 2
         }
     },
     demicoloncompat = true,
