@@ -87,7 +87,7 @@ local strawberry_pie = {
     loc_vars = function(self, q, card)
         local n, d = SMODS.get_probability_vars(card, card.ability.num, card.ability.denom, "entr_strawberry")
         return {
-            vars {
+            vars = {
                 n, d
             }
         }
