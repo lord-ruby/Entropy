@@ -1552,6 +1552,15 @@ local decs = {
 					"{C:inactive}(Currently: {X:blue,C:white}X#2#{C:inactive} Chips)"
                 },
             },
+			j_entr_spiral_of_ants = {
+                name = "Spiral of Ants",
+                text = {
+					"This Joker gains {C:blue}+#1#{} Chips",
+					"for each {C:attention}consecutive{} hand with {C:attention}fewer{}",
+					"cards than the previous hand",
+					"{C:inactive}(Currently: {C:blue}+#2#{C:inactive} Chips)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
