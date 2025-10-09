@@ -1536,6 +1536,22 @@ local decs = {
 					"in hand"
                 },
             },
+			j_entr_fast_food = {
+                name = "Fast Food",
+                text = {
+					"When {C:attention}Blind{} is selected",
+                    "create a {C:attention}Perishable Food{} Joker",
+					"{C:inactive}(Must have room)"
+                },
+            },
+			j_entr_antipattern= {
+                name = "Antipattern",
+                text = {
+					"This Joker gains {X:blue,C:white}X#1#{} Chips",
+					"for each {C:attention}Unique{} pair of {C:attention}Poker Hands{} played",
+					"{C:inactive}(Currently: {X:blue,C:white}X#2#{C:inactive} Chips)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
