@@ -2042,6 +2042,13 @@ local decs = {
 					"{C:attention}2{} Non Rune Consumables used"
 				},
 			},
+			sleeve_entr_corrupted = {
+				name = "Corrupted Sleeve",
+				text =  {
+					"{C:attention}Jokers{} and {C:attention}Consumables{}",
+					"Cycle between {C:attention}2{} options"
+				}
+			},
 		},
 		Fraud = {
 			c_entr_master = {
@@ -5803,7 +5810,7 @@ local decs = {
 			k_portal_reference = "The Part Where She Kills You",
 			k_entropy_is_endless = "Entropy Is Endless",
 
-			k_switch_ex = "Switch!"
+			k_switch_ex = "Switch!",
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",
@@ -5977,10 +5984,10 @@ local decs = {
 				"I was right to",
 				"believe in you"
 			},
-			ente_wq_4 = {
+			entr_wq_4 = {
 				"Good Job now do",
 				"Iridium Stake"
-			}
+			},
 		}
 	},
 }
