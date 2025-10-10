@@ -301,7 +301,7 @@ local neon = {
 		vol = 0.4,
 	},
 	config = {
-		cost_fac = 0.5
+		cost_fac = 0.9
 	},
 	dependencies = {
         items = {
@@ -313,11 +313,8 @@ local neon = {
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
-		return {vars={card and card.edition and card.edition.cost_fac or 0.5}}
+		return {vars={card and card.edition and card.edition.cost_fac or 0.9}}
     end,
-    calculate = function(self, card, context)
-
-	end,
 	entr_credits = {
 		custom={key="shader",text="cassknows"}
 	}
@@ -326,8 +323,10 @@ local neon = {
 local set_cost_ref = Card.set_cost
 function Card:set_cost()
 	set_cost_ref(self)
-	if self.edition and self.edition.key == "e_entr_neon" then
-		self.cost = self.cost * self.edition.cost_fac
+	for i, v in pairs(G.I.CARD) do
+		if v.edition and v.edition.key == "e_entr_neon" and v.area and v.area.config.type ~= "shop" then
+			self.cost = self.cost * v.edition.cost_fac
+		end
 	end
 	if Entropy.has_rune("rune_entr_avarice") then
 	    local cost = 0
