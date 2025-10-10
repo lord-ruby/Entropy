@@ -4984,6 +4984,37 @@ local fork_bomb = {
     end,
 }
 
+local solar_panel = {
+    order = 96,
+    object_type = "Joker",
+    key = "solar_panel",
+    rarity = 1,
+    cost = 2,
+    eternal_compat = true,
+    blueprint_compat = true,
+    pos = {x = 8, y = 12},
+    atlas = "jokers",
+    config = {
+        money = 4
+    },
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.e_entr_sunny
+        q[#q+1] = G.P_CENTERS.m_entr_radiant
+        return {
+            vars = {
+                card.ability.money
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.discard and context.other_card:is_sunny() then
+            return {
+                dollars = card.ability.money
+            }
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -5089,6 +5120,7 @@ return {
         fast_food,
         antipattern,
         spiral_of_ants,
-        fork_bomb
+        fork_bomb,
+        solar_panel
     }
 }

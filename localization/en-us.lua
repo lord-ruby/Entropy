@@ -1575,6 +1575,13 @@ local decs = {
 					"{C:inactive}(Does not need room, Max of 16)"
                 },
             },
+			j_entr_solar_panel = {
+                name = "Solar Panel",
+                text = {
+					"Discarded {C:attention}Sunny{} and {C:attention}Radiant{}",
+					"cards give {C:money}$#1#{}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
