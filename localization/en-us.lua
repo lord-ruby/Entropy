@@ -5800,7 +5800,7 @@ local decs = {
 			entr_opened = "Opened!",
 			entr_kiy_banished = "Banished.",
 
-			k_saved_heoric = "Not Heroic!",
+			k_saved_heroic = "Not Heroic!",
 			k_saved_just = "Not Just!",
 			b_on = "Enable",
 			b_off = "Disable",
