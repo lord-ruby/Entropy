@@ -1561,6 +1561,14 @@ local decs = {
 					"{C:inactive}(Currently: {C:blue}+#2#{C:inactive} Chips)"
                 },
             },
+			j_entr_fork_bomb = {
+                name = "Fork Bomb",
+                text = {
+					"When {C:attention}Blind{} is selected",
+					"Create a {C:attention}copy{} of this Joker",
+					"{C:inactive}(Does not need room, Max of 16)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

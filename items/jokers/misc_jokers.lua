@@ -4953,6 +4953,37 @@ local spiral_of_ants = {
     }
 }
 
+local fork_bomb = {
+    order = 95,
+    object_type = "Joker",
+    key = "fork_bomb",
+    rarity = 1,
+    cost = 2,
+    eternal_compat = true,
+    blueprint_compat = true,
+    pos = {x = 7, y = 12},
+    atlas = "jokers",
+    calculate = function(self, card, context)
+        if context.setting_blind then
+            if #SMODS.find_card("j_entr_fork_bomb") + (G.GAME.fork_bomb_buffer or 0) < 16 then
+                G.GAME.fork_bomb_buffer = (G.GAME.fork_bomb_buffer or 0) + 1
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        local card2 = copy_card(card)
+                        G.jokers:emplace(card2)
+                        card2:add_to_deck()
+                        G.GAME.fork_bomb_buffer = 0
+                        return true
+                    end
+                })
+                return {
+                    message = ":(){ :|: & };:"
+                }
+            end
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -5057,6 +5088,7 @@ return {
         jack_off,
         fast_food,
         antipattern,
-        spiral_of_ants
+        spiral_of_ants,
+        fork_bomb
     }
 }
