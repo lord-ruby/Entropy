@@ -862,7 +862,14 @@ local decs = {
 					"Resets after reaching your {C:attention}last{} Joker"
 				}
 			},
-
+			j_entr_d0 = {
+				name = "D0",
+				text = {
+					"Multiplies all {C:attention}listed{}",
+					"{C:green,E:1}probabilities{} by {C:attention}0",
+					"{C:inactive}(ex. {C:green}1 in 3{C:inactive} -> {C:green}0 in 3{C:inactive})"
+				}
+			},
 			j_entr_d1 = {
 				name = "D1",
 				text = {
