@@ -1904,6 +1904,7 @@ local decs = {
 			e_entr_neon = {
 				name = "Neon",
 				text = {
+					"Passively provides",
 					"{C:attention}X#1#{} Shop Costs"
 				},
 			},
