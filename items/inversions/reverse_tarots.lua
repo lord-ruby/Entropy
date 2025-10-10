@@ -1271,6 +1271,48 @@ local frail = {
     end
 }
 
+local inferno = {
+    key = "inferno",
+    set = "Fraud",
+    atlas = "fraud",
+    object_type = "Consumable",
+    order = -901+34,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        per_past_three = 3
+    },
+    pos = {x=8,y=2},
+    inversion = "c_entr_comet",
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.per_past_three
+            }
+        }
+    end,
+    use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        for i, v in pairs(cards) do
+            v:start_dissolve()
+        end
+        if #cards > 2 then
+            ease_dollars(-(card.ability.per_past_three * (#cards - 2)))
+        end
+    end,
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        return #cards > 0
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 return {
     items = {
         master,
@@ -1296,6 +1338,7 @@ return {
         tent,
         companion,
         village,
-        frail
+        frail,
+        inferno
     }
 }

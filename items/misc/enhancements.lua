@@ -329,6 +329,87 @@ local kiln = {
         self:use(card)
     end
 }
+
+local comet = {
+    key = "comet",
+    set = "Tarot",
+    atlas = "consumables2",
+    object_type = "Consumable",
+    order = -1000,
+    dependencies = {
+        items = {
+            "set_entr_misc",
+			"m_entr_radiant"
+        }
+    },
+    config = {
+        select = 1
+    },
+    pos = {x=0,y=3},
+    use = function(self, card2)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select)
+        Entropy.FlipThen(cards, function(card)
+            card:set_ability(G.P_CENTERS.m_entr_radiant)
+            G.hand:remove_from_highlighted(card)
+        end)
+            
+    end,
+    can_use = function(self, card)
+        local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        return num > 0 and num <= card.ability.select
+    end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.m_entr_radiant
+        return {
+            vars = {
+                card.ability.select
+            }
+        }
+    end,
+    entr_credits = {
+        art = {"aduckted"}
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
+local radiant = {
+	dependencies = {
+        items = {
+          "set_entr_misc"
+        }
+    },
+	order = 10000+6,
+	object_type = "Enhancement",
+	key = "radiant",
+	atlas = "enhancements",
+	pos = { x = 2, y = 1 },
+    config = {
+		extra = {
+            asc_pow = 0.25
+		},
+	},
+	in_pool = function()
+		return false
+	end,
+	loc_vars = function(self, info_queue, card)
+		return {
+            vars = {
+                card.ability.extra.asc_pow
+            }
+		}
+	end,
+	calculate = function(self, card, context)
+		if context.cardarea == G.play and context.main_scoring then
+			return {
+				plus_asc = card.ability.extra.asc_pow
+			}
+		end
+	end,
+}
+
 return {
     items = {
         flesh,
@@ -336,6 +417,8 @@ return {
 		prismatic,
 		dark,
 		ceramic,
-		kiln
+		kiln,
+		radiant,
+		comet
     }
 }
