@@ -416,20 +416,22 @@ local ybur = {
     end,
     calculate = function (self, card, context)
         if context.game_over and card.ability.active then
-            card.ability.active = false
-            SMODS.scale_card(card, {
-                ref_table = card.ability,
-                ref_value = "e_chips",
-                scalar_value = "e_chips_mod",
-                scaling_message = {
-                    message = localize({
-                        type = "variable",
-                        key = "a_powchips",
-                        vars = { card.ability.e_chips },
-                    }),
-                    colour = { 0.8, 0.45, 0.85, 1 }
-                }
-            })
+            for i, card in pairs(SMODS.find_card("j_entr_ybur")) do
+                card.ability.active = false
+                SMODS.scale_card(card, {
+                    ref_table = card.ability,
+                    ref_value = "e_chips",
+                    scalar_value = "e_chips_mod",
+                    scaling_message = {
+                        message = localize({
+                            type = "variable",
+                            key = "a_powchips",
+                            vars = { card.ability.e_chips },
+                        }),
+                        colour = { 0.8, 0.45, 0.85, 1 }
+                    }
+                })
+            end
             return {
                 saved = localize(pseudorandom("ybur") < 0.5 and "k_saved_heroic" or "k_saved_just")
             }
