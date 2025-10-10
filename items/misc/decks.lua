@@ -236,7 +236,7 @@ local buy_and_use_ref = G.FUNCS.can_buy_and_use
 G.FUNCS.can_buy_and_use = function(e)
   local card = e.config.ref_table
   if card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]] then
-    if (((e.config.ref_table.cost > G.GAME.dollars - G.GAME.bankrupt_at) and (e.config.ref_table.cost > 0)) or (not Card.can_use_consumeable(Entropy.GetDummy(G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]], card.area, card)))) then
+    if (((to_big(e.config.ref_table.cost) > to_big(G.GAME.dollars - G.GAME.bankrupt_at)) and (to_big(e.config.ref_table.cost) > to_big(0))) or (not Card.can_use_consumeable(Entropy.GetDummy(G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]], card.area, card)))) then
         e.UIBox.states.visible = false
         e.config.colour = G.C.UI.BACKGROUND_INACTIVE
         e.config.button = nil
