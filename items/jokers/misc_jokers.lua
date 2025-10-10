@@ -4758,8 +4758,8 @@ local black_rose_green_sun = {
     cost = 5,
     eternal_compat = true,
     blueprint_compat = true,
-    pos = {x = 0, y = 0},
-    atlas = "placeholder",
+    pos = {x = 6, y = 12},
+    atlas = "jokers",
     config = {
         asc_pow = 0.05
     },
