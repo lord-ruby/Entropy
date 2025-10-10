@@ -3564,6 +3564,9 @@ SMODS.Booster:take_ownership_by_kind('Celestial', {
 
 local get_probability_varsref = SMODS.get_probability_vars
 function SMODS.get_probability_vars(trigger_obj, base_numerator, base_denominator, identifier, from_roll)
+    if trigger_obj and trigger_obj.config and trigger_obj.config.center and not Entropy.probability_cards[trigger_obj.config.center.key] then
+        Entropy.probability_cards[trigger_obj.config.center.key] = true
+    end
     local numerator, denominator = get_probability_varsref(trigger_obj, base_numerator, base_denominator, identifier, from_roll)
     if type(numerator) == "string" or numerator == nil then numerator = 1 end
     if type(denominator) == "string" or denominator == nil then denominator = 1 end

@@ -240,8 +240,8 @@ local D7 = {
         and not context.retrigger_joker
         and context.other_card
         and context.other_card.config
+        and context.other_card.config.center
         and context.other_card.config.center.key ~= "j_entr_d7"
-        and Entropy.probability_cards[context.other_card.config.center.key] 
         and SMODS.pseudorandom_probability(
             card,
             "entr_D7",
@@ -249,17 +249,22 @@ local D7 = {
             card and card.ability.extra.odds or self.config.extra.odds
         )
         then
-            return {
-                message = localize("k_again_ex"),
-                repetitions = 1,
-                card = card,
-            }
+            if not Entropy.probability_cards[context.other_card.config.center.key] and context.other_card.config.center.loc_vars then
+                context.other_card.config.center:loc_vars({}, context.other_card)
+            end
+            if Entropy.probability_cards[context.other_card.config.center.key] then
+                return {
+                    message = localize("k_again_ex"),
+                    repetitions = 1,
+                    card = card,
+                }
+            end
         end
 
         if context.repetition
         and context.other_card
         and context.other_card.config
-        and Entropy.probability_cards[context.other_card.config.center.key] 
+        and context.other_card.config.center
         and SMODS.pseudorandom_probability(
             card,
             "entr_D7",
@@ -267,11 +272,16 @@ local D7 = {
             card and card.ability.extra.odds or self.config.extra.odds
         )
         then
-            return {
-                message = localize("k_again_ex"),
-                repetitions = 1,
-                card = card,
-            }
+            if not Entropy.probability_cards[context.other_card.config.center.key] and context.other_card.config.center.loc_vars then
+                context.other_card.config.center:loc_vars({}, context.other_card)
+            end
+            if Entropy.probability_cards[context.other_card.config.center.key] then
+                return {
+                    message = localize("k_again_ex"),
+                    repetitions = 1,
+                    card = card,
+                }
+            end
         end
     end,
 }
