@@ -144,6 +144,7 @@ Entropy.FixedRecipes = {
     c_basec_basec_basec_basem_entr_disavowed = "j_entr_surreal_joker",
     c_basem_multm_multm_multm_mult = "j_entr_red_fourty",
     c_basem_bonusm_bonusm_multm_mult = "j_entr_purple_joker",
+    m_entr_radiantm_entr_radiantm_entr_radiantm_entr_radiantm_entr_radiant = "j_entr_sunny"
 }
 Entropy.EnhancementPoints ={
     m_entr_disavowed=0,
@@ -162,7 +163,8 @@ Entropy.EnhancementPoints ={
     m_entr_dark = 8,
     m_cry_abstract=9.1,
     m_entr_prismatic = 20,
-    m_entr_ceramic = 6.5
+    m_entr_ceramic = 6.5,
+    m_entr_radiant = 6.7
 }
 Entropy.TMTrainerEffects = {}
 Entropy.TMTrainerScoring = {}

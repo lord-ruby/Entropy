@@ -39,7 +39,13 @@ local decs = {
 					"When scored {C:red}destroy{} this card",
 					"When destroyed create a {C:attention}random{} consumable"
 				}
-			}
+			},
+			m_entr_radiant = {
+				name = "Radiant Card",
+				text = {
+					"{C:gold}+#1#{} Ascension Power"
+				}
+			},
 		},
 		["Content Set"] = {
 			set_entr_inversions = {
@@ -2323,6 +2329,14 @@ local decs = {
 					"{C:attention}Halberds",
 					"{C:blue}+#4#{} Chips"
 				}
+			},
+			c_entr_inferno = {
+				name = "Inferno",
+				text = {
+					"Destroy {C:attention}all{} Selected Cards",
+					"lost {C:money}$#1#{} for every card",
+					"past {C:attention}2{}"
+				}
 			}
 		},
 		Planet = {
@@ -3503,7 +3517,15 @@ local decs = {
 					"card#<s>1# into a",
 					"{C:attention}Ceramic Card{}"
 				}
-			}
+			},
+			c_entr_comet = {
+				name = "The Comet",
+				text = {
+					"Enhances {C:attention}#1#{} selected",
+					"card#<s>1# into a",
+					"{C:attention}Radiant Card{}"
+				}
+			},
 		},
 		Spectral = {
 			c_entr_flipside = {
