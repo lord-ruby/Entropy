@@ -3601,7 +3601,7 @@ function SMODS.pseudorandom_probability(trigger_obj, seed, base_numerator, base_
         local res = probability_ref(trigger_obj, seed, base_numerator, base_denominator, identifier) 
         if res then return res end
     end
-    if next(SMODS.find_card("j_entr_heimartai")) then
+    if next(SMODS.find_card("j_entr_heimartai")) and not next(SMODS.find_card("j_entr_d0")) then
         local res = probability_ref(trigger_obj, seed, base_numerator, base_denominator, identifier) 
         local rolls = 1
         while not res do

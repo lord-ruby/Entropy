@@ -1,3 +1,28 @@
+local D0 = {
+    order = 199,
+    object_type = "Joker",
+    key = "d0",
+    rarity = 1,
+    cost = 6,
+    dependencies = {
+        items = {
+            "set_entr_dice_jokers",
+        }
+    },
+    pools = {["Dice"] = true},
+    eternal_compat = true,
+    pos = { x = 9, y = 12 },
+    atlas = "jokers",
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.fix_probability and not context.blueprint and not context.repetition then
+            return {
+                numerator = 0
+            }
+        end
+    end,
+}
+
 local D1 = {
     order = 200,
     object_type = "Joker",
@@ -444,6 +469,7 @@ local capsule_machine = {
 
 return {
     items = {
+        D0,
         D1,
         D4,
         D6,
