@@ -2044,3 +2044,16 @@ if not temp_pool then
 end
 '''
 match_indent = true 
+
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/game_object.lua"]'''
+pattern = '''
+if self.draw_hand == true then G.FUNCS.draw_from_deck_to_hand() end
+'''
+position = "at"
+payload = '''
+if self.draw_hand == true or G.GAME.mannaz_draw then G.FUNCS.draw_from_deck_to_hand(); G.GAME.mannaz_draw = nil end
+'''
+match_indent = true 

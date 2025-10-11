@@ -1099,6 +1099,7 @@ local mannaz_indicator = {
     dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
         if context.post_open_booster then
+            G.GAME.mannaz_draw = true
             if rune.num_triggered then
                 return {
                     func = function()
