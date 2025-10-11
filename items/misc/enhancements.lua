@@ -192,16 +192,24 @@ local ceramic = {
 		and not SMODS.is_eternal(card)
 		and not (card.will_shatter or card.destroyed or card.shattered) and not card.activated then
 			if (#G.consumeables.cards + G.GAME.consumeable_buffer <= G.consumeables.config.card_limit) then
+				G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
 				G.E_MANAGER:add_event(Event({
 					trigger = "immediate",
 					func = function()
+						G.GAME.consumeable_buffer = 0
 						SMODS.add_card{
 							area=G.consumeables,
 							set = "Consumeables",
 							key_append = "entr_ceramic"
 						}
 						card:juice_up(0.9, 0.9)
-						card:shatter()
+						if next(SMODS.find_card("j_entr_kintsugi")) then
+							card:flip()
+							card:set_ability(G.P_CENTERS.m_gold)
+							card:flip()
+						else
+							card:shatter()
+						end
 						card.ability.temporary2 = true
 						return true
 					end,
@@ -211,7 +219,13 @@ local ceramic = {
 					trigger = "immediate",
 					func = function()
 						card:juice_up(0.9, 0.9)
-						card:shatter()
+						if next(SMODS.find_card("j_entr_kintsugi")) then
+							card:flip()
+							card:set_ability(G.P_CENTERS.m_gold)
+							card:flip()
+						else
+							card:shatter()
+						end
 						card.ability.temporary2 = true
 						return true
 					end,
@@ -221,9 +235,11 @@ local ceramic = {
 		end
 		if context.destroying_card and context.destroying_card == card and not card.activated then
 			if (#G.consumeables.cards + G.GAME.consumeable_buffer <= G.consumeables.config.card_limit) then
+				G.GAME.consumeable_buffer = G.GAME.consumeable_buffer +1
 				G.E_MANAGER:add_event(Event({
 					trigger = "immediate",
 					func = function()
+						G.GAME.consumeable_buffer = 0
 						SMODS.add_card{
 							area=G.consumeables,
 							set = "Consumeables",
@@ -243,9 +259,11 @@ local ceramic = {
 			end
 			if check then
 				if (#G.consumeables.cards + G.GAME.consumeable_buffer <= G.consumeables.config.card_limit) then
+					G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
 					G.E_MANAGER:add_event(Event({
 						trigger = "immediate",
 						func = function()
+							G.GAME.consumeable_buffer = 0
 							SMODS.add_card{
 								area=G.consumeables,
 								set = "Consumeables",
