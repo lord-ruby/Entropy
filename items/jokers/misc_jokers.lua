@@ -4763,8 +4763,9 @@ local black_rose_green_sun = {
     config = {
         asc_pow = 0.05
     },
+    demicoloncompat = true,
     calculate = function(self, card, context)
-        if context.individual and context.cardarea == G.hand and (context.other_card:is_suit("Spades") or context.other_card:is_suit("Clubs")) and not context.end_of_round then
+        if (context.individual and context.cardarea == G.hand and (context.other_card:is_suit("Spades") or context.other_card:is_suit("Clubs")) and not context.end_of_round) or context.forcetrigger then
             return {
                 plus_asc = card.ability.asc_pow
             }
@@ -4790,8 +4791,9 @@ local jack_off = {
     blueprint_compat = true,
     pos = {x = 0, y = 0},
     atlas = "placeholder",
+    demicoloncompat = true,
     calculate = function(self, card, context)
-        if context.individual and context.cardarea == G.play and (context.other_card:get_id() == SMODS.Ranks.Jack.id) then
+        if (context.individual and context.cardarea == G.play and (context.other_card:get_id() == SMODS.Ranks.Jack.id)) or context.forcetrigger then
             local any_selected = nil
             local _cards = {}
             for _, playing_card in ipairs(G.hand.cards) do
@@ -4824,6 +4826,7 @@ local fast_food = {
     loc_vars = function(self, q, card)
         q[#q+1] = {set = "Other", key = "perishable", vars = {5, 5}}
     end,
+    demicoloncompat = true,
     calculate = function(self, card, context)
         if context.setting_blind or context.forcetrigger then
             if G.GAME.joker_buffer + #G.jokers.cards < G.jokers.config.card_limit then
@@ -4871,8 +4874,9 @@ local antipattern = {
         xchips = 1,
         xchips_mod = 0.2
     },
+    demicoloncompat = true,
     calculate = function(self, card, context)
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             if card.ability.last_hand ~= "" then
                 local pair = {last_hand, context.scoring_name}
                 local scale = true
@@ -4922,8 +4926,9 @@ local spiral_of_ants = {
         chips = 0,
         chips_mod = 50
     },
+    demicoloncompat = true,
     calculate = function(self, card, context)
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             if #G.play.cards < card.ability.last_card then
                 SMODS.scale_card(card, {
                     ref_table = card.ability,
@@ -4963,8 +4968,9 @@ local fork_bomb = {
     blueprint_compat = true,
     pos = {x = 7, y = 12},
     atlas = "jokers",
+    demicoloncompat = true,
     calculate = function(self, card, context)
-        if context.setting_blind then
+        if context.setting_blind or context.forcetrigger then
             if #SMODS.find_card("j_entr_fork_bomb") + (G.GAME.fork_bomb_buffer or 0) < 16 then
                 G.GAME.fork_bomb_buffer = (G.GAME.fork_bomb_buffer or 0) + 1
                 G.E_MANAGER:add_event(Event{
@@ -5006,8 +5012,9 @@ local solar_panel = {
             }
         }
     end,
+    demicoloncompat = true,
     calculate = function(self, card, context)
-        if context.discard and context.other_card:is_sunny() then
+        if (context.discard and context.other_card:is_sunny()) or context.forcetrigger then
             return {
                 dollars = card.ability.money
             }
