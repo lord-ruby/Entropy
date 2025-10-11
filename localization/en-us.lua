@@ -1589,6 +1589,14 @@ local decs = {
 					"cards give {C:money}$#1#{}"
                 },
             },
+			j_entr_kintsugi = {
+                name = "Kintsugi",
+                text = {
+					"{C:attention}Ceramic{} cards are turned",
+					"to {C:attention}Gold{} cards instead",
+					"of {C:red}self destructing{}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

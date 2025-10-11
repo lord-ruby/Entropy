@@ -4995,7 +4995,7 @@ local solar_panel = {
     object_type = "Joker",
     key = "solar_panel",
     rarity = 1,
-    cost = 2,
+    cost = 6,
     eternal_compat = true,
     blueprint_compat = true,
     pos = {x = 8, y = 12},
@@ -5019,6 +5019,21 @@ local solar_panel = {
                 dollars = card.ability.money
             }
         end
+    end,
+}
+
+local kintsugi = {
+    order = 97,
+    object_type = "Joker",
+    key = "kintsugi",
+    rarity = 1,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 0, y = 0},
+    atlas = "placeholder",
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.m_entr_ceramic
+        q[#q+1] = G.P_CENTERS.m_gold 
     end,
 }
 
@@ -5128,6 +5143,7 @@ return {
         antipattern,
         spiral_of_ants,
         fork_bomb,
-        solar_panel
+        solar_panel,
+        kintsugi
     }
 }
