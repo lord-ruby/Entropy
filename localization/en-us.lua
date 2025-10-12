@@ -2048,6 +2048,50 @@ local decs = {
 					"and {C:attention}distribute{} their modifications",
 					"between {C:attention}other{} cards held in hand"
 				}
+			},
+			c_entr_disturbance = {
+				name = "The Disturbance",
+				text = {
+					"Banish {C:attention}#1#{} selected card#<s>1#",
+					"Without {C:attention}destroying{} them"
+				}
+			},
+			c_entr_avarice = {
+				name = "Avarice",
+				text = {
+					"Immediately open {C:attention}#1#{} Standard Packs"
+				}
+			},
+			c_entr_muse = {
+				name = "The Muse",
+				text = {
+					"{C:attention}Link together{} any",
+					"#1# selected cards"
+				}
+			},
+			--Description feels awkwardly worded.
+			c_entr_garden = {
+				name = "The Garden",
+				text = {
+					"{C:attention} Randomize{} the rank and suit of {C:attention}#1#{} cards",
+					"all into the same rank and suit"
+				}
+			},
+			c_entr_desert = {
+				name = "The Desert",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}Fleurons",
+					"{C:blue}+#4#{} Chips"
+				}
+			},
+			c_entr_wastes = {
+				name = "The Wastes",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}Halberds",
+					"{C:blue}+#4#{} Chips"
+				}
 			}
 		},
 		Planet = {

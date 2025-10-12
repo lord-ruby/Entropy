@@ -9,7 +9,8 @@ local i = {
     "compat/revosvault",
     "compat/aikoshen",
     "compat/tspectrals",
-    "compat/grabbag"
+    "compat/grabbag",
+    "compat/bunco"
 }
 Entropy.load_files(i)
 
