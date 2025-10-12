@@ -5037,6 +5037,45 @@ local kintsugi = {
     end,
 }
 
+local blooming_crimson = {
+    order = 98,
+    object_type = "Joker",
+    key = "blooming_crimson",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 0, y = 2},
+    soul_pos = {x = 1, y = 1},
+    atlas = "prismatic_shard",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    config = {
+        xmult = 1.15,
+        xchips = 1.15,
+        asc = 1.05
+    },
+    calculate = function(self, card, context)
+        if (context.individual and context.cardarea == G.play) or context.forcetrigger then
+            local etype = pseudorandom_element({"xmult", "xchips", "asc"}, pseudoseed("blooming_crimson"))
+            return {
+                [etype] = card.ability[etype]
+            }
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.xmult,
+                card.ability.xchips,
+                card.ability.asc
+            }
+        }
+    end,
+    in_pool = function()
+        return G.GAME.pool_flags.prismatic_shard_gone
+    end
+}
+
 return {
     items = {
         surreal,
@@ -5144,6 +5183,7 @@ return {
         spiral_of_ants,
         fork_bomb,
         solar_panel,
-        kintsugi
+        kintsugi,
+        blooming_crimson
     }
 }

@@ -291,6 +291,9 @@ function Card:start_dissolve(...)
             end
         end
     end
+    if self.config.center_key == "j_entr_prismatic_shard" and G.GAME.pool_flags then
+        G.GAME.pool_flags.prismatic_shard_gone = true
+    end
 end
 
 local smcmb = SMODS.create_mod_badges
@@ -1447,6 +1450,11 @@ function Game:update(dt)
 		pointerobj.pos.x = pointerobj.pos.x + 1
         if pointerobj.pos.x > 10 then
             pointerobj.pos.x = 0
+        end
+        local crimsonobj = G.P_CENTERS.j_entr_blooming_crimson
+        crimsonobj.pos.x = crimsonobj.pos.x + 1
+        if crimsonobj.pos.x > 7 then
+            crimsonobj.pos.x = 0
         end
 	end
     entr_antireal_dt = entr_antireal_dt + dt

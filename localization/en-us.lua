@@ -1597,6 +1597,15 @@ local decs = {
 					"of {C:red}self destructing{}"
                 },
             },
+			j_entr_blooming_crimson = {
+                name = "Blooming Crimson",
+                text = {
+                    "Scored Cards give",
+					"{X:mult,C:white}X#1#{} Mult,",
+					"{X:blue,C:white}X#2#{} Chips, or",
+					"{X:gold,C:white}X#3#{} Ascension Power"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
