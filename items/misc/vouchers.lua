@@ -74,7 +74,7 @@ local providence = {
     key = "providence",
     atlas = "vouchers",
     pos = {x=1, y=1},
-    requires = {"v_entr_marked"},
+    requires = {"v_entr_diviner"},
     redeem = function(self, card)
         G.GAME.providence = true
     end,
