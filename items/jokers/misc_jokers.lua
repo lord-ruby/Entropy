@@ -5076,6 +5076,56 @@ local blooming_crimson = {
     end
 }
 
+local overpump = {
+    order = 99,
+    object_type = "Joker",
+    key = "overpump",
+    rarity = 2,
+    cost = 8,
+    eternal_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    config = {
+        xmult = 0,
+        xmult_mod = 1.5,
+        played = {},
+    },
+    calculate = function(self, card, context)
+        if context.joker_main or context.forcetrigger then
+            if not card.ability.played[context.scoring_name] then
+                SMODS.scale_card(card, {
+                    ref_table = card.ability,
+                    ref_value = "xmult",
+                    scalar_value = "xmult_mod"    
+                })
+                card.ability.played[context.scoring_name] = true
+            end
+            if context.forcetrigger or G.GAME.current_round.hands_left <= 0 then
+                return {
+                    xmult = card.ability.xmult
+                }
+            end
+        end
+        if context.end_of_round and not context.individual and not context.blueprint and not context.repetition then  
+            card.ability.played = {}
+            card.ability.xmult = 0
+            return {
+                message = localize("k_reset")
+            }
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.xmult,
+                card.ability.xmult_mod
+            }
+        }
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -5184,6 +5234,7 @@ return {
         fork_bomb,
         solar_panel,
         kintsugi,
-        blooming_crimson
+        blooming_crimson,
+        overpump
     }
 }
