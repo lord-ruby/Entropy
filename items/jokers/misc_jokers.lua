@@ -5029,8 +5029,8 @@ local kintsugi = {
     rarity = 1,
     cost = 6,
     eternal_compat = true,
-    pos = {x = 0, y = 0},
-    atlas = "placeholder",
+    pos = {x = 0, y = 13},
+    atlas = "jokers",
     loc_vars = function(self, q, card)
         q[#q+1] = G.P_CENTERS.m_entr_ceramic
         q[#q+1] = G.P_CENTERS.m_gold 
