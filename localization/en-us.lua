@@ -1606,6 +1606,15 @@ local decs = {
 					"{X:gold,C:white}X#3#{} Ascension Power"
                 },
             },
+			j_entr_overpump = {
+                name = "Overpump",
+                text = {
+                    "{X:mult,C:white}X#1#{} Mult on {C:attention}final{}",
+					"{C:attention}hand{} of round",
+					"Increases by {X:mult,C:white}X#2#{} for each",
+					"{C:attention}unique{} poker hand played this round"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
