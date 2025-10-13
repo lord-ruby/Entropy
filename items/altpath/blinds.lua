@@ -197,6 +197,14 @@ function Entropy.evaluate_play_misc(text, disp_text, poker_hands, scoring_hand, 
 	end
 	SMODS.Scoring_Parameters["mult"]:modify(mult - SMODS.Scoring_Parameters["mult"].current)
 	SMODS.Scoring_Parameters["chips"]:modify(hand_chips - SMODS.Scoring_Parameters["chips"].current)
+	G.E_MANAGER:add_event(Event{
+		trigger = "after",
+		blocking = false,
+		func = function()
+			G.GAME.asc_power_hand = nil
+			return true
+		end
+	})
     return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
 end
 
