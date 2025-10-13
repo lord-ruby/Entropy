@@ -4878,7 +4878,7 @@ local antipattern = {
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
             if card.ability.last_hand ~= "" then
-                local pair = {last_hand, context.scoring_name}
+                local pair = {card.ability.last_hand, context.scoring_name}
                 local scale = true
                 for i, v in pairs(card.ability.hand_pairs) do
                     if v[1] == pair[1] and v[2] == pair[2] then scale = false; break end
