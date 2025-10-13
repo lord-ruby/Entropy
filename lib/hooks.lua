@@ -1298,9 +1298,9 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         for i, v in pairs(SMODS.find_card("j_entr_axeh")) do
             amount = amount * v.ability.asc_mod
         end
-        local orig = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num)
-        G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 1) + G.GAME.current_round.current_hand.cry_asc_num) * to_big(amount)
-        if G.GAME.asc_power_hand == 0 then G.GAME.asc_power_hand = 1 end
+        local orig = to_big((G.GAME.asc_power_hand or G.GAME.current_round.current_hand.cry_asc_num))
+        if not G.GAME.asc_power_hand or G.GAME.asc_power_hand == 0 then G.GAME.asc_power_hand = G.GAME.current_round.current_hand.cry_asc_num end
+        G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand) * to_big(amount)        
         local text = number_format(to_big(G.GAME.asc_power_hand))
         G.E_MANAGER:add_event(Event({
             func = function()
@@ -1322,8 +1322,9 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         for i, v in pairs(SMODS.find_card("j_entr_axeh")) do
             amount = amount * v.ability.asc_mod
         end
-        local orig = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num)
-        G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num) + to_big(amount)
+        local orig = to_big((G.GAME.asc_power_hand or G.GAME.current_round.current_hand.cry_asc_num))
+        if not G.GAME.asc_power_hand or G.GAME.asc_power_hand == 0 then G.GAME.asc_power_hand = G.GAME.current_round.current_hand.cry_asc_num or 0 end
+        G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand) + to_big(amount)
         local text = number_format(to_big(G.GAME.asc_power_hand))
         G.E_MANAGER:add_event(Event({
             func = function()
@@ -1345,8 +1346,9 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         for i, v in pairs(SMODS.find_card("j_entr_axeh")) do
             amount = amount * v.ability.asc_mod
         end
-        local orig = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num)
-        G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num) ^ to_big(amount)
+        local orig = to_big((G.GAME.asc_power_hand or G.GAME.current_round.current_hand.cry_asc_num))
+        if not G.GAME.asc_power_hand or G.GAME.asc_power_hand == 0 then G.GAME.asc_power_hand = G.GAME.current_round.current_hand.cry_asc_num or 0 end
+        G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand) ^ to_big(amount)
         local text = number_format(to_big(G.GAME.asc_power_hand))
         G.E_MANAGER:add_event(Event({
             func = function()
@@ -1368,8 +1370,9 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
             amount = amount * v.ability.asc_mod
         end
         local e = card_eval_status_text
-        local orig = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num)
-        G.GAME.asc_power_hand = to_big((G.GAME.asc_power_hand or 0) + G.GAME.current_round.current_hand.cry_asc_num):arrow(amount[1], amount[2])
+        local orig = to_big((G.GAME.asc_power_hand or G.GAME.current_round.current_hand.cry_asc_num))
+        if not G.GAME.asc_power_hand or G.GAME.asc_power_hand == 0 then G.GAME.asc_power_hand = G.GAME.current_round.current_hand.cry_asc_num or 1 end
+        G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand):arrow(amount[1], amount[2])
         local text = number_format(to_big(G.GAME.asc_power_hand))
         G.E_MANAGER:add_event(Event({
             func = function()
@@ -1766,7 +1769,7 @@ function Cryptid.ascend(num, curr2) -- edit this function at your leisure
             (1 + (G.GAME.nemesisnumber or 0))
     local num2 = math.min(curr2 or 0, 50)
     local diff = curr2 - num2
-    if to_big(curr2 or 0) > to_big(50) then
+    if to_big(curr2 or 0) > to_big(40) then
         num2 = num2 + diff ^ 0.3
     end
     curr2 = num2

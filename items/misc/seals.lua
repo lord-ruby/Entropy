@@ -55,7 +55,7 @@ local sapphire = {
     pos = {x=1,y=0},
     badge_colour = HEX("8653ff"),
     calculate = function(self, card, context)
-        if context.main_scoring and context.cardarea == G.play then
+        if context.after and context.cardarea == G.play then
             local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
             G.FUNCS.get_poker_hand_info(G.play.cards)
             local pkey = "regulus"
