@@ -12,8 +12,8 @@ local crimson = {
     badge_colour = HEX("8a0050"),
     calculate = function(self, card, context)
         if (context.cardarea == G.play or context.cardarea == G.hand) and not context.crimson_trigger then
-            for i, v in ipairs(G.play.cards) do
-                if G.play.cards[i+1] == card or G.play.cards[i-1] == card then
+            for i, v in ipairs(card.area.cards) do
+                if card.area.cards[i+1] == card or card.area.cards[i-1] == card then
                     context.crimson_trigger = true
                     local eval, post = eval_card(v, context)
                     local effects = {eval}
