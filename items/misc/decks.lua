@@ -265,7 +265,7 @@ local corrupted = {
   pos = { x = 7, y = 0 },
   atlas = "decks",
   apply = function()
-    G.GAME.modifiers.glitched_items = 3
+    G.GAME.modifiers.glitched_items = (G.GAME.modifiers.glitched_items or 2) + 1
   end,
   entr_credits = {
     art = {"LFMoth"}
