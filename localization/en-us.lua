@@ -5215,7 +5215,7 @@ local decs = {
 				}
 			},
 			inversion_allowed = {
-				name = "Flipside",
+				name = "Inversion",
 				text = {
 					"Can be {C:red}Inverted{}",
 					"into {C:red}#1#{}"
