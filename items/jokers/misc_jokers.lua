@@ -5126,6 +5126,39 @@ local overpump = {
     end,
 }
 
+local shadow_crystal = {
+    order = 100,
+    object_type = "Joker",
+    key = "shadow_crystal",
+    rarity = 1,
+    cost = 7,
+    eternal_compat = true,
+    pos = {x = 0, y = 0},
+    atlas = "placeholder",
+    blueprint_compat = true,
+    config = {
+        extra = {
+            odds = 2
+        }
+    },
+    calculate = function(self, card, context)
+        if context.using_consumeable and SMODS.pseudorandom_probability(card, 'shadow_crystal', 1, card.ability.extra.odds) and Entropy.Inversion(context.consumeable) then
+            local dummy = Entropy.GetDummy(G.P_CENTERS[Entropy.Inversion(context.consumeable)], context.consumeable.area, context.consumeable)
+            Cryptid.forcetrigger(dummy, context)
+            return nil, true
+        end
+    end,
+    loc_vars = function(self, q, card)
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
+        return {
+            vars = {
+                numerator,
+                denominator
+            }
+        }
+    end
+}
+
 return {
     items = {
         surreal,
@@ -5235,6 +5268,7 @@ return {
         solar_panel,
         kintsugi,
         blooming_crimson,
-        overpump
+        overpump,
+        shadow_crystal
     }
 }

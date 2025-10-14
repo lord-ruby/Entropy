@@ -1615,6 +1615,14 @@ local decs = {
 					"{C:attention}unique{} poker hand played this round"
                 },
             },
+			j_entr_shadow_crystal = {
+                name = "Shadow Crystal",
+                text = {
+                    "Consumables have a {C:green}#1# in #2#{} chance",
+					"to also trigger their {C:red}Inverted{} counterparts",
+					"{C:inactive}(If Possible)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
