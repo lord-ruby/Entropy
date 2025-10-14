@@ -3420,7 +3420,7 @@ G.FUNCS.evaluate_play = function(e)
 end
 
 function Entropy.GetDummy(center, area, self)
-    local abil = copy_table(center.config)
+    local abil = copy_table(center.config) or {}
     abil.consumeable = copy_table(abil)
     abil.name = center.name or center.key
     local eligible_editionless_jokers = {}
