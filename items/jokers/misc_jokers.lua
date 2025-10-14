@@ -5133,8 +5133,8 @@ local shadow_crystal = {
     rarity = 1,
     cost = 7,
     eternal_compat = true,
-    pos = {x = 0, y = 0},
-    atlas = "placeholder",
+    pos = {x = 1, y = 13},
+    atlas = "jokers",
     blueprint_compat = true,
     config = {
         extra = {
