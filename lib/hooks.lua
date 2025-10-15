@@ -1692,7 +1692,6 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
                         get_consumable_type = true,
                         set = card.config.center.set
                     })
-                    print(ret)
                     if ret and (ret.set or ret.key) then
                         card:set_ability(ret.key and G.P_CENTERS[ret.key] or Entropy.GetPooledCenter(ret.set))
                         break
