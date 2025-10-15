@@ -5474,7 +5474,7 @@ local miracle_berry = {
         }
     end,
     calculate = function(self, card, context)
-        if context.get_consumable_type and not card.getting_sliced then
+        if context.get_consumable_type and not card.getting_sliced and not context.hidden then
             local pool = G.P_CENTER_POOLS[context.set]
             local inverted = pool and pool[1] and Entropy.is_inverted(pool[1])
             SMODS.scale_card(card, {

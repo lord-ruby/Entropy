@@ -1690,7 +1690,8 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
                 if c.config.center.calculate then
                     local ret = c.config.center:calculate(c, {
                         get_consumable_type = true,
-                        set = card.config.center.set
+                        set = card.config.center.set,
+                        hidden = card.config.center.hidden
                     })
                     if ret and (ret.set or ret.key) then
                         card:set_ability(ret.key and G.P_CENTERS[ret.key] or Entropy.GetPooledCenter(ret.set))
