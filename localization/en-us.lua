@@ -136,6 +136,14 @@ local decs = {
 					"added by Entropy",
 				},
 			},
+			set_entr_actives = {
+				name = "Activated Jokers",
+				text = {
+					"{C:attention}Jokers{} that are",
+					"{C:attention}manually{} activated",
+					"added by Entropy"
+				},
+			},
 		},
 		Joker = {
 			--Crossmod Jokers
@@ -1621,6 +1629,13 @@ local decs = {
                     "Consumables have a {C:green}#1# in #2#{} chance",
 					"to also trigger their {C:red}Inverted{} counterparts",
 					"{C:inactive}(If Possible, Hidden consumables excluded)"
+                },
+            },
+			j_entr_miracle_berry = {
+                name = "Miracle Berry",
+                text = {
+                    "The next {C:attention}#1#{} consumables",
+					"will be {C:spectral}Spectrals{}",
                 },
             },
 		},

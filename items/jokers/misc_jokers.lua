@@ -2221,7 +2221,12 @@ local ruby = {
                 number_format(card.ability.xmult)
             }
         }
-    end
+    end,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
 }
 
 local slipstream = {
@@ -2282,7 +2287,12 @@ local slipstream = {
             }
         }
     end,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}}
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
 }
 
 local cass = {
@@ -2397,7 +2407,12 @@ local cass = {
             }
         }
     end,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}}
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
 }
 
 local crabus = {
@@ -2470,7 +2485,12 @@ local crabus = {
             }
         }
     end,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}}
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
 }
 
 local hexa = {
@@ -2501,7 +2521,12 @@ local hexa = {
             }
         }
     end,
-    entr_credits = {art = {"HexaCryonic"}}
+    entr_credits = {art = {"HexaCryonic"}},
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
 }
 
 local sandpaper = {
@@ -3151,6 +3176,11 @@ local jestradiol = {
         left = 3,
         left_mod = 1
     },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+        }
+    },
     loc_vars = function(self, q, card)
         return {
             vars = {
@@ -3198,6 +3228,11 @@ local penny = {
             chips = 8
         }
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     loc_vars = function(self, q, card)
         return {
             vars = {
@@ -3235,6 +3270,11 @@ local slothful_joker = {
     config = {
         smult = 3
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     loc_vars = function(self, q, card)
         return {
             vars = {
@@ -3264,6 +3304,11 @@ local radar = {
     config = {
         dollar_mult = 1
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     loc_vars = function(self, q, card)
         return {
             vars = {
@@ -3290,6 +3335,11 @@ local abacus = {
     config = {
         dollar_mult = 1
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     demicoloncompat = true,
     calculate = function(self, card, context)
         if (context.individual and context.other_card.base.nominal and to_big(context.other_card.base.nominal) > to_big(0) and context.cardarea == G.play) or context.forcetrigger then
@@ -3314,6 +3364,11 @@ local matryoshka_dolls = {
     atlas = "jokers",
     config = {
         mult = 4
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
     },
     demicoloncompat = true,
     loc_vars = function(self, q, card)
@@ -3366,6 +3421,11 @@ local menger_sponge = {
         chips_mod = 3,
         base_chips = 10
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     demicoloncompat = true,
     loc_vars = function(self, q, card)
         return {
@@ -3417,6 +3477,11 @@ local arbitration = {
         chips_mod = 3,
         base_chips = 10
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     demicoloncompat = true,
     loc_vars = function(self, q, card)
         q[#q+1] = G.P_CENTERS.c_judgement
@@ -3459,6 +3524,11 @@ local masterful_gambit = {
     config = {
         dollars = 2
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     demicoloncompat = true,
     calculate = function(self, card, context)
         if (context.joker_main and #G.play.cards == 1) or context.forcetrigger then
@@ -3487,6 +3557,11 @@ local fourty_benadryls = {
     atlas = "jokers",
     config = {
         chip_mod = 15
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
     },
     pixel_size = { h = 95 / 1.2 },
     demicoloncompat = true,
@@ -3519,6 +3594,11 @@ local red_fourty = {
     config = {
         mult = 20,
         mult_mod = 2
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
     },
     demicoloncompat = true,
     blueprint_compat = true,
@@ -3569,6 +3649,11 @@ local promotion = {
         mult = 20,
         mult_mod = 2
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     demicoloncompat = true,
     blueprint_compat = true,
     calculate = function(self, card, context)
@@ -3606,6 +3691,11 @@ local offbrand = {
     config = {
         mult = 6,
         dollars = 6
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
     },
     pools = {["Food"] = true},
     demicoloncompat = true,
@@ -3645,6 +3735,11 @@ local girldinner = {
     config = {
         mult = 3,
         chips = 40
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
     },
     pools = {["Food"] = true},
     demicoloncompat = true,
@@ -3688,6 +3783,11 @@ local recycling_bin = {
     config = {
         mult = 0,
         mult_mod = 1
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
     },
     demicoloncompat = true,
     blueprint_compat = true,
@@ -3739,6 +3839,11 @@ local gold_bar = {
         dollars = 8,
         dollars_mod = 1
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     pools = {["Food"] = true},
     demicoloncompat = true,
     blueprint_compat = true,
@@ -3781,6 +3886,11 @@ local scribbled_joker = {
     config = {
         chips = 60
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     demicoloncompat = true,
     blueprint_compat = true,
     loc_vars = function(self, q, card)
@@ -3822,6 +3932,11 @@ local jokers_against_humanity = {
     config = {
         chips = 15,
         mult = 2
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
     },
     demicoloncompat = true,
     blueprint_compat = true,
@@ -3868,6 +3983,11 @@ local blind_collectible_pack = {
     atlas = "jokers",
     demicoloncompat = true,
     blueprint_compat = true,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     calculate = function(self, card, context)
         if context.selling_self or context.forcetrigger then
             if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
@@ -3905,6 +4025,11 @@ local prayer_card = {
     config = {
         amount = 100
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     calculate = function(self, card, context)
         if context.setting_blind or context.forcetrigger then
             card.gone = false
@@ -3941,6 +4066,11 @@ local desert = {
     config = {
         asc = 0,
         asc_mod = 0.05
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
     },
     calculate = function(self, card, context)
         if context.before and #G.play.cards == 1 then
@@ -3980,6 +4110,11 @@ local rugpull = {
     config = {
         multiplier = 1.25
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     loc_vars = function(self, q, card)
         return {
             vars = {card.ability.multiplier}
@@ -4001,6 +4136,11 @@ local grape_juice = {
     config = {
         left = 3,
         left_mod = 1
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+        }
     },
     loc_vars = function(self, q, card)
         return {
@@ -4035,6 +4175,11 @@ local petrichor = {
     config = {
         chips = 25
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     loc_vars = function(self, q, card)
         return {
             vars = {card.ability.chips}
@@ -4060,6 +4205,11 @@ local otherworldly_joker = {
     atlas = "jokers",
     demicoloncompat = true,
     blueprint_compat = true,
+    dependencies = {
+        items = {
+            "set_entr_inversions",
+        }
+    },
     calculate = function(self, card, context)
         if (context.skipping_booster) or context.forcetrigger then
             if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
@@ -4095,6 +4245,11 @@ local error_joker = {
     atlas = "jokers",
     demicoloncompat = true,
     blueprint_compat = true,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
 }
 
 local thirteen_of_stars = {
@@ -4108,6 +4263,11 @@ local thirteen_of_stars = {
     atlas = "jokers",
     demicoloncompat = true,
     blueprint_compat = true,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     calculate = function(self, card, context)
         if (context.joker_main) or context.forcetrigger then
             local text = G.FUNCS.get_poker_hand_info(G.play.cards)
@@ -4134,6 +4294,11 @@ local diode = {
     config = {
         mult = 6,
         chips = 40
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
     },
     calculate = function(self, card, context)
         if context.after then
@@ -4176,6 +4341,11 @@ local prismatic_shard = {
         mult = 2,
         chips = 8,
         plus_asc = 0.15
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
     },
     calculate = function(self, card, context)
         if (context.individual and context.cardarea == G.play) or context.forcetrigger then
@@ -4244,6 +4414,11 @@ local chameleon = {
     atlas = "jokers",
     demicoloncompat = true,
     blueprint_compat = true,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     calculate = function(self, card, context)
         if context.joker_main then
             local rand = Entropy.get_chameleon()
@@ -4275,6 +4450,11 @@ local thanatophobia = {
     atlas = "jokers",
     demicoloncompat = true,
     blueprint_compat = true,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
             if G.GAME.accumulated_sell_value then
@@ -4327,6 +4507,12 @@ local redkey = {
         left = 3,
         left_mod = 1
     },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+            "bl_entr_red"
+        }
+    },
     loc_vars = function(self, q, card)
         return {
             vars = {card.ability.left, card.ability.left_mod}
@@ -4371,6 +4557,11 @@ local polaroid = {
         target = -1,
         left = 1,
         left_mod = 1
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+        }
     },
     can_use = function(self, card) return #Entropy.GetHighlightedCards({G.jokers}, card, 1, 1) > 0 and card.ability.left > 0 end,
     use = function(self, card)
@@ -4475,6 +4666,11 @@ local car_battery = {
     config = {
         uses_mod = 1
     },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+        }
+    },
     calculate = function(self, card, context)
         if (context.end_of_round and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition) or context.forcetrigger then
             for i, v in pairs(G.jokers.cards) do
@@ -4508,6 +4704,12 @@ local chair = {
     config = {
         uses_mod = 1
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+            "e_entr_freaky"
+        }
+    },
     calculate = function(self, card, context)
         if (context.before and context.scoring_name == "Three of a Kind") then
             if #context.scoring_hand > 2 then
@@ -4534,6 +4736,11 @@ local captcha = {
     config = {
         left = 1,
         left_mod = 1
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+        }
     },
     can_use = function(self, card) return G.hand and #G.hand.cards > 0 and card.ability.left > 0 end,
     use = function(self, card)
@@ -4639,6 +4846,11 @@ local deck_enlargment_pills = {
         rounds = 2,
         max_rounds = 2
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     loc_vars = function(self, q, card)
         return {
             vars = {
@@ -4682,7 +4894,7 @@ local deck_enlargment_pills = {
                     end
             
                     local card = create_card("Back", G.play, nil, nil, nil, nil, nil, "entr_large_deck")
-                    if card.config.center.key = "j_joker" then
+                    if card.config.center.key == "j_joker" then
                         card:set_ability(G.P_CENTERS.b_red)
                     end
                     card:add_to_deck()
@@ -4705,6 +4917,11 @@ local photocopy = {
     eternal_compat = true,
     pos = {x = 8, y = 11},
     atlas = "jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
 }
 
 function Entropy.most_common_card()
@@ -4752,7 +4969,12 @@ local enlightenment = {
     atlas = "jokers",
     entr_credits = {
         art = {"LFMoth"}
-    }
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
 }
 
 local black_rose_green_sun = {
@@ -4767,6 +4989,11 @@ local black_rose_green_sun = {
     atlas = "jokers",
     config = {
         asc_pow = 0.05
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
     },
     demicoloncompat = true,
     calculate = function(self, card, context)
@@ -4797,6 +5024,11 @@ local jack_off = {
     pos = {x = 0, y = 0},
     atlas = "placeholder",
     demicoloncompat = true,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     calculate = function(self, card, context)
         if (context.individual and context.cardarea == G.play and (context.other_card:get_id() == SMODS.Ranks.Jack.id)) or context.forcetrigger then
             local any_selected = nil
@@ -4831,6 +5063,11 @@ local fast_food = {
     loc_vars = function(self, q, card)
         q[#q+1] = {set = "Other", key = "perishable", vars = {5, 5}}
     end,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     demicoloncompat = true,
     calculate = function(self, card, context)
         if context.setting_blind or context.forcetrigger then
@@ -4871,6 +5108,11 @@ local antipattern = {
             }
         }
     end,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     config = {
         hand_pairs = {
 
@@ -4918,6 +5160,11 @@ local spiral_of_ants = {
     blueprint_compat = true,
     pos = {x = 5, y = 12},
     atlas = "jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     loc_vars = function(self, q, card)
         return {
             vars = {
@@ -4973,6 +5220,11 @@ local fork_bomb = {
     blueprint_compat = true,
     pos = {x = 7, y = 12},
     atlas = "jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     demicoloncompat = true,
     calculate = function(self, card, context)
         if context.setting_blind or context.forcetrigger then
@@ -5005,6 +5257,11 @@ local solar_panel = {
     blueprint_compat = true,
     pos = {x = 8, y = 12},
     atlas = "jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     config = {
         money = 4
     },
@@ -5036,6 +5293,12 @@ local kintsugi = {
     eternal_compat = true,
     pos = {x = 0, y = 13},
     atlas = "jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+            "m_entr_ceramic"
+        }
+    },
     loc_vars = function(self, q, card)
         q[#q+1] = G.P_CENTERS.m_entr_ceramic
         q[#q+1] = G.P_CENTERS.m_gold 
@@ -5058,6 +5321,12 @@ local blooming_crimson = {
         xmult = 1.15,
         xchips = 1.15,
         asc = 1.05
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+            "j_entr_prismatic_shard"
+        }
     },
     calculate = function(self, card, context)
         if (context.individual and context.cardarea == G.play) or context.forcetrigger then
@@ -5096,6 +5365,11 @@ local overpump = {
         xmult = 0,
         xmult_mod = 1.5,
         played = {},
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
     },
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
@@ -5146,6 +5420,11 @@ local shadow_crystal = {
             odds = 2
         }
     },
+    dependencies = {
+        items = {
+            "set_entr_inversions",
+        }
+    },
     calculate = function(self, card, context)
         if context.using_consumeable then
             if SMODS.pseudorandom_probability(card, 'shadow_crystal', 1, card.ability.extra.odds) and Entropy.Inversion(context.consumeable) and not context.consumeable.config.center.hidden then
@@ -5164,6 +5443,56 @@ local shadow_crystal = {
             }
         }
     end
+}
+
+local miracle_berry = {
+    order = 101,
+    object_type = "Joker",
+    key = "miracle_berry",
+    rarity = 2,
+    cost = 7,
+    eternal_compat = true,
+    pos = {x = 2, y = 13},
+    atlas = "jokers",
+    pools = {
+        Food = true
+    },
+    blueprint_compat = true,
+    config = {
+        uses = 4
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.uses
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.get_consumable_type and not card.getting_sliced then
+            local pool = G.P_CENTER_POOLS[context.set]
+            local inverted = pool and pool[1] and Entropy.is_inverted(pool[1])
+            SMODS.scale_card(card, {
+                ref_table = card.ability,
+                ref_value = "uses",
+                scalar_table = {mod = 1},
+                scalar_value = "mod",
+                operation = "-"
+            })
+            if card.ability.uses <= 0 then
+                SMODS.destroy_cards(card, nil, nil, true)
+                card.getting_sliced = true
+            end
+            return {
+                set = inverted and "Omen" or "Spectral"
+            }
+        end
+    end,
 }
 
 return {
@@ -5276,6 +5605,7 @@ return {
         kintsugi,
         blooming_crimson,
         overpump,
-        shadow_crystal
+        shadow_crystal,
+        miracle_berry
     }
 }
