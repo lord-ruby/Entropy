@@ -541,7 +541,6 @@ local ssac = {
     },
     rarity = "entr_reverse_legendary",
     cost = 20,
-    blueprint_compat = true,
     eternal_compat = true,
     pos = {x=2, y=2},
     soul_pos = {x = 1, y = 2},
@@ -550,13 +549,13 @@ local ssac = {
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                Entropy.missing_ranks()
+                Entropy.missing_ranks() / 2
             },
         }
     end,
     calculate = function(self, card, context)
-        if context.joker_main then
-            for i = 1, Entropy.missing_ranks() do
+        if context.joker_main  then
+            for i = 1, Entropy.missing_ranks() / 2 do
                 local j_r = Cryptid.forcetrigger(G.jokers.cards[#G.jokers.cards], context)
                 local c_r = G.consumeables.cards[#G.consumeables.cards] and Cryptid.forcetrigger(G.consumeables.cards[#G.consumeables.cards], context) or {}
                 local v = G.play.cards[#G.play.cards]

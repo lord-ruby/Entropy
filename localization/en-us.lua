@@ -1490,7 +1490,7 @@ local decs = {
                 text = {
 					"{C:attention}Forcetrigger{} the Rightmost",
 					"{C:attention}Joker{}, {C:attention}Playing Card{}, and {C:attention}Consumable{}",
-					"once for every Base Rank missing in the deck",
+					"once for every two Base Ranks missing in the deck",
 					"{C:inactive}(Currently: {C:attention}#1#{C:inactive})"
                 },
             },

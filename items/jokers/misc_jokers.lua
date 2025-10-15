@@ -4658,10 +4658,12 @@ local deck_enlargment_pills = {
                     card.ability.juiced = true
                 end
             end
-            return {
-                message = to_big(card.ability.rounds) > to_big(0) and number_format(card.ability.max_rounds - card.ability.rounds).."/"..number_format(card.ability.max_rounds)
-                or localize("k_active_ex")
-            }
+            if not context.forcetrigger then
+                return {
+                    message = to_big(card.ability.rounds) > to_big(0) and number_format(card.ability.max_rounds - card.ability.rounds).."/"..number_format(card.ability.max_rounds)
+                    or localize("k_active_ex")
+                }
+            end
         end
         if (context.selling_self and to_big(card.ability.rounds) <= to_big(0)) or context.forcetrigger then
             G.E_MANAGER:add_event(Event{
@@ -4680,6 +4682,9 @@ local deck_enlargment_pills = {
                     end
             
                     local card = create_card("Back", G.play, nil, nil, nil, nil, nil, "entr_large_deck")
+                    if card.config.center.key = "j_joker" then
+                        card:set_ability(G.P_CENTERS.b_red)
+                    end
                     card:add_to_deck()
                     area:emplace(card)
                     card.cost = 0
