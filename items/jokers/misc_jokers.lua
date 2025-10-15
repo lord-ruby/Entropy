@@ -2333,8 +2333,9 @@ local cass = {
                 G.GAME.round_resets.discards = G.GAME.round_resets.discards + card.ability.mod
                 ease_discard(card.ability.mod)
             elseif result == 5 then
+                local old = card.ability.consumable_slots
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "consumable_slots", scalar_value = "mod"})
-                G.consumeables:handle_card_limit(card.ability.consumable_slots)
+                G.consumeables:handle_card_limit(card.ability.consumable_slots - old)
             elseif result == 6 then
                 if to_big(card.ability.shop_slots) < to_big(4) then
                     SMODS.scale_card(card, {ref_table = card.ability, ref_value = "shop_slots", scalar_value = "mod"})
