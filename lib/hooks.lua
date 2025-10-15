@@ -1567,26 +1567,6 @@ function Card:draw(layer)
     return card_drawref(self, layer)
 end
 
-local create_ref = create_card
-function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append, ...)
-    local card = create_ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append, ...)
-    if card and card.ability and card.ability.name == "entr-solarflare" then
-		card:set_edition("e_entr_solar", true, nil, true)
-	end
-    if card and card.ability and card.ability.name == "entr-trapezium_cluster" then
-		card:set_edition("e_entr_fractured", true, nil, true)
-	end
-    if card and card.ability and card.ability.name == "entr-eden" then
-		card:set_edition("e_entr_sunny", true, nil, true)
-	end
-    if card and card.ability and card.ability.name == "entr-ridiculus_absens" then
-		card:set_edition("e_cry_glitched", true, nil, true)
-        card.ability.cry_prob = 1
-        card.ability.extra.odds = 2 
-	end
-    return card
-end
-
 local ref = level_up_hand
 function level_up_hand(card, hand, instant, amount, ...)
     if next(SMODS.find_card("j_entr_strawberry_pie")) and hand ~= "High Card" then
@@ -1680,9 +1660,45 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
         end
     end
     local card = ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append, dont_calculate, ...)
+    if card and card.ability and card.ability.name == "entr-solarflare" then
+		card:set_edition("e_entr_solar", true, nil, true)
+	end
+    if card and card.ability and card.ability.name == "entr-trapezium_cluster" then
+		card:set_edition("e_entr_fractured", true, nil, true)
+	end
+    if card and card.ability and card.ability.name == "entr-eden" then
+		card:set_edition("e_entr_sunny", true, nil, true)
+	end
+    if card and card.ability and card.ability.name == "entr-ridiculus_absens" then
+		card:set_edition("e_cry_glitched", true, nil, true)
+        card.ability.cry_prob = 1
+        card.ability.extra.odds = 2 
+	end
     if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi"))) and not forced_key then 
         if not G.SETTINGS.paused and not G.GAME.akyrs_any_drag then
             card.fromdefine = true
+        end
+    end
+    if card and card.config and card.config.center and card.config.center.key == "c_base" and Entropy.DeckOrSleeve("crafting") then
+        if pseudorandom("crafting") < 0.5 then
+            card:set_ability(pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("crafting")))
+        end
+	end
+    if card and card.ability and card.ability.consumeable then
+        for i, a in pairs(SMODS.get_card_areas('jokers')) do
+            for _, c in pairs(a.cards) do
+                if c.config.center.calculate then
+                    local ret = c.config.center:calculate(c, {
+                        get_consumable_type = true,
+                        set = card.config.center.set
+                    })
+                    print(ret)
+                    if ret and (ret.set or ret.key) then
+                        card:set_ability(ret.key and G.P_CENTERS[ret.key] or Entropy.GetPooledCenter(ret.set))
+                        break
+                    end
+                end
+            end
         end
     end
     return card
@@ -2649,18 +2665,6 @@ function update_hand_text(config, vals)
     end
     ref(config, vals)
 end
-
-local create_ref = create_card
-function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append, ...)
-    local card = create_ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append, ...)
-    if card and card.config and card.config.center and card.config.center.key == "c_base" and Entropy.DeckOrSleeve("crafting") then
-      if pseudorandom("crafting") < 0.5 then
-        card:set_ability(pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("crafting")))
-      end
-	  end
-    return card
-end
-
 function Entropy.GetRecipeResult(val,jokerrares,seed)
     local rare = 1
     local cost=0
