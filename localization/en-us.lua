@@ -1634,8 +1634,8 @@ local decs = {
 			j_entr_miracle_berry = {
                 name = "Miracle Berry",
                 text = {
-                    "The next {C:attention}#1#{} consumables",
-					"will be {C:spectral}Spectrals{}",
+                    "The next {C:attention}#1#{} consumables to",
+					"appear will be {C:spectral}Spectrals{}",
                 },
             },
 		},
