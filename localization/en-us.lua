@@ -1620,7 +1620,7 @@ local decs = {
                 text = {
                     "Consumables have a {C:green}#1# in #2#{} chance",
 					"to also trigger their {C:red}Inverted{} counterparts",
-					"{C:inactive}(If Possible)"
+					"{C:inactive}(If Possible, Hidden consumables excluded)"
                 },
             },
 		},
