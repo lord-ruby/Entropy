@@ -549,13 +549,13 @@ local ssac = {
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                Entropy.missing_ranks() / 2
+                math.ceil(Entropy.missing_ranks() / 2)
             },
         }
     end,
     calculate = function(self, card, context)
         if context.joker_main  then
-            for i = 1, Entropy.missing_ranks() / 2 do
+            for i = 1, math.ceil(Entropy.missing_ranks() / 2) do
                 local j_r = Cryptid.forcetrigger(G.jokers.cards[#G.jokers.cards], context)
                 local c_r = G.consumeables.cards[#G.consumeables.cards] and Cryptid.forcetrigger(G.consumeables.cards[#G.consumeables.cards], context) or {}
                 local v = G.play.cards[#G.play.cards]
