@@ -5135,7 +5135,7 @@ local shadow_crystal = {
     order = 100,
     object_type = "Joker",
     key = "shadow_crystal",
-    rarity = 1,
+    rarity = 2,
     cost = 7,
     eternal_compat = true,
     pos = {x = 1, y = 13},
