@@ -1638,6 +1638,14 @@ local decs = {
 					"appear will be {C:spectral}Spectrals{}",
                 },
             },
+			j_entr_meridian = {
+                name = "Meridian",
+                text = {
+                    "Gives Mult based on",
+					"{C:attention}position{} in the Jokers tray",
+					"{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

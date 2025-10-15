@@ -3725,7 +3725,6 @@ function Card:open(...)
             }
         else
             G.GAME.last_tarot_planet = self.config.center.key
-            print(G.GAME.last_tarot_planet)
         end
     end
     open_ref(self, ...)

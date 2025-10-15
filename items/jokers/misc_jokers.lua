@@ -5474,7 +5474,7 @@ local miracle_berry = {
         }
     end,
     calculate = function(self, card, context)
-        if context.get_consumable_type and not card.getting_sliced and not context.hidden then
+        if context.get_consumable_type and not card.getting_sliced and not context.hidden and context.set ~= "Spectral" and context.set ~= "Omen" then
             local pool = G.P_CENTER_POOLS[context.set]
             local inverted = pool and pool[1] and Entropy.is_inverted(pool[1])
             SMODS.scale_card(card, {
@@ -5490,6 +5490,48 @@ local miracle_berry = {
             end
             return {
                 set = inverted and "Omen" or "Spectral"
+            }
+        end
+    end,
+}
+
+local meridian = {
+    order = 102,
+    object_type = "Joker",
+    key = "meridian",
+    rarity = 1,
+    cost = 5,
+    eternal_compat = true,
+    pos = {x = 3, y = 13},
+    atlas = "jokers",
+    blueprint_compat = true,
+    config = {
+        multiplier = 5
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    loc_vars = function(self, q, card)
+        local index = 0
+        for i, v in pairs(card.area.cards) do
+            if v == card then index = i break end
+        end
+        return {
+            vars = {
+                card.ability.multiplier * index
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main or context.forcetrigger then
+            local index = 0
+            for i, v in pairs(card.area.cards) do
+                if v == card then index = i break end
+            end
+            return {
+                mult = card.ability.multiplier * index
             }
         end
     end,
@@ -5606,6 +5648,7 @@ return {
         blooming_crimson,
         overpump,
         shadow_crystal,
-        miracle_berry
+        miracle_berry,
+        meridian
     }
 }
