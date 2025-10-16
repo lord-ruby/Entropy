@@ -2054,6 +2054,6 @@ if self.draw_hand == true then G.FUNCS.draw_from_deck_to_hand() end
 '''
 position = "at"
 payload = '''
-if self.draw_hand == true or G.GAME.mannaz_draw or next(SMODS.find_card("j_entr_miracle_berry")) then G.FUNCS.draw_from_deck_to_hand(); G.GAME.mannaz_draw = nil end
+if self.draw_hand == true or G.GAME.mannaz_draw or next(SMODS.find_card("j_entr_miracle_berry")) or (next(Entropy.find_runes("rune_entr_oss") and Entropy.DeckOrSleeve("corrupted"))) then G.FUNCS.draw_from_deck_to_hand(); G.GAME.mannaz_draw = nil end
 '''
 match_indent = true 
