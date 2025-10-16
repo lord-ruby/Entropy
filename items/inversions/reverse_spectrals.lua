@@ -572,6 +572,7 @@ local crypt = {
             if v ~= joker then            
                 copy_card(joker, v)
                 v:set_edition()
+                v:set_debuff(true)
                 v.ability.debuff_timer = (v.ability.debuff_timer or 0) + card2.ability.rounds
                 v.ability.debuff_timer_max = (v.ability.debuff_timer_max or 0) + card2.ability.rounds
             end
