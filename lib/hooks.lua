@@ -4014,3 +4014,88 @@ function SMODS.eval_individual(individual, context)
         return calculate_objref(individual, context)
     end
 end
+
+if HotPotato then
+    function PissDrawer.Shop.main_shop()
+        -- Reroll button for unknown goddamn reason just stuck, so I'll unstuck it
+        G.E_MANAGER:add_event(Event({
+            blocking = false,
+            no_delete = true,
+            func = function()
+                local reroll = G.shop and G.shop:get_UIE_by_ID('shop_reroll')
+                    if reroll and reroll.UIBox then
+                    reroll.UIBox:recalculate()
+                end
+                return true
+            end,
+        }))
+        return
+        {n=G.UIT.C, nodes = {
+            {n=G.UIT.R, config={align = "cm", padding = 0.05}, nodes={
+                {n=G.UIT.C, config={align = "cm", padding = 0.1}, nodes={
+                    {n=G.UIT.R,config={id = 'next_round_button', align = "cm", minw = 1.8, minh = Entropy.CanSwitchAltPath() and 1 or 1.3, r=0.15,colour = G.C.RED, one_press = true, button = 'toggle_shop', hover = true,shadow = true}, nodes = {
+                        {n=G.UIT.R, config={align = "cm", padding = 0.07, focus_args = {button = 'y', orientation = 'cr'}, func = 'set_button_pip'}, nodes={
+                            {n=G.UIT.R, config={align = "cm", maxw = 1.3}, nodes={
+                                {n=G.UIT.T, config={text = localize('b_next_round_1'), scale = 0.4, colour = G.C.WHITE, shadow = true}}
+                            }},
+                            {n=G.UIT.R, config={align = "cm", maxw = 1.3}, nodes={
+                                {n=G.UIT.T, config={text = localize('b_next_round_2'), scale = 0.4, colour = G.C.WHITE, shadow = true}}
+                            }}
+                        }},
+                    }},
+                    (Entropy.CanSwitchAltPath() and {n=G.UIT.R,config={id = 'change_path_button', align = "cm", minw = 1.8, minh = 1, r=0.15,colour = G.C.PURPLE, button = 'toggle_path', hover = true,shadow = true, func='can_toggle_path'}, nodes = {
+                        {n=G.UIT.R, config={align = "cm", padding = 0.07, focus_args = {button = 'y', orientation = 'cr'}, func = 'set_button_pip'}, nodes={
+                            {n=G.UIT.R, config={align = "cm", maxw = 1.3}, nodes={
+                            {n=G.UIT.T, config={text = localize(G.GAME.entr_alt and 'b_change_path_3' or 'b_change_path_1'), scale = 0.4, colour = G.C.WHITE, shadow = true}}
+                            }},
+                            {n=G.UIT.R, config={align = "cm", maxw = 1.3}, nodes={
+                            not G.GAME.entr_alt and {n=G.UIT.T, config={text = localize('b_change_path_2'), scale = 0.4, colour = G.C.WHITE, shadow = true}} or nil
+                            }}
+                        }},              
+                    }} or nil),
+                    {n=G.UIT.R, config={id = 'shop_reroll', align = "cm", minw = 1.8, minh = Entropy.CanSwitchAltPath() and 1 or 1.3, r=0.15,colour = G.C.GREEN, button = 'reroll_shop', func = 'can_reroll', hover = true,shadow = true}, nodes = {
+                        {n=G.UIT.R, config={align = "cm", padding = 0.07, focus_args = {button = 'x', orientation = 'cr'}, func = 'set_button_pip'}, nodes={
+                            {n=G.UIT.R, config={align = "cm", maxw = 1.3}, nodes={
+                                {n=G.UIT.T, config={text = localize('k_reroll'), scale = 0.4, colour = G.C.WHITE, shadow = true}},
+                            }},
+                            {n=G.UIT.R, config={align = "cm", maxw = 1.3, minw = 1}, nodes={
+                                {n=G.UIT.T, config={text = localize('$'), scale = 0.7, colour = G.C.WHITE, shadow = true}},
+                                {n=G.UIT.T, config={ref_table = G.GAME.current_round, ref_value = 'reroll_cost', scale = 0.75, colour = G.C.WHITE, shadow = true}},
+                            }}
+                        }}
+                    }},
+                }},
+                {n=G.UIT.C, config={align = "cm", padding = 0.2, r=0.2, colour = G.C.L_BLACK, emboss = 0.05, minw = 8.0}, nodes={
+                    {n=G.UIT.O, config={object = G.shop_jokers}},
+                }},
+                {n=G.UIT.C, config = {align='cm', padding = 0.1}, nodes = {
+                    {n=G.UIT.R, config={align = "cm", minw = 0.5, maxw = 0.7, minh = 0.8, r=0.15,colour = G.C.CLEAR, id = "show_plinko_button", button = 'open_plinko', shadow = true}, nodes = {
+                        {n=G.UIT.O, config = {object = Sprite(0, 0, 0.9, 0.9, G.ASSET_ATLAS['hpot_pissdrawer_shop'], { x = 0, y = 0 }), shadow = true, hover = true, button_dist = 0.63}},
+                    }},
+
+                    {n=G.UIT.R, config={align = "cm", minw = 0.5, maxw = 0.7, minh = 0.8, r=0.15,colour = G.C.CLEAR, id = "show_wheel_button", button = 'open_wheel', shadow = true}, nodes = {
+                        {n=G.UIT.O, config = {object = Sprite(0, 0, 0.9, 0.9, G.ASSET_ATLAS['hpot_pissdrawer_shop'], { x = 1, y = 0 }), shadow = true, hover = true, button_dist = 0.63}},
+                    }},
+
+                    {n=G.UIT.R, config={align = "cm", minw = 0.5, maxw = 0.7, minh = 0.8, r=0.15,colour = G.C.CLEAR, id = "show_nursery_button", button = 'open_nursery', shadow = true}, nodes = {
+                        {n=G.UIT.O, config = {object = Sprite(0, 0, 0.9, 0.9, G.ASSET_ATLAS['hpot_pissdrawer_shop'], { x = 2, y = 0 }), shadow = true, hover = true, button_dist = 0.63}},
+                    }},
+                }}
+            }},
+            -- spacer
+            {n=G.UIT.R, config={minh = 0.1}},
+            -- bottom shop row
+            {n=G.UIT.R, config={align = "cm", padding = 0.1}, nodes={
+                {n=G.UIT.C, config={align = "cm", padding = 0.15, r=0.2, colour = G.C.L_BLACK, emboss = 0.05}, nodes={
+                    {n=G.UIT.C, config={align = "cm", padding = 0.2, r=0.2, colour = G.C.BLACK, maxh = G.shop_vouchers.T.h+0.4}, nodes={
+                        {n=G.UIT.T, config={text = localize{type = 'variable', key = 'ante_x_voucher', vars = {G.GAME.round_resets.ante}}, scale = 0.45, colour = G.C.L_BLACK, vert = true}},
+                        {n=G.UIT.O, config={object = G.shop_vouchers}},
+                    }},
+                }},
+                {n=G.UIT.C, config={align = "cm", padding = 0.15, r=0.2, colour = G.C.L_BLACK, emboss = 0.05}, nodes={
+                    {n=G.UIT.O, config={object = G.shop_booster}},
+                }},
+            }}
+        }}
+    end
+end
