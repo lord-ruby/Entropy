@@ -3025,7 +3025,7 @@ end
 local set_abilityref = Card.set_ability
 function Card:set_ability(...)
     set_abilityref(self, ...)
-    if self.config.center.set == "Joker" and self.config.center.key ~= "j_entr_feynman_point" then
+    if self.config.center and self.config.center.set == "Joker" and self.config.center.key ~= "j_entr_feynman_point" then
         if next(SMODS.find_card("j_entr_feynman_point")) then
             local highest = 0
             for i, v in pairs(SMODS.find_card("j_entr_feynman_point")) do

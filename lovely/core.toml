@@ -2127,3 +2127,80 @@ function juice_card(card)
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+local bonus_chips = self.ability.bonus + (self.ability.perma_bonus or 0)
+'''
+position = "at"
+payload = '''
+self.ability.bonus = self.ability.bonus or 0
+self.ability.perma_h_x_chips = self.ability.perma_h_x_chips or 0
+self.ability.perma_x_chips = self.ability.perma_x_chips or 0
+self.ability.perma_x_mult = self.ability.perma_x_mult or 0
+self.ability.perma_h_x_mult = self.ability.perma_h_x_mult or 0
+local bonus_chips = self.ability.bonus + (self.ability.perma_bonus or 0)
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+local banned_cards, banned_tags, banned_other = {}, {}, {}
+'''
+position = "after"
+payload = '''
+local banned_cards, banned_tags, banned_other = {}, {}, {}
+    if challenge.restrictions and challenge.restrictions.banned_cards then
+      local banned = {}
+      for i, v in pairs(challenge.restrictions.banned_cards) do
+          if G.P_CENTERS[v.id] then
+            banned[#banned+1] = v
+          end
+      end
+      challenge.restrictions.banned_cards = banned
+    end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+for _,v in ipairs(post) do effects[#effects+1] = v end
+'''
+position = "at"
+payload = '''
+if not post then return end
+for _,v in ipairs(post) do effects[#effects+1] = v end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+if args and args.main_scoring and eval.individual then
+'''
+position = "at"
+payload = '''
+if not post then return end
+if args and args.main_scoring and eval and eval.individual then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+if next(post) then SMODS.trigger_effects({post}, card) end
+'''
+position = "at"
+payload = '''
+if not post then return end
+if next(post) then SMODS.trigger_effects({post}, card) end
+'''
+match_indent = true
