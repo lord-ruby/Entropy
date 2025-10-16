@@ -113,7 +113,7 @@ function Entropy.ReverseSuitLocVars(self, q, card, instant, noengulf)
       number_format(G.GAME.hands[card.ability.handnames[1]].level),
       number_format(G.GAME.hands[card.ability.handnames[2]].level),
       number_format(G.GAME.hands[card.ability.handnames[3]].level),
-      (card.ability.level or 2) + (G.GAME.entr_black_dwarf or 0),
+      (card.ability.level 1) + (G.GAME.entr_black_dwarf or 0),
       G.GAME.hands[card.ability.handnames[1]].AscensionPower and " + "..number_format(G.GAME.hands[card.ability.handnames[1]].AscensionPower) or "",
       G.GAME.hands[card.ability.handnames[2]].AscensionPower and " + "..number_format(G.GAME.hands[card.ability.handnames[2]].AscensionPower) or "",
       G.GAME.hands[card.ability.handnames[3]].AscensionPower and " + "..number_format(G.GAME.hands[card.ability.handnames[3]].AscensionPower) or "",
@@ -144,7 +144,7 @@ function Entropy.ChunkLocVars(self, q, card, instant, noengulf)
       number_format(G.GAME.hands[card.ability.handnames[1]].level),
       number_format(G.GAME.hands[card.ability.handnames[2]].level),
       number_format(G.GAME.hands[card.ability.handnames[3]].level),
-      card.ability.level or 2,
+      card.ability.level or 1,
       G.GAME.hands[card.ability.handnames[1]].AscensionPower and " + "..number_format(G.GAME.hands[card.ability.handnames[1]].AscensionPower) or "",
       G.GAME.hands[card.ability.handnames[2]].AscensionPower and " + "..number_format(G.GAME.hands[card.ability.handnames[2]].AscensionPower) or "",
       G.GAME.hands[card.ability.handnames[3]].AscensionPower and " + "..number_format(G.GAME.hands[card.ability.handnames[3]].AscensionPower) or "",
@@ -519,7 +519,7 @@ Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="entr_derivative",key=
 end}
 Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="",key="tyche",sprite_pos={x=0,y=2}, new_key="black_dwarf", prefix = "entr", atlas = "consumables2", set_badges = function(self, card, badges)
   badges[1] = create_badge(localize("k_star_q"), get_type_colour(self or card.config, card), nil, 1.2)
-end, func = Entropy.bdwarf, config = {bdwarf = 0.5}, loc_vars = function(self, q, card) return {vars = {card.ability.bdwarf}} end}
+end, func = Entropy.bdwarf, config = {bdwarf = 0.25}, loc_vars = function(self, q, card) return {vars = {card.ability.bdwarf}} end}
 Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="",key="theia",sprite_pos={x=1,y=2}, new_key="frozen_star", prefix = "entr", atlas = "consumables2", set_badges = function(self, card, badges)
   badges[1] = create_badge(localize("k_star_q"), get_type_colour(self or card.config, card), nil, 1.2)
 end, func = function(self, card, area, copier, number)
@@ -530,7 +530,7 @@ end, func = function(self, card, area, copier, number)
     end
   end
   Entropy.ReversePlanetUse(hand, card, card.ability.amt + (G.GAME.entr_black_dwarf or 0))
-end, config = {amt = 0.75}, loc_vars = function(self, q, card) return {vars = {card.ability.amt + (G.GAME.entr_black_dwarf or 0)}} end}
+end, config = {amt = 0.5}, loc_vars = function(self, q, card) return {vars = {card.ability.amt + (G.GAME.entr_black_dwarf or 0)}} end}
 
 Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="",key="chiron",sprite_pos={x=2,y=2}, new_key="coatlicue", prefix = "entr", atlas = "consumables2", set_badges = function(self, card, badges)
   badges[1] = create_badge(localize("k_star_q"), get_type_colour(self or card.config, card), nil, 1.2)

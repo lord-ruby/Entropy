@@ -318,7 +318,7 @@ local theia = {
 	aurinko = true,
 	config = {
 		l_chips = 5,
-		l_mult = 0.5,
+		l_mult = 0.25,
 	},
 	loc_vars = function(self, q, card)
 		return {
