@@ -4849,7 +4849,6 @@ local deck_enlargment_pills = {
     pos = {x = 2, y = 12},
     atlas = "jokers",
     demicoloncompat = true,
-    blueprint_compat = true,
     config = {
         rounds = 2,
         max_rounds = 2
@@ -4885,7 +4884,7 @@ local deck_enlargment_pills = {
                 }
             end
         end
-        if (context.selling_self and to_big(card.ability.rounds) <= to_big(0)) or context.forcetrigger then
+        if (context.selling_self and to_big(card.ability.rounds) <= to_big(0) and not context.blueprint) or context.forcetrigger then
             G.E_MANAGER:add_event(Event{
                 trigger = "after",
                 func = function()
