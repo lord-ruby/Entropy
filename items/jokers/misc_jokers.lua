@@ -5426,15 +5426,6 @@ local shadow_crystal = {
             "set_entr_inversions",
         }
     },
-    calculate = function(self, card, context)
-        if context.using_consumeable and not context.blueprint and not context.repetition then
-            if SMODS.pseudorandom_probability(card, 'shadow_crystal', 1, card.ability.extra.odds) and Entropy.Inversion(context.consumeable) and not context.consumeable.config.center.hidden then
-                local dummy = Entropy.GetDummy(G.P_CENTERS[Entropy.Inversion(context.consumeable)], context.consumeable.area, context.consumeable)
-                Cryptid.forcetrigger(dummy, context)
-            end
-            return nil, true
-        end
-    end,
     loc_vars = function(self, q, card)
         local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
         return {

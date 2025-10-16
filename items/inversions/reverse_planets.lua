@@ -113,7 +113,7 @@ function Entropy.ReverseSuitLocVars(self, q, card, instant, noengulf)
       number_format(G.GAME.hands[card.ability.handnames[1]].level),
       number_format(G.GAME.hands[card.ability.handnames[2]].level),
       number_format(G.GAME.hands[card.ability.handnames[3]].level),
-      (card.ability.level 1) + (G.GAME.entr_black_dwarf or 0),
+      (card.ability.level or 1) + (G.GAME.entr_black_dwarf or 0),
       G.GAME.hands[card.ability.handnames[1]].AscensionPower and " + "..number_format(G.GAME.hands[card.ability.handnames[1]].AscensionPower) or "",
       G.GAME.hands[card.ability.handnames[2]].AscensionPower and " + "..number_format(G.GAME.hands[card.ability.handnames[2]].AscensionPower) or "",
       G.GAME.hands[card.ability.handnames[3]].AscensionPower and " + "..number_format(G.GAME.hands[card.ability.handnames[3]].AscensionPower) or "",
