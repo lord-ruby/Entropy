@@ -2105,3 +2105,25 @@ if self.ability.name == "The Hanged Man" then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''
+function juice_card(card)
+    G.E_MANAGER:add_event(Event({
+        trigger = 'immediate',
+        func = (function() card:juice_up(0.7);return true end)
+    }))
+end
+'''
+position = "at"
+payload = '''
+function juice_card(card)
+    G.E_MANAGER:add_event(Event({
+        trigger = 'immediate',
+        func = (function() if card.juice_up then card:juice_up(0.7) end return true end)
+    }))
+end
+'''
+match_indent = true

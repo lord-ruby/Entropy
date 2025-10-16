@@ -1014,7 +1014,7 @@ local phantom_shopper = {
                 card.ability.rarity = ({
                     Common = "Uncommon",
                     Uncommon = "Rare",
-                    Rare = (SMODS.MODS["Cryptid"] or {}.can_load) and "cry_epic" or "Legendary",
+                    Rare = (SMODS.MODS["Cryptid"] or {}).can_load and "cry_epic" or "Legendary",
                     cry_epic = "Legendary"
                 })[card.ability.rarity] or card.ability.rarity
             else
@@ -5535,6 +5535,66 @@ local meridian = {
     end,
 }
 
+local mango = {
+    order = 103,
+    object_type = "Joker",
+    key = "mango",
+    rarity = 2,
+    cost = 7,
+    eternal_compat = true,
+    pos = {x = 4, y = 13},
+    atlas = "jokers",
+    pools = {
+        Food = true
+    },
+    blueprint_compat = true,
+    config = {
+        hands_left = 5
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.hands_left
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.before and not card.getting_sliced then
+            local card2 = G.play.cards[1]
+            if card2 then
+                G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+                local _card = copy_card(card2, nil, nil, G.playing_card)
+                _card:add_to_deck()
+                G.deck.config.card_limit = G.deck.config.card_limit + 1
+                table.insert(G.playing_cards, _card)
+                G.hand:emplace(_card)
+                _card.states.visible = nil
+
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        _card:start_materialize()
+                        return true
+                    end
+                })) 
+                card.ability.hands_left = card.ability.hands_left - 1
+                if to_big(card.ability.hands_left) <= to_big(0) then
+                    SMODS.destroy_cards(card, nil, nil, true)
+                    card.getting_sliced = true
+                end
+                return {
+                    message = card.getting_sliced and localize('k_eaten_ex') or localize("k_copied_ex"),
+                    playing_cards_created = {_card}
+                }
+            end
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -5647,6 +5707,7 @@ return {
         overpump,
         shadow_crystal,
         miracle_berry,
-        meridian
+        meridian,
+        mango
     }
 }
