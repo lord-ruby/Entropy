@@ -658,6 +658,7 @@ G.FUNCS.buy_deckorsleeve = function(e)
         if i == "joker_slot" then G.jokers:handle_card_limit(v) end
         if i == "hand_size" then G.hand:handle_card_limit(v) end
         if i == "dollars" then ease_dollars(v) end
+        if i == "spectral_rate" then G.GAME.spectral_rate = v end
     end
     if c1.config and c1.config.center and c1.config.center.config and c1.config.center.config then
         if c1.config.center.key == "b_entr_doc" or c1.config.center.key == "sleeve_entr_doc" then
