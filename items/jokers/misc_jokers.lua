@@ -1014,7 +1014,7 @@ local phantom_shopper = {
                 card.ability.rarity = ({
                     Common = "Uncommon",
                     Uncommon = "Rare",
-                    Rare = "cry_epic",
+                    Rare = (SMODS.MODS["Cryptid"] or {}.can_load) and "cry_epic" or "Legendary",
                     cry_epic = "Legendary"
                 })[card.ability.rarity] or card.ability.rarity
             else
