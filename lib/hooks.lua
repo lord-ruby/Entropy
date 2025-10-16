@@ -1977,6 +1977,13 @@ G.FUNCS.use_card = function(e, mute, nosave)
             return true
         end
     })
+    for i, v in pairs(SMODS.find_card("j_entr_shadow_crystal")) do
+        if SMODS.pseudorandom_probability(card, 'shadow_crystal', 1, v.ability.extra.odds) and Entropy.Inversion(card) and not card.config.center.hidden then
+            local dummy = Entropy.GetDummy(G.P_CENTERS[Entropy.Inversion(card)], card.area, card)
+            Cryptid.forcetrigger(dummy, {})
+            break
+        end
+    end
 end
 
 local main_ref = evaluate_play_main
