@@ -787,7 +787,7 @@ local quasar = {
 
     atlas = "consumables",
     config = {
-        level = 1
+        level = 2
     },
     no_select = true,
     soul_rate = 0,
