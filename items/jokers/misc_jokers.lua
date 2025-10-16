@@ -2094,7 +2094,7 @@ local debit_card = {
     atlas = "jokers",
     config = {
         amount = 1,
-        needed = 25,
+        needed = 35,
         current_spent = 0,
         current = 0
     },
@@ -5418,7 +5418,7 @@ local shadow_crystal = {
     blueprint_compat = true,
     config = {
         extra = {
-            odds = 2
+            odds = 3
         }
     },
     dependencies = {
