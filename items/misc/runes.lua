@@ -839,17 +839,13 @@ local ihwaz_indicator = {
                 return {
                     func = function()
                         if G.GAME.providence then
-                            local edition = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
-                                return G.GAME.banned_keys[e.key] or e.no_doe
-                            end).key
+                            local edition = SMODS.poll_edition({guaranteed = true, key = "entr_ihwaz"})
                             local enhancement_type = "Enhanced"
                             local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("ihwaz")).key
                             while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
                                 enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("ihwaz")).key
                             end
-                            local seal = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("ihwaz"),function(e)
-                                return G.GAME.banned_keys[e.key] or e.no_doe
-                            end).key
+                            local seal = SMODS.poll_seal{guaranteed = true, key = "ihwaz"}
                             card:flip()
                             card:set_edition(edition)
                             card:set_ability(G.P_CENTERS[enhancement])

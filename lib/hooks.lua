@@ -1707,7 +1707,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
     end
     if card and card.config and card.config.center and card.config.center.key == "c_base" and Entropy.DeckOrSleeve("crafting") then
         if pseudorandom("crafting") < 0.5 then
-            card:set_ability(pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("crafting")))
+            card:set_ability(SMODS.poll_enhancement({guaranteed = true, key = "entr_crafting"}))
         end
 	end
     if card and card.ability and card.ability.consumeable then
@@ -3285,7 +3285,7 @@ G.FUNCS.draw_from_deck_to_hand = function(e)
         if actual > 0 then
             for i = 1, actual do
                 local card = SMODS.create_card{
-                    key = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("pandora"), function(e) return e.no_doe or G.GAME.banned_keys[e.key] end).key,
+                    key = SMODS.poll_enhancement({guaranteed = true, key = "entr_pandora"}),
                     set = "Enhanced",
                     area = G.hand
                   }
@@ -4098,4 +4098,37 @@ if HotPotato then
             }}
         }}
     end
+end
+
+local smods_poll_edref = SMODS.poll_edition
+function SMODS.poll_edition(args)
+    local unordered_options = args.options or get_current_pool("Edition", nil, nil, _key or 'edition_generic')
+    local _options = {}
+    for _, edition in ipairs(unordered_options) do
+        if G.P_CENTERS[edition] and not G.P_CENTERS[edition].no_doe and not G.GAME.banned_keys[edition] then
+            if G.P_CENTERS[edition].vanilla then
+                table.insert(_options, 1, edition)
+            else
+                table.insert(_options, edition)
+            end
+        end
+    end
+    args.options = _options
+    return smods_poll_edref(args)
+end
+
+local poll_edref = poll_edition
+function poll_edition(_key, _mod, _no_neg, _guaranteed, options)
+    local unordered_options = options or get_current_pool("Edition", nil, nil, _key or 'edition_generic')
+    local _options = {}
+    for _, edition in ipairs(unordered_options) do
+        if G.P_CENTERS[edition] and not G.P_CENTERS[edition].no_doe and not G.GAME.banned_keys[edition] then
+            if G.P_CENTERS[edition].vanilla then
+                table.insert(_options, 1, edition)
+            else
+                table.insert(_options, edition)
+            end
+        end
+    end
+    return poll_edref(_key, _mod, _no_neg, _guaranteed, _options)
 end

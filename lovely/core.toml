@@ -2204,3 +2204,45 @@ if not post then return end
 if next(post) then SMODS.trigger_effects({post}, card) end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+for _,v in ipairs(available_enhancements) do
+'''
+position = "at"
+payload = '''
+local new_opts = {}
+for _,v in ipairs(available_enhancements) do
+  if not (G.GAME.banned_keys[v.key] or v.no_doe) then
+    new_opts[#new_opts + 1] = v
+  end
+end
+if #new_opts == 0 then
+  new_opts[1] = "m_mult"
+end
+for _,v in ipairs(new_opts) do
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+local seal_poll = pseudorandom(pseudoseed(key or 'stdseal'..G.GAME.round_resets.ante))
+'''
+position = "before"
+payload = '''
+local new_opts = {}
+for _,v in ipairs(available_seals) do
+  if not (G.GAME.banned_keys[v.key] or v.no_doe) then
+    new_opts[#new_opts + 1] = v
+  end
+end
+if #new_opts == 0 then
+  new_opts[1] = "Red"
+end
+available_seals = new_opts
+'''
+match_indent = true
