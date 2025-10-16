@@ -92,6 +92,8 @@ if Cryptid.misprintize_value_blacklist then
     Cryptid.misprintize_value_blacklist.debuff_timer = false
     Cryptid.misprintize_value_blacklist.superego_copies = false
     Cryptid.misprintize_value_blacklist.entr_hotfix_rounds = false
+    Cryptid.misprintize_value_blacklist.debuff_timer = false
+    Cryptid.misprintize_value_blacklist.debuff_timer_max = false
 end
 SMODS.current_mod.calculate = function(self, context)
     return Entropy.misc_calculations(self, context)
