@@ -2990,6 +2990,10 @@ local feynman_point = {
 
 local calculate_jokerref = Card.calculate_joker
 function Card:calculate_joker(...)
+    local abil
+    if self.ability.entr_pure then
+        abil = copy_table(self.ability)        
+    end
     local ret = calculate_jokerref(self, ...)
     if next(SMODS.find_card("j_entr_feynman_point")) and self.config.center.key ~= "j_entr_feynman_point" and not self.config.center.immutable and self.area == G.jokers then
         local highest = 0
@@ -3011,6 +3015,9 @@ function Card:calculate_joker(...)
                 no_deck_effects = true
             })
         end
+    end
+    if self.ability.entr_pure then
+        self.ability = abil
     end
     return ret
 end
