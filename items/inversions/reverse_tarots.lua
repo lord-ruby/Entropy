@@ -556,12 +556,16 @@ local earl = {
     use = function(self, card2, area, copier)
         local hands_taken = G.GAME.round_resets.hands - 1
         local discards_taken = G.GAME.round_resets.discards - 1
-        ease_hands_played(-hands_taken)
-        ease_discard(-discards_taken)
-        G.GAME.round_resets.hands = 1
-        G.GAME.round_resets.discards = 1
-        G.GAME.earl_hands = hands_taken
-        G.GAME.earl_discards = discards_taken
+        if hands_taken > 0 then 
+            ease_hands_played(-hands_taken)
+            G.GAME.round_resets.hands = 1
+            G.GAME.earl_hands = hands_taken
+        end
+        if discard_taken > 0 then
+            ease_discard(-discards_taken)
+            G.GAME.round_resets.discards = 1
+            G.GAME.earl_discards = discards_taken
+        end
         ease_dollars((hands_taken + discards_taken) * 3)
     end,
     can_use = function(self, card)
