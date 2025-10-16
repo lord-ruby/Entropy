@@ -196,6 +196,31 @@ create_UIBox_your_collection_seals = function()
     })
 end
 
+local set_sealref = Card.set_seal
+function Card:set_seal(seal, ...)
+    set_sealref(self, seal, ...)
+    local link = self and self.ability and self.ability.link
+    if link then
+        for i, v in pairs(G.hand.cards) do
+                if v.ability.link == link then
+                    set_sealref(v, seal, ...)
+                    v.ability.link = link 
+                end
+            end
+            for i, v in pairs(G.discard.cards) do
+                if v.ability.link == link then
+                    set_sealref(v, seal, ...)
+                    v.ability.link = link 
+                end
+            end
+            for i, v in pairs(G.deck.cards) do
+                if v.ability.link == link then
+                    set_sealref(v, seal, ...)
+                    v.ability.link = link
+                end
+            end
+    end
+end
 
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, initial, delay)
