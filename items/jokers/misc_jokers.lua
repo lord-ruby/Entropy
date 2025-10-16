@@ -4894,7 +4894,7 @@ local deck_enlargment_pills = {
                         area = G.play
                     end
             
-                    local card = create_card("Back", G.play, nil, nil, nil, nil, nil, "entr_large_deck")
+                    local card = create_card("RedeemableBacks", G.play, nil, nil, nil, nil, nil, "entr_large_deck")
                     if card.config.center.key == "j_joker" then
                         card:set_ability(G.P_CENTERS.b_red)
                     end
