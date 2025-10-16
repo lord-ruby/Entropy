@@ -982,28 +982,20 @@ Entropy.TMTrainerEffects["joker_choose_rarity"] = function(key) SMODS.add_card({
 Entropy.TMTrainerEffects["edition"] = function(key) 
     local element = pseudorandom_element(G.jokers.cards, pseudoseed(key))
     Entropy.FlipThen({element}, function(card)
-        card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
-            return G.GAME.banned_keys[e.key] or e.no_doe
-        end).key)
+        card:set_edition(SMODS.poll_edition({guaranteed = true, key = "entr_tmt_ed"}))
     end)
 end
 Entropy.TMTrainerEffects["ante"] = function(key) ease_ante(-pseudorandom(key)*0.1) end
 Entropy.TMTrainerEffects["consumable"] = function(key) SMODS.add_card({key = Cryptid.random_consumable("entr_segfault", nil, "c_entr_segfault").key, area = G.consumeables}) end
 Entropy.TMTrainerEffects["enhancement_play"] = function(key) 
-    local enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("entropy")).key
-    while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
-        enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("entropy")).key
-    end
+    local enhancement = SMODS.poll_enhancement({guaranteed = true, key = "entr_tmt_enh"})
     local element = pseudorandom_element(G.play.cards, pseudoseed(key))
     Entropy.FlipThen({element}, function(card)
         card:set_ability(G.P_CENTERS[enhancement])
     end)
 end
 Entropy.TMTrainerEffects["enhancement_hand"] = function(key) 
-    local enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("entropy")).key
-    while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
-        enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("entropy")).key
-    end
+    local enhancement = SMODS.poll_enhancement({guaranteed = true, key = "entr_tmt_enh"})
     local element = pseudorandom_element(G.hand.cards, pseudoseed(key))
     Entropy.FlipThen({element}, function(card)
         card:set_ability(G.P_CENTERS[enhancement])
@@ -1727,26 +1719,18 @@ end
 function Entropy.randomise_once(card, types, seed)
     local mtype = pseudorandom_element(types or {"Enhancement", "Edition", "Seal", "Base"}, pseudoseed(seed or "ihwaz"))    
     if mtype == "Edition" then
-        local edition = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
-            return G.GAME.banned_keys[e.key] or e.no_doe
-        end).key
+        local edition = SMODS.poll_edition({guaranteed = true, key = "entr_ihwaz"})
         card:set_edition(edition)
         card:juice_up()
     end
     if mtype == "Enhancement" then
-        local enhancement_type = "Enhanced"
-        local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed(seed or "ihwaz")).key
-        while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
-            enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed(seed or "ihwaz")).key
-        end
+        local enhancement = SMODS.poll_enhancement({guaranteed = true, key = seed or "entr_ihwaz"})
         card:flip()
         card:set_ability(G.P_CENTERS[enhancement])
         card:flip()
     end
     if mtype == "Seal" then
-        local seal = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("ihwaz"),function(e)
-            return G.GAME.banned_keys[e.key] or e.no_doe
-        end).key
+        local seal = SMODS.poll_seal{guaranteed = true, key = seed or "ihwaz"}
         card:set_seal(seal)
         card:juice_up()
     end

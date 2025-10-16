@@ -96,9 +96,7 @@ local mason = {
                 area = G.hand
             })
             SMODS.change_base(card, "entr_nilsuit", "entr_nilrank")
-            card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("mason"),function(e)
-                return G.GAME.banned_keys[e.key] or e.no_doe
-            end).key)
+            card:set_edition(SMODS.poll_edition({guaranteed = true, key = "entr_mason"}))
             G.hand:emplace(card)
             table.insert(G.playing_cards, card)
         end
@@ -151,9 +149,7 @@ local oracle = {
             card:set_ability(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Star, pseudoseed("oracle_ccd"),function(e)
                 return G.GAME.banned_keys[e.key] or e.no_doe
             end))
-            card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("oracle_edition"),function(e)
-                return G.GAME.banned_keys[e.key] or e.no_doe
-            end).key)
+            card:set_edition(SMODS.poll_edition({guaranteed = true, key = "entr_oracle"}))
         end)
     end,
     can_use = function(self, card)
@@ -304,16 +300,11 @@ local heretic = {
                 card:set_seal(seal)
             end
             if modification == "Edition" then
-                local edition = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("heretic_edition"),function(e)
-                    return G.GAME.banned_keys[e.key] or e.no_doe
-                end).key
+                local edition = SMODS.poll_edition({guaranteed = true, key = "entr_heretic_ed"})
                 card:set_edition(edition)
             end
             if modification == "Enhancement" then
-                local enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("heretic_enhancement")).key
-                while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
-                    enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("heretic_enhancement")).key
-                end
+                local enhancement = SMODS.poll_enhancement({guaranteed = true, key = "entr_heretic_enh"})
                 card:set_ability(G.P_CENTERS[enhancement])
             end
             if modification == "Suit" or modification == "Rank" then

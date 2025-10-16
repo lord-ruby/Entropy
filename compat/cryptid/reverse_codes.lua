@@ -607,11 +607,7 @@ local fork = {
                 G.E_MANAGER:add_event(Event({
                     trigger="immediate",
                     func = function()
-                        local ed = pseudorandom_element(G.P_CENTER_POOLS.Enhanced)
-                        while ed.no_doe or G.GAME.banned_keys[ed.key] do
-                            ed = pseudorandom_element(G.P_CENTER_POOLS.Enhanced)
-                        end
-                        card:set_ability(ed)
+                        card:set_ability(SMODS.poll_enhancement({guaranteed = true, key = "entr_fork"}))
                         card:set_edition({
                             cry_glitched = true,
                         })

@@ -541,9 +541,7 @@ local saint =  {
 			tag:yep("+", G.C.GREEN, function()
 				card:start_materialize()
 				card.ability.couponed = true
-				card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entr_saint"),function(e)
-					return G.GAME.banned_keys[e.key] or e.no_doe
-				end).key)
+				card:set_edition(SMODS.poll_edition({guaranteed = true, key = "entr_saint"}))
 				card:set_cost()
 				return true
 			end)
@@ -917,9 +915,7 @@ local ejoker = {
 					G.P_CENTERS[key],
 					{ bypass_discovery_center = true, bypass_discovery_ui = true }
 				)
-				card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entr_saint"),function(e)
-					return G.GAME.banned_keys[e.key] or e.no_doe
-				end).key)
+				card:set_edition(SMODS.poll_edition({guaranteed = true, key = "entr_ejoker"}))
 				card.cost = 0
 				card.from_tag = true
 				G.FUNCS.use_card({ config = { ref_table = card } })

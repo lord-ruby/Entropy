@@ -20,9 +20,7 @@ local rift = {
         local cards = Entropy.GetHighlightedCards({G.jokers, G.consumeables, G.hand}, card2, 1, card2.ability.num)
         Entropy.FlipThen(cards, function(card)
             card:juice_up()
-            card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("rift"),function(e)
-                return G.GAME.banned_keys[e.key] or e.no_doe
-            end).key)
+            card:set_edition(SMODS.poll_edition({guaranteed = true, key = "entr_rift"}))
         end)
     end,
     can_use = function(self, card)
@@ -1096,12 +1094,8 @@ local integrity = {
     use = function(self, card2)
         local cards = Entropy.FilterTable(Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select), function(card) return card.config.center.key ~= "c_base" end)
         Entropy.FlipThen(cards, function(card)
-            local edition = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
-                return G.GAME.banned_keys[e.key] or e.no_doe
-            end).key
-            local seal = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("entropy"),function(e)
-                return G.GAME.banned_keys[e.key] or e.no_doe
-            end).key
+            local edition = SMODS.poll_edition({guaranteed = true, key = "entr_integrity"})
+            local seal = SMODS.poll_seal{guaranteed = true, key = "entropy"}
             card:set_edition(edition)
             card:set_seal(seal)
             card:set_ability(G.P_CENTERS.c_base)
