@@ -1646,6 +1646,14 @@ local decs = {
 					"{C:inactive}(Currently {C:mult}+#1#{C:inactive} Mult)"
                 },
             },
+			j_entr_mango = {
+                name = "Mango",
+                text = {
+                    "Copy the {C:attention}first played{} card",
+					"of the next {C:attention}#1#{} hands",
+					"then draw it to {C:attention}hand{}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
