@@ -1749,7 +1749,7 @@ end
 
 local trigger_effectref = Back.trigger_effect
 function Back:trigger_effect(args, ...)
-    local ret = trigger_effectref(self, args, ...)
+    local chips, mult = trigger_effectref(self, args, ...)
     if G.GAME.entr_bought_decks then
         for i, v in pairs(G.GAME.entr_bought_decks or {}) do
             if v == 'b_anaglyph' and args.context == 'eval' and G.GAME.last_blind and G.GAME.last_blind.boss then
@@ -1763,10 +1763,10 @@ function Back:trigger_effect(args, ...)
                 }))
             end
             if v == "b_plasma" and args.context == 'final_scoring_step' then
-                local tot = args.chips + args.mult
-                args.chips = math.floor(tot/2)
-                args.mult = math.floor(tot/2)
-                update_hand_text({delay = 0}, {mult = args.mult, chips = args.chips})
+                local tot = chips + mult
+                chips = math.floor(tot/2)
+                mult = math.floor(tot/2)
+                update_hand_text({delay = 0}, {mult = mult, chips = chips})
 
                 G.E_MANAGER:add_event(Event({
                     func = (function()
@@ -1808,7 +1808,7 @@ function Back:trigger_effect(args, ...)
             end
         end
     end
-    return ret
+    return chips, mult
 end
 
 local ref = create_shop_card_ui

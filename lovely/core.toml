@@ -1426,6 +1426,7 @@ pattern = '''
     STATE = G.STATE,
     ACTION = G.action or nil,
     BLIND = G.GAME.blind:save(),
+    SCORING_CALC = G.GAME.current_scoring_calculation:save(),
     BACK = G.GAME.selected_back:save(),
     VERSION = G.VERSION
   }
@@ -1448,6 +1449,7 @@ payload = '''
     STATE = G.STATE,
     ACTION = G.action or nil,
     BLIND = G.GAME.blind:save(),
+    SCORING_CALC = G.GAME.current_scoring_calculation:save(),
     BACK = G.GAME.selected_back:save(),
     VERSION = G.VERSION
   }
