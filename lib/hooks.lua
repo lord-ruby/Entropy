@@ -4007,3 +4007,10 @@ SMODS.Consumable:take_ownership("fool", {
             G.GAME.last_tarot_planet ~= 'c_fool'
     end
 })
+
+local calculate_objref = SMODS.eval_individual
+function SMODS.eval_individual(individual, context)
+    if individual.object then
+        return calculate_objref(individual, context)
+    end
+end
