@@ -1727,6 +1727,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
             end
         end
     end
+    if next(SMODS.find_card("j_entr_kitchenjokers")) and card:is_food() then
+        card:set_edition("e_entr_lowres")
+    end
     return card
 end
 
@@ -4131,4 +4134,18 @@ function poll_edition(_key, _mod, _no_neg, _guaranteed, options)
         end
     end
     return poll_edref(_key, _mod, _no_neg, _guaranteed, _options)
+end
+
+local gcp = get_current_pool
+function get_current_pool(_type, _rarity, _legendary, _append, override_equilibrium_effect)
+    if next(SMODS.find_card("j_entr_kitchenjokers")) and _type == "Joker" then
+        for i, v in pairs(SMODS.find_card("j_entr_kitchenjokers")) do
+            if pseudorandom("kitchenjokers_check") < 0.25 then
+                _type = "Food"
+                break
+            end
+        end
+    end
+    local ret, ret2 = gcp(_type, _rarity, _legendary, _append, override_equilibrium_effect)
+    return ret, ret2
 end
