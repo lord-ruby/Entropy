@@ -3356,7 +3356,6 @@ local decs = {
 				name = "Pact of Serpents",
 				text = {
 					"Create a random {C:attention}Rare{} Consumable",
-					"{C:money}-$#1#{}",
 					"{C:inactive}(May overflow){}"
 				}
 			},
