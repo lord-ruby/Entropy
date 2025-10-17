@@ -5623,6 +5623,9 @@ local kitchenjokers = {
             }
         }
     end,
+    entr_credits = {
+        idea = {"cassknows", "crabus"}
+    }
 }
 
 return {
