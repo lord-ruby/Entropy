@@ -61,7 +61,8 @@ Entropy.BlindTokenBlacklist = {
   bl_entr_endless_entropy_phase_one = true,
   bl_entr_endless_entropy_phase_two = true,
   bl_entr_endless_entropy_phase_three = true,
-  bl_entr_endless_entropy_phase_four = true
+  bl_entr_endless_entropy_phase_four = true,
+  bl_entr_void = true
 }
 Entropy.References = {}
 Entropy.RarityPoints = {
