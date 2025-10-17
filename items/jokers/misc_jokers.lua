@@ -5678,7 +5678,7 @@ local hash_miner = {
             end
             for i, v in pairs(G.GAME.badarg) do
                 if SMODS.pseudorandom_probability(card, 'hash_miner', 1, card.ability.revive_odds) then
-                    G.GAME.badarg[v] = nil
+                    G.GAME.badarg[i] = nil
                     card_eval_status_text(
                         card,
                         "extra",
