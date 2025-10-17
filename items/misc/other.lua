@@ -174,7 +174,7 @@ local wormhole = {
 }
 
 function Entropy.l_chipsmult(hand, card, l_chips, l_mult)
-	update_hand_text({delay = 0}, {handname = hand, level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
+	update_hand_text({delay = 0}, {handname = localize(hand, "poker_hands"), level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
 	delay(1)
 	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
 		play_sound('tarot1')
@@ -209,7 +209,7 @@ function Entropy.l_chipsmult(hand, card, l_chips, l_mult)
 end
 
 function Entropy.xl_chips(hand, card, l_chips)
-	update_hand_text({delay = 0}, {handname = hand, level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
+	update_hand_text({delay = 0}, {handname = localize(hand, "poker_hands"), level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
 	delay(1)
 	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
 		play_sound('tarot1')
@@ -234,7 +234,7 @@ function Entropy.xl_chips(hand, card, l_chips)
 end
 
 function Entropy.xl_mult(hand, card, l_mult)
-	update_hand_text({delay = 0}, {handname = hand, level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
+	update_hand_text({delay = 0}, {handname = localize(hand, "poker_hands"), level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
 	delay(1)
 	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
 		play_sound('tarot1')
