@@ -394,9 +394,11 @@ local lowres = {
 		end
 	end,
 	on_apply = function(card)
-		Cryptid.manipulate(card, {
-			value = 0.25
-		}, nil, true)
+		if not card.edition or not card.edition.lowres then
+			Cryptid.manipulate(card, {
+				value = 0.25
+			}, nil, true)
+		end
 	end,
 	on_remove = function(card)
 		Cryptid.manipulate(card, { value = 1 })
