@@ -909,7 +909,6 @@ local sweet_tooth = {
                 end
             end
             if check then
-                card.ability.chips = to_big(card.ability.chips) ^ to_big(card.ability.chip_exp)
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "chips", scalar_value = "chip_exp", operation = function(ref_table, ref_value, initial, change)
                     ref_table[ref_value] = initial ^ change
                 end})
