@@ -1655,7 +1655,7 @@ local decs = {
                 },
             },
 			j_entr_kitchenjokers = {
-                name = "r/kitchenjokers",
+                name = "Kitchen Joker",
                 text = {
                     "Food Jokers are {C:attention}more likely{}",
 					"to appear are {C:attention}X#1#{} as expensive",
