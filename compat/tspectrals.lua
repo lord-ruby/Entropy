@@ -33,19 +33,11 @@ if (SMODS.Mods["TSpectrals"] or {}).can_load then
             "c_entr_oss"
         }
     }
-
-    local loadmodsref = SMODS.injectItems
-    function SMODS.injectItems(...)
-        loadmodsref(...)
-        if G.P_CENTERS.c_entr_oss then  
+    local set_spritesref = Card.set_sprites
+    function Card:set_sprites(_center, _front)
+        if self.config.center.key == "c_entr_oss" then
             G.P_CENTERS.c_entr_oss.soul_pos = {x=4, y = 3}
         end
-    end
-    local set_abilityref = Card.set_ability
-    function Card:set_ability(center, ...)
-        if G.P_CENTERS.c_entr_oss.soul_pos and not G.P_CENTERS.c_entr_oss.soul_pos.soul_pos then
-            G.P_CENTERS.c_entr_oss.soul_pos = {x = 4, y = 3}
-        end
-        set_abilityref(self, center, ...)
+        set_spritesref(self,_center,_front)
     end
 end

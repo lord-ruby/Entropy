@@ -1363,12 +1363,9 @@ local serpents = {
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
     inversion = "c_entr_oss",
     immutable = true,
-    config = {
-        dollars = 10
-    },
+    no_select = true,
     loc_vars = function(self, q, card) return {vars = {card.ability.dollars}} end,
     use = function(self, card)
-        ease_dollars(-card.ability.dollars)
         local omens = {}
         for i, v in pairs(G.P_CENTERS) do
             if v.hidden and not v.no_collection and (not v.in_pool or v:in_pool({}) and v.key ~= "c_entr_serpents") then

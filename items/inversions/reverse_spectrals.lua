@@ -714,10 +714,6 @@ local fervour = {
     inversion = "c_soul",
     
     atlas = "consumables",
-    config = {
-
-    },
-    no_select = true,
 	name = "entr-Fervour",
     soul_rate = 0, --probably only obtainable from flipsiding a gateway
     hidden = true, 

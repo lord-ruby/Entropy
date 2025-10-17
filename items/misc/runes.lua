@@ -1216,9 +1216,11 @@ local oss_indicator = {
     key = "oss",
     atlas = "rune_atlas",
     pos = {x=3,y=3},
+    soul_pos = {x = 4, y = 3},
     atlas = "rune_indicators",
     dependencies = {items = {"set_entr_runes"}},
     hidden = true,
+    no_select = true,
     calculate = function(self, rune, context)
         if context.post_open_booster then
             if rune.triggered then
