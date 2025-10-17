@@ -216,7 +216,7 @@ local phase1 = {
         }
     },
 	object_type = "Blind",
-    order = 663,
+    order = 6663,
 	key = "endless_entropy_phase_one",
 	pos = { x = 0, y = 6 },
 	atlas = "blinds",
@@ -288,7 +288,7 @@ local phase2 = {
         }
     },
 	object_type = "Blind",
-    order = 664,
+    order = 6664,
 	key = "endless_entropy_phase_three",
 	pos = { x = 0, y = 7 },
 	atlas = "blinds",
@@ -347,7 +347,7 @@ local phase3 = {
         }
     },
 	object_type = "Blind",
-    order = 665,
+    order = 6665,
 	key = "endless_entropy_phase_two",
 	pos = { x = 0, y = 8 },
 	atlas = "blinds",
@@ -464,7 +464,7 @@ local phase4 = {
         }
     },
 	object_type = "Blind",
-    order = 666,
+    order = 6666,
 	key = "endless_entropy_phase_four",
 	pos = { x = 0, y = 9 },
 	atlas = "blinds",
@@ -1013,7 +1013,7 @@ local void = {
         }
     },
 	object_type = "Blind",
-    order = 0,
+    order = 6660,
 	key = "void",
 	pos = { x = 0, y = 14 },
 	atlas = "blinds",
