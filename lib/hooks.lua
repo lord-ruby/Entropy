@@ -1,3 +1,5 @@
+is_number = is_number or function(x) return type(x) == "number" end
+
 local card_drawref = Card.draw
 function Card:draw(layer)
     local ref = card_drawref(self, layer)

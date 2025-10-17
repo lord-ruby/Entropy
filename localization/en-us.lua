@@ -1662,6 +1662,16 @@ local decs = {
 					"and are {C:dark_edition}Low-Res{}"
                 },
             },
+			j_entr_hash_miner = {
+                name = "Hash Miner",
+                text = {
+                    "{C:green}#1# in #2#{} chance to corrupt",
+					"played hands, Corrupted hands have a",
+					"{C:green}#3# in #4#{} chance to recover",
+					"Gain {C:money}$#5#{} of sell value",
+					"per corrupted hand at the end of round",
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
@@ -5770,6 +5780,8 @@ local decs = {
 			entr_nilrank = "Nil"
 		},
 		dictionary = {
+			k_corrupted_ex = "Corrupted!",
+			k_recovered_ex = "Recovered!",
 			cry_demicolon = "Demitrigger!",
 			k_ee_hand_1 = "When hand is played, a random card becomes sunny",
 			k_ee_hand_2 = "Cards cannot be debuffed",

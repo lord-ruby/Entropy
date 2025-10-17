@@ -5627,6 +5627,94 @@ local kitchenjokers = {
     }
 }
 
+local hash_miner = {
+    order = 105,
+    object_type = "Joker",
+    key = "hash_miner",
+    rarity = 2,
+    cost = 7,
+    eternal_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+    config = {
+        destroy_odds = 2,
+        revive_odds = 10,
+        per_corrupted = 2,
+        extra_value = 0
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    loc_vars = function(self, q, card)
+        local corrupted = 0
+        for i, v in pairs(G.GAME.badarg or {}) do
+            corrupted = corrupted + 1
+        end
+        local n, d = SMODS.get_probability_vars(card, 1, card.ability.destroy_odds, "hash_miner")
+        local n2, d2 = SMODS.get_probability_vars(card, 1, card.ability.revive_odds, "hash_miner")
+        return {
+            vars = {
+                n, d,
+                n2, d2,
+                card.ability.per_corrupted,
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.after then
+            if SMODS.pseudorandom_probability(card, 'hash_miner', 1, card.ability.destroy_odds) then
+                if not G.GAME.badarg then G.GAME.badarg = {} end
+                G.GAME.badarg[context.scoring_name] = true
+                card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_corrupted_ex"), colour = G.C.RED }
+				)
+            end
+            for i, v in pairs(G.GAME.badarg) do
+                if SMODS.pseudorandom_probability(card, 'hash_miner', 1, card.ability.revive_odds) then
+                    G.GAME.badarg[v] = nil
+                    card_eval_status_text(
+                        card,
+                        "extra",
+                        nil,
+                        nil,
+                        nil,
+                        { message = localize("k_recovered_ex"), colour = G.C.RED }
+                    )
+                end
+            end
+        end
+        if context.end_of_round and not context.individual and not context.blueprint and not context.repetition then     
+            local corrupted = 0
+            for i, v in pairs(G.GAME.badarg or {}) do
+                corrupted = corrupted + 1
+            end
+            SMODS.scale_card(card, {
+                ref_table = card.ability,
+                ref_value = "extra_value",
+                scalar_value = "per_corrupted",
+                operation = function(ref_table, ref_value, initial, change)
+                    ref_table[ref_value] = initial + (corrupted)*change
+                end,
+                scaling_message = {
+                    message = localize('k_val_up'),
+                    colour = G.C.MONEY
+                }
+            })
+            card:set_cost()
+        end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
+}
+
 return {
     items = {
         surreal,
@@ -5741,6 +5829,7 @@ return {
         miracle_berry,
         meridian,
         mango,
-        kitchenjokers
+        kitchenjokers,
+        hash_miner
     }
 }

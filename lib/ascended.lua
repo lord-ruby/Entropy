@@ -22,9 +22,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
         G.GAME.current_round.current_hand.cry_asc_num = a_power
         -- Change mult and chips colors if hand is ascended
         if not hidden then
-            ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.3)
-            ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.3)
-            if G.GAME.Overflow then
+            if G.GAME.Overflow or G.GAME.badarg[text] then
                 ease_colour(G.C.UI_CHIPS, copy_table(HEX("FF0000")), 0.3)
                 ease_colour(G.C.UI_MULT, copy_table(HEX("FF0000")), 0.3)
                 if not G.C.UI_GOLD then G.C.UI_GOLD = G.C.GOLD end
@@ -47,8 +45,13 @@ function G.FUNCS.get_poker_hand_info(_cards)
         end
     else
         G.GAME.current_round.current_hand.cry_asc_num = 0
-        ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
-        ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
+		if G.GAME.badarg[text] then
+            ease_colour(G.C.UI_CHIPS, copy_table(HEX("FF0000")), 0.3)
+            ease_colour(G.C.UI_MULT, copy_table(HEX("FF0000")), 0.3)
+		else 
+			ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
+			ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
+		end
         G.GAME.current_round.current_hand.cry_asc_num_text = ""
     end
     if to_big(G.GAME.current_round.current_hand.cry_asc_num) <= to_big(0) then
