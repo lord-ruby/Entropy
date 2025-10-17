@@ -343,6 +343,13 @@ function Card:set_cost()
 		self.sell_cost = self.cost
 		self.sell_cost_label = self.facing == 'back' and '?' or number_format(self.sell_cost)
 	end
+	if next(SMODS.find_card("j_entr_kitchenjokers")) and self:is_food() then
+		local val = 1
+		for i, v in pairs(SMODS.find_card("j_entr_kitchenjokers")) do
+			val = val * v.ability.off_perc
+		end
+		self.cost = self.cost * val
+	end
 end
 
 

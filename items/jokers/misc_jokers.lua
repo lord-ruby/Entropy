@@ -5108,6 +5108,9 @@ local antipattern = {
     pos = {x = 4, y = 12},
     atlas = "jokers",
     loc_vars = function(self, q, card)
+        for i, v in pairs(card.ability.hand_pairs) do
+            q[#q+1] = {set = "Other", key = "antipattern_pair", vars = {localize(v[1], "poker_hands"), localize(v[2], "poker_hands")}}
+        end
         return {
             vars = {
                 card.ability.xchips_mod,
@@ -5126,7 +5129,7 @@ local antipattern = {
         },
         last_hand = "",
         xchips = 1,
-        xchips_mod = 0.2
+        xchips_mod = 0.1
     },
     demicoloncompat = true,
     calculate = function(self, card, context)
@@ -5595,6 +5598,33 @@ local mango = {
     end,
 }
 
+local kitchenjokers = {
+    order = 104,
+    object_type = "Joker",
+    key = "kitchenjokers",
+    rarity = 2,
+    cost = 5,
+    eternal_compat = true,
+    pos = {x = 5, y = 13},
+    atlas = "jokers",
+    config = {
+        off_perc = 0.25,
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.e_entr_lowres
+        return {
+            vars = {
+                card.ability.off_perc,
+            }
+        }
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -5708,6 +5738,7 @@ return {
         shadow_crystal,
         miracle_berry,
         meridian,
-        mango
+        mango,
+        kitchenjokers
     }
 }

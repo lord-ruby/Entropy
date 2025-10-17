@@ -1654,6 +1654,14 @@ local decs = {
 					"then draw it to {C:attention}hand{}"
                 },
             },
+			j_entr_kitchenjokers = {
+                name = "r/kitchenjokers",
+                text = {
+                    "Food Jokers are {C:attention}more likely{}",
+					"to appear are {C:attention}X#1#{} as expensive",
+					"and are {C:dark_edition}Low-Res{}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
@@ -5197,6 +5205,13 @@ local decs = {
 			},
 		},
 		Other = {
+			antipattern_pair = {
+				name = "Poker hand Pair",
+				text = {
+					"Already Played",
+					"#1#, #2#"
+				}
+			},
 			cry_multiuse = {
 				name = "m",
 				text = {
