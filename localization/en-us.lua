@@ -1672,6 +1672,16 @@ local decs = {
 					"per corrupted hand at the end of round",
                 },
             },
+			j_entr_dice_shard = {
+                name = "Dice Shard",
+                text = {
+					"Use this Joker to transform a Selected",
+					"{C:attention}Joker{} into the previous Joker",
+					"according to the collection order",
+					"gains {C:attention}#2#{} use#<s>2# when defeating a Blind",
+					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#, #3#)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
