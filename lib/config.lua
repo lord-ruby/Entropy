@@ -122,14 +122,43 @@ function Entropy.generate_credits_nodes(table, type)
 		},
 	}
 	for i, v in pairs(table) do
+		local cards_with_credit = {}
+		for _, v in pairs(G.P_CENTERS) do
+			if v.entr_credits then
+				for i2, v2 in pairs(v.entr_credits) do
+					for i3, v3 in pairs(v2) do
+						if v3 == i then
+							cards_with_credit[#cards_with_credit+1] = v
+							goto continue
+						end
+					end
+				end
+			end
+			::continue::
+		end
+		G.FUNCS["entr_credit_"..i] = function(e)
+            G.SETTINGS.paused = true
+			G.E_MANAGER:add_event(Event{
+				trigger = "after",
+				func = function()
+					G.only_display_credit = i
+					return true
+				end
+			})
+            G.FUNCS.overlay_menu {
+                definition = SMODS.card_collection_UIBox(cards_with_credit, { 5, 5, 5 }),
+				config = {back_func = "exit_entr_overlay"}
+            }
+		end
 		code_nodes[#code_nodes + 1] = 
 		{
 			n = G.UIT.R,
-			config = { align = "cm" },
+			config = { align = "cm"},
 			nodes = {
 				{
 					n = G.UIT.O,
 					config = {
+						button = #cards_with_credit > 0 and "entr_credit_"..i or nil,
 						object = DynaText({
 							string = i,
 							colours = { G.C.WHITE },
@@ -142,6 +171,12 @@ function Entropy.generate_credits_nodes(table, type)
 		}
 	end
 	return { n = G.UIT.C, config = { align = "tm", padding = 0 }, nodes = code_nodes }
+end
+local overlay_ref = G.FUNCS.overlay_menu
+G.FUNCS.overlay_menu = function(...)
+	local ret = overlay_ref(...)
+	G.only_display_credit = nil
+	return ret
 end
 
 local entropyTabs = function()

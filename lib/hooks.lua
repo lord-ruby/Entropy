@@ -344,13 +344,15 @@ function SMODS.create_mod_badges(obj, badges)
 		if obj.entr_credits.art or obj.entr_credits.code or obj.entr_credits.idea or obj.entr_credits.custom then
 			local scale_fac = {}
 			local min_scale_fac = 1
-			local strings = { Entropy.display_name }
+			local strings =  G.only_display_credit and {} or {Entropy.display_name}
 			for _, v in ipairs({ "idea", "art", "code" }) do
 				if obj.entr_credits[v] then
 					if type(obj.entr_credits[v]) == "string" then obj.entr_credits[v] = {obj.entr_credits[v]} end
 					for i = 1, #obj.entr_credits[v] do
-						strings[#strings + 1] =
-							localize({ type = "variable", key = "cry_" .. v, vars = { obj.entr_credits[v][i] } })[1]
+                        if not G.only_display_credit or G.only_display_credit == obj.entr_credits[v][i] then
+            				strings[#strings + 1] =
+							    localize({ type = "variable", key = "cry_" .. v, vars = { obj.entr_credits[v][i] } })[1]
+                        end
 					end
 				end
 			end
@@ -367,6 +369,9 @@ function SMODS.create_mod_badges(obj, badges)
 					string = strings[i],
 				}
 			end
+            if #strings == 0 then
+                strings = {Entropy.display_name}
+            end
 			local entr_badge = {
 				n = G.UIT.R,
 				config = { align = "cm" },
