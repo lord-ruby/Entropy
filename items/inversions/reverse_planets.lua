@@ -40,7 +40,8 @@ function create_UIBox_current_hand_row(handname, simple)
         return hand_row_ref(handname, simple)
     else
         if not (G.GAME.hands[handname]) then return {} end
-        local color = (G.GAME.badarg[handname] and HEX("FF0000")) or (G.GAME.hands[handname].TranscensionPower and HEX("84e1ff")) or G.C.GOLD
+        if not G.GAME.badarg then G.GAME.badarg = {} end
+        local color = (G.GAME.badarg and G.GAME.badarg[handname] and HEX("FF0000")) or (G.GAME.hands[handname].TranscensionPower and HEX("84e1ff")) or G.C.GOLD
         return (G.GAME.hands[handname].visible) and
         (not simple and
           {n=G.UIT.R, config={align = "cm", padding = 0.05, r = 0.1, colour = darken(G.C.JOKER_GREY, 0.1), emboss = 0.05, hover = true, force_focus = true, on_demand_tooltip = {text = localize(handname, 'poker_hand_descriptions'), filler = {func = create_UIBox_hand_tip, args = handname}}}, nodes={
