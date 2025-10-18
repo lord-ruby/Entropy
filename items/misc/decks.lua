@@ -168,7 +168,7 @@ function Card:update(dt, ...)
           self.children.floating_sprite.states.click.can = false
         end
       end
-      self.glitched_dt = (self.glitched_dt or 0) + dt / G.SETTINGS.GAMESPEED * 4
+      self.glitched_dt = (self.glitched_dt or 0) + dt / G.SETTINGS.GAMESPEED * 2.5
       if self.glitched_dt > 3 / #self.ability.glitched_crown then
           self.glitched_dt = 0
           self.glitched_index = 1 + (self.glitched_index or 1)
