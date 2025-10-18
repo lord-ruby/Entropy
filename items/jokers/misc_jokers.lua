@@ -5731,8 +5731,10 @@ local dice_shard = {
     dependencies = {
         items = {
             "set_entr_actives",
+            "set_entr_dice_jokers",
         }
     },
+    pools = {["Dice"] = true},
     loc_vars = function(self, q, card)
         local name = "None"
         local cards = Entropy.GetHighlightedCards({G.jokers, G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.extra)
