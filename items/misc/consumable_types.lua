@@ -195,7 +195,13 @@ SMODS.ObjectType({
 		"b_entr_ambisinister",
 		"b_entr_butterfly",
 		"b_entr_gemstone",
-		"b_entr_corrupted"
+		"b_entr_corrupted",
+		HotPotato and "b_hpot_lime",
+		HotPotato and "b_hpot_poopdeck",
+		HotPotato and "b_hpot_ublockdeck",
+		HotPotato and "b_hpot_domn",
+		HotPotato and "b_hpot_window",
+		HotPotato and "b_hpot_unstable",
 	},
 	inject = function(self)
 		SMODS.ObjectType.inject(self)
