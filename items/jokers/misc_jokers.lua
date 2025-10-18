@@ -5676,7 +5676,7 @@ local hash_miner = {
 					{ message = localize("k_corrupted_ex"), colour = G.C.RED }
 				)
             end
-            for i, v in pairs(G.GAME.badarg) do
+            for i, v in pairs(G.GAME.badarg or {}) do
                 if SMODS.pseudorandom_probability(card, 'hash_miner', 1, card.ability.revive_odds) then
                     G.GAME.badarg[i] = nil
                     card_eval_status_text(
