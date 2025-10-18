@@ -473,6 +473,9 @@ local zelavi = {
           "set_entr_inversions"
         }
     },
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    },
     rarity = "entr_reverse_legendary",
     cost = 20,
     blueprint_compat = true,
@@ -546,6 +549,9 @@ local ssac = {
     soul_pos = {x = 1, y = 2},
     atlas = "ruby_atlas",
     demicoloncompat=true,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    },
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
@@ -555,7 +561,7 @@ local ssac = {
     end,
     calculate = function(self, card, context)
         if context.joker_main  then
-            for i = 1, math.ceil(Entropy.missing_ranks() / 2) do
+            for i = 1, math.min(math.ceil(Entropy.missing_ranks() / 2), (context.blueprint or context.repetition) and 1 or 99999) do
                 local j_r = Cryptid.forcetrigger(G.jokers.cards[#G.jokers.cards], context)
                 local c_r = G.consumeables.cards[#G.consumeables.cards] and Cryptid.forcetrigger(G.consumeables.cards[#G.consumeables.cards], context) or {}
                 local v = G.play.cards[#G.play.cards]
@@ -607,6 +613,9 @@ local subarc = {
     demicoloncompat=true,
     config = {
         mod = 0.05
+    },
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
     },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue+1] = G.P_CENTERS.e_entr_sunny
@@ -679,6 +688,9 @@ local axeh = {
     soul_pos = {x = 1, y = 4},
     atlas = "ruby_atlas",
     demicoloncompat=true,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue+1] = G.P_CENTERS.j_entr_sunny_joker
         return {

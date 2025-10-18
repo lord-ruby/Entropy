@@ -3773,7 +3773,7 @@ local girldinner = {
     end,
     entr_credits = {
         idea = {
-            "casknows"
+            "cassknows"
         }
     }
 }
