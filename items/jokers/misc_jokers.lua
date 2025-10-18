@@ -5715,6 +5715,71 @@ local hash_miner = {
     }
 }
 
+local dice_shard = {
+    order = 106,
+    object_type = "Joker",
+    key = "dice_shard",
+    rarity = 3,
+    cost = 10,
+    eternal_compat = true,
+    pos = {x = 2, y = 0},
+    atlas = "placeholder",
+    config = {
+        left = 1,
+        left_mod = 1
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+        }
+    },
+    loc_vars = function(self, q, card)
+        local name = "None"
+        local cards = Entropy.GetHighlightedCards({G.jokers, G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.extra)
+        if cards and #cards > 0 then
+            if cards[1].config.center.set == "Joker" or G.GAME.modifiers.cry_beta and cards[1].consumable then
+                local first = cards[1]
+                local ind = ReductionIndex(cards[1], cards[1].config.center.set )-1
+                while G.P_CENTER_POOLS[cards[1].config.center.set ][ind].no_doe or G.P_CENTER_POOLS[cards[1].config.center.set ].no_collection do
+                    ind = ind - 1
+                end
+                if ind < 1 then ind = 1 end
+                name = G.localization.descriptions[cards[1].config.center.set ][G.P_CENTER_POOLS[cards[1].config.center.set ][ind].key].name
+            end
+        end
+        return {
+            vars = {
+                card.ability.left,
+                card.ability.left_mod,
+                name
+            }
+        }
+    end,
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition) or context.forcetrigger then
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
+        end
+    end,
+    can_use = function(self, card)
+        local num = #Entropy.GetHighlightedCards({G.jokers}, card, 1, card.ability.extra)
+        return num > 0 and num <= 1 and to_big(card.ability.left) > to_big(0)
+    end,
+    use = function(self, card)
+        Entropy.FlipThen(Entropy.GetHighlightedCards({G.jokers}, card, 1, card.ability.extra), function(card)
+            local ind = ReductionIndex(card, card.config.center.set)-1
+            while G.P_CENTER_POOLS[card.config.center.set][ind] and G.P_CENTER_POOLS[card.config.center.set][ind].no_doe or G.P_CENTER_POOLS[card.config.center.set].no_collection do
+                ind = ind - 1
+            end
+            if ind < 1 then ind = 1 end
+            if G.P_CENTER_POOLS.Joker[ind] then
+                card:set_ability(G.P_CENTERS[G.P_CENTER_POOLS.Joker[ind].key])
+            end
+            G.jokers:remove_from_highlighted(card)
+        end)
+    end
+}
+
 return {
     items = {
         surreal,
@@ -5830,6 +5895,7 @@ return {
         meridian,
         mango,
         kitchenjokers,
-        hash_miner
+        hash_miner,
+        dice_shard
     }
 }

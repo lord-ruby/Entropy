@@ -101,15 +101,7 @@ local stillicidium = {
     end
 }
 
-function ReductionIndex(card, pool)
-    index = 0
-    for i, v in pairs(G.P_CENTER_POOLS[pool]) do
-        if card.config and v.key == card.config.center_key then
-            return i
-        end
-        i = i + 1
-    end
-end
+
 function LowerCardRank(card)
 	if not card.base then return nil end
 	local rank_suffix = math.min(card.base.id, 14)
