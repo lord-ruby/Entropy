@@ -5742,11 +5742,11 @@ local dice_shard = {
             if cards[1].config.center.set == "Joker" or G.GAME.modifiers.cry_beta and cards[1].consumable then
                 local first = cards[1]
                 local ind = ReductionIndex(cards[1], cards[1].config.center.set )-1
-                while G.P_CENTER_POOLS[cards[1].config.center.set ][ind].no_doe or G.P_CENTER_POOLS[cards[1].config.center.set ].no_collection do
+                while G.P_CENTER_POOLS[cards[1].config.center.set ][ind].no_doe or G.P_CENTER_POOLS[cards[1].config.center.set][ind].no_collection do
                     ind = ind - 1
                 end
                 if ind < 1 then ind = 1 end
-                name = G.localization.descriptions[cards[1].config.center.set ][G.P_CENTER_POOLS[cards[1].config.center.set ][ind].key].name
+                name = localize { type = 'name_text', key = G.P_CENTER_POOLS[cards[1].config.center.set][ind].key, set = G.P_CENTER_POOLS[cards[1].config.center.set][ind].set }
             end
         end
         return {
@@ -5764,11 +5764,12 @@ local dice_shard = {
         end
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.jokers}, card, 1, card.ability.extra)
+        local num = #Entropy.GetHighlightedCards({G.jokers}, card, 1, 1)
         return num > 0 and num <= 1 and to_big(card.ability.left) > to_big(0)
     end,
     use = function(self, card)
-        Entropy.FlipThen(Entropy.GetHighlightedCards({G.jokers}, card, 1, card.ability.extra), function(card)
+        card.ability.left = card.ability.left - 1
+        Entropy.FlipThen(Entropy.GetHighlightedCards({G.jokers}, card, 1, 1), function(card)
             local ind = ReductionIndex(card, card.config.center.set)-1
             while G.P_CENTER_POOLS[card.config.center.set][ind] and G.P_CENTER_POOLS[card.config.center.set][ind].no_doe or G.P_CENTER_POOLS[card.config.center.set].no_collection do
                 ind = ind - 1
