@@ -2,7 +2,7 @@
 # Entropy
 A chaotic Balatro mod
 
-[Download CryptLib](https://github.com/SpectralPack/Cryptlib) (Make sure you download via Code > Download zip)
+[Download CryptLib](https://github.com/SpectralPack/Cryptlib)
 
 Entropy currently adds:
 
