@@ -3870,6 +3870,7 @@ function copy_card(old, new, ...)
     for i, v in pairs(G.play.cards) do
         eval_card(v, {copying_card = true, original_card = old, new_card = copy})
     end
+    if old.base and old.base.nominal then copy.base.nominal = old.base.nominal end
     return copy
 end
 
