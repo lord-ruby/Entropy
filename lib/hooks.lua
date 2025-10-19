@@ -647,10 +647,15 @@ G.FUNCS.buy_deckorsleeve = function(e)
     end
     if c1.area then c1.area:remove_card(c1) end
     if c1.config and c1.config.center and c1.config.center.apply then
+        local orig = G.GAME.starting_params.joker_slots
         if c1.config.center.set == "Sleeve" then
             c1.config.center:apply(c1.config.center)
         else    
             c1.config.center:apply(false)
+        end
+        local diff = G.GAME.starting_params.joker_slots - orig
+        if to_big(diff) > to_big(0) then
+            G.jokers:handle_card_limit(diff)
         end
     end
     for i, v in pairs(c1.config and c1.config.center and c1.config.center.config or {}) do
