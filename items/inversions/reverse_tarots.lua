@@ -1305,7 +1305,10 @@ local inferno = {
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)
-    end
+    end,
+    entr_credits = {
+        art = {"LFMoth"}
+    }
 }
 
 return {
