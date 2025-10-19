@@ -5242,7 +5242,7 @@ local fork_bomb = {
                 G.E_MANAGER:add_event(Event{
                     func = function()
                         local card2 = copy_card(card)
-                        G.jokers:emplace(card2)
+                        card.area:emplace(card2)
                         card2:add_to_deck()
                         G.GAME.fork_bomb_buffer = 0
                         return true
