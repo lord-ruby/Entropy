@@ -4159,6 +4159,9 @@ local grape_juice = {
             "set_entr_actives",
         }
     },
+    pools = {
+        Food = true
+    },
     loc_vars = function(self, q, card)
         return {
             vars = {card.ability.left, card.ability.left_mod}

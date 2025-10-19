@@ -55,24 +55,8 @@ local sapphire = {
     pos = {x=1,y=0},
     badge_colour = HEX("8653ff"),
     calculate = function(self, card, context)
-        if context.after and context.cardarea == G.play then
-            local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
-            G.FUNCS.get_poker_hand_info(G.play.cards)
-            local pkey = "regulus"
-            for i, v in pairs(Entropy.ReversePlanets) do
-                if v.name == text then pkey = v.new_key end
-            end
-            local key = "c_entr_"..pkey
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    if G.consumeables.config.card_count < G.consumeables.config.card_limit then
-                        local c = create_card("Consumables", G.consumeables, nil, nil, nil, nil, key) 
-                        c:add_to_deck()
-                        G.consumeables:emplace(c)
-                    end
-                    return true
-                end
-            }))
+        if context.playing_card_end_of_round then
+            Entropy.ReversePlanetUse(G.GAME.last_hand_played, card, 0.25)
         end
         if context.forcetrigger then
             local c = create_card("Consumables", G.consumeables, nil, nil, nil, nil, key) 
