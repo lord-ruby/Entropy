@@ -311,7 +311,42 @@ function SMODS.injectItems(...)
         })
         SMODS.ObjectTypes.Twisted:inject()
         SMODS.ObjectTypes.Sunny:inject()
-
+        SMODS.ObjectType({
+            key = "RedeemableBacks",
+            default = "b_red",
+            cards = {},
+            inject = function(self)
+                local cards = {
+                    "b_entr_twisted",
+                    --"b_entr_destiny",
+                    "b_entr_ambisinister",
+                    "b_entr_butterfly",
+                    "b_entr_gemstone",
+                    "b_entr_corrupted",
+                    HotPotato and "b_hpot_lime" or nil,
+                    HotPotato and "b_hpot_ublockdeck" or nil,
+                    HotPotato and "b_hpot_domn" or nil,
+                    HotPotato and "b_hpot_window" or nil,
+                }
+                SMODS.ObjectType.inject(self)
+                for i, v in pairs(cards) do
+                    self:inject_card(G.P_CENTERS[v])
+                end
+                self:inject_card(G.P_CENTERS.b_red)
+                self:inject_card(G.P_CENTERS.b_blue)
+                self:inject_card(G.P_CENTERS.b_yellow)
+                self:inject_card(G.P_CENTERS.b_green)
+                self:inject_card(G.P_CENTERS.b_black)
+                self:inject_card(G.P_CENTERS.b_magic)
+                self:inject_card(G.P_CENTERS.b_nebula)
+                self:inject_card(G.P_CENTERS.b_ghost)
+                self:inject_card(G.P_CENTERS.b_zodiac)
+                self:inject_card(G.P_CENTERS.b_painted)
+                self:inject_card(G.P_CENTERS.b_anaglyph)
+                self:inject_card(G.P_CENTERS.b_plasma)
+            end,
+        })
+        SMODS.ObjectTypes.RedeemableBacks:inject()
         G.entr_hooked = true
         SMODS.ObjectTypes.Dice:inject()
         if (SMODS.Mods["Cryptid"] or {}).can_load then
