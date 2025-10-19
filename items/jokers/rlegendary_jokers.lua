@@ -591,7 +591,10 @@ local ssac = {
                 end
             end
         end
-    end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    },
 }
 
 local subarc = {
