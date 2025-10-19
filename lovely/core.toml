@@ -2314,7 +2314,6 @@ match_indent = true
 [patches.pattern]
 target = '''=[SMODS _ "src/game_object.lua"]'''
 pattern = '''
-
 if center.set ~= self.key then SMODS.insert_pool(G.P_CENTER_POOLS[self.key], center) end
 '''
 position = "before"
