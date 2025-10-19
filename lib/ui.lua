@@ -15,7 +15,7 @@ function G.UIDEF.bought_decks()
     end
     for k, v in ipairs(keys_used) do 
       if next(v) then
-        if #voucher_areas == 5 or #voucher_areas == 10 then 
+        if #voucher_areas % 7 == 0 then 
           table.insert(voucher_table_rows, 
           {n=G.UIT.R, config={align = "cm", padding = 0, no_fill = true}, nodes=voucher_tables}
           )
