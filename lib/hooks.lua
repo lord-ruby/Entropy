@@ -3780,7 +3780,7 @@ end
 
 local rate_ref = Cryptid.interest_rate
 function Cryptid.interest_rate()
-    local rate = Entropy.has_rune("rune_entr_loyalty") and 4
+    local rate = Entropy.has_rune("rune_entr_loyalty") and math.max(5 - (Entropy.has_rune("rune_entr_loyalty").ability.count or 1), 1)
     if rate then return rate end
 	return rate_ref and rate_ref() or G.GAME.modifiers.cry_interest_rate or 5
 end

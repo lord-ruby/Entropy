@@ -1078,7 +1078,7 @@ local loyalty_indicator = Entropy.create_mark("loyalty", 7069, {x = 4, y = 6}, f
             end
         })
         return {
-            Xmult_mod = 0.5,
+            Xmult_mod = 0.5 ^ rune.ability.count,
         }
     elseif context.final_scoring_step then
         rune.ability.hand = rune.ability.hand + 1
@@ -1118,7 +1118,7 @@ local brimstone_indicator = Entropy.create_mark("brimstone", 7070, {x = 5, y = 6
             func = function()
                 attention_text({
                     scale = 1.4,
-                    text = localize({ type = "variable", key = "a_xmult", vars = { 3.6 }}),
+                    text = localize({ type = "variable", key = "a_xmult", vars = { 3.6 * rune.ability.count }}),
                     hold = 2,
                     align = "cm",
                     offset = { x = 0, y = -2.7 },
@@ -1128,7 +1128,7 @@ local brimstone_indicator = Entropy.create_mark("brimstone", 7070, {x = 5, y = 6
             end
         })
         return {
-            Xmult_mod = 3.6,
+            Xmult_mod = 3.6 * rune.ability.count,
         }
     end
 end)
