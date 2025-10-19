@@ -5054,6 +5054,9 @@ local jack_off = {
             if any_selected then G.FUNCS.discard_cards_from_highlighted(nil, true) end
         end
     end,
+    entr_credits = {
+        art = {"LFMoth"}
+    }
 }
 
 local fast_food = {
