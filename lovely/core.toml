@@ -2318,6 +2318,6 @@ if center.set ~= self.key then SMODS.insert_pool(G.P_CENTER_POOLS[self.key], cen
 '''
 position = "before"
 payload = '''
-if not center then return
+if not center then return end
 '''
 match_indent = true
