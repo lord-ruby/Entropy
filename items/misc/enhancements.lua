@@ -384,9 +384,6 @@ local comet = {
             }
         }
     end,
-    entr_credits = {
-        art = {"aduckted"}
-    },
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)

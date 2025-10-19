@@ -102,8 +102,13 @@ Entropy.EditionFactors = {
     ["e_cry_m"] = 1.45,
     ["e_entr_solar"] = 2.4,
     ["e_entr_sunny"] = 1.45,
-    ["e_entr_fractured"] = 2.4,
-    ["e_entr_freaky"] = 1.8,
+    ["e_entr_fractured"] = 3,
+    ["e_entr_freaky"] = 2.5,
+    ["e_entr_neon"] = 1.5,
+    ["e_entr_lowres"] = 2,
+    ["e_entr_kaleidoscopic"] = 2.5,
+    ["e_hpot_phantasmic"] = 2.25,
+    ["e_hpot_psychedelic"] = 2
 }
 Entropy.SegFaultBlacklist = {
   entr_entropic = true,
@@ -166,7 +171,8 @@ Entropy.EnhancementPoints ={
     m_cry_abstract=9.1,
     m_entr_prismatic = 20,
     m_entr_ceramic = 6.5,
-    m_entr_radiant = 6.7
+    m_entr_radiant = 6.7,
+    m_hpot_lead = 6.15
 }
 Entropy.TMTrainerEffects = {}
 Entropy.TMTrainerScoring = {}
