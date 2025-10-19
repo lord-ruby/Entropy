@@ -5027,8 +5027,8 @@ local jack_off = {
     cost = 7,
     eternal_compat = true,
     blueprint_compat = true,
-    pos = {x = 0, y = 0},
-    atlas = "placeholder",
+    pos = {x = 6, y = 13},
+    atlas = "jokers",
     demicoloncompat = true,
     dependencies = {
         items = {
