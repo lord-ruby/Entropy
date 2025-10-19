@@ -168,7 +168,10 @@ local oracle = {
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)
-    end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    },
 }
 
 

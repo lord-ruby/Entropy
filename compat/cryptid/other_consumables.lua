@@ -1179,8 +1179,9 @@ local mallet = {
         self:use(card)
     end,
     entr_credits = {
+        idea = {"cassknows"},
         art = {"LFMoth"}
-    }
+    },
 }
 
 return {

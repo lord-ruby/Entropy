@@ -258,6 +258,18 @@ function SMODS.injectItems(...)
         })
         SMODS.ObjectTypes.BlindTokens:inject()
 
+        G.P_CENTERS.c_entr_bl_entr_alabaster_anchor.entr_credits = {idea = {"cassknows"}}
+        G.P_CENTERS.c_entr_bl_entr_burgundy_baracuda.entr_credits = {idea = {"cassknows"}}
+        G.P_CENTERS.c_entr_bl_entr_citrine_comet.entr_credits = {idea = {"cassknows"}}
+        G.P_CENTERS.c_entr_bl_entr_diamond_dawn.entr_credits = {idea = {"cassknows"}}
+        G.P_CENTERS.c_entr_bl_entr_olive_orchard.entr_credits = {idea = {"cassknows"}}
+
+        G.P_CENTERS.c_entr_bl_entr_styx.entr_credits = {idea = {"cassknows"}}
+        G.P_CENTERS.c_entr_bl_entr_choir.entr_credits = {idea = {"cassknows"}}
+        G.P_CENTERS.c_entr_bl_entr_pandora.entr_credits = {idea = {"cassknows"}}
+        G.P_CENTERS.c_entr_bl_entr_cassandra.entr_credits = {idea = {"cassknows"}}
+        G.P_CENTERS.c_entr_bl_entr_labyrinth.entr_credits = {idea = {"cassknows"}}
+
         if MP then
             function MP.DECK.ban_card(card_id)
                 if card_id:sub(1, 1) == "j" then
