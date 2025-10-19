@@ -75,8 +75,9 @@ local shatter = {
         }}
     end,
     entr_credits = {
+        idea = {"cassknows"},
         art = {"cassknows"}
-    }
+    },
 }
 
 local destiny = {
@@ -280,6 +281,9 @@ local antithesis = {
     can_use = function(self, card)
         return G.jokers and #G.jokers.cards > 0
 	end,
+    entr_credits = {
+        idea = {"cassknows"}
+    },
 }
 
 local enchant = {

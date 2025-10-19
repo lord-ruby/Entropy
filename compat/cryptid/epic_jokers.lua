@@ -203,7 +203,10 @@ local trapezium = {
         if context.forcetrigger then
             return Entropy.RandomForcetrigger(card, card and card.ability.forcetrigger or 5, context)
         end
-	end
+	end,
+    entr_credits = {
+        idea = {"cassknows"}
+    },
 }
 
 local metanoia = {

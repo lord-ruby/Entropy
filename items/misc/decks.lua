@@ -91,7 +91,10 @@ local ambisinister = {
     G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots + 3
     Entropy.last_csl = nil
     Entropy.last_slots = nil
-  end
+  end,
+  entr_credits = {
+      idea = {"cassknows"}
+  },
 }
 
 local butterfly = {
