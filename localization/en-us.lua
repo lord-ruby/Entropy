@@ -5531,11 +5531,10 @@ local decs = {
 			entr_sapphire_seal = {
 				name = "Sapphire Seal",
 				text = {
-					"Create the {C:purple}Star{} card",
-					"for played hand if this",
-					"card is {C:attention}part{}",
-					"of the poker hand",
-					"{C:inactive}(Must have room){}"
+					"Give {C:attention}+0.25{} Ascension ",
+					"Power to the played hand",
+					"if {C:attention}held{} in hand",
+					"at end of round"
         		}
 			},
 			entr_silver_seal = {

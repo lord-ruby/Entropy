@@ -2020,6 +2020,11 @@ function Card:set_ability(center, initial, delay_sprites)
         if self.config and self.config.center and Entropy.FlipsideInversions and not Entropy.is_inverted(center)
         and pseudorandom("marked") < 0.10 and G.GAME.Marked and G.STATE == G.STATES.SHOP and (not self.area or not self.area.config.collection) and Entropy.Inversion(center) then
             matref(self, G.P_CENTERS[Entropy.Inversion(center)], initial, delay_sprites)
+            if self.ability.glitched_crown then
+                for i, v in pairs(self.ability.glitched_crown) do
+                    self.ability.glitched_crown[i] = Entropy.FlipsideInversions[v]
+                end
+            end
         elseif self.config and self.config.center
         and pseudorandom("trump_card") < 0.10 and G.GAME.TrumpCard and G.STATE == G.STATES.SMODS_BOOSTER_OPENED
         and TrumpCardAllow[center.set] and (not self.area or not self.area.config.collection) then
