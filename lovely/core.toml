@@ -1551,11 +1551,6 @@ if self.ability.name == "The Hanged Man" then
         if SMODS.is_eternal(G.hand.highlighted[i]) then return false end
     end
 end
-if self.ability.name == "Death" then
-    local rightmost = G.hand.highlighted[1]
-    for i=1, #G.hand.highlighted-1 do if G.hand.highlighted[i].T.x > rightmost.T.x then rightmost = G.hand.highlighted[i] end end
-    for i=1, #G.hand.highlighted do if SMODS.is_eternal(G.hand.highlighted[i]) and rightmost ~= G.hand.highlighted[i] then return false end end
-end
 '''
 match_indent = true
 
