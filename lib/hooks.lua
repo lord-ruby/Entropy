@@ -2055,9 +2055,12 @@ G.FUNCS.has_inversion = function(e)
  end
 local ref = G.FUNCS.use_card
 G.FUNCS.use_card = function(e, mute, nosave)
+    local twis = G.GAME.modifiers.entr_twisted
+    G.GAME.modifiers.entr_twisted = nil
     local card = e.config.ref_table
     card.ability.bypass_aleph = true
     ref(e, mute, nosave)
+    G.GAME.modifiers.entr_twisted = twis
     G.E_MANAGER:add_event(Event{
         trigger = "after",
         delay = 2,
@@ -2130,6 +2133,11 @@ function Card:set_ability(center, f, s)
         if center and Entropy.Inversion(center) and not G.SETTINGS.paused and (G.GAME.modifiers.entr_twisted or center.set == "Planet" and G.GAME.entr_princess) and not self.multiuse and (not self.ability or not self.ability.fromflipside) then
             if Entropy.allow_spawning(center) and Entropy.allow_spawning(G.P_CENTERS[Entropy.Inversion(center)]) then
                 set_abilityref(self, G.P_CENTERS[Entropy.Inversion(center)] or center, f, s)
+                if self.ability.glitched_crown then
+                    for i, v in pairs(self.ability.glitched_crown) do
+                        self.ability.glitched_crown[i] = Entropy.FlipsideInversions[v]
+                    end
+                end
             else
                 set_abilityref(self, Entropy.GetPooledCenter(G.P_CENTERS[Entropy.Inversion(center)].set), f, s)
             end

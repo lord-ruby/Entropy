@@ -26,6 +26,11 @@ local flipside = {
         Entropy.FlipThen(cards, function(card)
             card.ability.fromflipside = true
             card:set_ability(G.P_CENTERS[Entropy.Inversion(card)])
+            if card.ability.glitched_crown then
+                for i,v in pairs(card.ability.glitched_crown) do
+                    card.ability.glitched_crown[i] = Entropy.FlipsideInversions[v]
+                end
+            end
             card.ability.fromflipside = false
             SMODS.calculate_context({entr_consumable_inverted = true, card = card})
         end)
