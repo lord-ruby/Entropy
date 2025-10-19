@@ -4136,6 +4136,11 @@ end
 
 local poll_edref = poll_edition
 function poll_edition(_key, _mod, _no_neg, _guaranteed, options)
+    if not options then
+		if _key == "wheel_of_fortune" or _key == "aura" then -- set base game edition polling
+			options = { 'e_negative', 'e_polychrome', 'e_holo', 'e_foil' }
+		end
+	end
     local unordered_options = options or get_current_pool("Edition", nil, nil, _key or 'edition_generic')
     local _options = {}
     for _, edition in ipairs(unordered_options) do
