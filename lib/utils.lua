@@ -1922,3 +1922,28 @@ function ReductionIndex(card, pool)
         i = i + 1
     end
 end
+
+--these currently only return a single value, but exist in case other effects get added that would need to be returned here
+function Card:get_entr_plus_asc()
+    return self.ability.entr_perma_plus_asc
+end
+
+function Card:get_entr_h_plus_asc()
+    return self.ability.entr_perma_h_plus_asc
+end
+
+function Card:get_entr_asc()
+    return self.ability.entr_perma_asc + 1
+end
+
+function Card:get_entr_h_asc()
+    return self.ability.entr_perma_h_asc + 1
+end
+
+function Card:get_entr_exp_asc()
+    return self.ability.entr_perma_exp_asc + 1
+end
+
+function Card:get_entr_h_exp_asc()
+    return self.ability.entr_perma_h_exp_asc + 1
+end
