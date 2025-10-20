@@ -5280,6 +5280,20 @@ local decs = {
 					"{C:purple}-c.#2#{}"
 				}
 			},
+			c_entr_deckfix = {
+				name = "Deckfix",
+				text = {
+					"Destroy up to {C:attention}#1#{}",
+					"selected cards",
+					"{C:purple}-c.#2#{}"
+				}
+			},
+			c_entr_generousdonation = {
+				name = "Deckfix",
+				text = {
+					"{C:purple}-c.#1#{}"
+				}
+			},
 		},
 		Other = {
 			antipattern_pair = {
