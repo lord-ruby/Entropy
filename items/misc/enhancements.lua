@@ -462,7 +462,7 @@ local ethereal = {
 					end
 				}))
 				return {
-					message = "+1 "..localize("k_spectral")
+					message = localize("k_plus_spectral")
 				}
 			end
 		end

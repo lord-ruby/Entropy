@@ -312,7 +312,7 @@ local ornate = {
                 })
                 card.delay_dissolve = true
                 return {
-                    message = "+1 "..localize("k_rune"),
+                    message = localize("k_plus_rune"),
                     colour = G.C.PURPLE,
                 }
             end
@@ -337,7 +337,7 @@ local ornate = {
                 })
                 card.delay_dissolve = true
                 return {
-                    message = "+1 "..localize("k_rune"),
+                    message = localize("k_plus_rune"),
                     colour = G.C.PURPLE,
                 }
             end
@@ -404,7 +404,7 @@ local amber = {
                 })
                 card.delay_dissolve = true
                 return {
-                    message = "+1 "..localize("k_pact"),
+                    message = localize("k_plus_pact"),
                     colour = G.C.RED,
                 }
             end

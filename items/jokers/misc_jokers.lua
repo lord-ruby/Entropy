@@ -1955,7 +1955,7 @@ local fused_lens = {
                 end)
             }))
             return {
-                message = "+1 "..localize("k_star")
+                message = localize("k_plus_star")
             }
         end
     end,
@@ -2263,7 +2263,7 @@ local slipstream = {
                 })
                 G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
                 return {
-                    message = "+1 "..localize("k_omen")
+                    message = localize("k_plus_omen")
                 }
             end
         end
@@ -2582,7 +2582,7 @@ local sandpaper = {
                     end
                 })
                 return {
-                    message = "+1 "..localize("k_rune")
+                    message = localize("k_plus_rune")
                 }
             end
         end
