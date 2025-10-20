@@ -323,7 +323,7 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
         config = {
             extra = {
                 max_highlighted = 5,
-                credits = 600
+                credits = 200
             },
         },
         loc_vars = function(self, info_queue, card)
