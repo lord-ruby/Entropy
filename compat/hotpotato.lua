@@ -24,9 +24,6 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
             x = 5,
             y = 5
         },
-        set_badges = function(self, card, badges)
-            SMODS.create_mod_badges({ mod = SMODS.find_mod("HotPotato")[1] }, badges)
-        end,
         entr_credits = {
             art = { "LFMoth" },
             idea = { "LFMoth" },
@@ -68,6 +65,8 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
                 end,
             }))
         end,
+        demicoloncompat = true,
+        force_use = function(self, card) self:use(card) end
     })
     SMODS.Consumable({
         key = "unstick",
@@ -130,6 +129,8 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
                 }))
             end
         end,
+        demicoloncompat = true,
+        force_use = function(self, card) self:use(card) end
     })
     SMODS.Consumable({
         key = "extrahands",
@@ -145,9 +146,6 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
             x = 7,
             y = 5
         },
-        set_badges = function(self, card, badges)
-            SMODS.create_mod_badges({ mod = SMODS.find_mod("HotPotato")[1] }, badges)
-        end,
         entr_credits = {
             art = { "LFMoth" },
             idea = { "LFMoth" },
@@ -188,6 +186,8 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
                 end,
             }))
         end,
+        demicoloncompat = true,
+        force_use = function(self, card) self:use(card) end
     })
     SMODS.Consumable({
         key = "moneybundle",
@@ -203,9 +203,6 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
             x = 8,
             y = 5
         },
-        set_badges = function(self, card, badges)
-            SMODS.create_mod_badges({ mod = SMODS.find_mod("HotPotato")[1] }, badges)
-        end,
         entr_credits = {
             art = { "LFMoth" },
             idea = { "LFMoth" },
@@ -245,6 +242,8 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
                 end,
             }))
         end,
+        demicoloncompat = true,
+        force_use = function(self, card) self:use(card) end
     })
     SMODS.Consumable({
         key = "biggerpockets",
@@ -260,9 +259,6 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
             x = 5,
             y = 6
         },
-        set_badges = function(self, card, badges)
-            SMODS.create_mod_badges({ mod = SMODS.find_mod("HotPotato")[1] }, badges)
-        end,
         entr_credits = {
             art = { "LFMoth" },
             idea = { "LFMoth" },
@@ -302,6 +298,8 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
                 end,
             }))
         end,
+        demicoloncompat = true,
+        force_use = function(self, card) self:use(card) end
     })
     SMODS.Consumable({
         key = "deckfix",
@@ -317,9 +315,6 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
             x = 6,
             y = 6
         },
-        set_badges = function(self, card, badges)
-            SMODS.create_mod_badges({ mod = SMODS.find_mod("HotPotato")[1] }, badges)
-        end,
         entr_credits = {
             art = { "LFMoth" },
             idea = { "LFMoth" },
@@ -363,6 +358,8 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
                 end,
             }))
         end,
+        demicoloncompat = true,
+        force_use = function(self, card) self:use(card) end
     })
     SMODS.Consumable({
         key = "generousdonation",
@@ -375,12 +372,9 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
         inversion = "c_hpot_lunacy",
         atlas = "crossmod_consumables",
         pos = {
-            x = 5,
+            x = 7,
             y = 6
         },
-        set_badges = function(self, card, badges)
-            SMODS.create_mod_badges({ mod = SMODS.find_mod("HotPotato")[1] }, badges)
-        end,
         entr_credits = {
             art = { "LFMoth" },
             idea = { "LFMoth" },
@@ -413,5 +407,7 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
                 end,
             }))
         end,
+        demicoloncompat = true,
+        force_use = function(self, card) self:use(card) end
     })
 end
