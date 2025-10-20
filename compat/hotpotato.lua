@@ -189,4 +189,61 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
             }))
         end,
     })
+    SMODS.Consumable({
+        key = "moneybundle",
+        dependencies = {
+            items = {
+                "set_entr_inversions",
+            }
+        },
+        set = "mtx",
+        inversion = "c_hpot_greatness",
+        atlas = "crossmod_consumables",
+        pos = {
+            x = 8,
+            y = 5
+        },
+        set_badges = function(self, card, badges)
+            SMODS.create_mod_badges({ mod = SMODS.find_mod("hpot")[1] }, badges)
+        end,
+        entr_credits = {
+            art = { "LFMoth" },
+            idea = { "LFMoth" },
+            code = { "LFMoth" },
+        },
+        config = {
+            extra = {
+                dollars = 50,
+                credits = 500
+            },
+        },
+        loc_vars = function(self, info_queue, card)
+            return {
+                vars = { card.ability.extra.dollars, card.ability.extra.credits },
+            }
+        end,
+        can_use = function(self, card)
+            if G.GAME.seeded == true and G.GAME.budget >= card.ability.extra.credits then         -- check if run is seeded, check seeded creds
+                return true
+            elseif G.PROFILES[G.SETTINGS.profile].TNameCredits >= card.ability.extra.credits then -- otherwise, check normal creds
+                return true
+            else
+                return false
+            end
+        end,
+        use = function(self, card, area, copier)
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    HPTN.ease_credits(-card.ability.extra.credits, false) -- remove credits
+                    return true
+                end,
+            }))
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    ease_dollars(card.ability.extra.dollars)
+                    return true
+                end,
+            }))
+        end,
+    })
 end
