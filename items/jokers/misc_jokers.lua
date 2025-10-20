@@ -1645,8 +1645,8 @@ local qu = {
         if context.first_hand_drawn or context.forcetrigger then
             local card = pseudorandom_element(G.hand.cards, pseudoseed("qu_card"))
             Entropy.FlipThen({card}, function(card)
-                local elem = pseudorandom_element(Entropy.FlipsidePureInversions, pseudoseed("qu_twisted"))
-                card:set_ability(G.P_CENTERS[elem])
+                local elem = Entropy.GetPooledCenter("Twisted")
+                card:set_ability(elem)
             end)
             G.E_MANAGER:add_event(Event({
                 blocking = false,
