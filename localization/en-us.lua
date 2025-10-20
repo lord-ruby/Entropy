@@ -5258,7 +5258,14 @@ local decs = {
 					"from your {C:attention}Jokers{}",
 					"{C:purple}-c.#1#{}"
 				}
-			}
+			},
+			c_entr_extrahands = {
+				name = "Extra Hands",
+				text = {
+					"{C:attention}+#1# Hand{}",
+					"{C:purple}-c.#2#{}"
+				}
+			},
 		},
 		Other = {
 			antipattern_pair = {
