@@ -2321,3 +2321,17 @@ payload = '''
 if not center then return end
 '''
 match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+if G.GAME.blind then t[#t + 1] = { object = G.GAME.blind, scored_card = G.GAME.blind.children.animatedSprite } end
+'''
+position = "at"
+payload = '''
+if G.GAME.blind and G.GAME.blind.children then t[#t + 1] = { object = G.GAME.blind, scored_card = G.GAME.blind.children.animatedSprite } end
+'''
+match_indent = true
+

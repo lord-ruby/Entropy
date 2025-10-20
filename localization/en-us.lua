@@ -46,6 +46,24 @@ local decs = {
 					"{C:gold}+#1#{} Ascension Power"
 				}
 			},
+
+			m_entr_ethereal = {
+				name = "Ethereal Card",
+				text = {
+					"Creates a {C:spectral}Spectral{}",
+					"card when modified"
+				}
+			},
+
+			m_entr_samsara = {
+				name = "Samsara Card",
+				text = {
+					"{C:red}Self Destructs{} when modified",
+					"Create a {C:attention}copy{} of this card",
+					"with {X:blue,C:white}+X#2#{} Chips when destroyed",
+					"{C:inactive}(Currently: {X:blue,C:white}X#1#{C:inactive})"
+				}
+			},
 		},
 		["Content Set"] = {
 			set_entr_inversions = {
