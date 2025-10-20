@@ -5199,6 +5199,58 @@ local decs = {
 				}
 			},
 		},
+		mtx = {
+			c_entr_extrajoker = {
+				name = "Extra Jokers",
+				text = {
+					"{C:attention}+#1# Joker Slot{}",
+					"{C:purple}-c.#2#{}"
+				}
+			},
+			c_entr_unstick = {
+				name = "Unstick",
+				text = {
+					"Remove ALL {C:attention}stickers{}",
+					"from your {C:attention}Jokers{}",
+					"{C:purple}-c.#1#{}"
+				}
+			},
+			c_entr_extrahands = {
+				name = "Extra Hands",
+				text = {
+					"{C:blue}+#1# Hand{}",
+					"{C:purple}-c.#2#{}"
+				}
+			},
+			c_entr_moneybundle = {
+				name = "Bundle of Dollars",
+				text = {
+					"{C:money}+$#1#{}",
+					"{C:purple}-c.#2#{}"
+				}
+			},
+			c_entr_biggerpockets = {
+				name = "Bigger Pockets",
+				text = {
+					"{C:attention}+#1# Consumable Slot{}",
+					"{C:purple}-c.#2#{}"
+				}
+			},
+			c_entr_deckfix = {
+				name = "Deckfix",
+				text = {
+					"Destroy up to {C:attention}#1#{}",
+					"selected cards",
+					"{C:purple}-c.#2#{}"
+				}
+			},
+			c_entr_generousdonation = {
+				name = "Generous Donation",
+				text = {
+					"{C:purple}-c.#1#{}"
+				}
+			},
+		},
 		Other = {
 			antipattern_pair = {
 				name = "Poker hand Pair",
@@ -5854,6 +5906,9 @@ local decs = {
 
 			k_transient = "Transient",
 			b_transient_cards = "Transient Cards",
+
+			k_mtx = "MTX",
+			b_mtx_cards = "MTX Cards",
 
 			k_inverted = "Inverted",
 			k_inverted_pack = "Twisted Pack",
