@@ -1251,10 +1251,10 @@ local hotfix_sticker = {
     apply = function(self,card,val) 
         card.ability.entr_hotfix = true
         card.ability.entr_hotfix_rounds = 15
-        if card.debuff then card.debuff = false end
+        if card.debuff then card:set_debuff(false) end
     end,
     calculate = function(self, card, context)
-        if card.debuff then card.debuff = false end
+        if card.debuff then card:set_debuff(false) end
     end
 }
 
