@@ -2335,3 +2335,64 @@ if G.GAME.blind and G.GAME.blind.children then t[#t + 1] = { object = G.GAME.bli
 '''
 match_indent = true
 
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Multiplayer "compatibility/TheOrder.lua"]'''
+pattern = '''
+SMODS.Booster:take_ownership_by_kind("Standard", {
+	create_card = function(self, card, i)
+		local s_append = "" -- MP.get_booster_append(card)
+		local b_append = MP.ante_based() .. s_append
+
+		local _edition = poll_edition("standard_edition" .. b_append, 2, true)
+		local _seal = SMODS.poll_seal({ mod = 10, key = "stdseal" .. b_append })
+
+		return {
+			set = (pseudorandom(pseudoseed("stdset" .. b_append)) > 0.6) and "Enhanced" or "Base",
+			edition = _edition,
+			seal = _seal,
+			area = G.pack_cards,
+			skip_materialize = true,
+			soulable = true,
+			key_append = "sta" .. s_append,
+		}
+	end,
+}, true)
+'''
+position = "at"
+payload = '''
+SMODS.Booster:take_ownership_by_kind("Standard", {
+	create_card = function(self, card, i)
+		local s_append = "" -- MP.get_booster_append(card)
+		local b_append = MP.ante_based() .. s_append
+
+		local _edition = poll_edition("standard_edition" .. b_append, 2, true)
+		local _seal = SMODS.poll_seal({ mod = 10, key = "stdseal" .. b_append })
+    local most_common
+    if next(SMODS.find_card("j_entr_photocopy")) and i == 1 then
+      most_common = Entropy.most_common_card()
+    end
+    local key
+    if pseudorandom("entr_rare_standard") < 0.003 or Entropy.has_rune("rune_entr_oss") then
+      if Entropy.has_rune("rune_entr_oss") then 
+        Entropy.has_rune("rune_entr_oss").triggered = true 
+      end
+      calculate_runes({generate_rare_consumable = true})
+      key = "m_entr_ethereal"
+    end
+		return {
+			set = not key and (pseudorandom(pseudoseed("stdset" .. b_append)) > 0.6) and "Enhanced" or "Base" or nil,
+			edition = _edition,
+			seal = _seal,
+			area = G.pack_cards,
+			skip_materialize = true,
+			soulable = true,
+			key_append = "sta" .. s_append,
+      rank = most_common and most_common.id or nil,
+      suit = most_common and most_common.suit or nil,
+      enhancement = key,
+		}
+	end,
+}, true)
+'''
+match_indent = true
