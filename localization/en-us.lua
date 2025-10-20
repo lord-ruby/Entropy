@@ -5209,6 +5209,13 @@ local decs = {
 					"{C:purple}-c.#2#{}"
 				}
 			},
+			c_entr_biggerpockets = {
+				name = "Bigger Pockets",
+				text = {
+					"{C:attention}+#1# Consumable Slot{}",
+					"{C:purple}-c.#2#{}"
+				}
+			},
 		},
 		Other = {
 			antipattern_pair = {
