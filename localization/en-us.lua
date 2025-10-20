@@ -5289,7 +5289,7 @@ local decs = {
 				}
 			},
 			c_entr_generousdonation = {
-				name = "Deckfix",
+				name = "Generous Donation",
 				text = {
 					"{C:purple}-c.#1#{}"
 				}

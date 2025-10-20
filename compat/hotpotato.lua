@@ -333,7 +333,7 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
         },
         loc_vars = function(self, info_queue, card)
             return {
-                vars = { card.ability.extra.slots, card.ability.extra.credits },
+                vars = { card.ability.extra.max_highlighted, card.ability.extra.credits },
             }
         end,
         can_use = function(self, card)
@@ -359,6 +359,56 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
             G.E_MANAGER:add_event(Event({
                 func = function()
                     SMODS.destroy_cards(G.hand.highlighted)
+                    return true
+                end,
+            }))
+        end,
+    })
+    SMODS.Consumable({
+        key = "generousdonation",
+        dependencies = {
+            items = {
+                "set_entr_inversions",
+            }
+        },
+        set = "mtx",
+        inversion = "c_hpot_lunacy",
+        atlas = "crossmod_consumables",
+        pos = {
+            x = 5,
+            y = 6
+        },
+        set_badges = function(self, card, badges)
+            SMODS.create_mod_badges({ mod = SMODS.find_mod("HotPotato")[1] }, badges)
+        end,
+        entr_credits = {
+            art = { "LFMoth" },
+            idea = { "LFMoth" },
+            code = { "LFMoth" },
+        },
+        config = {
+            extra = {
+                credits = 1
+            },
+        },
+        loc_vars = function(self, info_queue, card)
+            return {
+                vars = {card.ability.extra.credits },
+            }
+        end,
+        can_use = function(self, card)
+            if G.GAME.seeded == true and G.GAME.budget >= card.ability.extra.credits then         -- check if run is seeded, check seeded creds
+                return true
+            elseif G.PROFILES[G.SETTINGS.profile].TNameCredits >= card.ability.extra.credits then -- otherwise, check normal creds
+                return true
+            else
+                return false
+            end
+        end,
+        use = function(self, card, area, copier)
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    HPTN.ease_credits(-card.ability.extra.credits, false) -- remove credits
                     return true
                 end,
             }))
