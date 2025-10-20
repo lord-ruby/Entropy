@@ -51,7 +51,8 @@ local decs = {
 				name = "Ethereal Card",
 				text = {
 					"Creates a {C:spectral}Spectral{}",
-					"card when modified"
+					"card when modified",
+					"{C:inactive}(Must have room){}"
 				}
 			},
 
