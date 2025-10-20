@@ -51,7 +51,7 @@ local shatter = {
     
     order = 37,
     object_type = "Consumable",
-    config = {limit = 2},
+    config = {limit = 1, csl = 1},
     atlas = "consumables",
     pos = {x=5,y=8},
     dependencies = {
@@ -63,6 +63,7 @@ local shatter = {
         Entropy.FlipThen(G.hand.highlighted, function(card)
             card:set_edition("e_entr_fractured")
         end)
+        Entropy.ChangeFullCSL(-card.ability.csl)
     end,
     can_use = function(self, card)
         local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.limit)
@@ -71,7 +72,8 @@ local shatter = {
     loc_vars = function(self, q, card)
         q[#q+1] = G.P_CENTERS.e_entr_fractured
         return {vars={
-            card.ability.limit
+            card.ability.limit,
+            card.ability.csl
         }}
     end,
     entr_credits = {

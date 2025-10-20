@@ -3654,6 +3654,7 @@ local decs = {
 				text = {
 					"Apply {C:dark_edition}Fractured{} to",
 					"{C:attention}#1#{} selected cards in hand",
+					"{C:red}-#2#{} Card Selection Limit"
 				}
 			},
 			c_entr_lust = {
