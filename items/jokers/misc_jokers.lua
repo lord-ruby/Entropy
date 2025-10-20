@@ -1073,8 +1073,7 @@ local sunny_side_up = {
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
             local asc = card.ability.asc
-            card.ability.asc = card.ability.asc - card.ability.asc_mod
-            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "asc", scalar_value = "asc_mod", operation = "-"})
+            if not context.blueprint then SMODS.scale_card(card, {ref_table = card.ability, ref_value = "asc", scalar_value = "asc_mod", operation = "-"}) end
             if to_big(card.ability.asc) > to_big(0) then
                 return {
                     plus_asc = asc
