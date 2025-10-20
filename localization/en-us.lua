@@ -5198,7 +5198,14 @@ local decs = {
 			c_entr_extrahands = {
 				name = "Extra Hands",
 				text = {
-					"{C:attention}+#1# Hand{}",
+					"{C:blue}+#1# Hand{}",
+					"{C:purple}-c.#2#{}"
+				}
+			},
+			c_entr_moneybundle = {
+				name = "Bundle of Dollars",
+				text = {
+					"{C:money}+$#1#{}",
 					"{C:purple}-c.#2#{}"
 				}
 			},
