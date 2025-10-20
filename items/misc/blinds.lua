@@ -17,7 +17,7 @@ local sun = {
 		min = 3,
 		max = 10,
 		showdown = true,
-	}
+	},
 }
 
 local baracuda ={
@@ -48,7 +48,7 @@ local baracuda ={
 			then
 				return {remove=true}
 			end
-	end
+	end,
 }
 
 local dawn = {
@@ -91,7 +91,7 @@ local dawn = {
     disable = function(self)
         G.hand:change_size(-self.config.extra.hand_size)
         G.FUNCS.draw_from_deck_to_hand(-self.config.extra.hand_size)
-    end
+    end,
 }
 
 local orchard = {
@@ -960,7 +960,7 @@ local alabaster = {
 				G.jokers.cards[i].config.cry_multiply = (G.jokers.cards[i].config.cry_multiply or 1) * 0.95
 			end
 		end
-	end
+	end,
 }
 
 local highlight_ref = Card.highlight

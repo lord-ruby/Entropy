@@ -52,7 +52,7 @@ local solar = {
 	end,
 	entr_credits = {
 		custom={key="shader",text="cassknows"}
-	}
+	},
 }
 
 
@@ -113,8 +113,9 @@ local fractured ={
 		end
 	end,
 	entr_credits = {
-		custom={key="shader",text="cassknows"}
-	}
+		custom={key="shader",text="cassknows"},
+		idea = {"cassknows"}
+	},
 }
 SMODS.Shader({
     key="sunny",
@@ -225,8 +226,9 @@ local freaky = {
 		end
 	end,
 	entr_credits = {
-		custom={key="shader",text="cassknows"}
-	}
+		custom={key="shader",text="cassknows"},
+		idea = {"cassknows"}
+	},
 }
 
 if AurinkoAddons then
@@ -316,8 +318,9 @@ local neon = {
 		return {vars={card and card.edition and card.edition.cost_fac or 0.9}}
     end,
 	entr_credits = {
-		custom={key="shader",text="cassknows"}
-	}
+		custom={key="shader",text="cassknows"},
+		idea = {"cassknows"}
+	},
 }
 
 local set_cost_ref = Card.set_cost
@@ -405,8 +408,9 @@ local lowres = {
 		Cryptid.manipulate(card)
 	end,
 	entr_credits = {
-		custom={key="shader",text="cassknows"}
-	}
+		custom={key="shader",text="cassknows"},
+		idea = {"cassknows"}
+	},
 }
 
 SMODS.Shader({
@@ -477,8 +481,9 @@ local kaleidoscopic = {
 		end
 	end,
 	entr_credits = {
-		custom={key="shader",text="cassknows"}
-	}
+		custom={key="shader",text="cassknows"},
+		idea = {"cassknows"}
+	},
 }
 
 return {

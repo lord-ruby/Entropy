@@ -2290,3 +2290,34 @@ other.T = other.T or {x = 1, y = 1, w = 1, h = 1}
 local new_card = new_card or Card(other.T.x, other.T.y, G.CARD_W*(card_scale or 1), G.CARD_H*(card_scale or 1), G.P_CARDS.empty, G.P_CENTERS.c_base, {playing_card = playing_card, bypass_back = G.GAME.selected_back.pos})
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''
+                    if not extra or not extra.no_juice then
+                        card:juice_up(0.6, 0.1)
+                        G.ROOM.jiggle = G.ROOM.jiggle + 0.7
+                    end
+'''
+position = "at"
+payload = '''
+                    if not extra or not extra.no_juice and card and card.juice_up then
+                        card:juice_up(0.6, 0.1)
+                        G.ROOM.jiggle = G.ROOM.jiggle + 0.7
+                    end
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/game_object.lua"]'''
+pattern = '''
+if center.set ~= self.key then SMODS.insert_pool(G.P_CENTER_POOLS[self.key], center) end
+'''
+position = "before"
+payload = '''
+if not center then return end
+'''
+match_indent = true

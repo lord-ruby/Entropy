@@ -717,7 +717,11 @@ local eden = {
                 card = card,
             }
         end
-	end
+	end,
+    entr_credits = {
+        idea = {"cassknows"},
+        art = {"cassknows"}
+    },
 }
 
 local seventyseven = {
@@ -1321,6 +1325,9 @@ local fourbit = {
             end
         end
 	end,
+    entr_credits = {
+        idea = {"cassknows"}
+    },
 }
 
 local crimson_flask = {
@@ -2412,6 +2419,9 @@ local cass = {
         items = {
             "set_entr_misc_jokers",
         }
+    },
+    entr_credits = {
+        idea = {"cassknows"}
     },
 }
 
@@ -4149,6 +4159,9 @@ local grape_juice = {
             "set_entr_actives",
         }
     },
+    pools = {
+        Food = true
+    },
     loc_vars = function(self, q, card)
         return {
             vars = {card.ability.left, card.ability.left_mod}
@@ -5055,6 +5068,7 @@ local jack_off = {
         end
     end,
     entr_credits = {
+        idea = {"cassknows"},
         art = {"LFMoth"}
     }
 }
@@ -5257,6 +5271,9 @@ local fork_bomb = {
             end
         end
     end,
+    entr_credits = {
+        idea = {"cassknows"}
+    },
 }
 
 local solar_panel = {
@@ -5415,6 +5432,9 @@ local overpump = {
             }
         }
     end,
+    entr_credits = {
+        idea = {"cassknows"}
+    },
 }
 
 local shadow_crystal = {

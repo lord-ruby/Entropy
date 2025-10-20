@@ -168,7 +168,10 @@ local oracle = {
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)
-    end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    },
 }
 
 
@@ -552,7 +555,7 @@ local earl = {
             G.GAME.round_resets.hands = 1
             G.GAME.earl_hands = hands_taken
         end
-        if discard_taken > 0 then
+        if discards_taken > 0 then
             ease_discard(-discards_taken)
             G.GAME.round_resets.discards = 1
             G.GAME.earl_discards = discards_taken
