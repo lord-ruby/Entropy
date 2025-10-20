@@ -55,13 +55,9 @@ local sapphire = {
     pos = {x=1,y=0},
     badge_colour = HEX("8653ff"),
     calculate = function(self, card, context)
-        if context.playing_card_end_of_round then
+        if (context.playing_card_end_of_round and context.cardarea == G.hand) or context.forcetrigger then
             Entropy.ReversePlanetUse(G.GAME.last_hand_played, card, 0.25)
-        end
-        if context.forcetrigger then
-            local c = create_card("Consumables", G.consumeables, nil, nil, nil, nil, key) 
-            c:add_to_deck()
-            G.consumeables:emplace(c)
+             return { message = localize('k_level_up_ex'), colour = G.C.PURPLE }
         end
     end,
 }

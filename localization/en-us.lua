@@ -6104,10 +6104,10 @@ local decs = {
 			k_portal_reference = "The Part Where She Kills You",
 			k_entropy_is_endless = "Entropy Is Endless",
 
-			k_plus_rune = "+1 Rune"
-			k_plus_star = "+1 Star"
-			k_plus_pact = "+1 Pact"
-			k_plus_omen = "+1 Omen"
+			k_plus_rune = "+1 Rune",
+			k_plus_star = "+1 Star",
+			k_plus_pact = "+1 Pact",
+			k_plus_omen = "+1 Omen",
 
 			k_switch_ex = "Switch!",
 		},
