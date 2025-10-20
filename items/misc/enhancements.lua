@@ -439,6 +439,9 @@ local ethereal = {
 	key = "ethereal",
 	atlas = "enhancements",
 	pos = { x = 0, y = 2 },
+	no_doe = true,
+	upgrade_order = 9997,
+	no_code = true,
 	in_pool = function()
 		return false
 	end,
@@ -481,6 +484,9 @@ local samsara = {
 	key = "samsara",
 	atlas = "enhancements",
 	pos = { x = 1, y = 2 },
+	no_doe = true,
+	upgrade_order = 9998,
+	no_code = true,
 	in_pool = function()
 		return false
 	end,
