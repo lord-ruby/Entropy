@@ -1780,6 +1780,8 @@ function Back:trigger_effect(args, ...)
                 }))
             end
             if v == "b_plasma" and args.context == 'final_scoring_step' then
+                chips = chips or args.chips
+                mult = mult or args.mult
                 local tot = chips + mult
                 chips = math.floor(tot/2)
                 mult = math.floor(tot/2)

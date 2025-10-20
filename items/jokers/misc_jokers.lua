@@ -4524,7 +4524,7 @@ local redkey = {
     demicoloncompat = true,
     blueprint_compat = true,
     config = {
-        left = 3,
+        left = 1,
         left_mod = 1
     },
     dependencies = {
