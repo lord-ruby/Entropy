@@ -144,7 +144,7 @@ local gemstone = {
             end
           })
           return {
-            message = "+1 "..localize("k_rune")
+            message = localize("k_plus_rune")
           }
         else
           return {
@@ -370,7 +370,7 @@ if CardSleeves then
               end
             })
             return {
-              message = "+1 "..localize("k_rune")
+              message = localize("k_plus_rune")
             }
           else
             return {

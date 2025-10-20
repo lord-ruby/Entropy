@@ -2324,8 +2324,9 @@ local cass = {
             card.ability.mod = math.min(card.ability.mod, 20)
             local result = pseudorandom(pseudoseed("entr_cass"), 1, 6)
             if result == 1 then
+                local old = card.ability.hand_size
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "hand_size", scalar_value = "mod"})
-                G.hand:handle_card_limit(card.ability.hand_size)
+                G.hand:handle_card_limit(card.ability.hand_size - old)
             elseif result == 2 then
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "selection_limit", scalar_value = "mod"})
                 Entropy.ChangeFullCSL(card.ability.mod)
