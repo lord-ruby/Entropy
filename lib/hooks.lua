@@ -141,7 +141,7 @@ function end_round()
                     if card.ability.debuff_timer <= 0 then
                         card.ability.debuff_timer = nil
                         card.ability.debuff_timer_max = nil
-                        card.debuff = false
+                        card:set_debuff(false)
                         card_eval_status_text(
                             card,
                             "extra",
@@ -1313,7 +1313,7 @@ G.FUNCS.sell_card = function(e)
             card2:add_to_deck()
             card2.ability.superego = nil
             card2.ability.superego_copies = nil
-            card2.debuff = false
+            card2:set_debuff(false)
             card2.sell_cost = 0
             e.config.ref_table.area:emplace(card2)
         end
@@ -2697,7 +2697,7 @@ function Game:update(dt)
 		if G.jokers and G.GAME.blind and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" then
 			G.HUD_blind:get_UIE_by_ID("score_at_least").config.text = localize("ph_blind_score_less_than")
 			for i, v in pairs(G.jokers.cards) do
-				v.debuff = false
+				v:set_debuff(false)
 			end
             for i = 1, math.ceil(math.max(G.jokers.config.card_limit, #G.jokers.cards)/5) do
                 if G.jokers.cards[i] then
