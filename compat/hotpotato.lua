@@ -132,7 +132,7 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
         end,
     })
     SMODS.Consumable({
-        key = "extrahand",
+        key = "extrahands",
         dependencies = {
             items = {
                 "set_entr_inversions",
