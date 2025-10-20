@@ -4964,7 +4964,18 @@ end
 
 SMODS.Booster:take_ownership_by_kind("Standard", {
     create_card = function(self, card, i)
-        card = create_card((pseudorandom(pseudoseed('stdset'..G.GAME.round_resets.ante)) > 0.6) and "Enhanced" or "Base", G.pack_cards, nil, nil, nil, true, nil, 'sta')
+        local key
+        if pseudorandom("entr_rare_standard") < 0.003 or Entropy.has_rune("rune_entr_oss") then
+            if Entropy.has_rune("rune_entr_oss") then 
+            end
+            calculate_runes({generate_rare_consumable = true})
+            Entropy.has_rune("rune_entr_oss").triggered = true 
+            key = "m_entr_ethereal"
+        end
+        card = create_card((pseudorandom(pseudoseed('stdset'..G.GAME.round_resets.ante)) > 0.6) and "Enhanced" or "Base", G.pack_cards, nil, nil, nil, true, key, 'sta')
+        if key then
+            card:set_ability(G.P_CENTERS[key])
+        end
         local edition_rate = 2
         local edition = poll_edition('standard_edition'..G.GAME.round_resets.ante, edition_rate, true)
         card:set_edition(edition)

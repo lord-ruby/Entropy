@@ -201,26 +201,30 @@ end
 local set_sealref = Card.set_seal
 function Card:set_seal(seal, ...)
     set_sealref(self, seal, ...)
+    SMODS.calculate_context({card_modified = true, other_card = self})
     local link = self and self.ability and self.ability.link
     if link then
         for i, v in pairs(G.hand.cards) do
-                if v.ability.link == link then
-                    set_sealref(v, seal, ...)
-                    v.ability.link = link 
-                end
+            if v.ability.link == link then
+                set_sealref(v, seal, ...)
+                SMODS.calculate_context({card_modified = true, other_card = v})
+                v.ability.link = link 
             end
-            for i, v in pairs(G.discard.cards) do
-                if v.ability.link == link then
-                    set_sealref(v, seal, ...)
-                    v.ability.link = link 
-                end
+        end
+        for i, v in pairs(G.discard.cards) do
+            if v.ability.link == link then
+                set_sealref(v, seal, ...)
+                SMODS.calculate_context({card_modified = true, other_card = v})
+                v.ability.link = link 
             end
-            for i, v in pairs(G.deck.cards) do
-                if v.ability.link == link then
-                    set_sealref(v, seal, ...)
-                    v.ability.link = link
-                end
+        end
+        for i, v in pairs(G.deck.cards) do
+            if v.ability.link == link then
+                set_sealref(v, seal, ...)
+                SMODS.calculate_context({card_modified = true, other_card = v})
+                v.ability.link = link
             end
+        end
     end
 end
 
@@ -262,25 +266,55 @@ end
 local set_editionref = Card.set_edition
 function Card:set_edition(...)
     set_editionref(self, ...)
+    SMODS.calculate_context({card_modified = true, other_card = self})
     if self.ability.link then
         for i, v in pairs(G.hand.cards) do
             if v.ability.link == self.ability.link then
                 set_editionref(v, ...) 
+                SMODS.calculate_context({card_modified = true, other_card = v})
             end
         end
         for i, v in pairs(G.discard.cards) do
             if v.ability.link == self.ability.link then
                 set_editionref(v, ...) 
+                SMODS.calculate_context({card_modified = true, other_card = v})
             end
         end
         for i, v in pairs(G.deck.cards) do
             if v.ability.link == self.ability.link then
                 set_editionref(v, ...) 
+                SMODS.calculate_context({card_modified = true, other_card = v})
             end
         end
     end
     if self:is_sunny() and self.area == G.jokers then 
         check_for_unlock({ type = "sunny_joker" })
+    end
+end
+
+local set_base_ref = Card.set_base
+function Card:set_base(...)
+    set_base_ref(self, ...)
+    SMODS.calculate_context({card_modified = true, other_card = self})
+    if self.ability.link and G.hand then
+        for i, v in pairs(G.hand.cards) do
+            if v.ability.link == self.ability.link then
+                set_base_ref(v, ...) 
+                SMODS.calculate_context({card_modified = true, other_card = v})
+            end
+        end
+        for i, v in pairs(G.discard.cards) do
+            if v.ability.link == self.ability.link then
+                set_base_ref(v, ...) 
+                SMODS.calculate_context({card_modified = true, other_card = v})
+            end
+        end
+        for i, v in pairs(G.deck.cards) do
+            if v.ability.link == self.ability.link then
+                sset_base_ref(v, ...) 
+                SMODS.calculate_context({card_modified = true, other_card = v})
+            end
+        end
     end
 end
 

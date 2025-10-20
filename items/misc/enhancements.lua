@@ -407,7 +407,7 @@ local radiant = {
 		},
 	},
 	in_pool = function()
-		return false
+		return true
 	end,
 	loc_vars = function(self, info_queue, card)
 		return {
@@ -423,6 +423,125 @@ local radiant = {
 			}
 		end
 	end,
+	entr_credits = {
+		art = {"Lil. Mr. Slipstream"}
+	}
+}
+
+local ethereal = {
+	dependencies = {
+        items = {
+          "set_entr_misc"
+        }
+    },
+	order = 10000+7,
+	object_type = "Enhancement",
+	key = "ethereal",
+	atlas = "enhancements",
+	pos = { x = 0, y = 2 },
+	in_pool = function()
+		return false
+	end,
+	calculate = function(self, card, context)
+		if (context.card_modified or (context.setting_ability and context.new ~= "m_entr_ethereal")) and context.other_card == card then
+			if (#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit) then
+				G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+				G.E_MANAGER:add_event(Event({
+					trigger = "immediate",
+					func = function()
+						G.GAME.consumeable_buffer = 0
+						SMODS.add_card{
+							area=G.consumeables,
+							set = "Spectral",
+							key_append = "entr_ethereal"
+						}
+						return true
+					end
+				}))
+				return {
+					message = "+1 "..localize("k_spectral")
+				}
+			end
+		end
+	end,
+	entr_credits = {
+		art = {"Lil. Mr. Slipstream"}
+	}
+}
+
+local samsara = {
+	dependencies = {
+        items = {
+          "set_entr_inversions",
+		  "m_entr_ethereal"
+        }
+    },
+	order = 10000+8,
+	object_type = "Enhancement",
+	key = "samsara",
+	atlas = "enhancements",
+	pos = { x = 1, y = 2 },
+	in_pool = function()
+		return false
+	end,
+	config = {
+		sam_xchips = 1,
+		sam_xchips_mod = 0.75
+	},
+	inversion = "m_entr_ethereal",
+	loc_vars = function(self, q, card)
+		return {
+			vars = {
+				card.ability.sam_xchips,
+				card.ability.sam_xchips_mod
+			}
+		}
+	end,
+	calculate = function(self, card, context)
+		if context.main_scoring then
+			return {
+				xchips = card.ability.sam_xchips
+			}
+		end
+		if (context.card_modified or (context.setting_ability and context.new ~= "m_entr_samsara")) and context.other_card == card then
+			card.delay_dissolve = true
+			SMODS.destroy_cards(card, nil, nil, true)
+		end
+		if context.remove_playing_cards then
+			local cont
+			for i, v in pairs(context.removed) do
+				if v == card then
+					cont = true
+				end
+			end
+			if not cont then return end
+			card.delay_dissolve = false
+			local copy = copy_card(card)
+			copy.dissolve = nil
+			copy.getting_sliced = nil
+			SMODS.scale_card(copy, {
+				ref_table = copy.ability,
+				ref_value = "sam_xchips",
+				scalar_value = "sam_xchips_mod",
+				no_message = true
+			})
+			copy:add_to_deck()
+			G.hand:emplace(copy)
+			table.insert(G.playing_cards, copy)
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_xchips",
+					vars = { card.ability.sam_xchips + card.ability.sam_xchips_mod },
+				}),
+				colour = G.C.BLUE,
+				card = copy
+			}
+        end
+	end,
+	entr_credits = {
+		art = {"Lil. Mr. Slipstream"}
+	}
 }
 
 return {
@@ -434,6 +553,9 @@ return {
 		ceramic,
 		kiln,
 		radiant,
-		comet
+		comet,
+
+		ethereal,
+		samsara
     }
 }
