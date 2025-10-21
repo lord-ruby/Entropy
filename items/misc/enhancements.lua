@@ -446,7 +446,7 @@ local ethereal = {
 		return false
 	end,
 	calculate = function(self, card, context)
-		if (context.card_modified or (context.setting_ability and context.new ~= "m_entr_ethereal")) and context.other_card == card then
+		if context.card_modified and context.other_card == card then
 			if (#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit) then
 				G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
 				G.E_MANAGER:add_event(Event({
@@ -509,9 +509,14 @@ local samsara = {
 				xchips = card.ability.sam_xchips
 			}
 		end
-		if (context.card_modified or (context.setting_ability and context.new ~= "m_entr_samsara")) and context.other_card == card then
+		if context.card_modified and context.other_card == card then
 			card.delay_dissolve = true
-			SMODS.destroy_cards(card)
+			G.E_MANAGER:add_event(Event{
+				func = function()
+					SMODS.destroy_cards(card)
+					return true
+				end
+			})
 		end
 		if context.remove_playing_cards and not card.die then
 			local cont
