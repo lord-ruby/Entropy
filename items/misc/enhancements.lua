@@ -504,16 +504,15 @@ local samsara = {
 		}
 	end,
 	calculate = function(self, card, context)
-		if context.main_scoring then
+		if context.main_scoring and context.cardarea == G.play then
 			return {
 				xchips = card.ability.sam_xchips
 			}
 		end
 		if (context.card_modified or (context.setting_ability and context.new ~= "m_entr_samsara")) and context.other_card == card then
 			card.delay_dissolve = true
-			SMODS.destroy_cards(card, nil, nil, true)
 		end
-		if context.remove_playing_cards then
+		if context.remove_playing_cards and not card.die then
 			local cont
 			for i, v in pairs(context.removed) do
 				if v == card then
@@ -521,10 +520,24 @@ local samsara = {
 				end
 			end
 			if not cont then return end
+			card.die = true
+			local link = card.ability.link
 			card.delay_dissolve = false
+			card.ability.link = nil
 			local copy = copy_card(card)
-			copy.dissolve = nil
-			copy.getting_sliced = nil
+			G.E_MANAGER:add_event(Event{
+				trigger = "after",
+				blocking = false,
+				func = function()
+					copy.die = nil
+					copy.dissolve = nil
+					copy.getting_sliced = nil
+					copy.ability.temporary = nil
+					copy.ability.temporary2 = nil
+					copy.ability.link = link
+					return true	
+				end
+			})
 			SMODS.scale_card(copy, {
 				ref_table = copy.ability,
 				ref_value = "sam_xchips",
@@ -534,15 +547,19 @@ local samsara = {
 			copy:add_to_deck()
 			G.hand:emplace(copy)
 			table.insert(G.playing_cards, copy)
-			return {
-				message = localize({
+			card_eval_status_text(
+				copy,
+				"extra",
+				nil,
+				nil,
+				nil,
+				{ message = localize({
 					type = "variable",
 					key = "a_xchips",
 					vars = { card.ability.sam_xchips + card.ability.sam_xchips_mod },
-				}),
-				colour = G.C.BLUE,
-				card = copy
-			}
+				}), colour = G.C.BLUE }
+			)
+			return {}
         end
 	end,
 	entr_credits = {

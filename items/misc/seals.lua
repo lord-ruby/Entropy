@@ -166,9 +166,28 @@ local pink = {
     calculate = function(self, card, context)
         if context.pre_discard and context.cardarea == G.hand and card.highlighted then
             if not SMODS.is_eternal(card) then
-                card.ability.temporary2 = true
-                card:remove_from_deck()
-                card:start_dissolve()
+                local link = card.ability.link
+                if link then
+                    local cards = {card}
+                    for i, v in pairs(G.hand.cards) do
+                        if v.ability.link == link then
+                            cards[#cards+1] = v
+                        end
+                    end
+                    for i, v in pairs(G.discard.cards) do
+                        if v.ability.link == link then
+                            cards[#cards+1] = v
+                        end
+                    end
+                    for i, v in pairs(G.deck.cards) do
+                        if v.ability.link == link then
+                            cards[#cards+1] = v
+                        end
+                    end
+                    SMODS.destroy_cards(cards, nil, nil, true)
+                else
+                    SMODS.destroy_cards(card, nil, nil, true)
+                end
             end
             G.E_MANAGER:add_event(Event({
                 func = function()

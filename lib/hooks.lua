@@ -335,18 +335,21 @@ function Card:start_dissolve(...)
     if self.ability.link then
         for i, v in pairs(G.hand.cards) do
             if v.ability.link == self.ability.link then
+                SMODS.calculate_context({remove_playing_cards = true, removed={v}})
                 start_dissolveref(v, ...) 
                 v.ability.temporary2 = true
             end
         end
         for i, v in pairs(G.discard.cards) do
             if v.ability.link == self.ability.link then
+                SMODS.calculate_context({remove_playing_cards = true, removed={v}})
                 start_dissolveref(v, ...) 
                 v.ability.temporary2 = true
             end
         end
         for i, v in pairs(G.deck.cards) do
             if v.ability.link == self.ability.link then
+                SMODS.calculate_context({remove_playing_cards = true, removed={v}})
                 start_dissolveref(v, ...) 
                 v.ability.temporary2 = true
             end
