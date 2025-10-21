@@ -268,12 +268,76 @@ local hyperaccelerated_bongcloud_opening = {
 	},
 }
 
+local paycheck_to_paycheck = {
+    object_type = "Challenge",
+	key = "paycheck_to_paycheck",
+	order = 4,
+    jokers = {
+		{ id = "j_entr_tenner", stickers = { "entr_aleph" } },
+        { id = "j_credit_card", stickers = { "entr_aleph" } },
+        { id = "j_entr_debit_card", stickers = { "entr_aleph" } },
+	},
+    consumeables = {
+        { id = "c_entr_strength", stickers = { "eternal" } },
+        { id = "c_entr_dreams", stickers = { "eternal" } },
+    },
+	deck = {
+		type = "Challenge Deck",
+	},
+}
+
+
+local variety_content = {
+    object_type = "Challenge",
+	key = "variety_content",
+	order = 5,
+    jokers = {
+		{ id = "j_entr_spiral_of_ants", stickers = { "entr_aleph" } },
+        { id = "j_entr_hash_miner", stickers = { "entr_aleph" } },
+        { id = "j_obelisk", stickers = { "entr_aleph" } },
+        { id = "j_entr_overpump", stickers = { "entr_aleph" } },
+        { id = "j_entr_antipattern", stickers = { "entr_aleph" } },
+	},
+    consumeables = {
+        { id = "c_temperance", edition = "negative" },
+        { id = "c_entr_statue" },
+        { id = "c_entr_mason" },
+    },
+	deck = {
+		type = "Challenge Deck",
+	},
+}
+
+
+local riffle_shuffle = {
+    object_type = "Challenge",
+	key = "riffle_shuffle",
+	order = 5,
+    jokers = {
+		{ id = "j_entr_meridian", stickers = { "entr_aleph" } },
+        { id = "j_entr_broadcast", stickers = { "entr_aleph" } },
+        { id = "j_entr_roulette", stickers = { "entr_aleph" } },
+        { id = "j_entr_crimson_flask", stickers = { "entr_aleph" }, edition = "entr_lowres" },
+	},
+    consumeables = {
+        { id = "c_entr_ingwaz" },
+        { id = "c_entr_loyalty" },
+    },
+	deck = {
+		type = "Challenge Deck",
+	},
+}
+
+
 
 return {
     items = {
         lifelight,
         vesuvius,
         hyperaccelerated_bongcloud_opening,
+        paycheck_to_paycheck,
+        variety_content,
+        riffle_shuffle,
         (SMODS.Mods["Cryptid"] or {}).can_load and hyperbolic_chamber or nil
     }
 }
