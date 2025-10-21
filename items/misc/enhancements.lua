@@ -511,6 +511,7 @@ local samsara = {
 		end
 		if (context.card_modified or (context.setting_ability and context.new ~= "m_entr_samsara")) and context.other_card == card then
 			card.delay_dissolve = true
+			SMODS.destroy_cards(card)
 		end
 		if context.remove_playing_cards and not card.die then
 			local cont
