@@ -13,6 +13,7 @@ local surreal = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 0 },
@@ -49,6 +50,7 @@ local tesseract = {
     cost = 3,
     
     pools = { ["Meme"] = true },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 1, y = 0 },
@@ -78,7 +80,8 @@ local strawberry_pie = {
         num = 2,
         denom = 3
     },
-    blueprint_compat = false,
+    perishable_compat = true,
+    blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 2, y = 1 },
     atlas = "jokers",
@@ -109,7 +112,8 @@ local recursive_joker = {
             "set_entr_misc_jokers"
         }
     },
-    blueprint_compat = false,
+    perishable_compat = true,
+    blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 3, y = 1 },
     atlas = "jokers",
@@ -196,6 +200,7 @@ local sunny_joker = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 5, y = 1 },
@@ -233,6 +238,7 @@ local antidagger = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     immutable = true,
     eternal_compat = true,
@@ -353,6 +359,7 @@ local insatiable_dagger = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     immutable = true,
@@ -413,8 +420,8 @@ local rusty_shredder = {
         items = {
             "set_entr_misc_jokers"
         }
-    },
-    blueprint_compat=true,
+    perishable_compat = true,
+    blueprint_compat = true,
     immutable = true,
     eternal_compat = true,
     pos = { x = 7, y = 1 },
@@ -462,6 +469,7 @@ local chocolate_egg = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 2 },
@@ -523,7 +531,8 @@ local lotteryticket = {
             "set_entr_misc_jokers"
         }
     },
-    blueprint_compat=true,
+    perishable_compat = true,
+    blueprint_compat = true,
     demicoloncompat=true,
     eternal_compat = true,
     pos = { x = 9, y = 0 },
@@ -599,7 +608,8 @@ local devilled_suns = {
             "set_entr_misc_jokers"
         }
     },
-    blueprint_compat=true,
+    perishable_compat = true,
+    blueprint_compat = true,
     demicoloncompat=true,
     eternal_compat = true,
     pos = { x = 1, y = 2 },
@@ -648,6 +658,7 @@ local eden = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 2, y = 2 },
@@ -739,6 +750,7 @@ local seventyseven = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 3, y = 2 },
@@ -777,6 +789,7 @@ local skullcry = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 8, y = 2 },
@@ -876,7 +889,7 @@ local sweet_tooth = {
     key = "sweet_tooth",
     config = {
         chips = 20,
-        chip_exp = 1.1
+        chip_mul = 1.25
     },
     rarity = 3,
     cost = 8,
@@ -885,6 +898,7 @@ local sweet_tooth = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 3 },
@@ -894,7 +908,7 @@ local sweet_tooth = {
         return {
             vars = {
                 number_format(center.ability.chips),
-                number_format(center.ability.chip_exp)
+                number_format(center.ability.chip_mul)
             },
         }
     end,
@@ -913,8 +927,8 @@ local sweet_tooth = {
                 end
             end
             if check then
-                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "chips", scalar_value = "chip_exp", operation = function(ref_table, ref_value, initial, change)
-                    ref_table[ref_value] = initial ^ change
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "chips", scalar_value = "chip_mul", operation = function(ref_table, ref_value, initial, change)
+                    ref_table[ref_value] = initial * change
                 end})
             end
         end
@@ -941,6 +955,7 @@ local bossfight = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 1, y = 3 },
@@ -987,6 +1002,7 @@ local phantom_shopper = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     pos = { x = 3, y = 3 },
     atlas = "jokers",
@@ -1053,6 +1069,7 @@ local sunny_side_up = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 5, y = 3 },
@@ -1104,6 +1121,7 @@ local sunflower_seeds = {
         needed = 3,
         left = 3
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 7, y = 3 },
@@ -1171,6 +1189,7 @@ local tenner = {
     config = {
         dollars = 10
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 8, y = 3 },
@@ -1222,6 +1241,7 @@ local sticker_sheet = {
     config = {
         per_sticker = 2
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 9, y = 3 },
@@ -1279,7 +1299,8 @@ local fourbit = {
         needed = 16,
         left = 16
     },
-    blueprint_compat = false,
+    perishable_compat = true,
+    blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 1, y = 4 },
     pixel_size = { w = 53, h = 53 },
@@ -1475,6 +1496,7 @@ local dog_chocolate = {
             "tag_entr_dog"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 4, y = 4 },
@@ -1516,6 +1538,7 @@ local nucleotide = {
             "set_entr_misc_jokers",
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 8, y = 6 },
@@ -1577,6 +1600,7 @@ local afterimage = {
             "set_entr_misc_jokers",
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 5, y = 4 },
@@ -1636,6 +1660,7 @@ local qu = {
             "set_entr_misc_jokers",
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 6, y = 4 },
@@ -1674,6 +1699,7 @@ local memento_mori = {
             "set_entr_misc_jokers",
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 8, y = 4 },
@@ -1712,6 +1738,7 @@ local broadcast = {
             "set_entr_misc_jokers",
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 5 },
@@ -1799,6 +1826,8 @@ local milk_chocolate = {
     end,
     pools = {["Food"] = true},
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if context.selling_self or context.forcetrigger then
             G.E_MANAGER:add_event(Event({
@@ -1830,6 +1859,8 @@ local insurance_fraud = {
     pos = {x = 9, y = 7},
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if (context.selling_card and context.card.config.center.set == "Tarot") or context.forcetrigger then
             G.E_MANAGER:add_event(Event({
@@ -1861,6 +1892,8 @@ local free_samples = {
         }
     },
     eternal_compat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     pos = { x = 4, y = 6 },
     atlas = "jokers",
     config = {
@@ -1928,6 +1961,8 @@ local fused_lens = {
         }} 
     end,
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if (context.after and SMODS.pseudorandom_probability(
             card,
@@ -1973,6 +2008,8 @@ local opal = {
         }
     },
     eternal_compat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     pos = { x = 5, y = 6 },
     atlas = "jokers",
     calculate = function(self, card, context)
@@ -2000,6 +2037,7 @@ local inkbleed = {
         }
     },
     eternal_compat = true,
+    perishable_compat = true,
     pos = { x = 7, y = 6 },
     atlas = "jokers",
     entr_credits = {
@@ -2029,6 +2067,8 @@ local roulette = {
         }
     },
     eternal_compat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     pos = {x = 0, y = 8},
     atlas = "jokers",
     loc_vars = function(self, q, card)
@@ -2114,7 +2154,6 @@ local debit_card = {
             }
         }
     end,
-    demicoloncompat = true,
     calculate = function(self, card, context)
         if context.money_altered and to_big(context.amount) < to_big(0) and not context.blueprint and context.from_shop then
             card.ability.current_spent = card.ability.current_spent - context.amount
@@ -2171,7 +2210,8 @@ local birthday_card = {
             }
         }
     end,
-    demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if Overflow then
             if context.joker_main and G.consumeables:get_total_count() >= card.ability.consumables then
@@ -2247,6 +2287,8 @@ local slipstream = {
         xmult = 2,
     },
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if context.setting_blind then
             if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
@@ -2319,6 +2361,7 @@ local cass = {
         mod = 0.5
     },
     demicoloncompat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if context.using_consumeable and (context.consumeable.config.center.set == "Planet" or context.consumeable.config.center.set == "Star") then
             card.ability.mod = math.min(card.ability.mod, 20)
@@ -2439,6 +2482,8 @@ local crabus = {
         x_chips_mod = 0.05
     },
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if context.before and not context.repetition and not context.blueprint then
             local cards = {}
@@ -2517,6 +2562,7 @@ local hexa = {
         csl = 3
     },
     demicoloncompat = true,
+    perishable_compat = true,
     add_to_deck = function(self, card)
         Entropy.ChangeFullCSL(card.ability.csl)
     end,
@@ -2557,7 +2603,8 @@ local sandpaper = {
     loc_vars = function(self, q, card)
         q[#q+1] = G.P_CENTERS.m_stone
     end,
-    demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if context.after then
             local stones = {}
@@ -2620,6 +2667,7 @@ local purple_joker = {
     pos = { x = 1, y = 7 },
     atlas = "jokers",
     demicoloncompat = true,
+    blueprint_compat = true,
     config = {
         xmult_mod = 0.2,
         xmult = 1
@@ -2671,6 +2719,8 @@ local chalice_of_blood = {
     pos = { x = 2, y = 7 },
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     config = {
         xmult_mod = 0.75,
     },
@@ -2704,6 +2754,7 @@ local torn_photograph = {
         }
     },
     eternal_compat = true,
+    blueprint_compat = true,
     pos = { x = 3, y = 7 },
     pixel_size = { h = 95 / 1.2 },
     atlas = "jokers",
@@ -2748,9 +2799,11 @@ local chuckle_cola = {
     pos = { x = 4, y = 7 },
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     config = {
-        triggers = 20,
-        xchip_mod = 2
+        triggers = 10,
+        xchip_mod = 1.5
     },
     pools = {Food = true},
     loc_vars = function(self, q, card)
@@ -2799,6 +2852,7 @@ local antiderivative = {
         }
     },
     eternal_compat = true,
+    perishable_compat = true,
     pos = { x = 5, y = 7 },
     atlas = "jokers",
 }
@@ -2937,6 +2991,7 @@ local alles = {
         dollars = 8
     },
     eternal_compat = true,
+    perishable_compat = true,
     pos = { x = 6, y = 7 },
     pixel_size = {h = 46},
     atlas = "jokers",
@@ -2978,6 +3033,7 @@ local feynman_point = {
         nearest_mod = 0.05
     },
     eternal_compat = true,
+    perishable_compat = true,
     pos = { x = 7, y = 7 },
     atlas = "jokers",
     loc_vars = function(self, q, card)
@@ -3078,6 +3134,7 @@ local neuroplasticity = {
         }
     },    
     eternal_compat = true,
+    perishable_compat = true,
     pos = {x = 3, y = 8},
     atlas = "jokers",
     add_to_deck = function(self, card, from_debuff)
@@ -3143,6 +3200,7 @@ local dragonfruit = {
         left = 5,
         left_mod = 1
     },
+    perishable_compat = true,
     pools = {Food = true},
     add_to_deck = function(self, card, from_debuff)
         Entropy.ChangeFullCSL(card.ability.left)
@@ -3259,6 +3317,7 @@ local penny = {
     end,
     pixel_size = { w = 32, h = 32 },
     demicoloncompat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition) or context.forcetrigger then
             card.ability.extra.chips = to_big(card.ability.extra.chips) * 2
@@ -3300,6 +3359,8 @@ local slothful_joker = {
         }
     end,
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if (context.individual and Entropy.true_suitless(context.other_card) and context.cardarea == G.play) or context.forcetrigger then
             return {
@@ -3326,6 +3387,7 @@ local radar = {
             "set_entr_misc_jokers",
         }
     },
+    perishable_compat = true,
     loc_vars = function(self, q, card)
         return {
             vars = {
@@ -3358,6 +3420,8 @@ local abacus = {
         }
     },
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if (context.individual and context.other_card.base.nominal and to_big(context.other_card.base.nominal) > to_big(0) and context.cardarea == G.play) or context.forcetrigger then
             local id = context.other_card:get_id()
@@ -3387,6 +3451,8 @@ local matryoshka_dolls = {
             "set_entr_misc_jokers",
         }
     },
+    perishable_compat = true,
+    blueprint_compat = true,
     demicoloncompat = true,
     loc_vars = function(self, q, card)
         return {
@@ -3443,6 +3509,8 @@ local menger_sponge = {
             "set_entr_misc_jokers",
         }
     },
+    perishable_compat = true,
+    blueprint_compat = true,
     demicoloncompat = true,
     loc_vars = function(self, q, card)
         return {
@@ -3500,6 +3568,8 @@ local arbitration = {
         }
     },
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     loc_vars = function(self, q, card)
         q[#q+1] = G.P_CENTERS.c_judgement
         q[#q+1] = G.P_CENTERS.m_glass
@@ -3547,6 +3617,8 @@ local masterful_gambit = {
         }
     },
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if (context.joker_main and #G.play.cards == 1) or context.forcetrigger then
             return {
@@ -3582,6 +3654,8 @@ local fourty_benadryls = {
     },
     pixel_size = { h = 95 / 1.2 },
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
             return {
@@ -3618,6 +3692,7 @@ local red_fourty = {
         }
     },
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     pools = {["Food"] = true},
     loc_vars = function(self, q, card)
@@ -3672,6 +3747,7 @@ local promotion = {
         }
     },
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     calculate = function(self, card, context)
         if (context.end_of_round and not context.individual and not context.repetition) or context.forcetrigger then
@@ -3716,6 +3792,7 @@ local offbrand = {
     },
     pools = {["Food"] = true},
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     loc_vars = function(self, q, card)
         return {
@@ -3760,6 +3837,7 @@ local girldinner = {
     },
     pools = {["Food"] = true},
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     loc_vars = function(self, q, card)
         return {
@@ -3807,6 +3885,7 @@ local recycling_bin = {
         }
     },
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     loc_vars = function(self, q, card)
         return {
@@ -3863,6 +3942,7 @@ local gold_bar = {
     },
     pools = {["Food"] = true},
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     loc_vars = function(self, q, card)
         return {
@@ -3909,6 +3989,7 @@ local scribbled_joker = {
         }
     },
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     loc_vars = function(self, q, card)
         return {
@@ -3955,6 +4036,8 @@ local jokers_against_humanity = {
             "set_entr_misc_jokers",
         }
     },
+    perishable_compat = true,
+    blueprint_compat = true,
     demicoloncompat = true,
     blueprint_compat = true,
     loc_vars = function(self, q, card)
@@ -3999,6 +4082,7 @@ local blind_collectible_pack = {
     pos = {x = 3, y = 10},
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     dependencies = {
         items = {
@@ -4038,6 +4122,7 @@ local prayer_card = {
     pos = {x = 4, y = 10},
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     config = {
         amount = 100
@@ -4123,6 +4208,7 @@ local rugpull = {
     pos = {x = 6, y = 10},
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     config = {
         multiplier = 1.25
@@ -4191,6 +4277,7 @@ local petrichor = {
     pos = {x = 8, y = 10},  
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     config = {
         chips = 25
@@ -4224,6 +4311,7 @@ local otherworldly_joker = {
     pos = {x = 9, y = 10},  
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     dependencies = {
         items = {
@@ -4264,6 +4352,7 @@ local error_joker = {
     pos = {x = 0, y = 11},  
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     dependencies = {
         items = {
@@ -4310,6 +4399,7 @@ local diode = {
     pos = {x = 2, y = 11},  
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     config = {
         mult = 6,
@@ -4356,6 +4446,7 @@ local prismatic_shard = {
     soul_pos = {x = 0, y = 1},
     atlas = "prismatic_shard",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     config = {
         mult = 2,
@@ -4433,6 +4524,7 @@ local chameleon = {
     pos = {x = 9, y = 11},
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     dependencies = {
         items = {
@@ -4469,6 +4561,7 @@ local thanatophobia = {
     pos = {x = 0, y = 12},
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     dependencies = {
         items = {
@@ -4572,6 +4665,7 @@ local polaroid = {
     pos = {x = 3, y = 11},
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     config = {
         target = -1,
@@ -4682,6 +4776,7 @@ local car_battery = {
     pos = {x = 4, y = 11},
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     config = {
         uses_mod = 1
@@ -4720,6 +4815,7 @@ local chair = {
     pos = {x = 5, y = 11},
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     config = {
         uses_mod = 1
@@ -4934,6 +5030,7 @@ local photocopy = {
     rarity = 2,
     cost = 7,
     eternal_compat = true,
+    perishable_compat = true,
     pos = {x = 8, y = 11},
     atlas = "jokers",
     dependencies = {
@@ -5014,6 +5111,7 @@ local black_rose_green_sun = {
     rarity = 1,
     cost = 5,
     eternal_compat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     pos = {x = 6, y = 12},
     atlas = "jokers",
@@ -5050,6 +5148,7 @@ local jack_off = {
     rarity = 1,
     cost = 7,
     eternal_compat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     pos = {x = 6, y = 13},
     atlas = "jokers",
@@ -5091,6 +5190,7 @@ local fast_food = {
     rarity = 2,
     cost = 7,
     eternal_compat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     pos = {x = 1, y = 0},
     atlas = "placeholder",
@@ -5194,6 +5294,7 @@ local spiral_of_ants = {
     rarity = 1,
     cost = 5,
     eternal_compat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     pos = {x = 5, y = 12},
     atlas = "jokers",
@@ -5254,6 +5355,7 @@ local fork_bomb = {
     rarity = 1,
     cost = 2,
     eternal_compat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     pos = {x = 7, y = 12},
     atlas = "jokers",
@@ -5294,6 +5396,7 @@ local solar_panel = {
     rarity = 1,
     cost = 6,
     eternal_compat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     pos = {x = 8, y = 12},
     atlas = "jokers",
@@ -5331,6 +5434,7 @@ local kintsugi = {
     rarity = 1,
     cost = 6,
     eternal_compat = true,
+    perishable_compat = true,
     pos = {x = 0, y = 13},
     atlas = "jokers",
     dependencies = {
@@ -5356,6 +5460,7 @@ local blooming_crimson = {
     soul_pos = {x = 1, y = 1},
     atlas = "prismatic_shard",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     config = {
         xmult = 1.15,
@@ -5457,6 +5562,7 @@ local shadow_crystal = {
     eternal_compat = true,
     pos = {x = 1, y = 13},
     atlas = "jokers",
+    perishable_compat = true,
     blueprint_compat = true,
     config = {
         extra = {
@@ -5491,6 +5597,7 @@ local miracle_berry = {
     pools = {
         Food = true
     },
+    perishable_compat = true,
     blueprint_compat = true,
     config = {
         uses = 4
@@ -5538,6 +5645,7 @@ local meridian = {
     eternal_compat = true,
     pos = {x = 3, y = 13},
     atlas = "jokers",
+    perishable_compat = true,
     blueprint_compat = true,
     config = {
         multiplier = 5
@@ -5583,6 +5691,7 @@ local mango = {
     pools = {
         Food = true
     },
+    perishable_compat = true,
     blueprint_compat = true,
     config = {
         hands_left = 5
@@ -5643,6 +5752,7 @@ local kitchenjokers = {
     config = {
         off_perc = 0.25,
     },
+    perishable_compat = true,
     dependencies = {
         items = {
             "set_entr_misc_jokers",
@@ -5676,6 +5786,8 @@ local hash_miner = {
         per_corrupted = 2,
         extra_value = 0
     },
+    perishable_compat = true,
+    blueprint_compat = true,
     dependencies = {
         items = {
             "set_entr_misc_jokers",
@@ -5768,6 +5880,8 @@ local dice_shard = {
             "set_entr_dice_jokers",
         }
     },
+    perishable_compat = true,
+    blueprint_compat = true,
     pools = {["Dice"] = true},
     loc_vars = function(self, q, card)
         local name = "None"
@@ -5831,6 +5945,8 @@ local bell_curve = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
+    blueprint_compat = true,
     demicoloncompat = true,
     calculate = function(self, card, context)
         if context.repetition and context.cardarea == G.play then

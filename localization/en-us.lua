@@ -655,7 +655,7 @@ local decs = {
 					"{C:blue}+#1#{} Chip#<s>1#",
 					"at the end of the {C:attention}shop{}",
 					"destroy all {C:attention}Food{} or {C:attention}Candy{} Jokers",
-					"then increase this Jokers chips by {X:dark_edition,C:white}^#2#{}",
+					"then increase this Jokers chips by {X:blue,C:white}X#2#{}",
 					"if any {c:attention}Food{} or {C:attention}Candy{} Jokers were destroyed"
 				}
 			},
