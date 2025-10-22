@@ -420,6 +420,7 @@ local rusty_shredder = {
         items = {
             "set_entr_misc_jokers"
         }
+    },
     perishable_compat = true,
     blueprint_compat = true,
     immutable = true,
