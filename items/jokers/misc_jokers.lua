@@ -5817,6 +5817,36 @@ local dice_shard = {
     end
 }
 
+local bell_curve = {
+    order = 107,
+    object_type = "Joker",
+    key = "bell_curve",
+    rarity = 1,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 7, y = 13},
+    atlas = "jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.repetition and context.cardarea == G.play then
+            local index = 0
+            for i, v in pairs(G.play.cards) do
+                if v == context.other_card then index = i; break end
+            end
+            if index ~= 1 and index ~= #G.play.cards then
+                return {
+                    repetitions = 1
+                }
+            end
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -5933,6 +5963,7 @@ return {
         mango,
         kitchenjokers,
         hash_miner,
-        dice_shard
+        dice_shard,
+        bell_curve
     }
 }

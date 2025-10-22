@@ -1701,6 +1701,14 @@ local decs = {
 					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#, #3#)"
                 },
             },
+			j_entr_bell_curve = {
+                name = "Bell Curve",
+                text = {
+					"Retrigger all Played",
+					"cards other than the",
+					"{C:attention}First{} and {C:attention}Last"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
