@@ -2398,3 +2398,43 @@ SMODS.Booster:take_ownership_by_kind("Standard", {
 }, true)
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''game.lua'''
+pattern = '''
+if _ch.consumeables then
+    for k, v in ipairs(_ch.consumeables) do
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                add_joker(v.id, nil, k ~= 1)
+            return true
+            end
+        }))
+    end
+end
+'''
+position = "at"
+payload = '''
+if _ch.consumeables then
+    for k, v in ipairs(_ch.consumeables) do
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                local _joker = add_joker(v.id, v.edition, k ~= 1)
+                if v.stickers then
+                  for i, _v in ipairs(v.stickers) do
+                    SMODS.Stickers[_v]:apply(_joker, true)
+                  end
+                end
+                if v.eternal then _joker:set_eternal(true) end
+                if v.pinned then _joker.pinned = true end
+                if v.rental then _joker:set_rental(true) end
+            return true
+            end
+        }))
+    end
+end
+'''
+match_indent = true
+
+            
