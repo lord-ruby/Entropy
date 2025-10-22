@@ -328,6 +328,29 @@ local riffle_shuffle = {
 	},
 }
 
+local phantom_hand_syndrome = {
+    object_type = "Challenge",
+	key = "phantom_hand_syndrome",
+	order = 6,
+    rules = {
+        modifiers = {
+            {id = "discards", value = -32},
+        }
+    },
+    jokers = {
+		{ id = "j_entr_jack_off", stickers = { "entr_aleph" } },
+        { id = "j_entr_nucleotide", stickers = { "entr_aleph" } },
+        { id = "j_castle", stickers = { "entr_aleph" } },
+        { id = "j_selzer" },
+	},
+    consumeables = {
+        { id = "c_medium" },
+        { id = "c_medium" },
+    },
+	deck = {
+		type = "Challenge Deck",
+	},
+}
 
 
 return {
@@ -338,6 +361,7 @@ return {
         paycheck_to_paycheck,
         variety_content,
         riffle_shuffle,
+        phantom_hand_syndrome,
         (SMODS.Mods["Cryptid"] or {}).can_load and hyperbolic_chamber or nil
     }
 }
