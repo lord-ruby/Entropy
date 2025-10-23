@@ -109,15 +109,9 @@ local destiny = {
         end
         if #remove > 0 then SMODS.calculate_context({remove_playing_cards = true, removed=remove}) end
         add_joker(Entropy.GetRecipe(G.hand.highlighted))
-        if Entropy.DeckOrSleeve("crafting") then
-            if not (card.ability.overflow_amount) then
-                local card2 = copy_card(card)
-                card2.ability.cry_absolute = true
-                card2:add_to_deck()
-                G.consumeables:emplace(card2)
-                card2:set_edition("e_negative")
-            end
-        end
+    end,
+    keep_on_use = function(self, card)
+        return Entropy.DeckOrSleeve("crafting")
     end,
     can_use = function(self, card)
         return G.hand and #G.hand.highlighted == 5
