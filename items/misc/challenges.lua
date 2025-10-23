@@ -317,7 +317,7 @@ local riffle_shuffle = {
 		{ id = "j_entr_meridian", stickers = { "entr_aleph" } },
         { id = "j_entr_broadcast", stickers = { "entr_aleph" } },
         { id = "j_entr_roulette", stickers = { "entr_aleph" } },
-        { id = "j_entr_crimson_flask", stickers = { "entr_aleph" }, edition = "entr_lowres" },
+        { id = "j_entr_crimson_flask", stickers = { "entr_aleph", "entr_pure" }, edition = "entr_lowres" },
 	},
     consumeables = {
         { id = "c_entr_ingwaz" },
