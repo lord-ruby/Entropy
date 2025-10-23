@@ -5261,10 +5261,11 @@ local decs = {
 		},
 		Other = {
 			antipattern_pair = {
-				name = "Poker hand Pair",
+				name = "Antipattern",
 				text = {
-					"Already Played",
-					"#1#, #2#"
+					"Hands played after #1#: ",
+					"#2# #3# #4# #5# #6# #7#",
+					"#8# #9# #10# #11# #12#",
 				}
 			},
 			cry_multiuse = {
