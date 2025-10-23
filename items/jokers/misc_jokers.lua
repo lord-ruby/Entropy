@@ -5236,8 +5236,25 @@ local antipattern = {
     pos = {x = 4, y = 12},
     atlas = "jokers",
     loc_vars = function(self, q, card)
+        local hands = {}
+        for i, v in pairs(G.handlist) do
+            hands[#hands+1] = {}
+        end
         for i, v in pairs(card.ability.hand_pairs) do
-            q[#q+1] = {set = "Other", key = "antipattern_pair", vars = {localize(v[1], "poker_hands"), localize(v[2], "poker_hands")}}
+            hands[v[1]] = hands[v[1]] or {}
+            hands[v[1]][#hands[v[1]]+1] = v[2]
+        end
+        for i, v in pairs(hands) do
+            local vars = {localize(i, "poker_hands")}
+            if #v > 0 then
+                for i, v2 in pairs(v) do
+                    vars[#vars+1] = localize(v2, "poker_hands")
+                end
+                for i = #vars, 12 do
+                    vars[#vars+1] = ""
+                end
+                q[#q+1] = {set = "Other", key = "antipattern_pair", vars = vars}
+            end
         end
         return {
             vars = {
