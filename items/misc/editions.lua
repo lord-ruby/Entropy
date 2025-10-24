@@ -342,7 +342,8 @@ function Card:set_cost()
 	if G.GAME.modifiers.entr_platinum and self.config.center.set == "Joker" then
 		self.cost = math.floor(self.cost * G.GAME.modifiers.entr_platinum)
 	end
-	if self.config.center.key == "j_entr_recursive_joker" then
+	if self.config.center.key == "j_entr_recursive_joker" and not self.ability.cost_set then
+		self.ability.cost_set = true
 		self.sell_cost = self.cost
 		self.sell_cost_label = self.facing == 'back' and '?' or number_format(self.sell_cost)
 	end
