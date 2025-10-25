@@ -5170,10 +5170,12 @@ local jack_off = {
             end
             if G.hand.cards[1] then
                 local selected_card, card_index = pseudorandom_element(_cards, 'jacking_off')
-                G.hand:add_to_highlighted(selected_card, true)
-                table.remove(_cards, card_index)
-                any_selected = true
-                play_sound('card1', 1)
+                if selected_card then
+                    G.hand:add_to_highlighted(selected_card, true)
+                    table.remove(_cards, card_index)
+                    any_selected = true
+                    play_sound('card1', 1)
+                end
             end
             if any_selected then G.FUNCS.discard_cards_from_highlighted(nil, true) end
         end
