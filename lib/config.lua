@@ -80,6 +80,15 @@ local entrConfigTab = function()
 		callback = function()
         end,
 	})
+	entr_nodes[#entr_nodes+1] = create_slider({
+		label = localize('k_entr_corrupted_speed'), 
+		w = 5, 
+		h = 0.4, 
+		ref_table = Entropy.config, 
+		ref_value = 'corrupted_speed', 
+		min = 25, 
+		max = 100
+	})
 	return {
 		n = G.UIT.ROOT,
 		config = {
