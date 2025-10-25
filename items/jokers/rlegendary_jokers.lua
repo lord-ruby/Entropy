@@ -457,7 +457,8 @@ local ybur = {
                 }
             end
         end
-    end
+    end,
+    pronouns = "feminine",
 }
 
 local zelavi = {
@@ -513,7 +514,8 @@ local zelavi = {
                 G.shop_booster.cards[1]:set_ability(G.P_CENTERS.p_spectral_mega_1)
             end
         end
-    end
+    end,
+    pronouns = "he_they",
 }
 
 function Entropy.missing_ranks()
@@ -595,6 +597,7 @@ local ssac = {
     entr_credits = {
         idea = {"cassknows"}
     },
+    pronouns = "feminine",
 }
 
 local subarc = {
@@ -668,7 +671,8 @@ local subarc = {
                 end
             end
         end
-    end
+    end,
+    pronouns = "masculine",
 }
 
 local axeh = {
@@ -709,7 +713,8 @@ local axeh = {
                 key = "j_entr_sunny_joker"
             }
         end
-    end
+    end,
+    pronouns = "feminine",
 }
 
 return {
