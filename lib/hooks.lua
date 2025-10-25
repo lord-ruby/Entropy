@@ -3880,7 +3880,9 @@ function SMODS.is_eternal(c, ...)
     if c and (c.area == G.play or c.area == G.hand or c.area == G.deck) and (c.ability.eternal or c.ability.entr_aleph) then
         return true
     end
-    return is_eternalref(c, ...)
+    if c then
+        return is_eternalref(c, ...)
+    end
 end
 
 local open_ref = Card.open

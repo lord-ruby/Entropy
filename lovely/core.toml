@@ -2437,4 +2437,29 @@ end
 '''
 match_indent = true
 
-            
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+for i=1, highlighted_count do
+'''
+position = "at"
+payload = '''
+for i=1, highlighted_count do
+  if not G.hand.highlighted[i] or G.hand.highlighted[i].already_discarded then break
+  G.hand.highlighted[i].already_discarded = true
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+local _, eff = next(reps[j])
+'''
+position = "before"
+payload = '''
+if not reps[j] then break end
+'''
+match_indent = true
