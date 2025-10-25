@@ -6013,7 +6013,7 @@ local pineapple = {
     calculate = function(self, card, context)
         if (context.end_of_round and not context.individual and not context.blueprint and not context.repetition) or context.forcetrigger then
             local rcard = pseudorandom_element(G.playing_cards, "entr_pineapple")          
-            rcard.ability.perma_repetitions = card.ability.perma_repetitions + 1
+            rcard.ability.perma_repetitions = rcard.ability.perma_repetitions + 1
             if not context.forcetrigger then
                 if card.ability.rounds - 1 <= 0 then
                     SMODS.destroy_cards(card, nil, nil, true)
