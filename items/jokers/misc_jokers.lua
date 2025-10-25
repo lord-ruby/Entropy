@@ -2251,7 +2251,7 @@ local ruby = {
     },
     demicoloncompat = true,
     blueprint_compat = true,
-    pronouns = "feminine",
+    pronouns = "she_her",
     calculate = function(self, card, context)
         if context.entr_path_changed and not context.blueprint then
             SMODS.scale_card(card, {ref_table = card.ability, ref_value = "xmult", scalar_value = "xmult_mod"})
@@ -2366,7 +2366,7 @@ local cass = {
     },
     demicoloncompat = true,
     blueprint_compat = true,
-    pronouns = "feminine",
+    pronouns = "she_her",
     calculate = function(self, card, context)
         if context.using_consumeable and (context.consumeable.config.center.set == "Planet" or context.consumeable.config.center.set == "Star") then
             card.ability.mod = math.min(card.ability.mod, 20)
@@ -2489,7 +2489,7 @@ local crabus = {
     demicoloncompat = true,
     perishable_compat = true,
     blueprint_compat = true,
-    pronouns = "masculine",
+    pronouns = "any_all",
     calculate = function(self, card, context)
         if context.before and not context.repetition and not context.blueprint then
             local cards = {}
@@ -2589,7 +2589,7 @@ local hexa = {
             "set_entr_misc_jokers",
         }
     },
-    pronouns = "feminine",
+    pronouns = "she_her",
 }
 
 local sandpaper = {
