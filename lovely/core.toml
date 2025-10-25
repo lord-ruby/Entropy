@@ -2446,6 +2446,21 @@ for i=1, highlighted_count do
 '''
 position = "at"
 payload = '''
+G.E_MANAGER:add_event(Event{
+  func = function()
+      trigger = "after",
+      blocking = false,
+      func = function()
+          for i, v in pairs(G.discard.cards) do
+              v.already_discarded = nil
+          end
+          for i, v in pairs(G.hand.cards) do
+              v.already_discarded = nil
+          end
+          return true
+      end
+  end
+})
 for i=1, highlighted_count do
   if not G.hand.highlighted[i] or G.hand.highlighted[i].already_discarded then break end
   G.hand.highlighted[i].already_discarded = true
