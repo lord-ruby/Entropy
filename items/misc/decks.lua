@@ -154,10 +154,10 @@ local gemstone = {
     end
   end
 }
-
 local update_ref = Card.update
 function Card:update(dt, ...)
     if self.ability.glitched_crown then
+      self.last_dt = self.last_dt or 0
       if not self.glitched_dt then
         local soul_layer
         for i, v in pairs(self.ability.glitched_crown) do
@@ -171,7 +171,8 @@ function Card:update(dt, ...)
           self.children.floating_sprite.states.click.can = false
         end
       end
-      self.glitched_dt = (self.glitched_dt or 0) + dt / G.SETTINGS.GAMESPEED * 2.5 * (Entropy.config.corrupted_speed/100)
+      self.glitched_dt = (self.glitched_dt or 0) + (G.TIMERS.REAL - self.last_dt) * 2.5 * (Entropy.config.corrupted_speed/100)
+      self.last_dt = G.TIMERS.REAL
       if self.glitched_dt > 3 / #self.ability.glitched_crown then
           self.glitched_dt = 0
           self.glitched_index = 1 + (self.glitched_index or 1)
