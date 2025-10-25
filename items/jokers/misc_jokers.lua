@@ -2250,6 +2250,7 @@ local ruby = {
     },
     demicoloncompat = true,
     blueprint_compat = true,
+    pronouns = "feminine",
     calculate = function(self, card, context)
         if context.entr_path_changed and not context.blueprint then
             SMODS.scale_card(card, {ref_table = card.ability, ref_value = "xmult", scalar_value = "xmult_mod"})
@@ -2290,6 +2291,7 @@ local slipstream = {
     demicoloncompat = true,
     perishable_compat = true,
     blueprint_compat = true,
+    pronouns = "he_they",
     calculate = function(self, card, context)
         if context.setting_blind then
             if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
@@ -2363,6 +2365,7 @@ local cass = {
     },
     demicoloncompat = true,
     blueprint_compat = true,
+    pronouns = "feminine",
     calculate = function(self, card, context)
         if context.using_consumeable and (context.consumeable.config.center.set == "Planet" or context.consumeable.config.center.set == "Star") then
             card.ability.mod = math.min(card.ability.mod, 20)
@@ -2485,6 +2488,7 @@ local crabus = {
     demicoloncompat = true,
     perishable_compat = true,
     blueprint_compat = true,
+    pronouns = "masculine",
     calculate = function(self, card, context)
         if context.before and not context.repetition and not context.blueprint then
             local cards = {}
@@ -2584,6 +2588,7 @@ local hexa = {
             "set_entr_misc_jokers",
         }
     },
+    pronouns = "feminine",
 }
 
 local sandpaper = {
@@ -5983,6 +5988,56 @@ local bell_curve = {
     end,
 }
 
+local pineapple = {
+    order = 108,
+    object_type = "Joker",
+    key = "pineapple",
+    rarity = 2,
+    cost = 7,
+    eternal_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    config = {
+        rounds = 5
+    },
+    pools = {Food = true},
+    perishable_compat = true,
+    blueprint_compat = true,
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.individual and not context.blueprint and not context.repetition) or context.forcetrigger then
+            local rcard = pseudorandom_element(G.playing_cards, "entr_pineapple")          
+            rcard.ability.perma_repetitions = card.ability.perma_repetitions + 1
+            if not context.forcetrigger then
+                if card.ability.rounds - 1 <= 0 then
+                    SMODS.destroy_cards(card, nil, nil, true)
+                    return {
+                        message = localize('k_eaten_ex'),
+                        colour = G.C.FILTER
+                    }
+                else
+                    card.ability.rounds = card.ability.rounds - 1
+                end
+            end
+            return {
+                message = localize("k_upgrade_ex")
+            }
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.rounds
+            }
+        }
+    end
+}
+
 return {
     items = {
         surreal,
@@ -6100,6 +6155,7 @@ return {
         kitchenjokers,
         hash_miner,
         dice_shard,
-        bell_curve
+        bell_curve,
+        pineapple
     }
 }

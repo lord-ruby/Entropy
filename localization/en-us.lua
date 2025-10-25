@@ -1709,6 +1709,15 @@ local decs = {
 					"{C:attention}First{} and {C:attention}Last"
                 },
             },
+			j_entr_pineapple = {
+                name = "Pineapple",
+                text = {
+					"Add a {C:attention}Permanent{} Retrigger",
+					"to {C:attention}1{} random card from",
+					"{C:attention}full deck{} at the end of",
+					"the next {C:attention}#1#{} rounds"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
