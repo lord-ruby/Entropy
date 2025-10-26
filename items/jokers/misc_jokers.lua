@@ -2255,26 +2255,43 @@ local ruby = {
     pronouns = "she_her",
     calculate = function(self, card, context)
         if context.buying_card and context.card.config.center.set == "Joker" then
-            card.ability.jokers = card.ability.jokers + 1
-            local add
-            if card.ability.jokers >= card.ability.jokers_needed then
-                add_tag(Tag(get_next_tag_key()))
-                G.E_MANAGER:add_event(Event{
-                    func = function()
-                        card.ability.jokers = 0
-                        return true
-                    end
-                })
-                add = true
-            end
-            if add then
+            if context.blueprint then
+                local off = 0
+                for i = 1, #G.jokers.cards do
+                    if G.jokers.cards[i] == context.blueprint_card then off = 1; break end
+                    if G.jokers.cards[i] == card then break end
+                end
+                if card.ability.jokers + off == card.ability.jokers_needed then
+                    add_tag(Tag(get_next_tag_key()))
+                    return {
+                        message = localize("k_plus_tag")
+                    }
+                end
                 return {
-                    message = localize("k_plus_tag")
+                    message = number_format(card.ability.jokers + off).."/"..number_format(card.ability.jokers_needed)
                 }
             else
-                return {
-                    message = number_format(card.ability.jokers).."/"..number_format(card.ability.jokers_needed)
-                }
+                card.ability.jokers = card.ability.jokers + 1
+                local add
+                if card.ability.jokers >= card.ability.jokers_needed then
+                    add_tag(Tag(get_next_tag_key()))
+                    G.E_MANAGER:add_event(Event{
+                        func = function()
+                            card.ability.jokers = 0
+                            return true
+                        end
+                    })
+                    add = true
+                end
+                if add then
+                    return {
+                        message = localize("k_plus_tag")
+                    }
+                else
+                    return {
+                        message = number_format(card.ability.jokers).."/"..number_format(card.ability.jokers_needed)
+                    }
+                end
             end
         end
     end,
@@ -2292,39 +2309,6 @@ local ruby = {
         }
     },
 }
-
-local blueprint_effect = SMODS.blueprint_effect
-function SMODS.blueprint_effect(card, target, context, ...)
-    if target.config.center_key == "j_entr_ruby" and context.buying_card and context.card.config.center.set == "Joker" then
-        if target.ability.jokers == target.ability.jokers_needed then
-            add_tag(Tag(get_next_tag_key()))
-            return {
-                message = localize("k_plus_tag")
-            }
-        end
-        return {
-            message = number_format(target.ability.jokers).."/"..number_format(target.ability.jokers_needed)
-        }
-    end
-    return blueprint_effect(card, target, context, ...)
-end
-
-SMODS.Joker:take_ownership("blueprint", {
-    calculate = function(self, card, context)
-        local other_joker = nil
-        for i = 1, #G.jokers.cards do
-            if G.jokers.cards[i] == self then other_joker = G.jokers.cards[i+1] end
-        end
-        if other_joker then return SMODS.blueprint_effect(card, other_joker, context) end
-    end
-}, true)
-
-SMODS.Joker:take_ownership("brainstorm", {
-    calculate = function(self, card, context)
-        local other_joker = G.jokers.cards[1]
-        if other_joker then return SMODS.blueprint_effect(card, other_joker, context) end
-    end
-}, true)
 
 local slipstream = {
     object_type = "Joker",
