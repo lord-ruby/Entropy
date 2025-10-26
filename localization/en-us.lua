@@ -3998,7 +3998,7 @@ local decs = {
 			},
 			tag_entr_ascendant_universal = {
 				name = "{C:gold}Universal Tag{}",
-				text = { "Level up {C:attention}#1#{}", "{C:gold}+6{} Ascension Power" },
+				text = { "Level up {C:attention}#1#{}", "{C:gold}+3{} Ascension Power" },
 			},
 			tag_entr_ascendant_ebundle = {
 				name = "{C:gold}Bundle Tag{}",
