@@ -6100,6 +6100,91 @@ local rubber_ball = {
     end
 }
 
+local stand_arrow = {
+    order = 110,
+    object_type = "Joker",
+    key = "stand_arrow",
+    rarity = 2,
+    cost = 8,
+    eternal_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+    config = {
+        left = 1,
+        left_mod = 1,
+        odds = 2,
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+            "e_entr_sunny",
+            "e_entr_solar",
+            "e_entr_freaky",
+            "e_entr_fractured"
+        }
+    },
+    perishable_compat = true,
+    blueprint_compat = true,
+    loc_vars = function(self, q, card)
+        local options = {
+                    "e_polychrome",
+                    "e_negative",
+                    "e_entr_sunny",
+                    "e_entr_solar",
+                    "e_entr_freaky",
+                    "e_entr_fractured"
+                }
+        for i, v in pairs(options) do
+            q[#q+1] = G.P_CENTERS[v]
+        end
+        local n, d = SMODS.get_probability_vars(card, 1, card.ability.odds, "stand_arrow")
+        return {
+            vars = {
+                card.ability.left,
+                card.ability.left_mod,
+                n, d
+            }
+        }
+    end,
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and not context.repetition) or context.forcetrigger then
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
+        end
+    end, 
+    can_use = function(self, card)
+        local num = Entropy.GetHighlightedCards({G.jokers}, card, 1, 1)
+        local no_ed = false
+        for i, v in pairs(num) do
+            if not v.edition then no_ed = true end
+        end
+        if not no_ed then return end
+        return #num > 0 and #num <= 1 and to_big(card.ability.left) > to_big(0) 
+    end,
+    use = function(self, card)
+        card.ability.left = card.ability.left - 1
+        local cards = Entropy.GetHighlightedCards({G.jokers}, card, 1, 1)
+        for i, v in pairs(cards) do
+            if SMODS.pseudorandom_probability(v, 'stand_arrow', 1, card.ability.odds) and not SMODS.is_eternal(v) then
+                v:start_dissolve()
+            elseif not v.edition then
+                local edition = SMODS.poll_edition({
+                    options = {
+                        "e_polychrome",
+                        "e_negative",
+                        "e_entr_sunny",
+                        "e_entr_solar",
+                        "e_entr_freaky",
+                        "e_entr_fractured"
+                    },
+                    guaranteed = true
+                })
+                v:set_edition(edition)
+            end
+        end
+    end
+}
+
 return {
     items = {
         surreal,
@@ -6219,6 +6304,7 @@ return {
         dice_shard,
         bell_curve,
         pineapple,
-        rubber_ball
+        rubber_ball,
+        stand_arrow
     }
 }
