@@ -1505,7 +1505,7 @@ local decs = {
                 },
             },
 			j_entr_zelavi = {
-                name = "Zelavi",
+                name = "Zelevai",
                 text = {
 					"This Joker gains {X:blue,C:white}X#2#{} Chips",
 					"whenever a {C:spectral}Spectral Pack{} is opened",
