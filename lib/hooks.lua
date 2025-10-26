@@ -2095,7 +2095,7 @@ local ref = Tag.init
 function Tag:init(_tag, for_collection, _blind_type, ...)
     if next(SMODS.find_card("j_entr_ruby")) and not for_collection then
         local roll = pseudorandom("ruby_asc")
-        if roll < 0.25 and Entropy.AscendedTags[_tag] then
+        if roll < 0.15 and Entropy.AscendedTags[_tag] then
             _tag = Entropy.AscendedTags[_tag]
         end
     end
