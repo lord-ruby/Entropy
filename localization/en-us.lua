@@ -1728,6 +1728,17 @@ local decs = {
 					"when triggered"
                 },
             },
+			j_entr_stand_arrow = {
+                name = "Stand Arrow",
+                text = {
+					"Use this Joker to {C:red}destroy{} a selected",
+					"Joker with a {C:green}#3# in #4#{} chance",
+					"otherwise apply {C:dark_edition}Polychrome, Negative{}",
+					"{C:dark_edition}Sunny, Solar, Fractured{} or {C:dark_edition}Freaky{}",
+					"gains {C:attention}#2#{} use#<s>2# when defeating a Blind",
+					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
