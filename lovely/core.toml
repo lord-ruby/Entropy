@@ -2476,3 +2476,17 @@ payload = '''
 if not reps[j] then break end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''tag.lua'''
+pattern = '''
+if self.name == 'Orbital Tag' then
+'''
+position = "after"
+payload = '''
+if not self.ability.orbital_hand or self.ability.orbital_hand == "[poker hand]" then
+  self.ability.orbital_hand = "High Card"
+end
+'''
+match_indent = true
