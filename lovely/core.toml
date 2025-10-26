@@ -2490,3 +2490,52 @@ if not self.ability.orbital_hand or self.ability.orbital_hand == "[poker hand]" 
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+local in_scoring = scoring_hand and SMODS.in_scoring(card, context.scoring_hand)
+'''
+position = "at"
+payload = '''
+local area = context.scoring_hand
+if context.cardarea == G.play and G.rubber_cards then area = G.rubber_cards.cards end
+local in_scoring = scoring_hand and SMODS.in_scoring(card, area)
+if G.rubber_cards and scoring_hand [_] == scoring_hand [_-1] then
+  card_eval_status_text(
+    card,
+    "extra",
+    nil,
+    nil,
+    nil,
+    { message = localize("k_bounce_ex") }
+  )
+end
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events'''
+pattern = '''
+    for i=1, #scoring_hand do
+        --Highlight all the cards used in scoring and play a sound indicating highlight
+        highlight_card(scoring_hand[i],(i-0.999)/5,'up')
+    end
+'''
+position = "at"
+payload = '''
+    for i=1, #scoring_hand do
+        --Highlight all the cards used in scoring and play a sound indicating highlight
+        local area = context.scoring_hand
+        if scoring_hand[i].area == G.play and G.rubber_cards then area = G.rubber_cards.cards end
+        local in_scoring = scoring_hand and SMODS.in_scoring(card, area)
+        if in_scoring then
+          highlight_card(scoring_hand[i],(i-0.999)/5,'up')
+        end
+    end
+'''
+match_indent = true
+

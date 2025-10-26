@@ -821,9 +821,9 @@ G.FUNCS.get_poker_hand_info = function(_cards)
 end
 
 local never_scoresref = SMODS.never_scores
-function SMODS.never_scores(...)
-	if (next(SMODS.find_card("j_splash")) or SMODS.always_scores(...)) and Entropy.BlindIs("bl_entr_kappa") then return true end
-	return never_scoresref(...)
+function SMODS.never_scores(card, ...)
+	if (next(SMODS.find_card("j_splash")) or SMODS.always_scores(card, ...)) and Entropy.BlindIs("bl_entr_kappa") then return true end
+	return never_scoresref(card, ...)
 end
 
 local lambda = {

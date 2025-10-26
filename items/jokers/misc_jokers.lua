@@ -6072,6 +6072,34 @@ local pineapple = {
     end
 }
 
+local rubber_ball = {
+    order = 109,
+    object_type = "Joker",
+    key = "rubber_ball",
+    rarity = 1,
+    cost = 4,
+    eternal_compat = true,
+    pos = {x = 0, y = 0},
+    atlas = "placeholder",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    config = {
+        odds = 3,
+    },
+    perishable_compat = true,
+    loc_vars = function(self, q, card)
+        local n, d = SMODS.get_probability_vars(card, 1, card.ability.odds, "rubber_ball")
+        return {
+            vars = {
+                n, d
+            }
+        }
+    end
+}
+
 return {
     items = {
         surreal,
@@ -6190,6 +6218,7 @@ return {
         hash_miner,
         dice_shard,
         bell_curve,
-        pineapple
+        pineapple,
+        rubber_ball
     }
 }

@@ -1719,6 +1719,15 @@ local decs = {
 					"the next {C:attention}#1#{} rounds"
                 },
             },
+			j_entr_rubber_ball = {
+                name = "Rubber Ball",
+                text = {
+					"{C:green}#1# in #2#{} chance to",
+					"retrigger each scored card",
+					"then {C:red}reverse{} scoring {C:attention}order{}",
+					"when triggered"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
@@ -6087,6 +6096,7 @@ local decs = {
 			k_plus_tag = "+1 Tag",
 
 			k_switch_ex = "Switch!",
+			k_bounce_ex = "Bounce!"
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

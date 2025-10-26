@@ -4291,3 +4291,20 @@ function get_current_pool(_type, _rarity, _legendary, _append, override_equilibr
     local ret, ret2 = gcp(_type, _rarity, _legendary, _append, override_equilibrium_effect)
     return ret, ret2
 end
+
+local calc_main_scoring = SMODS.calculate_main_scoring
+function SMODS.calculate_main_scoring(context, scoring_hand)
+    if context.cardarea ~= G.play or not next(SMODS.find_card('j_entr_rubber_ball')) then
+	    calc_main_scoring(context, scoring_hand)
+    end
+	if context.cardarea == G.play and next(SMODS.find_card('j_entr_rubber_ball')) then
+        if not G.rubber_cards or #G.rubber_cards.cards == 0 then
+            G.rubber_cards = {cards = Entropy.rubber_ball_scoring(scoring_hand)}
+        end
+		context.cardarea = G.rubber_cards
+		calc_main_scoring(context, G.rubber_cards.cards)
+		context.cardarea = G.play
+        G.rubber_cards = nil
+	end
+	return
+end
