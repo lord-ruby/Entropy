@@ -2246,27 +2246,46 @@ local ruby = {
     pos = {x=0, y=0},
     soul_pos = {x = 1, y = 0},
     config = {
-        xmult = 1,
-        xmult_mod = 2
+        jokers_needed = 2,
+        jokers = 0
     },
     demicoloncompat = true,
     blueprint_compat = true,
     pronouns = "she_her",
     calculate = function(self, card, context)
-        if context.entr_path_changed and not context.blueprint then
-            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "xmult", scalar_value = "xmult_mod"})
-        end
-        if context.joker_main or context.forcetrigger then
-            return {
-                xmult = card.ability.xmult
-            }
+        if context.buying_card and context.card.config.center.set == "Joker" then
+            if not context.blueprint then
+                card.ability.jokers = card.ability.jokers + 1
+            end
+            local add
+            if card.ability.jokers + (context.blueprint and 1 or 0) >= card.ability.jokers_needed then
+                add_tag(Tag(get_next_tag_key()))
+                if not context.blueprint then 
+                    G.E_MANAGER:add_event(Event{
+                        func = function()
+                            card.ability.jokers = card.ability.jokers - card.ability.jokers_needed 
+                            return true
+                        end
+                    })
+                end
+                add = true
+            end
+            if add then
+                return {
+                    message = localize("k_plus_tag")
+                }
+            else
+                return {
+                    message = number_format(card.ability.jokers + (context.blueprint and 1 or 0)).."/"..number_format(card.ability.jokers_needed)
+                }
+            end
         end
     end,
     loc_vars = function(self, q, card)
         return {
             vars = {
-                number_format(card.ability.xmult_mod),
-                number_format(card.ability.xmult)
+                number_format(card.ability.jokers_needed),
+                number_format(card.ability.jokers_needed - card.ability.jokers)
             }
         }
     end,

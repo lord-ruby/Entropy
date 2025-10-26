@@ -354,7 +354,7 @@ local decs = {
 			j_entr_exousia = {
 				name = "Exousia",
 				text = {
-					"{C:attention}Ascends{} all Tags",
+					"{C:entr_entropic}Ascends{} all Tags",
 					"Gain {C:attention}#1#{} skip Tags when",
 					"any Blind is selected"
 				}
@@ -517,9 +517,10 @@ local decs = {
 			j_entr_ruby = {
 				name = "Ruby, Lord of Hope",
 				text = {
-					"This Joker gains {X:mult,C:white}X#1#{} Mult",
-					"Whenever you Enter or Exit {C:attention}The Flipside{}",
-					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}"
+					"Gain a random {C:attention}Tag{}",
+					"every {C:attention}#1#{} {C:inactive}[#2#]{} Jokers bought.",					
+					"Tags may randomly become",
+					"{C:entr_entropic}Ascended{}"
 				}
 			},
 			j_entr_slipstream = {
@@ -791,7 +792,7 @@ local decs = {
 			j_entr_caviar = {
 				name = "Caviar",
 				text = {
-					"{C:attention}Ascend{} the next {C:attention}#1#{}",
+					"{C:entr_entropic}Ascend{} the next {C:attention}#1#{}",
 					"obtained Tags"
 				},
 			},
@@ -3966,7 +3967,7 @@ local decs = {
 			},
 			tag_entr_ascendant_stock = {
 				name = "{C:gold}Stock Tag{}",
-				text = {"Multiplies your money by 2.5X", },
+				text = {"Multiplies your money by 2X", },
 			},
 			tag_entr_ascendant_blind = {
 				name = "{C:gold}Blind Tag{}",
@@ -6083,6 +6084,7 @@ local decs = {
 			k_plus_star = "+1 Star",
 			k_plus_pact = "+1 Pact",
 			k_plus_omen = "+1 Omen",
+			k_plus_tag = "+1 Tag",
 
 			k_switch_ex = "Switch!",
 		},

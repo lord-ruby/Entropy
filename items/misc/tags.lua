@@ -1094,7 +1094,7 @@ local stock = {
 	end,
 	apply = function(self, tag, context)
 		if context.type == "immediate" then
-			ease_dollars(G.GAME.dollars * 1.5)
+			ease_dollars(G.GAME.dollars)
 			tag:yep("+", G.C.GOLD, function()
 				return true
 			end)
