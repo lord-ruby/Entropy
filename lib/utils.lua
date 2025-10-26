@@ -1959,10 +1959,8 @@ function Entropy.rubber_ball_scoring(cards)
                 dir = -dir
                 add = true
                 v.triggered = true
+                new_cards[#new_cards+1] = cards[index]
             end
-        end
-        if add then 
-            new_cards[#new_cards+1] = cards[index]
         end
         new_cards[#new_cards+1] = cards[index]
         index = index + dir
