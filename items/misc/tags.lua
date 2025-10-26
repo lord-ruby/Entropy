@@ -432,9 +432,6 @@ SMODS.Atlas {
 			local lock = tag.ID
 			G.CONTROLLER.locks[lock] = true
 			tag:yep("+", G.C.RED, function()
-				if context.tag.ability and context.tag.ability.orbital_hand then
-					G.orbital_hand = context.tag.ability.orbital_hand
-				end
 				for i = 1, to_number(tag.ability.num) do
 					local tag = Tag(context.tag.key)
 					if context.tag.key == "tag_cry_rework" then
@@ -443,7 +440,6 @@ SMODS.Atlas {
 					end
 					add_tag(tag)
 				end
-				G.orbital_hand = nil
 				G.CONTROLLER.locks[lock] = nil
 				return true
 			end)
@@ -957,7 +953,7 @@ local universal = {
 	apply = function(self, tag, context)
 		if context.type == "immediate" then
 			tag:yep("+", G.C.GOLD, function()
-				G.GAME.hands[tag.ability.hand].AscensionPower = (G.GAME.hands[tag.ability.hand].AscensionPower or 0) + 6
+				G.GAME.hands[tag.ability.hand].AscensionPower = (G.GAME.hands[tag.ability.hand].AscensionPower or 0) + 3
 				return true
 			end)
 			tag.triggered = true
