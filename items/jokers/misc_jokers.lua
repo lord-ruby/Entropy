@@ -865,7 +865,6 @@ local dating_simbo = {
                         return true
                     end
                 }))
-                card.ability.chips = card.ability.chips + math.max(context.destroying_card.base.nominal + (context.destroying_card.ability.bonus or 0), 0)
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "chips", scalar_table = context.destroying_card.base, scalar_value = "nominal"})
                 if context.destroying_card.ability.bonus then
                     SMODS.scale_card(card, {ref_table = card.ability, ref_value = "chips", scalar_table = context.destroying_card.ability, scalar_value = "bonus", no_message = true})
@@ -3267,12 +3266,10 @@ local dragonfruit = {
                     colour = G.C.FILTER,
                 }
             end
-            if not msg or type(msg) == "string" then
-                return {
-                    message = msg or "-"..number_format(card.ability.left_mod),
-                    colour = G.C.RED,
-                }
-            end
+            return {
+                message = msg or "-"..number_format(card.ability.left_mod),
+                colour = G.C.RED,
+            }
         end
     end
 }
