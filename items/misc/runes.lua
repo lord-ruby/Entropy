@@ -1044,6 +1044,13 @@ local ehwaz_indicator = {
     calculate = function(self, rune, context)
         if context.skip_blind then
             local card = context.removed and context.removed[1] or context.destroy_card
+            local bl = ({Boss = "Big", Big = "Small"})[G.GAME.blind_on_deck]
+            local o = G.GAME.round_resets.blind_states[bl == "Big" and "Small" or "Big"]
+            G.GAME.RedBlindStates = {
+                [bl == "Big" and "Small" or "Big"] = o,
+                [bl] = "Skipped",
+                Boss = "Upcoming"
+            }
             return {
                 rune_break = true,
                 func = function()
@@ -1056,6 +1063,7 @@ local ehwaz_indicator = {
                                     trigger = "after",
                                     blocking = false,
                                     func = function()
+                                        G.GAME.blind:set_blind(G.P_BLINDS[G.GAME.round_resets.blind_choices[bl]])
                                         G.STATE = G.STATES.ROUND_EVAL
                                         G.STATE_COMPLETE = false
                                         return true
