@@ -34,9 +34,9 @@ function G.FUNCS.get_poker_hand_info(_cards)
             end
 
             G.GAME.current_round.current_hand.cry_asc_num_text = (
-                a_power and (type(a_power) == "table" and a_power:gt(to_big(0)) or a_power > 0)
+                a_power
             )
-                    and " (+" .. a_power .. ")"
+                    and " (".. (to_big(a_power) >= to_big(0) and "+" or "") .. a_power .. ")"
                 or ""
         else
             ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
@@ -54,7 +54,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
 		end
         G.GAME.current_round.current_hand.cry_asc_num_text = ""
     end
-    if to_big(G.GAME.current_round.current_hand.cry_asc_num) <= to_big(0) then
+    if to_big(G.GAME.current_round.current_hand.cry_asc_num) == to_big(0) then
         ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
         ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
     end
@@ -73,6 +73,9 @@ function Cryptid.calculate_ascension_power(hand_name, hand_cards, hand_scoring_c
 			local check = Cryptid.hand_ascension_numbers(hand_name, tether)
 			if check then
 				starting = (tether and #hand_cards or #hand_scoring_cards) - check
+			end
+			if Entropy.BlindIs("bl_entr_scarlet_sun") then
+				starting = #hand_cards
 			end
 		end
 		-- Extra starting calculation for Declare hands
@@ -127,7 +130,7 @@ function Cryptid.calculate_ascension_power(hand_name, hand_cards, hand_scoring_c
 	if final > 0 and final < 1 then
 		final = 1
 	end
-    if not (SMODS.Mods["Cryptid"] or {}).can_load and not next(SMODS.find_card("j_entr_hexa")) then
+    if not (SMODS.Mods["Cryptid"] or {}).can_load and not next(SMODS.find_card("j_entr_hexa")) and not Entropy.BlindIs("bl_entr_scarlet_sun") then
         final = 0
     end
     if next(SMODS.find_card("j_entr_hexa")) then
@@ -140,12 +143,13 @@ function Cryptid.calculate_ascension_power(hand_name, hand_cards, hand_scoring_c
     end
     final = final + (G.GAME.hands[hand_name] and G.GAME.hands[hand_name].AscensionPower or 0)
     final = final * (1+(G.GAME.nemesisnumber or 0))
-    if Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled then 
+    if Entropy.BlindIs("bl_entr_scarlet_sun") and not G.GAME.blind.disabled then 
         final = final * (Entropy.IsEE() and -0.25 or -1)
     end
 	return final
 end
 function Cryptid.hand_ascension_numbers(hand_name, tether)
+	tether = tether or Entropy.BlindIs("bl_entr_scarlet_sun")
     Cryptid.ascension_numbers = Cryptid.ascension_numbers or {}
 	if Cryptid.ascension_numbers[hand_name] and type(Cryptid.ascension_numbers[hand_name]) == "function" then
 		return Cryptid.ascension_numbers[hand_name](hand_name, tether)
@@ -173,7 +177,7 @@ function Cryptid.hand_ascension_numbers(hand_name, tether)
 	then
 		return 5
 	elseif hand_name == "Four of a Kind" then
-		return G.GAME.used_vouchers.v_cry_hyperspacetether and 4 or nil
+		return tether and 4 or nil
 	elseif hand_name == "cry_Clusterfuck" or hand_name == "cry_UltPair" then
 		return 8
 	elseif hand_name == "cry_WholeDeck" then
