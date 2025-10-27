@@ -446,7 +446,8 @@ local fehu_indicator = {
                         mult = 1
                     end
                     Entropy.FlipThen(G.jokers.cards, function(card)
-                        card.sell_cost = card.sell_cost + context.card.sell_cost * mult
+                        card.ability.extra_value = (card.ability.extra_value or 0) + context.card.sell_cost * mult
+                        card:set_cost()
                     end)
                 end,
             }
