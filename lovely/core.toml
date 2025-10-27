@@ -2539,3 +2539,18 @@ payload = '''
 '''
 match_indent = true
 
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''
+config.saved and 
+{n=G.UIT.C, config={padding = 0.05, align = 'cm'}, nodes={
+'''
+position = "at"
+payload = '''
+config.saved and G.GAME.saved_text and not G.GAME.no_saved and
+{n=G.UIT.C, config={padding = 0.05, align = 'cm'}, nodes={
+'''
+match_indent = true
+
