@@ -1934,9 +1934,6 @@ function Cryptid.ascend(num, curr2) -- edit this function at your leisure
         num2 = num2 + diff ^ 0.3
     end
     curr2 = num2
-    if Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled then
-        curr2 = curr2 * (Entropy.IsEE() and -0.25 or -1)
-    end
     if next(SMODS.find_card("j_entr_helios")) then
         local curr = 1
         for i, v in pairs(G.jokers.cards) do
@@ -1953,7 +1950,7 @@ end
 local pokerhandinforef = G.FUNCS.get_poker_hand_info
 function G.FUNCS.get_poker_hand_info(_cards)
     G.GAME.current_round.current_hand.cry_asc_num = 0
-    if next(SMODS.find_card("j_entr_helios")) or (Entropy.BlindIs(G.GAME.blind, "bl_entr_scarlet_sun") and not G.GAME.blind.disabled) then G.GAME.used_vouchers.v_cry_hyperspacetether = true end
+    if next(SMODS.find_card("j_entr_helios")) or (Entropy.BlindIs("bl_entr_scarlet_sun") and not G.GAME.blind.disabled) then G.GAME.used_vouchers.v_cry_hyperspacetether = true end
     local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
     if text and G.GAME.badarg and G.GAME.badarg[text] and text ~= "NULL" then
         G.boss_throw_hand = true
