@@ -1051,6 +1051,7 @@ local ehwaz_indicator = {
                 [bl] = "Skipped",
                 Boss = "Upcoming"
             }
+            G.GAME.no_saved = true
             return {
                 rune_break = true,
                 func = function()
@@ -1066,6 +1067,7 @@ local ehwaz_indicator = {
                                         G.GAME.blind:set_blind(G.P_BLINDS[G.GAME.round_resets.blind_choices[bl]])
                                         G.STATE = G.STATES.ROUND_EVAL
                                         G.STATE_COMPLETE = false
+                                        G.GAME.no_saved = nil
                                         return true
                                     end,
                                 }))
@@ -1279,4 +1281,4 @@ return {
         othila, othila_indicator,
         oss, oss_indicator
     }
-}
+} 
