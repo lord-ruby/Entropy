@@ -184,9 +184,9 @@ local pink = {
                             cards[#cards+1] = v
                         end
                     end
-                    SMODS.destroy_cards(cards, nil, true)
+                    SMODS.destroy_cards(cards, nil)
                 else
-                    SMODS.destroy_cards(card, nil, true)
+                    SMODS.destroy_cards(card, nil)
                 end
             end
             G.E_MANAGER:add_event(Event({
