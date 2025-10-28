@@ -86,7 +86,7 @@ local rage = {
     use = function(self, card)
         local cards = {}
         for i, v in pairs(G.playing_cards) do
-            if not SMODS,.is_eternal(v) then
+            if not SMODS.is_eternal(v) then
                 cards[#cards+1] = v
             end
         end
