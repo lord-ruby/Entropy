@@ -263,8 +263,8 @@ local servant = {
     loc_vars = function(self, q, card)
         return {
             vars = {
-                card.ability.select,
                 card.ability.create
+                card.ability.select,
             }
         }
     end,
