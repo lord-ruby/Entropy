@@ -94,7 +94,7 @@ local helios = {
     }
 }
 
-Cryptid.big_num_blacklist["j_entr_xekanos"] = true
+if Cryptid.big_num_blacklist then Cryptid.big_num_blacklist["j_entr_xekanos"] = true end
 local xekanos = {
     order = 602,
     object_type = "Joker",
@@ -457,7 +457,7 @@ local akyros = {
     end
 }
 
-Cryptid.big_num_blacklist["j_entr_katarraktis"] = true
+if Cryptid.big_num_blacklist then Cryptid.big_num_blacklist["j_entr_katarraktis"] = true end
 
 local katarraktis = {
     order = 609,
@@ -999,9 +999,9 @@ local heimartai = {
 return {
     items = {
         epitachyno,
-        helios,
+        not Entropy.ValkarriOverCryptid and helios or nil,
         xekanos,
-        dekatria,
+        not Entropy.ValkarriOverCryptid and dekatria or nil,
         anaptyxi,
         parakmi,
         exousia,
