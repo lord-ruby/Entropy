@@ -12,10 +12,13 @@ local master = {
     inversion = "c_fool",
     use = function(self, card, area, copier)
         if G.GAME.last_inversion then
+            local tw = G.GAME.modifiers.entr_twisted
+            G.GAME.modifiers.entr_twisted = nil
             local c = create_card(G.GAME.last_inversion.set, G.consumeables, nil, nil, nil, nil, G.GAME.last_inversion.key)
             G.GAME.last_inversion = nil
             c:add_to_deck()
             G.consumeables:emplace(c)
+            G.GAME.modifiers.entr_twisted = tw
         end
     end,
     can_use = function(self, card)
@@ -29,6 +32,7 @@ local master = {
             if not nodes[1] then
                 localize{type = 'name', set = "Other", key = string.gsub(G.GAME.last_inversion.key, "_[0-9]*$", ""), nodes = nodes}
             end
+            q[#q+1] = G.P_CENTERS[G.GAME.last_inversion.key]
             card.ability.last_inversion = nodes[1][1].nodes[1].config.object.string
         end
         return {
@@ -263,7 +267,7 @@ local servant = {
     loc_vars = function(self, q, card)
         return {
             vars = {
-                card.ability.create
+                card.ability.create,
                 card.ability.select,
             }
         }

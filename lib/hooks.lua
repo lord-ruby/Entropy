@@ -3984,8 +3984,18 @@ function Card:open(...)
     end
 end
 
+local new_round_ref = new_round
+function new_round(...)
+    new_round_ref(...)
+    if Entropy.DeckOrSleeve("crafting") then
+        G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit, 5)
+    end
+end
+
 local copy_cardref = copy_card
 function copy_card(old, new, ...)
+    local tw = G.GAME.modifiers.entr_twisted
+    G.GAME.modifiers.entr_twisted = nil
     local copy = copy_cardref(old, new, ...)
     if G.deck and not G.SETTINGS.paused then
         SMODS.calculate_context{copying_card = true, original_card = old, new_card = copy}
@@ -3994,6 +4004,7 @@ function copy_card(old, new, ...)
         eval_card(v, {copying_card = true, original_card = old, new_card = copy})
     end
     if old.base and old.base.nominal then copy.base.nominal = old.base.nominal end
+    G.GAME.modifiers.entr_twisted = tw
     return copy
 end
 
