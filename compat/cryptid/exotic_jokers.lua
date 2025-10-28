@@ -1,15 +1,18 @@
+local rarity = Entropy.ValkarriOverCryptid and "valk_exquisite" or "cry_exotic"
+local set = Entropy.ValkarriOverCryptid and "set_entr_misc_jokers" or "set_cry_exotic"
+
 local stillicidium = {
     order = 500,
     object_type = "Joker",
     key = "stillicidium",
-    rarity = "cry_exotic",
+    rarity = rarity,
     cost = 50,
     atlas = "exotic_jokers",
     soul_pos = { x = 2, y = 0, extra = { x = 1, y = 0 } },
     
     dependencies = {
         items = {
-            "set_cry_exotic"
+            set
         }
     },
     blueprint_compat = true,
@@ -140,7 +143,7 @@ local libra = {
     order = 500 + 1,
     object_type = "Joker",
     key = "libra",
-    rarity = "cry_exotic",
+    rarity = rarity,
     cost = 50,
     atlas = "exotic_jokers",
 
@@ -149,7 +152,7 @@ local libra = {
     
     dependencies = {
         items = {
-            "set_cry_exotic"
+            set
         }
     },
 
@@ -232,7 +235,7 @@ local scorpio = {
     order = 500 + 2,
     object_type = "Joker",
     key = "scorpio",
-    rarity = "cry_exotic",
+    rarity = rarity,
     cost = 50,
     atlas = "exotic_jokers",
 
@@ -241,7 +244,7 @@ local scorpio = {
     
     dependencies = {
         items = {
-            "set_cry_exotic"
+            set
         }
     },
     config = {
@@ -309,7 +312,7 @@ local ridiculus_absens = {
     order = 500 + 3,
     object_type = "Joker",
     key = "ridiculus_absens",
-    rarity = "cry_exotic",
+    rarity = rarity,
     cost = 50,
     atlas = "exotic_jokers",
     name = "entr-ridiculus_absens",
@@ -318,7 +321,7 @@ local ridiculus_absens = {
     
     dependencies = {
         items = {
-            "set_cry_exotic"
+            set
         }
     },
     config = {
@@ -366,6 +369,6 @@ return {
         stillicidium,
         libra,
         scorpio,
-        ridiculus_absens
+        not Entropy.ValkarriOverCryptid and ridiculus_absens or nil
     }
 }
