@@ -2,7 +2,7 @@ local rarity = Entropy.ValkarriOverCryptid and "valk_renowned" or "cry_epic"
 local set = Entropy.ValkarriOverCryptid and "set_entr_misc_jokers" or "set_cry_epic"
 
 local burnt_m = {
-    order = 300,
+    order = 250,
     object_type = "Joker",
     key = "burnt_m",
     config = {
@@ -72,7 +72,7 @@ local burnt_m = {
 }
 
 local chaos= {
-    order = 301,
+    order = 251,
     object_type = "Joker",
     key = "chaos",
     rarity = rarity,
@@ -87,7 +87,7 @@ local chaos= {
 }
 
 local dni = {
-    order = 302,
+    order = 252,
     object_type = "Joker",
     key = "dni",
     config = {
@@ -133,7 +133,7 @@ local dni = {
 }
 
 local trapezium = {
-    order = 303,
+    order = 253,
     object_type = "Joker",
     key = "trapezium_cluster",
     name="entr-trapezium_cluster",
@@ -213,7 +213,7 @@ local trapezium = {
 }
 
 local metanoia = {
-    order = 304,
+    order = 254,
     object_type = "Joker",
     key = "metanoia",
     rarity = rarity,
@@ -241,7 +241,7 @@ local metanoia = {
 }
 
 local antireal = {
-    order = 305,
+    order = 255,
     object_type = "Joker",
     key = "antireal",
     rarity = rarity,
@@ -290,7 +290,7 @@ local antireal = {
 }
 
 local jokezmann_brain = {
-    order = 306,
+    order = 256,
     object_type = "Joker",
     key = "jokezmann_brain",
     rarity = rarity,
@@ -347,7 +347,7 @@ local jokezmann_brain = {
 }
 
 local metamorphosis = {
-    order = 307,
+    order = 257,
     object_type = "Joker",
     key = "metamorphosis",
     rarity = rarity,
@@ -444,7 +444,7 @@ local metamorphosis = {
 }
 
 local nyctophobia = {
-    order = 308,
+    order = 258,
     object_type = "Joker",
     key = "nyctophobia",
     rarity = rarity,
@@ -509,7 +509,7 @@ local nyctophobia = {
 }
 
 local caviar = {
-    order = 308,
+    order = 258,
     object_type = "Joker",
     key = "caviar",
     rarity = rarity,
