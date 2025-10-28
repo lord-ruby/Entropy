@@ -2210,7 +2210,7 @@ local decs = {
 					"Jokers may no longer appear naturally",
 					"Start with an {C:dark_edition}Aleph, Negative{} {T:c_entr_destiny}Destiny{}",
 					"Cards have a higher chance to be Enhanced",
-					"Start with {C:attention,T:v_magic_trick}Magic Trick{} amd {C:attention,T:v_illusion}Illusion{}
+					"Start with {C:attention,T:v_magic_trick}Magic Trick{} amd {C:attention,T:v_illusion}Illusion{}"
 				}
 			},
 			sleeve_entr_butterfly = {
