@@ -13,6 +13,11 @@ local twisted = {
     atlas = "decks",
     apply = function()
         G.GAME.modifiers.entr_twisted = true
+        G.GAME.round_resets.path_toggled = true
+        G.GAME.entr_alt = not G.GAME.entr_alt
+        G.GAME.round_resets.blind_choices.Boss = get_new_boss()
+        ease_background_colour{new_colour = Entropy.get_bg_colour(), contrast = 1}
+        G.ARGS.spin.real = (G.SETTINGS.reduced_motion and 0 or 1)*(G.GAME.entr_alt and 0.3 or -0.3)
     end
 }
 
@@ -283,6 +288,11 @@ if CardSleeves then
       pos = { x = 0, y = 0 },
       apply = function()
         G.GAME.modifiers.entr_twisted = true
+        G.GAME.round_resets.path_toggled = true
+        G.GAME.entr_alt = not G.GAME.entr_alt
+        G.GAME.round_resets.blind_choices.Boss = get_new_boss()
+        ease_background_colour{new_colour = Entropy.get_bg_colour(), contrast = 1}
+        G.ARGS.spin.real = (G.SETTINGS.reduced_motion and 0 or 1)*(G.GAME.entr_alt and 0.3 or -0.3)
       end
     }
     CardSleeves.Sleeve {

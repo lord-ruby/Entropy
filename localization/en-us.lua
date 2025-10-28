@@ -1739,6 +1739,13 @@ local decs = {
 					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
                 },
             },
+			j_entr_dancer = {
+                name = "Dancer",
+                text = {
+					"{C:attention}+#1#{} Card Selection Limit",
+					"{C:red}#2#{} Discards"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

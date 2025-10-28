@@ -6182,6 +6182,56 @@ local stand_arrow = {
     end
 }
 
+local dancer = {
+    order = 111,
+    object_type = "Joker",
+    key = "dancer",
+    rarity = 1,
+    cost = 5,
+    eternal_compat = true,
+    pos = {x = 0, y = 0},
+    atlas = "placeholder",
+    config = {
+        csl = 2,
+        discards = 1
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    perishable_compat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.csl,
+                -card.ability.discards
+            }
+        }
+    end,
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.forcetrigger then
+            Entropy.ChangeFullCSL(card.ability.csl)
+            G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.discards
+            ease_discard(-card.ability.discards)
+        end
+    end, 
+    add_to_deck = function(self, card)
+        Entropy.ChangeFullCSL(card.ability.csl)
+        G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.discards
+        ease_discard(-card.ability.discards)
+    end,
+    remove_from_deck = function(self, card)
+        Entropy.ChangeFullCSL(-card.ability.csl)
+        G.GAME.round_resets.discards = G.GAME.round_resets.discards + card.ability.discards
+        ease_discard(card.ability.discards)
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
+}
+
 return {
     items = {
         surreal,
@@ -6302,6 +6352,7 @@ return {
         bell_curve,
         pineapple,
         rubber_ball,
-        stand_arrow
+        stand_arrow,
+        dancer
     }
 }
