@@ -4246,7 +4246,6 @@ local rugpull = {
     atlas = "jokers",
     demicoloncompat = true,
     perishable_compat = true,
-    blueprint_compat = true,
     config = {
         multiplier = 1.25
     },
