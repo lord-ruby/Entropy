@@ -86,7 +86,9 @@ local rage = {
     use = function(self, card)
         local cards = {}
         for i, v in pairs(G.playing_cards) do
-            cards[#cards+1] = v
+            if not SMODS,.is_eternal(v) then
+                cards[#cards+1] = v
+            end
         end
         if #cards > 0 then 
             pseudoshuffle(cards, pseudoseed("entr_rage"))
