@@ -428,7 +428,7 @@ local scar = {
 
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card, 1, card.ability.select)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
         local num = #cards
         return num > 0 and num <= card.ability.select
 	end,
