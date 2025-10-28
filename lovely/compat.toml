@@ -222,7 +222,7 @@ match_indent = true
 [patches.pattern]
 target = "card.lua"
 pattern = '''end        if self.ability.name == 'The Hermit' or self.ability.consumeable.hand_type or self.ability.name == 'Temperance' or self.ability.name == 'Black Hole' then'''
-position = "before"
+position = "at"
 payload = '''
 end        if self.ability.name == 'The Hermit' or (self.ability.consumeable and self.ability.consumeable.hand_type) or self.ability.name == 'Temperance' or self.ability.name == 'Black Hole' then
 '''
