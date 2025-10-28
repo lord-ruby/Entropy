@@ -2747,7 +2747,7 @@ local chalice_of_blood = {
     object_type = "Joker",
     key = "chalice_of_blood",
     rarity = 3,
-    cost = 12,
+    cost = 8,
     dependencies = {
         items = {
             "set_entr_runes",
