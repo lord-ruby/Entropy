@@ -100,8 +100,10 @@ local destiny = {
         local remove = {}
         for i, v in pairs(G.hand.highlighted) do
             if v.config.center.key ~= "c_base" or pseudorandom("crafting") < 0.4 then
-                v:start_dissolve()
-                v.ability.temporary2 = true
+                if not SMODS.is_eternal(v) then
+                    v:start_dissolve()
+                    v.ability.temporary2 = true
+                end
                 remove[#remove+1]=v
             else
                 Entropy.DiscardSpecific({v})
