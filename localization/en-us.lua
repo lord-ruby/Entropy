@@ -2130,8 +2130,9 @@ local decs = {
 				name = "Deck of Destiny",
 				text =  {
 					"Jokers may no longer appear naturally",
-					"Start with an {C:dark_edition}Aleph, Negative{} Destiny",
-					"Cards have a higher chance to be Enhanced"
+					"Start with an {C:dark_edition}Aleph, Negative{} {T:c_entr_destiny}Destiny{}",
+					"Cards have a higher chance to be Enhanced",
+					"Start with {C:attention,T:v_magic_trick}Magic Trick{} amd {C:attention,T:v_illusion}Illusion{}"
 				}
 			},
 			b_entr_butterfly = {
@@ -2207,8 +2208,9 @@ local decs = {
 				name = "Sleeve of Fate",
 				text =  {
 					"Jokers may no longer appear naturally",
-					"Start with an {C:dark_edition}Aleph, Negative{} Destiny",
-					"Cards have a higher chance to be Enhanced"
+					"Start with an {C:dark_edition}Aleph, Negative{} {T:c_entr_destiny}Destiny{}",
+					"Cards have a higher chance to be Enhanced",
+					"Start with {C:attention,T:v_magic_trick}Magic Trick{} amd {C:attention,T:v_illusion}Illusion{}
 				}
 			},
 			sleeve_entr_butterfly = {
