@@ -1066,7 +1066,7 @@ local sigma = {
 	setting_blind = function()
 		local avg = math.ceil((G.GAME.round_resets.hands+G.GAME.round_resets.discards)/2)
 		ease_hands_played(avg-G.GAME.round_resets.hands)
-		ease_discard(abg-G.GAME.round_resets.discards)
+		ease_discard(avg-G.GAME.round_resets.discards)
 		G.GAME.blind.triggered = true
 	end
 }
