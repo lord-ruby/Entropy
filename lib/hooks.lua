@@ -3979,6 +3979,9 @@ function Card:open(...)
             return true
         end
     })
+    if Entropy.DeckOrSleeve("crafting") then
+        G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit, 5)
+    end
 end
 
 local copy_cardref = copy_card
