@@ -120,7 +120,9 @@ local destiny = {
 	end,
     loc_vars = function(self, q, card)
         local jok = Entropy.GetRecipe(G.hand.highlighted)
-        q[#q+1] = jok and G.P_CENTERS[jok] or nil
+        if G.hand and #G.hand.highlighted == 5 then
+            q[#q+1] = jok and G.P_CENTERS[jok] or nil
+        end
         return {vars={
             G.hand and #G.hand.highlighted == 5 and localize({type = "name_text", set = "Joker", key = jok}) or "none"
         }}

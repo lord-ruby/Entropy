@@ -1713,6 +1713,16 @@ function Entropy.find_runes(key)
 end
 
 function Entropy.show_flipside()
+    for i, v in pairs((G.pack_cards or {}).cards or {}) do
+        if ({
+            c_entr_flipside = true,
+            c_entr_dagaz = true,
+            rune_entr_dagaz = true,
+            j_entr_shadow_crystal = true
+        })[v.config.center_key] then
+            return true
+        end
+    end
     return next(SMODS.find_card("c_entr_flipside")) or next(SMODS.find_card("c_entr_dagaz")) or Entropy.has_rune("rune_entr_dagaz") or next(SMODS.find_card("j_entr_shadow_crystal"))
 end
 
