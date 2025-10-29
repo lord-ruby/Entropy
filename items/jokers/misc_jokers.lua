@@ -2624,6 +2624,85 @@ local hexa = {
     pronouns = "she_her",
 }
 
+local grahkon = {
+    object_type = "Joker",
+    key = "grahkon",
+    order = 305,
+    rarity = 4,
+    cost = 20,
+    atlas = "grahkon_atlas",
+    pos = {x=0, y=0},
+    soul_pos = {x = 1, y = 0},
+    config = {
+        blind_size = 800,
+        value_inc = 1.08,
+        left = 1,
+        left_mod = 1,
+        cards = 4
+    },
+    demicoloncompat = true,
+    perishable_compat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.blind_size,
+                card.ability.value_inc,
+                card.ability.cards,
+                card.ability.left_mod,
+                card.ability.left,
+            }
+        }
+    end,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    dependencies = {
+        items = {
+            "set_entr_misc_actives",
+        }
+    },
+    pronouns = "he_him",
+
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition) or context.forcetrigger then
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
+        end
+        if context.remove_playing_cards and not context.blueprint then
+            for i, v in pairs(context.removed) do
+                SMODS.scale_card(card, {
+                    ref_table = card.ability,
+                    ref_value = "blind_size",
+                    scalar_value = "value_inc",
+                    operation = function(ref_table, ref_value, initial, change)
+                        ref_table[ref_value] = initial * change
+                    end,
+                })
+            end
+        end
+        if (context.setting_blind and not context.blueprint and not card.getting_sliced) or context.forcetrigger then
+            G.GAME.blind.chips = G.GAME.blind.chips - card.ability.blind_size
+            G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+            G.HUD_blind:recalculate()
+        end
+    end,
+    can_use = function(self, card)
+        return to_big(card.ability.left) > to_big(0) and G.hand and #G.hand.cards > 0
+    end,
+    use = function(self, card)
+        card.ability.left = card.ability.left - 1
+        local cards = {}
+        for i, v in pairs(G.hand.cards) do
+            if not SMODS.is_eternal(v) then
+                cards[#cards+1] = v
+            end
+        end
+        local a_cards = {}
+        pseudoshuffle(cards, pseudoseed("entr_grahkon"))
+        for i = 1, card.ability.cards do
+            a_cards[#a_cards+1] = cards[i]
+        end
+        SMODS.destroy_cards(a_cards)
+    end,
+}
+
 local sandpaper = {
     order = 43,
     object_type = "Joker",
@@ -6344,6 +6423,7 @@ return {
         cass,
         crabus,
         hexa,
+        grahkon,
         sandpaper,
         purple_joker,
         chalice_of_blood,
