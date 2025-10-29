@@ -954,7 +954,7 @@ local village = {
         end)
     end,
     can_use = function(self, card)
-        return true
+        return G.hand and #G.hand.cards > 0
     end,
     loc_vars = function(self, q, card)
         return {
