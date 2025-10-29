@@ -1486,6 +1486,7 @@ end
 local entr_define_dt = 0
 local entr_antireal_dt = 0
 local entr_xekanos_dt = 0
+local entr_grahkon_dt = 0
 local bdt = 0
 local entr_prismatic_dt = 0
 local update_ref = Game.update
@@ -1502,6 +1503,9 @@ Entropy.ee_faces[#Entropy.ee_faces+1] = {pos = {y = 13, x = 0}}
 function Game:update(dt)
     if entr_xekanos_dt > 0.05 then
         entr_xekanos_dt = 0
+    end
+    if entr_grahkon_dt > 0.1 then
+        entr_grahkon_dt = 0
     end
     if bdt > 0.15 then
         bdt = 0
@@ -1551,6 +1555,7 @@ function Game:update(dt)
         end
 	end
     entr_xekanos_dt = entr_xekanos_dt + dt
+    entr_grahkon_dt = entr_grahkon_dt + dt
     bdt = bdt + dt
     cdt = cdt + dt
     if Entropy.DeckOrSleeve("ambisinister") and cdt > 0.05 and G.jokers then
@@ -1631,6 +1636,22 @@ function Card:draw(layer)
             end
             v.children.floating_sprite2:set_sprite_pos(obj.pos)
             v.children.floating_sprite:set_sprite_pos({x=1, y=3})
+        end
+    end
+    if self.config.center.key == "j_entr_grahkon" or self.config.center.key == "j_entr_nokharg" then
+        if entr_grahkon_dt > 0.1 then
+            local v = self
+            local obj = {pos = v.children.floating_sprite.sprite_pos}
+            obj.pos.x = obj.pos.x + 1 
+            if obj.pos.x > 5 then
+                obj.pos.x = 1
+                obj.pos.y = obj.pos.y + 1
+            end
+            if obj.pos.y > 3 then
+                obj.pos.y = 0
+                obj.pos.x = 1
+            end
+            v.children.floating_sprite:set_sprite_pos(obj.pos)
         end
     end
     if bdt >= 0.15 and self.config.center.set == "CBlind" then

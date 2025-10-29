@@ -1493,7 +1493,17 @@ local decs = {
 					"{C:attention}+#1#{} Card Selection Limit"
                 },
             },
-
+			j_entr_grahkon = {
+                name = "First Guardian, Grahkon",
+                text = {
+					"{C:attention}-#1#{} Blind Size",
+					"Increases by {X:attention,C:white}X#2#{} when a ",
+					"playing card is destroyed. Use this Joker to",
+					"destroy {C:attention}#3#{} random card#<s>3# in hand",
+					"gains {C:attention}#4#{} use#<s>4# when defeating a Blind",
+					"{C:inactive}(Currently {C:attention}#5#{C:inactive} use#<s>5#)"
+                },
+            },
 			j_entr_ybur = {
                 name = "Ybur",
                 text = {
@@ -1538,6 +1548,16 @@ local decs = {
 					"when obtained",
 					"{X:gold,C:white}X#1#{} to all sources",
 					"of Ascension Power"
+                },
+            },
+			j_entr_nokharg = {
+                name = "Nokharg",
+                text = {
+					"Use this Joker to turn selected",
+					"playing cards {C:dark_edition}Negative{}",
+					"and increase blind size by {C:attention}#2#{}",
+					"for each card selected",
+					"{C:inactive}(Currently {X:attention,C:white}X#1#{C:inactive} Blind Size)"
                 },
             },
 
