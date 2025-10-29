@@ -614,7 +614,7 @@ local subarc = {
     blueprint_compat = true,
     eternal_compat = true,
     pos = {x=2, y=3},
-    soul_pos = {x = 1, y = 3},
+    soul_pos = {x = 3, y = 3},
     atlas = "ruby_atlas",
     demicoloncompat=true,
     config = {
