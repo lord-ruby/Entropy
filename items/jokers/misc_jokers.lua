@@ -2656,7 +2656,7 @@ local grahkon = {
     entr_credits = {art = {"Lil. Mr. Slipstream"}},
     dependencies = {
         items = {
-            "set_entr_misc_actives",
+            "set_entr_actives",
         }
     },
     pronouns = "he_him",

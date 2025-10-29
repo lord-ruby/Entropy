@@ -606,7 +606,7 @@ local subarc = {
     key = "subarc",
     dependencies = {
         items = {
-          "set_entr_inversions"
+          "set_entr_inversions",
         }
     },
     rarity = "entr_reverse_legendary",
@@ -723,7 +723,8 @@ local nokharg  = {
     key = "nokharg",
     dependencies = {
         items = {
-          "set_entr_inversions"
+          "set_entr_inversions",
+          "set_entr_actives"
         }
     },
     rarity = "entr_reverse_legendary",
