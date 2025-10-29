@@ -22,7 +22,8 @@ local master = {
         end
     end,
     can_use = function(self, card)
-        return G.GAME.last_inversion
+        local fac = card.area == G.consumeables and -1 or 0
+        return G.consumeables.config.card_limit > #G.consumeables.cards + fac and G.GAME.last_inversion
 	end,
     loc_vars = function(self, q, card)
         card.ability.last_inversion = G.GAME.last_inversion and G.GAME.last_inversion.set and G.localization.descriptions[G.GAME.last_inversion.set] and G.localization.descriptions[G.GAME.last_inversion.set][G.GAME.last_inversion.key].name or localize('k_none')
