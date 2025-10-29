@@ -6226,6 +6226,7 @@ local decs = {
 			c_entr_riffle_shuffle = "Riffle Shuffle",
 			c_entr_variety_content = "Variety Content",
 			c_entr_phantom_hand_syndrome = "Phantom Hand Syndrome",
+			c_entr_eco_friendly = "Eco-Friendly",
 		},
 		v_text = {
 			ch_c_entr_no_planets = { "No Planets in the Shop" },
