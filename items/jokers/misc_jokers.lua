@@ -5578,6 +5578,14 @@ local kintsugi = {
         q[#q+1] = G.P_CENTERS.m_entr_ceramic
         q[#q+1] = G.P_CENTERS.m_gold 
     end,
+    in_pool = function()
+        local any_ceramic
+        for i, v in pairs(G.playing_cards) do
+            if v.config.center.key == "m_entr_ceramic" then
+                return true
+            end
+        end
+    end
 }
 
 local blooming_crimson = {
