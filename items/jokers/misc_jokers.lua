@@ -5673,6 +5673,7 @@ local miracle_berry = {
         if context.get_consumable_type and not card.getting_sliced and not context.hidden and context.set ~= "Spectral" and context.set ~= "Omen" then
             local pool = G.P_CENTER_POOLS[context.set]
             local inverted = pool and pool[1] and Entropy.is_inverted(pool[1])
+            if G.GAME.modifiers.entr_twisted then inverted = not inverted end
             SMODS.scale_card(card, {
                 ref_table = card.ability,
                 ref_value = "uses",
