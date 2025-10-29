@@ -114,10 +114,10 @@ SMODS.PokerHandPart {
 
 SMODS.PokerHand{
 	key = "entr_derivative",
-	l_chips = 50,
+	l_chips = 30,
 	l_mult = 3,
-	chips = 160,
-	mult = 16,
+	chips = 80,
+	mult = 7,
 	visible = false,
 	example = {
 		{ "entr_nilsuit_K", true },

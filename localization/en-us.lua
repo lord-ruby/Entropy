@@ -2174,7 +2174,7 @@ local decs = {
 				name = "Butterfly Deck",
 				text =  {
 					"{C:attention}-2{} Joker Slots",
-					"Sold Jokers have a {C:green}#1# in 2{}",
+					"Sold Jokers have a {C:green}1 in 2{}",
 					"chance to still trigger"
 				}
 			},
@@ -2190,7 +2190,7 @@ local decs = {
 			b_entr_gemstone = {
 				name = "Gemstone Deck",
 				text =  {
-					"Non Rune Consumables have a {C:green}1 in 3{}",
+					"Non Rune Consumables have a {C:green}#1# in #2#{}",
 					"chance to {C:red}fail{}, create a",
 					"random {C:purple}Rune Card{} every",
 					"{C:attention}2{} Non Rune Consumables used"
@@ -2252,14 +2252,14 @@ local decs = {
 				name = "Butterfly Sleeve",
 				text =  {
 					"{C:attention}-2{} Joker Slots",
-					"Sold Jokers have a {C:green}#1# in 2{}",
+					"Sold Jokers have a {C:green}1 in 2{}",
 					"chance to still trigger"
 				}
 			},
 			sleeve_entr_gemstone  = {
 				name = "Gemstone Sleeve",
 				text = {
-					"Non Rune Consumables have a {C:green}1 in 3{}",
+					"Non Rune Consumables have a {C:green}#1# in #2#{}",
 					"chance to {C:red}fail{}, create a",
 					"random {C:purple}Rune Card{} every",
 					"{C:attention}2{} Non Rune Consumables used"
