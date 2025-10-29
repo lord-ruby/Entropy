@@ -6232,6 +6232,31 @@ local dancer = {
     }
 }
 
+local kings_scepter = {
+    order = 112,
+    object_type = "Joker",
+    key = "kings_scepter",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    perishable_compat = true,
+    calculate = function(self, card, context)
+        if context.destroy_card and context.destroy_card.debuff and context.cardarea == G.play then
+            return {remove = not SMODS.is_eternal(context.destroy_card)}
+        end
+    end, 
+    entr_credits = {
+        idea = {"cassknows"}
+    }
+}
+
 return {
     items = {
         surreal,
@@ -6353,6 +6378,7 @@ return {
         pineapple,
         rubber_ball,
         stand_arrow,
-        dancer
+        dancer,
+        kings_scepter
     }
 }

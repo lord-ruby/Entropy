@@ -1746,6 +1746,13 @@ local decs = {
 					"{C:red}#2#{} Discards"
                 },
             },
+			j_entr_kings_scepter = {
+                name = "King's Scepter",
+                text = {
+					"Destroy {C:attention}all{} played",
+					"{C:red}debuffed{} cards"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
