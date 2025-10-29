@@ -208,6 +208,12 @@ function Entropy.evaluate_play_misc(text, disp_text, poker_hands, scoring_hand, 
     return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
 end
 
+local calc_scoreref = SMODS.calculate_round_score
+function SMODS.calculate_round_score(...)
+	if G.GAME.blind and Entropy.BlindIs("bl_entr_omicron") and not G.GAME.blind.config.done and not G.GAME.blind.disabled then return 0 end
+	return calc_scoreref(...)
+end
+
 local epsilon = {
 	dependencies = {
         items = {
@@ -974,6 +980,17 @@ local omicron = {
     in_pool = function()
         return G.GAME.entr_alt
     end,
+	calculate = function(self, blind, context)
+		if context.after then
+			G.E_MANAGER:add_event(Event {
+				trigger = "after",
+				func = function()
+					G.GAME.blind.config.done = true
+					return true
+				end
+			})
+		end
+	end
 }
 
 local pi = {
