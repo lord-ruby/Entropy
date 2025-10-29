@@ -272,6 +272,10 @@ local paycheck_to_paycheck = {
     object_type = "Challenge",
 	key = "paycheck_to_paycheck",
 	order = 4,
+    custom = {
+                {id = 'no_reward'},
+                {id = 'no_extra_hand_money'},
+    },
     jokers = {
 		{ id = "j_entr_tenner", stickers = { "entr_aleph" } },
         { id = "j_credit_card", stickers = { "entr_aleph" } },
@@ -352,6 +356,37 @@ local phantom_hand_syndrome = {
 	},
 }
 
+local eco_friendly = {
+    object_type = "Challenge",
+	key = "eco_friendly",
+	order = 7,
+    rules = {
+            custom = {
+                {id = 'no_reward'},
+                {id = 'no_extra_hand_money'},
+                {id = 'no_interest'}
+            },
+            modifiers = {
+            {id = "dollars", value = 20},
+        }
+        },
+    jokers = {
+		{ id = "j_entr_solar_panel", stickers = { "entr_aleph" } },
+        { id = "j_entr_car_battery", stickers = { "entr_aleph" } },
+        { id = "j_entr_recycling_bin", stickers = { "entr_aleph" } },
+	},
+    consumeables = {
+        { id = "c_entr_comet", stickers = { "eternal" } },
+        { id = "c_entr_comet", stickers = { "eternal" } },
+        { id = "c_entr_comet" },
+    },
+    vouchers = {
+        { id = "v_crystal_ball" },
+    },
+	deck = {
+		type = "Challenge Deck",
+	},
+}
 
 return {
     items = {
@@ -362,6 +397,7 @@ return {
         variety_content,
         riffle_shuffle,
         phantom_hand_syndrome,
+        eco_friendly,
         (SMODS.Mods["Cryptid"] or {}).can_load and hyperbolic_chamber or nil
     }
 }
