@@ -6179,8 +6179,8 @@ local stand_arrow = {
     rarity = 2,
     cost = 8,
     eternal_compat = true,
-    pos = {x = 1, y = 0},
-    atlas = "placeholder",
+    pos = {x = 8, y = 13},
+    atlas = "jokers",
     config = {
         left = 1,
         left_mod = 1,
