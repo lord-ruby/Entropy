@@ -458,7 +458,7 @@ local ybur = {
             end
         end
     end,
-    pronouns = "feminine",
+    pronouns = "she_her",
 }
 
 local zelavi = {
@@ -597,7 +597,7 @@ local ssac = {
     entr_credits = {
         idea = {"cassknows"}
     },
-    pronouns = "feminine",
+    pronouns = "she_her",
 }
 
 local subarc = {
@@ -606,7 +606,7 @@ local subarc = {
     key = "subarc",
     dependencies = {
         items = {
-          "set_entr_inversions"
+          "set_entr_inversions",
         }
     },
     rarity = "entr_reverse_legendary",
@@ -614,7 +614,7 @@ local subarc = {
     blueprint_compat = true,
     eternal_compat = true,
     pos = {x=2, y=3},
-    soul_pos = {x = 1, y = 3},
+    soul_pos = {x = 3, y = 3},
     atlas = "ruby_atlas",
     demicoloncompat=true,
     config = {
@@ -672,7 +672,7 @@ local subarc = {
             end
         end
     end,
-    pronouns = "masculine",
+    pronouns = "he_him",
 }
 
 local axeh = {
@@ -714,7 +714,65 @@ local axeh = {
             }
         end
     end,
-    pronouns = "feminine",
+    pronouns = "she_her",
+}
+
+local nokharg  = {
+    order = 410,
+    object_type = "Joker",
+    key = "nokharg",
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+          "set_entr_actives"
+        }
+    },
+    rarity = "entr_reverse_legendary",
+    cost = 20,
+    blueprint_compat = true,
+    eternal_compat = true,
+    pos = {x=0, y=1},
+    soul_pos = {x = 1, y = 0},
+    atlas = "grahkon_atlas",
+    demicoloncompat=true,
+    entr_credits = {
+        art = {"Lil. Mr. Slipstream"}
+    },
+    config = {
+        blind_size = 1,
+        blind_size_mod = 0.1
+    },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue+1] = {key = 'e_negative_playing_card', set = 'Edition', config = {extra = 1}}
+        return {
+            vars = {
+                card.ability.blind_size,
+                card.ability.blind_size_mod
+            }
+        }
+    end,
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        return #cards > 0
+    end,
+    use = function(self, card)
+        Entropy.FlipThen(Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select), function(c) 
+            c:set_edition("e_negative")
+            SMODS.scale_card(card, {
+                ref_table = card.ability,
+                ref_value = "blind_size",
+                scalar_value = "blind_size_mod"
+            })
+        end)
+    end,
+    calculate = function(self, card, context)
+        if (context.setting_blind and not context.blueprint and not card.getting_sliced) or context.forcetrigger then
+            G.GAME.blind.chips = G.GAME.blind.chips * card.ability.blind_size
+            G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+            G.HUD_blind:recalculate()
+        end
+    end,
+    pronouns = "he_him",
 }
 
 return {
@@ -729,6 +787,7 @@ return {
         zelavi,
         subarc,
         axeh,
+        nokharg,
         SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load and entropy_card or nil, --lazy so this goes here
     }
 }

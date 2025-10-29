@@ -33,8 +33,9 @@ local master = {
             if not nodes[1] then
                 localize{type = 'name', set = "Other", key = string.gsub(G.GAME.last_inversion.key, "_[0-9]*$", ""), nodes = nodes}
             end
-            q[#q+1] = G.P_CENTERS[G.GAME.last_inversion.key]
             card.ability.last_inversion = nodes[1][1].nodes[1].config.object.string
+        elseif G.GAME.last_inversion then
+            q[#q+1] = G.P_CENTERS[G.GAME.last_inversion.key]
         end
         return {
             main_end = (card.area and (card.area == G.consumeables or card.area == G.pack_cards or card.area == G.hand or card.area == G.shop_jokers or card.area == G.shop_booster or card.area == G.shop_vouchers)) and {

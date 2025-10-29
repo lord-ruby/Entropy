@@ -129,10 +129,15 @@ function Entropy.RegisterBlinds()
                 entr_credits = v.entr_credits,
                 cry_credits = v.cry_credits,
                 set_sprites = function(self, card, front)
-                    card.children.center.sprite_pos = {x=self.blpos.x or 0, y=self.blpos.y or 0}
-                    card.children.center.atlas = G.ANIMATION_ATLAS[self.blatlas] or G.ANIMATION_ATLAS["blind_chips"]
-                    card.children.center:reset()
-                    card.children.center.atlas = G.ANIMATION_ATLAS[self.blatlas] or G.ANIMATION_ATLAS["blind_chips"]
+                    if self.blatlas and G.ANIMATION_ATLAS[self.blatlas] and self.blatlas ~= "blind_chips" then
+                        card.children.center.sprite_pos = {x=self.blpos.x or 0, y=self.blpos.y or 0}
+                        card.children.center.atlas = G.ANIMATION_ATLAS[self.blatlas]
+                        card.children.center:reset()
+                        card.children.center.atlas = G.ANIMATION_ATLAS[self.blatlas]
+                    else
+                        card.children.center.atlas = G.ANIMATION_ATLAS["blind_chips"]
+                        card.children.center:set_sprite_pos({x=self.blpos.x or 0, y=self.blpos.y or 0})
+                    end
                 end,
                 set_badges = function(self, card, badges)
                     if v.original_mod then badges[#badges+1] = create_badge(v.original_mod.name, v.original_mod.badge_colour, G.C.WHITE, 1 ) end

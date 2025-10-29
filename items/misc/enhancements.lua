@@ -53,6 +53,9 @@ local disavowed = {
 	set_ability = function(self,card) 
 		card.ability.disavow = true
 	end,
+	in_pool = function()
+		return true
+	end
 }
 
 local prismatic = {

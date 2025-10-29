@@ -1493,7 +1493,17 @@ local decs = {
 					"{C:attention}+#1#{} Card Selection Limit"
                 },
             },
-
+			j_entr_grahkon = {
+                name = "First Guardian, Grahkon",
+                text = {
+					"{C:attention}-#1#{} Blind Size",
+					"Increases by {X:attention,C:white}X#2#{} when a ",
+					"playing card is destroyed. Use this Joker to",
+					"destroy {C:attention}#3#{} random card#<s>3# in hand",
+					"gains {C:attention}#4#{} use#<s>4# when defeating a Blind",
+					"{C:inactive}(Currently {C:attention}#5#{C:inactive} use#<s>5#)"
+                },
+            },
 			j_entr_ybur = {
                 name = "Ybur",
                 text = {
@@ -1538,6 +1548,16 @@ local decs = {
 					"when obtained",
 					"{X:gold,C:white}X#1#{} to all sources",
 					"of Ascension Power"
+                },
+            },
+			j_entr_nokharg = {
+                name = "Nokharg",
+                text = {
+					"Use this Joker to turn selected",
+					"playing cards {C:dark_edition}Negative{}",
+					"and increase blind size by {C:attention}#2#{}",
+					"for each card selected",
+					"{C:inactive}(Currently {X:attention,C:white}X#1#{C:inactive} Blind Size)"
                 },
             },
 
@@ -1744,6 +1764,21 @@ local decs = {
                 text = {
 					"{C:attention}+#1#{} Card Selection Limit",
 					"{C:red}#2#{} Discards"
+                },
+            },
+			j_entr_kings_scepter = {
+                name = "King's Scepter",
+                text = {
+					"Destroy {C:attention}all{} played",
+					"{C:red}debuffed{} cards"
+                },
+            },
+			j_entr_monkeys_paw = {
+                name = "Monkey's Paw",
+                text = {
+					"Use this Joker to create",
+					"a random {C:attention}Eternal{} {C:red}Pact{}",
+					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
                 },
             },
 		},
@@ -2139,7 +2174,7 @@ local decs = {
 				name = "Butterfly Deck",
 				text =  {
 					"{C:attention}-2{} Joker Slots",
-					"Sold Jokers have a {C:green}#1# in 2{}",
+					"Sold Jokers have a {C:green}1 in 2{}",
 					"chance to still trigger"
 				}
 			},
@@ -2155,7 +2190,7 @@ local decs = {
 			b_entr_gemstone = {
 				name = "Gemstone Deck",
 				text =  {
-					"Non Rune Consumables have a {C:green}1 in 3{}",
+					"Non Rune Consumables have a {C:green}#1# in #2#{}",
 					"chance to {C:red}fail{}, create a",
 					"random {C:purple}Rune Card{} every",
 					"{C:attention}2{} Non Rune Consumables used"
@@ -2217,14 +2252,14 @@ local decs = {
 				name = "Butterfly Sleeve",
 				text =  {
 					"{C:attention}-2{} Joker Slots",
-					"Sold Jokers have a {C:green}#1# in 2{}",
+					"Sold Jokers have a {C:green}1 in 2{}",
 					"chance to still trigger"
 				}
 			},
 			sleeve_entr_gemstone  = {
 				name = "Gemstone Sleeve",
 				text = {
-					"Non Rune Consumables have a {C:green}1 in 3{}",
+					"Non Rune Consumables have a {C:green}#1# in #2#{}",
 					"chance to {C:red}fail{}, create a",
 					"random {C:purple}Rune Card{} every",
 					"{C:attention}2{} Non Rune Consumables used"
@@ -4865,7 +4900,8 @@ local decs = {
 				text = {
 					"Create a {C:attention}copy{} of",
 					"the next {C:attention}used{}",
-					"Consumable"
+					"Consumable",
+					"{C:inactive}(Rare Consumables excluded)"
 				}
 			},
 			c_entr_jera_providence = {
