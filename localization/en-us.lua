@@ -4944,7 +4944,8 @@ local decs = {
 				text = {
 					"Create a {C:attention}copy{} of",
 					"the next {C:attention}used{}",
-					"Consumable"
+					"Consumable",
+					"{C:inactive}(Rare Consumables excluded)"
 				}
 			},
 			c_entr_jera_providence = {
