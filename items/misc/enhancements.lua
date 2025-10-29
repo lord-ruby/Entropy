@@ -54,7 +54,7 @@ local disavowed = {
 		card.ability.disavow = true
 	end,
 	in_pool = function()
-		return true
+		return false
 	end
 }
 
