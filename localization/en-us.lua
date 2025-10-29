@@ -3551,6 +3551,15 @@ local decs = {
 					"to #1# selected card",
 				}
 			},
+
+			c_entr_idyll = {
+				name = "Idyll",
+				text = {
+					"Create a {C:attention}Copy{}",
+					"and an {C:entr_entropic}Ascended{}",
+					"variant of the last obtained {C:attention}Tag{}"
+				}
+			},
 		},
 		Transient = {
 			c_entr_cage = {
@@ -3804,6 +3813,14 @@ local decs = {
 					"Add an {C:purple}Ornate Seal{}",
 					"to {C:attention}#1#{} selected",
 					"card in your hand"
+				}
+			},
+			c_entr_manifest = {
+				name = "Manifest",
+				text = {
+					"Create {C:entr_entropic}Ascended{}",
+					"variants of this antes",
+					"Skip Tags"
 				}
 			},
 		},

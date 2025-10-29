@@ -1143,6 +1143,40 @@ local weld = {
 
 local malediction = Entropy.SealSpectral("malediction", {x=2,y=0}, "entr_amber", 2000+37, "c_entr_enchant", nil, "consumables2")
 
+local idyll = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 38,
+    key = "idyll",
+    set = "Omen",
+    
+    inversion = "c_entr_manifest",
+
+    atlas = "consumables",
+	pos = {x=2,y=8},
+    use = function(self, card, area, copier)
+        add_tag(Tag(G.GAME.last_tag))
+        add_tag(Tag(Entropy.AscendedTags[G.GAME.last_tag] or G.GAME.last_tag))
+    end,
+    can_use = function(self, card)
+        return G.GAME.last_tag
+	end,
+    loc_vars = function(self, q, card)
+        if G.GAME.last_tag then
+            q[#q+1] = G.P_TAGS[G.GAME.last_tag]
+            q[#q+1] = G.P_TAGS[Entropy.AscendedTags[G.GAME.last_tag] or G.GAME.last_tag]
+        end
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 return {
     items = {
         changeling,
@@ -1172,6 +1206,7 @@ return {
         purity,
         transcend,
         weld,
-        malediction
+        malediction,
+        idyll
     }
 }
