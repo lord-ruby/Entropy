@@ -325,6 +325,39 @@ local enchant = {
     end
 }
 
+local manifest = {
+    dependencies = {
+        items = {
+          "set_entr_spectrals",
+        }
+    },
+    object_type = "Consumable",
+    order = 41,
+    key = "manifest",
+    set = "Spectral",
+    
+    atlas = "consumables",
+    pos = {x=2,y=7},
+    use = function()
+        add_tag(Tag(Entropy.AscendedTags[G.GAME.round_resets.blind_tags.Small] or G.GAME.round_resets.blind_tags.Small))
+        add_tag(Tag(Entropy.AscendedTags[G.GAME.round_resets.blind_tags.Big] or G.GAME.round_resets.blind_tags.Small))
+    end,
+    can_use = function(self, card)
+        return true
+    end,
+    loc_vars = function(self, q, card)
+        if G.GAME.round_resets and G.GAME.round_resets.blind_tags then
+            q[#q+1] = G.P_TAGS[Entropy.AscendedTags[G.GAME.round_resets.blind_tags.Small] or G.GAME.round_resets.blind_tags.Small]
+            q[#q+1] = G.P_TAGS[Entropy.AscendedTags[G.GAME.round_resets.blind_tags.Big] or G.GAME.round_resets.blind_tags.Small]
+        end
+    end,
+    entr_credits = entr_credits,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 return {
     items = {
         flipside,
@@ -333,6 +366,7 @@ return {
         lust,
         null,
         antithesis,
-        enchant
+        enchant,
+        manifest
     }
 }

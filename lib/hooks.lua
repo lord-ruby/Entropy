@@ -2762,6 +2762,7 @@ function add_tag(_tag, ...)
     else    
         add_tagref(_tag, ...)
     end
+    G.GAME.last_tag = _tag.key
 end
 
 local disable_ref = Blind.disable

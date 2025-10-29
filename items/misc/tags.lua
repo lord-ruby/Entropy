@@ -47,7 +47,6 @@ local neon = {
 	config = { type = "store_joker_modify", edition = "entr_neon" },
 	loc_vars = function(self, info_queue, tag)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_neon
-		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
@@ -89,7 +88,6 @@ local lowres = {
 	config = { type = "store_joker_modify", edition = "entr_lowres" },
 	loc_vars = function(self, info_queue, tag)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_lowres
-		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
@@ -136,7 +134,6 @@ local sunny = {
 	config = { type = "store_joker_modify", edition = "entr_sunny" },
 	loc_vars = function(self, info_queue, tag)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_sunny
-		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
@@ -181,7 +178,6 @@ local solar = {
 	config = { type = "store_joker_modify", edition = "entr_solar" },
 	loc_vars = function(self, info_queue, tag)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_solar
-		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
@@ -229,7 +225,6 @@ local fractured = {
 	config = { type = "store_joker_modify", edition = "entr_fractured" },
 	loc_vars = function(self, info_queue, tag)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_fractured
-		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
@@ -275,7 +270,6 @@ local freaky = {
 	config = { type = "store_joker_modify", edition = "entr_freaky" },
 	loc_vars = function(self, info_queue, tag)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_freaky
-		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
@@ -317,7 +311,6 @@ local kaleidoscopic = {
 	config = { type = "store_joker_modify", edition = "entr_kaleidoscopic" },
 	loc_vars = function(self, info_queue, tag)
 		info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_kaleidoscopic
-		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
 		if context.type == "store_joker_modify" then
@@ -414,7 +407,7 @@ SMODS.Atlas {
 	config = { type = "tag_add", num = 4 },
 	in_pool = function() return false end or nil,
 	loc_vars = function(self, info_queue, tag)
-		return { vars = { tag.ability.num or "?" } }
+		return { vars = { tag.ability and tag.ability.num or "?" } }
 	end,
 	config = {
 		num = 4
@@ -648,7 +641,7 @@ local cat_asc = {
 	key = "ascendant_cat",
 	name = "entr-Ascendant-Cat Tag",
 	loc_vars = function(self, info_queue, tag)
-		return { vars = { tag.ability.level or 1 } }
+		return { vars = { tag.ability and tag.ability.level or 1 } }
 	end,
 	level_func = function(level,one,tag)
 		tag.ability.level2 = (tag.ability.level2 or 0) + 1
@@ -680,7 +673,7 @@ local dog_asc = {
 	key = "ascendant_dog",
 	name = "entr-Ascendant-Dog Tag",
 	loc_vars = function(self, info_queue, tag)
-		return { vars = { tag.ability.level or 1 } }
+		return { vars = { tag.ability and tag.ability.level or 1 } }
 	end,
 	level_func = function(level,one,tag)
 		tag.ability.level2 = (tag.ability.level2 or 0) + 1
@@ -712,8 +705,6 @@ local canvas = {
 	pos = {x=4,y=3},
 	config = { type = "store_joker_create" },
 	in_pool = function() return false end or nil,
-	loc_vars = function(self, info_queue, tag)
-	end,
 	apply = function(self, tag, context)
 		if context.type == "store_joker_create" then
 			local card
@@ -754,7 +745,6 @@ local unbounded = {
 		info_queue[#info_queue + 1] = G.P_CENTERS.p_spectral_normal_1
 		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_cry_pointer" }
 		info_queue[#info_queue + 1] = G.P_CENTERS.c_entr_beyond
-		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
 		if context.type == "new_blind_choice" then
@@ -894,7 +884,6 @@ local ejoker = {
 	in_pool = function() return false end or nil,
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.p_buffoon_mega_1
-		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
 		if context.type == "new_blind_choice" then
@@ -948,7 +937,7 @@ local universal = {
 	config = { type = "immediate" },
 	in_pool = function() return false end or nil,
 	loc_vars = function(self, info_queue,tag)
-		return { vars = {tag.ability.hand and localize(tag.ability.hand,'poker_hands') or "[poker hand]"} }
+		return { vars = {tag.ability and tag.ability.hand and localize(tag.ability.hand,'poker_hands') or "[poker hand]"} }
 	end,
 	apply = function(self, tag, context)
 		if context.type == "immediate" then
@@ -992,7 +981,6 @@ local ebundle = {
 		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_console" }
 		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_entr_ascendant_twisted" }
 		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_bundle" }
-		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
 		if context.type == "new_blind_choice" then
@@ -1035,7 +1023,6 @@ local twisted = {
 	in_pool = function() return false end or nil,
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.p_entr_twisted_pack_mega
-		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
 		if context.type == "new_blind_choice" then
@@ -1115,9 +1102,6 @@ local blind = {
 	pos = {x=4,y=4},
 	config = { type = "new_blind_choice" },
 	in_pool = function() return false end or nil,
-	loc_vars = function(self, info_queue)
-		return { vars = {} }
-	end,
 	apply = function(self, tag, context)
 		if context.type == "new_blind_choice" then
 			local lock = tag.ID
@@ -1217,7 +1201,6 @@ local reference = {
 	in_pool = function() return false end or nil,
 	loc_vars = function(self, info_queue)
 		info_queue[#info_queue + 1] = G.P_CENTERS.p_entr_reference
-		return { vars = {} }
 	end,
 	apply = function(self, tag, context)
 		if context.type == "new_blind_choice" then
