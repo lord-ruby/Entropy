@@ -4271,7 +4271,6 @@ local grape_juice = {
     pos = {x = 7, y = 10},
     atlas = "jokers",
     demicoloncompat = true,
-    blueprint_compat = true,
     config = {
         left = 3,
         left_mod = 1
@@ -4651,7 +4650,6 @@ local redkey = {
     pos = {x = 3, y = 12},
     atlas = "jokers",
     demicoloncompat = true,
-    blueprint_compat = true,
     config = {
         left = 1,
         left_mod = 1
@@ -4884,7 +4882,6 @@ local captcha = {
     pos = {x = 6, y = 11},
     atlas = "jokers",
     demicoloncompat = true,
-    blueprint_compat = true,
     config = {
         left = 1,
         left_mod = 1
@@ -5937,7 +5934,6 @@ local dice_shard = {
         }
     },
     perishable_compat = true,
-    blueprint_compat = true,
     pools = {["Dice"] = true},
     loc_vars = function(self, q, card)
         local name = "None"
@@ -6121,7 +6117,6 @@ local stand_arrow = {
         }
     },
     perishable_compat = true,
-    blueprint_compat = true,
     loc_vars = function(self, q, card)
         local options = {
                     "e_polychrome",
@@ -6257,6 +6252,47 @@ local kings_scepter = {
     }
 }
 
+local monkeys_paw = {
+    order = 113,
+    object_type = "Joker",
+    key = "monkeys_paw",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+    config = {
+        left = 3,
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+            "set_entr_inversions",
+            "set_entr_runes"
+        }
+    },
+    perishable_compat = true,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {set = "Other", key = "eternal"}
+        return {
+            vars = {
+                card.ability.left,
+            }
+        }
+    end,
+    can_use = function(self, card)
+        return to_big(card.ability.left) > to_big(0) and #G.consumeables.cards < G.consumeables.config.card_limit
+    end,
+    use = function(self, card)
+        card.ability.left = card.ability.left - 1
+        SMODS.add_card {
+            set = "Pact",
+            area = G.consumeables,
+            key_append = "entr_monkeys_paw"
+        }.ability.eternal = true
+    end
+}
+
 return {
     items = {
         surreal,
@@ -6379,6 +6415,7 @@ return {
         rubber_ball,
         stand_arrow,
         dancer,
-        kings_scepter
+        kings_scepter,
+        monkeys_paw
     }
 }
