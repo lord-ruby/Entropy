@@ -1753,6 +1753,14 @@ local decs = {
 					"{C:red}debuffed{} cards"
                 },
             },
+			j_entr_monkeys_paw = {
+                name = "Monkey's Paw",
+                text = {
+					"Use this Joker to create",
+					"a random {C:attention}Eternal{} {C:red}Pact{}",
+					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
