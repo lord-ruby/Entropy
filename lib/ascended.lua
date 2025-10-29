@@ -36,7 +36,7 @@ function G.FUNCS.get_poker_hand_info(_cards)
             G.GAME.current_round.current_hand.cry_asc_num_text = (
                 a_power
             )
-                    and " (".. (to_big(a_power) >= to_big(0) and "+" or "") .. a_power .. ")"
+                    and " (".. (to_big(a_power) >= to_big(0) and "+" or "") .. number_format(a_power) .. ")"
                 or ""
         else
             ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
