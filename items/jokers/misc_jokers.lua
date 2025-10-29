@@ -6322,7 +6322,7 @@ local kings_scepter = {
     },
     perishable_compat = true,
     calculate = function(self, card, context)
-        if context.destroy_card and context.destroy_card.debuff and context.cardarea == G.play then
+        if context.destroy_card and context.destroy_card.debuff and context.destroy_card.area == G.play then
             return {remove = not SMODS.is_eternal(context.destroy_card)}
         end
     end, 
