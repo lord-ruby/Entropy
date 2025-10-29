@@ -1349,7 +1349,11 @@ position = "after"
 payload = '''
     if Entropy.DeckOrSleeve("butterfly") then
         for i = 1, Entropy.DeckOrSleeve("butterfly") do
-            t[#t+1] = G.butterfly_jokers
+            local jok = {cards = {}}
+            for i, v in pairs(G.butterfly_jokers.cards) do
+              if pseudorandom("entr_butterfly") < 0.5 then jok.cards[#jok.cards+1] = v end
+            end
+            t[#t+1] = jok
         end
     end
 '''

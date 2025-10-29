@@ -115,7 +115,8 @@ local butterfly = {
   pos = { x = 4, y = 0 },
   atlas = "decks",
   loc_vars = function() 
-    return {vars = {G.GAME.probabilities.normal or 1}}
+    local n, d = SMODS.get_probability_vars(card, 1, 2, "entr_butterfly")
+    return {vars = {n, d}}
   end
 }
 
@@ -131,6 +132,10 @@ local gemstone = {
   key = "gemstone",
   pos = { x = 6, y = 0 },
   atlas = "decks",
+  loc_vars = function() 
+    local n, d = SMODS.get_probability_vars(card, 1, 3, "entr_gemstone")
+    return {vars = {n, d1}}
+  end,
   calculate = function(self, back, context)
     if context.using_consumeable and context.consumeable.config.center.set ~= "Rune" then
         G.GAME.gemstone_amount = (G.GAME.gemstone_amount or 0) + 1
@@ -354,9 +359,10 @@ if CardSleeves then
     apply = function()
       G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots - 2
     end,
-    loc_vars = function() 
-      return {vars = {G.GAME.probabilities.normal or 1}}
-    end
+  loc_vars = function() 
+    local n, d = SMODS.get_probability_vars(card, 1, 2, "entr_butterfly")
+    return {vars = {n, d}}
+  end
   }
 
   CardSleeves.Sleeve {
@@ -389,6 +395,10 @@ if CardSleeves then
             }
           end
       end
+    end,
+    loc_vars = function() 
+      local n, d = SMODS.get_probability_vars(card, 1, 3, "entr_gemstone")
+      return {vars = {n, d}}
     end
   }
 
