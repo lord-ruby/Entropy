@@ -119,7 +119,7 @@ local destiny = {
         return G.hand and #G.hand.highlighted == 5
 	end,
     loc_vars = function(self, q, card)
-        local jok = Entropy.GetRecipe(G.hand.highlighted)
+        local jok = G.hand and Entropy.GetRecipe(G.hand.highlighted)
         if G.hand and #G.hand.highlighted == 5 then
             q[#q+1] = jok and G.P_CENTERS[jok] or nil
         end
