@@ -6403,8 +6403,8 @@ local magic_skin = {
     rarity = 3,
     cost = 6,
     eternal_compat = true,
-    pos = {x = 2, y = 0},
-    atlas = "placeholder",
+    pos = {x = 0, y = 14},
+    atlas = "jokers",
     config = {
         left = 0,
         left_mod = 1,
@@ -6435,7 +6435,7 @@ local magic_skin = {
         }
     end,
     can_use = function(self, card)
-        if SMODS.OPENED_BOOSTER.config and SMODS.OPENED_BOOSTER.config.center.kind == "Standard" then
+        if SMODS.OPENED_BOOSTER and SMODS.OPENED_BOOSTER.config and SMODS.OPENED_BOOSTER.config.center.kind == "Standard" then
             return
         end
         return to_big(card.ability.left) > to_big(0) and G.STATE == G.STATES.SMODS_BOOSTER_OPENED and (Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind) or SMODS.OPENED_BOOSTER.config.center.create_card)
