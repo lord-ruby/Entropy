@@ -4725,13 +4725,13 @@ local decs = {
 				}
 			},
 			rune_entr_blood = {
-				name = "Blood of Blood",
+				name = "Mark of Blood",
 				text = {
 					"Marked by {C:red}Blood{}"
 				}
 			},
 			rune_entr_awakening = {
-				name = "Blood of Awakening",
+				name = "Mark of Awakening",
 				text = {
 					"Marked by {C:red}Awakening{}"
 				}
