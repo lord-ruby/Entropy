@@ -311,7 +311,7 @@ function Card:set_base(...)
         end
         for i, v in pairs(G.deck.cards) do
             if v.ability.link == self.ability.link then
-                sset_base_ref(v, ...) 
+                set_base_ref(v, ...) 
                 SMODS.calculate_context({card_modified = true, other_card = v})
             end
         end
@@ -4344,4 +4344,41 @@ function SMODS.calculate_main_scoring(context, scoring_hand)
         G.rubber_cards = nil
 	end
 	return
+end
+
+local base_shader_ref = Card.should_draw_base_shader
+function Card:should_draw_base_shader(...)
+    return base_shader_ref(self, ...) and not (self.debuff and Entropy.IsEE())
+end
+
+function Entropy.ee_taunt(taunt)
+    local quip = taunt
+    local extra = {
+        center = SMODS.JimboQuips[taunt].extra.center
+    }
+    extra.x = 0
+    extra.y = 5
+    Jimbo = Card_Character(extra)
+    local spot = G.HUD:get_UIE_by_ID('hand_text_area')
+    spot.config.object = Jimbo
+    Jimbo.ui_object_updated = true
+    Jimbo:add_speech_bubble(quip, nil, {quip = true}, extra)
+    Jimbo:say_stuff((extra and extra.times) or 5, false, quip)
+    G.E_MANAGER:add_event(Event{
+        trigger = "after",
+        blocking = false,
+        func = function()
+            if not Jimbo.talking then
+                G.E_MANAGER:add_event(Event{
+                    trigger = "after",
+                    delay = 4,
+                    func = function()
+                        Jimbo:remove()
+                        return true
+                    end
+                })
+                return true
+            end
+        end
+    })
 end
