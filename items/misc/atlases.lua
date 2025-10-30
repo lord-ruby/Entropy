@@ -280,3 +280,10 @@ SMODS.Atlas {
     px = 71, 
     py = 95 
 }
+
+SMODS.Atlas {
+    key = 'crossmod_tags',
+    path = 'crossmod/crossmod_tags.png',
+    px = 34,
+    py = 34
+}

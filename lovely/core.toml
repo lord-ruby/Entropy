@@ -2663,3 +2663,26 @@ if self.debuff then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "card.T.x = self.T.x"
+position = "before"
+payload = '''
+local edi = self.edition or {}
+if edi.type then
+	if card.ability.name ~= "cry-meteor"
+ 	and card.ability.name ~= "cry-exoplanet"
+  	and card.ability.name ~= "cry-stardust" then
+		card:set_edition({[edi.type] = true})
+  	end
+end
+local stickers = {'eternal', 'perishable', 'rental', 'banana'}
+for _, v in ipairs(stickers) do
+	if self.ability[v] then
+		card.ability[v] = self.ability[v]
+	end
+end
+'''
+match_indent = true

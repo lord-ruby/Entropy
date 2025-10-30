@@ -4120,6 +4120,15 @@ local decs = {
 					"Obtain {C:attention}Two{} random {C:purple}Runes{}"
 				},
 			},
+
+			tag_entr_ascendant_negative_eternal = {
+				name = "{C:gold}Negative Eternal Tag{}",
+				text = { "{C:attention}All{} shop items are","{C:dark_edition}Negative{} and {C:attention}Eternal{}" },
+			},
+			tag_entr_ascendant_kitty = {
+				name = "{C:gold}Kitty Tag{}",
+				text = { "Every {C:attention}Kitty Tag{} owned", "Gives {X:chips,C:white}X#1#{} Chips" },
+			},
 		},
 		["Rune Tag"] = {
 			rune_entr_fehu = {

@@ -10,7 +10,8 @@ local i = {
     "compat/aikoshen",
     "compat/tspectrals",
     "compat/grabbag",
-    "compat/hotpotato"
+    "compat/hotpotato",
+    "compat/vallkarri"
 }
 Entropy.load_files(i)
 
