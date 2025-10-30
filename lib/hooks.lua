@@ -3806,7 +3806,7 @@ SMODS.Booster:take_ownership_by_kind('Celestial', {
 		if G.GAME.entr_diviner then
             if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
         end
-        if rune then
+        if rune and (i ~= 1 or not G.GAME.used_vouchers.v_telescope) then
             return create_card("Rune", G.pack_cards, nil, nil, true, true, nil, "spe")
         end
         local _card

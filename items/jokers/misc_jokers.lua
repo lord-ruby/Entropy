@@ -6381,13 +6381,19 @@ local monkeys_paw = {
     end
 }
 
-function Entropy.kind_to_set(kind)
-    return ({
+function Entropy.kind_to_set(kind, c)
+    local check = {
         Arcana = "Tarot",
         Celestial = "Planet",
         Ethereal = "Spectral",
-        Buffoon = "Joker"
-    })[kind] or kind
+        Buffoon = "Joker",
+        Inverted = c and "Twisted" or nil
+    }
+    local kind2 = check[kind] or kind
+    check.Inverted = "Twisted"
+    local check2 = check[kind] or kind
+    if not G.P_CENTER_POOLS[kind2] and not G.P_CENTER_POOLS[check2] then return end
+    return kind2
 end
 
 local magic_skin = {
@@ -6424,13 +6430,43 @@ local magic_skin = {
         return to_big(card.ability.left) > to_big(0) and G.STATE == G.STATES.SMODS_BOOSTER_OPENED and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind)
     end,
     use = function(self, card)
+        card.ability.left = card.ability.left - 1
         G.GAME.magic_skin_prob = (G.GAME.magic_skin_prob or 0) + 0.05
         for i = 1, card.ability.cards do
-            SMODS.add_card {
-                set =  SMODS.OPENED_BOOSTER and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind) or "Joker",
-                key_append = "entr_magic_skin",
-                edition = "e_negative"
-            }
+            local k = SMODS.OPENED_BOOSTER and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind, true)
+            if not k and SMODS.OPENED_BOOSTER.config.center.create_card and type(SMODS.OPENED_BOOSTER.config.center.create_card) == "function" then
+                local _card_to_spawn = SMODS.OPENED_BOOSTER:create_card(SMODS.OPENED_BOOSTER.config.center, i)
+                local spawned
+                if type((_card_to_spawn or {}).is) == 'function' and _card_to_spawn:is(Card) then
+                    spawned = _card_to_spawn
+                else
+                    spawned = SMODS.create_card(_card_to_spawn)
+                end
+                if spawned.config.center.set == "Joker" then
+                    G.jokers:emplace(spawned)
+                else    
+                    G.consumeables:emplace(spawned)
+                end
+                spawned:set_edition("e_negative")
+            else
+                if k == "Planet" or k == "Tarot" then
+                    local rune
+                    local rare_rune
+                    if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
+                    if G.GAME.entr_diviner then
+                        if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
+                    end
+                    if rune then
+                        k = "Rune"
+                    end
+                end
+                SMODS.add_card {
+                    set = k or "Joker",
+                    area = k == "Twisted" and G.consumeables or nil,
+                    key_append = "entr_magic_skin",
+                    edition = "e_negative"
+                }
+            end
         end
     end,
     calculate = function(self, card, context)
