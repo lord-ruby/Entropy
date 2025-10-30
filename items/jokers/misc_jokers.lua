@@ -6009,8 +6009,8 @@ local dice_shard = {
     rarity = 3,
     cost = 10,
     eternal_compat = true,
-    pos = {x = 2, y = 0},
-    atlas = "placeholder",
+    pos = { x = 9, y = 5 },
+    atlas = "jokers",
     config = {
         left = 1,
         left_mod = 1
@@ -6418,7 +6418,7 @@ local magic_skin = {
     perishable_compat = true,
     loc_vars = function(self, q, card)
         local loc = G.STATE == G.STATES.SMODS_BOOSTER_OPENED and SMODS.OPENED_BOOSTER and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind)
-        if loc == "ERROR" or (not Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind) and SMODS.OPENED_BOOSTER.config.center.create_card) then
+        if loc == "ERROR" or (SMODS.OPENED_BOOSTER and not Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind) and SMODS.OPENED_BOOSTER.config.center.create_card) then
             loc = localize(SMODS.OPENED_BOOSTER.config.center.group_key)
         end
         if G.STATE ~= G.STATES.SMODS_BOOSTER_OPENED or (SMODS.OPENED_BOOSTER and (not Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind) and not SMODS.OPENED_BOOSTER.config.center.create_card)) or SMODS.OPENED_BOOSTER.config.center.kind == "Standard" then
