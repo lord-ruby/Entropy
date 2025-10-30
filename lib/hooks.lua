@@ -2105,7 +2105,9 @@ local AscendantTags = {
     --tag_entr_ascendant_exotic="tag_entr_ascendant_entropic",
     tag_entr_sunny = "tag_entr_ascendant_sunny",
     tag_entr_freaky = "tag_entr_ascendant_freaky",
-    tag_entr_fractured = "tag_entr_ascendant_fractured"
+    tag_entr_fractured = "tag_entr_ascendant_fractured",
+    tag_valk_kitty = "tag_entr_ascendant_kitty",
+    tag_valk_negativeeternal = "tag_entr_negative_eternal"
 }
 for i, v in pairs(AscendantTags) do Entropy.AscendedTags[i]=v end
 

@@ -4781,9 +4781,11 @@ local polaroid = {
     perishable_compat = true,
     blueprint_compat = true,
     config = {
-        target = -1,
         left = 1,
-        left_mod = 1
+        left_mod = 1,
+        immutable = {
+            target = -1
+        }
     },
     dependencies = {
         items = {
@@ -4795,13 +4797,13 @@ local polaroid = {
         card.ability.left = card.ability.left - 1
         local cards = Entropy.GetHighlightedCards({G.jokers}, card, 1, 1)
         for i, v in pairs(cards) do
-            card.ability.target = v.sort_id
+            card.ability.immutable.target = v.sort_id
         end
         card:juice_up()
         play_sound("entr_polaroid")
     end,
     loc_vars = function(self, q, card)
-        local other_joker = G.jokers and Entropy.get_by_sortid(card.ability.target)
+        local other_joker = G.jokers and Entropy.get_by_sortid(card.ability.immutable.target)
         local compatible = other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat
         local main_end = {
             {
@@ -4846,8 +4848,8 @@ local polaroid = {
         if (context.end_of_round and not context.blueprint and not context.individual and not context.repetition) or context.forcetrigger then
             SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
         end
-        if card.ability.target > -1 then 
-            local target = Entropy.get_by_sortid(card.ability.target)
+        if (card.ability.immutable.target or -1) > -1 then 
+            local target = Entropy.get_by_sortid(card.ability.immutable.target)
             if target then
                 local ret = SMODS.blueprint_effect(card, target, context)
                 return ret
