@@ -5641,8 +5641,8 @@ local overpump = {
     rarity = 2,
     cost = 8,
     eternal_compat = true,
-    pos = {x = 1, y = 0},
-    atlas = "placeholder",
+    pos = {x = 1, y = 14},
+    atlas = "jokers",
     demicoloncompat = true,
     blueprint_compat = true,
     config = {
