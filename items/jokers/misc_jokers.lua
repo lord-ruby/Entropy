@@ -6417,17 +6417,28 @@ local magic_skin = {
     },
     perishable_compat = true,
     loc_vars = function(self, q, card)
+        local loc = G.STATE == G.STATES.SMODS_BOOSTER_OPENED and SMODS.OPENED_BOOSTER and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind)
+        if loc == "ERROR" or (not Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind) and SMODS.OPENED_BOOSTER.config.center.create_card) then
+            loc = localize(SMODS.OPENED_BOOSTER.config.center.group_key)
+        end
+        if G.STATE ~= G.STATES.SMODS_BOOSTER_OPENED or (SMODS.OPENED_BOOSTER and (not Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind) and not SMODS.OPENED_BOOSTER.config.center.create_card)) or SMODS.OPENED_BOOSTER.config.center.kind == "Standard" then
+            loc = "none"
+        end
+        loc = loc or "ERROR"
         return {
             vars = {
                 card.ability.left,
-                localize("k_"..string.lower(G.STATE == G.STATES.SMODS_BOOSTER_OPENED and SMODS.OPENED_BOOSTER and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind) or "none")),
+                localize("k_"..string.lower(loc)),
                 card.ability.cards,
                 card.ability.left_mod
             }
         }
     end,
     can_use = function(self, card)
-        return to_big(card.ability.left) > to_big(0) and G.STATE == G.STATES.SMODS_BOOSTER_OPENED and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind)
+        if SMODS.OPENED_BOOSTER.config and SMODS.OPENED_BOOSTER.config.center.kind == "Standard" then
+            return
+        end
+        return to_big(card.ability.left) > to_big(0) and G.STATE == G.STATES.SMODS_BOOSTER_OPENED and (Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind) or SMODS.OPENED_BOOSTER.config.center.create_card)
     end,
     use = function(self, card)
         card.ability.left = card.ability.left - 1
@@ -6435,7 +6446,7 @@ local magic_skin = {
         for i = 1, card.ability.cards do
             local k = SMODS.OPENED_BOOSTER and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind, true)
             if not k and SMODS.OPENED_BOOSTER.config.center.create_card and type(SMODS.OPENED_BOOSTER.config.center.create_card) == "function" then
-                local _card_to_spawn = SMODS.OPENED_BOOSTER:create_card(SMODS.OPENED_BOOSTER.config.center, i)
+                local _card_to_spawn = SMODS.OPENED_BOOSTER.config.center:create_card(SMODS.OPENED_BOOSTERr, i)
                 local spawned
                 if type((_card_to_spawn or {}).is) == 'function' and _card_to_spawn:is(Card) then
                     spawned = _card_to_spawn
