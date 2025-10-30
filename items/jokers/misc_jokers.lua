@@ -5918,8 +5918,8 @@ local hash_miner = {
     rarity = 2,
     cost = 7,
     eternal_compat = true,
-    pos = {x = 1, y = 0},
-    atlas = "placeholder",
+    pos = {x = 9, y = 13},
+    atlas = "jokers",
     config = {
         destroy_odds = 2,
         revive_odds = 10,
@@ -5997,7 +5997,8 @@ local hash_miner = {
         end
     end,
     entr_credits = {
-        idea = {"cassknows"}
+        idea = {"cassknows"},
+        art = {"candycanearter"}
     }
 }
 
