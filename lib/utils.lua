@@ -365,7 +365,7 @@ end
 
 function Entropy.BlindIs(blind)
     if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == blind then return true end
-    if Entropy.IsEE() and Entropy.EEWhitelist[blind] then return true end
+    if Entropy.IsEE() and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_four" and Entropy.EEWhitelist[blind] then return true end
 end
 
 function Entropy.card_eval_status_text_eq(card, eval_type, amt, percent, dir, extra, pref, col, sound, vol, ta)

@@ -380,6 +380,7 @@ local phase3 = {
 		end
 	end,
 	set_blind = function()
+		Entropy.ee_taunt("entr_tq_ee_half")
 		G.GAME.EE_JOKERS = G.jokers:save()
 		G.GAME.EE_HANDS = copy_table(G.GAME.hands)
 		for i, v in pairs(G.GAME.hands) do
@@ -1005,6 +1006,12 @@ function ease_background_colour(tbl,...)
 		return ease_bg_c_ref(tbl,...)
 	end
 end
+
+SMODS.Shader({
+    key="brimstone",
+    path="brimstone.fs"
+})
+
 
 local void = {
     dependencies = {

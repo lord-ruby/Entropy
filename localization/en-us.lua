@@ -6357,6 +6357,10 @@ local decs = {
 				"think that would",
 				"work?"
 			},
+			entr_tq_ee_half = {
+				"Is that",
+				"all you got?"
+			},
 			entr_wq_ee_1={
                 "Huh?",
             },
