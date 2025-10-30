@@ -6380,6 +6380,66 @@ local monkeys_paw = {
     end
 }
 
+function Entropy.kind_to_set(kind)
+    return ({
+        Arcana = "Tarot",
+        Celestial = "Planet",
+        Ethereal = "Spectral",
+        Buffoon = "Joker"
+    })[kind] or kind
+end
+
+local magic_skin = {
+    order = 114,
+    object_type = "Joker",
+    key = "magic_skin",
+    rarity = 3,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 2, y = 0},
+    atlas = "placeholder",
+    config = {
+        left = 0,
+        left_mod = 1,
+        cards = 2
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+        }
+    },
+    perishable_compat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.left,
+                localize("k_"..string.lower(G.STATE == G.STATES.SMODS_BOOSTER_OPENED and SMODS.OPENED_BOOSTER and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind) or "none")),
+                card.ability.cards,
+                card.ability.left_mod
+            }
+        }
+    end,
+    can_use = function(self, card)
+        return to_big(card.ability.left) > to_big(0) and G.STATE == G.STATES.SMODS_BOOSTER_OPENED and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind)
+    end,
+    use = function(self, card)
+        G.GAME.magic_skin_prob = (G.GAME.magic_skin_prob or 0) + 0.075
+        for i = 1, card.ability.cards do
+            SMODS.add_card {
+                set =  SMODS.OPENED_BOOSTER and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind) or "Joker",
+                key_append = "entr_magic_skin",
+                edition = "e_negative"
+            }
+        end
+    end,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and not context.repetition) or context.forcetrigger then
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
+        end
+    end, 
+    entr_credits = {idea = "Athebyne"}
+}
+
 return {
     items = {
         surreal,
@@ -6504,6 +6564,7 @@ return {
         stand_arrow,
         dancer,
         kings_scepter,
-        monkeys_paw
+        monkeys_paw,
+        magic_skin
     }
 }

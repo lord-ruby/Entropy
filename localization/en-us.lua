@@ -1781,6 +1781,17 @@ local decs = {
 					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
                 },
             },
+			j_entr_magic_skin = {
+                name = "Magic Skin",
+                text = {
+					"Use this Joker to create {C:attention}#3#{}",
+					"{C:dark_edition}Negative{} cards based on",
+					"the {C:attention}currently{} opened Booster Pack",
+					"gains {C:attention}#4#{} use#<s>4# when defeating a Blind",
+					"{C:inactive,s:0.8}Has a higher chance to show up after each use",
+					"{C:inactive}(Currently {C:attention}#2#{}, {C:attention}#1#{C:inactive} use#<s>1#)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
