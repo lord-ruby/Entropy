@@ -2143,6 +2143,10 @@ function Card:set_ability(center, initial, delay_sprites)
     if G.SETTINGS.paused then
         matref(self, center, initial, delay_sprites)
     else
+        if center.set == "Joker" and G.GAME.magic_skin_prob and pseudorandom("entr_magic_skin") < G.GAME.magic_skin_prob then
+            matref(self, G.P_CENTERS.j_entr_magic_skin, initial, delay_sprites)
+            return
+        end
         if self.config and self.config.center and Entropy.FlipsideInversions and not Entropy.is_inverted(center)
         and pseudorandom("marked") < 0.10 and G.GAME.Marked and G.STATE == G.STATES.SHOP and (not self.area or not self.area.config.collection) and Entropy.Inversion(center) then
             matref(self, G.P_CENTERS[Entropy.Inversion(center)], initial, delay_sprites)
