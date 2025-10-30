@@ -6423,7 +6423,7 @@ local magic_skin = {
         return to_big(card.ability.left) > to_big(0) and G.STATE == G.STATES.SMODS_BOOSTER_OPENED and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind)
     end,
     use = function(self, card)
-        G.GAME.magic_skin_prob = (G.GAME.magic_skin_prob or 0) + 0.075
+        G.GAME.magic_skin_prob = (G.GAME.magic_skin_prob or 0) + 0.05
         for i = 1, card.ability.cards do
             SMODS.add_card {
                 set =  SMODS.OPENED_BOOSTER and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind) or "Joker",
