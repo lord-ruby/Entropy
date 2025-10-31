@@ -6490,6 +6490,68 @@ local magic_skin = {
     entr_credits = {idea = "Athebyne"}
 }
 
+local lambda_calculus = {
+    order = 115,
+    object_type = "Joker",
+    key = "lambda_calculus",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 2, y = 14},
+    atlas = "jokers",
+    config = {
+        chips = 0
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    perishable_compat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.chips
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main then
+            local chips = card.ability.chips
+            card.ability.chips = 0
+            return {
+                chips = chips
+            }
+        end
+        if context.post_trigger and context.other_card ~= card then
+            local change = Entropy.gather_values(context.other_card)
+            if to_big(change) > to_big(0) then
+                card.ability.chips = card.ability.chips + change
+                card_eval_status_text(
+                    card,
+                    "extra",
+                    nil,
+                    nil,
+                    nil,
+                    { message = number_format(card.ability.chips), colour = G.C.BLUE }
+                )
+            end
+        end
+    end, 
+}
+
+function Entropy.gather_values(card)
+    local total = 0
+    for i, v in pairs(card.ability) do
+        if (type(v) == "number" or (type(v) == "table" and v.tetrate)) and to_big(v) > to_big(1) and i ~= "order" then
+            total = total + v
+        elseif type(v) == "table" then
+            total = total + Entropy.gather_values({ability = v})
+        end
+    end
+    return total
+end
+
 return {
     items = {
         surreal,
@@ -6615,6 +6677,7 @@ return {
         dancer,
         kings_scepter,
         monkeys_paw,
-        magic_skin
+        magic_skin,
+        lambda_calculus
     }
 }

@@ -2107,7 +2107,14 @@ local AscendantTags = {
     tag_entr_freaky = "tag_entr_ascendant_freaky",
     tag_entr_fractured = "tag_entr_ascendant_fractured",
     tag_valk_kitty = "tag_entr_ascendant_kitty",
-    tag_valk_negativeeternal = "tag_entr_negative_eternal"
+    tag_valk_negativeeternal = "tag_entr_negative_eternal",
+
+    tag_entr_fractured = "tag_entr_ascendant_fractured",
+    tag_entr_freaky = "tag_entr_ascendant_freaky",
+    tag_entr_kaleidoscopic = "tag_entr_ascendant_kaleidoscopic",
+    tag_entr_neon = "tag_entr_ascendant_neon",
+    tag_entr_lowres = "tag_entr_ascendant_lowres",
+    tag_entr_arcane = "tag_entr_ascendant_arcane"
 }
 for i, v in pairs(AscendantTags) do Entropy.AscendedTags[i]=v end
 
