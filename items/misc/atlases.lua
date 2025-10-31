@@ -239,7 +239,6 @@ SMODS.Atlas {
     py = 95 
 }
 
-
 SMODS.Atlas { 
     key = 'consumables2', 
     path = 'second_consumables.png',
@@ -287,3 +286,12 @@ SMODS.Atlas {
     px = 34,
     py = 34
 }
+
+if (SMODS.Mods.vallkarri or {}).can_load then
+    SMODS.Atlas {
+        key = "aes",
+        path = "crossmod/valk_aesthetics.png",
+        px = 71,
+        py = 95,
+    }
+end

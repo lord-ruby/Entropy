@@ -3227,6 +3227,13 @@ local decs = {
 					"Destroy all other held Jokers"
 				}
 			},
+			c_entr_highway = {
+				name = "Highway",
+				text = {
+					"Destroy {C:red}all{} Jokers except {C:attention}one{}",
+					"then create an {C:entr_entropic}Entropic{} Joker"
+				}
+			},
 			c_entr_fervour={
                 name="Fervour",
                 text={
@@ -3569,6 +3576,57 @@ local decs = {
 					"Create a {C:attention}Copy{}",
 					"and an {C:entr_entropic}Ascended{}",
 					"variant of the last obtained {C:attention}Tag{}"
+				}
+			},
+		},
+		Aesthetic = {
+			c_entr_vintage = {
+				name = "Vintage",
+				text = {
+					"Enhance up to {C:attention}#1#{} selected",
+                	"Joker with {C:attention}#2#{}",
+				}
+			},
+			c_entr_retro = {
+				name = "Retro",
+				text = {
+					"Enhance up to {C:attention}#1#{} selected",
+                	"Joker with {C:attention}#2#{}",
+				}
+			},
+			c_entr_ytp = {
+				name = "YTP",
+				text = {
+					"Enhance up to {C:attention}#1#{} selected",
+                	"Joker with {C:attention}#2#{}",
+				}
+			},
+			c_entr_solarpunk = {
+				name = "Solarpunk",
+				text = {
+					"Enhance up to {C:attention}#1#{} selected",
+                	"Joker with {C:attention}#2#{}",
+				}
+			},
+			c_entr_breakcore = {
+				name = "Breakcore",
+				text = {
+					"Enhance up to {C:attention}#1#{} selected",
+                	"Joker with {C:attention}#2#{}",
+				}
+			},
+			c_entr_lewd = {
+				name = "Lewd",
+				text = {
+					"Enhance up to {C:attention}#1#{} selected",
+                	"Joker with {C:attention}#2#{}",
+				}
+			},
+			c_entr_disco = {
+				name = "Disco",
+				text = {
+					"Enhance up to {C:attention}#1#{} selected",
+                	"Joker with {C:attention}#2#{}",
 				}
 			},
 		},
