@@ -1792,6 +1792,15 @@ local decs = {
 					"{C:inactive}(Currently {C:attention}#2#{}, {C:attention}#1#{C:inactive} use#<s>1#)"
                 },
             },
+			j_entr_lambda_calculus = {
+                name = "Lambda Calculus",
+                text = {
+					"Whenever another Joker {C:attention}triggers{}",
+					"add its {C:attention}values{} to this Jokers {C:blue}Chips{}",
+					"{C:red}Resets{} when this Joker triggers",
+					"{C:inactive}(Currently {C:blue}+#1#{C:inactive} Chips)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
