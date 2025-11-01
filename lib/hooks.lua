@@ -2149,10 +2149,10 @@ local TrumpCardAllow = {
 local matref = Card.set_ability
 function Card:set_ability(center, initial, delay_sprites)
     G.GAME.entropy = G.GAME.entropy or 0
-    if G.SETTINGS.paused then
+    if G.SETTINGS.paused or not center then
         matref(self, center, initial, delay_sprites)
     else
-        if center.set == "Joker" and G.GAME.magic_skin_prob and pseudorandom("entr_magic_skin") < G.GAME.magic_skin_prob then
+        if center and center.set == "Joker" and G.GAME.magic_skin_prob and pseudorandom("entr_magic_skin") < G.GAME.magic_skin_prob then
             matref(self, G.P_CENTERS.j_entr_magic_skin, initial, delay_sprites)
             return
         end

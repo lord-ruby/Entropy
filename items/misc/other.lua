@@ -136,7 +136,12 @@ SMODS.PokerHand{
 			return { SMODS.merge_lists(parts.entr_derivative_part) }
 		end
 		return {}
-	end
+	end,
+	dependencies = {
+		items = {
+			"c_entr_wormhole"
+		}
+	}
 }
 
 local wormhole = {
