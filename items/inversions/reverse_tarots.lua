@@ -34,7 +34,7 @@ local master = {
                 localize{type = 'name', set = "Other", key = string.gsub(G.GAME.last_inversion.key, "_[0-9]*$", ""), nodes = nodes}
             end
             card.ability.last_inversion = nodes[1][1].nodes[1].config.object.string
-        elseif G.GAME.last_inversion then
+        elseif G.GAME.last_inversion and G.GAME.last_inversion.key~= "c_entr_master" then
             q[#q+1] = G.P_CENTERS[G.GAME.last_inversion.key]
         end
         return {
