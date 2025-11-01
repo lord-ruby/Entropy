@@ -1012,6 +1012,10 @@ SMODS.Shader({
     path="brimstone.fs"
 })
 
+SMODS.Shader({
+    key="brimstone_badge",
+    path="brimstone_badge.fs"
+})
 
 local void = {
     dependencies = {

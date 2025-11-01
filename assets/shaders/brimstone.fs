@@ -5,6 +5,7 @@
 #endif
 
 extern MY_HIGHP_OR_MEDIUMP vec2 brimstone;
+extern MY_HIGHP_OR_MEDIUMP vec2 entr_brimstone;
 extern MY_HIGHP_OR_MEDIUMP number dissolve;
 extern MY_HIGHP_OR_MEDIUMP number time;
 extern MY_HIGHP_OR_MEDIUMP vec4 texture_details;
@@ -261,6 +262,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	// Dummy, doesn't do anything but at least it makes the shader useable
     if (uv.x > uv.x * 2.){
         uv = brimstone;
+        uv = entr_brimstone;
     }
 
     float mod = brimstone.r * 1.0;

@@ -173,6 +173,7 @@ function Entropy.generate_credits_nodes(table, type)
 							colours = { G.C.WHITE },
 							shadow = true,
 							scale = 0.4,
+							shader = "entr_brimstone"
 						}),
 					},
 				},
