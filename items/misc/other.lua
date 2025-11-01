@@ -488,6 +488,31 @@ local sputnik = {
 	can_use = function() return true end
 }
 
+SMODS.Atlas{  
+    key = "rubyhearts_lc",
+    px = 71,
+    py = 95,
+    path = "RubyDeck.png",
+}
+
+SMODS.Atlas{  
+	key = "rubyhearts_hc",
+	px = 71,
+	py = 95,
+	path = "RubyDeck2.png",
+}
+
+SMODS.DeckSkin{
+	key = "ruby_hearts",
+	suit = "Hearts",
+	ranks = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King','Ace'},
+	lc_atlas = 'entr_rubyhearts_lc',
+	hc_atlas = 'entr_rubyhearts_hc',
+	posStyle = 'deck',
+	loc_txt = {
+        ['en-us'] = "Ruby"
+    },
+}
 
 return {
     items = {
