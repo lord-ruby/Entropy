@@ -696,7 +696,7 @@ local axeh = {
     atlas = "ruby_atlas",
     demicoloncompat=true,
     entr_credits = {
-        art = {"Lil. Mr. Slipstream"}
+        art = {"HexaCryonic"}
     },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue+1] = G.P_CENTERS.j_entr_sunny_joker
