@@ -90,6 +90,8 @@ SMODS.PokerHandPart {
 	func = function(hand)
 		local eligible_cards = {}
 		local stones = 0
+		local all_pure = true
+		if G.GAME.starting_params.akyrs_starting_letters then return {} end
 		for i, card in ipairs(hand) do
 			if SMODS.has_no_suit(card) or card.config.center.key == "m_stone" 
 			or card.config.center.overrides_base_rank 
@@ -102,8 +104,11 @@ SMODS.PokerHandPart {
 			if (SMODS.Mods["Cryptid"] or {}).can_load and card.config.center.key == "m_stone" then
 				stones = stones + 1
 			end
+			if not card.ability.akyrs_special_card_type then
+				all_pure = false
+			end
 		end
-		if stones >= 5 then return {} end
+		if stones >= 5 or all_pure then return {} end
         local num = 5
 		if #eligible_cards >= num then
 			return { eligible_cards }
