@@ -363,7 +363,7 @@ end
 local smcmb = SMODS.create_mod_badges
 function SMODS.create_mod_badges(obj, badges)
 	smcmb(obj, badges)
-	if not SMODS.config.no_mod_badges and obj and obj.entr_credits then
+	if not SMODS.config.no_mod_badges and obj and obj.original_mod and obj.original_mod.id == "entr" then
 		local function calc_scale_fac(text)
 			local size = 0.9
 			local font = G.LANG.font
@@ -378,12 +378,12 @@ function SMODS.create_mod_badges(obj, badges)
 			local scale_fac = calced_text_width > max_text_width and max_text_width / calced_text_width or 1
 			return scale_fac
 		end
-		if obj.entr_credits.art or obj.entr_credits.code or obj.entr_credits.idea or obj.entr_credits.custom then
+		if not obj.entr_credit or (obj.entr_credits.art or obj.entr_credits.code or obj.entr_credits.idea or obj.entr_credits.custom) then
 			local scale_fac = {}
 			local min_scale_fac = 1
 			local strings =  G.only_display_credit and {} or {Entropy.display_name}
 			for _, v in ipairs({ "idea", "art", "code" }) do
-				if obj.entr_credits[v] then
+				if obj.entr_credits and obj.entr_credits[v] then
 					if type(obj.entr_credits[v]) == "string" then obj.entr_credits[v] = {obj.entr_credits[v]} end
 					for i = 1, #obj.entr_credits[v] do
                         if not G.only_display_credit or G.only_display_credit == obj.entr_credits[v][i] then
@@ -393,7 +393,7 @@ function SMODS.create_mod_badges(obj, badges)
 					end
 				end
 			end
-            if obj.entr_credits.custom then
+            if obj.entr_credits and obj.entr_credits.custom then
                 strings[#strings + 1] = localize({ type="variable", key = obj.entr_credits.custom.key, vars = { obj.entr_credits.custom.text } })
             end
 			for i = 1, #strings do
@@ -423,6 +423,7 @@ function SMODS.create_mod_badges(obj, badges)
 							minh = 0.36,
 							emboss = 0.05,
 							padding = 0.03 * 0.9,
+                            shader = "entr_brimstone_badge"
 						},
 						nodes = {
 							{ n = G.UIT.B, config = { h = 0.1, w = 0.03 } },
