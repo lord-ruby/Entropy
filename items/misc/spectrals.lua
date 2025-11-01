@@ -42,7 +42,11 @@ local flipside = {
             }
         }
     end,
-    can_be_pulled = true
+    can_be_pulled = true,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local shatter = {
@@ -60,7 +64,7 @@ local shatter = {
         }
     },
     use = function(self, card, area, copier)
-        Entropy.FlipThen(G.hand.highlighted, function(card)
+        Entropy.FlipThen(Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.limit), function(card)
             card:set_edition("e_entr_fractured")
         end)
         Entropy.ChangeFullCSL(-card.ability.csl)
@@ -80,6 +84,10 @@ local shatter = {
         idea = {"cassknows"},
         art = {"cassknows"}
     },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local destiny = {
@@ -149,7 +157,7 @@ local lust = {
         }
     },
     use = function(self, card, area, copier)
-        Entropy.FlipThen(G.hand.highlighted, function(card)
+        Entropy.FlipThen(Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.limit), function(card)
             card:set_edition("e_entr_freaky")
         end)
     end,
@@ -165,7 +173,11 @@ local lust = {
     end,
     entr_credits = {
         art = {"missingnumber"}
-    }
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 local ref = Cryptid.reload_localization
 function Cryptid.reload_localization()
@@ -258,6 +270,10 @@ local null = {
             card.ability.create
         }}
     end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local antithesis = {
@@ -286,6 +302,10 @@ local antithesis = {
     entr_credits = {
         idea = {"cassknows"}
     },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local enchant = {
