@@ -2686,3 +2686,34 @@ for _, v in ipairs(stickers) do
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Cryptid "lib/forcetrigger.lua"]'''
+pattern = "if Talisman and not Talisman.config_file.disable_anims then"
+position = "at"
+payload = '''
+if Talisman and not Talisman.config_file.disable_anims and (not context or not context.no_sound) then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Cryptlib "forcetrigger.lua"]'''
+pattern = "if Talisman and not Talisman.config_file.disable_anims then"
+position = "at"
+payload = '''
+if Talisman and not Talisman.config_file.disable_anims and (not context or not context.no_sound) then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''card.lua'''
+pattern = "eligible_card:set_edition(edition, true)"
+position = "at"
+payload = '''
+if eligible_card then eligible_card:set_edition(edition, true) end
+'''
+match_indent = true
+

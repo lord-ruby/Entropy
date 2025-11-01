@@ -1801,6 +1801,14 @@ local decs = {
 					"{C:inactive}(Currently {C:blue}+#1#{C:inactive} Chips)"
                 },
             },
+			j_entr_elderberries = {
+                name = "Elderberries",
+                text = {
+					"Forcibly use {C:attention}#1#{}",
+					"{C:spectral}Spectal{} cards",
+					"when sold"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

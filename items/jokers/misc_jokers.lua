@@ -6552,6 +6552,103 @@ function Entropy.gather_values(card)
     return total
 end
 
+local elderberries = {
+    order = 116,
+    object_type = "Joker",
+    key = "elderberries",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 2, y = 14},
+    atlas = "jokers",
+    config = {
+        spectrals = 2
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    pools = {Food = true},
+    perishable_compat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                math.min(card.ability.spectrals, 100)
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.selling_self then
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                func = function()
+                    local area
+                    if G.STATE == G.STATES.HAND_PLAYED then
+                        if not G.redeemed_vouchers_during_hand then
+                            G.redeemed_vouchers_during_hand =
+                                CardArea(G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, { type = "play", card_limit = 5 })
+                        end
+                        area = G.redeemed_vouchers_during_hand
+                    else
+                        area = G.play
+                    end
+                    for i = 1, card.ability.spectrals do
+                        local card = create_card("Spectral", G.play, nil, nil, nil, nil, nil, "entr_large_deck")
+                        if card.config.center.key == "j_joker" then
+                            card:set_ability(G.P_CENTERS.b_aura)
+                        end
+                        card:add_to_deck()
+                        area:emplace(card)
+
+                        local top_dynatext = nil
+                        
+                        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                                top_dynatext = DynaText({string = localize{type = 'name_text', set = card.config.center.set, key = card.config.center.key}, colours = {G.C.WHITE}, rotate = 1,shadow = true, bump = true,float=true, scale = 0.9, pop_in = 0.6/G.SPEEDFACTOR, pop_in_rate = 1.5*G.SPEEDFACTOR})
+                                card:juice_up(0.3, 0.5)
+                                play_sound('card1')
+                                play_sound('coin1')
+                                card.children.top_disp = UIBox{
+                                    definition =    {n=G.UIT.ROOT, config = {align = 'tm', r = 0.15, colour = G.C.CLEAR, padding = 0.15}, nodes={
+                                                        {n=G.UIT.O, config={object = top_dynatext}}
+                                                    }},
+                                    config = {align="tm", offset = {x=0,y=0},parent = card}
+                                }
+        
+                            return true end }))
+                        --G.GAME.current_round.voucher = nil
+
+
+                        delay(0.6)
+                        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 2.6, func = function()
+                            top_dynatext:pop_out(4)
+                            return true end }))
+                        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.5, func = function()
+                            card.children.top_disp:remove()
+                            card.children.top_disp = nil
+                        return true end }))
+
+                        if Cryptid.forcetriggerConsumableCheck(card) then
+                            Cryptid.forcetrigger(card, {no_sound = true})
+                        else
+                            --card:use_consumeable()
+                        end
+                        G.E_MANAGER:add_event(Event{
+                            trigger = "after",
+                            func = function()
+                                card:start_dissolve()
+                                return true
+                            end
+                        })
+                    end
+                    return true
+                end
+            })
+            return nil, true
+        end
+    end, 
+}
+
 return {
     items = {
         surreal,
@@ -6678,6 +6775,7 @@ return {
         kings_scepter,
         monkeys_paw,
         magic_skin,
-        lambda_calculus
+        lambda_calculus,
+        elderberries
     }
 }
