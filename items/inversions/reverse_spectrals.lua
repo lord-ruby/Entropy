@@ -1159,8 +1159,10 @@ local idyll = {
     atlas = "consumables",
 	pos = {x=2,y=8},
     use = function(self, card, area, copier)
-        add_tag(Tag(G.GAME.last_tag))
-        add_tag(Tag(Entropy.AscendedTags[G.GAME.last_tag] or G.GAME.last_tag))
+        if G.GAME.last_tag then
+            add_tag(Tag(G.GAME.last_tag))
+            add_tag(Tag(Entropy.AscendedTags[G.GAME.last_tag] or G.GAME.last_tag))
+        end
     end,
     can_use = function(self, card)
         return G.GAME.last_tag
