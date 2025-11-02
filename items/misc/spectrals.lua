@@ -106,7 +106,8 @@ local destiny = {
     },
     use = function(self, card, area, copier)
         local remove = {}
-        for i, v in pairs(G.hand.highlighted) do
+        local highlighted = Entropy.GetHighlightedCards({G.hand}, card, 5, 5)
+        for i, v in pairs(highlighted) do
             if v.config.center.key ~= "c_base" or pseudorandom("crafting") < 0.4 then
                 if not SMODS.is_eternal(v) then
                     v:start_dissolve()
@@ -118,28 +119,35 @@ local destiny = {
             end
         end
         if #remove > 0 then SMODS.calculate_context({remove_playing_cards = true, removed=remove}) end
-        add_joker(Entropy.GetRecipe(G.hand.highlighted))
+        add_joker(Entropy.GetRecipe(highlighted))
     end,
     keep_on_use = function(self, card)
         return Entropy.DeckOrSleeve("crafting")
     end,
     can_use = function(self, card)
-        return G.hand and #G.hand.highlighted == 5
+        local highlighted = Entropy.GetHighlightedCards({G.hand}, card, 5, 5)
+        return G.hand and #highlighted == 5
 	end,
     loc_vars = function(self, q, card)
         local jok = G.hand and Entropy.GetRecipe(G.hand.highlighted)
-        if G.hand and #G.hand.highlighted == 5 then
+        local highlighted = Entropy.GetHighlightedCards({G.hand}, card, 5, 5)
+        if G.hand and #highlighted == 5 then
             q[#q+1] = jok and G.P_CENTERS[jok] or nil
         end
+        
         return {vars={
-            G.hand and #G.hand.highlighted == 5 and localize({type = "name_text", set = "Joker", key = jok}) or "none"
+            G.hand and #highlighted == 5 and localize({type = "name_text", set = "Joker", key = jok}) or "none"
         }}
     end,
     no_doe = true,
     in_pool = function()
         return not Entropy.DeckOrSleeve("crafting")
     end,
-    weight = 0
+    weight = 0,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local lust = {
