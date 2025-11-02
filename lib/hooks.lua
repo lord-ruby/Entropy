@@ -890,7 +890,7 @@ end
 G.FUNCS.can_use_joker = function(e)
     local center = e.config.ref_table.config.center
     if
-        center.can_use and center:can_use(e.config.ref_table) and not G.CONTROLLER.locked
+        center.can_use and center:can_use(e.config.ref_table) and not G.CONTROLLER.locked and not e.config.ref_table.debuff
     then
         e.config.colour = G.C.GREEN
         e.config.button = "use_joker"
