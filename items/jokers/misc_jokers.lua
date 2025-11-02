@@ -6632,8 +6632,8 @@ local elderberries = {
 
                         if Cryptid.forcetriggerConsumableCheck(card) then
                             Cryptid.forcetrigger(card, {no_sound = true})
-                        else
-                            --card:use_consumeable()
+                        elseif card:can_use_consumeable() then
+                            card:use_consumeable()
                         end
                         G.E_MANAGER:add_event(Event{
                             trigger = "after",
@@ -6649,6 +6649,74 @@ local elderberries = {
             return nil, true
         end
     end, 
+}
+
+local nostalgic_d6 = {
+    order = 117,
+    object_type = "Joker",
+    key = "nostalgic_d6",
+    rarity = 3,
+    cost = 8,
+    eternal_compat = true,
+    pos = {x = 2, y = 0},
+    atlas = "placeholder",
+    config = {
+        dollars = 4
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+        }
+    },
+    perishable_compat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.dollars
+            }
+        }
+    end,
+    can_use = function(self, card)
+        return G.STATE == G.STATES.SMODS_BOOSTER_OPENED and (Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind) or SMODS.OPENED_BOOSTER.config.center.create_card)
+    end,
+    use = function(self, card)
+        ease_dollars(-card.ability.dollars)
+        for i, v in pairs(G.pack_cards.cards) do
+            v:start_dissolve()
+            local p_card
+            local k = SMODS.OPENED_BOOSTER and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind, true)
+            if not k and SMODS.OPENED_BOOSTER.config.center.create_card and type(SMODS.OPENED_BOOSTER.config.center.create_card) == "function" then
+                local _card_to_spawn = SMODS.OPENED_BOOSTER.config.center:create_card(SMODS.OPENED_BOOSTERr, i)
+                local spawned
+                if type((_card_to_spawn or {}).is) == 'function' and _card_to_spawn:is(Card) then
+                    spawned = _card_to_spawn
+                else
+                    spawned = SMODS.create_card(_card_to_spawn)
+                end
+                p_card = spawned
+            else
+                if k == "Planet" or k == "Tarot" then
+                    local rune
+                    local rare_rune
+                    if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
+                    if G.GAME.entr_diviner then
+                        if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
+                    end
+                    if rune then
+                        k = "Rune"
+                    end
+                end
+                p_card = SMODS.create_card {
+                    set = k or "Joker",
+                    area = k == "Twisted" and G.consumeables or nil,
+                    key_append = "entr_nostalgic_d6",
+                }
+            end
+            G.pack_cards.cards[i] = p_card
+            p_card.area = G.pack_cards
+        end
+    end,
+    entr_credits = {idea = "Grahkon"}
 }
 
 return {
@@ -6778,6 +6846,7 @@ return {
         monkeys_paw,
         magic_skin,
         lambda_calculus,
-        elderberries
+        elderberries,
+        nostalgic_d6
     }
 }

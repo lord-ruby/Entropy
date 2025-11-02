@@ -1809,6 +1809,14 @@ local decs = {
 					"when sold"
                 },
             },
+			j_entr_nostalgic_d6 = {
+                name = "Nostalgic D6",
+                text = {
+					"Use this Joker for {C:money}$#1#{}",
+					"to {C:attention}reroll{} a Booster Pack's",
+					"contents"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
