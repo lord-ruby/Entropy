@@ -440,10 +440,12 @@ local ichor = {
         local joker = pseudorandom_element(Entropy.FilterTable(G.jokers.cards, function(card)
             return card.edition and card.edition.key == "e_negative"
         end), pseudoseed("ichor"))
-        joker:start_dissolve()
-        G.GAME.banned_keys[joker.config.center.key] = true
-        G.jokers:handle_card_limit(card.ability.num)
-        eval_card(joker, {banishing_card = true, banisher = card, card = joker, cardarea = joker.area})
+        if joker then
+            joker:start_dissolve()
+            G.GAME.banned_keys[joker.config.center.key] = true
+            G.jokers:handle_card_limit(card.ability.num)
+            eval_card(joker, {banishing_card = true, banisher = card, card = joker, cardarea = joker.area})
+        end
     end,
     can_use = function(self, card)
         if not G.jokers then return false end
