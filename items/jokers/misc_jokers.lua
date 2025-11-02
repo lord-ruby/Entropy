@@ -6559,7 +6559,7 @@ local elderberries = {
     rarity = 2,
     cost = 6,
     eternal_compat = true,
-    pos = {x = 2, y = 14},
+    pos = {x = 3, y = 14},
     atlas = "jokers",
     config = {
         spectrals = 2
