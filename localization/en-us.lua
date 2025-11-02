@@ -1805,7 +1805,7 @@ local decs = {
                 name = "Elderberries",
                 text = {
 					"Forcibly use {C:attention}#1#{}",
-					"{C:spectral}Spectal{} cards",
+					"{C:spectral}Spectral{} cards",
 					"when sold"
                 },
             },

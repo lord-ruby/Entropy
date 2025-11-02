@@ -6571,6 +6571,8 @@ local elderberries = {
     },
     pools = {Food = true},
     perishable_compat = true,
+    blueprint_compat = true,
+    demicoloncompat = true,
     loc_vars = function(self, q, card)
         return {
             vars = {
@@ -6579,7 +6581,7 @@ local elderberries = {
         }
     end,
     calculate = function(self, card, context)
-        if context.selling_self then
+        if context.selling_self or context.forcetrigger then
             G.E_MANAGER:add_event(Event{
                 trigger = "after",
                 func = function()
