@@ -140,22 +140,22 @@ if (SMODS.Mods["Cryptid"] or {}).can_load then
 			end
 		end,
 	}
-
-	local acheros = {
-		object_type = "Achievement",
-		key = "acheros",
-		order = 999,
-		bypass_all_unlocked = true,
-		atlas = "entr_achievements",
-		pos = {x=1,y=1},
-		hidden_text = true,
-		unlock_condition = function(self, args)
-			if args.type == "beat_ee" then
-				return true
-			end
-		end,
-	}
 end
+
+local acheros = {
+	object_type = "Achievement",
+	key = "acheros",
+	order = 999,
+	bypass_all_unlocked = true,
+	atlas = "entr_achievements",
+	pos = {x=1,y=1},
+	hidden_text = true,
+	unlock_condition = function(self, args)
+		if args.type == "beat_ee" then
+			return true
+		end
+	end,
+}
 
 return {
     items = {
