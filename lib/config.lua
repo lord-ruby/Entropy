@@ -33,6 +33,12 @@ local entrConfigTab = function()
 	right_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
 	config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }
 	entr_nodes[#entr_nodes + 1] = config
+	entr_nodes[#entr_nodes + 1] = create_toggle({
+		label = localize("k_entr_profile_prefix"),
+		active_colour = HEX("40c76d"),
+		ref_table = Entropy.config,
+		ref_value = "profile_prefix",
+	})
 	entr_nodes[#entr_nodes+1] = create_option_cycle({
 		label = localize("flipside_info"),
 		scale = 0.8,

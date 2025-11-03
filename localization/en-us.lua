@@ -6134,6 +6134,7 @@ local decs = {
 			k_entr_faster_ante_scaling = "Scale Blind scores quicker if you have an Entropic Joker",
 			k_entr_entropic_music = "Entropic Jokers (Joker in Greek by gemstonez)",
 			k_entr_blind_tokens = "Enable Blind Tokens",
+			k_entr_profile_prefix = "Enable Custom Profiles for Entropy",
 			k_credits = "Credits",
 			k_code = "Code",
 			k_idea = "Ideas",
