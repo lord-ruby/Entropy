@@ -362,6 +362,13 @@ Entropy.ReversePlanets = {
   {name="Flush House",key="ceres",sprite_pos={x=8,y=1},new_key="procyon", art="Binary"},
   {name="Flush Five",key="eris",sprite_pos={x=10,y=1},new_key="sirius", art="Binary"},
 }
+-- Spectrum Compat
+if SMODS.Mods["SpectrumAPI"] then
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="spa_Spectrum",key=SpectrumAPI.get_planet("spa_Spectrum"),sprite_pos={x=0,y=3}, new_key="starspectrum", prefix = "spa", atlas = "placeholder"}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="spa_Straight_Spectrum",key=SpectrumAPI.get_planet("spa_Straight_Spectrum"),sprite_pos={x=0,y=3}, new_key="starstraightspectrum", prefix = "spa", atlas = "placeholder"}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="spa_Spectrum_House",key=SpectrumAPI.get_planet("spa_Spectrum_House"),sprite_pos={x=0,y=3}, new_key="starhousespectrum", prefix = "spa", atlas = "placeholder"}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="spa_Spectrum_Five",key=SpectrumAPI.get_planet("spa_Spectrum_Five"),sprite_pos={x=0,y=3}, new_key="starfivespectrum", prefix = "spa", atlas = "placeholder"}
+end
 -- putting this here its easier because of how dumb the system is
 if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
   Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="planetlua",sprite_pos={x=8,y=2}, new_key="starlua", prefix = "cry",config = {
