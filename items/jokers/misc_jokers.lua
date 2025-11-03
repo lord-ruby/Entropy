@@ -6761,6 +6761,7 @@ local mark_of_the_beast = {
             create_shop_card_ui(card, 'Booster', G.shop_booster)
             card.ability.booster_pos = #G.shop_booster.cards + 1
             card:start_materialize()
+            card.cost = 0
             G.shop_booster:emplace(card)
             return nil, true
         end
@@ -6778,6 +6779,7 @@ local mark_of_the_beast = {
                             create_shop_card_ui(card, 'Booster', G.shop_booster)
                             card.ability.booster_pos = #G.shop_booster.cards + 1
                             card:start_materialize()
+                            card.cost = 0
                             G.shop_booster:emplace(card)
                             return true
                         end})
