@@ -3104,6 +3104,38 @@ local decs = {
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
+			c_entr_starspectrum = {
+				name = "Spectrum Star",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_starstraightspectrum = {
+				name = "Straight Spectrum Star",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_starhousespectrum = {
+				name = "Spectrum House Star",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_starfivespectrum = {
+				name = "Spectrum Five Star",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
 			c_entr_multiverse = {
 				name = Cryptid_config.family_mode and "Multiverse" or "The Multiverse In Its Fucking Entirety",
 				text = {
