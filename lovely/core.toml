@@ -214,7 +214,46 @@ match_indent = true
 target = "game.lua"
 pattern = 'Cryptid.profile_prefix = Jen and "J" or "M"'
 position = "after"
-payload = 'Cryptid.profile_prefix = Cryptid.profile_prefix == "M" and "E" or Cryptid.profile_prefix.."E"'
+payload = 'local pref = Entropy_config.profile_prefix and "E" or "M"; Cryptid.profile_prefix = Cryptid.profile_prefix == "M" and pref or Cryptid.profile_prefix..pref'
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = 'self:load_profile(G.SETTINGS.profile or 1)'
+position = "before"
+payload = '''
+if not Cryptid then Cryptid = {profile_prefix = Entropy_config.profile_prefix and "E" or ""} end;
+Cryptid.profile_prefix = "E"
+if type(G.SETTINGS.profile) ~= "string" or G.SETTINGS.profile:sub(1, #Cryptid.profile_prefix) ~= Cryptid.profile_prefix then
+    G.SETTINGS.profile = Cryptid.profile_prefix .. "1"
+end
+for i = 1, 3 do
+    G.PROFILES[Cryptid.profile_prefix .. i] = {}
+end'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = 'for i = 1, 3 do'
+position = "after"
+payload = 'if not Cryptid then Cryptid = {profile_prefix = Entropy_config.profile_prefix and "E" or ""} end; i = Cryptid.profile_prefix .. i'
+match_indent = true
+
+
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "local settings = get_compressed('settings.jkr')"
+position = "after"
+payload = '''Entropy_config = {profile_prefix = true}
+local entr_conf = get_compressed("config/entr.jkr")
+if entr_conf then
+  Entropy_config = STR_UNPACK(entr_conf)
+end
+'''
 match_indent = true
 
 
