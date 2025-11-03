@@ -1220,7 +1220,7 @@ local othila_indicator = {
     end
 }
 
-local oss = Entropy.create_rune("oss", {x=3,y=3}, "rune_entr_oss", 6025, nil, nil, true, {x=4,y=3})
+local oss = Entropy.create_rune("oss", {x=3,y=3}, "rune_entr_oss", 6025, {art = {"Lil. Mr. Slipstream"}}, nil, true, {x=4,y=3})
 local oss_indicator = {
     object_type = "RuneTag",
     order = 7025,
