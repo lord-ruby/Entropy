@@ -265,7 +265,9 @@ local entropyTabs = function()
 						["wingedcatgirl"]=true, 
 						["Lily Felli"]=true, 
 						["gemstonez"]=true, 
-						["triple6lexi"]=true
+						["triple6lexi"]=true,
+						["Athebyne"] = true,
+						["InvalidOS"] = true,
 					},
 					music = {gemstonez=true, MilkyP = true}
 				}
