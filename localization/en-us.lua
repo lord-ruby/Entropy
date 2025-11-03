@@ -2564,6 +2564,50 @@ local decs = {
 					"lost {C:money}$#1#{} for every card",
 					"past {C:attention}2{}"
 				}
+			},
+			c_entr_disturbance = {
+				name = "The Disturbance",
+				text = {
+					"Banish {C:attention}#1#{} selected card#<s>1#",
+					"Without {C:attention}destroying{} them"
+				}
+			},
+			c_entr_avarice = {
+				name = "Avarice",
+				text = {
+					"Immediately open {C:attention}#1#{} Standard Packs"
+				}
+			},
+			c_entr_muse = {
+				name = "The Muse",
+				text = {
+					"{C:attention}Link together{} any",
+					"#1# selected cards"
+				}
+			},
+			--Description feels awkwardly worded.
+			c_entr_garden = {
+				name = "The Garden",
+				text = {
+					"{C:attention} Randomize{} the rank and suit of {C:attention}#1#{} cards",
+					"all into the same rank and suit"
+				}
+			},
+			c_entr_desert = {
+				name = "The Desert",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}Fleurons",
+					"{C:blue}+#4#{} Chips"
+				}
+			},
+			c_entr_wastes = {
+				name = "The Wastes",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}Halberds",
+					"{C:blue}+#4#{} Chips"
+				}
 			}
 		},
 		Planet = {
@@ -3010,6 +3054,39 @@ local decs = {
 			},
 			c_entr_sirius = {
 				name = "Sirius",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_starspectrum = {
+				name = "Vega",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_starstraightspectrum = {
+				name = "Rigel",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			c_entr_starhousespectrum = {
+				name = "Eltanin",
+				text = {
+					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
+					"{C:attention}#3#",
+					"{C:gold}+#4#{} Ascension Power"
+				}
+			},
+			--least sure about the name of this one, feel free to change it to a different star
+			c_entr_starfivespectrum = {
+				name = "HD 33579",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
 					"{C:attention}#3#",
