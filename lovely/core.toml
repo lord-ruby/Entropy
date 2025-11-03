@@ -2841,3 +2841,77 @@ if not Cryptid then Cryptid = {profile_prefix = Entropy.config.profile_prefix an
         },
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+{n=G.UIT.O, config={object = DynaText({string = {{prefix = localize('$'), ref_table = card, ref_value = 'cost'}}, colours = {G.C.MONEY},shadow = true, silent = true, bump = true, pop_in = 0, scale = 0.5})}},
+'''
+position = 'at'
+payload = '''
+{n=G.UIT.O, config={object = DynaText({string = {{prefix = not card.ability.beast_mark and localize('$') or nil, ref_table = not card.ability.beast_mark and card or {cost = "1 Card"}, ref_value = 'cost'}}, colours = {card.ability.beast_mark and G.C.RED or G.C.MONEY},shadow = true, silent = true, bump = true,pop_in = 0, scale = 0.5})}},
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''
+if self.cost > 0 then 
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+'''
+position = 'at'
+payload = '''
+if self.ability.beast_mark then
+    local cards = {}
+    for i, v in pairs(G.playing_cards) do if not SMODS.is_eternal(v) then cards[#cards+1] = v end end
+    pseudoshuffle(cards, "entr_beast_mark")
+    local card = cards[1]
+    card.area:remove_card(card)
+    G.hand:emplace(card)
+    delay(1)
+    G.E_MANAGER:add_event(Event{
+      func = function()
+        --G.hand.cards[1]:flip()
+        return true
+      end
+    })
+    delay(1)
+    SMODS.destroy_cards(card)
+    delay(2)
+    G.E_MANAGER:add_event(Event{
+      func = function()
+        if SMODS.Centers[(booster_obj or {}).key] and booster_obj then
+            G.STATE = G.STATES.SMODS_BOOSTER_OPENED
+            SMODS.OPENED_BOOSTER = self
+        end
+        return true
+      end
+    })
+elseif self.cost > 0 then 
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''
+if booster_obj and SMODS.Centers[booster_obj.key] then
+    G.STATE = G.STATES.SMODS_BOOSTER_OPENED
+    SMODS.OPENED_BOOSTER = self
+end
+'''
+position = 'at'
+payload = '''
+if not self.ability.beast_mark then
+   if booster_obj and SMODS.Centers[booster_obj.key] then
+      G.STATE = G.STATES.SMODS_BOOSTER_OPENED
+      SMODS.OPENED_BOOSTER = self
+  end
+end
+'''
+match_indent = true
+
+        
