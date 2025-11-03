@@ -1817,6 +1817,15 @@ local decs = {
 					"contents"
                 },
             },
+			j_entr_blood_orange = {
+                name = "Blood Orange",
+                text = {
+					"Create an {C:red}Inverted{} Consumable",
+					"for the next {C:attention}#1#{}",
+					"Playing cards destroyed",
+					"{C:inactive}(Must have room)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
@@ -6314,6 +6323,7 @@ local decs = {
 			k_plus_pact = "+1 Pact",
 			k_plus_omen = "+1 Omen",
 			k_plus_tag = "+1 Tag",
+			k_plus_inverted = "+1 Twisted Card",
 
 			k_switch_ex = "Switch!",
 			k_bounce_ex = "Bounce!"
