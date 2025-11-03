@@ -6427,6 +6427,9 @@ local magic_skin = {
             loc = "none"
         end
         loc = loc or "ERROR"
+        if SMODS.OPENED_BOOSTER and SMODS.OPENED_BOOSTER.config.center.no_magic_skin then
+            loc = "none"
+        end
         return {
             vars = {
                 card.ability.left,
@@ -6444,41 +6447,43 @@ local magic_skin = {
     end,
     use = function(self, card)
         card.ability.left = card.ability.left - 1
-        G.GAME.magic_skin_prob = (G.GAME.magic_skin_prob or 0) + 0.05
+        G.GAME.magic_skin_prob = (G.GAME.magic_skin_prob or 0) + 0.02
         for i = 1, card.ability.cards do
-            local k = SMODS.OPENED_BOOSTER and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind, true)
-            if not k and SMODS.OPENED_BOOSTER.config.center.create_card and type(SMODS.OPENED_BOOSTER.config.center.create_card) == "function" then
-                local _card_to_spawn = SMODS.OPENED_BOOSTER.config.center:create_card(SMODS.OPENED_BOOSTERr, i)
-                local spawned
-                if type((_card_to_spawn or {}).is) == 'function' and _card_to_spawn:is(Card) then
-                    spawned = _card_to_spawn
+            if SMODS.OPENED_BOOSTER and not SMODS.OPENED_BOOSTER.config.center.no_magic_skin then
+                local k = SMODS.OPENED_BOOSTER and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind, true)
+                if not k and SMODS.OPENED_BOOSTER.config.center.create_card and type(SMODS.OPENED_BOOSTER.config.center.create_card) == "function" then
+                    local _card_to_spawn = SMODS.OPENED_BOOSTER.config.center:create_card(SMODS.OPENED_BOOSTER, i)
+                    local spawned
+                    if type((_card_to_spawn or {}).is) == 'function' and _card_to_spawn:is(Card) then
+                        spawned = _card_to_spawn
+                    else
+                        spawned = SMODS.create_card(_card_to_spawn)
+                    end
+                    if spawned.config.center.set == "Joker" then
+                        G.jokers:emplace(spawned)
+                    else    
+                        G.consumeables:emplace(spawned)
+                    end
+                    spawned:set_edition("e_negative")
                 else
-                    spawned = SMODS.create_card(_card_to_spawn)
-                end
-                if spawned.config.center.set == "Joker" then
-                    G.jokers:emplace(spawned)
-                else    
-                    G.consumeables:emplace(spawned)
-                end
-                spawned:set_edition("e_negative")
-            else
-                if k == "Planet" or k == "Tarot" then
-                    local rune
-                    local rare_rune
-                    if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
-                    if G.GAME.entr_diviner then
+                    if k == "Planet" or k == "Tarot" then
+                        local rune
+                        local rare_rune
                         if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
+                        if G.GAME.entr_diviner then
+                            if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
+                        end
+                        if rune then
+                            k = "Rune"
+                        end
                     end
-                    if rune then
-                        k = "Rune"
-                    end
+                    SMODS.add_card {
+                        set = k or "Joker",
+                        area = k == "Twisted" and G.consumeables or nil,
+                        key_append = "entr_magic_skin",
+                        edition = "e_negative"
+                    }
                 end
-                SMODS.add_card {
-                    set = k or "Joker",
-                    area = k == "Twisted" and G.consumeables or nil,
-                    key_append = "entr_magic_skin",
-                    edition = "e_negative"
-                }
             end
         end
     end,
