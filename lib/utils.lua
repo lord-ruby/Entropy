@@ -1963,21 +1963,33 @@ function Entropy.rubber_ball_scoring(cards)
     local index = 1
     local dir = 1
     local new_cards = {}
-    while index > 0 and index <= #cards do
-        local add
-        for i, v in pairs(SMODS.find_card("j_entr_rubber_ball")) do
-            if not v.triggered and SMODS.pseudorandom_probability(v, 'rubber_ball', 1, v.ability.odds) then
-                dir = -dir
-                add = true
-                v.triggered = true
-                new_cards[#new_cards+1] = cards[index]
-            end
-        end
-        new_cards[#new_cards+1] = cards[index]
-        index = index + dir
+    local fvc_cards = {}
+    for i, v in pairs(G.play.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
+    for i, v in pairs(G.jokers.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
+    for i, v in pairs(fvc_cards) do
+        new_cards[#new_cards+1] = v
     end
-    for i, v in pairs(SMODS.find_card("j_entr_rubber_ball")) do
-        v.triggered = false
+    if next(SMODS.find_card("j_entr_rubber_ball")) then
+        while index > 0 and index <= #cards do
+            local add
+            for i, v in pairs(SMODS.find_card("j_entr_rubber_ball")) do
+                if not v.triggered and SMODS.pseudorandom_probability(v, 'rubber_ball', 1, v.ability.odds) then
+                    dir = -dir
+                    add = true
+                    v.triggered = true
+                    new_cards[#new_cards+1] = cards[index]
+                end
+            end
+            new_cards[#new_cards+1] = cards[index]
+            index = index + dir
+        end
+        for i, v in pairs(SMODS.find_card("j_entr_rubber_ball")) do
+            v.triggered = false
+        end
+    else
+        for i, v in pairs(cards) do
+            new_cards[#new_cards+1] = v
+        end
     end
     return new_cards
 end
