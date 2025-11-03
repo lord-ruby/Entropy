@@ -6749,7 +6749,12 @@ local mark_of_the_beast = {
     end,
     calculate = function(self, card, context)
         if context.starting_shop or context.forcetrigger then
-            card:juice_up()
+            G.E_MANAGER:add_event(Event{
+                func = function()
+                    card:juice_up()
+                    return true
+                end
+            })
             local card = Card(G.shop_booster.T.x + G.shop_booster.T.w/2,
             G.shop_booster.T.y, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS["p_entr_twisted_pack_mega"], {bypass_discovery_center = true, bypass_discovery_ui = true})
             card.ability.beast_mark = true
@@ -6758,6 +6763,27 @@ local mark_of_the_beast = {
             card:start_materialize()
             G.shop_booster:emplace(card)
             return nil, true
+        end
+        if (context.reroll_shop and Entropy.has_rune("rune_entr_perthro")) then
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                func = function()
+                    G.E_MANAGER:add_event(Event{
+                        trigger = "after",
+                        func = function()
+                            card:juice_up()
+                            local card = Card(G.shop_booster.T.x + G.shop_booster.T.w/2,
+                            G.shop_booster.T.y, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS["p_entr_twisted_pack_mega"], {bypass_discovery_center = true, bypass_discovery_ui = true})
+                            card.ability.beast_mark = true
+                            create_shop_card_ui(card, 'Booster', G.shop_booster)
+                            card.ability.booster_pos = #G.shop_booster.cards + 1
+                            card:start_materialize()
+                            G.shop_booster:emplace(card)
+                            return true
+                        end})
+                    return true
+                end
+            })
         end
     end, 
 }

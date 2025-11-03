@@ -3283,7 +3283,7 @@ local decs = {
 				name = "Highway",
 				text = {
 					"Destroy {C:red}all{} Jokers except {C:attention}one{}",
-					"then create an {C:entr_entropic}Entropic{} Joker"
+					"then create an {C:entr_entropic,E:1}Entropic{} Joker"
 				}
 			},
 			c_entr_fervour={
@@ -5608,7 +5608,7 @@ local decs = {
 				group_name = "Inverted Card",
 				text={
 					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{V:1} Inverted{} cards to",
+					"{C:attention}#2#{C:red} Inverted{} cards to",
 					"be used immediately or taken",
 				}
 			},
@@ -5617,7 +5617,7 @@ local decs = {
 				group_name = "Inverted Card",
 				text={
 					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{V:1} Inverted{} cards to",
+					"{C:attention}#2#{C:red} Inverted{} cards to",
 					"be used immediately or taken",
 				},
 			},
@@ -5626,7 +5626,7 @@ local decs = {
 				group_name = "Inverted Card",
 				text={
 					"Choose {C:attention}#1#{} of up to",
-					"{C:attention}#2#{V:1} Inverted{} cards to",
+					"{C:attention}#2#{C:red} Inverted{} cards to",
 					"be used immediately or taken",
 				},
 			},
