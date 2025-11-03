@@ -1835,6 +1835,15 @@ local decs = {
 					"then returns"
                 },
             },
+			j_entr_mark_of_the_beast = {
+                name = "Mark of The Beast",
+                text = {
+					"Each shop contains a",
+					"{C:red}Mega Twisted Pack{} at the cost",
+					"of {C:attention}1{} random card from",
+					"{C:attention}full deck{}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

@@ -6670,7 +6670,6 @@ local false_vacuum_collapse = {
             "set_entr_inversions"
         }
     },
-    pools = {Food = true},
     perishable_compat = true,
     blueprint_compat = true,
     demicoloncompat = true,
@@ -6682,7 +6681,7 @@ local false_vacuum_collapse = {
         }
     end,
     calculate = function(self, card, context)
-                if context.before then
+        if context.before then
             card.area:remove_card(card)
             G.play:emplace(card, "front")
             card:highlight(true)
@@ -6723,6 +6722,45 @@ function eval_card(card, ...)
         return eval_card_ref(card, ...)
     end
 end
+
+local mark_of_the_beast = {
+    order = 120,
+    object_type = "Joker",
+    key = "mark_of_the_beast",
+    rarity = 2,
+    cost = 8,
+    eternal_compat = true,
+    pos = {x = 4, y = 14},
+    atlas = "jokers",
+    config = {
+        cards = 10
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+            "set_entr_inversions"
+        }
+    },
+    perishable_compat = true,
+    blueprint_compat = true,
+    demicoloncompat = true,
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.p_entr_twisted_pack_mega
+    end,
+    calculate = function(self, card, context)
+        if context.starting_shop or context.forcetrigger then
+            card:juice_up()
+            local card = Card(G.shop_booster.T.x + G.shop_booster.T.w/2,
+            G.shop_booster.T.y, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS["p_entr_twisted_pack_mega"], {bypass_discovery_center = true, bypass_discovery_ui = true})
+            card.ability.beast_mark = true
+            create_shop_card_ui(card, 'Booster', G.shop_booster)
+            card.ability.booster_pos = #G.shop_booster.cards + 1
+            card:start_materialize()
+            G.shop_booster:emplace(card)
+            return nil, true
+        end
+    end, 
+}
 
 return {
     items = {
@@ -6854,6 +6892,7 @@ return {
         elderberries,
         nostalgic_d6,
         blood_orange,
-        false_vacuum_collapse
+        false_vacuum_collapse,
+        mark_of_the_beast
     }
 }

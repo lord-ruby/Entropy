@@ -4049,7 +4049,7 @@ function copy_card(old, new, ...)
     if G.deck and not G.SETTINGS.paused then
         SMODS.calculate_context{copying_card = true, original_card = old, new_card = copy}
     end
-    for i, v in pairs(G.play.cards) do
+    for i, v in pairs(G.play and G.play.cards or {}) do
         eval_card(v, {copying_card = true, original_card = old, new_card = copy})
     end
     if old.base and old.base.nominal then copy.base.nominal = old.base.nominal end
