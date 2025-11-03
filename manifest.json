@@ -1,7 +1,7 @@
 {
     "name": "Entropy",
     "id": "entr",
-    "version": "1.0.0b",
+    "version": "1.1.0",
     "website_url": "https://github.com/lord-ruby/Entropy/tree/main",
     "description": "A chaotic Balatro mod. Adds inverted consumables as well as various other miscelaneous mechanics.",
     "prefix": "entr",
@@ -10,7 +10,7 @@
     "priority": 666,
     "badge_colour": "FE0001",
     "dependencies": [
-        "Steamodded (>=1.0.0~BETA-0827)",
+        "Steamodded (>=1.0.0~BETA-0101c)",
         "Cryptlib"
     ],
     "conflicts": [
