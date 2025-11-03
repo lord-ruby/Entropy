@@ -372,7 +372,7 @@ local feud = {
             if new_card then
                 chips = chips + new_card.base.nominal
                 bonus_chips = bonus_chips + (new_card.ability and new_card.ability.bonus or 0)
-                new_card:start_dissolve()
+                SMODS.destroy_cards(new_card)
             end
         end
         local mult = card.ability.chip_mult

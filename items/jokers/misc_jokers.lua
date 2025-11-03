@@ -6004,75 +6004,6 @@ local hash_miner = {
     }
 }
 
-local dice_shard = {
-    order = 106,
-    object_type = "Joker",
-    key = "dice_shard",
-    rarity = 3,
-    cost = 10,
-    eternal_compat = true,
-    pos = { x = 9, y = 5 },
-    atlas = "jokers",
-    config = {
-        left = 1,
-        left_mod = 1
-    },
-    dependencies = {
-        items = {
-            "set_entr_actives",
-            "set_entr_dice_jokers",
-        }
-    },
-    perishable_compat = true,
-    pools = {["Dice"] = true},
-    loc_vars = function(self, q, card)
-        local name = "None"
-        local cards = Entropy.GetHighlightedCards({G.jokers, G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.extra)
-        if cards and #cards > 0 then
-            if cards[1].config.center.set == "Joker" or G.GAME.modifiers.cry_beta and cards[1].consumable then
-                local first = cards[1]
-                local ind = ReductionIndex(cards[1], cards[1].config.center.set )-1
-                while G.P_CENTER_POOLS[cards[1].config.center.set ][ind].no_doe or G.P_CENTER_POOLS[cards[1].config.center.set][ind].no_collection do
-                    ind = ind - 1
-                end
-                if ind < 1 then ind = 1 end
-                name = localize { type = 'name_text', key = G.P_CENTER_POOLS[cards[1].config.center.set][ind].key, set = G.P_CENTER_POOLS[cards[1].config.center.set][ind].set }
-            end
-        end
-        return {
-            vars = {
-                card.ability.left,
-                card.ability.left_mod,
-                name
-            }
-        }
-    end,
-    demicoloncompat = true,
-    calculate = function(self, card, context)
-        if (context.end_of_round and not context.blueprint and not context.individual and not context.repetition) or context.forcetrigger then
-            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
-        end
-    end,
-    can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.jokers}, card, 1, 1)
-        return num > 0 and num <= 1 and to_big(card.ability.left) > to_big(0)
-    end,
-    use = function(self, card)
-        card.ability.left = card.ability.left - 1
-        Entropy.FlipThen(Entropy.GetHighlightedCards({G.jokers}, card, 1, 1), function(card)
-            local ind = ReductionIndex(card, card.config.center.set)-1
-            while G.P_CENTER_POOLS[card.config.center.set][ind] and G.P_CENTER_POOLS[card.config.center.set][ind].no_doe or G.P_CENTER_POOLS[card.config.center.set].no_collection do
-                ind = ind - 1
-            end
-            if ind < 1 then ind = 1 end
-            if G.P_CENTER_POOLS.Joker[ind] then
-                card:set_ability(G.P_CENTERS[G.P_CENTER_POOLS.Joker[ind].key])
-            end
-            G.jokers:remove_from_highlighted(card)
-        end)
-    end
-}
-
 local bell_curve = {
     order = 107,
     object_type = "Joker",
@@ -6656,72 +6587,69 @@ local elderberries = {
     end, 
 }
 
-local nostalgic_d6 = {
-    order = 117,
+local blood_orange = {
+    order = 118,
     object_type = "Joker",
-    key = "nostalgic_d6",
-    rarity = 3,
-    cost = 8,
+    key = "blood_orange",
+    rarity = 2,
+    cost = 6,
     eternal_compat = true,
-    pos = {x = 2, y = 0},
+    pos = {x = 1, y = 0},
     atlas = "placeholder",
     config = {
-        dollars = 4
+        cards = 10
     },
     dependencies = {
         items = {
-            "set_entr_actives",
+            "set_entr_misc_jokers",
+            "set_entr_inversions"
         }
     },
+    pools = {Food = true},
     perishable_compat = true,
+    blueprint_compat = true,
+    demicoloncompat = true,
     loc_vars = function(self, q, card)
         return {
             vars = {
-                card.ability.dollars
+                card.ability.cards
             }
         }
     end,
-    can_use = function(self, card)
-        return G.STATE == G.STATES.SMODS_BOOSTER_OPENED and (Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind) or SMODS.OPENED_BOOSTER.config.center.create_card)
-    end,
-    use = function(self, card)
-        ease_dollars(-card.ability.dollars)
-        for i, v in pairs(G.pack_cards.cards) do
-            v:start_dissolve()
-            local p_card
-            local k = SMODS.OPENED_BOOSTER and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind, true)
-            if not k and SMODS.OPENED_BOOSTER.config.center.create_card and type(SMODS.OPENED_BOOSTER.config.center.create_card) == "function" then
-                local _card_to_spawn = SMODS.OPENED_BOOSTER.config.center:create_card(SMODS.OPENED_BOOSTERr, i)
-                local spawned
-                if type((_card_to_spawn or {}).is) == 'function' and _card_to_spawn:is(Card) then
-                    spawned = _card_to_spawn
-                else
-                    spawned = SMODS.create_card(_card_to_spawn)
+    calculate = function(self, card, context)
+        if context.remove_playing_cards or context.forcetrigger then
+            local eated
+            for i, v in pairs(context.removed or {true}) do
+                card.ability.cards = card.ability.cards - 1
+                if card.ability.cards <= 0 then
+                    SMODS.destroy_cards(card, nil, nil, true)
+                    eated = true
                 end
-                p_card = spawned
-            else
-                if k == "Planet" or k == "Tarot" then
-                    local rune
-                    local rare_rune
-                    if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
-                    if G.GAME.entr_diviner then
-                        if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
-                    end
-                    if rune then
-                        k = "Rune"
-                    end
+                if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
+                    G.E_MANAGER:add_event(Event{
+                        func = function()
+                            G.GAME.consumeable_buffer = 0
+                            SMODS.add_card{
+                                set = "Twisted",
+                                area = G.consumeables,
+                                key_append = "entr_blood_orange"
+                            }         
+                            return true
+                        end
+                    })
+                    G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+                    card_eval_status_text(
+                        card,
+                        "extra",
+                        nil,
+                        nil,
+                        nil,
+                        { message = eated and localize("k_eaten_ex") or localize("k_plus_inverted"), colour = G.C.RED }
+                    )
                 end
-                p_card = SMODS.create_card {
-                    set = k or "Joker",
-                    area = k == "Twisted" and G.consumeables or nil,
-                    key_append = "entr_nostalgic_d6",
-                }
             end
-            G.pack_cards.cards[i] = p_card
-            p_card.area = G.pack_cards
         end
-    end,
-    entr_credits = {idea = "Grahkon"}
+    end, 
 }
 
 return {
@@ -6852,6 +6780,7 @@ return {
         magic_skin,
         lambda_calculus,
         elderberries,
-        nostalgic_d6
+        nostalgic_d6,
+        blood_orange
     }
 }
