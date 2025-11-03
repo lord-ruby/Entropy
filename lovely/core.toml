@@ -224,7 +224,7 @@ pattern = 'self:load_profile(G.SETTINGS.profile or 1)'
 position = "before"
 payload = '''
 if not Cryptid then Cryptid = {profile_prefix = Entropy_config.profile_prefix and "E" or ""} end;
-Cryptid.profile_prefix = "E"
+Cryptid.profile_prefix = Entropy_config.profile_prefix and "E" or ""
 if type(G.SETTINGS.profile) ~= "string" or G.SETTINGS.profile:sub(1, #Cryptid.profile_prefix) ~= Cryptid.profile_prefix then
     G.SETTINGS.profile = Cryptid.profile_prefix .. "1"
 end
@@ -238,7 +238,7 @@ match_indent = true
 target = "functions/button_callbacks.lua"
 pattern = 'for i = 1, 3 do'
 position = "after"
-payload = 'if not Cryptid then Cryptid = {profile_prefix = Entropy_config.profile_prefix and "E" or ""} end; i = Cryptid.profile_prefix .. i'
+payload = 'if not Cryptid then Cryptid = {profile_prefix = (Entropy.config or Entropy_config).profile_prefix and "E" or ""} end; i = Cryptid.profile_prefix .. i'
 match_indent = true
 
 
@@ -2530,8 +2530,11 @@ local in_scoring = scoring_hand and SMODS.in_scoring(card, context.scoring_hand)
 position = "at"
 payload = '''
 local area = context.scoring_hand
-if context.cardarea == G.play and G.rubber_cards then area = G.rubber_cards.cards end
+if context.cardarea == G.play and G.rubber_cards then area = G.rubber_cards.cards; context.scoring_hand = G.rubber_cards.cards; scoring_hand = G.rubber_cards.cards end
 local in_scoring = scoring_hand and SMODS.in_scoring(card, area)
+if (area[1]) == card and card.config.center.key == "j_entr_false_vacuum_collapse" then
+  in_scoring = true
+end
 if G.rubber_cards and scoring_hand [_] == scoring_hand [_-1] then
   card_eval_status_text(
     card,
@@ -2756,3 +2759,85 @@ if eligible_card then eligible_card:set_edition(edition, true) end
 '''
 match_indent = true
 
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+if next(effects) then
+    SMODS.calculate_card_areas('jokers', context, effects, { main_scoring = true })
+    SMODS.calculate_card_areas('individual', context, effects, { main_scoring = true })
+end
+'''
+position = "at"
+payload = '''
+if next(effects) then
+    if card.config.center.key == "j_entr_false_vacuum_collapse" then
+      local fvc_cards = {}
+      for i, v in pairs(G.play.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
+      for i, v in pairs(G.jokers.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
+      for i, v in pairs(fvc_cards) do
+        v.config.center:calculate(v, {individual = true, card = card})
+      end
+    end
+    SMODS.calculate_card_areas('jokers', context, effects, { main_scoring = true })
+    SMODS.calculate_card_areas('individual', context, effects, { main_scoring = true })
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+  local t =   create_UIBox_generic_options({padding = 0,contents ={
+      {n=G.UIT.R, config={align = "cm", padding = 0, draw_layer = 1, minw = 4}, nodes={
+        create_tabs(
+        {tabs = {
+            {
+                label = 1,
+                chosen = G.focused_profile == 1,
+                tab_definition_function = G.UIDEF.profile_option,
+                tab_definition_function_args = 1
+            },
+            {
+                label = 2,
+                chosen = G.focused_profile == 2,
+                tab_definition_function = G.UIDEF.profile_option,
+                tab_definition_function_args = 2
+            },
+            {
+                label = 3,
+                chosen = G.focused_profile == 3,
+                tab_definition_function = G.UIDEF.profile_option,
+                tab_definition_function_args = 3
+            }
+        },
+'''
+position = "at"
+payload = '''
+if not Cryptid then Cryptid = {profile_prefix = Entropy.config.profile_prefix and "E" or ""} end;
+  local t =   create_UIBox_generic_options({padding = 0,contents ={
+      {n=G.UIT.R, config={align = "cm", padding = 0, draw_layer = 1, minw = 4}, nodes={
+        create_tabs(
+        {tabs = {
+             {
+                label = Cryptid.profile_prefix..1,
+                chosen = G.focused_profile == Cryptid.profile_prefix..1,
+                tab_definition_function = G.UIDEF.profile_option,
+                tab_definition_function_args = Cryptid.profile_prefix..1
+            },
+            {
+                label = Cryptid.profile_prefix..2,
+                chosen = G.focused_profile == Cryptid.profile_prefix..2,
+                tab_definition_function = G.UIDEF.profile_option,
+                tab_definition_function_args = Cryptid.profile_prefix..2
+            },
+            {
+                label = Cryptid.profile_prefix..3,
+                chosen = G.focused_profile == Cryptid.profile_prefix..3,
+                tab_definition_function = G.UIDEF.profile_option,
+                tab_definition_function_args = Cryptid.profile_prefix..3
+            }
+        },
+'''
+match_indent = true

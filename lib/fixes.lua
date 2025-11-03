@@ -422,3 +422,12 @@ function copy_table(tbl, iter, ...)
     return copy_tableref(tbl, iter - 1, ...)
   end
 end
+
+local get_areas_ref = SMODS.get_card_areas
+function SMODS.get_card_areas(...)
+  local ret = get_areas_ref(...)
+  for i, v in pairs(ret) do
+    v.cards = v.cards or {}
+  end
+  return ret
+end

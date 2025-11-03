@@ -3916,11 +3916,24 @@ end
 
 local has_no_suitref = SMODS.has_no_suit
 function SMODS.has_no_suit(card, bypass)
+    if card.config.center.key == "j_entr_false_vacuum_collapse" then return true end
     if next(SMODS.find_card("j_entr_opal")) and not bypass then
         return false
     end
     if card.base.suit == "entr_nilsuit" then return true end
     return has_no_suitref(card)
+end
+
+local has_no_rankref = SMODS.has_no_rank
+function SMODS.has_no_rank(card, bypass)
+    if card.config.center.key == "j_entr_false_vacuum_collapse" then return true end
+    return has_no_rankref(card)
+end
+
+local in_scoringref = SMODS.in_scoring
+function SMODS.in_scoring(card, ...)
+    if card.config.center.key == "j_entr_false_vacuum_collapse" then return true end
+    return in_scoringref(card, ...)
 end
 
 local get_idref = Card.get_id
@@ -4341,14 +4354,18 @@ end
 
 local calc_main_scoring = SMODS.calculate_main_scoring
 function SMODS.calculate_main_scoring(context, scoring_hand)
-    if context.cardarea ~= G.play or not next(SMODS.find_card('j_entr_rubber_ball')) then
+    local fvc_cards = {}
+    for i, v in pairs(G.play.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
+    for i, v in pairs(G.jokers.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
+    if context.cardarea ~= G.play or (not next(SMODS.find_card('j_entr_rubber_ball')) and not next(fvc_cards)) then
 	    calc_main_scoring(context, scoring_hand)
     end
-	if context.cardarea == G.play and next(SMODS.find_card('j_entr_rubber_ball')) then
+	if context.cardarea == G.play and (next(SMODS.find_card('j_entr_rubber_ball')) or next(fvc_cards)) then
         if not G.rubber_cards or #G.rubber_cards.cards == 0 then
             G.rubber_cards = {cards = Entropy.rubber_ball_scoring(scoring_hand)}
         end
 		context.cardarea = G.rubber_cards
+        context.scoring_hand = G.rubber_cards.cards
 		calc_main_scoring(context, G.rubber_cards.cards)
 		context.cardarea = G.play
         G.rubber_cards = nil
