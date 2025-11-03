@@ -364,10 +364,10 @@ Entropy.ReversePlanets = {
 }
 -- Spectrum Compat
 if SMODS.Mods["SpectrumAPI"] then
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="spa_Spectrum",key=SpectrumAPI.get_planet("spa_Spectrum"),sprite_pos={x=0,y=3}, new_key="starspectrum", prefix = "spa", atlas = "placeholder"}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="spa_Straight_Spectrum",key=SpectrumAPI.get_planet("spa_Straight_Spectrum"),sprite_pos={x=0,y=3}, new_key="starstraightspectrum", prefix = "spa", atlas = "placeholder"}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="spa_Spectrum_House",key=SpectrumAPI.get_planet("spa_Spectrum_House"),sprite_pos={x=0,y=3}, new_key="starhousespectrum", prefix = "spa", atlas = "placeholder"}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="spa_Spectrum_Five",key=SpectrumAPI.get_planet("spa_Spectrum_Five"),sprite_pos={x=0,y=3}, new_key="starfivespectrum", prefix = "spa", atlas = "placeholder"}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="spa_Spectrum",key="Spectrum",sprite_pos={x=0,y=3}, new_key="starspectrum", prefix = "spa", atlas = "placeholder"}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="spa_Straight_Spectrum",key="Straight_Spectrum",sprite_pos={x=0,y=3}, new_key="starstraightspectrum", prefix = "spa", atlas = "placeholder"}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="spa_Spectrum_House",key="Spectrum_House",sprite_pos={x=0,y=3}, new_key="starhousespectrum", prefix = "spa", atlas = "placeholder"}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="spa_Spectrum_Five",key="Spectrum_Five",sprite_pos={x=0,y=3}, new_key="starfivespectrum", prefix = "spa", atlas = "placeholder"}
 end
 -- putting this here its easier because of how dumb the system is
 if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then

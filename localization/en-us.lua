@@ -3105,7 +3105,7 @@ local decs = {
 				}
 			},
 			c_entr_starspectrum = {
-				name = "Spectrum Star",
+				name = "Vega",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
 					"{C:attention}#3#",
@@ -3113,7 +3113,7 @@ local decs = {
 				}
 			},
 			c_entr_starstraightspectrum = {
-				name = "Straight Spectrum Star",
+				name = "Rigel",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
 					"{C:attention}#3#",
@@ -3121,15 +3121,16 @@ local decs = {
 				}
 			},
 			c_entr_starhousespectrum = {
-				name = "Spectrum House Star",
+				name = "Eltanin",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
 					"{C:attention}#3#",
 					"{C:gold}+#4#{} Ascension Power"
 				}
 			},
+			--least sure about the name of this one, feel free to change it to a different star
 			c_entr_starfivespectrum = {
-				name = "Spectrum Five Star",
+				name = "HD 33579",
 				text = {
 					"{S:0.8}({S:0.8,V:1}lvl.#1#{}{S:0.8,C:gold}#2#{}{S:0.8}){} Level up",
 					"{C:attention}#3#",
