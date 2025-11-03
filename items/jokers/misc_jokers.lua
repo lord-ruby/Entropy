@@ -6652,6 +6652,78 @@ local blood_orange = {
     end, 
 }
 
+local false_vacuum_collapse = {
+    order = 119,
+    object_type = "Joker",
+    key = "false_vacuum_collapse",
+    rarity = 2,
+    cost = 8,
+    eternal_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+    config = {
+        cards = 10
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+            "set_entr_inversions"
+        }
+    },
+    pools = {Food = true},
+    perishable_compat = true,
+    blueprint_compat = true,
+    demicoloncompat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.cards
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+                if context.before then
+            card.area:remove_card(card)
+            G.play:emplace(card, "front")
+            card:highlight(true)
+            SMODS.change_base(card, "entr_nilsuit", "entr_nilrank")
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                blocking = false,
+                func = function()
+                    G.E_MANAGER:add_event(Event{
+                        trigger = "after",
+                        func = function()
+                            card.area:remove_card(card)
+                            G.jokers:emplace(card, "front")
+                            return true
+                        end
+                    })
+                    return true
+                end
+            })
+        end
+        if context.individual and context.card == card then
+            local d
+            for i = 2, #G.play.cards do
+                if G.play.cards[i] and not G.play.cards[i].getting_sucked and G.play.cards[i] ~= card and not d then
+                    G.play.cards[i].getting_sucked = true
+                    SMODS.destroy_cards(G.play.cards[i])
+                    d = true
+                end
+            end
+        end
+    end, 
+}
+
+
+local eval_card_ref = eval_card
+function eval_card(card, ...)
+    if not card.getting_sucked then
+        return eval_card_ref(card, ...)
+    end
+end
+
 return {
     items = {
         surreal,
@@ -6781,6 +6853,7 @@ return {
         lambda_calculus,
         elderberries,
         nostalgic_d6,
-        blood_orange
+        blood_orange,
+        false_vacuum_collapse
     }
 }

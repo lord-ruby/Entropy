@@ -1826,6 +1826,15 @@ local decs = {
 					"{C:inactive}(Must have room)"
                 },
             },
+			j_entr_false_vacuum_collapse = {
+                name = "False Vacuum Collapse",
+                text = {
+					"This Joker is played as the {C:attention}first{}",
+					"card of hand and {C:red}destroys{} the",
+					" {C:attention}second{} played card when scored",
+					"then returns"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
