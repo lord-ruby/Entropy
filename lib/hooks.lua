@@ -4409,3 +4409,10 @@ function Entropy.ee_taunt(taunt)
         end
     })
 end
+
+function Entropy.is_number(x)
+    return type(x) == "number" or (type(x) == "table" and x.tetrate) or (is_big and is_big(x))
+end
+function Entropy.is_big(x)
+    return (type(x) == "table" and x.tetrate) or (is_big and is_big(x))
+end

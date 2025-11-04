@@ -180,18 +180,18 @@ local libra = {
                     total = total + v
                     values = values + 1
                 end
-                if type(v) == "table" and v.arrow and v ~= to_big(1) and v ~= to_big(0) then
+                if (Entropy.is_big(v)) and v ~= to_big(1) and v ~= to_big(0) then
                     total = total + v
                     values = values + 1
                 end
             end
-            if type(context.other_card.ability.extra) == "table" and not context.other_card.ability.extra.arrow then
+            if type(context.other_card.ability.extra) == "table" and not Entropy.is_big(context.other_card.ability.extra) then
                 for i, v in pairs(context.other_card.ability.extra or {}) do
                     if type(v) == "number" and v ~= 1 and v~= 0 then
                         total = total + v
                         values = values + 1
                     end
-                    if type(v) == "table" and v.arrow and v ~= to_big(1) and v ~= to_big(0) then
+                    if Entropy.is_big(v) and v ~= to_big(1) and v ~= to_big(0) then
                         total = total + v
                         values = values + 1
                     end
@@ -203,7 +203,7 @@ local libra = {
                 if type(v) == "number" and v ~= 1 and v~= 0 then
                     context.other_card.ability[i] = total / values
                 end
-                if type(v) == "table" and v.arrow and v ~= to_big(1) and v ~= to_big(0) then
+                if Entropy.is_big(v) and v ~= to_big(1) and v ~= to_big(0) then
                     context.other_card.ability[i] = to_big(total / values)
                 end
             end

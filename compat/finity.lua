@@ -43,7 +43,7 @@ if FinisherBossBlindStringMap then
                         if results then
                             for i, v in pairs(results) do
                                 for i2, result in pairs(v) do
-                                    if type(result) == "number" or (type(result) == "table" and result.tetrate) then
+                                    if Entropy.is_number(result) then
                                         res[i2] = Entropy.StackEvalReturns(res[i2], result, i2)
                                     else
                                         res[i2] = result

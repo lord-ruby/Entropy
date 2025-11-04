@@ -43,8 +43,8 @@ payload = '''
                 local val = v.val or (v.func and v.func(self))
 
                 -- thanks talisman
-                if Talisman and type(val) == "table" and is_number(val) then
-                	if val > to_big(1e300) then
+                if Entropy.is_big(val) then
+                	if to_big(val) > to_big(1e300) then
                 		val = 1e300
                 	else
                 		val = val:tonumber()
