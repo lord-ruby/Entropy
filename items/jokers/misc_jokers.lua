@@ -5133,6 +5133,7 @@ local deck_enlargment_pills = {
                     return true
                 end
             })
+            return nil, true
         end
     end,
 }
