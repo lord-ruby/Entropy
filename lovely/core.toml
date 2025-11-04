@@ -2914,4 +2914,15 @@ end
 '''
 match_indent = true
 
-        
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+if card.opening then return true end
+'''
+position = 'after'
+payload = '''
+local free_pack = SMODS.find_card('v_ortalab_anti_inv')
+'''
+match_indent = true
