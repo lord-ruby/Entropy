@@ -57,7 +57,7 @@ G.FUNCS.flame_handler = function(e)
       local exptime = math.exp(-0.4*G.real_dt)
       if to_big(G.ARGS.score_intensity.earned_score) >= to_big(G.ARGS.score_intensity.required_score) and to_big(G.ARGS.score_intensity.required_score) > to_big(0) then
         _F.intensity = ((G.pack_cards and not G.pack_cards.REMOVED) or (G.TAROT_INTERRUPT)) and 0 or math.max(0., math.log(G.ARGS.score_intensity.earned_score+1, 5)-2)
-          if type(_F.intensity) == "table" then
+          if Entropy.is_big(_F.intensity) then
               if _F.intensity > to_big(85) then
                   _F.intensity = 85
               else

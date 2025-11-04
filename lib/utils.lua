@@ -737,7 +737,7 @@ function Entropy.GetJokerSumRarity(loc)
     local sum = Entropy.SumJokerPoints()
     local last_sum = 0
     for i, v in pairs(Entropy.RarityPoints) do
-        if type(sum) == "table" then
+        if Entropy.is_big(sum) == "table" then
             if v > 12 and sum:gte(v-1) or sum:gte(v) then  
                 if v > last_sum  then
                     rarity = i 
@@ -1008,7 +1008,7 @@ Entropy.TMTrainerEffects["random"] = function(key, context )
         if results then
             for i, v in pairs(results) do
                 for i2, result in pairs(v) do
-                    if type(result) == "number" or (type(result) == "table" and result.tetrate) then
+                    if Entropy.is_number(result) then
                         res[i2] = Entropy.StackEvalReturns(res[i2], result, i2)
                     else
                         res[i2] = result
