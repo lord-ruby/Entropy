@@ -2522,6 +2522,7 @@ local crabus = {
     perishable_compat = true,
     blueprint_compat = true,
     pronouns = "any_all",
+    hpot_unbreedable = true,
     calculate = function(self, card, context)
         if context.before and not context.repetition and not context.blueprint then
             local cards = {}
