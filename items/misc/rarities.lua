@@ -36,24 +36,6 @@ Entropy.zenith_gradient = SMODS.Gradient{
     }
 }
 
-Entropy.zenith_gradient = SMODS.Gradient{
-    key = "zenith_gradient",
-    colours = {
-        HEX("a20000"),
-        HEX("a15000"),
-        HEX("a3a101"),
-        HEX("626262"),
-        HEX("416600"),
-        HEX("028041"),
-        HEX("008284"),
-        HEX("005683"),
-        HEX("000056"),
-        HEX("2b0157"),
-        HEX("6a016a"),
-        HEX("77003c"),
-    }
-}
-
 
 SMODS.Rarity {
     key = "entropic",
