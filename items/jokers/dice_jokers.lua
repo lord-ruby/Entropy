@@ -612,7 +612,7 @@ local nostalgic_d6 = {
             p_card.area = G.pack_cards
         end
     end,
-    entr_credits = {idea = "Grahkon"}
+    entr_credits = {idea = {"Grahkon"}}
 }
 
 return {

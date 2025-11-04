@@ -6479,7 +6479,7 @@ local lambda_calculus = {
 function Entropy.gather_values(card)
     local total = 0
     for i, v in pairs(card.ability) do
-        if (type(v) == "number" or (type(v) == "table" and v.tetrate)) and to_big(v) > to_big(1) and i ~= "order" then
+        if Entropy.is_number(v) and to_big(v) > to_big(1) and i ~= "order" then
             total = total + v
         elseif type(v) == "table" then
             total = total + Entropy.gather_values({ability = v})
@@ -6907,7 +6907,6 @@ return {
         mango,
         kitchenjokers,
         hash_miner,
-        dice_shard,
         bell_curve,
         pineapple,
         rubber_ball,
@@ -6918,7 +6917,6 @@ return {
         magic_skin,
         lambda_calculus,
         elderberries,
-        nostalgic_d6,
         blood_orange,
         false_vacuum_collapse,
         mark_of_the_beast
