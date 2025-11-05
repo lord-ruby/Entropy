@@ -6425,7 +6425,7 @@ local magic_skin = {
             SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
         end
     end, 
-    entr_credits = {idea = "Athebyne"}
+    entr_credits = {idea = {"Athebyne"}}
 }
 
 local lambda_calculus = {
