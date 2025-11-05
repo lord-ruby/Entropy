@@ -567,7 +567,7 @@ local ssac = {
                 local j_r = Cryptid.forcetrigger(G.jokers.cards[#G.jokers.cards], context)
                 local c_r = G.consumeables.cards[#G.consumeables.cards] and Cryptid.forcetrigger(G.consumeables.cards[#G.consumeables.cards], context) or {}
                 local v = G.play.cards[#G.play.cards]
-                if G.play.cards then
+                if G.play.cards and v then
                     local results = eval_card(v, {cardarea=G.play,main_scoring=true, forcetrigger=true, individual=true})
                     if results then
                         for i, v2 in pairs(results) do

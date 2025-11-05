@@ -2522,7 +2522,7 @@ local crabus = {
     perishable_compat = true,
     blueprint_compat = true,
     pronouns = "any_all",
-    hpot_unbreedable = true,
+    hpot_unbreedable = true,    
     calculate = function(self, card, context)
         if context.before and not context.repetition and not context.blueprint then
             local cards = {}
@@ -6720,7 +6720,7 @@ local false_vacuum_collapse = {
 
 local eval_card_ref = eval_card
 function eval_card(card, ...)
-    if not card.getting_sucked then
+    if card and not card.getting_sucked then
         return eval_card_ref(card, ...)
     end
 end
