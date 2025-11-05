@@ -253,7 +253,9 @@ local entropyTabs = function()
 					},
 				}
 				local credits = {
-					art = {},
+					art = {
+						["pangaea47"] = true
+					},
 					idea = {},
 					code = {
 						["lord.ruby"]=true, 
