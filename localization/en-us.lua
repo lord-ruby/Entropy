@@ -2368,7 +2368,8 @@ local decs = {
 				text = {
 					"{C:attention}Sell{} and {C:attention}Destroy{}",
 					"#<up to >1##1# selected card#<s>1#",
-					"from the {C:attention}shop{}"
+					"from the {C:attention}shop{}",
+					"for {X:attention,C:white}X#2#{} their buy cost"
 				}
 			},
 			c_entr_servant = {
@@ -2454,10 +2455,9 @@ local decs = {
 			c_entr_earl = {
 				name = "The Earl",
 				text = {
-					"Lose all but {C:attention}1{}",
-					"Discard and Hand for the next round",
-					"Gain {C:money}Money{} based on how many taken",
-					"{C:inactive}(Currently: {C:money}$#1#{C:inactive})"
+					"For the next round",
+					"spare {C:blue}Hands{} give {C:money}$#1#{}",
+					"and spare {C:red}Discards{} give {C:money}$#2#{}"
 				}
 			},
 			c_entr_mason = {

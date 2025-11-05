@@ -3265,15 +3265,10 @@ function end_round()
     else    
         end_roundref()
     end
-    if G.GAME.earl_hands then
-        G.GAME.round_resets.hands = G.GAME.round_resets.hands + G.GAME.earl_hands
-        ease_hands_played(G.GAME.earl_hands)
-        G.GAME.earl_hands = nil
-    end
-    if G.GAME.earl_discards then
-        G.GAME.round_resets.discards = G.GAME.round_resets.discards + G.GAME.earl_discards
-        ease_discard(G.GAME.earl_discards)
-        G.GAME.earl_discards = nil
+    if G.GAME.earl_modiifers then
+        G.GAME.modifiers.money_per_discard = G.GAME.earl_modifiers.discard
+        G.GAME.modifiers.money_per_hand = G.GAME.earl_modifiers.hand
+        G.GAME.earl_modifiers = nil
     end
     if G.GAME.candle_hand_size then 
         G.hand:handle_card_limit(-G.GAME.candle_hand_size)
