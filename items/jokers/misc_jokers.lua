@@ -6595,8 +6595,8 @@ local blood_orange = {
     rarity = 2,
     cost = 6,
     eternal_compat = true,
-    pos = {x = 1, y = 0},
-    atlas = "placeholder",
+    pos = {x = 7, y = 14},
+    atlas = "jokers",
     config = {
         cards = 10
     },
