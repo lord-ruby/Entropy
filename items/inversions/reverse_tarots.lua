@@ -545,24 +545,18 @@ local earl = {
         }
     },
     config = {
-        max = 20,
+        per_hand = 4,
+        per_discard = 3
     },
     inversion = "c_hermit",
     pos = {x=9, y = 0},
-    use = function(self, card2, area, copier)
-        local hands_taken = G.GAME.round_resets.hands - 1
-        local discards_taken = G.GAME.round_resets.discards - 1
-        if hands_taken > 0 then 
-            ease_hands_played(-hands_taken)
-            G.GAME.round_resets.hands = 1
-            G.GAME.earl_hands = hands_taken
-        end
-        if discards_taken > 0 then
-            ease_discard(-discards_taken)
-            G.GAME.round_resets.discards = 1
-            G.GAME.earl_discards = discards_taken
-        end
-        ease_dollars((hands_taken + discards_taken) * 3)
+    use = function(self, card, area, copier)
+        G.GAME.earl_modifiers = {
+            discard = G.GAME.modifiers.money_per_discard,
+            hand = G.GAME.modifiers.money_per_hand
+        }
+        G.GAME.modifiers.money_per_discard = (G.GAME.modifiers.money_per_discard or 0) + card.ability.per_discard
+        G.GAME.modifiers.money_per_hand = (G.GAME.modifiers.money_per_hand or 0) + card.ability.per_hand
     end,
     can_use = function(self, card)
         return true
@@ -570,8 +564,8 @@ local earl = {
     loc_vars = function(self, q, card)
         return {
             vars = {
-                card.ability.max,
-                (G.GAME.round_resets.hands + G.GAME.round_resets.discards) * 3
+                (G.GAME.modifiers.money_per_hand or 0) + card.ability.per_hand,
+                (G.GAME.modifiers.money_per_discard or 0) + card.ability.per_discard
             }
         }
     end,
@@ -847,7 +841,8 @@ local feast = {
         }
     },
     config = {
-        select = 2
+        select = 2,
+        multiplier = 2
     },
     pos = {x=4,y=1},
     inversion = "c_temperance",
@@ -857,7 +852,7 @@ local feast = {
             local card = cards[i]
             G.E_MANAGER:add_event(Event({
                 func = function()
-                    ease_dollars(card.cost)
+                    ease_dollars(card.cost * card2.ability.multiplier)
                     card:start_dissolve()
                     return true
                 end
@@ -872,7 +867,8 @@ local feast = {
     loc_vars = function(self, q, card)
         return {
             vars = {
-                card.ability.select
+                card.ability.select,
+                card.ability.multiplier
             }
         }
     end,
