@@ -6621,12 +6621,12 @@ local blood_orange = {
         if context.remove_playing_cards or context.forcetrigger then
             local eated
             for i, v in pairs(context.removed or {true}) do
-                card.ability.cards = card.ability.cards - 1
-                if card.ability.cards <= 0 then
-                    SMODS.destroy_cards(card, nil, nil, true)
-                    eated = true
-                end
                 if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
+                    card.ability.cards = card.ability.cards - 1
+                    if card.ability.cards <= 0 then
+                        SMODS.destroy_cards(card, nil, nil, true)
+                        eated = true
+                    end
                     G.E_MANAGER:add_event(Event{
                         func = function()
                             G.GAME.consumeable_buffer = 0
