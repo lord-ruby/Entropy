@@ -4201,7 +4201,7 @@ SMODS.Consumable:take_ownership("fool", {
         return G.consumeables.config.card_limit > #G.consumeables.cards + fac and G.GAME.last_tarot_planet and
             G.GAME.last_tarot_planet ~= 'c_fool'
     end
-})
+}, true)
 
 local calculate_objref = SMODS.eval_individual
 function SMODS.eval_individual(individual, context)
