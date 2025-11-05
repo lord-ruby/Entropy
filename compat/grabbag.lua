@@ -868,7 +868,7 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
             Entropy.ChangeFullCSL(card.ability.size)
         end,
         can_use = function(self, card)
-            return G.GAMe.blind.in_blind
+            return G.GAME.blind.in_blind
         end,
         loc_vars = function(self, q, card)
             return {vars = {card.ability.size}}
