@@ -6094,8 +6094,8 @@ local rubber_ball = {
     rarity = 1,
     cost = 4,
     eternal_compat = true,
-    pos = {x = 0, y = 0},
-    atlas = "placeholder",
+    pos = {x = 6, y = 14},
+    atlas = "jokers",
     dependencies = {
         items = {
             "set_entr_misc_jokers"
