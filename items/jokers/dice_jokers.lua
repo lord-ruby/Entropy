@@ -553,8 +553,8 @@ local nostalgic_d6 = {
     rarity = 3,
     cost = 8,
     eternal_compat = true,
-    pos = {x = 2, y = 0},
-    atlas = "placeholder",
+    pos = {x = 5, y = 14},
+    atlas = "jokers",
     config = {
         dollars = 4
     },
