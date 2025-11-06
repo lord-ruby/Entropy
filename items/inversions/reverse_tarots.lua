@@ -551,10 +551,12 @@ local earl = {
     inversion = "c_hermit",
     pos = {x=9, y = 0},
     use = function(self, card, area, copier)
-        G.GAME.earl_modifiers = {
-            discard = G.GAME.modifiers.money_per_discard,
-            hand = G.GAME.modifiers.money_per_hand
-        }
+        if not G.GAME.earl_modifiers then
+            G.GAME.earl_modifiers = {
+                discard = G.GAME.modifiers.money_per_discard,
+                hand = G.GAME.modifiers.money_per_hand
+            }
+        end
         G.GAME.modifiers.money_per_discard = (G.GAME.modifiers.money_per_discard or 0) + card.ability.per_discard
         G.GAME.modifiers.money_per_hand = (G.GAME.modifiers.money_per_hand or 0) + card.ability.per_hand
     end,
