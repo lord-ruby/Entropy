@@ -2,13 +2,13 @@
 # Entropy
 A chaotic Balatro mod
 
-[Download CryptLib](https://github.com/SpectralPack/Cryptlib) (Make sure you download via Code > Download zip)
+[Download CryptLib](https://github.com/SpectralPack/Cryptlib)
 
 Entropy currently adds:
 
-![image](https://github.com/user-attachments/assets/02d065d5-2c15-4946-a724-bc995c8eee2a)
-![image](https://github.com/user-attachments/assets/3eff5308-0b72-40a3-89af-a710de425d90)
-![image](https://github.com/user-attachments/assets/f20d2145-6a3a-48e1-946c-32b667e2f01c)
+<img width="791" height="607" alt="image" src="https://github.com/user-attachments/assets/50f7baf4-1ba8-4aa5-a58f-83f43618c722" />
+<img width="590" height="342" alt="image" src="https://github.com/user-attachments/assets/79d8b0e4-5e35-4b3e-b580-25eeb960d975" />
+<img width="365" height="111" alt="image" src="https://github.com/user-attachments/assets/9fcab4f0-67cf-402e-adca-62e4dc3df7eb" />
 
 ## Wheres all the Other Content?
 Due to me wanting to depart from this mod as a Cryptid addon but not wanting the content to go to waste a lot of existing content has been moved into CrossMod territory, where it will only show up if you have Cryptid enabled. This includes entropic Jokers which are based on Exotics
