@@ -2027,11 +2027,13 @@ function ease_ante(mod)
         for i, v in pairs(G.GAME.runes or {}) do
             if G.P_RUNES[v.key].calculate then
                 local ret = G.P_RUNES[v.key]:calculate(v, {entr_ante_change = mod})
-                if ret and ret.ante_mod then
+                if ret then
                     v:yep("+", G.C.PURPLE, function()
                         return true
                     end)
-                    mod = ret.ante_mod
+                    if ret.ante_mod then
+                        mod = ret.ante_mod
+                    end
                     break;
                 end
             end

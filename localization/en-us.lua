@@ -4425,14 +4425,15 @@ local decs = {
 			rune_entr_raido = {
 				name = "Raido",
 				text = {
-					"Prevents the next",
+					"{C:green}#1# in #2#{} chance",
+					"to prevent the next",
 					"change of Ante",
 				}
 			},
 			rune_entr_raido_providence = {
 				name = "Raido{C:purple}+{}",
 				text = {
-					"{C:purple,E:1}Inverts{} the next",
+					"{C:purple,E:1}Prevents{} the next",
 					"change of Ante",
 				}
 			},
@@ -4587,16 +4588,16 @@ local decs = {
 			rune_entr_algiz = {
 				name = "Algiz",
 				text = {
-					"Prevents the next {C:red}Death{}",
-					"and grants {C:money}$5{} when this occurs"
+					"Costs {C:money}$10{} to",
+					"prevent the next {C:red}Death{}",
 
 				}
 			},
 			rune_entr_algiz_providence = {
 				name = "Algiz{C:purple}+{}",
 				text = {
-					"Prevents the next {C:red}Death{}",
-					"and grants {C:purple,E:1}$10{} when this occurs"
+					"Costs {C:purple,E:1}$5{} to",
+					"prevent the next {C:red}Death{}",
 				}
 			},
 
@@ -5050,6 +5051,7 @@ local decs = {
 			c_entr_raido = {
 				name = "Rune of Raido",
 				text = {
+					"{C:green}#1# in #2#{} chance that",
 					"The next {C:attention}change{} in",
 					"Ante is prevented"
 				}
@@ -5058,7 +5060,7 @@ local decs = {
 				name = "Rune of Raido{C:purple}+{}",
 				text = {
 					"The next {C:attention}change{} in",
-					"Ante is {C:purple,E:1}Inverted{}"
+					"Ante is {C:purple,E:1}prevented{}"
 				}
 			},
 			c_entr_kaunan = {
@@ -5215,15 +5217,15 @@ local decs = {
 			c_entr_algiz = {
 				name = "Rune of Algiz",
 				text = {
-					"Prevent the next {C:red}Death{}",
-					"and grant {C:money}$5{} when this occurs"
+					"Costs {C:money}$10{} to",
+					"prevent the next {C:red}Death{}",
 				}
 			},
 			c_entr_algiz_providence = {
 				name = "Rune of Algiz{C:purple}+{}",
 				text = {
-					"Prevent the next {C:red}Death{}",
-					"and grant {C:purple,E:1}$10{} when this occurs"
+					"Costs {C:purple,E:1}$5{} to",
+					"prevent the next {C:red}Death{}",
 				}
 			},
 
