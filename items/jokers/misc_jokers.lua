@@ -6276,11 +6276,11 @@ local monkeys_paw = {
     order = 113,
     object_type = "Joker",
     key = "monkeys_paw",
+    atlas = "jokers",
     rarity = 2,
     cost = 6,
     eternal_compat = true,
-    pos = {x = 1, y = 0},
-    atlas = "placeholder",
+    pos = {x = 1, y = 15},
     config = {
         left = 3,
     },
