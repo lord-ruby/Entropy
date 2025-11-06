@@ -3265,7 +3265,7 @@ function end_round()
     else    
         end_roundref()
     end
-    if G.GAME.earl_modiifers then
+    if G.GAME.earl_modifiers then
         G.GAME.modifiers.money_per_discard = G.GAME.earl_modifiers.discard
         G.GAME.modifiers.money_per_hand = G.GAME.earl_modifiers.hand
         G.GAME.earl_modifiers = nil
