@@ -3265,11 +3265,6 @@ function end_round()
     else    
         end_roundref()
     end
-    if G.GAME.earl_modifiers then
-        G.GAME.modifiers.money_per_discard = G.GAME.earl_modifiers.discard
-        G.GAME.modifiers.money_per_hand = G.GAME.earl_modifiers.hand
-        G.GAME.earl_modifiers = nil
-    end
     if G.GAME.candle_hand_size then 
         G.hand:handle_card_limit(-G.GAME.candle_hand_size)
         G.GAME.candle_hand_size = nil
