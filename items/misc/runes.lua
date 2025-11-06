@@ -540,7 +540,12 @@ local ansuz_indicator = {
     end
 }
 
-local raido = Entropy.create_rune("raido", {x=4,y=0}, "rune_entr_raido", 6005)
+local raido = Entropy.create_rune("raido", {x=4,y=0}, "rune_entr_raido", 6005, nil, function(self, q, card)
+    local n, d = SMODS.get_probability_vars(card, G.GAME.providence and 2 or 1, 2, "entr_raido")
+    return {
+        n, d
+    }
+end)
 local raido_indicator = {
     object_type = "RuneTag",
     order = 7005,
@@ -551,13 +556,21 @@ local raido_indicator = {
     dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
         if context.entr_ante_change then
+            local change = (G.GAME.providence or SMODS.pseudorandom_probability(rube, 'entr_raido', 1, 2)) and 0 or nil
             return {
-                ante_mod = G.GAME.providence and -context.entr_ante_change or 0,
-                func = function()
-                    return true
-                end,
+                ante_mod = change,
+                remove = true
             }
         end
+    end,
+    loc_vars = function(self, queue, rune)
+        local n, d = SMODS.get_probability_vars(rune, G.GAME.providence and 2 or 1, 2, "entr_raido")
+        return {
+            vars = {
+                n, d
+            },
+            key = Entropy.providence_ui_active(rune) and"rune_entr_raido_providence" or "rune_entr_raido"
+        }
     end
 }
 
@@ -915,10 +928,10 @@ local algiz_indicator = {
     atlas = "rune_indicators",
     dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
-        if context.game_over then
+        if context.game_over and to_big(G.GAME.dollars -G.GAME.bankrupt_at) > to_big(G.GAME.providence and 5 or 10)  then
             return {
                 func = function()
-                    ease_dollars(G.GAME.providence and 10 or 5)
+                    ease_dollars(G.GAME.providence and -5 or -10)
                 end,
                 saved = "k_saved_algiz"
             }
