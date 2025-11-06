@@ -6044,8 +6044,8 @@ local pineapple = {
     rarity = 2,
     cost = 7,
     eternal_compat = true,
-    pos = {x = 1, y = 0},
-    atlas = "placeholder",
+    pos = {x = 0, y = 15},
+    atlas = "jokers",
     dependencies = {
         items = {
             "set_entr_misc_jokers"
