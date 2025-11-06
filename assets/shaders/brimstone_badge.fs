@@ -110,13 +110,13 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     float scale_const = 10;
 
-    float cx = uv.x * scale_const * 0.7;
+    float cx = uv.x * scale_const * 0.45;
     float cy = uv.y * scale_const * 1.5;
 
     //t *= 5;
 
 
-    hsl.x = 0;
+    hsl.x = 0.99;
     hsl.y = 0.9;
     hsl.z = 0;
 
@@ -129,7 +129,8 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     
     float flamebundle = (- flame1 * flame2 - flame1 * flame3 + flame2 * flame3)/4;
 
-    hsl.z += (1.2 * flame1 + 1.1 * flame2 + 0.7 * flame3 + flamebundle - 1)/4;// * pulse;
+    hsl.z += (1.2 * flame1 + 1.1 * flame2 + 0.7 * flame3 + flamebundle)/4;// * pulse;
+    hsl.x -= flamebundle/7;
 
     //hsl.z = pow(hsl.z, 2)/(pow(hsl.z, 2) + 1);
     
