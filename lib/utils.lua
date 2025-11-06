@@ -1993,3 +1993,24 @@ function Entropy.rubber_ball_scoring(cards)
     end
     return new_cards
 end
+
+function Node:to_screenspace()
+    local T = self.CT or self.T
+    self.ARGS.collides_with_point_translation = self.ARGS.collides_with_point_translation or {}
+    self.ARGS.collides_with_point_rotation = self.ARGS.collides_with_point_rotation or {}
+    local _t = self.ARGS.collides_with_point_translation
+    local _r = self.ARGS.collides_with_point_rotation
+    if self.container ~= self then
+        _t.x, _t.y = self.container.T.w/2, self.container.T.h/2
+        point_translate(T, _t)
+        _t.x, _t.y = -self.container.T.w/2+self.container.T.x, -self.container.T.h/2+self.container.T.y
+        point_translate(T, _t)
+        T.x = T.x * G.TILESCALE*G.TILESIZE*G.CANV_SCALE
+        T.y = T.y * G.TILESCALE*G.TILESIZE*G.CANV_SCALE
+    end
+    return T
+end
+
+function UIElement:to_screenspace()
+    return Node.to_screenspace(self)
+end
