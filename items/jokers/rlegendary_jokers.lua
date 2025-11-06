@@ -585,7 +585,7 @@ local ssac = {
                         end
                     end
                 end
-                for i, v in pairs(j_r) do
+                for i, v in pairs(j_r or {}) do
                     SMODS.calculate_individual_effect(j_r, card, i, v, false)
                 end
                 for i, v in pairs(c_r) do
