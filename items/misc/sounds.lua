@@ -55,16 +55,6 @@ SMODS.Sound({
 })
 
 SMODS.Sound({
-	key = "music_dread",
-	path = "music_dread.ogg",
-	select_music_track = function()
-    if not G.screenwipe and G.STATE == G.STATES.SMODS_BOOSTER_OPENED and SMODS.OPENED_BOOSTER and string.find(SMODS.OPENED_BOOSTER.config.center.key, "twisted", 0, true) ~= nil then
-      return 1339
-    end
-  end
-})
-
-SMODS.Sound({
 	key = "polaroid",
 	path = "polaroid.ogg",
 	volume = 1.4
