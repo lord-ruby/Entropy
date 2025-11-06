@@ -840,7 +840,7 @@ G.FUNCS.play_cards_from_highlighted = function(e)
         v.ability.entr_times_played = (v.ability.entr_times_played or 0) + 1
     end
     local text = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
-    if text == "Full House" and (next(SMODS.find_card("j_entr_ruby") or next(SMODS.find_card("j_entr_slipstream"))) or next(SMODS.find_card("j_entr_cassknows")) or next(SMODS.find_card("j_entr_crabus"))) then
+    if text == "Full House" and (next(SMODS.find_card("j_entr_ruby") or next(SMODS.find_card("j_entr_slipstream"))) or next(SMODS.find_card("j_entr_cassknows")) or next(SMODS.find_card("j_entr_crabus")) or next(SMODS.find_card("j_entr_grahkon"))) then
         check_for_unlock({type = "suburban_jungle"})
     end
     local text = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
