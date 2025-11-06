@@ -1658,7 +1658,7 @@ function Card:draw(layer)
     if bdt >= 0.15 and self.config.center.set == "CBlind" then
         local obj = {pos = self.children.center.sprite_pos}
         obj.pos.x = obj.pos.x + 1
-        if obj.pos.x >= self.children.center.atlas.frames or 21 then
+        if to_number(obj.pos.x) >= to_number(self.children.center.atlas.frames or 21) then
             obj.pos.x = 0
         end
     end
