@@ -3337,7 +3337,9 @@ local dragonfruit = {
     calculate = function(self, card, context)
         if context.after and not context.repetition and not context.blueprint then
             SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", operation = "-", no_message = true})
-            Entropy.ChangeFullCSL(- card.ability.left_mod)
+            if not card.ability.entr_pure then
+                Entropy.ChangeFullCSL(- card.ability.left_mod)
+            end
             if card.ability.left <= 0 then
                 SMODS.destroy_cards(card, nil, nil, true)
                 return {
