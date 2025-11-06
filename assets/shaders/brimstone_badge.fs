@@ -53,52 +53,40 @@ vec4 HSL(vec4 c)
     return hsl;
 }
 
+vec4 HSVtoRGB(vec4 hsv) {
+    vec4 rgb;
+
+    float h = hsv.x * 6.0;
+    float c = hsv.z * hsv.y;
+    float x = c * (1.0 - abs(mod(h, 2.0) - 1.0));
+    float m = hsv.z - c;
+
+    if (h < 1.0) {
+        rgb = vec4(c, x, 0.0, hsv.a);
+    } else if (h < 2.0) {
+        rgb = vec4(x, c, 0.0, hsv.a);
+    } else if (h < 3.0) {
+        rgb = vec4(0.0, c, x, hsv.a);
+    } else if (h < 4.0) {
+        rgb = vec4(0.0, x, c, hsv.a);
+    } else if (h < 5.0) {
+        rgb = vec4(x, 0.0, c, hsv.a);
+    } else {
+        rgb = vec4(c, 0.0, x, hsv.a);
+    }
+
+    rgb.rgb += m;
+
+    return rgb;
+}
+
 #define PI 3.14159265358979323846
 
 float rand(vec2 c){
 	return fract(sin(dot(c.xy ,vec2(12.9898,78.233))) * 43758.5453);
 }
 
-float noise(vec2 p, float freq ){
-	float unit = 1./freq;
-	vec2 ij = floor(p/unit);
-	vec2 xy = mod(p,unit)/unit;
-	//xy = 3.*xy*xy-2.*xy*xy*xy;
-	xy = .5*(1.-cos(PI*xy));
-	float a = rand((ij+vec2(0.,0.)));
-	float b = rand((ij+vec2(1.,0.)));
-	float c = rand((ij+vec2(0.,1.)));
-	float d = rand((ij+vec2(1.,1.)));
-	float x1 = mix(a, b, xy.x);
-	float x2 = mix(c, d, xy.x);
-	return mix(x1, x2, xy.y);
-}
 
-float pNoise(vec2 p, int res){
-	float persistance = .5;
-	float n = 0.;
-	float normK = 0.;
-	float f = 4.;
-	float amp = 1.;
-	int iCount = 0;
-	for (int i = 0; i<50; i++){
-		n+=amp*noise(p, f);
-		f*=2.;
-		normK+=amp;
-		amp*=persistance;
-		if (iCount == res) break;
-		iCount++;
-	}
-	float nf = n/normK;
-	return nf*nf*nf*nf;
-}
-
-vec4 smoke(float time, vec2 uv, vec4 base_col) 
-{
-    float p = (pNoise(uv + vec2(0, time), 1));
-    p = p * p * 1.5;
-    return vec4(-0.6,-0.6,-0.6,1.) * (2.-p) + base_col * p;
-}
 
 vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords )
 {
@@ -107,21 +95,51 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     uv.x = uv.x * (love_ScreenSize.x/love_ScreenSize.y);
     uv.y = uv.y / (20.);
 
+    vec4 hsl = HSL(vec4(tex.r, tex.g, tex.b, tex.a));
+
+    //float fuckyouGSL = min(0, 0.001 * (brimstone_badge.x + uibox_size.x + uibox_pos.x + screen_scale + time));
+
+    float t = time + brimstone_badge.y * 0.32151;
+
+    float scale_const = 1;
+
+    float cx = uv.x * scale_const * 0.7;
+    float cy = uv.y * scale_const * 100;
+
+    //t *= 5;
+
+
+    hsl.x = 0;
+    hsl.y = 0.9;
+    hsl.z = 0;
+
+    float pulse = pow(2 * abs(pow(
+        mod(-0.16 * cy - 0.15 * t 
+        - sin(5.2 * cx + 0.3 * t)/2
+        - sin(12.3 * cx + 0.11 * t)/5
+        , 1), 2) - 0.5), 2);
+
+    float flame1 = max(0, pow((sin(11.3 * cx - sin(7.17 * t))), 2) + pow((sin(2.44 * cy + 8.17 * t - sin(2.19 * t + cx))), 2));
+    float flame2 = max(0, pow((sin(23.9 * cx - sin(6.94 * t))), 2) + pow((sin(1.21 * cy + 13.41 * t - sin(0.83 * t + cx))), 2));
+    float flame3 = max(0, pow((sin(44.1 * cx - sin(4.77 * t))), 2) + pow((sin(0.66 * cy + 9.14 * t - sin(1.23 * t + cx))), 2));
+    //float flame4 = max(0, pow((sin(44.1 * cx - sin(4.77 * t))), 2) + pow((sin(0.66 * cy + 9.14 * t - sin(1.23 * t + cx))), 2));
+    
+    hsl.z += (flame1 + flame2 + flame3 + 1)/2 * pulse;
+
+    hsl.z = pow(hsl.z, 2)/(pow(hsl.z, 2) + 1);
+    
+    //hsl.z += flame1 + flame2;// * pulse;
+
     number low = min(tex.r, min(tex.g, tex.b));
     number high = max(tex.r, max(tex.g, tex.b));
 	number delta = high-low -0.1;
 
-    float t = time;
 
-    tex.a = 1. + time;
+    vec4 rgb = HSVtoRGB(hsl);
 
-    float p = (sin(brimstone_badge.y) + 1.) / 2.;
-    vec4 base_col = vec4(1., .3, .65, 1.);
-    colour = vec4(-0.65, -0.65, -0.65, 1) + smoke(brimstone_badge.y, uv, vec4(1,1,1,1)) * smoke(brimstone_badge.y, uv, vec4(1,1,1,1));
-    vec4 ret = tex * colour * colour;
-    ret.a = 1. + time;
-    ret = HSL(ret);
-    ret.r = ret.r -0.1 * p;
-    ret.b = pow(ret.b, 0.75);
-    return RGB(ret);
+    //rgb.r += flame1;
+    //rgb.b += flame2;
+    //rgb.g += flame3;
+
+    return vec4(rgb.r, rgb.g, rgb.b, 1);
 }
