@@ -3955,7 +3955,7 @@ function Cryptid.get_interest(add_rows)
     else    
         local rate = Cryptid.interest_rate()
         local interest = math.min(math.floor(G.GAME.dollars / rate), G.GAME.interest_cap / 5)
-        interst = interest * G.GAME.interest_amount
+        interest = interest * G.GAME.interest_amount
         for _, a in pairs(SMODS.get_card_areas("jokers")) do
             for i, c in pairs(a.cards) do
                 if c.config.center.cry_calc_interest then
