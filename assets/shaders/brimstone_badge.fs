@@ -91,7 +91,14 @@ float rand(vec2 c){
 vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords )
 {
     vec4 tex = colour;
-    vec2 uv = (screen_coords - uibox_pos) / (uibox_size.xy * screen_scale * 2);
+
+
+     vec2 uv = (screen_coords - uibox_pos) / (uibox_size.xy * screen_scale);
+    if (uv.x < 0.00001) {
+        uv = (screen_coords - (uibox_pos / screen_scale)) / (uibox_size.xy * screen_scale);
+    }
+
+
     uv.x = uv.x * (love_ScreenSize.x/love_ScreenSize.y);
     uv.y = uv.y / (20.);
 
@@ -101,10 +108,10 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     float t = time + brimstone_badge.y * 0.32151;
 
-    float scale_const = 1;
+    float scale_const = 10;
 
     float cx = uv.x * scale_const * 0.7;
-    float cy = uv.y * scale_const * 100;
+    float cy = uv.y * scale_const * 1.5;
 
     //t *= 5;
 
@@ -113,20 +120,18 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     hsl.y = 0.9;
     hsl.z = 0;
 
-    float pulse = pow(2 * abs(pow(
-        mod(-0.16 * cy - 0.15 * t 
-        - sin(5.2 * cx + 0.3 * t)/2
-        - sin(12.3 * cx + 0.11 * t)/5
-        , 1), 2) - 0.5), 2);
+    //float pulse = pow(2 * abs(pow(mod(-0.16 * cy - 0.15 * t - sin(5.2 * cx + 0.3 * t)/2 - sin(12.3 * cx + 0.11 * t)/5, 1), 2) - 0.5), 2);
 
-    float flame1 = max(0, pow((sin(11.3 * cx - sin(7.17 * t))), 2) + pow((sin(2.44 * cy + 8.17 * t - sin(2.19 * t + cx))), 2));
-    float flame2 = max(0, pow((sin(23.9 * cx - sin(6.94 * t))), 2) + pow((sin(1.21 * cy + 13.41 * t - sin(0.83 * t + cx))), 2));
-    float flame3 = max(0, pow((sin(44.1 * cx - sin(4.77 * t))), 2) + pow((sin(0.66 * cy + 9.14 * t - sin(1.23 * t + cx))), 2));
+    float flame1 = pow((sin(1.11 * cx - sin(1.11 * t))), 2) + pow((sin(1.11 * cy + 1.00 * t - sin(7 * t + 1.2 * cx))), 2);
+    float flame2 = pow((sin(2.10 * cx - sin(0.40 * t))), 2) + pow((sin(3.04 * cy + 2.41 * t - sin(-7 * t + 2 * cx))), 2);
+    float flame3 = pow((sin(6.14 * cx - sin(2.40 * t))), 2) + pow((sin(2.14 * cy + 3.41 * t)), 2);
     //float flame4 = max(0, pow((sin(44.1 * cx - sin(4.77 * t))), 2) + pow((sin(0.66 * cy + 9.14 * t - sin(1.23 * t + cx))), 2));
     
-    hsl.z += (flame1 + flame2 + flame3 + 1)/2 * pulse;
+    float flamebundle = (- flame1 * flame2 - flame1 * flame3 + flame2 * flame3)/4;
 
-    hsl.z = pow(hsl.z, 2)/(pow(hsl.z, 2) + 1);
+    hsl.z += (1.2 * flame1 + 1.1 * flame2 + 0.7 * flame3 + flamebundle - 1)/4;// * pulse;
+
+    //hsl.z = pow(hsl.z, 2)/(pow(hsl.z, 2) + 1);
     
     //hsl.z += flame1 + flame2;// * pulse;
 
