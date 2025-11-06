@@ -2033,8 +2033,8 @@ function ease_ante(mod)
                     end)
                     if ret.ante_mod then
                         mod = ret.ante_mod
+                        break
                     end
-                    break;
                 end
             end
         end
