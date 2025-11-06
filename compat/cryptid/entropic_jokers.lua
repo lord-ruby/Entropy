@@ -974,8 +974,8 @@ local heimartai = {
             "set_entr_entropics"
         }
     },
-    soul_pos = { x = 5, y = 6, extra = { x = 4, y = 6 } },
-    pos = { x = 3, y = 6 },
+    pos = { x = 6, y = 4 },
+    soul_pos = { x = 8, y = 4, extra = { x = 7, y = 4 } },
     atlas = "exotic_jokers",
     config = {
         echips = 1
@@ -993,7 +993,8 @@ local heimartai = {
                 echips = card.ability.echips
             }
         end
-    end
+    end,
+    entr_credits = {art = {"crabus"}}
 }
 
 return {
