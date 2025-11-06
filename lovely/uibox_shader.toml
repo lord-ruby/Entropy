@@ -32,6 +32,23 @@ payload = '''
         love.graphics.polygon((_type == 'line' or _type == 'line_emboss') and 'line' or "fill", self.pixellated_rect[_type].vertices)
     end
 
+    local function to_screenspace()
+        local T = self.CT or self.T
+        self.ARGS.collides_with_point_translation = self.ARGS.collides_with_point_translation or {}
+        self.ARGS.collides_with_point_rotation = self.ARGS.collides_with_point_rotation or {}
+        local _t = self.ARGS.collides_with_point_translation
+        local _r = self.ARGS.collides_with_point_rotation
+        if self.container ~= self then
+            _t.x, _t.y = self.container.T.w/2, self.container.T.h/2
+            point_translate(T, _t)
+            _t.x, _t.y = -self.container.T.w/2+self.container.T.x, -self.container.T.h/2+self.container.T.y
+            point_translate(T, _t)
+            T.x = T.x * G.TILESCALE*G.TILESIZE*G.CANV_SCALE
+            T.y = T.y * G.TILESCALE*G.TILESIZE*G.CANV_SCALE
+        end
+        return T
+    end
+
     local function _draw_layer(shader, send)
         local args = {
             G.TIMERS.REAL/28,
@@ -56,13 +73,14 @@ payload = '''
         elseif shader == "vortex" then
             G.SHADERS['vortex']:send('vortex_amt', G.TIMERS.REAL - (G.vortex_time or 0))
         else
+            local screen_pos = to_screenspace(self)
             local prefix = SMODS.Shaders[shader] and SMODS.Shaders[shader].mod and SMODS.Shaders[shader].mod.prefix
             local prefixless_key = prefix and string.sub(shader, #prefix + 2) or shader
 
             -- actually supported
             G.SHADERS[shader]:send(prefixless_key, args)
             G.SHADERS[shader]:send("uibox_size", {self.VT.w, self.VT.h})
-            G.SHADERS[shader]:send("uibox_pos", {self.VT.x, self.VT.y})
+            G.SHADERS[shader]:send("uibox_pos", {screen_pos.x, screen_pos.y})
             G.SHADERS[shader]:send('screen_scale', G.TILESCALE*G.TILESIZE*G.CANV_SCALE)
             
             -- placeholder values
