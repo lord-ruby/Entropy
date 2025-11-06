@@ -5309,8 +5309,8 @@ local fast_food = {
     eternal_compat = true,
     perishable_compat = true,
     blueprint_compat = true,
-    pos = {x = 1, y = 0},
-    atlas = "placeholder",
+    pos = {x = 8, y = 14},
+    atlas = "jokers",
     loc_vars = function(self, q, card)
         q[#q+1] = {set = "Other", key = "perishable", vars = {5, 5}}
     end,
