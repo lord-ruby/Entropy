@@ -1,26 +1,57 @@
 function Entropy.GetHighlightedCards(cardareas, ignorecard, min, max, blacklist)
-    if Cryptid.get_highlighted_cards then
-        return Cryptid.get_highlighted_cards(cardareas, ignorecard or {}, min or 1, max or 1, blacklist and function(card)
+    return Cryptid.get_highlighted_cards(cardareas, ignorecard or {}, min or 1, max or 1, blacklist and function(card)
             return not blacklist[card.config.center.key]
-        end)
-    else    
-        local cards = {}
-        if ignorecard then ignorecard.checked = true end
-        blacklist = blacklist or {}
-        for i, area in pairs(cardareas) do
-            if area.cards then
-                for i2, card in ipairs(area.highlighted) do
-                    if card ~= ignorecard and not blacklist[card.config.center.key] and card.highlighted and not card.checked then
-                        cards[#cards + 1] = card
-                        card.checked = true
-                    end
-                end
-            end
-        end
-        for i, v in ipairs(cards) do v.checked = nil end
-        if ignorecard then ignorecard.checked = false end
-        return cards
-    end
+    end)
+end
+
+function Cryptid.get_highlighted_cards(areas, ignore, min, max, blacklist, seed)
+	ignore.checked = true
+	blacklist = blacklist or function()
+		return true
+	end
+	local cards = {}
+	for i, area in pairs(areas) do
+		if area.cards then
+			for i2, card in pairs(area.cards) do
+				if
+					card ~= ignore
+					and blacklist(card)
+					and (card.highlighted or G.cry_force_use)
+					and not card.checked
+				then
+					cards[#cards + 1] = card
+					card.checked = true
+				end
+			end
+		end
+	end
+	for i, v in ipairs(cards) do
+		v.checked = nil
+	end
+	if (#cards >= min and #cards <= max) or not G.cry_force_use then
+		ignore.checked = nil
+		return cards
+	else
+		for i, v in pairs(cards) do
+			v.f_use_order = i
+		end
+		pseudoshuffle(cards, pseudoseed("forcehighlight" or seed))
+		local actual = {}
+		for i = 1, max do
+			if cards[i] and not cards[i].checked and actual ~= ignore and actual.original_card ~= ignore and actual ~= ignore.original_card then
+				actual[#actual + 1] = cards[i]
+			end
+		end
+		table.sort(actual, function(a, b)
+			return a.f_use_order < b.f_use_order
+		end)
+		for i, v in pairs(cards) do
+			v.f_use_order = nil
+		end
+		ignore.checked = nil
+		return actual
+	end
+	return {}
 end
 
 function Entropy.FilterTable(table, func)
@@ -1994,23 +2025,3 @@ function Entropy.rubber_ball_scoring(cards)
     return new_cards
 end
 
-function Node:to_screenspace()
-    local T = self.CT or self.T
-    self.ARGS.collides_with_point_translation = self.ARGS.collides_with_point_translation or {}
-    self.ARGS.collides_with_point_rotation = self.ARGS.collides_with_point_rotation or {}
-    local _t = self.ARGS.collides_with_point_translation
-    local _r = self.ARGS.collides_with_point_rotation
-    if self.container ~= self then
-        _t.x, _t.y = self.container.T.w/2, self.container.T.h/2
-        point_translate(T, _t)
-        _t.x, _t.y = -self.container.T.w/2+self.container.T.x, -self.container.T.h/2+self.container.T.y
-        point_translate(T, _t)
-        T.x = T.x * G.TILESCALE*G.TILESIZE*G.CANV_SCALE
-        T.y = T.y * G.TILESCALE*G.TILESIZE*G.CANV_SCALE
-    end
-    return T
-end
-
-function UIElement:to_screenspace()
-    return Node.to_screenspace(self)
-end

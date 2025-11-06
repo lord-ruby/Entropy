@@ -78,7 +78,7 @@ SMODS.Sticker:take_ownership("eternal", {
 			G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
 		end
 	end,
-})
+}, true)
 
 SMODS.Sticker:take_ownership("cry_absolute", {
     no_collection = true,
