@@ -60,7 +60,7 @@ payload = '''
             G.SHADERS['vortex']:send('vortex_amt', G.TIMERS.REAL - (G.vortex_time or 0))
         else
             local key = SMODS.Shaders[shader].original_key
-            local tile_scale = G.TILESCALE*G.TILESIZE
+            local tile_scale = G.TILESCALE*G.TILESIZE*G.CANV_SCALE
 
             -- actually supported
             G.SHADERS[shader]:send(key, args)
