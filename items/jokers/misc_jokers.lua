@@ -385,7 +385,7 @@ local insatiable_dagger = {
                         play_sound("slice1", 0.96 + math.random() * 0.08)
                         local check2
                         if not Card.no(G.jokers.cards[check], "immutable", true) then
-                            Cryptid.manipulate(G.jokers.cards[check], { value = sliced_card.sell_cost * 0.05 + 1 })
+                            Cryptid.manipulate(G.jokers.cards[check], { value = sliced_card.sell_cost * 0.025 + 1 })
                             check2 = true
                         end
                         if check2 then
