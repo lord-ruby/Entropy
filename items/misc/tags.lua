@@ -653,6 +653,7 @@ local cat_asc = {
 		tag.get_edition = function(tag)
 			return G.P_CENTER_POOLS.Edition[(tag.ability.level2%#G.P_CENTER_POOLS.Edition)+1]
 		end
+		tag.hover_sound = function() return 'cry_meow'..math.random(4) end
 	end,
 	in_pool = function() return false end,
 	shiny_atlas = "entr_shiny_asc_tags",
