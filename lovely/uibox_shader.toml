@@ -4,7 +4,7 @@ dump_lua = true
 priority = 1
 
 # UI Element Shader Patch by InvalidOS
-# v2.0.2
+# v2.0.2a
 # play lemniscate (when it releases) (it is not released yet)
 
 ## hacky method of preventing repeat patches
