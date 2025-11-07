@@ -899,7 +899,7 @@ local companion = {
     use = function(self, card)
         G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.interest_cap = G.GAME.interest_cap + (card.ability.extra)
+				G.GAME.companion_interest_cap = (G.GAME.companion_interest_cap or 0) + (card.ability.extra)
                 ease_dollars(math.min(G.GAME.interest_cap, 50))
 				return true
 			end,
