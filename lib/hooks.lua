@@ -3947,7 +3947,7 @@ end
 local interest_ref = Cryptid.get_interest
 function Cryptid.get_interest(add_rows)
     local cap = G.GAME.interest_cap
-    G.GAME.interest_cap = G.GAME.interest_cap + G.GAME.companion_interest_cap
+    G.GAME.interest_cap = G.GAME.interest_cap +(G.GAME.companion_interest_cap or 0)
     if interest_ref then
         local interest = interest_ref(add_rows)
         G.GAME.interest_cap = cap
