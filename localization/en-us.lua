@@ -458,7 +458,7 @@ local decs = {
 				text = {
 					"When {C:attention}Blind{} is selected",
 					"banish rightmost Joker",
-					"Joker to the left gains {C:attention}5%{}",
+					"Joker to the left gains {C:attention}2.5%{}",
 					"of its sell value as {C:purple}xValues{}"
 				}
 			},
@@ -6629,7 +6629,7 @@ for i, v in pairs(G.localization.descriptions.Blind) do
 	local text = {}
 	for i2, v2 in pairs(v.text or {}) do text[#text+1]=v2 end
 	CBlind["c_entr_"..i] = {
-		name=(v.name or "Blind").." Token",
+		name=(type(v.name) ~= "table" and v.name or "Blind").." Token",
 		text={
 			"Use to change the upcoming Blind",
 		}
