@@ -363,7 +363,7 @@ Entropy.ReversePlanets = {
   {name="Flush Five",key="eris",sprite_pos={x=10,y=1},new_key="sirius", art="Binary"},
 }
 -- Spectrum Compat
-if SMODS.Mods["SpectrumAPI"] then
+if (SMODS.Mods["SpectrumAPI"] or {}).can_load then
   Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="spa_Spectrum",key="Spectrum",sprite_pos={x=0,y=3}, new_key="starspectrum", prefix = "spa", atlas = "placeholder"}
   Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="spa_Straight_Spectrum",key="Straight_Spectrum",sprite_pos={x=0,y=3}, new_key="starstraightspectrum", prefix = "spa", atlas = "placeholder"}
   Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="spa_Spectrum_House",key="Spectrum_House",sprite_pos={x=0,y=3}, new_key="starhousespectrum", prefix = "spa", atlas = "placeholder"}
