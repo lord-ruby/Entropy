@@ -42,6 +42,8 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
     Cryptid.edeck_sprites.enhancement.m_entr_prismatic = {atlas="entr_crypt_deck", pos = {x=3,y=1}}
     Cryptid.edeck_sprites.enhancement.m_entr_dark = {atlas="entr_crypt_deck", pos = {x=3,y=2}}
     Cryptid.edeck_sprites.enhancement.m_entr_ceramic = {atlas="entr_crypt_deck", pos = {x=1,y=4}}
+    Cryptid.edeck_sprites.enhancement.m_entr_ethereal = {atlas="entr_crypt_deck", pos = {x=4,y=4}}
+    Cryptid.edeck_sprites.enhancement.m_entr_samsara = {atlas="entr_crypt_deck", pos = {x=5,y=4}}
     Cryptid.edeck_sprites.sticker.entr_pinned = {atlas="entr_crypt_deck", pos = {x=4,y=1}}
     Cryptid.edeck_sprites.sticker.entr_hotfix = {atlas="entr_crypt_deck", pos = {x=5,y=1}}
     Cryptid.edeck_sprites.sticker.entr_pseudorandom = {atlas="entr_crypt_deck", pos = {x=6,y=1}}
