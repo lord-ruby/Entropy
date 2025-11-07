@@ -2526,7 +2526,7 @@ local crabus = {
         if context.before and not context.repetition and not context.blueprint then
             local cards = {}
             for i, v in pairs(context.full_hand) do
-                if not SMODS.in_scoring(v, context.scoring_hand) then cards[#cards+1] = v end
+                if not SMODS.in_scoring(v, context.scoring_hand) and v.config.center.key ~= "m_entr_dark" then cards[#cards+1] = v end
             end
             Entropy.FlipThen(cards, function(card)
                 card:set_ability(G.P_CENTERS.m_entr_dark)
