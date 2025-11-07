@@ -699,7 +699,7 @@ function Entropy.HigherCardRank(card)
 	elseif rank_suffix == 11 then rank_suffix = 'Jack'
 	elseif rank_suffix == 12 then rank_suffix = 'Queen'
 	elseif rank_suffix == 13 then rank_suffix = 'King'
-	elseif rank_suffix == 14 then raFnk_suffix = 'Ace'
+	elseif rank_suffix == 14 then rank_suffix = 'Ace'
 	end
 	return ({
 		Queen = "King",
