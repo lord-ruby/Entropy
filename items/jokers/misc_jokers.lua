@@ -6143,13 +6143,13 @@ local stand_arrow = {
     perishable_compat = true,
     loc_vars = function(self, q, card)
         local options = {
-                    "e_polychrome",
-                    "e_negative",
-                    "e_entr_sunny",
-                    "e_entr_solar",
-                    "e_entr_freaky",
-                    "e_entr_fractured"
-                }
+            {key ="e_polychrome", weight = 1},
+            {key ="e_negative", weight = 1},
+            {key ="e_entr_sunny", weight = 1},
+            {key ="e_entr_solar", weight = 1},
+            {key ="e_entr_freaky", weight = 1},
+            {key ="e_entr_fractured", weight = 1},
+        }
         for i, v in pairs(options) do
             q[#q+1] = G.P_CENTERS[v]
         end
