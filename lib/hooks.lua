@@ -3946,8 +3946,11 @@ end
 
 local interest_ref = Cryptid.get_interest
 function Cryptid.get_interest(add_rows)
+    local cap = G.GAME.interest_cap
+    G.GAME.interest_cap = G.GAME.interest_cap + G.GAME.companion_interest_cap
     if interest_ref then
         local interest = interest_ref(add_rows)
+        G.GAME.interest_cap = cap
         return interest
     else    
         local rate = Cryptid.interest_rate()
@@ -3960,6 +3963,7 @@ function Cryptid.get_interest(add_rows)
                 end
             end
         end
+        G.GAME.interest_cap = cap
         return interest
     end
 end
