@@ -2571,6 +2571,7 @@ local crabus = {
         if context.joker_main then return {x_chips = card.ability.x_chips} end
     end,
     loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.m_entr_dark
         return {
             vars = {
                 number_format(card.ability.x_chips_mod),
