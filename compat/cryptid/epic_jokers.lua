@@ -279,7 +279,7 @@ local antireal = {
         end
     end,
     add_to_deck = function(self, card, from_debuff)
-		if not from_debuff then
+		if not from_debuff and Cryptid.notification_overlay then
 			Cryptid.notification_overlay("antireal")
 		end
 	end,
