@@ -66,17 +66,17 @@ end
 
 function Entropy.Inversion(card)
     if not card then return end
-    return Entropy.FlipsideInversions[card.key or card.config.center.key]
+    return Entropy.FlipsideInversions[card.key or (card.config and card.config.center and card.config.center.key) or ""]
 end
 
 function Entropy.is_inverted(card)
     if not card then return end
-    return Entropy.FlipsideInversions[card.key or card.config.center.key] and not Entropy.FlipsidePureInversions[card.key or card.config.center.key]
+    return Entropy.FlipsideInversions[card.key or (card.config and card.config.center and card.config.center.key) or ""] and not Entropy.FlipsidePureInversions[card.key or (card.config and card.config.center and card.config.center.key) or ""]
 end
 
 function Entropy.inversion_queue(card, _c, first_pass)
     local info_queue = {}
-    if Entropy.Inversion(card) and first_pass and Entropy.show_flipside(card, _c) and Entropy.config.inversion_queues > 1 then 
+    if (Entropy.Inversion(card) or _c.key == "c_entr_flipside") and first_pass and Entropy.show_flipside(card, _c) and Entropy.config.inversion_queues > 1 then 
         if _c.key ~= "c_entr_flipside" then
           local inversion = G.P_CENTERS[Entropy.Inversion(_c)] 
           info_queue[#info_queue+1] = {key = "inversion_allowed", set = "Other", vars = {G.localization.descriptions[inversion.set][inversion.key].name}}

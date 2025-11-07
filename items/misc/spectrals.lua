@@ -14,7 +14,7 @@ local flipside = {
     can_use = function(self, card)
         local cards = Entropy.GetHighlightedCards({{cards = G.I.CARD}}, card, 1, card.ability.select)
         cards = Entropy.FilterTable(cards, function(card)
-            return Entropy.Inversion(card)
+            return Entropy.Inversion(card) or card.config.center.key == "c_entr_flipside"
         end)
         return #cards > 0 and #cards <= card.ability.select
     end,
@@ -24,15 +24,36 @@ local flipside = {
             return Entropy.Inversion(card)
         end)
         Entropy.FlipThen(cards, function(card)
-            card.ability.fromflipside = true
-            card:set_ability(G.P_CENTERS[Entropy.Inversion(card)])
-            if card.ability.glitched_crown then
-                for i,v in pairs(card.ability.glitched_crown) do
-                    card.ability.glitched_crown[i] = Entropy.FlipsideInversions[v]
+            if card.config.center.key == "c_entr_flipside" then
+                local cards2 = {}
+                for i, card in pairs(G.I.CARD) do
+                    if Entropy.Inversion(card) then
+                        cards2[#cards2+1] = card
+                    end
                 end
+                card:start_dissolve()
+                Entropy.FlipThen(cards2, function(card)
+                    card.ability.fromflipside = true
+                    card:set_ability(G.P_CENTERS[Entropy.Inversion(card)])
+                    if card.ability.glitched_crown then
+                        for i,v in pairs(card.ability.glitched_crown) do
+                            card.ability.glitched_crown[i] = Entropy.FlipsideInversions[v]
+                        end
+                    end
+                    card.ability.fromflipside = false
+                    SMODS.calculate_context({entr_consumable_inverted = true, card = card})
+                end)
+            else
+                card.ability.fromflipside = true
+                card:set_ability(G.P_CENTERS[Entropy.Inversion(card)])
+                if card.ability.glitched_crown then
+                    for i,v in pairs(card.ability.glitched_crown) do
+                        card.ability.glitched_crown[i] = Entropy.FlipsideInversions[v]
+                    end
+                end
+                card.ability.fromflipside = false
+                SMODS.calculate_context({entr_consumable_inverted = true, card = card})
             end
-            card.ability.fromflipside = false
-            SMODS.calculate_context({entr_consumable_inverted = true, card = card})
         end)
     end,
     loc_vars = function(self, q, card)
