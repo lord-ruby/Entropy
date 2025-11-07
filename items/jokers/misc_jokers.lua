@@ -994,7 +994,7 @@ local phantom_shopper = {
     config = {
         rarity = "Common",
         progress = 0,
-        needed_progress = 4
+        needed_progress = 5
     },
     rarity = 2,
     cost = 8,
@@ -1037,6 +1037,7 @@ local phantom_shopper = {
                     Rare = (SMODS.Mods["Cryptid"] or {}).can_load and "cry_epic" or "Legendary",
                     cry_epic = "Legendary"
                 })[card.ability.rarity] or card.ability.rarity
+                card.ability.needed_progress = card.ability.needed_progress + 1
             else
                 card_eval_status_text(
                     card,
