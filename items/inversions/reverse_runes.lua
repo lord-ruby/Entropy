@@ -91,10 +91,12 @@ local rage = {
             end
         end
         if #cards > 0 then 
+            local a_cards = {}
             pseudoshuffle(cards, pseudoseed("entr_rage"))
             for i = 1, math.max(math.floor(#cards/5), math.min(#cards, 5)) do
-                cards[i]:start_dissolve()
+                a_cards[#a_cards+1] = cards[i]
             end
+            SMODS.destroy_cards(a_cards)
         end
         Entropy.pact_mark("rune_entr_rage")
     end,
