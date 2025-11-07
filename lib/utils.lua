@@ -768,7 +768,7 @@ function Entropy.GetJokerSumRarity(loc)
     local sum = Entropy.SumJokerPoints()
     local last_sum = 0
     for i, v in pairs(Entropy.RarityPoints) do
-        if Entropy.is_big(sum) == "table" then
+        if Entropy.is_big(sum) then
             if v > 12 and sum:gte(v-1) or sum:gte(v) then  
                 if v > last_sum  then
                     rarity = i 
