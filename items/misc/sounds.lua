@@ -59,3 +59,9 @@ SMODS.Sound({
 	path = "polaroid.ogg",
 	volume = 1.4
 })
+
+SMODS.Sound({
+	key = "bounce",
+	path = "bounce.ogg",
+	volume = 1.4
+})
