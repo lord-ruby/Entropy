@@ -2541,7 +2541,7 @@ if G.rubber_cards and scoring_hand [_] == scoring_hand [_-1] then
     nil,
     nil,
     nil,
-    { message = localize("k_bounce_ex") }
+    { message = localize("k_bounce_ex"), sound = "entr_bounce" }
   )
 end
 '''
