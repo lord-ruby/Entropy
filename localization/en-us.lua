@@ -458,8 +458,9 @@ local decs = {
 				text = {
 					"When {C:attention}Blind{} is selected",
 					"banish rightmost Joker",
-					"Joker to the left gains {C:attention}2.5%{}",
-					"of its sell value as {C:purple}xValues{}"
+					"Joker to the left gains {C:attention}#1#%{}",
+					"of its sell value as {C:purple}xValues{}",
+					"then decrease this value by {C:attention}#2#{}"
 				}
 			},
 			j_entr_rusty_shredder = {
