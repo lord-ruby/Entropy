@@ -1031,6 +1031,7 @@ local void = {
 	boss_colour = HEX("494949"),
     mult=1,
     dollars = 0,
+	no_collection = true,
     in_pool = function(self) return false end
 }
 
