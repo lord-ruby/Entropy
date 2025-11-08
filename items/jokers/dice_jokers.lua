@@ -610,6 +610,13 @@ local nostalgic_d6 = {
             end
             G.pack_cards.cards[i] = p_card
             p_card.area = G.pack_cards
+            if G.GAME.modifiers.glitched_items then
+                local gc = {p_card.config.center.key}
+                for i = 1, G.GAME.modifiers.glitched_items - 1 do
+                gc[#gc+1] = Entropy.GetPooledCenter(p_card.config.center.set).key
+                end
+                p_card.ability.glitched_crown = gc
+            end
         end
     end,
     entr_credits = {idea = {"Grahkon"}}
