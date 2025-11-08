@@ -5,7 +5,7 @@ local pack = {
         }
     },
 	object_type = "Booster",
-    order = -1003,
+    order = -1006,
     key = "twisted_pack_normal",
     set = "Booster",
     config = { extra = 3, choose = 1 },
@@ -45,7 +45,15 @@ local pack = {
 			G.consumeables:emplace(ccard)
 		end,
 	},
+    entr_credits = {art = {"LFMoth"}}
 }
+
+local pack2 = copy_table(pack)
+pack2.pos.y = 1
+pack2.entr_credits = {art = {"Lil. Mr. Slipstream"}}
+pack2.key = "twisted_pack_normal_2"
+pack2.order = -1005
+
 local jumbo = {
     dependencies = {
         items = {
@@ -53,7 +61,7 @@ local jumbo = {
         }
     },
 	object_type = "Booster",
-    order = -1002,
+    order = -1004,
     key = "twisted_pack_jumbo",
     set = "Booster",
     config = { extra = 5, choose = 1 },
@@ -93,7 +101,14 @@ local jumbo = {
 			G.consumeables:emplace(ccard)
 		end,
 	},
+    entr_credits = {art = {"Lil. Mr. Slipstream"}}
 }
+local jumbo2 = copy_table(jumbo)
+jumbo2.pos.y = 1
+jumbo2.entr_credits = {art = {"Binary"}}
+jumbo2.key = "twisted_pack_jumbo_2"
+jumbo2.order = -1003
+
 local mega = {
     dependencies = {
         items = {
@@ -101,7 +116,7 @@ local mega = {
         }
     },
 	object_type = "Booster",
-    order = -1001,
+    order = -1002,
     key = "twisted_pack_mega",
     set = "Booster",
     config = { extra = 5, choose = 2 },
@@ -141,7 +156,12 @@ local mega = {
 			G.consumeables:emplace(ccard)
 		end,
 	},
+    entr_credits = {art = {"Lil. Mr. Slipstream"}}
 }
+local mega2 = copy_table(mega)
+mega2.pos.y = 1
+mega2.key = "twisted_pack_mega_2"
+mega2.order = -1001
 
 function Entropy.get_rare_inversion(seed)
     local pool = {}
@@ -251,8 +271,11 @@ local voucher = {
 return {
     items = {
         pack,
+        pack2,
         jumbo,
+        jumbo2,
         mega,
+        mega2,
         voucher
     }
 }

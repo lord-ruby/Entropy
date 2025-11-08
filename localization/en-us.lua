@@ -5709,6 +5709,33 @@ local decs = {
 					"be used immediately or taken",
 				},
 			},
+			p_entr_twisted_pack_normal_2 = { 
+				name = "Twisted Pack",
+				group_name = "Inverted Card",
+				text={
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:red} Inverted{} cards to",
+					"be used immediately or taken",
+				}
+			},
+			p_entr_twisted_pack_jumbo_2 = { 
+				name = "Jumbo Twisted Pack",
+				group_name = "Inverted Card",
+				text={
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:red} Inverted{} cards to",
+					"be used immediately or taken",
+				},
+			},
+			p_entr_twisted_pack_mega_2 = { 
+				name = "Mega Twisted Pack",
+				group_name = "Inverted Card",
+				text={
+					"Choose {C:attention}#1#{} of up to",
+					"{C:attention}#2#{C:red} Inverted{} cards to",
+					"be used immediately or taken",
+				},
+			},
 			p_entr_blind = { 
 				name = "Blind Pack",
 				group_name = "Blinds",

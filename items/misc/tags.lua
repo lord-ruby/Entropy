@@ -442,7 +442,7 @@ SMODS.Atlas {
 	end,
 	shiny_atlas = "entr_shiny_asc_tags",
 	set_ability = function(self, tag)
-		tag.ability.num = math.floor(pseudorandom("ascendant_copying")*4+4)
+		tag.ability.num = math.floor(pseudorandom("ascendant_copying")*3+4)
 	end
 }
 
@@ -1574,7 +1574,7 @@ return {
 		credit,
 		topup,
 		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or better_topup,
-		booster,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or booster,
 		effarcire,
 		sunny_asc,
 		fractured_asc,
