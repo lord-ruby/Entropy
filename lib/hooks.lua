@@ -4412,3 +4412,56 @@ end
 function Entropy.is_big(x)
     return (type(x) == "table" and is_number(x)) or (is_big and is_big(x))
 end
+
+function hotpot_horsechicot_market_section_init_cards()
+  G.GAME.shop.market_joker_max = G.GAME.shop.market_joker_max or 2
+  if G.GAME.market_table then
+    G.market_jokers:load(G.GAME.market_table)
+    G.GAME.market_table = nil
+  else
+    if not G.GAME.market_filled then
+      G.GAME.market_filled = {}
+      for i = 1, G.GAME.shop.market_joker_max - #G.market_jokers.cards do
+        local new_shop_card
+        if G.GAME.modifiers.no_shop_jokers then
+            new_shop_card = SMODS.create_card { set = "BlackMarketJokerless", area = G.market_jokers, bypass_discovery_ui = true, bypass_discovery_center = true }
+            if G.GAME.modifiers.glitched_items then
+                local gc = {new_shop_card.config.center.key}
+                for i = 1, G.GAME.modifiers.glitched_items - 1 do
+                gc[#gc+1] = Entropy.GetPooledCenter("BlackMarketJokerless").key
+                end
+                new_shop_card.ability.glitched_crown = gc
+            end
+        else
+            new_shop_card = SMODS.create_card { set = "BlackMarket", area = G.market_jokers, bypass_discovery_ui = true, bypass_discovery_center = true }
+            if G.GAME.modifiers.glitched_items then
+                local gc = {new_shop_card.config.center.key}
+                for i = 1, G.GAME.modifiers.glitched_items - 1 do
+                gc[#gc+1] = Entropy.GetPooledCenter("BlackMarket").key
+                end
+                new_shop_card.ability.glitched_crown = gc
+            end
+        end
+        G.market_jokers:emplace(new_shop_card)
+        create_market_card_ui(new_shop_card)
+        new_shop_card:juice_up()
+        G.GAME.market_filled[#G.GAME.market_filled + 1] = new_shop_card.config.center.key
+      end
+      -- save_run()
+    else
+      for i, v in pairs(G.GAME.market_filled) do
+        local c = SMODS.create_card {
+          key = v,
+          bypass_discovery_ui = true,
+          bypass_discovery_center = true
+        }
+        create_market_card_ui(c)
+        G.market_jokers:emplace(c)
+      end
+      for i, v in pairs(G.market_jokers.cards) do
+        create_market_card_ui(v)
+      end
+    end
+  end
+  G.harvest_cost = G.harvest_cost or 0
+end
