@@ -360,6 +360,10 @@ local insatiable_dagger = {
             "set_entr_misc_jokers"
         }
     },
+    config = {
+        perc = 15,
+        perc_mod = 3
+    },
     perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
@@ -385,7 +389,7 @@ local insatiable_dagger = {
                         play_sound("slice1", 0.96 + math.random() * 0.08)
                         local check2
                         if not Card.no(G.jokers.cards[check], "immutable", true) then
-                            Cryptid.manipulate(G.jokers.cards[check], { value = sliced_card.sell_cost * 0.025 + 1 })
+                            Cryptid.manipulate(G.jokers.cards[check], { value = sliced_card.sell_cost * (card.ability.perc / 100) + 1 })
                             check2 = true
                         end
                         if check2 then
@@ -401,8 +405,20 @@ local insatiable_dagger = {
                         return true
                     end,
                 }))
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "perc", scalar_value = "perc_mod", operation = "-", no_message = true})
+                if card.ability.perc <= 0 then
+                    SMODS.destroy_cards(card, nil, nil, true)
+                end
             end
         end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.perc,
+                card.ability.perc_mod
+            }
+        }
     end,
     entr_credits = {
         idea = {"cassknows"},
