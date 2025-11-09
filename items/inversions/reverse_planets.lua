@@ -1,5 +1,6 @@
 local hand_row_ref = create_UIBox_current_hand_row
 function create_UIBox_current_hand_row(handname, simple)
+    G.GAME.badarg = G.GAME.badarg or {}
     if G.GAME.hands[handname].operator then
       return (G.GAME.hands[handname].visible) and
       (not simple and
