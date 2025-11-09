@@ -2960,3 +2960,17 @@ payload = '''
 if self.HUD_tag then self.HUD_tag:remove() end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+G.HUD:get_UIE_by_ID('hand_operator_container').UIBox:recalculate()
+'''
+position = 'at'
+payload = '''
+if G.HUD:get_UIE_by_ID('hand_operator_container') and G.HUD:get_UIE_by_ID('hand_operator_container').UIBox then
+  G.HUD:get_UIE_by_ID('hand_operator_container').UIBox:recalculate()
+end
+'''
+match_indent = true

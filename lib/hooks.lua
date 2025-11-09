@@ -3608,6 +3608,11 @@ function CardArea:parse_highlighted()
     end
 end
 
+local set_scoring_calculation_funcref = G.FUNCS.SMODS_scoring_calculation_function
+G.FUNCS.SMODS_scoring_calculation_function = function(e)
+    if e then set_scoring_calculation_funcref(e) end
+end
+
 local ref = SMODS.set_scoring_calculation
 function SMODS.set_scoring_calculation(key, ...)
     G.GAME.current_scoring_calculation_key = key
