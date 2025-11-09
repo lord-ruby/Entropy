@@ -993,9 +993,9 @@ local ebundle = {
 					local _tag = Tag("tag_" .. v, true)
 					_tag.ability.shiny = Cryptid.is_shiny()
 					add_tag(_tag)
+					_tag.ability.no_asc = true
 					if i == 1 then
 						tag.triggered = true
-						_tag:apply_to_run({ type = "new_blind_choice" })
 					end
 				end
 				G.CONTROLLER.locks[lock] = nil
