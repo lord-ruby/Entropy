@@ -2936,3 +2936,27 @@ if next(_eval or {}) then
   _eval.individual.juice_card = _area.scored_card
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'tag.lua'
+pattern = '''
+self.HUD_tag.states.visible = false
+'''
+position = 'at'
+payload = '''
+if self.HUD_tag then self.HUD_tag.states.visible = false end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'tag.lua'
+pattern = '''
+self.HUD_tag:remove()
+'''
+position = 'at'
+payload = '''
+if self.HUD_tag then self.HUD_tag:remove() end
+'''
+match_indent = true
