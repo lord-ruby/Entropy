@@ -207,7 +207,7 @@ local libra = {
                     context.other_card.ability[i] = to_big(total / values)
                 end
             end
-            iftype(context.other_card.ability.extra) == "table" and not Entropy.is_big(context.other_card.ability.extra) then
+            if type(context.other_card.ability.extra) == "table" and not Entropy.is_big(context.other_card.ability.extra) then
                 for i, v in pairs(context.other_card.ability.extra or {}) do
                     if type(v) == "number" and v ~= 1 and v~= 0 then
                         context.other_card.ability.extra[i] = total / values
