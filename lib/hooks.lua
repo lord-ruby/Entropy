@@ -3598,11 +3598,13 @@ function CardArea:parse_highlighted()
     parse_ref(self)
     local text,disp_text,poker_hands = G.FUNCS.get_poker_hand_info(self.highlighted)
     if G.GAME.hands[text] and G.GAME.hands[text].operator then
-        G.GAME.old_operator = G.GAME.current_scoring_calculation_key or "multiply"
+        if not G.GAME.old_operator then G.GAME.old_operator = G.GAME.current_scoring_calculation_key or "multiply" end
         SMODS.set_scoring_calculation(G.GAME.hands[text].operator)
     elseif G.GAME.old_operator then
         SMODS.set_scoring_calculation(G.GAME.old_operator)
         G.GAME.old_operator = nil
+    else
+        SMODS.set_scoring_calculation("multiply")
     end
 end
 
