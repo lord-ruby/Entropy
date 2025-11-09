@@ -111,14 +111,6 @@ function Game:start_run(args)
     end
 end
 
-local set_abilityref = Card.set_ability
-function Card:set_ability(center, initial, delay)
-    set_abilityref(self, center, initial, delay)
-    if (G.GAME.modifiers.entr_reverse_redeo or G.GAME.ReverseRedeo) and self.config.center.key == "j_cry_redeo" then
-        self.ability.extra.ante_reduction = -1
-    end
-end
-
 local change_ref = G.FUNCS.change_challenge_description
 G.FUNCS.change_challenge_description = function(e)
     change_ref(e)

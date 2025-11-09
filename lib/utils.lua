@@ -2025,3 +2025,63 @@ function Entropy.rubber_ball_scoring(cards)
     return new_cards
 end
 
+function Entropy.post_create_card(card, from_booster)
+    if G.SETTINGS.paused then return end
+    local set = card.config.center.set
+    local key = card.config.center.key
+
+    if card.config and card.config.center and Entropy.FlipsideInversions and not Entropy.is_inverted(center)
+        and pseudorandom("marked") < 0.10 and G.GAME.Marked and G.STATE == G.STATES.SHOP and (not card.area or not card.area.config.collection) and Entropy.Inversion(center) then
+        local c = G.P_CENTERS[Entropy.Inversion(center)]
+        card:set_ability(c)
+        key = c.key
+        set = c.set
+    elseif card.config and card.config.center
+    and pseudorandom("trump_card") < 0.10 and G.GAME.TrumpCard and G.STATE == G.STATES.SMODS_BOOSTER_OPENED
+    and TrumpCardAllow[center.set] and (not card.area or not card.area.config.collection) then
+        card:set_ability(G.P_CENTERS["c_entr_flipside"])
+        key = "c_entr_flipside"
+        set = "Spectral"
+    elseif card.config and card.config.center and card.config.center.set == "Booster"
+    and pseudorandom("supersede") < 0.20 and G.GAME.Supersede and G.STATE == G.STATES.SHOP and (not card.area or not card.area.config.collection) then
+        local type = (center.cost == 6 and "jumbo") or (center.cost == 8 and "mega") or "normal"
+        card:set_ability(G.P_CENTERS["p_entr_twisted_pack_"..type])
+
+        key = "p_entr_twisted_pack_"..type
+        set = "Booster"
+    elseif card.config and card.config.center and card.config.center.set == "Booster"
+    and to_big(pseudorandom("doc")) < to_big(1-(0.995^(G.GAME.entropy/2))) and G.STATE == G.STATES.SHOP and (not card.area or not card.area.config.collection) and Entropy.DeckOrSleeve("doc") then
+        local type = (center.cost == 6 and "jumbo_1") or (center.cost == 8 and "mega_1") or "normal_"..pseudorandom_element({1,2},pseudoseed("doc"))
+        card:set_ability(G.P_CENTERS["p_spectral_"..type])
+        key = "p_spectral_"..type
+        set = "Booster"
+    end
+    if Entropy.Inversion(G.P_CENTERS[key]) and not G.SETTINGS.paused and (G.GAME.modifiers.entr_twisted or set == "Planet" and G.GAME.entr_princess) and not card.multiuse and (not card.ability or not card.ability.fromflipside) then
+        if Entropy.allow_spawning(G.P_CENTERS[key]) and Entropy.allow_spawning(G.P_CENTERS[Entropy.Inversion(G.P_CENTERS[key])]) then
+            local c = G.P_CENTERS[Entropy.Inversion(G.P_CENTERS[key])]
+            key = c.key
+            card:set_ability(c)
+            set = c.set
+        else
+            local c = Entropy.GetPooledCenter(G.P_CENTERS[Entropy.Inversion(G.P_CENTERS[key])].set)
+            key = c.key
+            card:set_ability(c)
+            set = c.set
+        end
+    end
+    set = G.P_CENTERS[key] and G.P_CENTERS[key].set or set
+    if G.GAME.modifiers.glitched_items and not (set == "Default" or set == "Enhanced") then
+        local gc = {key}
+        for i = 1, G.GAME.modifiers.glitched_items - 1 do
+            gc[#gc+1] = Entropy.GetPooledCenter(set).key
+        end
+        if from_booster then
+            G.E_MANAGER:add_event(Event({trigger = 'after', blockable = false, blocking = false, func = function()
+                card.ability.glitched_crown = gc
+                return true
+            end}))
+        else
+            card.ability.glitched_crown = gc
+        end
+    end
+end
