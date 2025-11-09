@@ -6263,7 +6263,8 @@ local dancer = {
         ease_discard(card.ability.discards)
     end,
     entr_credits = {
-        idea = {"cassknows"}
+        idea = {"cassknows"},
+        art = {"candycanearter"}
     }
 }
 
