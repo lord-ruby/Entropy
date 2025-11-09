@@ -296,7 +296,7 @@ local set_base_ref = Card.set_base
 function Card:set_base(...)
     set_base_ref(self, ...)
     SMODS.calculate_context({card_modified = true, other_card = self})
-    if self.ability.link and G.hand then
+    if self.ability and self.ability.link and G.hand then
         for i, v in pairs(G.hand.cards) do
             if v.ability.link == self.ability.link then
                 set_base_ref(v, ...) 
@@ -2149,41 +2149,6 @@ local TrumpCardAllow = {
     ["Tarot"] = true,
     ["Code"] = true
 }
-local matref = Card.set_ability
-function Card:set_ability(center, initial, delay_sprites)
-    G.GAME.entropy = G.GAME.entropy or 0
-    if G.SETTINGS.paused or not center then
-        matref(self, center, initial, delay_sprites)
-    else
-        if center and center.set == "Joker" and G.GAME.magic_skin_prob and pseudorandom("entr_magic_skin") < G.GAME.magic_skin_prob then
-            matref(self, G.P_CENTERS.j_entr_magic_skin, initial, delay_sprites)
-            return
-        end
-        if self.config and self.config.center and Entropy.FlipsideInversions and not Entropy.is_inverted(center)
-        and pseudorandom("marked") < 0.10 and G.GAME.Marked and G.STATE == G.STATES.SHOP and (not self.area or not self.area.config.collection) and Entropy.Inversion(center) then
-            matref(self, G.P_CENTERS[Entropy.Inversion(center)], initial, delay_sprites)
-            if self.ability.glitched_crown then
-                for i, v in pairs(self.ability.glitched_crown) do
-                    self.ability.glitched_crown[i] = Entropy.FlipsideInversions[v]
-                end
-            end
-        elseif self.config and self.config.center
-        and pseudorandom("trump_card") < 0.10 and G.GAME.TrumpCard and G.STATE == G.STATES.SMODS_BOOSTER_OPENED
-        and TrumpCardAllow[center.set] and (not self.area or not self.area.config.collection) then
-            matref(self, G.P_CENTERS["c_entr_flipside"], initial, delay_sprites)
-        elseif self.config and self.config.center and self.config.center.set == "Booster"
-        and pseudorandom("supersede") < 0.20 and G.GAME.Supersede and G.STATE == G.STATES.SHOP and (not self.area or not self.area.config.collection) then
-            local type = (center.cost == 6 and "jumbo") or (center.cost == 8 and "mega") or "normal"
-            matref(self, G.P_CENTERS["p_entr_twisted_pack_"..type], initial, delay_sprites)
-        elseif self.config and self.config.center and self.config.center.set == "Booster"
-        and to_big(pseudorandom("doc")) < to_big(1-(0.995^(G.GAME.entropy/2))) and G.STATE == G.STATES.SHOP and (not self.area or not self.area.config.collection) and Entropy.DeckOrSleeve("doc") then
-            local type = (center.cost == 6 and "jumbo_1") or (center.cost == 8 and "mega_1") or "normal_"..pseudorandom_element({1,2},pseudoseed("doc"))
-            matref(self, G.P_CENTERS["p_spectral_"..type], initial, delay_sprites)
-        else
-            matref(self, center, initial, delay_sprites)
-        end
-    end
-end
 
 G.FUNCS.has_inversion = function(e) 
     if G.GAME.last_inversion and G.GAME.last_inversion.key ~= "c_entr_master" then 
@@ -2276,27 +2241,24 @@ end
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, f, s)
     if type(center) == "string" then center = G.P_CENTERS[center] end
+    if center and center.set == "Joker" and G.GAME.magic_skin_prob and pseudorandom("entr_magic_skin") < G.GAME.magic_skin_prob then
+        set_abilityref(self, G.P_CENTERS.j_entr_magic_skin, initial, delay_sprites)
+        return
+    end
     if (self.config and self.config.center and self.config.center.key ~= "m_entr_disavowed" and (not self.entr_aleph or self.ability.bypass_aleph)) or G.SETTINGS.paused then
-        if center and Entropy.Inversion(center) and not G.SETTINGS.paused and (G.GAME.modifiers.entr_twisted or center.set == "Planet" and G.GAME.entr_princess) and not self.multiuse and (not self.ability or not self.ability.fromflipside) then
-            if Entropy.allow_spawning(center) and Entropy.allow_spawning(G.P_CENTERS[Entropy.Inversion(center)]) then
-                set_abilityref(self, G.P_CENTERS[Entropy.Inversion(center)] or center, f, s)
-                if self.ability.glitched_crown then
-                    for i, v in pairs(self.ability.glitched_crown) do
-                        self.ability.glitched_crown[i] = Entropy.FlipsideInversions[v]
-                    end
-                end
-            else
-                set_abilityref(self, Entropy.GetPooledCenter(G.P_CENTERS[Entropy.Inversion(center)].set), f, s)
-            end
-        else    
-            set_abilityref(self, center, f, s)
-        end
+        set_abilityref(self, center, f, s)
     else
         if not self.entr_aleph and not G.SETTINGS.paused then
             set_abilityref(self, G.P_CENTERS.m_entr_disavowed, f, s)
         else
             set_abilityref(self, self.config.center, f, s)
         end
+    end
+    if (G.GAME.modifiers.entr_reverse_redeo or G.GAME.ReverseRedeo) and self.config.center.key == "j_cry_redeo" then
+        self.ability.extra.ante_reduction = -1
+    end
+    if self.ability.consumeable and Entropy.has_rune("rune_entr_gluttony") then
+        self.ability.eternal = true
     end
 end
 

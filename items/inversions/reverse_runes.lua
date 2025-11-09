@@ -735,14 +735,6 @@ local gluttony = {
     end
 }
 
-local set_abilityref = Card.set_ability
-function Card:set_abilityref(...)
-    set_abilityref(self, ...)
-    if self.ability.consumeable and Entropy.has_rune("rune_entr_gluttony") then
-        self.ability.eternal = true
-    end
-end
-
 local can_sellref = Card.can_sell_card
 function Card:can_sell_card(context)
     if self.ability.eternal or SMODS.is_eternal(self, {from_sell = true}) then return false end
