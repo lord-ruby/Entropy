@@ -1233,7 +1233,7 @@ function G.UIDEF.use_and_sell_buttons(card)
               }},
           }}
     end
-    if Entropy.needs_use_button(card) and card.config.center.use and card.area == G.pack_cards and G.pack_cards and (Entropy.needs_pull_button(card) or (not SMODS.OPENED_BOOSTER or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front)) and (card.ability.consumeable) then
+    if Entropy.needs_use_button(card) and card.area == G.pack_cards and G.pack_cards and (Entropy.needs_pull_button(card) or (not SMODS.OPENED_BOOSTER or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front and (card.ability.consumeable))) then
         return {
             n = G.UIT.ROOT,
             config = { padding = -0.1, colour = G.C.CLEAR },
@@ -1305,7 +1305,7 @@ function G.UIDEF.use_and_sell_buttons(card)
                 -- Betmma can't explain it, neither can I
             },
         }
-    elseif card.area == G.pack_cards and G.pack_cards and (Entropy.needs_pull_button(card) or (not SMODS.OPENED_BOOSTER or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front)) and (card.ability.consumeable) then
+    elseif card.area == G.pack_cards and G.pack_cards and (Entropy.needs_pull_button(card) or (not SMODS.OPENED_BOOSTER or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front and (card.ability.consumeable))) then
         return {
             n = G.UIT.ROOT,
                 config = { padding = -0.1, colour = G.C.CLEAR },
