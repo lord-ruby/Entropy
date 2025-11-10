@@ -17,7 +17,7 @@ local sun = {
 		min = 3,
 		max = 10,
 		showdown = true,
-	}
+	},
 }
 
 local baracuda ={
@@ -48,7 +48,7 @@ local baracuda ={
 			then
 				return {remove=true}
 			end
-	end
+	end,
 }
 
 local dawn = {
@@ -91,7 +91,7 @@ local dawn = {
     disable = function(self)
         G.hand:change_size(-self.config.extra.hand_size)
         G.FUNCS.draw_from_deck_to_hand(-self.config.extra.hand_size)
-    end
+    end,
 }
 
 local orchard = {
@@ -157,12 +157,12 @@ local comet = {
 			local remove = {}
 			for i, v in pairs(G.hand.cards) do
 				if v.destroy_adjacent and not v.destroyed_adjacent then
-					if G.hand.cards[i-1] and pseudorandom("citrine") < (Entropy.IsEE() and 0.2 or 0.5) then
+					if G.hand.cards[i-1] and pseudorandom("citrine") < (Entropy.IsEE() and 0.2 or 0.5) and not SMODS.is_eternal(G.hand.cards[i-1]) then
 						G.hand.cards[i-1]:start_dissolve()
 						G.hand.cards[i-1].ability.temporary2 = true
 						remove[#remove+1]=G.hand.cards[i-1]
 					end
-					if G.hand.cards[i+1] and pseudorandom("citrine") < (Entropy.IsEE() and 0.2 or 0.5) then
+					if G.hand.cards[i+1] and pseudorandom("citrine") < (Entropy.IsEE() and 0.2 or 0.5) and not SMODS.is_eternal(G.hand.cards[i-1]) then
 						G.hand.cards[i+1]:start_dissolve()
 						G.hand.cards[i+1].ability.temporary2 = true
 						remove[#remove+1]=G.hand.cards[i+1]
@@ -203,6 +203,12 @@ local comet = {
 -- 	bl_mf_psychic_dx = true,
 -- 	bl_mf_hook_dx = true,
 -- }
+
+SMODS.Shader({
+    key="entropic_vortex",
+    path="splash.fs"
+})
+
 local phase1 = {
 	dependencies = {
         items = {
@@ -210,11 +216,11 @@ local phase1 = {
         }
     },
 	object_type = "Blind",
-    order = 663,
+    order = 6663,
 	key = "endless_entropy_phase_one",
 	pos = { x = 0, y = 6 },
 	atlas = "blinds",
-	boss_colour = HEX("6d1414"),
+	boss_colour = HEX("000000"),
     mult=2,
 	no_ee = true,
     dollars = 8,
@@ -244,6 +250,35 @@ local phase1 = {
 			}))
 		end
 	end,
+	set_blind = function()
+		G.GAME.EE_R = nil
+		if not G.SPLASH_EE then
+			G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
+			G.GAME.EE_FADE = 0
+			G.E_MANAGER:add_event(Event{
+				trigger = "after",
+				blocking = false,
+				blockable = false,
+				delay = 1 * G.SETTINGS.GAMESPEED,
+				func = function()
+					G.GAME.EE_FADE = 0
+					G.SPLASH_EE:define_draw_steps({{
+						shader = 'entr_entropic_vortex',
+						send = {
+							{name = 'time', ref_table = G.TIMERS, ref_value = 'REAL'},
+							{name = 'vort_speed', val = 1},
+							{name = 'colour_1', ref_table = G.C, ref_value = 'BLUE'},
+							{name = 'colour_2', ref_table = G.C, ref_value = 'WHITE'},
+							{name = 'mid_flash', val = 0},
+							{name = 'transgender', ref_table = G.GAME, ref_value = "EE_FADE"},
+							{name = 'vort_offset', val = (2*90.15315131*os.time())%100000},
+						}}}
+					)
+					return true
+				end
+			})
+		end
+	end
 }
 
 local phase2 = {
@@ -253,11 +288,11 @@ local phase2 = {
         }
     },
 	object_type = "Blind",
-    order = 664,
+    order = 6664,
 	key = "endless_entropy_phase_three",
 	pos = { x = 0, y = 7 },
 	atlas = "blinds",
-	boss_colour = HEX("6d1414"),
+	boss_colour = HEX("000000"),
     mult=3,
 	no_ee = true,
     dollars = 8,
@@ -274,8 +309,34 @@ local phase2 = {
 	collection_loc_vars = function(self)
 		return { vars = { localize("entr_nadir_placeholder") } }
 	end,
-	setting_blind = function()
-		G.GAME.round_resets.lost = false
+	set_blind = function()
+		G.GAME.EE_R = nil
+		if not G.SPLASH_EE then
+			G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
+			G.GAME.EE_FADE = 0
+			G.E_MANAGER:add_event(Event{
+				trigger = "after",
+				blocking = false,
+				blockable = false,
+				delay = 1 * G.SETTINGS.GAMESPEED,
+				func = function()
+					G.GAME.EE_FADE = 0
+					G.SPLASH_EE:define_draw_steps({{
+						shader = 'entr_entropic_vortex',
+						send = {
+							{name = 'time', ref_table = G.TIMERS, ref_value = 'REAL'},
+							{name = 'vort_speed', val = 1},
+							{name = 'colour_1', ref_table = G.C, ref_value = 'BLUE'},
+							{name = 'colour_2', ref_table = G.C, ref_value = 'WHITE'},
+							{name = 'mid_flash', val = 0},
+							{name = 'transgender', ref_table = G.GAME, ref_value = "EE_FADE"},
+							{name = 'vort_offset', val = (2*90.15315131*os.time())%100000},
+						}}}
+					)
+					return true
+				end
+			})
+		end
 	end
 }
 
@@ -286,11 +347,11 @@ local phase3 = {
         }
     },
 	object_type = "Blind",
-    order = 665,
+    order = 6665,
 	key = "endless_entropy_phase_two",
 	pos = { x = 0, y = 8 },
 	atlas = "blinds",
-	boss_colour = HEX("6d1414"),
+	boss_colour = HEX("000000"),
     mult=1,
 	no_ee = true,
     dollars = 8,
@@ -299,9 +360,6 @@ local phase3 = {
 		max = 32,
 	},
 	no_disable=true,
-	exponent = {
-		1, 1.25
-	},
 	in_pool = function() return false end,
 	next_phase = "bl_entr_endless_entropy_phase_four",
 	calculate = function(self, blind, context)
@@ -315,10 +373,88 @@ local phase3 = {
 				math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
 			)
 			G.FUNCS.draw_from_discard_to_deck()
+			G.jokers:load(G.GAME.EE_JOKERS)
+			G.GAME.hands = copy_table(G.GAME.EE_HANDS)
+			G.GAME.EE_HANDS = nil
+			G.GAME.EE_JOKERS = nil
 		end
 	end,
 	set_blind = function()
-		G.GAME.blind.chips = G.GAME.blind.chips ^ 1.25
+		Entropy.ee_taunt("entr_tq_ee_half")
+		G.GAME.EE_JOKERS = G.jokers:save()
+		G.GAME.EE_HANDS = copy_table(G.GAME.hands)
+		for i, v in pairs(G.GAME.hands) do
+			v.mult = v.s_mult
+			v.chips = v.s_chips
+			v.level = 1
+			G.GAME.hands[i] = v
+		end
+		G.E_MANAGER:add_event(Event{
+			func = function()
+				for i, v in pairs(G.jokers.cards) do
+					local c = v
+					G.E_MANAGER:add_event(Event{
+						trigger = "after",
+						delay = 0.15 * G.SETTINGS.GAMESPEED,	
+						func = function()
+							c:juice_up()
+							c.debuff = true
+							play_sound("multhit1")
+							return true
+						end
+					})
+				end
+				G.E_MANAGER:add_event(Event{
+					trigger = "after",
+					delay = 0.4 * G.SETTINGS.GAMESPEED,
+					func = function()
+						for i, v in pairs(G.jokers.cards) do
+							v:start_dissolve()
+						end
+						play_sound("glass6")
+						return true
+					end
+				})
+				G.E_MANAGER:add_event(Event{
+					trigger = "after",
+					func = function()
+						save_run()
+						return true
+					end
+				})
+				return true
+			end
+		})
+		G.GAME.blind.chips = 10000
+		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+		G.HUD_blind:recalculate()
+		G.GAME.EE_R = nil
+		if not G.SPLASH_EE then
+			G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
+			G.GAME.EE_FADE = 0
+			G.E_MANAGER:add_event(Event{
+				trigger = "after",
+				blocking = false,
+				blockable = false,
+				delay = 1 * G.SETTINGS.GAMESPEED,
+				func = function()
+					G.GAME.EE_FADE = 0
+					G.SPLASH_EE:define_draw_steps({{
+						shader = 'entr_entropic_vortex',
+						send = {
+							{name = 'time', ref_table = G.TIMERS, ref_value = 'REAL'},
+							{name = 'vort_speed', val = 1},
+							{name = 'colour_1', ref_table = G.C, ref_value = 'BLUE'},
+							{name = 'colour_2', ref_table = G.C, ref_value = 'WHITE'},
+							{name = 'mid_flash', val = 0},
+							{name = 'transgender', ref_table = G.GAME, ref_value = "EE_FADE"},
+							{name = 'vort_offset', val = (2*90.15315131*os.time())%100000},
+						}}}
+					)
+					return true
+				end
+			})
+		end
 	end
 }
 
@@ -329,11 +465,11 @@ local phase4 = {
         }
     },
 	object_type = "Blind",
-    order = 666,
+    order = 6666,
 	key = "endless_entropy_phase_four",
 	pos = { x = 0, y = 9 },
 	atlas = "blinds",
-	boss_colour = HEX("6d1414"),
+	boss_colour = HEX("000000"),
     mult=1,
 	no_ee = true,
     dollars = 8,
@@ -343,7 +479,7 @@ local phase4 = {
 		max = 32,
 	},
 	exponent = {
-		1, 2.5
+		1, 1.5
 	},
 	in_pool = function() return false end,
 	calculate = function(self, blind, context)
@@ -355,7 +491,6 @@ local phase4 = {
 		end
 	end,
 	set_blind = function(self, reset, silent)
-		G.GAME.blind.chips = G.GAME.blind.chips ^ 2.5
 		for k, _ in pairs(Entropy.GetEEBlinds()) do
 			s = G.P_BLINDS[k]
 			if s.set_blind then
@@ -444,6 +579,33 @@ local phase4 = {
 				end
 			end
 		end
+		G.GAME.EE_R = nil
+		if not G.SPLASH_EE then
+			G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
+			G.GAME.EE_FADE = 0
+			G.E_MANAGER:add_event(Event{
+				trigger = "after",
+				blocking = false,
+				blockable = false,
+				delay = 1 * G.SETTINGS.GAMESPEED,
+				func = function()
+					G.GAME.EE_FADE = 0
+					G.SPLASH_EE:define_draw_steps({{
+						shader = 'entr_entropic_vortex',
+						send = {
+							{name = 'time', ref_table = G.TIMERS, ref_value = 'REAL'},
+							{name = 'vort_speed', val = 1},
+							{name = 'colour_1', ref_table = G.C, ref_value = 'BLUE'},
+							{name = 'colour_2', ref_table = G.C, ref_value = 'WHITE'},
+							{name = 'mid_flash', val = 0},
+							{name = 'transgender', ref_table = G.GAME, ref_value = "EE_FADE"},
+							{name = 'vort_offset', val = (2*90.15315131*os.time())%100000},
+						}}}
+					)
+					return true
+				end
+			})
+		end
 	end,
 	defeat = function(self, silent)
 		for k, _ in pairs(Entropy.GetEEBlinds()) do
@@ -460,6 +622,20 @@ local phase4 = {
 		end
 		G.GAME.EEBuildup = false
 		check_for_unlock({ type = "beat_ee" })
+
+		G.GAME.EE_R = true
+		G.E_MANAGER:add_event(Event{
+			blocking = false,
+			blockable = false,
+			func = function()
+				if not G.GAME.EE_FADE or not G.SPLASH_EE then return end
+				if G.GAME.EE_FADE <= 0 and G.SPLASH_EE then
+					G.SPLASH_EE:remove()
+					G.SPLASH_EE = nil
+					return true
+				end
+			end
+		})
 	end,
 	press_play = function(self)
 		for k, _ in pairs(Entropy.GetEEBlinds()) do
@@ -785,7 +961,7 @@ local alabaster = {
 				G.jokers.cards[i].config.cry_multiply = (G.jokers.cards[i].config.cry_multiply or 1) * 0.95
 			end
 		end
-	end
+	end,
 }
 
 local highlight_ref = Card.highlight
@@ -813,6 +989,69 @@ if not (SMODS.Mods["Cryptid"] or {}).can_load then
 	end
 end
 
+local ease_bg_cref = ease_background_colour_blind
+function ease_background_colour_blind(state, blind_override)
+	if G.GAME.EEBuildup and not Entropy.IsEE() then
+		ease_background_colour{new_colour = HEX("5f5f5f"), contrast = 3}
+	else
+		return ease_bg_cref(state, blind_override)
+	end
+end
+
+local ease_bg_c_ref = ease_background_colour
+function ease_background_colour(tbl,...)
+	if G.GAME.EEBuildup and not Entropy.IsEE() then
+		ease_bg_c_ref{new_colour = HEX("5f5f5f"), contrast = 3}
+	else
+		return ease_bg_c_ref(tbl,...)
+	end
+end
+
+SMODS.Shader({
+    key="brimstone",
+    path="brimstone.fs"
+})
+
+SMODS.Shader({
+    key="brimstone_badge",
+    path="brimstone_badge.fs"
+})
+
+local void = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+	object_type = "Blind",
+    order = 6660,
+	key = "void",
+	pos = { x = 0, y = 14 },
+	atlas = "blinds",
+	boss_colour = HEX("494949"),
+    mult=1,
+    dollars = 0,
+	no_collection = true,
+    in_pool = function(self) return false end
+}
+
+local rr = {
+    dependencies = {
+        items = {
+          "set_entr_inversions"
+        }
+    },
+	object_type = "Blind",
+    order = 4200,
+	key = "red",
+	pos = { x = 0, y = 0 },
+	atlas = "blinds",
+	boss_colour = HEX("FF0000"),
+    mult=1,
+    dollars = 3,
+    in_pool = function(self) return false end
+}
+
 return {
 	items = {
 		sun,
@@ -825,6 +1064,8 @@ return {
 		phase3,
 		phase4,
 		endless_entropy,
-		alabaster
+		alabaster,
+		void,
+		rr
 	}
 }

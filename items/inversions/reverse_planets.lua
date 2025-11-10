@@ -1,5 +1,6 @@
 local hand_row_ref = create_UIBox_current_hand_row
 function create_UIBox_current_hand_row(handname, simple)
+    G.GAME.badarg = G.GAME.badarg or {}
     if G.GAME.hands[handname].operator then
       return (G.GAME.hands[handname].visible) and
       (not simple and
@@ -13,14 +14,14 @@ function create_UIBox_current_hand_row(handname, simple)
             }}
           }},
           {n=G.UIT.C, config={align = "cm", padding = 0.05, colour = G.C.BLACK,r = 0.1}, nodes={
-            {n=G.UIT.C, config={align = "cr", padding = 0.01, r = 0.1, colour = G.C.CHIPS, minw = 1.1}, nodes={
-              {n=G.UIT.T, config={text = number_format(G.GAME.hands[handname].chips, 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}},
+            {n=G.UIT.C, config={align = "cr", padding = 0.01, r = 0.1, colour = G.GAME.badarg[handname] and HEX("FF0000") or G.C.CHIPS, minw = 1.1}, nodes={
+              {n=G.UIT.T, config={text = G.GAME.badarg[handname] and "BAD" or number_format(G.GAME.hands[handname].chips, 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}},
               {n=G.UIT.B, config={w = 0.08, h = 0.01}}
             }},
             {n=G.UIT.T, config={text = G.GAME.hands[handname].operator and Entropy.FormatArrowMult(G.GAME.hands[handname].operator, "") or "X", scale = 0.45, colour = Entropy.get_arrow_color(G.GAME.hands[handname].operator or 0)}},
-            {n=G.UIT.C, config={align = "cl", padding = 0.01, r = 0.1, colour = G.C.MULT, minw = 1.1}, nodes={
+            {n=G.UIT.C, config={align = "cl", padding = 0.01, r = 0.1, colour = G.GAME.badarg[handname] and HEX("FF0000") or G.C.MULT, minw = 1.1}, nodes={
               {n=G.UIT.B, config={w = 0.08,h = 0.01}},
-              {n=G.UIT.T, config={text = number_format(G.GAME.hands[handname].mult, 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}}
+              {n=G.UIT.T, config={text = G.GAME.badarg[handname] and "ARG" or number_format(G.GAME.hands[handname].mult, 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}}
             }}
           }},
           {n=G.UIT.C, config={align = "cm"}, nodes={
@@ -40,7 +41,8 @@ function create_UIBox_current_hand_row(handname, simple)
         return hand_row_ref(handname, simple)
     else
         if not (G.GAME.hands[handname]) then return {} end
-        local color = G.GAME.hands[handname].TranscensionPower and HEX("84e1ff") or G.C.GOLD
+        if not G.GAME.badarg then G.GAME.badarg = {} end
+        local color = (G.GAME.badarg and G.GAME.badarg[handname] and HEX("FF0000")) or (G.GAME.hands[handname].TranscensionPower and HEX("84e1ff")) or G.C.GOLD
         return (G.GAME.hands[handname].visible) and
         (not simple and
           {n=G.UIT.R, config={align = "cm", padding = 0.05, r = 0.1, colour = darken(G.C.JOKER_GREY, 0.1), emboss = 0.05, hover = true, force_focus = true, on_demand_tooltip = {text = localize(handname, 'poker_hand_descriptions'), filler = {func = create_UIBox_hand_tip, args = handname}}}, nodes={
@@ -60,13 +62,13 @@ function create_UIBox_current_hand_row(handname, simple)
             }},
             {n=G.UIT.C, config={align = "cm", padding = 0.05, colour = G.C.BLACK,r = 0.1}, nodes={
               {n=G.UIT.C, config={align = "cr", padding = 0.01, r = 0.1, colour = color, minw = 1.1}, nodes={
-                {n=G.UIT.T, config={text = number_format(Entropy.ascend_hand(G.GAME.hands[handname].chips,handname), 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}},
+                {n=G.UIT.T, config={text = G.GAME.badarg[handname] and "BAD" or number_format(Entropy.ascend_hand(G.GAME.hands[handname].chips,handname), 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}},
                 {n=G.UIT.B, config={w = 0.08, h = 0.01}}
               }},
               {n=G.UIT.T, config={text = G.GAME.hands[handname].operator and Entropy.FormatArrowMult(G.GAME.hands[handname].operator, "") or "X", scale = 0.45, colour = color}},
               {n=G.UIT.C, config={align = "cl", padding = 0.01, r = 0.1, colour = color, minw = 1.1}, nodes={
                 {n=G.UIT.B, config={w = 0.08,h = 0.01}},
-                {n=G.UIT.T, config={text = number_format(Entropy.ascend_hand(G.GAME.hands[handname].mult,handname), 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}}
+                {n=G.UIT.T, config={text = G.GAME.badarg[handname] and "ARG" or number_format(Entropy.ascend_hand(G.GAME.hands[handname].mult,handname), 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}}
               }}
             }},
             {n=G.UIT.C, config={align = "cm"}, nodes={
@@ -113,7 +115,7 @@ function Entropy.ReverseSuitLocVars(self, q, card, instant, noengulf)
       number_format(G.GAME.hands[card.ability.handnames[1]].level),
       number_format(G.GAME.hands[card.ability.handnames[2]].level),
       number_format(G.GAME.hands[card.ability.handnames[3]].level),
-      (card.ability.level or 2) + (G.GAME.entr_black_dwarf or 0),
+      (card.ability.level or 1) + (G.GAME.entr_black_dwarf or 0),
       G.GAME.hands[card.ability.handnames[1]].AscensionPower and " + "..number_format(G.GAME.hands[card.ability.handnames[1]].AscensionPower) or "",
       G.GAME.hands[card.ability.handnames[2]].AscensionPower and " + "..number_format(G.GAME.hands[card.ability.handnames[2]].AscensionPower) or "",
       G.GAME.hands[card.ability.handnames[3]].AscensionPower and " + "..number_format(G.GAME.hands[card.ability.handnames[3]].AscensionPower) or "",
@@ -144,7 +146,7 @@ function Entropy.ChunkLocVars(self, q, card, instant, noengulf)
       number_format(G.GAME.hands[card.ability.handnames[1]].level),
       number_format(G.GAME.hands[card.ability.handnames[2]].level),
       number_format(G.GAME.hands[card.ability.handnames[3]].level),
-      card.ability.level or 2,
+      card.ability.level or 1,
       G.GAME.hands[card.ability.handnames[1]].AscensionPower and " + "..number_format(G.GAME.hands[card.ability.handnames[1]].AscensionPower) or "",
       G.GAME.hands[card.ability.handnames[2]].AscensionPower and " + "..number_format(G.GAME.hands[card.ability.handnames[2]].AscensionPower) or "",
       G.GAME.hands[card.ability.handnames[3]].AscensionPower and " + "..number_format(G.GAME.hands[card.ability.handnames[3]].AscensionPower) or "",
@@ -361,6 +363,13 @@ Entropy.ReversePlanets = {
   {name="Flush House",key="ceres",sprite_pos={x=8,y=1},new_key="procyon", art="Binary"},
   {name="Flush Five",key="eris",sprite_pos={x=10,y=1},new_key="sirius", art="Binary"},
 }
+-- Spectrum Compat
+if (SMODS.Mods["SpectrumAPI"] or {}).can_load then
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="spa_Spectrum",key="Spectrum",sprite_pos={x=0,y=3}, new_key="starspectrum", prefix = "spa", atlas = "placeholder"}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="spa_Straight_Spectrum",key="Straight_Spectrum",sprite_pos={x=0,y=3}, new_key="starstraightspectrum", prefix = "spa", atlas = "placeholder"}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="spa_Spectrum_House",key="Spectrum_House",sprite_pos={x=0,y=3}, new_key="starhousespectrum", prefix = "spa", atlas = "placeholder"}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="spa_Spectrum_Five",key="Spectrum_Five",sprite_pos={x=0,y=3}, new_key="starfivespectrum", prefix = "spa", atlas = "placeholder"}
+end
 -- putting this here its easier because of how dumb the system is
 if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
   Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="planetlua",sprite_pos={x=8,y=2}, new_key="starlua", prefix = "cry",config = {
@@ -519,7 +528,7 @@ Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="entr_derivative",key=
 end}
 Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="",key="tyche",sprite_pos={x=0,y=2}, new_key="black_dwarf", prefix = "entr", atlas = "consumables2", set_badges = function(self, card, badges)
   badges[1] = create_badge(localize("k_star_q"), get_type_colour(self or card.config, card), nil, 1.2)
-end, func = Entropy.bdwarf, config = {bdwarf = 0.5}, loc_vars = function(self, q, card) return {vars = {card.ability.bdwarf}} end}
+end, func = Entropy.bdwarf, config = {bdwarf = 0.25}, loc_vars = function(self, q, card) return {vars = {card.ability.bdwarf}} end}
 Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="",key="theia",sprite_pos={x=1,y=2}, new_key="frozen_star", prefix = "entr", atlas = "consumables2", set_badges = function(self, card, badges)
   badges[1] = create_badge(localize("k_star_q"), get_type_colour(self or card.config, card), nil, 1.2)
 end, func = function(self, card, area, copier, number)
@@ -530,7 +539,7 @@ end, func = function(self, card, area, copier, number)
     end
   end
   Entropy.ReversePlanetUse(hand, card, card.ability.amt + (G.GAME.entr_black_dwarf or 0))
-end, config = {amt = 0.75}, loc_vars = function(self, q, card) return {vars = {card.ability.amt + (G.GAME.entr_black_dwarf or 0)}} end}
+end, config = {amt = 0.5}, loc_vars = function(self, q, card) return {vars = {card.ability.amt + (G.GAME.entr_black_dwarf or 0)}} end}
 
 Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="",key="chiron",sprite_pos={x=2,y=2}, new_key="coatlicue", prefix = "entr", atlas = "consumables2", set_badges = function(self, card, badges)
   badges[1] = create_badge(localize("k_star_q"), get_type_colour(self or card.config, card), nil, 1.2)

@@ -94,7 +94,7 @@ local helios = {
     }
 }
 
-Cryptid.big_num_blacklist["j_entr_xekanos"] = true
+if Cryptid.big_num_blacklist then Cryptid.big_num_blacklist["j_entr_xekanos"] = true end
 local xekanos = {
     order = 602,
     object_type = "Joker",
@@ -348,70 +348,6 @@ local parakmi = {
     end
 }
 
-local AscendantTags = {
-    tag_uncommon="tag_entr_ascendant_rare",
-    tag_rare="tag_entr_ascendant_epic",
-    tag_negative="tag_entr_ascendant_negative",
-    tag_foil="tag_entr_ascendant_foil",
-    tag_holo="tag_entr_ascendant_holo",
-    tag_polychrome="tag_entr_ascendant_poly",
-    tag_investment="tag_entr_ascendant_stock",
-    tag_voucher="tag_entr_ascendant_voucher",
-    tag_boss="tag_entr_ascendant_blind",
-    tag_standard="tag_entr_ascendant_twisted",
-    tag_charm="tag_entr_ascendant_twisted",
-    tag_meteor="tag_entr_ascendant_twisted",
-    tag_buffoon="tag_entr_ascendant_ejoker",
-    tag_handy="tag_entr_ascendant_stock",
-    tag_garbage="tag_entr_ascendant_stock",
-    tag_ethereal="tag_entr_ascendant_twisted",
-    tag_coupon="tag_entr_ascendant_credit",
-    tag_double="tag_entr_ascendant_copying",
-    tag_juggle="tag_entr_ascendant_effarcire",
-    tag_d_six="tag_entr_ascendant_credit",
-    tag_top_up="tag_entr_ascendant_topup",
-    tag_skip="tag_entr_ascendant_stock",
-    tag_economy="tag_entr_ascendant_stock",
-    tag_orbital="tag_entr_ascendant_universal",
-    tag_cry_epic="tag_entr_ascendant_epic",
-    tag_cry_glitched="tag_entr_ascendant_glitched",
-    tag_cry_mosaic="tag_entr_ascendant_mosaic",
-    tag_cry_oversat="tag_entr_ascendant_oversat",
-    tag_cry_glass="tag_entr_ascendant_glass",
-    tag_cry_gold="tag_entr_ascendant_gold",
-    tag_cry_blur="tag_entr_ascendant_blurry",
-    tag_cry_astral="tag_entr_ascendant_astral",
-    tag_cry_m="tag_entr_ascendant_m",
-    tag_cry_double_m="tag_entr_ascendant_m",
-    tag_cry_cat="tag_entr_ascendant_cat",
-    tag_cry_gambler="tag_entr_ascendant_unbounded",
-    tag_cry_empowered="tag_entr_ascendant_unbounded",
-    tag_cry_better_voucher="tag_entr_ascendant_better_voucher",
-    tag_cry_memory="tag_entr_ascendant_copying",
-    tag_cry_better_top_up="tag_entr_ascendant_better_topup",
-    tag_cry_bundle="tag_entr_ascendant_ebundle",
-    tag_cry_gourmand="tag_entr_ascendant_saint",
-    tag_cry_triple="tag_entr_ascendant_copying",
-    tag_cry_quadruple="tag_entr_ascendant_copying",
-    tag_cry_quintuple="tag_entr_ascendant_copying",
-    tag_cry_scope="tag_entr_ascendant_infdiscard",
-    tag_cry_schematic="tag_entr_ascendant_canvas",
-    tag_cry_loss="tag_entr_ascendant_reference",
-    tag_cry_banana="tag_entr_ascendant_cavendish",
-    tag_cry_booster="tag_entr_ascendant_booster",
-    tag_cry_console="tag_entr_ascendant_twisted",
-    tag_entr_dog="tag_entr_ascendant_dog",
-    tag_entr_solar="tag_entr_ascendant_solar",
-    tag_entr_ascendant_rare="tag_entr_ascendant_epic",
-    tag_entr_ascendant_epic="tag_entr_ascendant_legendary",
-    --tag_entr_ascendant_legendary="tag_entr_ascendant_exotic",
-    --tag_entr_ascendant_exotic="tag_entr_ascendant_entropic",
-    tag_entr_sunny = "tag_entr_ascendant_sunny",
-    tag_entr_freaky = "tag_entr_ascendant_freaky",
-    tag_entr_fractured = "tag_entr_ascendant_fractured"
-}
-for i, v in pairs(AscendantTags) do Entropy.AscendedTags[i]=v end
-
 local exousia = {
     order = 607,
     object_type = "Joker",
@@ -453,7 +389,7 @@ local exousia = {
     end,
     calculate = function(self, card, context)
         if (context.setting_blind and not context.getting_sliced) or context.forcetrigger then
-            if to_big(card.ability.tags) > to_big(30) or type(card.ability.tags) == "table" then card.ability.tags = 30 end
+            if to_big(card.ability.tags) > to_big(30) or type(card.ability.tags) ~= "number" then card.ability.tags = 30 end
             for i = 1, math.min(card.ability.tags or 1,30) or 1 do
                 tag = Tag(get_next_tag_key())
                 add_tag(tag)
@@ -521,7 +457,7 @@ local akyros = {
     end
 }
 
-Cryptid.big_num_blacklist["j_entr_katarraktis"] = true
+if Cryptid.big_num_blacklist then Cryptid.big_num_blacklist["j_entr_katarraktis"] = true end
 
 local katarraktis = {
     order = 609,
@@ -1025,12 +961,48 @@ local prismatikos = {
     end,
 }
 
+local heimartai = {
+    order = 614,
+    object_type = "Joker",
+    key = "heimartai",
+    rarity = "entr_entropic",
+    cost = 150,
+    eternal_compat = true,
+    blueprint_compat = true,
+    dependencies = {
+        items = {
+            "set_entr_entropics"
+        }
+    },
+    pos = { x = 6, y = 4 },
+    soul_pos = { x = 8, y = 4, extra = { x = 7, y = 4 } },
+    atlas = "exotic_jokers",
+    config = {
+        echips = 1
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.echips
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main then
+            return {
+                echips = card.ability.echips
+            }
+        end
+    end,
+    entr_credits = {art = {"crabus"}}
+}
+
 return {
     items = {
         epitachyno,
-        helios,
+        not Entropy.ValkarriOverCryptid and helios or nil,
         xekanos,
-        dekatria,
+        not Entropy.ValkarriOverCryptid and dekatria or nil,
         anaptyxi,
         parakmi,
         exousia,
@@ -1040,6 +1012,7 @@ return {
         exelixi,
         atomikos,
         apeirostemma,
-        prismatikos
+        prismatikos,
+        heimartai
     }
 }

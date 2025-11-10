@@ -1,26 +1,57 @@
 function Entropy.GetHighlightedCards(cardareas, ignorecard, min, max, blacklist)
-    if Cryptid.get_highlighted_cards then
-        return Cryptid.get_highlighted_cards(cardareas, ignorecard or {}, min or 1, max or 1, blacklist and function(card)
+    return Cryptid.get_highlighted_cards(cardareas, ignorecard or {}, min or 1, max or 1, blacklist and function(card)
             return not blacklist[card.config.center.key]
-        end)
-    else    
-        local cards = {}
-        if ignorecard then ignorecard.checked = true end
-        blacklist = blacklist or {}
-        for i, area in pairs(cardareas) do
-            if area.cards then
-                for i2, card in ipairs(area.highlighted) do
-                    if card ~= ignorecard and not blacklist[card.config.center.key] and card.highlighted and not card.checked then
-                        cards[#cards + 1] = card
-                        card.checked = true
-                    end
-                end
-            end
-        end
-        for i, v in ipairs(cards) do v.checked = nil end
-        if ignorecard then ignorecard.checked = false end
-        return cards
-    end
+    end)
+end
+
+function Cryptid.get_highlighted_cards(areas, ignore, min, max, blacklist, seed)
+	ignore.checked = true
+	blacklist = blacklist or function()
+		return true
+	end
+	local cards = {}
+	for i, area in pairs(areas) do
+		if area.cards then
+			for i2, card in pairs(area.cards) do
+				if
+					card ~= ignore
+					and blacklist(card)
+					and (card.highlighted or G.cry_force_use)
+					and not card.checked
+				then
+					cards[#cards + 1] = card
+					card.checked = true
+				end
+			end
+		end
+	end
+	for i, v in ipairs(cards) do
+		v.checked = nil
+	end
+	if (#cards >= min and #cards <= max) or not G.cry_force_use then
+		ignore.checked = nil
+		return cards
+	else
+		for i, v in pairs(cards) do
+			v.f_use_order = i
+		end
+		pseudoshuffle(cards, pseudoseed("forcehighlight" or seed))
+		local actual = {}
+		for i = 1, max do
+			if cards[i] and not cards[i].checked and actual ~= ignore and actual.original_card ~= ignore and actual ~= ignore.original_card then
+				actual[#actual + 1] = cards[i]
+			end
+		end
+		table.sort(actual, function(a, b)
+			return a.f_use_order < b.f_use_order
+		end)
+		for i, v in pairs(cards) do
+			v.f_use_order = nil
+		end
+		ignore.checked = nil
+		return actual
+	end
+	return {}
 end
 
 function Entropy.FilterTable(table, func)
@@ -35,17 +66,17 @@ end
 
 function Entropy.Inversion(card)
     if not card then return end
-    return Entropy.FlipsideInversions[card.key or card.config.center.key]
+    return Entropy.FlipsideInversions[card.key or (card.config and card.config.center and card.config.center.key) or ""]
 end
 
 function Entropy.is_inverted(card)
     if not card then return end
-    return Entropy.FlipsideInversions[card.key or card.config.center.key] and not Entropy.FlipsidePureInversions[card.key or card.config.center.key]
+    return Entropy.FlipsideInversions[card.key or (card.config and card.config.center and card.config.center.key) or ""] and not Entropy.FlipsidePureInversions[card.key or (card.config and card.config.center and card.config.center.key) or ""]
 end
 
 function Entropy.inversion_queue(card, _c, first_pass)
     local info_queue = {}
-    if Entropy.Inversion(card) and first_pass and Entropy.show_flipside(card, _c) and Entropy.config.inversion_queues > 1 then 
+    if (Entropy.Inversion(card) or _c.key == "c_entr_flipside") and first_pass and Entropy.show_flipside(card, _c) and Entropy.config.inversion_queues > 1 then 
         if _c.key ~= "c_entr_flipside" then
           local inversion = G.P_CENTERS[Entropy.Inversion(_c)] 
           info_queue[#info_queue+1] = {key = "inversion_allowed", set = "Other", vars = {G.localization.descriptions[inversion.set][inversion.key].name}}
@@ -365,7 +396,7 @@ end
 
 function Entropy.BlindIs(blind)
     if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == blind then return true end
-    if Entropy.IsEE() and Entropy.EEWhitelist[blind] then return true end
+    if Entropy.IsEE() and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_four" and Entropy.EEWhitelist[blind] then return true end
 end
 
 function Entropy.card_eval_status_text_eq(card, eval_type, amt, percent, dir, extra, pref, col, sound, vol, ta)
@@ -668,7 +699,7 @@ function Entropy.HigherCardRank(card)
 	elseif rank_suffix == 11 then rank_suffix = 'Jack'
 	elseif rank_suffix == 12 then rank_suffix = 'Queen'
 	elseif rank_suffix == 13 then rank_suffix = 'King'
-	elseif rank_suffix == 14 then raFnk_suffix = 'Ace'
+	elseif rank_suffix == 14 then rank_suffix = 'Ace'
 	end
 	return ({
 		Queen = "King",
@@ -737,7 +768,7 @@ function Entropy.GetJokerSumRarity(loc)
     local sum = Entropy.SumJokerPoints()
     local last_sum = 0
     for i, v in pairs(Entropy.RarityPoints) do
-        if type(sum) == "table" then
+        if Entropy.is_big(sum) then
             if v > 12 and sum:gte(v-1) or sum:gte(v) then  
                 if v > last_sum  then
                     rarity = i 
@@ -783,8 +814,7 @@ end
 
 function Entropy.CanEeSpawn()
     if MP and MP.LOBBY and MP.LOBBY.code then return false end
-    return (SMODS.Mods["Cryptid"] or {}).can_load and Talisman 
-    and Cryptid.enabled("bl_entr_endless_entropy_phase_one")
+    return Cryptid.enabled("bl_entr_endless_entropy_phase_one")
     and Cryptid.enabled("bl_entr_endless_entropy_phase_two")
     and Cryptid.enabled("bl_entr_endless_entropy_phase_three")
     and Cryptid.enabled("bl_entr_endless_entropy_phase_four")
@@ -804,6 +834,7 @@ end
 
 function Card:is_sunny()
     if self.config.center.key == "j_entr_sunny_joker" then return true end
+    if self.config.center.key == "m_entr_radiant" then return true end
     if self.edition and self.edition.key == "e_entr_sunny" then return true end
     if self.config.center.pools and self.config.center.pools.Sunny == true then return true end
     return nil
@@ -982,28 +1013,20 @@ Entropy.TMTrainerEffects["joker_choose_rarity"] = function(key) SMODS.add_card({
 Entropy.TMTrainerEffects["edition"] = function(key) 
     local element = pseudorandom_element(G.jokers.cards, pseudoseed(key))
     Entropy.FlipThen({element}, function(card)
-        card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
-            return G.GAME.banned_keys[e.key] or e.no_doe
-        end).key)
+        card:set_edition(SMODS.poll_edition({guaranteed = true, key = "entr_tmt_ed"}))
     end)
 end
 Entropy.TMTrainerEffects["ante"] = function(key) ease_ante(-pseudorandom(key)*0.1) end
 Entropy.TMTrainerEffects["consumable"] = function(key) SMODS.add_card({key = Cryptid.random_consumable("entr_segfault", nil, "c_entr_segfault").key, area = G.consumeables}) end
 Entropy.TMTrainerEffects["enhancement_play"] = function(key) 
-    local enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("entropy")).key
-    while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
-        enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("entropy")).key
-    end
+    local enhancement = SMODS.poll_enhancement({guaranteed = true, key = "entr_tmt_enh"})
     local element = pseudorandom_element(G.play.cards, pseudoseed(key))
     Entropy.FlipThen({element}, function(card)
         card:set_ability(G.P_CENTERS[enhancement])
     end)
 end
 Entropy.TMTrainerEffects["enhancement_hand"] = function(key) 
-    local enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("entropy")).key
-    while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
-        enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("entropy")).key
-    end
+    local enhancement = SMODS.poll_enhancement({guaranteed = true, key = "entr_tmt_enh"})
     local element = pseudorandom_element(G.hand.cards, pseudoseed(key))
     Entropy.FlipThen({element}, function(card)
         card:set_ability(G.P_CENTERS[enhancement])
@@ -1016,7 +1039,7 @@ Entropy.TMTrainerEffects["random"] = function(key, context )
         if results then
             for i, v in pairs(results) do
                 for i2, result in pairs(v) do
-                    if type(result) == "number" or (type(result) == "table" and result.tetrate) then
+                    if Entropy.is_number(result) then
                         res[i2] = Entropy.StackEvalReturns(res[i2], result, i2)
                     else
                         res[i2] = result
@@ -1136,7 +1159,7 @@ function Entropy.LevelSuit(suit, card, amt, chips_override)
             return true 
         end 
     }))
-    update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { chips="+"..number_format((10 or chips_override)*amt), StatusText = true })
+    update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { chips="+"..number_format((chips_override or 10)*amt), StatusText = true })
     G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
             play_sound('tarot1')
             if card then card:juice_up(0.8, 0.5) end
@@ -1698,6 +1721,7 @@ function Entropy.load_files(files)
                         if type(result) == "table" and result.object_type then
                             if not Entropy.contents[result.object_type] then Entropy.contents[result.object_type] = {} end
                             result.cry_order = result.order
+                            result.perishable_compat = result.perishable_compat or false
                             Entropy.contents[result.object_type][#Entropy.contents[result.object_type]+1]=result
                         end
                     end
@@ -1721,32 +1745,34 @@ function Entropy.find_runes(key)
 end
 
 function Entropy.show_flipside()
-    return next(SMODS.find_card("c_entr_flipside")) or next(SMODS.find_card("c_entr_dagaz")) or Entropy.has_rune("rune_entr_dagaz")
+    for i, v in pairs((G.pack_cards or {}).cards or {}) do
+        if ({
+            c_entr_flipside = true,
+            c_entr_dagaz = true,
+            rune_entr_dagaz = true,
+            j_entr_shadow_crystal = true
+        })[v.config.center_key] then
+            return true
+        end
+    end
+    return next(SMODS.find_card("c_entr_flipside")) or next(SMODS.find_card("c_entr_dagaz")) or Entropy.has_rune("rune_entr_dagaz") or next(SMODS.find_card("j_entr_shadow_crystal"))
 end
 
 function Entropy.randomise_once(card, types, seed)
     local mtype = pseudorandom_element(types or {"Enhancement", "Edition", "Seal", "Base"}, pseudoseed(seed or "ihwaz"))    
     if mtype == "Edition" then
-        local edition = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
-            return G.GAME.banned_keys[e.key] or e.no_doe
-        end).key
+        local edition = SMODS.poll_edition({guaranteed = true, key = "entr_ihwaz"})
         card:set_edition(edition)
         card:juice_up()
     end
     if mtype == "Enhancement" then
-        local enhancement_type = "Enhanced"
-        local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed(seed or "ihwaz")).key
-        while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
-            enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed(seed or "ihwaz")).key
-        end
+        local enhancement = SMODS.poll_enhancement({guaranteed = true, key = seed or "entr_ihwaz"})
         card:flip()
         card:set_ability(G.P_CENTERS[enhancement])
         card:flip()
     end
     if mtype == "Seal" then
-        local seal = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("ihwaz"),function(e)
-            return G.GAME.banned_keys[e.key] or e.no_doe
-        end).key
+        local seal = SMODS.poll_seal{guaranteed = true, key = seed or "ihwaz"}
         card:set_seal(seal)
         card:juice_up()
     end
@@ -1875,9 +1901,11 @@ function Entropy.calculate_ratios(incl_vanilla, only_vanilla)
     local rarities = {}
     for i, v in pairs(G.P_CENTER_POOLS.Joker) do
         if (not only_vanilla and v.original_mod and v.original_mod.id == "entr") or (incl_vanilla and not v.original_mod) then
-            total = total + 1
-            if not rarities[v.rarity] then rarities[v.rarity] = 0 end
-            rarities[v.rarity] = rarities[v.rarity] + 1
+                if not v.no_collection then
+                total = total + 1
+                if not rarities[v.rarity] then rarities[v.rarity] = 0 end
+                rarities[v.rarity] = rarities[v.rarity] + 1
+            end
         end
     end
     for i, v in pairs(rarities) do
@@ -1906,6 +1934,172 @@ function Entropy.allow_spawning(center)
 end
 
 function Entropy.get_reroll_height()
-    if HotPotato then return 1.04 end
     return Entropy.CanSwitchAltPath() and 1 or 1.6
+end
+
+function Entropy.can_be_pulled(card)
+    local center = card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]] or card.config.center
+    return not center.no_select and (SMODS.ConsumableTypes[center.set] and SMODS.ConsumableTypes[center.set].can_be_pulled or center.can_be_pulled) and not center.hidden
+end
+
+function Entropy.needs_pull_button(card)
+    local center = card.config.center
+    if not center.no_select and (SMODS.ConsumableTypes[center.set] and SMODS.ConsumableTypes[center.set].can_be_pulled or center.can_be_pulled) and not center.hidden then
+        local loc = SMODS.ConsumableTypes[center.set] and SMODS.ConsumableTypes[center.set].can_be_pulled or center.can_be_pulled
+        return localize(type(loc) == "string" and loc or "b_select")
+    end
+    for i, v in pairs(card.ability.glitched_crown or {}) do
+        local center = G.P_CENTERS[v]
+        if center and not center.no_select and (SMODS.ConsumableTypes[center.set] and SMODS.ConsumableTypes[center.set].can_be_pulled or center.can_be_pulled) and not center.hidden then
+            local loc = SMODS.ConsumableTypes[center.set] and SMODS.ConsumableTypes[center.set].can_be_pulled or center.can_be_pulled
+            return localize(type(loc) == "string" and loc or "b_select")
+        end
+    end
+end
+
+function Entropy.needs_use_button(card)
+    local center = card.config.center
+    local center_cant_use = false
+    if not (center.no_use_button or (SMODS.ConsumableTypes[center.set] and SMODS.ConsumableTypes[center.set].no_use_button)) then
+        center_cant_use = true
+    end
+    for i, v in pairs(card.ability.glitched_crown or {}) do
+        local center = G.P_CENTERS[v]
+        if not (center.no_use_button or (SMODS.ConsumableTypes[center.set] and SMODS.ConsumableTypes[center.set].no_use_button)) then
+            center_cant_use = true
+        end
+    end
+    return center_cant_use
+end
+
+function ReductionIndex(card, pool)
+    index = 0
+    for i, v in pairs(G.P_CENTER_POOLS[pool]) do
+        if card.config and v.key == card.config.center_key then
+            return i
+        end
+        i = i + 1
+    end
+end
+
+--these currently only return a single value, but exist in case other effects get added that would need to be returned here
+function Card:get_entr_plus_asc()
+    return self.ability.entr_perma_plus_asc
+end
+
+function Card:get_entr_h_plus_asc()
+    return self.ability.entr_perma_h_plus_asc
+end
+
+function Card:get_entr_asc()
+    return self.ability.entr_perma_asc + 1
+end
+
+function Card:get_entr_h_asc()
+    return self.ability.entr_perma_h_asc + 1
+end
+
+function Card:get_entr_exp_asc()
+    return self.ability.entr_perma_exp_asc + 1
+end
+
+function Card:get_entr_h_exp_asc()
+    return self.ability.entr_perma_h_exp_asc + 1
+end
+
+function Entropy.rubber_ball_scoring(cards)
+    local index = 1
+    local dir = 1
+    local new_cards = {}
+    local fvc_cards = {}
+    for i, v in pairs(G.play.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
+    for i, v in pairs(G.jokers.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
+    for i, v in pairs(fvc_cards) do
+        new_cards[#new_cards+1] = v
+    end
+    if next(SMODS.find_card("j_entr_rubber_ball")) then
+        while index > 0 and index <= #cards do
+            local add
+            for i, v in pairs(SMODS.find_card("j_entr_rubber_ball")) do
+                if not v.triggered and SMODS.pseudorandom_probability(v, 'rubber_ball', 1, v.ability.odds) then
+                    dir = -dir
+                    add = true
+                    v.triggered = true
+                    new_cards[#new_cards+1] = cards[index]
+                end
+            end
+            new_cards[#new_cards+1] = cards[index]
+            index = index + dir
+        end
+        for i, v in pairs(SMODS.find_card("j_entr_rubber_ball")) do
+            v.triggered = false
+        end
+    else
+        for i, v in pairs(cards) do
+            new_cards[#new_cards+1] = v
+        end
+    end
+    return new_cards
+end
+
+function Entropy.post_create_card(card, from_booster)
+    if G.SETTINGS.paused then return end
+    local set = card.config.center.set
+    local key = card.config.center.key
+
+    if card.config and card.config.center and Entropy.FlipsideInversions and not Entropy.is_inverted(center)
+        and pseudorandom("marked") < 0.10 and G.GAME.Marked and G.STATE == G.STATES.SHOP and (not card.area or not card.area.config.collection) and Entropy.Inversion(center) then
+        local c = G.P_CENTERS[Entropy.Inversion(center)]
+        card:set_ability(c)
+        key = c.key
+        set = c.set
+    elseif card.config and card.config.center
+    and pseudorandom("trump_card") < 0.10 and G.GAME.TrumpCard and G.STATE == G.STATES.SMODS_BOOSTER_OPENED
+    and TrumpCardAllow[center.set] and (not card.area or not card.area.config.collection) then
+        card:set_ability(G.P_CENTERS["c_entr_flipside"])
+        key = "c_entr_flipside"
+        set = "Spectral"
+    elseif card.config and card.config.center and card.config.center.set == "Booster"
+    and pseudorandom("supersede") < 0.20 and G.GAME.Supersede and G.STATE == G.STATES.SHOP and (not card.area or not card.area.config.collection) then
+        local type = (center.cost == 6 and "jumbo") or (center.cost == 8 and "mega") or "normal"
+        card:set_ability(G.P_CENTERS["p_entr_twisted_pack_"..type])
+
+        key = "p_entr_twisted_pack_"..type
+        set = "Booster"
+    elseif card.config and card.config.center and card.config.center.set == "Booster" and Entropy.DeckOrSleeve("doc")
+    and to_big(pseudorandom("doc")) < to_big(1-(0.995^(G.GAME.entropy/2))) and G.STATE == G.STATES.SHOP and (not card.area or not card.area.config.collection) then
+        local type = (center.cost == 6 and "jumbo_1") or (center.cost == 8 and "mega_1") or "normal_"..pseudorandom_element({1,2},pseudoseed("doc"))
+        card:set_ability(G.P_CENTERS["p_spectral_"..type])
+        key = "p_spectral_"..type
+        set = "Booster"
+    end
+    if Entropy.Inversion(G.P_CENTERS[key]) and not G.SETTINGS.paused and (G.GAME.modifiers.entr_twisted or set == "Planet" and G.GAME.entr_princess) and not card.multiuse and (not card.ability or not card.ability.fromflipside) then
+        if Entropy.allow_spawning(G.P_CENTERS[key]) and Entropy.allow_spawning(G.P_CENTERS[Entropy.Inversion(G.P_CENTERS[key])]) then
+            local c = G.P_CENTERS[Entropy.Inversion(G.P_CENTERS[key])]
+            key = c.key
+            card:set_ability(c)
+            set = c.set
+            
+        else
+            local c = Entropy.GetPooledCenter(G.P_CENTERS[Entropy.Inversion(G.P_CENTERS[key])].set)
+            key = c.key
+            card:set_ability(c)
+            set = c.set
+        end
+    end
+    set = G.P_CENTERS[key] and G.P_CENTERS[key].set or set
+    if G.GAME.modifiers.glitched_items and not (set == "Default" or set == "Enhanced") then
+        local gc = {key}
+        for i = 1, G.GAME.modifiers.glitched_items - 1 do
+            gc[#gc+1] = Entropy.GetPooledCenter(set).key
+        end
+        if from_booster then
+            G.E_MANAGER:add_event(Event({trigger = 'after', blockable = false, blocking = false, func = function()
+                card.ability.glitched_crown = gc
+                return true
+            end}))
+        else
+            card.ability.glitched_crown = gc
+        end
+    end
 end

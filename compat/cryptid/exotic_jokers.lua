@@ -1,15 +1,18 @@
+local rarity = Entropy.ValkarriOverCryptid and "valk_exquisite" or "cry_exotic"
+local set = Entropy.ValkarriOverCryptid and "set_entr_misc_jokers" or "set_cry_exotic"
+
 local stillicidium = {
     order = 500,
     object_type = "Joker",
     key = "stillicidium",
-    rarity = "cry_exotic",
+    rarity = rarity,
     cost = 50,
     atlas = "exotic_jokers",
     soul_pos = { x = 2, y = 0, extra = { x = 1, y = 0 } },
     
     dependencies = {
         items = {
-            "set_cry_exotic"
+            set
         }
     },
     blueprint_compat = true,
@@ -101,15 +104,7 @@ local stillicidium = {
     end
 }
 
-function ReductionIndex(card, pool)
-    index = 0
-    for i, v in pairs(G.P_CENTER_POOLS[pool]) do
-        if card.config and v.key == card.config.center_key then
-            return i
-        end
-        i = i + 1
-    end
-end
+
 function LowerCardRank(card)
 	if not card.base then return nil end
 	local rank_suffix = math.min(card.base.id, 14)
@@ -148,7 +143,7 @@ local libra = {
     order = 500 + 1,
     object_type = "Joker",
     key = "libra",
-    rarity = "cry_exotic",
+    rarity = rarity,
     cost = 50,
     atlas = "exotic_jokers",
 
@@ -157,7 +152,7 @@ local libra = {
     
     dependencies = {
         items = {
-            "set_cry_exotic"
+            set
         }
     },
 
@@ -185,18 +180,18 @@ local libra = {
                     total = total + v
                     values = values + 1
                 end
-                if type(v) == "table" and v.arrow and v ~= to_big(1) and v ~= to_big(0) then
+                if (Entropy.is_big(v)) and v ~= to_big(1) and v ~= to_big(0) then
                     total = total + v
                     values = values + 1
                 end
             end
-            if type(context.other_card.ability.extra) == "table" and not context.other_card.ability.extra.arrow then
+            if type(context.other_card.ability.extra) == "table" and not Entropy.is_big(context.other_card.ability.extra) then
                 for i, v in pairs(context.other_card.ability.extra or {}) do
                     if type(v) == "number" and v ~= 1 and v~= 0 then
                         total = total + v
                         values = values + 1
                     end
-                    if type(v) == "table" and v.arrow and v ~= to_big(1) and v ~= to_big(0) then
+                    if Entropy.is_big(v) and v ~= to_big(1) and v ~= to_big(0) then
                         total = total + v
                         values = values + 1
                     end
@@ -208,16 +203,16 @@ local libra = {
                 if type(v) == "number" and v ~= 1 and v~= 0 then
                     context.other_card.ability[i] = total / values
                 end
-                if type(v) == "table" and v.arrow and v ~= to_big(1) and v ~= to_big(0) then
+                if Entropy.is_big(v) and v ~= to_big(1) and v ~= to_big(0) then
                     context.other_card.ability[i] = to_big(total / values)
                 end
             end
-            if type(context.other_card.ability.extra) == "table" and not context.other_card.ability.extra.arrow then
+            if type(context.other_card.ability.extra) == "table" and not Entropy.is_big(context.other_card.ability.extra) then
                 for i, v in pairs(context.other_card.ability.extra or {}) do
                     if type(v) == "number" and v ~= 1 and v~= 0 then
                         context.other_card.ability.extra[i] = total / values
                     end
-                    if type(v) == "table" and v.arrow and v ~= to_big(1) and v ~= to_big(0) then
+                    if Entropy.is_big(v) and v ~= to_big(1) and v ~= to_big(0) then
                         context.other_card.ability.extra[i] = to_big(total / values)
                     end
                 end
@@ -240,7 +235,7 @@ local scorpio = {
     order = 500 + 2,
     object_type = "Joker",
     key = "scorpio",
-    rarity = "cry_exotic",
+    rarity = rarity,
     cost = 50,
     atlas = "exotic_jokers",
 
@@ -249,7 +244,7 @@ local scorpio = {
     
     dependencies = {
         items = {
-            "set_cry_exotic"
+            set
         }
     },
     config = {
@@ -317,7 +312,7 @@ local ridiculus_absens = {
     order = 500 + 3,
     object_type = "Joker",
     key = "ridiculus_absens",
-    rarity = "cry_exotic",
+    rarity = rarity,
     cost = 50,
     atlas = "exotic_jokers",
     name = "entr-ridiculus_absens",
@@ -326,7 +321,7 @@ local ridiculus_absens = {
     
     dependencies = {
         items = {
-            "set_cry_exotic"
+            set
         }
     },
     config = {
@@ -374,6 +369,6 @@ return {
         stillicidium,
         libra,
         scorpio,
-        ridiculus_absens
+        not Entropy.ValkarriOverCryptid and ridiculus_absens or nil
     }
 }

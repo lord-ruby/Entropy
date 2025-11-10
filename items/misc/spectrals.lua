@@ -14,7 +14,7 @@ local flipside = {
     can_use = function(self, card)
         local cards = Entropy.GetHighlightedCards({{cards = G.I.CARD}}, card, 1, card.ability.select)
         cards = Entropy.FilterTable(cards, function(card)
-            return Entropy.Inversion(card)
+            return Entropy.Inversion(card) or card.config.center.key == "c_entr_flipside"
         end)
         return #cards > 0 and #cards <= card.ability.select
     end,
@@ -24,10 +24,36 @@ local flipside = {
             return Entropy.Inversion(card)
         end)
         Entropy.FlipThen(cards, function(card)
-            card.ability.fromflipside = true
-            card:set_ability(G.P_CENTERS[Entropy.Inversion(card)])
-            card.ability.fromflipside = false
-            SMODS.calculate_context({entr_consumable_inverted = true, card = card})
+            if card.config.center.key == "c_entr_flipside" then
+                local cards2 = {}
+                for i, card in pairs(G.I.CARD) do
+                    if Entropy.Inversion(card) then
+                        cards2[#cards2+1] = card
+                    end
+                end
+                card:start_dissolve()
+                Entropy.FlipThen(cards2, function(card)
+                    card.ability.fromflipside = true
+                    card:set_ability(G.P_CENTERS[Entropy.Inversion(card)])
+                    if card.ability.glitched_crown then
+                        for i,v in pairs(card.ability.glitched_crown) do
+                            card.ability.glitched_crown[i] = Entropy.FlipsideInversions[v]
+                        end
+                    end
+                    card.ability.fromflipside = false
+                    SMODS.calculate_context({entr_consumable_inverted = true, card = card})
+                end)
+            else
+                card.ability.fromflipside = true
+                card:set_ability(G.P_CENTERS[Entropy.Inversion(card)])
+                if card.ability.glitched_crown then
+                    for i,v in pairs(card.ability.glitched_crown) do
+                        card.ability.glitched_crown[i] = Entropy.FlipsideInversions[v]
+                    end
+                end
+                card.ability.fromflipside = false
+                SMODS.calculate_context({entr_consumable_inverted = true, card = card})
+            end
         end)
     end,
     loc_vars = function(self, q, card)
@@ -37,7 +63,11 @@ local flipside = {
             }
         }
     end,
-    can_be_pulled = true
+    can_be_pulled = true,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local shatter = {
@@ -46,7 +76,7 @@ local shatter = {
     
     order = 37,
     object_type = "Consumable",
-    config = {limit = 2},
+    config = {limit = 1, csl = 1},
     atlas = "consumables",
     pos = {x=5,y=8},
     dependencies = {
@@ -55,9 +85,10 @@ local shatter = {
         }
     },
     use = function(self, card, area, copier)
-        Entropy.FlipThen(G.hand.highlighted, function(card)
+        Entropy.FlipThen(Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.limit), function(card)
             card:set_edition("e_entr_fractured")
         end)
+        Entropy.ChangeFullCSL(-card.ability.csl)
     end,
     can_use = function(self, card)
         local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.limit)
@@ -66,12 +97,18 @@ local shatter = {
     loc_vars = function(self, q, card)
         q[#q+1] = G.P_CENTERS.e_entr_fractured
         return {vars={
-            card.ability.limit
+            card.ability.limit,
+            card.ability.csl
         }}
     end,
     entr_credits = {
+        idea = {"cassknows"},
         art = {"cassknows"}
-    }
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local destiny = {
@@ -90,40 +127,48 @@ local destiny = {
     },
     use = function(self, card, area, copier)
         local remove = {}
-        for i, v in pairs(G.hand.highlighted) do
+        local highlighted = Entropy.GetHighlightedCards({G.hand}, card, 5, 5)
+        for i, v in pairs(highlighted) do
             if v.config.center.key ~= "c_base" or pseudorandom("crafting") < 0.4 then
-                v:start_dissolve()
-                v.ability.temporary2 = true
+                if not SMODS.is_eternal(v) then
+                    v:start_dissolve()
+                    v.ability.temporary2 = true
+                end
                 remove[#remove+1]=v
             else
                 Entropy.DiscardSpecific({v})
             end
         end
         if #remove > 0 then SMODS.calculate_context({remove_playing_cards = true, removed=remove}) end
-        add_joker(Entropy.GetRecipe(G.hand.highlighted))
-        if Entropy.DeckOrSleeve("crafting") then
-            if not (card.ability.overflow_amount) then
-                local card2 = copy_card(card)
-                card2.ability.cry_absolute = true
-                card2:add_to_deck()
-                G.consumeables:emplace(card2)
-                card2:set_edition("e_negative")
-            end
-        end
+        add_joker(Entropy.GetRecipe(highlighted))
+    end,
+    keep_on_use = function(self, card)
+        return Entropy.DeckOrSleeve("crafting")
     end,
     can_use = function(self, card)
-        return G.hand and #G.hand.highlighted == 5
+        local highlighted = Entropy.GetHighlightedCards({G.hand}, card, 5, 5)
+        return G.hand and #highlighted == 5
 	end,
     loc_vars = function(self, q, card)
+        local jok = G.hand and Entropy.GetRecipe(G.hand.highlighted)
+        local highlighted = Entropy.GetHighlightedCards({G.hand}, card, 5, 5)
+        if G.hand and #highlighted == 5 then
+            q[#q+1] = jok and G.P_CENTERS[jok] or nil
+        end
+        
         return {vars={
-            G.hand and #G.hand.highlighted == 5 and localize({type = "name_text", set = "Joker", key = Entropy.GetRecipe(G.hand.highlighted)}) or "none"
+            G.hand and #highlighted == 5 and localize({type = "name_text", set = "Joker", key = jok}) or "none"
         }}
     end,
     no_doe = true,
     in_pool = function()
         return not Entropy.DeckOrSleeve("crafting")
     end,
-    weight = 0
+    weight = 0,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local lust = {
@@ -141,7 +186,7 @@ local lust = {
         }
     },
     use = function(self, card, area, copier)
-        Entropy.FlipThen(G.hand.highlighted, function(card)
+        Entropy.FlipThen(Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.limit), function(card)
             card:set_edition("e_entr_freaky")
         end)
     end,
@@ -157,7 +202,11 @@ local lust = {
     end,
     entr_credits = {
         art = {"missingnumber"}
-    }
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 local ref = Cryptid.reload_localization
 function Cryptid.reload_localization()
@@ -250,6 +299,10 @@ local null = {
             card.ability.create
         }}
     end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local antithesis = {
@@ -275,6 +328,13 @@ local antithesis = {
     can_use = function(self, card)
         return G.jokers and #G.jokers.cards > 0
 	end,
+    entr_credits = {
+        idea = {"cassknows"}
+    },
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
 }
 
 local enchant = {
@@ -314,6 +374,39 @@ local enchant = {
     end
 }
 
+local manifest = {
+    dependencies = {
+        items = {
+          "set_entr_spectrals",
+        }
+    },
+    object_type = "Consumable",
+    order = 41,
+    key = "manifest",
+    set = "Spectral",
+    
+    atlas = "consumables",
+    pos = {x=2,y=7},
+    use = function()
+        add_tag(Tag(Entropy.AscendedTags[G.GAME.round_resets.blind_tags.Small] or G.GAME.round_resets.blind_tags.Small))
+        add_tag(Tag(Entropy.AscendedTags[G.GAME.round_resets.blind_tags.Big] or G.GAME.round_resets.blind_tags.Big))
+    end,
+    can_use = function(self, card)
+        return true
+    end,
+    loc_vars = function(self, q, card)
+        if G.GAME.round_resets and G.GAME.round_resets.blind_tags then
+            q[#q+1] = G.P_TAGS[Entropy.AscendedTags[G.GAME.round_resets.blind_tags.Small] or G.GAME.round_resets.blind_tags.Small]
+            q[#q+1] = G.P_TAGS[Entropy.AscendedTags[G.GAME.round_resets.blind_tags.Big] or G.GAME.round_resets.blind_tags.Big]
+        end
+    end,
+    entr_credits = entr_credits,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 return {
     items = {
         flipside,
@@ -322,6 +415,7 @@ return {
         lust,
         null,
         antithesis,
-        enchant
+        enchant,
+        manifest
     }
 }

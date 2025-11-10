@@ -1,16 +1,19 @@
+local rarity = Entropy.ValkarriOverCryptid and "valk_renowned" or "cry_epic"
+local set = Entropy.ValkarriOverCryptid and "set_entr_misc_jokers" or "set_cry_epic"
+
 local burnt_m = {
-    order = 100,
+    order = 250,
     object_type = "Joker",
     key = "burnt_m",
     config = {
         per_jolly=1
     },
-    rarity = "cry_epic",
+    rarity = rarity,
     cost = 10,
     
     dependencies = {
         items = {
-            "set_cry_epic"
+            set
         }
     },
     blueprint_compat = true,
@@ -69,10 +72,10 @@ local burnt_m = {
 }
 
 local chaos= {
-    order = 101,
+    order = 251,
     object_type = "Joker",
     key = "chaos",
-    rarity = "cry_epic",
+    rarity = rarity,
     cost = 15,
     
 
@@ -84,18 +87,18 @@ local chaos= {
 }
 
 local dni = {
-    order = 102,
+    order = 252,
     object_type = "Joker",
     key = "dni",
     config = {
         suit = "Spades"
     },
-    rarity = "cry_epic",
+    rarity = rarity,
     cost = 10,
     
     dependencies = {
         items = {
-            "set_cry_epic"
+            set
         }
     },
     blueprint_compat = false,
@@ -130,19 +133,19 @@ local dni = {
 }
 
 local trapezium = {
-    order = 103,
+    order = 253,
     object_type = "Joker",
     key = "trapezium_cluster",
     name="entr-trapezium_cluster",
     config = {
         forcetrigger=5
     },
-    rarity = "cry_epic",
+    rarity = rarity,
     cost = 10,
     
     dependencies = {
         items = {
-            "set_cry_epic"
+            set
         }
     },
     blueprint_compat = true,
@@ -203,19 +206,22 @@ local trapezium = {
         if context.forcetrigger then
             return Entropy.RandomForcetrigger(card, card and card.ability.forcetrigger or 5, context)
         end
-	end
+	end,
+    entr_credits = {
+        idea = {"cassknows"}
+    },
 }
 
 local metanoia = {
-    order = 104,
+    order = 254,
     object_type = "Joker",
     key = "metanoia",
-    rarity = "cry_epic",
+    rarity = rarity,
     cost = 10,
     
     dependencies = {
         items = {
-            "set_cry_epic"
+            set
         }
     },
     blueprint_compat = false,
@@ -235,15 +241,15 @@ local metanoia = {
 }
 
 local antireal = {
-    order = 105,
+    order = 255,
     object_type = "Joker",
     key = "antireal",
-    rarity = "cry_epic",
+    rarity = rarity,
     cost = 15,
     
     dependencies = {
         items = {
-            "set_cry_epic"
+            set
         }
     },
     blueprint_compat = true,
@@ -273,7 +279,7 @@ local antireal = {
         end
     end,
     add_to_deck = function(self, card, from_debuff)
-		if not from_debuff then
+		if not from_debuff and Cryptid.notification_overlay then
 			Cryptid.notification_overlay("antireal")
 		end
 	end,
@@ -284,15 +290,15 @@ local antireal = {
 }
 
 local jokezmann_brain = {
-    order = 106,
+    order = 256,
     object_type = "Joker",
     key = "jokezmann_brain",
-    rarity = "cry_epic",
+    rarity = rarity,
     cost = 15,
     
     dependencies = {
         items = {
-            "set_cry_epic"
+            set
         }
     },
     eternal_compat = true,
@@ -341,15 +347,15 @@ local jokezmann_brain = {
 }
 
 local metamorphosis = {
-    order = 107,
+    order = 257,
     object_type = "Joker",
     key = "metamorphosis",
-    rarity = "cry_epic",
+    rarity = rarity,
     cost = 15,
     
     dependencies = {
         items = {
-            "set_cry_epic"
+            set
         }
     },
     eternal_compat = true,
@@ -438,15 +444,15 @@ local metamorphosis = {
 }
 
 local nyctophobia = {
-    order = 108,
+    order = 258,
     object_type = "Joker",
     key = "nyctophobia",
-    rarity = "cry_epic",
+    rarity = rarity,
     cost = 15,
     
     dependencies = {
         items = {
-            "set_cry_epic"
+            set
         }
     },
     eternal_compat = true,
@@ -503,17 +509,17 @@ local nyctophobia = {
 }
 
 local caviar = {
-    order = 108,
+    order = 258,
     object_type = "Joker",
     key = "caviar",
-    rarity = "cry_epic",
+    rarity = rarity,
     cost = 15,
     config = {
         tags = 8
     },
     dependencies = {
         items = {
-            "set_cry_epic"
+            set
         }
     },
     eternal_compat = true,
@@ -528,7 +534,7 @@ local caviar = {
     end,
     pools = {["Food"] = true},
     calculate = function (self, card, context)
-        if context.tag_create and Entropy.AscendedTags[context.tag.key] then
+        if context.tag_create and Entropy.AscendedTags[context.tag.key] and not context.tag.ability.no_asc then
             card.ability.tags = card.ability.tags - 1
             if to_number(card.ability.tags) <= 0.00000001 then
 				SMODS.destroy_cards(card, nil, nil, true)
@@ -559,10 +565,10 @@ local caviar = {
 
 return {
     items = {
-        burnt_m,
+        not Entropy.ValkarriOverCryptid and burnt_m or nil,
         chaos,
         dni,
-        trapezium,
+        not Entropy.ValkarriOverCryptid and trapezium or nil,
         antireal,
         jokezmann_brain,
         metanoia,

@@ -197,7 +197,21 @@ function Entropy.evaluate_play_misc(text, disp_text, poker_hands, scoring_hand, 
 	end
 	SMODS.Scoring_Parameters["mult"]:modify(mult - SMODS.Scoring_Parameters["mult"].current)
 	SMODS.Scoring_Parameters["chips"]:modify(hand_chips - SMODS.Scoring_Parameters["chips"].current)
+	G.E_MANAGER:add_event(Event{
+		trigger = "after",
+		blocking = false,
+		func = function()
+			G.GAME.asc_power_hand = nil
+			return true
+		end
+	})
     return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
+end
+
+local calc_scoreref = SMODS.calculate_round_score
+function SMODS.calculate_round_score(...)
+	if G.GAME.blind and Entropy.BlindIs("bl_entr_omicron") and not G.GAME.blind.config.done and not G.GAME.blind.disabled then return 0 end
+	return calc_scoreref(...)
 end
 
 local epsilon = {
@@ -813,9 +827,15 @@ G.FUNCS.get_poker_hand_info = function(_cards)
 end
 
 local never_scoresref = SMODS.never_scores
-function SMODS.never_scores(...)
-	if (next(SMODS.find_card("j_splash")) or SMODS.always_scores(...)) and Entropy.BlindIs("bl_entr_kappa") then return true end
-	return never_scoresref(...)
+function SMODS.never_scores(card, ...)
+	if (next(SMODS.find_card("j_splash")) or SMODS.always_scores(card, ...)) and Entropy.BlindIs("bl_entr_kappa") then return true end
+	return never_scoresref(card, ...)
+end
+
+local always_scoresref = SMODS.always_scores
+function SMODS.always_scores(card, ...)
+	if card.config.center.key == "j_entr_false_vacuum_collapse" then return true end
+	return always_scoresref(card, ...)
 end
 
 local lambda = {
@@ -966,6 +986,17 @@ local omicron = {
     in_pool = function()
         return G.GAME.entr_alt
     end,
+	calculate = function(self, blind, context)
+		if context.after then
+			G.E_MANAGER:add_event(Event {
+				trigger = "after",
+				func = function()
+					G.GAME.blind.config.done = true
+					return true
+				end
+			})
+		end
+	end
 }
 
 local pi = {
@@ -990,14 +1021,6 @@ local pi = {
     in_pool = function()
         return G.GAME.entr_alt
     end,
-	calculate = function(self, blind, context)
-		if context.pre_discard then
-			Entropy.FlipThen(G.hand.highlighted, function(card)
-				card.ability.perishable = true
-				card.ability.perish_tally = 5
-			end)
-		end
-	end
 }
 
 local rho = {
@@ -1066,7 +1089,7 @@ local sigma = {
 	setting_blind = function()
 		local avg = math.ceil((G.GAME.round_resets.hands+G.GAME.round_resets.discards)/2)
 		ease_hands_played(avg-G.GAME.round_resets.hands)
-		ease_discard(abg-G.GAME.round_resets.discards)
+		ease_discard(avg-G.GAME.round_resets.discards)
 		G.GAME.blind.triggered = true
 	end
 }

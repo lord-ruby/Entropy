@@ -12,17 +12,31 @@ local master = {
     inversion = "c_fool",
     use = function(self, card, area, copier)
         if G.GAME.last_inversion then
+            local tw = G.GAME.modifiers.entr_twisted
+            G.GAME.modifiers.entr_twisted = nil
             local c = create_card(G.GAME.last_inversion.set, G.consumeables, nil, nil, nil, nil, G.GAME.last_inversion.key)
             G.GAME.last_inversion = nil
             c:add_to_deck()
             G.consumeables:emplace(c)
+            G.GAME.modifiers.entr_twisted = tw
         end
     end,
     can_use = function(self, card)
-        return G.GAME.last_inversion
+        local fac = card.area == G.consumeables and -1 or 0
+        return G.consumeables.config.card_limit > #G.consumeables.cards + fac and G.GAME.last_inversion
 	end,
     loc_vars = function(self, q, card)
-        card.ability.last_inversion = G.GAME.last_inversion and G.GAME.last_inversion.set and G.localization.descriptions[G.GAME.last_inversion.set][G.GAME.last_inversion.key].name or "None"
+        card.ability.last_inversion = G.GAME.last_inversion and G.GAME.last_inversion.set and G.localization.descriptions[G.GAME.last_inversion.set] and G.localization.descriptions[G.GAME.last_inversion.set][G.GAME.last_inversion.key].name or localize('k_none')
+        if G.GAME.last_inversion and card.ability.last_inversion == localize('k_none') then
+            local nodes = {}
+            localize{type = 'name', set = "Other", key = G.GAME.last_inversion.key, nodes = nodes}
+            if not nodes[1] then
+                localize{type = 'name', set = "Other", key = string.gsub(G.GAME.last_inversion.key, "_[0-9]*$", ""), nodes = nodes}
+            end
+            card.ability.last_inversion = nodes[1][1].nodes[1].config.object.string
+        elseif G.GAME.last_inversion and G.GAME.last_inversion.key~= "c_entr_master" then
+            q[#q+1] = G.P_CENTERS[G.GAME.last_inversion.key]
+        end
         return {
             main_end = (card.area and (card.area == G.consumeables or card.area == G.pack_cards or card.area == G.hand or card.area == G.shop_jokers or card.area == G.shop_booster or card.area == G.shop_vouchers)) and {
 				{
@@ -88,9 +102,7 @@ local mason = {
                 area = G.hand
             })
             SMODS.change_base(card, "entr_nilsuit", "entr_nilrank")
-            card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("mason"),function(e)
-                return G.GAME.banned_keys[e.key] or e.no_doe
-            end).key)
+            card:set_edition(SMODS.poll_edition({guaranteed = true, key = "entr_mason"}))
             G.hand:emplace(card)
             table.insert(G.playing_cards, card)
         end
@@ -143,9 +155,7 @@ local oracle = {
             card:set_ability(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Star, pseudoseed("oracle_ccd"),function(e)
                 return G.GAME.banned_keys[e.key] or e.no_doe
             end))
-            card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("oracle_edition"),function(e)
-                return G.GAME.banned_keys[e.key] or e.no_doe
-            end).key)
+            card:set_edition(SMODS.poll_edition({guaranteed = true, key = "entr_oracle"}))
         end)
     end,
     can_use = function(self, card)
@@ -164,7 +174,10 @@ local oracle = {
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)
-    end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    },
 }
 
 
@@ -256,8 +269,8 @@ local servant = {
     loc_vars = function(self, q, card)
         return {
             vars = {
+                card.ability.create,
                 card.ability.select,
-                card.ability.create
             }
         }
     end,
@@ -296,16 +309,11 @@ local heretic = {
                 card:set_seal(seal)
             end
             if modification == "Edition" then
-                local edition = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("heretic_edition"),function(e)
-                    return G.GAME.banned_keys[e.key] or e.no_doe
-                end).key
+                local edition = SMODS.poll_edition({guaranteed = true, key = "entr_heretic_ed"})
                 card:set_edition(edition)
             end
             if modification == "Enhancement" then
-                local enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("heretic_enhancement")).key
-                while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
-                    enhancement = pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("heretic_enhancement")).key
-                end
+                local enhancement = SMODS.poll_enhancement({guaranteed = true, key = "entr_heretic_enh"})
                 card:set_ability(G.P_CENTERS[enhancement])
             end
             if modification == "Suit" or modification == "Rank" then
@@ -364,7 +372,7 @@ local feud = {
             if new_card then
                 chips = chips + new_card.base.nominal
                 bonus_chips = bonus_chips + (new_card.ability and new_card.ability.bonus or 0)
-                new_card:start_dissolve()
+                SMODS.destroy_cards(new_card)
             end
         end
         local mult = card.ability.chip_mult
@@ -422,7 +430,7 @@ local scar = {
 
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card, 1, card.ability.select)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
         local num = #cards
         return num > 0 and num <= card.ability.select
 	end,
@@ -491,11 +499,7 @@ local dagger = {
         for i, card in ipairs(cards) do
             total = total + card.base.nominal + (card.ability.bonus or 0)
         end
-        Entropy.FlipThen(cards, function(card)
-            if not SMODS.is_eternal(card) then
-                card:start_dissolve()
-            end
-        end)
+        SMODS.destroy_cards(cards)
         update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = G.GAME.hands[_hand].level, mult = Entropy.ascend_hand(G.GAME.hands[_hand].mult, _hand), chips = Entropy.ascend_hand(G.GAME.hands[_hand].chips, _hand), handname = localize(_hand, "poker_hands"), StatusText = true })
         delay(1.6)
         update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { chips = "+"..total, handname = localize(_hand, "poker_hands"), StatusText = true })
@@ -541,20 +545,20 @@ local earl = {
         }
     },
     config = {
-        max = 20,
+        per_hand = 4,
+        per_discard = 3
     },
     inversion = "c_hermit",
     pos = {x=9, y = 0},
-    use = function(self, card2, area, copier)
-        local hands_taken = G.GAME.round_resets.hands - 1
-        local discards_taken = G.GAME.round_resets.discards - 1
-        ease_hands_played(-hands_taken)
-        ease_discard(-discards_taken)
-        G.GAME.round_resets.hands = 1
-        G.GAME.round_resets.discards = 1
-        G.GAME.earl_hands = hands_taken
-        G.GAME.earl_discards = discards_taken
-        ease_dollars((hands_taken + discards_taken) * 3)
+    use = function(self, card, area, copier)
+        if not G.GAME.earl_modifiers then
+            G.GAME.earl_modifiers = {
+                discard = G.GAME.modifiers.money_per_discard,
+                hand = G.GAME.modifiers.money_per_hand
+            }
+        end
+        G.GAME.modifiers.money_per_discard = (G.GAME.modifiers.money_per_discard or 0) + card.ability.per_discard
+        G.GAME.modifiers.money_per_hand = (G.GAME.modifiers.money_per_hand or 0) + card.ability.per_hand
     end,
     can_use = function(self, card)
         return true
@@ -562,8 +566,8 @@ local earl = {
     loc_vars = function(self, q, card)
         return {
             vars = {
-                card.ability.max,
-                (G.GAME.round_resets.hands + G.GAME.round_resets.discards) * 3
+                (G.GAME.modifiers.money_per_hand or 0) + card.ability.per_hand,
+                (G.GAME.modifiers.money_per_discard or 0) + card.ability.per_discard
             }
         }
     end,
@@ -839,7 +843,8 @@ local feast = {
         }
     },
     config = {
-        select = 2
+        select = 2,
+        multiplier = 2
     },
     pos = {x=4,y=1},
     inversion = "c_temperance",
@@ -849,7 +854,7 @@ local feast = {
             local card = cards[i]
             G.E_MANAGER:add_event(Event({
                 func = function()
-                    ease_dollars(card.cost)
+                    ease_dollars(card.cost * card2.ability.multiplier)
                     card:start_dissolve()
                     return true
                 end
@@ -864,7 +869,8 @@ local feast = {
     loc_vars = function(self, q, card)
         return {
             vars = {
-                card.ability.select
+                card.ability.select,
+                card.ability.multiplier
             }
         }
     end,
@@ -893,7 +899,7 @@ local companion = {
     use = function(self, card)
         G.E_MANAGER:add_event(Event({
 			func = function()
-				G.GAME.interest_cap = G.GAME.interest_cap + (card.ability.extra)
+				G.GAME.companion_interest_cap = (G.GAME.companion_interest_cap or 0) + (card.ability.extra)
                 ease_dollars(math.min(G.GAME.interest_cap, 50))
 				return true
 			end,
@@ -948,7 +954,7 @@ local village = {
         end)
     end,
     can_use = function(self, card)
-        return true
+        return G.hand and #G.hand.cards > 0
     end,
     loc_vars = function(self, q, card)
         return {
@@ -1263,6 +1269,51 @@ local frail = {
     end
 }
 
+local inferno = {
+    key = "inferno",
+    set = "Fraud",
+    atlas = "fraud",
+    object_type = "Consumable",
+    order = -901+34,
+    dependencies = {
+        items = {
+            "set_entr_inversions"
+        }
+    },
+    config = {
+        per_past_three = 3
+    },
+    pos = {x=8,y=2},
+    inversion = "c_entr_comet",
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.per_past_three
+            }
+        }
+    end,
+    use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        for i, v in pairs(cards) do
+            v:start_dissolve()
+        end
+        if #cards > 2 then
+            ease_dollars(-(card.ability.per_past_three * (#cards - 2)))
+        end
+    end,
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        return #cards > 0
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end,
+    entr_credits = {
+        art = {"LFMoth"}
+    }
+}
+
 return {
     items = {
         master,
@@ -1288,6 +1339,7 @@ return {
         tent,
         companion,
         village,
-        frail
+        frail,
+        inferno
     }
 }

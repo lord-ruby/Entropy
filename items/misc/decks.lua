@@ -13,6 +13,11 @@ local twisted = {
     atlas = "decks",
     apply = function()
         G.GAME.modifiers.entr_twisted = true
+        G.GAME.round_resets.path_toggled = true
+        G.GAME.entr_alt = not G.GAME.entr_alt
+        G.GAME.round_resets.blind_choices.Boss = get_new_boss()
+        ease_background_colour{new_colour = Entropy.get_bg_colour(), contrast = 1}
+        if G.ARGS.spin then G.ARGS.spin.real = (G.SETTINGS.reduced_motion and 0 or 1)*(G.GAME.entr_alt and 0.3 or -0.3) end
     end
 }
 
@@ -91,7 +96,10 @@ local ambisinister = {
     G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots + 3
     Entropy.last_csl = nil
     Entropy.last_slots = nil
-  end
+  end,
+  entr_credits = {
+      idea = {"cassknows"}
+  },
 }
 
 local butterfly = {
@@ -107,7 +115,8 @@ local butterfly = {
   pos = { x = 4, y = 0 },
   atlas = "decks",
   loc_vars = function() 
-    return {vars = {G.GAME.probabilities.normal or 1}}
+    local n, d = SMODS.get_probability_vars(card, 1, 2, "entr_butterfly")
+    return {vars = {n, d}}
   end
 }
 
@@ -123,6 +132,10 @@ local gemstone = {
   key = "gemstone",
   pos = { x = 6, y = 0 },
   atlas = "decks",
+  loc_vars = function() 
+    local n, d = SMODS.get_probability_vars(card, 1, 3, "entr_gemstone")
+    return {vars = {n, d1}}
+  end,
   calculate = function(self, back, context)
     if context.using_consumeable and context.consumeable.config.center.set ~= "Rune" then
         G.GAME.gemstone_amount = (G.GAME.gemstone_amount or 0) + 1
@@ -141,7 +154,7 @@ local gemstone = {
             end
           })
           return {
-            message = "+1 "..localize("k_rune")
+            message = localize("k_plus_rune")
           }
         else
           return {
@@ -151,6 +164,130 @@ local gemstone = {
     end
   end
 }
+local update_ref = Card.update
+function Card:update(dt, ...)
+    if self.ability.glitched_crown then
+      self.last_dt = self.last_dt or 0
+      if not self.glitched_dt then
+        local soul_layer
+        for i, v in pairs(self.ability.glitched_crown) do
+          if G.P_CENTERS[v].soul_pos then soul_layer = true end
+        end
+        if soul_layer and not self.children.floating_sprite then
+          local _center = G.P_CENTERS[self.ability.glitched_crown[1]]
+          self.children.floating_sprite = Sprite(self.T.x, self.T.y, self.T.w, self.T.h, G.ASSET_ATLAS[_center[G.SETTINGS.colourblind_option and 'hc_atlas' or 'lc_atlas'] or _center.atlas or _center.set], self.config.center.soul_pos or {x=9999,y=9999})
+          self.children.floating_sprite.role.draw_major = self
+          self.children.floating_sprite.states.hover.can = false
+          self.children.floating_sprite.states.click.can = false
+        end
+      end
+      self.glitched_dt = (self.glitched_dt or 0) + (G.TIMERS.REAL - self.last_dt) * 2.5 * (Entropy.config.corrupted_speed/100)
+      self.last_dt = G.TIMERS.REAL
+      if self.glitched_dt > 3 / #self.ability.glitched_crown then
+          self.glitched_dt = 0
+          self.glitched_index = 1 + (self.glitched_index or 1)
+          if self.glitched_index > #self.ability.glitched_crown then self.glitched_index = 1 end
+          local _center = G.P_CENTERS[self.ability.glitched_crown[self.glitched_index]]
+          self.children.center.atlas = G.ASSET_ATLAS[(_center.atlas or (_center.set == 'Joker' or _center.consumeable or _center.set == 'Voucher') and _center.set) or 'centers']
+          self.children.center:set_sprite_pos(_center.pos)
+          if self.children.floating_sprite then
+            self.children.floating_sprite.atlas = G.ASSET_ATLAS[_center[G.SETTINGS.colourblind_option and 'hc_atlas' or 'lc_atlas'] or _center.atlas or _center.set]
+            self.children.floating_sprite:set_sprite_pos(_center.soul_pos or {x=9999,y=9999})
+          end
+          if self.states.hover.is then
+              self:stop_hover()
+              self:hover()
+          end
+      end
+    end
+    return update_ref(self, dt, ...)
+end
+
+local generate_UIBox_ability_tableref = Card.generate_UIBox_ability_table
+function Card:generate_UIBox_ability_table(vars_only)
+    if self.ability.glitched_crown and G.P_CENTERS[self.ability.glitched_crown[self.glitched_index]] then
+        local a = self.ability
+        local conf = self.config.center
+        local center = G.P_CENTERS[self.ability.glitched_crown[self.glitched_index]]
+        self.ability = center.config
+        self.config.center = center
+        self.ability.name = center.name
+        self.ability.set = center.set
+        local ret = generate_UIBox_ability_tableref(self, vars_only)
+        self.ability = a
+        self.config.center = conf
+        return ret
+    else
+        return generate_UIBox_ability_tableref(self, vars_only)
+    end
+end
+
+local get_type_colourref = get_type_colour
+function get_type_colour(_c, card)
+    if Entropy.IsEE() and card.debuff then
+      return Entropy.reverse_legendary_gradient
+    end
+    if card.ability and card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]] then
+        return get_type_colourref(G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]], card)
+    end
+    return get_type_colourref(_c, card)
+end
+
+local can_use_ref = G.FUNCS.can_use_consumeable
+G.FUNCS.can_use_consumeable = function(e)
+  local card = e.config.ref_table
+  if card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]] then
+    if Card.can_use_consumeable(Entropy.GetDummy(G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]], card.area, card)) then
+      e.config.colour = G.C.RED
+      e.config.button = 'use_card'
+    else
+      e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+      e.config.button = nil
+    end
+  else
+    can_use_ref(e)
+  end
+end
+
+local buy_and_use_ref = G.FUNCS.can_buy_and_use
+G.FUNCS.can_buy_and_use = function(e)
+  local card = e.config.ref_table
+  if card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]] then
+    if (((to_big(e.config.ref_table.cost) > to_big(G.GAME.dollars - G.GAME.bankrupt_at)) and (to_big(e.config.ref_table.cost) > to_big(0))) or (not Card.can_use_consumeable(Entropy.GetDummy(G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]], card.area, card)))) then
+        e.UIBox.states.visible = false
+        e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+        e.config.button = nil
+    else
+        if e.config.ref_table.highlighted then
+          e.UIBox.states.visible = true
+        end
+        e.config.colour = G.C.SECONDARY_SET.Voucher
+        e.config.button = 'buy_from_shop'
+    end
+  else  
+    buy_and_use_ref(e)
+  end
+end
+
+local corrupted = {
+  object_type = "Back",
+  order = 7006,
+  dependencies = {
+    items = {
+      "set_entr_decks"
+    }
+  },
+  config = { },
+  key = "corrupted",
+  pos = { x = 7, y = 0 },
+  atlas = "decks",
+  apply = function()
+    G.GAME.modifiers.glitched_items = (G.GAME.modifiers.glitched_items or 2) + 1
+  end,
+  entr_credits = {
+    art = {"LFMoth"}
+  }
+}
 
 if CardSleeves then
     CardSleeves.Sleeve {
@@ -159,6 +296,11 @@ if CardSleeves then
       pos = { x = 0, y = 0 },
       apply = function()
         G.GAME.modifiers.entr_twisted = true
+        G.GAME.round_resets.path_toggled = true
+        G.GAME.entr_alt = not G.GAME.entr_alt
+        G.GAME.round_resets.blind_choices.Boss = get_new_boss()
+        ease_background_colour{new_colour = Entropy.get_bg_colour(), contrast = 1}
+        G.ARGS.spin.real = (G.SETTINGS.reduced_motion and 0 or 1)*(G.GAME.entr_alt and 0.3 or -0.3)
       end
     }
     CardSleeves.Sleeve {
@@ -220,9 +362,10 @@ if CardSleeves then
     apply = function()
       G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots - 2
     end,
-    loc_vars = function() 
-      return {vars = {G.GAME.probabilities.normal or 1}}
-    end
+  loc_vars = function() 
+    local n, d = SMODS.get_probability_vars(card, 1, 2, "entr_butterfly")
+    return {vars = {n, d}}
+  end
   }
 
   CardSleeves.Sleeve {
@@ -247,7 +390,7 @@ if CardSleeves then
               end
             })
             return {
-              message = "+1 "..localize("k_rune")
+              message = localize("k_plus_rune")
             }
           else
             return {
@@ -255,7 +398,20 @@ if CardSleeves then
             }
           end
       end
+    end,
+    loc_vars = function() 
+      local n, d = SMODS.get_probability_vars(card, 1, 3, "entr_gemstone")
+      return {vars = {n, d}}
     end
+  }
+
+  CardSleeves.Sleeve {
+    key = "corrupted",
+    atlas = "sleeves",
+    pos = { x = 7, y = 0 },
+    apply = function()
+      G.GAME.modifiers.glitched_items = (G.GAME.modifiers.glitched_items or 0) + 2
+    end,
   }
 end
 
@@ -267,6 +423,7 @@ return {
       destiny,
       ambisinister,
       butterfly,
-      gemstone
+      gemstone,
+      corrupted
     }
   }

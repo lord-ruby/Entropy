@@ -86,13 +86,17 @@ local rage = {
     use = function(self, card)
         local cards = {}
         for i, v in pairs(G.playing_cards) do
-            cards[#cards+1] = v
+            if not SMODS.is_eternal(v) then
+                cards[#cards+1] = v
+            end
         end
         if #cards > 0 then 
+            local a_cards = {}
             pseudoshuffle(cards, pseudoseed("entr_rage"))
             for i = 1, math.max(math.floor(#cards/5), math.min(#cards, 5)) do
-                cards[i]:start_dissolve()
+                a_cards[#a_cards+1] = cards[i]
             end
+            SMODS.destroy_cards(a_cards)
         end
         Entropy.pact_mark("rune_entr_rage")
     end,
@@ -731,14 +735,6 @@ local gluttony = {
     end
 }
 
-local set_abilityref = Card.set_ability
-function Card:set_abilityref(...)
-    set_abilityref(self, ...)
-    if self.ability.consumeable and Entropy.has_rune("rune_entr_gluttony") then
-        self.ability.eternal = true
-    end
-end
-
 local can_sellref = Card.can_sell_card
 function Card:can_sell_card(context)
     if self.ability.eternal or SMODS.is_eternal(self, {from_sell = true}) then return false end
@@ -838,7 +834,7 @@ G.FUNCS.play_cards_from_highlighted = function(e)
         v.ability.entr_times_played = (v.ability.entr_times_played or 0) + 1
     end
     local text = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
-    if text == "Full House" and (next(SMODS.find_card("j_entr_ruby") or next(SMODS.find_card("j_entr_slipstream"))) or next(SMODS.find_card("j_entr_cassknows")) or next(SMODS.find_card("j_entr_crabus"))) then
+    if text == "Full House" and (next(SMODS.find_card("j_entr_ruby") or next(SMODS.find_card("j_entr_slipstream"))) or next(SMODS.find_card("j_entr_cassknows")) or next(SMODS.find_card("j_entr_crabus")) or next(SMODS.find_card("j_entr_grahkon")) or next(SMODS.find_card("j_entr_hexa"))) then
         check_for_unlock({type = "suburban_jungle"})
     end
     local text = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
@@ -1068,7 +1064,7 @@ local loyalty_indicator = Entropy.create_mark("loyalty", 7069, {x = 4, y = 6}, f
             func = function()
                 attention_text({
                     scale = 1.4,
-                    text = localize({ type = "variable", key = "a_xmult", vars = { 0.5 }}),
+                    text = localize({ type = "variable", key = "a_xmult", vars = { 0.5 * rune.ability.count }}),
                     hold = 2,
                     align = "cm",
                     offset = { x = 0, y = -2.7 },
@@ -1078,7 +1074,7 @@ local loyalty_indicator = Entropy.create_mark("loyalty", 7069, {x = 4, y = 6}, f
             end
         })
         return {
-            Xmult_mod = 0.5,
+            Xmult_mod = 0.5 * rune.ability.count,
         }
     elseif context.final_scoring_step then
         rune.ability.hand = rune.ability.hand + 1
@@ -1118,7 +1114,7 @@ local brimstone_indicator = Entropy.create_mark("brimstone", 7070, {x = 5, y = 6
             func = function()
                 attention_text({
                     scale = 1.4,
-                    text = localize({ type = "variable", key = "a_xmult", vars = { 3.6 }}),
+                    text = localize({ type = "variable", key = "a_xmult", vars = { 3.6 * rune.ability.count }}),
                     hold = 2,
                     align = "cm",
                     offset = { x = 0, y = -2.7 },
@@ -1128,7 +1124,7 @@ local brimstone_indicator = Entropy.create_mark("brimstone", 7070, {x = 5, y = 6
             end
         })
         return {
-            Xmult_mod = 3.6,
+            Xmult_mod = 3.6 * rune.ability.count,
         }
     end
 end)
@@ -1363,12 +1359,10 @@ local serpents = {
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
     inversion = "c_entr_oss",
     immutable = true,
-    config = {
-        dollars = 10
-    },
+    no_select = true,
+    hidden = true,
     loc_vars = function(self, q, card) return {vars = {card.ability.dollars}} end,
     use = function(self, card)
-        ease_dollars(-card.ability.dollars)
         local omens = {}
         for i, v in pairs(G.P_CENTERS) do
             if v.hidden and not v.no_collection and (not v.in_pool or v:in_pool({}) and v.key ~= "c_entr_serpents") then

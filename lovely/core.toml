@@ -10,6 +10,7 @@ pattern = '''function love.load()'''
 position = "before"
 payload = '''
 Entropy = {}
+Entropy.ee_faces = {}
 Entropy.AltBlinds = {}
 Entropy.FlipsideInversions = {}
 Entropy.FlipsidePureInversions = {}
@@ -60,7 +61,8 @@ Entropy.BlindTokenBlacklist = {
   bl_entr_endless_entropy_phase_one = true,
   bl_entr_endless_entropy_phase_two = true,
   bl_entr_endless_entropy_phase_three = true,
-  bl_entr_endless_entropy_phase_four = true
+  bl_entr_endless_entropy_phase_four = true,
+  bl_entr_void = true
 }
 Entropy.References = {}
 Entropy.RarityPoints = {
@@ -100,8 +102,13 @@ Entropy.EditionFactors = {
     ["e_cry_m"] = 1.45,
     ["e_entr_solar"] = 2.4,
     ["e_entr_sunny"] = 1.45,
-    ["e_entr_fractured"] = 2.4,
-    ["e_entr_freaky"] = 1.8,
+    ["e_entr_fractured"] = 3,
+    ["e_entr_freaky"] = 2.5,
+    ["e_entr_neon"] = 1.5,
+    ["e_entr_lowres"] = 2,
+    ["e_entr_kaleidoscopic"] = 2.5,
+    ["e_hpot_phantasmic"] = 2.25,
+    ["e_hpot_psychedelic"] = 2
 }
 Entropy.SegFaultBlacklist = {
   entr_entropic = true,
@@ -119,6 +126,7 @@ Entropy.RareInversions = {
   "c_entr_fervour",
   "c_entr_quasar",
   "c_entr_weld",
+  "c_entr_serpents"
 }
 Entropy.FixedRecipes = {
     c_basec_basec_basec_basec_base = "j_joker",
@@ -127,13 +135,12 @@ Entropy.FixedRecipes = {
     m_cry_lightm_cry_lightm_cry_lightm_entr_fleshm_entr_flesh = "j_entr_dr_sunshine",
     m_cry_lightm_cry_lightm_cry_lightm_cry_lightm_gold = "j_entr_devilled_suns",
     c_basec_basec_basem_multm_mult = "j_jolly",
-    c_basec_basec_basem_steelm_steel = "j_steel_joker",
     m_bonusm_bonusm_bonusm_bonusm_bonus = "j_banner",
     m_multm_multm_multm_multm_mult = "j_misprint",
     m_wildm_wildm_wildm_wildm_wild = "j_ancient",
     m_glassm_glassm_glassm_glassm_glass = "j_glass",
     m_steelm_steelm_steelm_steelm_steel = "j_steel",
-    m_stonem_stonem_stonem_stonem_stone = "j_paved",
+    m_stonem_stonem_stonem_stonem_stone = Cryptid and "j_cry_paved" or "j_marble",
     m_goldm_goldm_goldm_goldm_gold = "j_ticket",
     m_luckym_luckym_luckym_luckym_lucky = "j_lucky_cat",
     m_entr_fleshm_entr_fleshm_entr_fleshm_entr_fleshm_entr_flesh = "j_entr_grotesque_joker",
@@ -143,6 +150,7 @@ Entropy.FixedRecipes = {
     c_basec_basec_basec_basem_entr_disavowed = "j_entr_surreal_joker",
     c_basem_multm_multm_multm_mult = "j_entr_red_fourty",
     c_basem_bonusm_bonusm_multm_mult = "j_entr_purple_joker",
+    m_entr_radiantm_entr_radiantm_entr_radiantm_entr_radiantm_entr_radiant = "j_entr_sunny_joker"
 }
 Entropy.EnhancementPoints ={
     m_entr_disavowed=0,
@@ -151,17 +159,21 @@ Entropy.EnhancementPoints ={
     m_mult=3.2,
     m_wild=4.1,
     m_lucky=4.2,
-    m_stone=5.1,
-    m_entr_flesh=5.2,
-    m_steel=6.1,
-    m_gold=6.2,
-    m_cry_echo=6.3,
-    m_glass=7.1,
-    m_cry_light=7.2,
-    m_entr_dark = 8,
-    m_cry_abstract=9.1,
-    m_entr_prismatic = 20,
-    m_entr_ceramic = 6.5
+    m_stone=4.1,
+    m_entr_flesh=4.2,
+    m_steel=5.1,
+    m_gold=5.2,
+    m_cry_echo=5.3,
+    m_glass=5.5,
+    m_cry_light=6.2,
+    m_entr_dark = 6.1,
+    m_cry_abstract=7.1,
+    m_entr_prismatic = 15,
+    m_entr_ceramic = 5.5,
+    m_entr_radiant = 5.7,
+    m_hpot_lead = 5.15,
+    m_entr_ethereal = 8.5,
+    m_entr_samsara = 9
 }
 Entropy.TMTrainerEffects = {}
 Entropy.TMTrainerScoring = {}
@@ -201,7 +213,46 @@ match_indent = true
 target = "game.lua"
 pattern = 'Cryptid.profile_prefix = Jen and "J" or "M"'
 position = "after"
-payload = 'Cryptid.profile_prefix = Cryptid.profile_prefix == "M" and "E" or Cryptid.profile_prefix.."E"'
+payload = 'local pref = Entropy_config.profile_prefix and "E" or "M"; Cryptid.profile_prefix = Cryptid.profile_prefix == "M" and pref or Cryptid.profile_prefix..pref'
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = 'self:load_profile(G.SETTINGS.profile or 1)'
+position = "before"
+payload = '''
+if not Cryptid then Cryptid = {profile_prefix = Entropy_config.profile_prefix and "E" or ""} end;
+Cryptid.profile_prefix = Entropy_config.profile_prefix and "E" or ""
+if type(G.SETTINGS.profile) ~= "string" or G.SETTINGS.profile:sub(1, #Cryptid.profile_prefix) ~= Cryptid.profile_prefix then
+    G.SETTINGS.profile = Cryptid.profile_prefix .. "1"
+end
+for i = 1, 3 do
+    G.PROFILES[Cryptid.profile_prefix .. i] = {}
+end'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = 'for i = 1, 3 do'
+position = "after"
+payload = 'if not Cryptid then Cryptid = {profile_prefix = (Entropy.config or Entropy_config).profile_prefix and "E" or ""} end; i = Cryptid.profile_prefix .. i'
+match_indent = true
+
+
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "local settings = get_compressed('settings.jkr')"
+position = "after"
+payload = '''Entropy_config = {profile_prefix = true}
+local entr_conf = get_compressed("config/entr.jkr")
+if entr_conf then
+  Entropy_config = STR_UNPACK(entr_conf)
+end
+'''
 match_indent = true
 
 
@@ -262,26 +313,13 @@ if G.GAME.modifiers.ccd2 then
         local ptype = pseudorandom_element({
             "Booster",
             "Voucher",
-            "Tarot",
             "Joker",
-            "Consumeable",
-        }, pseudoseed("segfault"))
-        if ptype == "Consumeable" then
-            key = G.P_CENTERS[Cryptid.random_consumable("entr_segfault", nil, "c_entr_segfault").key]
-            while key.no_doe or G.GAME.banned_keys[key.key] do
-              key = G.P_CENTERS[Cryptid.random_consumable("entr_segfault", nil, "c_entr_segfault").key]
-            end
-            key = key.key
-        else
-            key = pseudorandom_element(G.P_CENTERS, pseudoseed("segfault"))
-            local tries = 0
-            while key.set ~= ptype or key.no_doe or G.GAME.banned_keys[key.key] do --i love when my key has keys
-                key = pseudorandom_element(G.P_CENTERS, pseudoseed("segfault"))
-                tries = tries + 1
-            end
-            key = key.key
-        end
-        v:set_ability(G.P_CENTERS[key])
+            "Consumeables",
+            "Consumeables",
+        }, pseudoseed("redefined"))
+        local center = Entropy.GetPooledCenter(ptype)
+        v:set_ability(center)
+        discover_card(center)
     end
 end
 '''
@@ -325,9 +363,14 @@ position = "after"
 payload = '''
 elseif self.exponent[2] > 0 then
     local initial = to_big(get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling)
-    initial = Big:create(initial)
-    initial = initial:arrow(self.exponent[1], self.exponent[2])
-    self.chips = initial
+    if Big then
+      initial = Big:create(initial)
+      initial = initial:arrow(self.exponent[1], self.exponent[2])
+      self.chips = initial
+    else
+      initial = initial ^ self.exponent[2]
+      self.chips = initial
+    end
 end
 '''
 match_indent = true
@@ -353,7 +396,11 @@ position = "after"
 payload = '''
 if blind_choice.config.exponent then
       local initial = get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling
-      initial = initial:arrow(blind_choice.config.exponent[1], blind_choice.config.exponent[2])
+      if Big then
+        initial = initial:arrow(blind_choice.config.exponent[1], blind_choice.config.exponent[2])
+      else
+        initial = initial ^ blind_choice.config.exponent[2]
+      end
       blind_amt = initial
 end
 '''
@@ -1340,7 +1387,11 @@ position = "after"
 payload = '''
     if Entropy.DeckOrSleeve("butterfly") then
         for i = 1, Entropy.DeckOrSleeve("butterfly") do
-            t[#t+1] = G.butterfly_jokers
+            local jok = {cards = {}}
+            for i, v in pairs(G.butterfly_jokers.cards) do
+              if pseudorandom("entr_butterfly") < 0.5 then jok.cards[#jok.cards+1] = v end
+            end
+            t[#t+1] = jok
         end
     end
 '''
@@ -1414,6 +1465,7 @@ pattern = '''
     STATE = G.STATE,
     ACTION = G.action or nil,
     BLIND = G.GAME.blind:save(),
+    SCORING_CALC = G.GAME.current_scoring_calculation:save(),
     BACK = G.GAME.selected_back:save(),
     VERSION = G.VERSION
   }
@@ -1436,6 +1488,7 @@ payload = '''
     STATE = G.STATE,
     ACTION = G.action or nil,
     BLIND = G.GAME.blind:save(),
+    SCORING_CALC = G.GAME.current_scoring_calculation:save(),
     BACK = G.GAME.selected_back:save(),
     VERSION = G.VERSION
   }
@@ -1528,11 +1581,6 @@ if self.ability.name == "The Hanged Man" then
     for i = 1, #G.hand.highlighted do
         if SMODS.is_eternal(G.hand.highlighted[i]) then return false end
     end
-end
-if self.ability.name == "Death" then
-    local rightmost = G.hand.highlighted[1]
-    for i=1, #G.hand.highlighted-1 do if G.hand.highlighted[i].T.x > rightmost.T.x then rightmost = G.hand.highlighted[i] end end
-    for i=1, #G.hand.highlighted do if SMODS.is_eternal(G.hand.highlighted[i]) and rightmost ~= G.hand.highlighted[i] then return false end end
 end
 '''
 match_indent = true
@@ -1818,5 +1866,1137 @@ payload = '''
 elseif G.GAME.round_resets.blind == G.P_BLINDS.bl_big then
    G.GAME.round_resets.blind_states.Big = 'Defeated'
 elseif G.GAME.blind_on_deck ~= "Red" then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'game.lua'
+pattern = '''
+    if G.SPLASH_BACK then
+        if G.debug_background_toggle then
+            love.graphics.clear({0,1,0,1})
+        else
+            love.graphics.push()
+            G.SPLASH_BACK:translate_container()
+            G.SPLASH_BACK:draw()
+            love.graphics.pop()
+        end
+    end
+'''
+position = 'after'
+payload = '''
+    if G.SPLASH_EE then
+        if G.debug_background_toggle then
+            
+        else
+            love.graphics.push()
+            G.SPLASH_EE:translate_container()
+            G.SPLASH_EE:draw()
+            love.graphics.pop()
+        end
+    end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+if G.GAME.modifiers.no_blind_reward and G.GAME.modifiers.no_blind_reward[type] then _reward = nil end
+'''
+position = 'after'
+payload = '''
+if (G.GAME.modifiers.no_blind_reward and G.GAME.modifiers.no_blind_reward[type]) or ((type == "Big" or type == "Small") and G.GAME.EEBuildup) then _reward = nil end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''if main_end then'''
+position = "before"
+payload = '''
+if cfg and cfg.cry_multiuse then
+	local loc = {}
+	localize{type = 'other', key = 'cry_multiuse', nodes = loc, vars = {cfg.cry_multiuse, colours = {get_type_colour(cfg, card)}}}
+	desc_nodes[#desc_nodes+1] = loc[1]
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''if cfg and cfg.cry_multiuse then
+	local loc = {}
+	localize{type = 'other', key = 'cry_multiuse', nodes = loc, vars = {cfg.cry_multiuse}}
+	desc_nodes[#desc_nodes+1] = loc[1]
+end'''
+position = "at"
+payload = '''
+
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''if (prev_state == G.STATES.TAROT_PACK or prev_state == G.STATES.PLANET_PACK or'''
+position = "before"
+payload = '''
+if cry_muse and not (SMODS.Mods["Cryptid"] or {}).can_load then
+	card.ability.cry_multiuse = card.ability.cry_multiuse - 1
+	card.ability.extra_value = -1 * math.max(1, math.floor(card.cost/2))
+	card:set_cost()
+	delay(0.4)
+
+	-- i make my own card eval status text :D
+
+	card:juice_up()
+	play_sound('generic1')
+	attention_text({
+		text = format_ui_value(card.ability.cry_multiuse),
+		scale = 1.1,
+		hold = 0.6,
+		major = card,
+		backdrop_colour = G.C.SET[card.config.center.set],
+		align = 'bm',
+		offset = {x = 0, y = 0.2}
+	})
+
+	delay(0.8)
+ 	if card.playing_card then
+		draw_card(G.play, G.hand, 1, 'up', true, card, nil, true)
+ 	elseif not G.GAME.modifiers.cry_beta then
+		if to_big(#G.consumeables.cards) < to_big(G.consumeables.config.card_limit) then
+			draw_card(G.play, G.consumeables, 1, 'up', true, card, nil, true)
+		else card:start_dissolve()
+		end
+  	else
+		if to_big(#G.jokers.cards) < to_big(G.jokers.config.card_limit) then
+			draw_card(G.play, G.jokers, 1, 'up', true, card, nil, true)
+		else card:start_dissolve()
+		end
+    end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = '''if card.area and (not nc or card.area == G.pack_cards) then card.area:remove_card(card) end'''
+position = "before"
+payload = '''
+local cry_muse = false
+if card.ability.cry_multiuse and not (card.ability.cry_multiuse <= 1) then
+	cry_muse = true
+	dont_dissolve = true
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = SMODS.Rarity:get_rarity_badge(card.config.center.rarity) end'''
+position = "at"
+payload = '''
+if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then 
+  local rarity = card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]] and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]].rarity or card.config.center.rarity
+  card_type = SMODS.Rarity:get_rarity_badge(rarity) 
+end
+'''
+match_indent = true 
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''local card = create_card(v.type, area, nil, nil, nil, nil, nil, 'sho')'''
+position = "at"
+payload = '''
+local card = create_card(v.type, area, nil, nil, nil, nil, nil, 'sho')
+Entropy.post_create_card(card)
+'''
+match_indent = true 
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''pack_cards[i] = card'''
+position = "after"
+payload = '''
+Entropy.post_create_card(card, true)
+'''
+match_indent = true 
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+if self.ability.consumeable.mod_num >= #G.hand.highlighted and #G.hand.highlighted >= (self.ability.consumeable.min_highlighted or 1) then'''
+position = "at"
+payload = '''
+
+if (self.ability.consumeable.max_highlighted or 9999) + (self.area == G.hand and 1 or 0) >= #G.hand.highlighted and #G.hand.highlighted - (self.area == G.hand and 1 or 0) >= (self.ability.consumeable.min_highlighted or 1) then
+'''
+match_indent = true 
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+local temp_pool =   (self.ability.name == 'The Wheel of Fortune' and self.eligible_strength_jokers) or 
+                            ((self.ability.name == 'Ectoplasm' or self.ability.name == 'Hex') and self.eligible_editionless_jokers) or {}'''
+position = "at"
+payload = '''
+
+local temp_pool =   (self.ability.name == 'The Wheel of Fortune' and self.eligible_strength_jokers) or 
+                            (self.eligible_editionless_jokers)
+
+if not temp_pool then
+    temp_pool = {}
+    for i, v in pairs(G.jokers.cards) do
+        if not v.edition then
+            temp_pool[#temp_pool+1] = v
+        end
+    end
+end
+'''
+match_indent = true 
+
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/game_object.lua"]'''
+pattern = '''
+if self.draw_hand == true then G.FUNCS.draw_from_deck_to_hand() end
+'''
+position = "at"
+payload = '''
+if self.draw_hand == true or G.GAME.mannaz_draw or next(SMODS.find_card("j_entr_miracle_berry")) or (next(Entropy.find_runes("rune_entr_oss")) and Entropy.DeckOrSleeve("corrupted")) then G.FUNCS.draw_from_deck_to_hand(); G.GAME.mannaz_draw = nil end
+'''
+match_indent = true 
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+function SMODS.calculate_destroying_cards(context, cards_destroyed, scoring_hand)
+    for i,card in ipairs(context.cardarea.cards) do
+'''
+position = "at"
+payload = '''
+function SMODS.calculate_destroying_cards(context, cards_destroyed, scoring_hand)
+    local cards = {}
+    for i,card in ipairs(context.cardarea.cards) do
+      if not SMODS.is_eternal(card) then
+        cards[#cards+1] = card
+      end
+    end
+    for i,card in ipairs(cards) do
+'''
+match_indent = true 
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''if SMODS.has_enhancement(scoring_hand[i], 'm_glass') and scoring_hand[i]:can_calculate() and pseudorandom('glass') < G.GAME.probabilities.normal/(scoring_hand[i].ability.name == 'Glass Card' and scoring_hand[i].ability.extra or G.P_CENTERS.m_glass.config.extra) then'''
+position = "at"
+payload = '''
+if (SMODS.has_enhancement(scoring_hand[i], 'm_glass')
+   and not scoring_hand[i].debuff
+   and SMODS.pseudorandom_probability(scoring_hand[i], 'glass', 1, scoring_hand[i].ability.extra or G.P_CENTERS.m_glass.config.extra)
+   and not SMODS.is_eternal(scoring_hand[i]) then'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if self.ability.name == 'The Wheel of Fortune' then"
+position = "before"
+payload = '''
+if self.ability.name == "The Hanged Man" then
+    for i = 1, #G.hand.highlighted do
+        if SMODS.is_eternal(G.hand.highlighted[i]) then return false end
+    end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''
+function juice_card(card)
+    G.E_MANAGER:add_event(Event({
+        trigger = 'immediate',
+        func = (function() card:juice_up(0.7);return true end)
+    }))
+end
+'''
+position = "at"
+payload = '''
+function juice_card(card)
+    G.E_MANAGER:add_event(Event({
+        trigger = 'immediate',
+        func = (function() if card.juice_up then card:juice_up(0.7) end return true end)
+    }))
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+local bonus_chips = self.ability.bonus + (self.ability.perma_bonus or 0)
+'''
+position = "at"
+payload = '''
+self.ability.bonus = self.ability.bonus or 0
+self.ability.perma_h_x_chips = self.ability.perma_h_x_chips or 0
+self.ability.perma_x_chips = self.ability.perma_x_chips or 0
+self.ability.perma_x_mult = self.ability.perma_x_mult or 0
+self.ability.perma_h_x_mult = self.ability.perma_h_x_mult or 0
+local bonus_chips = self.ability.bonus + (self.ability.perma_bonus or 0)
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+local banned_cards, banned_tags, banned_other = {}, {}, {}
+'''
+position = "after"
+payload = '''
+local banned_cards, banned_tags, banned_other = {}, {}, {}
+    if challenge.restrictions and challenge.restrictions.banned_cards then
+      local banned = {}
+      for i, v in pairs(challenge.restrictions.banned_cards) do
+          if G.P_CENTERS[v.id] then
+            banned[#banned+1] = v
+          end
+      end
+      challenge.restrictions.banned_cards = banned
+    end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+for _,v in ipairs(post) do effects[#effects+1] = v end
+'''
+position = "at"
+payload = '''
+if not post then return end
+for _,v in ipairs(post) do effects[#effects+1] = v end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+if args and args.main_scoring and eval.individual then
+'''
+position = "at"
+payload = '''
+if not post then return end
+if args and args.main_scoring and eval and eval.individual then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+if next(post) then SMODS.trigger_effects({post}, card) end
+'''
+position = "at"
+payload = '''
+if not post then return end
+if next(post) then SMODS.trigger_effects({post}, card) end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+for _,v in ipairs(available_enhancements) do
+'''
+position = "at"
+payload = '''
+local new_opts = {}
+for _,v in ipairs(available_enhancements) do
+  if not (G.GAME.banned_keys[v.key] or v.no_doe) then
+    new_opts[#new_opts + 1] = v
+  end
+end
+if #new_opts == 0 then
+  new_opts[1] = "m_mult"
+end
+for _,v in ipairs(new_opts) do
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+local seal_poll = pseudorandom(pseudoseed(key or 'stdseal'..G.GAME.round_resets.ante))
+'''
+position = "before"
+payload = '''
+local new_opts = {}
+for _,v in ipairs(available_seals) do
+  if not (G.GAME.banned_keys[v.key] or v.no_doe) then
+    new_opts[#new_opts + 1] = v
+  end
+end
+if #new_opts == 0 then
+  new_opts[1] = "Red"
+end
+available_seals = new_opts
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/UI_definitions.lua'''
+pattern = '''
+        {n=G.UIT.C, config={align = "cr", padding = 0.01, r = 0.1, colour = G.C.CHIPS, minw = 1.1}, nodes={
+          {n=G.UIT.T, config={text = number_format(G.GAME.hands[handname].chips, 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}},
+          {n=G.UIT.B, config={w = 0.08, h = 0.01}}
+        }},
+        {n=G.UIT.T, config={text = "X", scale = 0.45, colour = G.C.MULT}},
+        {n=G.UIT.C, config={align = "cl", padding = 0.01, r = 0.1, colour = G.C.MULT, minw = 1.1}, nodes={
+          {n=G.UIT.B, config={w = 0.08,h = 0.01}},
+          {n=G.UIT.T, config={text = number_format(G.GAME.hands[handname].mult, 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}}
+        }}
+'''
+position = "at"
+payload = '''
+        {n=G.UIT.C, config={align = "cr", padding = 0.01, r = 0.1, colour = (G.GAME.badarg or {})[handname] and HEX("FF0000") or G.C.CHIPS, minw = 1.1}, nodes={
+          {n=G.UIT.T, config={text = (G.GAME.badarg or {})[handname] and "BAD" or number_format(G.GAME.hands[handname].chips, 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}},
+          {n=G.UIT.B, config={w = 0.08, h = 0.01}}
+        }},
+        {n=G.UIT.T, config={text = "X", scale = 0.45, colour = (G.GAME.badarg or {})[handname] and HEX("FF0000") or G.C.MULT}},
+        {n=G.UIT.C, config={align = "cl", padding = 0.01, r = 0.1, colour = (G.GAME.badarg or {})[handname] and HEX("FF0000") or G.C.MULT, minw = 1.1}, nodes={
+          {n=G.UIT.B, config={w = 0.08,h = 0.01}},
+          {n=G.UIT.T, config={text = (G.GAME.badarg or {})[handname] and "ARG" or number_format(G.GAME.hands[handname].mult, 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}}
+        }}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''
+local new_card = new_card or Card(other.T.x, other.T.y, G.CARD_W*(card_scale or 1), G.CARD_H*(card_scale or 1), G.P_CARDS.empty, G.P_CENTERS.c_base, {playing_card = playing_card, bypass_back = G.GAME.selected_back.pos})
+'''
+position = "at"
+payload = '''
+other.T = other.T or {x = 1, y = 1, w = 1, h = 1}
+local new_card = new_card or Card(other.T.x, other.T.y, G.CARD_W*(card_scale or 1), G.CARD_H*(card_scale or 1), G.P_CARDS.empty, G.P_CENTERS.c_base, {playing_card = playing_card, bypass_back = G.GAME.selected_back.pos})
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''
+                    if not extra or not extra.no_juice then
+                        card:juice_up(0.6, 0.1)
+                        G.ROOM.jiggle = G.ROOM.jiggle + 0.7
+                    end
+'''
+position = "at"
+payload = '''
+                    if not extra or not extra.no_juice and card and card.juice_up then
+                        card:juice_up(0.6, 0.1)
+                        G.ROOM.jiggle = G.ROOM.jiggle + 0.7
+                    end
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/game_object.lua"]'''
+pattern = '''
+if center.set ~= self.key then SMODS.insert_pool(G.P_CENTER_POOLS[self.key], center) end
+'''
+position = "before"
+payload = '''
+if not center then return end
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+if G.GAME.blind then t[#t + 1] = { object = G.GAME.blind, scored_card = G.GAME.blind.children.animatedSprite } end
+'''
+position = "at"
+payload = '''
+if G.GAME.blind and G.GAME.blind.children then t[#t + 1] = { object = G.GAME.blind, scored_card = G.GAME.blind.children.animatedSprite } end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Multiplayer "compatibility/TheOrder.lua"]'''
+pattern = '''
+SMODS.Booster:take_ownership_by_kind("Standard", {
+	create_card = function(self, card, i)
+		local s_append = "" -- MP.get_booster_append(card)
+		local b_append = MP.ante_based() .. s_append
+
+		local _edition = poll_edition("standard_edition" .. b_append, 2, true)
+		local _seal = SMODS.poll_seal({ mod = 10, key = "stdseal" .. b_append })
+
+		return {
+			set = (pseudorandom(pseudoseed("stdset" .. b_append)) > 0.6) and "Enhanced" or "Base",
+			edition = _edition,
+			seal = _seal,
+			area = G.pack_cards,
+			skip_materialize = true,
+			soulable = true,
+			key_append = "sta" .. s_append,
+		}
+	end,
+}, true)
+'''
+position = "at"
+payload = '''
+SMODS.Booster:take_ownership_by_kind("Standard", {
+	create_card = function(self, card, i)
+		local s_append = "" -- MP.get_booster_append(card)
+		local b_append = MP.ante_based() .. s_append
+
+		local _edition = poll_edition("standard_edition" .. b_append, 2, true)
+		local _seal = SMODS.poll_seal({ mod = 10, key = "stdseal" .. b_append })
+    local most_common
+    if next(SMODS.find_card("j_entr_photocopy")) and i == 1 then
+      most_common = Entropy.most_common_card()
+    end
+    local key
+    if pseudorandom("entr_rare_standard") < 0.003 or Entropy.has_rune("rune_entr_oss") then
+      if Entropy.has_rune("rune_entr_oss") then 
+        Entropy.has_rune("rune_entr_oss").triggered = true 
+      end
+      calculate_runes({generate_rare_consumable = true})
+      key = "m_entr_ethereal"
+    end
+		return {
+			set = not key and (pseudorandom(pseudoseed("stdset" .. b_append)) > 0.6) and "Enhanced" or "Base" or nil,
+			edition = _edition,
+			seal = _seal,
+			area = G.pack_cards,
+			skip_materialize = true,
+			soulable = true,
+			key_append = "sta" .. s_append,
+      rank = most_common and most_common.id or nil,
+      suit = most_common and most_common.suit or nil,
+      enhancement = key,
+		}
+	end,
+}, true)
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''game.lua'''
+pattern = '''
+if _ch.consumeables then
+    for k, v in ipairs(_ch.consumeables) do
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                add_joker(v.id, nil, k ~= 1)
+            return true
+            end
+        }))
+    end
+end
+'''
+position = "at"
+payload = '''
+if _ch.consumeables then
+    for k, v in ipairs(_ch.consumeables) do
+        G.E_MANAGER:add_event(Event({
+            func = function()
+                local _joker = add_joker(v.id, v.edition, k ~= 1)
+                if v.stickers then
+                  for i, _v in ipairs(v.stickers) do
+                    SMODS.Stickers[_v]:apply(_joker, true)
+                  end
+                end
+                if v.eternal then _joker:set_eternal(true) end
+                if v.pinned then _joker.pinned = true end
+                if v.rental then _joker:set_rental(true) end
+            return true
+            end
+        }))
+    end
+end
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+for i=1, highlighted_count do
+'''
+position = "at"
+payload = '''
+G.E_MANAGER:add_event(Event{
+  trigger = "after",
+  blocking = false,
+  func = function()
+      for i, v in pairs(G.discard.cards) do
+          v.already_discarded = nil
+      end
+      for i, v in pairs(G.hand.cards) do
+          v.already_discarded = nil
+      end
+      return true
+  end
+})
+for i=1, highlighted_count do
+  if not G.hand.highlighted[i] or G.hand.highlighted[i].already_discarded then break end
+  G.hand.highlighted[i].already_discarded = true
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+local _, eff = next(reps[j])
+'''
+position = "before"
+payload = '''
+if not reps[j] then break end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''tag.lua'''
+pattern = '''
+if self.name == 'Orbital Tag' then
+'''
+position = "after"
+payload = '''
+if not self.ability.orbital_hand or self.ability.orbital_hand == "[poker hand]" then
+  self.ability.orbital_hand = "High Card"
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+local in_scoring = scoring_hand and SMODS.in_scoring(card, context.scoring_hand)
+'''
+position = "at"
+payload = '''
+local area = context.scoring_hand
+if context.cardarea == G.play and G.rubber_cards then area = G.rubber_cards.cards; context.scoring_hand = G.rubber_cards.cards; scoring_hand = G.rubber_cards.cards end
+local in_scoring = scoring_hand and SMODS.in_scoring(card, area)
+if (area[1]) == card and card.config.center.key == "j_entr_false_vacuum_collapse" then
+  in_scoring = true
+end
+if G.rubber_cards and scoring_hand [_] == scoring_hand [_-1] then
+  card_eval_status_text(
+    card,
+    "extra",
+    nil,
+    nil,
+    nil,
+    { message = localize("k_bounce_ex"), sound = "entr_bounce" }
+  )
+end
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events'''
+pattern = '''
+    for i=1, #scoring_hand do
+        --Highlight all the cards used in scoring and play a sound indicating highlight
+        highlight_card(scoring_hand[i],(i-0.999)/5,'up')
+    end
+'''
+position = "at"
+payload = '''
+    for i=1, #scoring_hand do
+        --Highlight all the cards used in scoring and play a sound indicating highlight
+        local area = context.scoring_hand
+        if scoring_hand[i].area == G.play and G.rubber_cards then area = G.rubber_cards.cards end
+        local in_scoring = scoring_hand and SMODS.in_scoring(card, area)
+        if in_scoring then
+          highlight_card(scoring_hand[i],(i-0.999)/5,'up')
+        end
+    end
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''
+config.saved and 
+{n=G.UIT.C, config={padding = 0.05, align = 'cm'}, nodes={
+'''
+position = "at"
+payload = '''
+config.saved and G.GAME.saved_text and not G.GAME.no_saved and
+{n=G.UIT.C, config={padding = 0.05, align = 'cm'}, nodes={
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if G.hand and (#G.hand.highlighted == 1) and G.hand.highlighted[1] and (not G.hand.highlighted[1].edition) then return true end"
+position = "at"
+payload = '''
+if self.area ~= G.hand then
+    return G.hand and (#G.hand.highlighted == 1) and G.hand.highlighted[1] and (not G.hand.highlighted[1].edition)
+else
+    local idx = 1
+    if G.hand.highlighted[1] == self then
+        local idx = 2
+    end
+    return (#G.hand.highlighted == 2) and (not G.hand.highlighted[idx].edition)
+end
+'''
+match_indent = true
+
+# Prevent counting CCD consumables for pack uses
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = "if area == G.consumeables then"
+position = "at"
+payload = "if area == G.consumeables or area == G.hand then"
+match_indent = true
+
+# Fix bugs from removing CCD
+# This really shouldn't be in the card drawing code, but it doesn't really matter since that's where it crashes anyway lol
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if not self.config.center.discovered and (self.ability.consumeable or self.config.center.unlocked) and not self.config.center.demo and not self.bypass_discovery_center then"
+position = "before"
+payload = "if self.ability.set == 'Enhanced' then self.ability.consumeable = nil end"
+match_indent = true
+
+# Remove CCD from enhanced cards
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if center.consumeable then 
+	self.ability.consumeable = center.config
+end  
+'''
+position = "at"
+payload = '''
+if center.consumeable then 
+	self.ability.consumeable = center.config
+else
+	self.ability.consumeable = nil
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+if G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED then
+            if self.ability.consumeable.max_highlighted then
+'''
+position = "at"
+payload = '''
+if G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED then
+            if self.ability.consumeable and self.ability.consumeable.max_highlighted then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/card_draw.lua"]'''
+pattern = '''
+if self.debuff then
+    self.children.center:draw_shader('debuff', nil, self.ARGS.send_to_shader)
+    if self.children.front and (self.ability.delayed or not self:should_hide_front()) then
+        self.children.front:draw_shader('debuff', nil, self.ARGS.send_to_shader)
+    end
+end
+'''
+position = "at"
+payload = '''
+if self.debuff then
+    if Entropy.IsEE() then
+      self.children.center:draw_shader('entr_brimstone', nil, self.ARGS.send_to_shader)
+      if self.children.front and (self.ability.delayed or not self:should_hide_front()) then
+          self.children.front:draw_shader('entr_brimstone', nil, self.ARGS.send_to_shader)
+      end
+      if self.children.floating_sprite then
+          if type(self.config.center.soul_pos.draw) == 'function' then
+              self.config.center.soul_pos.draw(self, scale_mod, rotate_mod)
+          elseif self.children.floating_sprite then
+              if self.ability.name == 'Hologram' then
+                  self.hover_tilt = self.hover_tilt*1.5
+                  self.children.floating_sprite:draw_shader('hologram', nil, self.ARGS.send_to_shader, nil, self.children.center, 2*scale_mod, 2*rotate_mod)
+                  self.hover_tilt = self.hover_tilt/1.5
+              else
+                  self.children.floating_sprite:draw_shader('dissolve',0, nil, nil, self.children.center,scale_mod, rotate_mod,nil, 0.1 + 0.03*math.sin(1.8*G.TIMERS.REAL),nil, 0.6)
+                  self.children.floating_sprite:draw_shader('dissolve', nil, nil, nil, self.children.center, scale_mod, rotate_mod)
+              end
+          end
+          if self.edition then 
+              local edition = G.P_CENTERS[self.edition.key]
+              if edition.apply_to_float and self.children.floating_sprite then
+                  self.children.floating_sprite:draw_shader(edition.shader, nil, nil, nil, self.children.center, scale_mod, rotate_mod)                    
+              end
+          end
+      end
+    else
+      self.children.center:draw_shader('debuff', nil, self.ARGS.send_to_shader)
+      if self.children.front and (self.ability.delayed or not self:should_hide_front()) then
+          self.children.front:draw_shader('debuff', nil, self.ARGS.send_to_shader)
+      end
+    end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "card.T.x = self.T.x"
+position = "before"
+payload = '''
+local edi = self.edition or {}
+if edi.type then
+	if card.ability.name ~= "cry-meteor"
+ 	and card.ability.name ~= "cry-exoplanet"
+  	and card.ability.name ~= "cry-stardust" then
+		card:set_edition({[edi.type] = true})
+  	end
+end
+local stickers = {'eternal', 'perishable', 'rental', 'banana'}
+for _, v in ipairs(stickers) do
+	if self.ability[v] then
+		card.ability[v] = self.ability[v]
+	end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Cryptid "lib/forcetrigger.lua"]'''
+pattern = "if Talisman and not Talisman.config_file.disable_anims then"
+position = "at"
+payload = '''
+if Talisman and not Talisman.config_file.disable_anims and (not context or not context.no_sound) then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Cryptlib "forcetrigger.lua"]'''
+pattern = "if Talisman and not Talisman.config_file.disable_anims then"
+position = "at"
+payload = '''
+if Talisman and not Talisman.config_file.disable_anims and (not context or not context.no_sound) then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''card.lua'''
+pattern = "eligible_card:set_edition(edition, true)"
+position = "at"
+payload = '''
+if eligible_card then eligible_card:set_edition(edition, true) end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+if next(effects) then
+    SMODS.calculate_card_areas('jokers', context, effects, { main_scoring = true })
+    SMODS.calculate_card_areas('individual', context, effects, { main_scoring = true })
+end
+'''
+position = "at"
+payload = '''
+if next(effects) then
+    if card.config.center.key == "j_entr_false_vacuum_collapse" then
+      local fvc_cards = {}
+      for i, v in pairs(G.play.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
+      for i, v in pairs(G.jokers.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
+      for i, v in pairs(fvc_cards) do
+        v.config.center:calculate(v, {individual = true, card = card})
+      end
+    end
+    SMODS.calculate_card_areas('jokers', context, effects, { main_scoring = true })
+    SMODS.calculate_card_areas('individual', context, effects, { main_scoring = true })
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+  local t =   create_UIBox_generic_options({padding = 0,contents ={
+      {n=G.UIT.R, config={align = "cm", padding = 0, draw_layer = 1, minw = 4}, nodes={
+        create_tabs(
+        {tabs = {
+            {
+                label = 1,
+                chosen = G.focused_profile == 1,
+                tab_definition_function = G.UIDEF.profile_option,
+                tab_definition_function_args = 1
+            },
+            {
+                label = 2,
+                chosen = G.focused_profile == 2,
+                tab_definition_function = G.UIDEF.profile_option,
+                tab_definition_function_args = 2
+            },
+            {
+                label = 3,
+                chosen = G.focused_profile == 3,
+                tab_definition_function = G.UIDEF.profile_option,
+                tab_definition_function_args = 3
+            }
+        },
+'''
+position = "at"
+payload = '''
+if not Cryptid then Cryptid = {profile_prefix = Entropy.config.profile_prefix and "E" or ""} end;
+  local t =   create_UIBox_generic_options({padding = 0,contents ={
+      {n=G.UIT.R, config={align = "cm", padding = 0, draw_layer = 1, minw = 4}, nodes={
+        create_tabs(
+        {tabs = {
+             {
+                label = Cryptid.profile_prefix..1,
+                chosen = G.focused_profile == Cryptid.profile_prefix..1,
+                tab_definition_function = G.UIDEF.profile_option,
+                tab_definition_function_args = Cryptid.profile_prefix..1
+            },
+            {
+                label = Cryptid.profile_prefix..2,
+                chosen = G.focused_profile == Cryptid.profile_prefix..2,
+                tab_definition_function = G.UIDEF.profile_option,
+                tab_definition_function_args = Cryptid.profile_prefix..2
+            },
+            {
+                label = Cryptid.profile_prefix..3,
+                chosen = G.focused_profile == Cryptid.profile_prefix..3,
+                tab_definition_function = G.UIDEF.profile_option,
+                tab_definition_function_args = Cryptid.profile_prefix..3
+            }
+        },
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+{n=G.UIT.O, config={object = DynaText({string = {{prefix = localize('$'), ref_table = card, ref_value = 'cost'}}, colours = {G.C.MONEY},shadow = true, silent = true, bump = true, pop_in = 0, scale = 0.5})}},
+'''
+position = 'at'
+payload = '''
+{n=G.UIT.O, config={object = DynaText({string = {{prefix = not card.ability.beast_mark and localize('$') or nil, ref_table = not card.ability.beast_mark and card or {cost = "1 Card"}, ref_value = 'cost'}}, colours = {card.ability.beast_mark and G.C.RED or G.C.MONEY},shadow = true, silent = true, bump = true,pop_in = 0, scale = 0.5})}},
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''
+if self.cost > 0 then 
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+'''
+position = 'at'
+payload = '''
+if self.ability.beast_mark then
+    local cards = {}
+    for i, v in pairs(G.playing_cards) do if not SMODS.is_eternal(v) then cards[#cards+1] = v end end
+    pseudoshuffle(cards, "entr_beast_mark")
+    local card = cards[1]
+    card.area:remove_card(card)
+    G.hand:emplace(card)
+    delay(1)
+    G.E_MANAGER:add_event(Event{
+      func = function()
+        --G.hand.cards[1]:flip()
+        return true
+      end
+    })
+    delay(1)
+    SMODS.destroy_cards(card)
+    delay(2)
+    G.E_MANAGER:add_event(Event{
+      func = function()
+        if SMODS.Centers[(booster_obj or {}).key] and booster_obj then
+            G.STATE = G.STATES.SMODS_BOOSTER_OPENED
+            SMODS.OPENED_BOOSTER = self
+        end
+        return true
+      end
+    })
+elseif self.cost > 0 then 
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''
+if booster_obj and SMODS.Centers[booster_obj.key] then
+    G.STATE = G.STATES.SMODS_BOOSTER_OPENED
+    SMODS.OPENED_BOOSTER = self
+end
+'''
+position = 'at'
+payload = '''
+if not self.ability.beast_mark then
+   if booster_obj and SMODS.Centers[booster_obj.key] then
+      G.STATE = G.STATES.SMODS_BOOSTER_OPENED
+      SMODS.OPENED_BOOSTER = self
+  end
+end
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+if card.opening then return true end
+'''
+position = 'after'
+payload = '''
+local free_pack = SMODS.find_card('v_ortalab_anti_inv')
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''
+if G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED then
+'''
+position = 'after'
+payload = '''
+self.ability.consumeable.mod_num = self.ability.consumeable.mod_num or 0
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''
+if next(_eval) then
+  _eval.individual.juice_card = _area.scored_card
+'''
+position = 'at'
+payload = '''
+if next(_eval or {}) then
+  _eval.individual.juice_card = _area.scored_card
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'tag.lua'
+pattern = '''
+self.HUD_tag.states.visible = false
+'''
+position = 'at'
+payload = '''
+if self.HUD_tag then self.HUD_tag.states.visible = false end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'tag.lua'
+pattern = '''
+self.HUD_tag:remove()
+'''
+position = 'at'
+payload = '''
+if self.HUD_tag then self.HUD_tag:remove() end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+G.HUD:get_UIE_by_ID('hand_operator_container').UIBox:recalculate()
+'''
+position = 'at'
+payload = '''
+if G.HUD:get_UIE_by_ID('hand_operator_container') and G.HUD:get_UIE_by_ID('hand_operator_container').UIBox then
+  G.HUD:get_UIE_by_ID('hand_operator_container').UIBox:recalculate()
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+{n=G.UIT.R, config={align = "cm", colour = mod.badge_colour or G.C.GREEN, r = 0.1, minw = 2, minh = 0.36, emboss = 0.05, padding = 0.03*size}, nodes={
+'''
+position = 'at'
+payload = '''
+{n=G.UIT.R, config={align = "cm", colour = mod.badge_colour or G.C.GREEN, shader = shader, r = 0.1, minw = 2, minh = 0.36, emboss = 0.05, padding = 0.03*size}, nodes={
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+for i, mod in ipairs(mods) do
+  local mod_name = mod.display_name
+'''
+position = 'after'
+payload = '''
+local shader
+if mod.id == "entr" then shader = "entr_brimstone_badge" end
 '''
 match_indent = true

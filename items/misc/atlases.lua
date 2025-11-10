@@ -145,6 +145,12 @@ SMODS.Atlas {
     px = 71, 
     py = 95 
 }
+SMODS.Atlas { 
+    key = 'grahkon_atlas', 
+    path = 'grahkon.png', 
+    px = 71, 
+    py = 95 
+}
 SMODS.Atlas {
     key = "modicon",
     path = "entr_icon.png",
@@ -233,7 +239,6 @@ SMODS.Atlas {
     py = 95 
 }
 
-
 SMODS.Atlas { 
     key = 'consumables2', 
     path = 'second_consumables.png',
@@ -274,3 +279,19 @@ SMODS.Atlas {
     px = 71, 
     py = 95 
 }
+
+SMODS.Atlas {
+    key = 'crossmod_tags',
+    path = 'crossmod/crossmod_tags.png',
+    px = 34,
+    py = 34
+}
+
+if (SMODS.Mods.vallkarri or {}).can_load then
+    SMODS.Atlas {
+        key = "aes",
+        path = "crossmod/valk_aesthetics.png",
+        px = 71,
+        py = 95,
+    }
+end

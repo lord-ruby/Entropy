@@ -446,7 +446,8 @@ local fehu_indicator = {
                         mult = 1
                     end
                     Entropy.FlipThen(G.jokers.cards, function(card)
-                        card.sell_cost = card.sell_cost + context.card.sell_cost * mult
+                        card.ability.extra_value = (card.ability.extra_value or 0) + context.card.sell_cost * mult
+                        card:set_cost()
                     end)
                 end,
             }
@@ -539,7 +540,12 @@ local ansuz_indicator = {
     end
 }
 
-local raido = Entropy.create_rune("raido", {x=4,y=0}, "rune_entr_raido", 6005)
+local raido = Entropy.create_rune("raido", {x=4,y=0}, "rune_entr_raido", 6005, nil, function(self, q, card)
+    local n, d = SMODS.get_probability_vars(card, G.GAME.providence and 2 or 1, 2, "entr_raido")
+    return {
+        n, d
+    }
+end)
 local raido_indicator = {
     object_type = "RuneTag",
     order = 7005,
@@ -550,13 +556,21 @@ local raido_indicator = {
     dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
         if context.entr_ante_change then
+            local change = (G.GAME.providence or SMODS.pseudorandom_probability(rube, 'entr_raido', 1, 2)) and 0 or nil
             return {
-                ante_mod = G.GAME.providence and -context.entr_ante_change or 0,
-                func = function()
-                    return true
-                end,
+                ante_mod = change,
+                remove = true
             }
         end
+    end,
+    loc_vars = function(self, queue, rune)
+        local n, d = SMODS.get_probability_vars(rune, G.GAME.providence and 2 or 1, 2, "entr_raido")
+        return {
+            vars = {
+                n, d
+            },
+            key = Entropy.providence_ui_active(rune) and"rune_entr_raido_providence" or "rune_entr_raido"
+        }
     end
 }
 
@@ -839,17 +853,13 @@ local ihwaz_indicator = {
                 return {
                     func = function()
                         if G.GAME.providence then
-                            local edition = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
-                                return G.GAME.banned_keys[e.key] or e.no_doe
-                            end).key
+                            local edition = SMODS.poll_edition({guaranteed = true, key = "entr_ihwaz"})
                             local enhancement_type = "Enhanced"
                             local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("ihwaz")).key
                             while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
                                 enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("ihwaz")).key
                             end
-                            local seal = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("ihwaz"),function(e)
-                                return G.GAME.banned_keys[e.key] or e.no_doe
-                            end).key
+                            local seal = SMODS.poll_seal{guaranteed = true, key = "ihwaz"}
                             card:flip()
                             card:set_edition(edition)
                             card:set_ability(G.P_CENTERS[enhancement])
@@ -918,10 +928,10 @@ local algiz_indicator = {
     atlas = "rune_indicators",
     dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
-        if context.game_over then
+        if context.game_over and to_big(G.GAME.dollars -G.GAME.bankrupt_at) > to_big(G.GAME.providence and 5 or 10)  then
             return {
                 func = function()
-                    ease_dollars(G.GAME.providence and 10 or 5)
+                    ease_dollars(G.GAME.providence and -5 or -10)
                 end,
                 saved = "k_saved_algiz"
             }
@@ -1047,6 +1057,14 @@ local ehwaz_indicator = {
     calculate = function(self, rune, context)
         if context.skip_blind then
             local card = context.removed and context.removed[1] or context.destroy_card
+            local bl = ({Boss = "Big", Big = "Small"})[G.GAME.blind_on_deck]
+            local o = G.GAME.round_resets.blind_states[bl == "Big" and "Small" or "Big"]
+            G.GAME.RedBlindStates = {
+                [bl == "Big" and "Small" or "Big"] = o,
+                [bl] = "Skipped",
+                Boss = "Upcoming"
+            }
+            G.GAME.no_saved = true
             return {
                 rune_break = true,
                 func = function()
@@ -1059,8 +1077,10 @@ local ehwaz_indicator = {
                                     trigger = "after",
                                     blocking = false,
                                     func = function()
+                                        G.GAME.blind:set_blind(G.P_BLINDS[G.GAME.round_resets.blind_choices[bl]])
                                         G.STATE = G.STATES.ROUND_EVAL
                                         G.STATE_COMPLETE = false
+                                        G.GAME.no_saved = nil
                                         return true
                                     end,
                                 }))
@@ -1099,6 +1119,7 @@ local mannaz_indicator = {
     dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
         if context.post_open_booster then
+            G.GAME.mannaz_draw = true
             if rune.num_triggered then
                 return {
                     func = function()
@@ -1212,16 +1233,18 @@ local othila_indicator = {
     end
 }
 
-local oss = Entropy.create_rune("oss", {x=3,y=3}, "rune_entr_oss", 6025, nil, nil, true, {x=4,y=3})
+local oss = Entropy.create_rune("oss", {x=3,y=3}, "rune_entr_oss", 6025, {art = {"Lil. Mr. Slipstream"}}, nil, true, {x=4,y=3})
 local oss_indicator = {
     object_type = "RuneTag",
     order = 7025,
     key = "oss",
     atlas = "rune_atlas",
     pos = {x=3,y=3},
+    soul_pos = {x = 4, y = 3},
     atlas = "rune_indicators",
     dependencies = {items = {"set_entr_runes"}},
     hidden = true,
+    no_select = true,
     calculate = function(self, rune, context)
         if context.post_open_booster then
             if rune.triggered then
@@ -1271,4 +1294,4 @@ return {
         othila, othila_indicator,
         oss, oss_indicator
     }
-}
+} 

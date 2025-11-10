@@ -22,9 +22,7 @@ local changeling = {
             actual[i] = cards[i]
         end
         Entropy.FlipThen(actual, function(card)
-            card:set_edition(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("changeling_edition"), function(e)
-                return G.GAME.banned_keys[e.key] or e.no_doe
-            end).key)
+            card:set_edition(SMODS.poll_edition({guaranteed = true, key = "entr_changeling"}))
             SMODS.change_base(card, nil, pseudorandom_element({"King", "Queen", "Jack"}, pseudoseed("changeling_rank")), nil)
         end)
     end,
@@ -442,10 +440,12 @@ local ichor = {
         local joker = pseudorandom_element(Entropy.FilterTable(G.jokers.cards, function(card)
             return card.edition and card.edition.key == "e_negative"
         end), pseudoseed("ichor"))
-        joker:start_dissolve()
-        G.GAME.banned_keys[joker.config.center.key] = true
-        G.jokers:handle_card_limit(card.ability.num)
-        eval_card(joker, {banishing_card = true, banisher = card, card = joker, cardarea = joker.area})
+        if joker then
+            joker:start_dissolve()
+            G.GAME.banned_keys[joker.config.center.key] = true
+            G.jokers:handle_card_limit(card.ability.num)
+            eval_card(joker, {banishing_card = true, banisher = card, card = joker, cardarea = joker.area})
+        end
     end,
     can_use = function(self, card)
         if not G.jokers then return false end
@@ -500,14 +500,9 @@ local rejuvenate = {
         for i = 1, card2.ability.num do
             actual[i] = cards[i]
         end
-        local ed = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("rejuvenate"),function(e)
-            return G.GAME.banned_keys[e.key] or e.no_doe
-        end).key
-        local enh = G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("rejuvenate")).key]
-        while enh.no_doe do enh = G.P_CENTERS[pseudorandom_element(G.P_CENTER_POOLS.Enhanced, pseudoseed("rejuvenate")).key] end
-        local seal = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("rejuvenate"),function(e)
-            return G.GAME.banned_keys[e.key] or e.no_doe
-        end).key
+        local ed = SMODS.poll_edition({guaranteed = true, key = "entr_rejuvenate_ed"})
+        local enh = G.P_CENTERS[SMODS.poll_enhancement({guaranteed = true})]
+        local seal = SMODS.poll_seal{guaranteed = true, key = "rejuvenate"}
         local card = Entropy.GetHighlightedCards({G.hand}, card2, 1, 1)[1] or pseudorandom_element(G.hand.cards, pseudoseed("rejuvenate"), 1, 1)
         card:set_edition(ed)
         card:set_ability(enh)
@@ -557,6 +552,7 @@ local crypt = {
     atlas = "consumables",
     config = {
         select = 2,
+        rounds = 3,
     },
 	pos = {x=9,y=5},
     --soul_pos = { x = 5, y = 0},
@@ -571,6 +567,9 @@ local crypt = {
             if v ~= joker then            
                 copy_card(joker, v)
                 v:set_edition()
+                v:set_debuff(true)
+                v.ability.debuff_timer = (v.ability.debuff_timer or 0) + card2.ability.rounds
+                v.ability.debuff_timer_max = (v.ability.debuff_timer_max or 0) + card2.ability.rounds
             end
         end)
 
@@ -583,6 +582,7 @@ local crypt = {
         return {
             vars = {
                 card.ability.select,
+                card.ability.rounds
             }
         }
     end,
@@ -664,13 +664,8 @@ local entropy = {
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
         Entropy.FlipThen(Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select), function(card,area)
-            local edition = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Edition, pseudoseed("entropy"),function(e)
-                return G.GAME.banned_keys[e.key] or e.no_doe
-            end).key
-            local enhancement_type = pseudorandom_element({"Enhanced","Enhanced","Enhanced","Joker","Consumable","Voucher","Booster"}, pseudoseed("entropy"))
-            if enhancement_type == "Consumable" then
-                enhancement_type = pseudorandom_element({"Tarot","Planet","Spectral","Code","Star","Omen","Command"}, pseudoseed("entropy"))
-            end
+            local edition = SMODS.poll_edition({guaranteed = true, key = "entr_entropy"})
+            local enhancement_type = pseudorandom_element({"Enhanced","Enhanced","Enhanced","Joker","Consumeables","Voucher","Booster"}, pseudoseed("entropy"))
             local enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("entropy")).key
             while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] or (enhancement_type == "Joker" and SMODS.Rarities[G.P_CENTERS[enhancement].rarity]
                 and (
@@ -679,9 +674,7 @@ local entropy = {
                 )) do
                 enhancement = pseudorandom_element(G.P_CENTER_POOLS[enhancement_type], pseudoseed("entropy")).key
             end
-            local seal = Entropy.pseudorandom_element(G.P_CENTER_POOLS.Seal, pseudoseed("entropy"),function(e)
-                return G.GAME.banned_keys[e.key] or e.no_doe
-            end).key
+            local seal = SMODS.poll_seal{guaranteed = true, key = "entropy"}
             card:set_edition(edition)
             card:set_ability(G.P_CENTERS[enhancement])
             card:set_seal(seal)
@@ -723,10 +716,6 @@ local fervour = {
     inversion = "c_soul",
     
     atlas = "consumables",
-    config = {
-
-    },
-    no_select = true,
 	name = "entr-Fervour",
     soul_rate = 0, --probably only obtainable from flipsiding a gateway
     hidden = true, 
@@ -786,7 +775,7 @@ local quasar = {
 
     atlas = "consumables",
     config = {
-        level = 3
+        level = 2
     },
     no_select = true,
     soul_rate = 0,
@@ -835,7 +824,8 @@ local quasar = {
             return true
           end,
         }))
-        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+"..G.GAME.hands[ind].level..card.ability.level*amt })
+        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+"..(to_big(G.GAME.hands[ind].level) * to_big(amt) * to_big(card.ability.level)) })
+        delay(1.0)
         delay(2.6)
         update_hand_text(
           { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
@@ -1053,17 +1043,6 @@ function Cryptid.misprintize(card, ...)
     end
 end
 
-local manipulate = Cryptid.manipulate
-function Cryptid.manipulate(card, args)
-    if card and not card.ability.entr_pure then
-        local ret = manipulate(card, args)
-        if card.edition and card.edition.card_limit and card.area and not args.bypass_checks and not args.no_deck_effects then 
-            card.area:handle_card_limit(card.edition.card_limit)
-        end
-        return ret
-    end
-end
-
 local transcend = {
     dependencies = {
         items = {
@@ -1106,7 +1085,10 @@ local transcend = {
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)
-    end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    },
 }
 
 local weld = {
@@ -1163,6 +1145,42 @@ local weld = {
 
 local malediction = Entropy.SealSpectral("malediction", {x=2,y=0}, "entr_amber", 2000+37, "c_entr_enchant", nil, "consumables2")
 
+local idyll = {
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    object_type = "Consumable",
+    order = 2000 + 38,
+    key = "idyll",
+    set = "Omen",
+    
+    inversion = "c_entr_manifest",
+
+    atlas = "consumables",
+	pos = {x=2,y=8},
+    use = function(self, card, area, copier)
+        if G.GAME.last_tag then
+            add_tag(Tag(G.GAME.last_tag))
+            add_tag(Tag(Entropy.AscendedTags[G.GAME.last_tag] or G.GAME.last_tag))
+        end
+    end,
+    can_use = function(self, card)
+        return G.GAME.last_tag
+	end,
+    loc_vars = function(self, q, card)
+        if G.GAME.last_tag then
+            q[#q+1] = G.P_TAGS[G.GAME.last_tag]
+            q[#q+1] = G.P_TAGS[Entropy.AscendedTags[G.GAME.last_tag] or G.GAME.last_tag]
+        end
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
 return {
     items = {
         changeling,
@@ -1192,6 +1210,7 @@ return {
         purity,
         transcend,
         weld,
-        malediction
+        malediction,
+        idyll
     }
 }

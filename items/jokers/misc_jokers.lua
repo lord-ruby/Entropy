@@ -13,6 +13,7 @@ local surreal = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 0 },
@@ -49,6 +50,7 @@ local tesseract = {
     cost = 3,
     
     pools = { ["Meme"] = true },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 1, y = 0 },
@@ -74,12 +76,25 @@ local strawberry_pie = {
             "set_entr_misc_jokers"
         }
     },
-    blueprint_compat = false,
+    config = {
+        num = 2,
+        denom = 3
+    },
+    perishable_compat = true,
+    blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 2, y = 1 },
     atlas = "jokers",
     demicoloncompat = true,
     pools = { ["Food"] = true },
+    loc_vars = function(self, q, card)
+        local n, d = SMODS.get_probability_vars(card, card.ability.num, card.ability.denom, "entr_strawberry")
+        return {
+            vars = {
+                n, d
+            }
+        }
+    end
 }
 
 local recursive_joker = {
@@ -97,7 +112,8 @@ local recursive_joker = {
             "set_entr_misc_jokers"
         }
     },
-    blueprint_compat = false,
+    perishable_compat = true,
+    blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 3, y = 1 },
     atlas = "jokers",
@@ -115,6 +131,7 @@ local recursive_joker = {
         end
         if (context.selling_card and context.card == card and not card.ability.used_this_round) or context.forcetrigger then
             card.ability.used_this_round = true
+            card.ability.cost_set = false
             local card = copy_card(card)
             if context.forcetrigger and card.ability.desync then
                 card.ability.context = Entropy.RandomContext()
@@ -184,6 +201,7 @@ local sunny_joker = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 5, y = 1 },
@@ -221,6 +239,7 @@ local antidagger = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     immutable = true,
     eternal_compat = true,
@@ -341,6 +360,11 @@ local insatiable_dagger = {
             "set_entr_misc_jokers"
         }
     },
+    config = {
+        perc = 15,
+        perc_mod = 3
+    },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     immutable = true,
@@ -365,7 +389,7 @@ local insatiable_dagger = {
                         play_sound("slice1", 0.96 + math.random() * 0.08)
                         local check2
                         if not Card.no(G.jokers.cards[check], "immutable", true) then
-                            Cryptid.manipulate(G.jokers.cards[check], { value = sliced_card.sell_cost * 0.05 + 1 })
+                            Cryptid.manipulate(G.jokers.cards[check], { value = sliced_card.sell_cost * (card.ability.perc / 100) + 1 })
                             check2 = true
                         end
                         if check2 then
@@ -381,8 +405,20 @@ local insatiable_dagger = {
                         return true
                     end,
                 }))
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "perc", scalar_value = "perc_mod", operation = "-", no_message = true})
+                if card.ability.perc <= 0 then
+                    SMODS.destroy_cards(card, nil, nil, true)
+                end
             end
         end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.perc,
+                card.ability.perc_mod
+            }
+        }
     end,
     entr_credits = {
         idea = {"cassknows"},
@@ -402,7 +438,8 @@ local rusty_shredder = {
             "set_entr_misc_jokers"
         }
     },
-    blueprint_compat=true,
+    perishable_compat = true,
+    blueprint_compat = true,
     immutable = true,
     eternal_compat = true,
     pos = { x = 7, y = 1 },
@@ -450,6 +487,7 @@ local chocolate_egg = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 2 },
@@ -511,7 +549,8 @@ local lotteryticket = {
             "set_entr_misc_jokers"
         }
     },
-    blueprint_compat=true,
+    perishable_compat = true,
+    blueprint_compat = true,
     demicoloncompat=true,
     eternal_compat = true,
     pos = { x = 9, y = 0 },
@@ -587,7 +626,8 @@ local devilled_suns = {
             "set_entr_misc_jokers"
         }
     },
-    blueprint_compat=true,
+    perishable_compat = true,
+    blueprint_compat = true,
     demicoloncompat=true,
     eternal_compat = true,
     pos = { x = 1, y = 2 },
@@ -636,6 +676,7 @@ local eden = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 2, y = 2 },
@@ -705,7 +746,11 @@ local eden = {
                 card = card,
             }
         end
-	end
+	end,
+    entr_credits = {
+        idea = {"cassknows"},
+        art = {"cassknows"}
+    },
 }
 
 local seventyseven = {
@@ -723,6 +768,7 @@ local seventyseven = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 3, y = 2 },
@@ -761,6 +807,7 @@ local skullcry = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 8, y = 2 },
@@ -788,7 +835,7 @@ local skullcry = {
             end
             return {
                 message = localize('k_saved_ex'),
-                saved = "k_saved_skullcry",
+                saved = localize("k_saved_skullcry"),
                 colour = G.C.RED
             }
         end
@@ -834,7 +881,6 @@ local dating_simbo = {
                         return true
                     end
                 }))
-                card.ability.chips = card.ability.chips + math.max(context.destroying_card.base.nominal + (context.destroying_card.ability.bonus or 0), 0)
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "chips", scalar_table = context.destroying_card.base, scalar_value = "nominal"})
                 if context.destroying_card.ability.bonus then
                     SMODS.scale_card(card, {ref_table = card.ability, ref_value = "chips", scalar_table = context.destroying_card.ability, scalar_value = "bonus", no_message = true})
@@ -860,7 +906,7 @@ local sweet_tooth = {
     key = "sweet_tooth",
     config = {
         chips = 20,
-        chip_exp = 1.1
+        chip_mul = 1.25
     },
     rarity = 3,
     cost = 8,
@@ -869,6 +915,7 @@ local sweet_tooth = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 3 },
@@ -878,7 +925,7 @@ local sweet_tooth = {
         return {
             vars = {
                 number_format(center.ability.chips),
-                number_format(center.ability.chip_exp)
+                number_format(center.ability.chip_mul)
             },
         }
     end,
@@ -897,9 +944,8 @@ local sweet_tooth = {
                 end
             end
             if check then
-                card.ability.chips = to_big(card.ability.chips) ^ to_big(card.ability.chip_exp)
-                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "chips", scalar_value = "chip_exp", operation = function(ref_table, ref_value, initial, change)
-                    ref_table[ref_value] = initial ^ change
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "chips", scalar_value = "chip_mul", operation = function(ref_table, ref_value, initial, change)
+                    ref_table[ref_value] = initial * change
                 end})
             end
         end
@@ -926,6 +972,7 @@ local bossfight = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 1, y = 3 },
@@ -963,7 +1010,7 @@ local phantom_shopper = {
     config = {
         rarity = "Common",
         progress = 0,
-        needed_progress = 4
+        needed_progress = 5
     },
     rarity = 2,
     cost = 8,
@@ -972,6 +1019,7 @@ local phantom_shopper = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     pos = { x = 3, y = 3 },
     atlas = "jokers",
@@ -1002,9 +1050,10 @@ local phantom_shopper = {
                 card.ability.rarity = ({
                     Common = "Uncommon",
                     Uncommon = "Rare",
-                    Rare = "cry_epic",
+                    Rare = (SMODS.Mods["Cryptid"] or {}).can_load and "cry_epic" or "Legendary",
                     cry_epic = "Legendary"
                 })[card.ability.rarity] or card.ability.rarity
+                card.ability.needed_progress = card.ability.needed_progress + 1
             else
                 card_eval_status_text(
                     card,
@@ -1038,6 +1087,7 @@ local sunny_side_up = {
             "set_entr_misc_jokers"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 5, y = 3 },
@@ -1058,8 +1108,7 @@ local sunny_side_up = {
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
             local asc = card.ability.asc
-            card.ability.asc = card.ability.asc - card.ability.asc_mod
-            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "asc", scalar_value = "asc_mod", operation = "-"})
+            if not context.blueprint then SMODS.scale_card(card, {ref_table = card.ability, ref_value = "asc", scalar_value = "asc_mod", operation = "-"}) end
             if to_big(card.ability.asc) > to_big(0) then
                 return {
                     plus_asc = asc
@@ -1090,6 +1139,7 @@ local sunflower_seeds = {
         needed = 3,
         left = 3
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 7, y = 3 },
@@ -1157,6 +1207,7 @@ local tenner = {
     config = {
         dollars = 10
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 8, y = 3 },
@@ -1208,6 +1259,7 @@ local sticker_sheet = {
     config = {
         per_sticker = 2
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 9, y = 3 },
@@ -1265,7 +1317,8 @@ local fourbit = {
         needed = 16,
         left = 16
     },
-    blueprint_compat = false,
+    perishable_compat = true,
+    blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 1, y = 4 },
     pixel_size = { w = 53, h = 53 },
@@ -1310,6 +1363,9 @@ local fourbit = {
             end
         end
 	end,
+    entr_credits = {
+        idea = {"cassknows"}
+    },
 }
 
 local crimson_flask = {
@@ -1458,6 +1514,7 @@ local dog_chocolate = {
             "tag_entr_dog"
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 4, y = 4 },
@@ -1499,6 +1556,7 @@ local nucleotide = {
             "set_entr_misc_jokers",
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 8, y = 6 },
@@ -1560,6 +1618,7 @@ local afterimage = {
             "set_entr_misc_jokers",
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 5, y = 4 },
@@ -1619,6 +1678,7 @@ local qu = {
             "set_entr_misc_jokers",
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 6, y = 4 },
@@ -1628,8 +1688,8 @@ local qu = {
         if context.first_hand_drawn or context.forcetrigger then
             local card = pseudorandom_element(G.hand.cards, pseudoseed("qu_card"))
             Entropy.FlipThen({card}, function(card)
-                local elem = pseudorandom_element(Entropy.FlipsidePureInversions, pseudoseed("qu_twisted"))
-                card:set_ability(G.P_CENTERS[elem])
+                local elem = Entropy.GetPooledCenter("Twisted")
+                card:set_ability(elem)
             end)
             G.E_MANAGER:add_event(Event({
                 blocking = false,
@@ -1657,6 +1717,7 @@ local memento_mori = {
             "set_entr_misc_jokers",
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 8, y = 4 },
@@ -1695,6 +1756,7 @@ local broadcast = {
             "set_entr_misc_jokers",
         }
     },
+    perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 0, y = 5 },
@@ -1782,6 +1844,8 @@ local milk_chocolate = {
     end,
     pools = {["Food"] = true},
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if context.selling_self or context.forcetrigger then
             G.E_MANAGER:add_event(Event({
@@ -1813,6 +1877,8 @@ local insurance_fraud = {
     pos = {x = 9, y = 7},
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if (context.selling_card and context.card.config.center.set == "Tarot") or context.forcetrigger then
             G.E_MANAGER:add_event(Event({
@@ -1844,6 +1910,8 @@ local free_samples = {
         }
     },
     eternal_compat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     pos = { x = 4, y = 6 },
     atlas = "jokers",
     config = {
@@ -1911,6 +1979,8 @@ local fused_lens = {
         }} 
     end,
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if (context.after and SMODS.pseudorandom_probability(
             card,
@@ -1938,7 +2008,7 @@ local fused_lens = {
                 end)
             }))
             return {
-                message = "+1 "..localize("k_star")
+                message = localize("k_plus_star")
             }
         end
     end,
@@ -1956,6 +2026,8 @@ local opal = {
         }
     },
     eternal_compat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     pos = { x = 5, y = 6 },
     atlas = "jokers",
     calculate = function(self, card, context)
@@ -1983,6 +2055,7 @@ local inkbleed = {
         }
     },
     eternal_compat = true,
+    perishable_compat = true,
     pos = { x = 7, y = 6 },
     atlas = "jokers",
     entr_credits = {
@@ -2012,6 +2085,8 @@ local roulette = {
         }
     },
     eternal_compat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     pos = {x = 0, y = 8},
     atlas = "jokers",
     loc_vars = function(self, q, card)
@@ -2082,7 +2157,7 @@ local debit_card = {
     atlas = "jokers",
     config = {
         amount = 1,
-        needed = 25,
+        needed = 35,
         current_spent = 0,
         current = 0
     },
@@ -2097,7 +2172,6 @@ local debit_card = {
             }
         }
     end,
-    demicoloncompat = true,
     calculate = function(self, card, context)
         if context.money_altered and to_big(context.amount) < to_big(0) and not context.blueprint and context.from_shop then
             card.ability.current_spent = card.ability.current_spent - context.amount
@@ -2118,7 +2192,9 @@ local debit_card = {
         end
     end,
     calc_dollar_bonus = function(self, card)
-        return card.ability.current
+        if to_big(card.ability.current) > to_big(0) then
+            return card.ability.current
+        end
     end,
     entr_credits = {
         art = {"Lil. Mr. Slipstream"}
@@ -2152,7 +2228,8 @@ local birthday_card = {
             }
         }
     end,
-    demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if Overflow then
             if context.joker_main and G.consumeables:get_total_count() >= card.ability.consumables then
@@ -2185,29 +2262,68 @@ local ruby = {
     pos = {x=0, y=0},
     soul_pos = {x = 1, y = 0},
     config = {
-        xmult = 1,
-        xmult_mod = 2
+        jokers_needed = 2,
+        jokers = 0,
+        already_triggered = false
     },
     demicoloncompat = true,
     blueprint_compat = true,
+    pronouns = "she_her",
     calculate = function(self, card, context)
-        if context.entr_path_changed and not context.blueprint then
-            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "xmult", scalar_value = "xmult_mod"})
-        end
-        if context.joker_main or context.forcetrigger then
-            return {
-                xmult = card.ability.xmult
-            }
+        if context.buying_card and context.card.config.center.set == "Joker" then
+            if context.blueprint then
+                local off = 0
+                for i = 1, #G.jokers.cards do
+                    if G.jokers.cards[i] == context.blueprint_card then off = 1; break end
+                    if G.jokers.cards[i] == card then break end
+                end
+                if card.ability.jokers + off == card.ability.jokers_needed then
+                    add_tag(Tag(get_next_tag_key()))
+                    return {
+                        message = localize("k_plus_tag")
+                    }
+                end
+                return {
+                    message = number_format(card.ability.jokers + off).."/"..number_format(card.ability.jokers_needed)
+                }
+            else
+                card.ability.jokers = card.ability.jokers + 1
+                local add
+                if card.ability.jokers >= card.ability.jokers_needed then
+                    add_tag(Tag(get_next_tag_key()))
+                    G.E_MANAGER:add_event(Event{
+                        func = function()
+                            card.ability.jokers = 0
+                            return true
+                        end
+                    })
+                    add = true
+                end
+                if add then
+                    return {
+                        message = localize("k_plus_tag")
+                    }
+                else
+                    return {
+                        message = number_format(card.ability.jokers).."/"..number_format(card.ability.jokers_needed)
+                    }
+                end
+            end
         end
     end,
     loc_vars = function(self, q, card)
         return {
             vars = {
-                number_format(card.ability.xmult_mod),
-                number_format(card.ability.xmult)
+                number_format(card.ability.jokers_needed),
+                number_format(card.ability.jokers_needed - card.ability.jokers)
             }
         }
-    end
+    end,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
 }
 
 local slipstream = {
@@ -2223,6 +2339,9 @@ local slipstream = {
         xmult = 2,
     },
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
+    pronouns = "he_they",
     calculate = function(self, card, context)
         if context.setting_blind then
             if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
@@ -2239,7 +2358,7 @@ local slipstream = {
                 })
                 G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
                 return {
-                    message = "+1 "..localize("k_omen")
+                    message = localize("k_plus_omen")
                 }
             end
         end
@@ -2268,7 +2387,12 @@ local slipstream = {
             }
         }
     end,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}}
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
 }
 
 local cass = {
@@ -2290,13 +2414,16 @@ local cass = {
         mod = 0.5
     },
     demicoloncompat = true,
+    blueprint_compat = true,
+    pronouns = "she_her",
     calculate = function(self, card, context)
         if context.using_consumeable and (context.consumeable.config.center.set == "Planet" or context.consumeable.config.center.set == "Star") then
             card.ability.mod = math.min(card.ability.mod, 20)
             local result = pseudorandom(pseudoseed("entr_cass"), 1, 6)
             if result == 1 then
+                local old = card.ability.hand_size
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "hand_size", scalar_value = "mod"})
-                G.hand:handle_card_limit(card.ability.hand_size)
+                G.hand:handle_card_limit(card.ability.hand_size - old)
             elseif result == 2 then
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "selection_limit", scalar_value = "mod"})
                 Entropy.ChangeFullCSL(card.ability.mod)
@@ -2309,8 +2436,9 @@ local cass = {
                 G.GAME.round_resets.discards = G.GAME.round_resets.discards + card.ability.mod
                 ease_discard(card.ability.mod)
             elseif result == 5 then
+                local old = card.ability.consumable_slots
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "consumable_slots", scalar_value = "mod"})
-                G.consumeables:handle_card_limit(card.ability.consumable_slots)
+                G.consumeables:handle_card_limit(card.ability.consumable_slots - old)
             elseif result == 6 then
                 if to_big(card.ability.shop_slots) < to_big(4) then
                     SMODS.scale_card(card, {ref_table = card.ability, ref_value = "shop_slots", scalar_value = "mod"})
@@ -2383,7 +2511,15 @@ local cass = {
             }
         }
     end,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}}
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    entr_credits = {
+        idea = {"cassknows"}
+    },
 }
 
 local crabus = {
@@ -2400,11 +2536,14 @@ local crabus = {
         x_chips_mod = 0.05
     },
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
+    pronouns = "any_all",
     calculate = function(self, card, context)
         if context.before and not context.repetition and not context.blueprint then
             local cards = {}
             for i, v in pairs(context.full_hand) do
-                if not SMODS.in_scoring(v, context.scoring_hand) then cards[#cards+1] = v end
+                if not SMODS.in_scoring(v, context.scoring_hand) and v.config.center.key ~= "m_entr_dark" then cards[#cards+1] = v end
             end
             Entropy.FlipThen(cards, function(card)
                 card:set_ability(G.P_CENTERS.m_entr_dark)
@@ -2449,6 +2588,7 @@ local crabus = {
         if context.joker_main then return {x_chips = card.ability.x_chips} end
     end,
     loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.m_entr_dark
         return {
             vars = {
                 number_format(card.ability.x_chips_mod),
@@ -2456,7 +2596,129 @@ local crabus = {
             }
         }
     end,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}}
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+}
+
+local hexa = {
+    object_type = "Joker",
+    key = "hexa",
+    order = 304,
+    rarity = 4,
+    cost = 20,
+    atlas = "ruby_atlas",
+    pos = {x=0, y=4},
+    soul_pos = {x = 1, y = 4},
+    config = {
+        asc_fac = 3,
+        csl = 3
+    },
+    demicoloncompat = true,
+    perishable_compat = true,
+    add_to_deck = function(self, card)
+        Entropy.ChangeFullCSL(card.ability.csl)
+    end,
+    remove_from_deck = function(self, card)
+        Entropy.ChangeFullCSL(-card.ability.csl)
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            key = (SMODS.Mods["Cryptid"] or {}).can_load and "j_entr_hexa_cryptid" or nil,
+            vars = {
+                number_format(card.ability.csl)
+            }
+        }
+    end,
+    entr_credits = {art = {"HexaCryonic"}},
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    pronouns = "she_her",
+}
+
+local grahkon = {
+    object_type = "Joker",
+    key = "grahkon",
+    order = 305,
+    rarity = 4,
+    cost = 20,
+    atlas = "grahkon_atlas",
+    pos = {x=0, y=0},
+    soul_pos = {x = 1, y = 0},
+    config = {
+        blind_size = 800,
+        value_inc = 1.08,
+        left = 1,
+        left_mod = 1,
+        cards = 4
+    },
+    demicoloncompat = true,
+    perishable_compat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.blind_size,
+                card.ability.value_inc,
+                card.ability.cards,
+                card.ability.left_mod,
+                card.ability.left,
+            }
+        }
+    end,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    dependencies = {
+        items = {
+            "set_entr_actives",
+        }
+    },
+    pronouns = "he_him",
+
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and not context.repetition) or context.forcetrigger then
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
+        end
+        if context.remove_playing_cards and not context.blueprint then
+            for i, v in pairs(context.removed) do
+                SMODS.scale_card(card, {
+                    ref_table = card.ability,
+                    ref_value = "blind_size",
+                    scalar_value = "value_inc",
+                    operation = function(ref_table, ref_value, initial, change)
+                        ref_table[ref_value] = initial * change
+                    end,
+                })
+            end
+        end
+        if (context.setting_blind and not context.blueprint and not card.getting_sliced) or context.forcetrigger then
+            G.GAME.blind.chips = G.GAME.blind.chips - card.ability.blind_size
+            G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+            G.HUD_blind:recalculate()
+        end
+    end,
+    can_use = function(self, card)
+        return to_big(card.ability.left) > to_big(0) and G.hand and #G.hand.cards > 0
+    end,
+    use = function(self, card)
+        card.ability.left = card.ability.left - 1
+        local cards = {}
+        for i, v in pairs(G.hand.cards) do
+            if not SMODS.is_eternal(v) then
+                cards[#cards+1] = v
+            end
+        end
+        local a_cards = {}
+        pseudoshuffle(cards, pseudoseed("entr_grahkon"))
+        for i = 1, card.ability.cards do
+            a_cards[#a_cards+1] = cards[i]
+        end
+        SMODS.destroy_cards(a_cards)
+    end,
 }
 
 local sandpaper = {
@@ -2477,7 +2739,8 @@ local sandpaper = {
     loc_vars = function(self, q, card)
         q[#q+1] = G.P_CENTERS.m_stone
     end,
-    demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if context.after then
             local stones = {}
@@ -2503,7 +2766,7 @@ local sandpaper = {
                     end
                 })
                 return {
-                    message = "+1 "..localize("k_rune")
+                    message = localize("k_plus_rune")
                 }
             end
         end
@@ -2540,6 +2803,7 @@ local purple_joker = {
     pos = { x = 1, y = 7 },
     atlas = "jokers",
     demicoloncompat = true,
+    blueprint_compat = true,
     config = {
         xmult_mod = 0.2,
         xmult = 1
@@ -2580,7 +2844,7 @@ local chalice_of_blood = {
     object_type = "Joker",
     key = "chalice_of_blood",
     rarity = 3,
-    cost = 12,
+    cost = 8,
     dependencies = {
         items = {
             "set_entr_runes",
@@ -2591,6 +2855,8 @@ local chalice_of_blood = {
     pos = { x = 2, y = 7 },
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     config = {
         xmult_mod = 0.75,
     },
@@ -2624,6 +2890,7 @@ local torn_photograph = {
         }
     },
     eternal_compat = true,
+    blueprint_compat = true,
     pos = { x = 3, y = 7 },
     pixel_size = { h = 95 / 1.2 },
     atlas = "jokers",
@@ -2668,9 +2935,11 @@ local chuckle_cola = {
     pos = { x = 4, y = 7 },
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     config = {
-        triggers = 20,
-        xchip_mod = 2
+        triggers = 10,
+        xchip_mod = 1.5
     },
     pools = {Food = true},
     loc_vars = function(self, q, card)
@@ -2719,6 +2988,7 @@ local antiderivative = {
         }
     },
     eternal_compat = true,
+    perishable_compat = true,
     pos = { x = 5, y = 7 },
     atlas = "jokers",
 }
@@ -2857,6 +3127,7 @@ local alles = {
         dollars = 8
     },
     eternal_compat = true,
+    perishable_compat = true,
     pos = { x = 6, y = 7 },
     pixel_size = {h = 46},
     atlas = "jokers",
@@ -2898,6 +3169,7 @@ local feynman_point = {
         nearest_mod = 0.05
     },
     eternal_compat = true,
+    perishable_compat = true,
     pos = { x = 7, y = 7 },
     atlas = "jokers",
     loc_vars = function(self, q, card)
@@ -2919,6 +3191,10 @@ local feynman_point = {
 
 local calculate_jokerref = Card.calculate_joker
 function Card:calculate_joker(...)
+    local abil
+    if self.ability.entr_pure then
+        abil = copy_table(self.ability)        
+    end
     local ret = calculate_jokerref(self, ...)
     if next(SMODS.find_card("j_entr_feynman_point")) and self.config.center.key ~= "j_entr_feynman_point" and not self.config.center.immutable and self.area == G.jokers then
         local highest = 0
@@ -2941,13 +3217,16 @@ function Card:calculate_joker(...)
             })
         end
     end
+    if self.ability.entr_pure then
+        self.ability = abil
+    end
     return ret
 end
 
 local set_abilityref = Card.set_ability
 function Card:set_ability(...)
     set_abilityref(self, ...)
-    if self.config.center.set == "Joker" and self.config.center.key ~= "j_entr_feynman_point" then
+    if self.config.center and self.config.center.set == "Joker" and self.config.center.key ~= "j_entr_feynman_point" then
         if next(SMODS.find_card("j_entr_feynman_point")) then
             local highest = 0
             for i, v in pairs(SMODS.find_card("j_entr_feynman_point")) do
@@ -2991,6 +3270,7 @@ local neuroplasticity = {
         }
     },    
     eternal_compat = true,
+    perishable_compat = true,
     pos = {x = 3, y = 8},
     atlas = "jokers",
     add_to_deck = function(self, card, from_debuff)
@@ -3056,6 +3336,7 @@ local dragonfruit = {
         left = 5,
         left_mod = 1
     },
+    perishable_compat = true,
     pools = {Food = true},
     add_to_deck = function(self, card, from_debuff)
         Entropy.ChangeFullCSL(card.ability.left)
@@ -3074,7 +3355,9 @@ local dragonfruit = {
     calculate = function(self, card, context)
         if context.after and not context.repetition and not context.blueprint then
             SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", operation = "-", no_message = true})
-            Entropy.ChangeFullCSL(- card.ability.left_mod)
+            if not card.ability.entr_pure then
+                Entropy.ChangeFullCSL(- card.ability.left_mod)
+            end
             if card.ability.left <= 0 then
                 SMODS.destroy_cards(card, nil, nil, true)
                 return {
@@ -3082,12 +3365,10 @@ local dragonfruit = {
                     colour = G.C.FILTER,
                 }
             end
-            if not msg or type(msg) == "string" then
-                return {
-                    message = msg or "-"..number_format(card.ability.left_mod),
-                    colour = G.C.RED,
-                }
-            end
+            return {
+                message = msg or "-"..number_format(card.ability.left_mod),
+                colour = G.C.RED,
+            }
         end
     end
 }
@@ -3105,6 +3386,11 @@ local jestradiol = {
     config = {
         left = 3,
         left_mod = 1
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+        }
     },
     loc_vars = function(self, q, card)
         return {
@@ -3153,6 +3439,11 @@ local penny = {
             chips = 8
         }
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     loc_vars = function(self, q, card)
         return {
             vars = {
@@ -3162,15 +3453,10 @@ local penny = {
     end,
     pixel_size = { w = 32, h = 32 },
     demicoloncompat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition) or context.forcetrigger then
             card.ability.extra.chips = to_big(card.ability.extra.chips) * 2
-            SMODS.scale_card(card, {
-                ref_table = card.ability.extra,
-                ref_value = "chips",
-                scalar_table = {mod = 2},
-                scalar_value = "mod"  
-            })
             return {
                 message = localize("k_upgrade_ex"),
                 chips = context.forcetrigger and card.ability.extra.chips or nil
@@ -3196,6 +3482,11 @@ local slothful_joker = {
     config = {
         smult = 3
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     loc_vars = function(self, q, card)
         return {
             vars = {
@@ -3204,6 +3495,8 @@ local slothful_joker = {
         }
     end,
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if (context.individual and Entropy.true_suitless(context.other_card) and context.cardarea == G.play) or context.forcetrigger then
             return {
@@ -3225,6 +3518,12 @@ local radar = {
     config = {
         dollar_mult = 1
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    perishable_compat = true,
     loc_vars = function(self, q, card)
         return {
             vars = {
@@ -3251,7 +3550,14 @@ local abacus = {
     config = {
         dollar_mult = 1
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if (context.individual and context.other_card.base.nominal and to_big(context.other_card.base.nominal) > to_big(0) and context.cardarea == G.play) or context.forcetrigger then
             local id = context.other_card:get_id()
@@ -3276,6 +3582,13 @@ local matryoshka_dolls = {
     config = {
         mult = 4
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    perishable_compat = true,
+    blueprint_compat = true,
     demicoloncompat = true,
     loc_vars = function(self, q, card)
         return {
@@ -3327,6 +3640,13 @@ local menger_sponge = {
         chips_mod = 3,
         base_chips = 10
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    perishable_compat = true,
+    blueprint_compat = true,
     demicoloncompat = true,
     loc_vars = function(self, q, card)
         return {
@@ -3378,7 +3698,14 @@ local arbitration = {
         chips_mod = 3,
         base_chips = 10
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     loc_vars = function(self, q, card)
         q[#q+1] = G.P_CENTERS.c_judgement
         q[#q+1] = G.P_CENTERS.m_glass
@@ -3420,7 +3747,14 @@ local masterful_gambit = {
     config = {
         dollars = 2
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if (context.joker_main and #G.play.cards == 1) or context.forcetrigger then
             return {
@@ -3449,8 +3783,15 @@ local fourty_benadryls = {
     config = {
         chip_mod = 15
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     pixel_size = { h = 95 / 1.2 },
     demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
             return {
@@ -3481,7 +3822,13 @@ local red_fourty = {
         mult = 20,
         mult_mod = 2
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     pools = {["Food"] = true},
     loc_vars = function(self, q, card)
@@ -3530,7 +3877,13 @@ local promotion = {
         mult = 20,
         mult_mod = 2
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     calculate = function(self, card, context)
         if (context.end_of_round and not context.individual and not context.repetition) or context.forcetrigger then
@@ -3568,8 +3921,14 @@ local offbrand = {
         mult = 6,
         dollars = 6
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     pools = {["Food"] = true},
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     loc_vars = function(self, q, card)
         return {
@@ -3607,8 +3966,14 @@ local girldinner = {
         mult = 3,
         chips = 40
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     pools = {["Food"] = true},
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     loc_vars = function(self, q, card)
         return {
@@ -3632,7 +3997,7 @@ local girldinner = {
     end,
     entr_credits = {
         idea = {
-            "casknows"
+            "cassknows"
         }
     }
 }
@@ -3650,7 +4015,13 @@ local recycling_bin = {
         mult = 0,
         mult_mod = 1
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     loc_vars = function(self, q, card)
         return {
@@ -3700,8 +4071,14 @@ local gold_bar = {
         dollars = 8,
         dollars_mod = 1
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     pools = {["Food"] = true},
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     loc_vars = function(self, q, card)
         return {
@@ -3742,7 +4119,13 @@ local scribbled_joker = {
     config = {
         chips = 60
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     loc_vars = function(self, q, card)
         return {
@@ -3784,6 +4167,13 @@ local jokers_against_humanity = {
         chips = 15,
         mult = 2
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    perishable_compat = true,
+    blueprint_compat = true,
     demicoloncompat = true,
     blueprint_compat = true,
     loc_vars = function(self, q, card)
@@ -3823,12 +4213,17 @@ local blind_collectible_pack = {
     object_type = "Joker",
     key = "blind_collectible_pack",
     rarity = 1,
-    cost = 6,   
-    eternal_compat = true,
+    cost = 6,
     pos = {x = 3, y = 10},
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     calculate = function(self, card, context)
         if context.selling_self or context.forcetrigger then
             if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
@@ -3862,9 +4257,15 @@ local prayer_card = {
     pos = {x = 4, y = 10},
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     config = {
         amount = 100
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
     },
     calculate = function(self, card, context)
         if context.setting_blind or context.forcetrigger then
@@ -3903,6 +4304,11 @@ local desert = {
         asc = 0,
         asc_mod = 0.05
     },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     calculate = function(self, card, context)
         if context.before and #G.play.cards == 1 then
             SMODS.scale_card(card, {
@@ -3937,9 +4343,14 @@ local rugpull = {
     pos = {x = 6, y = 10},
     atlas = "jokers",
     demicoloncompat = true,
-    blueprint_compat = true,
+    perishable_compat = true,
     config = {
         multiplier = 1.25
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
     },
     loc_vars = function(self, q, card)
         return {
@@ -3958,10 +4369,17 @@ local grape_juice = {
     pos = {x = 7, y = 10},
     atlas = "jokers",
     demicoloncompat = true,
-    blueprint_compat = true,
     config = {
         left = 3,
         left_mod = 1
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+        }
+    },
+    pools = {
+        Food = true
     },
     loc_vars = function(self, q, card)
         return {
@@ -3992,9 +4410,15 @@ local petrichor = {
     pos = {x = 8, y = 10},  
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     config = {
         chips = 25
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
     },
     loc_vars = function(self, q, card)
         return {
@@ -4020,7 +4444,13 @@ local otherworldly_joker = {
     pos = {x = 9, y = 10},  
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
+    dependencies = {
+        items = {
+            "set_entr_inversions",
+        }
+    },
     calculate = function(self, card, context)
         if (context.skipping_booster) or context.forcetrigger then
             if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
@@ -4055,7 +4485,13 @@ local error_joker = {
     pos = {x = 0, y = 11},  
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
 }
 
 local thirteen_of_stars = {
@@ -4069,6 +4505,11 @@ local thirteen_of_stars = {
     atlas = "jokers",
     demicoloncompat = true,
     blueprint_compat = true,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
     calculate = function(self, card, context)
         if (context.joker_main) or context.forcetrigger then
             local text = G.FUNCS.get_poker_hand_info(G.play.cards)
@@ -4091,10 +4532,16 @@ local diode = {
     pos = {x = 2, y = 11},  
     atlas = "jokers",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     config = {
         mult = 6,
         chips = 40
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
     },
     calculate = function(self, card, context)
         if context.after then
@@ -4132,11 +4579,17 @@ local prismatic_shard = {
     soul_pos = {x = 0, y = 1},
     atlas = "prismatic_shard",
     demicoloncompat = true,
+    perishable_compat = true,
     blueprint_compat = true,
     config = {
         mult = 2,
-        chips = 10,
-        plus_asc = 0.25
+        chips = 8,
+        plus_asc = 0.15
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
     },
     calculate = function(self, card, context)
         if (context.individual and context.cardarea == G.play) or context.forcetrigger then
@@ -4155,6 +4608,2205 @@ local prismatic_shard = {
             }
         }
     end
+}
+
+function Entropy.trigger_enhancement(enh, card)
+    if G.P_CENTERS[enh].demicoloncompat then
+        return G.P_CENTERS[enh]:calculate(card, {forcetrigger = true})
+    end
+    local lucky = {}
+    if SMODS.pseudorandom_probability(card, 'entr_chameleon', 1, 5) then
+        lucky.mult = 20
+    end
+    if SMODS.pseudorandom_probability(card, 'entr_chameleon', 1, 15) then
+        lucky.money = 20
+    end
+    local funcs = {
+        m_mult = {mult = 4},
+        m_bonus = {chips = 30},
+        m_glass = {xmult = 2},
+        m_steel = {xmult = 1.5},
+        m_stone = {chips = 50},
+        m_gold = {money=3},
+        m_lucky = lucky
+    }
+    if funcs[enh] then
+        return funcs[enh]
+    end
+end
+
+function Entropy.get_chameleon()
+    local enhs = {}
+    for i, v in pairs(G.P_CENTER_POOLS.Enhanced) do
+        if not v.original_mod or v.demicoloncompat then
+            if v.key ~= "m_wild" then
+                enhs[#enhs+1] = v.key
+            end
+        end
+    end
+    return pseudorandom_element(enhs, pseudoseed("entr_chameleon_enh"))
+end
+
+local chameleon = {
+    order = 80,
+    object_type = "Joker",
+    key = "chameleon",
+    rarity = 1,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 9, y = 11},
+    atlas = "jokers",
+    demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    calculate = function(self, card, context)
+        if context.joker_main then
+            local rand = Entropy.get_chameleon()
+            return Entropy.trigger_enhancement(rand)
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.mult,
+                card.ability.chips,
+                card.ability.plus_asc
+            }
+        }
+    end,
+    entr_credits = {
+        art = {"LFMoth"}
+    }
+}
+
+local thanatophobia = {
+    order = 81,
+    object_type = "Joker",
+    key = "thanatophobia",
+    rarity = 1,
+    cost = 7,
+    eternal_compat = true,
+    pos = {x = 0, y = 12},
+    atlas = "jokers",
+    demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    calculate = function(self, card, context)
+        if context.joker_main or context.forcetrigger then
+            if G.GAME.accumulated_sell_value then
+                return {
+                    mult = G.GAME.accumulated_sell_value
+                }
+            end
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                G.GAME.accumulated_sell_value or 0
+            }
+        }
+    end,
+    entr_credits = {
+        art = {"LFMoth"}
+    }
+}
+
+local start_dissolveref = Card.start_dissolve
+function Card:start_dissolve(...)
+    if self.config and self.config.center and self.config.center.set == "Joker" and G.jokers then
+        G.GAME.accumulated_sell_value = (G.GAME.accumulated_sell_value or 0) + self.sell_cost / 2
+    end
+    return start_dissolveref(self, ...)
+end
+
+local destroy_cardsref = SMODS.destroy_cards
+function SMODS.destroy_cards(c, ...)
+    if c.config and c.config.center and c.config.center.set == "Joker" and G.jokers then
+        G.GAME.accumulated_sell_value = (G.GAME.accumulated_sell_value or 0) + c.sell_cost / 2
+    end
+    return destroy_cardsref(c, ...)
+end
+
+local redkey = {
+    order = 82,
+    object_type = "Joker",
+    key = "redkey",
+    rarity = 2,
+    cost = 8,
+    eternal_compat = true,
+    pos = {x = 3, y = 12},
+    atlas = "jokers",
+    demicoloncompat = true,
+    config = {
+        left = 1,
+        left_mod = 1
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+            "bl_entr_red"
+        }
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {card.ability.left, card.ability.left_mod}
+        }
+    end,
+    can_use = function(self, card) return to_big(card.ability.left) > to_big(0) and not G.GAME.round_resets.red_room and G.blind_select end,
+    use = function(self, card)
+        card.ability.left = card.ability.left - 1
+        G.GAME.round_resets.red_room = true
+        G.GAME.round_resets.blind_states['Red'] = "Select"
+        if G.blind_select then        
+            G.blind_select:remove()
+            G.blind_prompt_box:remove()
+            G.STATE_COMPLETE = false
+        end
+    end,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition) or context.forcetrigger then
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
+        end
+    end,
+}
+
+function Entropy.get_by_sortid(id)
+    for i, v in pairs(G.jokers.cards) do
+        if v.sort_id == id then return v end
+    end
+end
+
+local polaroid = {
+    order = 83,
+    object_type = "Joker",
+    key = "polaroid",
+    rarity = 3,
+    cost = 10,
+    eternal_compat = true,
+    pos = {x = 3, y = 11},
+    atlas = "jokers",
+    demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
+    config = {
+        left = 1,
+        left_mod = 1,
+        immutable = {
+            target = -1
+        }
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+        }
+    },
+    can_use = function(self, card) return #Entropy.GetHighlightedCards({G.jokers}, card, 1, 1) > 0 and card.ability.left > 0 end,
+    use = function(self, card)
+        card.ability.left = card.ability.left - 1
+        local cards = Entropy.GetHighlightedCards({G.jokers}, card, 1, 1)
+        for i, v in pairs(cards) do
+            card.ability.immutable.target = v.sort_id
+        end
+        card:juice_up()
+        play_sound("entr_polaroid")
+    end,
+    loc_vars = function(self, q, card)
+        local other_joker = G.jokers and Entropy.get_by_sortid(card.ability.immutable.target)
+        local compatible = other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat
+        local main_end = {
+            {
+                n = G.UIT.C,
+                config = { align = "bm", minh = 0.4 },
+                nodes = {
+                    {
+                        n = G.UIT.C,
+                        config = {
+                            ref_table = card,
+                            align = "m",
+                            colour = compatible and mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8)
+                                or mix_colours(G.C.RED, G.C.JOKER_GREY, 0.8),
+                            r = 0.05,
+                            padding = 0.06,
+                        },
+                        nodes = {
+                            {
+                                n = G.UIT.T,
+                                config = {
+                                    text = " "
+                                        .. (compatible and localize { type = 'name_text', set = other_joker.config.center.set, key = other_joker.config.center.key } or localize("k_incompatible"))
+                                        .. " ",
+                                    colour = G.C.UI.TEXT_LIGHT,
+                                    scale = 0.32 * 0.8,
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        }
+        return {
+            vars = {
+                card.ability.left,
+                card.ability.left_mod
+            },
+            main_end = main_end
+        }
+    end,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and not context.repetition) or context.forcetrigger then
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
+        end
+        if (card.ability.immutable.target or -1) > -1 then 
+            local target = Entropy.get_by_sortid(card.ability.immutable.target)
+            if target then
+                local ret = SMODS.blueprint_effect(card, target, context)
+                return ret
+            end
+        end
+    end,
+}
+
+function Entropy.overclock(v, card)
+    if v.config.center.use or v.ability.consumeable then
+        if v.ability.consumeable then
+            v.ability.cry_multiuse = v.ability.cry_multiuse or 1
+            SMODS.scale_card(v, {
+                ref_table = v.ability, 
+                ref_value = "cry_multiuse", 
+                scalar_table = card.ability,
+                scalar_value = "uses_mod", 
+                scaling_message = {message = "+"..number_format(card.ability.uses_mod)}
+            })
+        elseif v.ability.left and v.ability.left_mod then
+            SMODS.scale_card(v, {
+                ref_table = v.ability, 
+                ref_value = "left", 
+                scalar_table = card.ability,
+                scalar_value = "uses_mod", 
+                scaling_message = {message = "+"..number_format(card.ability.uses_mod)}
+            })
+        end
+    end
+end
+
+local car_battery = {
+    order = 84,
+    object_type = "Joker",
+    key = "car_battery",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 4, y = 11},
+    atlas = "jokers",
+    demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
+    config = {
+        uses_mod = 1
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+        }
+    },
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition) or context.forcetrigger then
+            for i, v in pairs(G.jokers.cards) do
+                Entropy.overclock(v, card)
+            end
+            for i, v in pairs(G.consumeables.cards) do
+                Entropy.overclock(v, card)
+            end
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.uses_mod
+            }
+        }
+    end
+}
+
+local chair = {
+    order = 85,
+    object_type = "Joker",
+    key = "chair",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 5, y = 11},
+    atlas = "jokers",
+    demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
+    config = {
+        uses_mod = 1
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+            "e_entr_freaky"
+        }
+    },
+    calculate = function(self, card, context)
+        if (context.before and context.scoring_name == "Three of a Kind") then
+            if #context.scoring_hand > 2 then
+                context.scoring_hand[3]:set_edition("e_entr_freaky")
+            end
+        end
+    end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.e_entr_freaky
+    end
+}
+
+local captcha = {
+    order = 86,
+    object_type = "Joker",
+    key = "captcha",
+    rarity = 2,
+    cost = 8,
+    eternal_compat = true,
+    pos = {x = 6, y = 11},
+    atlas = "jokers",
+    demicoloncompat = true,
+    config = {
+        left = 1,
+        left_mod = 1
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+        }
+    },
+    can_use = function(self, card) return G.hand and #G.hand.cards > 0 and card.ability.left > 0 end,
+    use = function(self, card)
+        card.ability.left = card.ability.left - 1
+        local cards = {}
+        for i, v in pairs(G.hand.cards) do
+            if v ~= card then cards[#cards+1] = v end 
+        end
+        pseudoshuffle(cards, pseudoseed("entr_captcha"))
+        Entropy.FlipThen({cards[1]}, function(c)
+            c:set_ability(Entropy.GetPooledCenter(Entropy.GetRandomSet()))
+        end)
+        card:juice_up()
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.left,
+                card.ability.left_mod
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and not context.repetition) or context.forcetrigger then
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
+        end
+    end,
+}
+
+function Card:redeem_deck()
+    if self.ability.set == "Back" or self.ability.set == "Sleeve" then
+        stop_use()
+        if not self.config.center.discovered then
+            discover_card(self.config.center)
+        end
+        --G.STATE = G.STATES.SMODS_REDEEM_VOUCHER
+
+        self.states.hover.can = false
+        local top_dynatext = nil
+        local bot_dynatext = nil
+        
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                top_dynatext = DynaText({string = localize{type = 'name_text', set = self.config.center.set, key = self.config.center.key}, colours = {G.C.WHITE}, rotate = 1,shadow = true, bump = true,float=true, scale = 0.9, pop_in = 0.6/G.SPEEDFACTOR, pop_in_rate = 1.5*G.SPEEDFACTOR})
+                bot_dynatext = DynaText({string = localize('k_redeemed_ex'), colours = {G.C.WHITE}, rotate = 2,shadow = true, bump = true,float=true, scale = 0.9, pop_in = 1.4/G.SPEEDFACTOR, pop_in_rate = 1.5*G.SPEEDFACTOR, pitch_shift = 0.25})
+                self:juice_up(0.3, 0.5)
+                play_sound('card1')
+                play_sound('coin1')
+                self.children.top_disp = UIBox{
+                    definition =    {n=G.UIT.ROOT, config = {align = 'tm', r = 0.15, colour = G.C.CLEAR, padding = 0.15}, nodes={
+                                        {n=G.UIT.O, config={object = top_dynatext}}
+                                    }},
+                    config = {align="tm", offset = {x=0,y=0},parent = self}
+                }
+                self.children.bot_disp = UIBox{
+                        definition =    {n=G.UIT.ROOT, config = {align = 'tm', r = 0.15, colour = G.C.CLEAR, padding = 0.15}, nodes={
+                                            {n=G.UIT.O, config={object = bot_dynatext}}
+                                        }},
+                        config = {align="bm", offset = {x=0,y=0},parent = self}
+                    }
+            return true end }))
+        if self.cost ~= 0 then
+            ease_dollars(-self.cost)
+            inc_career_stat('c_shop_dollars_spent', self.cost)
+        end
+        --G.GAME.current_round.voucher = nil
+
+
+        delay(0.6)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 2.6, func = function()
+            top_dynatext:pop_out(4)
+            bot_dynatext:pop_out(4)
+            return true end }))
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.5, func = function()
+            self.children.top_disp:remove()
+            self.children.top_disp = nil
+            self.children.bot_disp:remove()
+            self.children.bot_disp = nil
+        return true end }))
+
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.5, func = function()
+            G.FUNCS.buy_deckorsleeve{
+                config = {
+                    ref_table = self
+                }
+            }
+        return true end }))
+
+    end
+end
+
+local deck_enlargment_pills = {
+    order = 87,
+    object_type = "Joker",
+    key = "deck_enlargement_pills",
+    rarity = 3,
+    cost = 10,
+    pos = {x = 2, y = 12},
+    atlas = "jokers",
+    demicoloncompat = true,
+    config = {
+        rounds = 2,
+        max_rounds = 2
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.max_rounds,
+                card.ability.rounds
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and not context.repetition) or context.forcetrigger then
+            card.ability.rounds = card.ability.rounds - 1
+            if to_big(card.ability.rounds) <= to_big(0) then
+                card.ability.rounds = 0
+                if not card.ability.juiced then
+                    local eval = function(card) return true end
+                    juice_card_until(card, eval, true)
+                    card.ability.juiced = true
+                end
+            end
+            if not context.forcetrigger then
+                return {
+                    message = to_big(card.ability.rounds) > to_big(0) and number_format(card.ability.max_rounds - card.ability.rounds).."/"..number_format(card.ability.max_rounds)
+                    or localize("k_active_ex")
+                }
+            end
+        end
+        if (context.selling_self and to_big(card.ability.rounds) <= to_big(0) and not context.blueprint) or context.forcetrigger then
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                func = function()
+            
+                    local area
+                    if G.STATE == G.STATES.HAND_PLAYED then
+                        if not G.redeemed_vouchers_during_hand then
+                            G.redeemed_vouchers_during_hand =
+                                CardArea(G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, { type = "play", card_limit = 5 })
+                        end
+                        area = G.redeemed_vouchers_during_hand
+                    else
+                        area = G.play
+                    end
+                    
+                    local card = create_card("RedeemableBacks", G.play, nil, nil, nil, nil, nil, "entr_large_deck")
+                    if card.config.center.key == "j_joker" then
+                        card:set_ability(G.P_CENTERS.b_red)
+                    end
+                    card:add_to_deck()
+                    area:emplace(card)
+                    card.cost = 0
+                    card:redeem_deck()
+                    return true
+                end
+            })
+            return nil, true
+        end
+    end,
+}
+
+local photocopy = {
+    order = 88,
+    object_type = "Joker",
+    key = "photocopy",
+    rarity = 2,
+    cost = 7,
+    eternal_compat = true,
+    perishable_compat = true,
+    pos = {x = 8, y = 11},
+    atlas = "jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+}
+
+function Entropy.most_common_card()
+    local ranks = {}
+    local suits = {}
+    for i, v in pairs(G.playing_cards) do
+        ranks[v.base.value] = (ranks[v.base.value] or 0) + 1
+        suits[v.base.suit] = (suits[v.base.suit] or 0) + 1
+    end
+    local r = {}
+    local s = {}
+    for i, v in pairs(ranks) do r[#r+1] = {rank = i, num = v} end
+    for i, v in pairs(suits) do s[#s+1] = {suit = i, num = v} end
+    table.sort(r, function(a, b) return a.num > b.num end)
+    table.sort(s, function(a, b) return a.num > b.num end)
+    return {
+        id = r[1].rank,
+        suit = s[1].suit
+    }
+end
+
+SMODS.Booster:take_ownership_by_kind("Standard", {
+    create_card = function(self, card, i)
+        local key
+        if pseudorandom("entr_rare_standard") < 0.003 or Entropy.has_rune("rune_entr_oss") then
+            if Entropy.has_rune("rune_entr_oss") then 
+                Entropy.has_rune("rune_entr_oss").triggered = true 
+            end
+            calculate_runes({generate_rare_consumable = true})
+            key = "m_entr_ethereal"
+        end
+        card = create_card((pseudorandom(pseudoseed('stdset'..G.GAME.round_resets.ante)) > 0.6) and "Enhanced" or "Base", G.pack_cards, nil, nil, nil, true, key, 'sta')
+        if key then
+            card:set_ability(G.P_CENTERS[key])
+        end
+        local edition_rate = 2
+        local edition = poll_edition('standard_edition'..G.GAME.round_resets.ante, edition_rate, true)
+        card:set_edition(edition)
+        card:set_seal(SMODS.poll_seal({mod = 10}), true, true)
+        if next(SMODS.find_card("j_entr_photocopy")) and i == 1 then
+            local most_common = Entropy.most_common_card()
+            SMODS.change_base(card, most_common.suit, most_common.id)
+        end
+        return card
+    end
+})
+
+local enlightenment = {
+    order = 89,
+    object_type = "Joker",
+    key = "enlightenment",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 1, y = 12},
+    atlas = "jokers",
+    entr_credits = {
+        art = {"LFMoth"}
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+}
+
+local black_rose_green_sun = {
+    order = 90,
+    object_type = "Joker",
+    key = "black_rose_green_sun",
+    rarity = 1,
+    cost = 5,
+    eternal_compat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
+    pos = {x = 6, y = 12},
+    atlas = "jokers",
+    config = {
+        asc_pow = 0.05
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if (context.individual and context.cardarea == G.hand and (context.other_card:is_suit("Spades") or context.other_card:is_suit("Clubs")) and not context.end_of_round) or context.forcetrigger then
+            return {
+                plus_asc = card.ability.asc_pow
+            }
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.asc_pow
+            }
+        }
+    end
+}
+
+
+local jack_off = {
+    order = 91,
+    object_type = "Joker",
+    key = "jack_off",
+    rarity = 1,
+    cost = 7,
+    eternal_compat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
+    pos = {x = 6, y = 13},
+    atlas = "jokers",
+    demicoloncompat = true,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    calculate = function(self, card, context)
+        if (context.individual and context.cardarea == G.play and (context.other_card:get_id() == SMODS.Ranks.Jack.id)) or context.forcetrigger then
+            local any_selected = nil
+            local _cards = {}
+            for _, playing_card in ipairs(G.hand.cards) do
+                if not playing_card.highlighted then
+                    _cards[#_cards + 1] = playing_card
+                end
+            end
+            if G.hand.cards[1] then
+                local selected_card, card_index = pseudorandom_element(_cards, 'jacking_off')
+                if selected_card then
+                    G.hand:add_to_highlighted(selected_card, true)
+                    table.remove(_cards, card_index)
+                    any_selected = true
+                    play_sound('card1', 1)
+                end
+            end
+            if any_selected then G.FUNCS.discard_cards_from_highlighted(nil, true) end
+        end
+    end,
+    entr_credits = {
+        idea = {"cassknows"},
+        art = {"LFMoth"}
+    }
+}
+
+local fast_food = {
+    order = 92,
+    object_type = "Joker",
+    key = "fast_food",
+    rarity = 2,
+    cost = 7,
+    eternal_compat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
+    pos = {x = 8, y = 14},
+    atlas = "jokers",
+    loc_vars = function(self, q, card)
+        q[#q+1] = {set = "Other", key = "perishable", vars = {5, 5}}
+    end,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.setting_blind or context.forcetrigger then
+            if G.GAME.joker_buffer + #G.jokers.cards < G.jokers.config.card_limit then
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        local ncard = SMODS.add_card{
+                            set = "Food",
+                            area = G.jokers
+                        }
+                        ncard:set_perishable(true)
+                        G.GAME.joker_buffer = 0
+                        return true
+                    end
+                })
+                G.GAME.joker_buffer = G.GAME.joker_buffer + 1
+                return nil, true
+            end
+        end
+    end,
+}
+
+local antipattern = {
+    order = 93,
+    object_type = "Joker",
+    key = "antipattern",
+    rarity = 2,
+    cost = 7,
+    eternal_compat = true,
+    blueprint_compat = true,
+    pos = {x = 4, y = 12},
+    atlas = "jokers",
+    loc_vars = function(self, q, card)
+        local hands = {}
+        for i, v in pairs(G.handlist) do
+            hands[#hands+1] = {}
+        end
+        for i, v in pairs(card.ability.hand_pairs) do
+            hands[v[1]] = hands[v[1]] or {}
+            hands[v[1]][#hands[v[1]]+1] = v[2]
+        end
+        for i, v in pairs(hands) do
+            local vars = {localize(i, "poker_hands")}
+            if #v > 0 then
+                for i, v2 in pairs(v) do
+                    vars[#vars+1] = localize(v2, "poker_hands")
+                end
+                for i = #vars, 12 do
+                    vars[#vars+1] = ""
+                end
+                q[#q+1] = {set = "Other", key = "antipattern_pair", vars = vars}
+            end
+        end
+        return {
+            vars = {
+                card.ability.xchips_mod,
+                card.ability.xchips
+            }
+        }
+    end,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        hand_pairs = {
+
+        },
+        last_hand = "",
+        xchips = 1,
+        xchips_mod = 0.1
+    },
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.joker_main or context.forcetrigger then
+            if card.ability.last_hand ~= "" then
+                local pair = {card.ability.last_hand, context.scoring_name}
+                local scale = true
+                for i, v in pairs(card.ability.hand_pairs) do
+                    if v[1] == pair[1] and v[2] == pair[2] then scale = false; break end
+                end
+                if scale then
+                    SMODS.scale_card(card, {
+                        ref_table = card.ability,
+                        ref_value = "xchips",
+                        scalar_value = "xchips_mod"
+                    })
+                    card.ability.hand_pairs[#card.ability.hand_pairs+1] = pair
+                end
+            end
+            card.ability.last_hand = context.scoring_name
+            return {
+                xchips = card.ability.xchips
+            }
+        end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
+}
+
+local spiral_of_ants = {
+    order = 94,
+    object_type = "Joker",
+    key = "spiral_of_ants",
+    rarity = 1,
+    cost = 5,
+    eternal_compat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
+    pos = {x = 5, y = 12},
+    atlas = "jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.chips_mod,
+                card.ability.chips
+            }
+        }
+    end,
+    config = {
+        last_card = 9999,
+        chips = 0,
+        chips_mod = 50
+    },
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.joker_main or context.forcetrigger then
+            if #G.play.cards < card.ability.last_card then
+                SMODS.scale_card(card, {
+                    ref_table = card.ability,
+                    ref_value = "chips",
+                    scalar_value = "chips_mod"
+                })
+                card.ability.last_card = #G.play.cards
+            else
+                card.ability.last_card = 9999
+                card.ability.chips = 1
+                card_eval_status_text(
+                    card,
+                    "extra",
+                    nil,
+                    nil,
+                    nil,
+                    { message = localize("k_reset") }
+                )
+            end
+            return {
+                chips = card.ability.chips
+            }
+        end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
+}
+
+local fork_bomb = {
+    order = 95,
+    object_type = "Joker",
+    key = "fork_bomb",
+    rarity = 1,
+    cost = 2,
+    eternal_compat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
+    pos = {x = 7, y = 12},
+    atlas = "jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.setting_blind or context.forcetrigger then
+            if #SMODS.find_card("j_entr_fork_bomb") + (G.GAME.fork_bomb_buffer or 0) < 16 then
+                G.GAME.fork_bomb_buffer = (G.GAME.fork_bomb_buffer or 0) + 1
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        local card2 = copy_card(card)
+                        card.area:emplace(card2)
+                        card2:add_to_deck()
+                        G.GAME.fork_bomb_buffer = 0
+                        return true
+                    end
+                })
+                return {
+                    message = ":(){ :|: & };:"
+                }
+            end
+        end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    },
+}
+
+local solar_panel = {
+    order = 96,
+    object_type = "Joker",
+    key = "solar_panel",
+    rarity = 1,
+    cost = 6,
+    eternal_compat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
+    pos = {x = 8, y = 12},
+    atlas = "jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        money = 4
+    },
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.e_entr_sunny
+        q[#q+1] = G.P_CENTERS.m_entr_radiant
+        return {
+            vars = {
+                card.ability.money
+            }
+        }
+    end,
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if (context.discard and context.other_card:is_sunny()) or context.forcetrigger then
+            return {
+                dollars = card.ability.money
+            }
+        end
+    end,
+}
+
+local kintsugi = {
+    order = 97,
+    object_type = "Joker",
+    key = "kintsugi",
+    rarity = 1,
+    cost = 6,
+    eternal_compat = true,
+    perishable_compat = true,
+    pos = {x = 0, y = 13},
+    atlas = "jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+            "m_entr_ceramic"
+        }
+    },
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.m_entr_ceramic
+        q[#q+1] = G.P_CENTERS.m_gold 
+    end,
+    in_pool = function()
+        local any_ceramic
+        for i, v in pairs(G.playing_cards) do
+            if v.config.center.key == "m_entr_ceramic" then
+                return true
+            end
+        end
+    end
+}
+
+local blooming_crimson = {
+    order = 98,
+    object_type = "Joker",
+    key = "blooming_crimson",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 0, y = 2},
+    soul_pos = {x = 1, y = 1},
+    atlas = "prismatic_shard",
+    demicoloncompat = true,
+    perishable_compat = true,
+    blueprint_compat = true,
+    config = {
+        xmult = 1.15,
+        xchips = 1.15,
+        asc = 1.05
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+            "j_entr_prismatic_shard"
+        }
+    },
+    calculate = function(self, card, context)
+        if (context.individual and context.cardarea == G.play) or context.forcetrigger then
+            local etype = pseudorandom_element({"xmult", "xchips", "asc"}, pseudoseed("blooming_crimson"))
+            return {
+                [etype] = card.ability[etype]
+            }
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.xmult,
+                card.ability.xchips,
+                card.ability.asc
+            }
+        }
+    end,
+    in_pool = function()
+        return G.GAME.pool_flags.prismatic_shard_gone
+    end
+}
+
+local overpump = {
+    order = 99,
+    object_type = "Joker",
+    key = "overpump",
+    rarity = 2,
+    cost = 8,
+    eternal_compat = true,
+    pos = {x = 1, y = 14},
+    atlas = "jokers",
+    demicoloncompat = true,
+    blueprint_compat = true,
+    config = {
+        xmult = 0,
+        xmult_mod = 1.5,
+        played = {},
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    calculate = function(self, card, context)
+        if context.joker_main or context.forcetrigger then
+            if not card.ability.played[context.scoring_name] then
+                SMODS.scale_card(card, {
+                    ref_table = card.ability,
+                    ref_value = "xmult",
+                    scalar_value = "xmult_mod"    
+                })
+                card.ability.played[context.scoring_name] = true
+            end
+            if context.forcetrigger or G.GAME.current_round.hands_left <= 0 then
+                return {
+                    xmult = card.ability.xmult
+                }
+            end
+        end
+        if context.end_of_round and not context.individual and not context.blueprint and not context.repetition then  
+            card.ability.played = {}
+            card.ability.xmult = 0
+            return {
+                message = localize("k_reset")
+            }
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.xmult,
+                card.ability.xmult_mod
+            }
+        }
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    },
+}
+
+local shadow_crystal = {
+    order = 100,
+    object_type = "Joker",
+    key = "shadow_crystal",
+    rarity = 2,
+    cost = 7,
+    eternal_compat = true,
+    pos = {x = 1, y = 13},
+    atlas = "jokers",
+    perishable_compat = true,
+    blueprint_compat = true,
+    config = {
+        extra = {
+            odds = 2
+        }
+    },
+    dependencies = {
+        items = {
+            "set_entr_inversions",
+        }
+    },
+    loc_vars = function(self, q, card)
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
+        return {
+            vars = {
+                numerator,
+                denominator
+            }
+        }
+    end
+}
+
+local miracle_berry = {
+    order = 101,
+    object_type = "Joker",
+    key = "miracle_berry",
+    rarity = 2,
+    cost = 7,
+    eternal_compat = true,
+    pos = {x = 2, y = 13},
+    atlas = "jokers",
+    pools = {
+        Food = true
+    },
+    perishable_compat = true,
+    blueprint_compat = true,
+    config = {
+        uses = 4
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.uses
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.get_consumable_type and not card.getting_sliced and not context.hidden and context.set ~= "Spectral" and context.set ~= "Omen" then
+            local pool = G.P_CENTER_POOLS[context.set]
+            local inverted = pool and pool[1] and Entropy.is_inverted(pool[1])
+            if G.GAME.modifiers.entr_twisted then inverted = not inverted end
+            SMODS.scale_card(card, {
+                ref_table = card.ability,
+                ref_value = "uses",
+                scalar_table = {mod = 1},
+                scalar_value = "mod",
+                operation = "-"
+            })
+            if card.ability.uses <= 0 then
+                SMODS.destroy_cards(card, nil, nil, true)
+                card.getting_sliced = true
+            end
+            return {
+                set = inverted and "Omen" or "Spectral"
+            }
+        end
+    end,
+}
+
+local meridian = {
+    order = 102,
+    object_type = "Joker",
+    key = "meridian",
+    rarity = 1,
+    cost = 5,
+    eternal_compat = true,
+    pos = {x = 3, y = 13},
+    atlas = "jokers",
+    perishable_compat = true,
+    blueprint_compat = true,
+    config = {
+        multiplier = 5
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    loc_vars = function(self, q, card)
+        local index = 0
+        for i, v in pairs(card.area.cards) do
+            if v == card then index = i break end
+        end
+        return {
+            vars = {
+                card.ability.multiplier * index
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main or context.forcetrigger then
+            local index = 0
+            for i, v in pairs(card.area.cards) do
+                if v == card then index = i break end
+            end
+            return {
+                mult = card.ability.multiplier * index
+            }
+        end
+    end,
+}
+
+local mango = {
+    order = 103,
+    object_type = "Joker",
+    key = "mango",
+    rarity = 2,
+    cost = 7,
+    eternal_compat = true,
+    pos = {x = 4, y = 13},
+    atlas = "jokers",
+    pools = {
+        Food = true
+    },
+    perishable_compat = true,
+    blueprint_compat = true,
+    config = {
+        hands_left = 5
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.hands_left
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.before and not card.getting_sliced then
+            local card2 = G.play.cards[1]
+            if card2 then
+                G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+                local _card = copy_card(card2, nil, nil, G.playing_card)
+                _card:add_to_deck()
+                G.deck.config.card_limit = G.deck.config.card_limit + 1
+                table.insert(G.playing_cards, _card)
+                G.hand:emplace(_card)
+                _card.states.visible = nil
+
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        _card:start_materialize()
+                        return true
+                    end
+                })) 
+                card.ability.hands_left = card.ability.hands_left - 1
+                if to_big(card.ability.hands_left) <= to_big(0) then
+                    SMODS.destroy_cards(card, nil, nil, true)
+                    card.getting_sliced = true
+                end
+                return {
+                    message = card.getting_sliced and localize('k_eaten_ex') or localize("k_copied_ex"),
+                    playing_cards_created = {_card}
+                }
+            end
+        end
+    end,
+}
+
+local kitchenjokers = {
+    order = 104,
+    object_type = "Joker",
+    key = "kitchenjokers",
+    rarity = 2,
+    cost = 5,
+    eternal_compat = true,
+    pos = {x = 5, y = 13},
+    atlas = "jokers",
+    config = {
+        off_perc = 0.25,
+    },
+    perishable_compat = true,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.e_entr_lowres
+        return {
+            vars = {
+                card.ability.off_perc,
+            }
+        }
+    end,
+    entr_credits = {
+        idea = {"cassknows", "crabus"}
+    }
+}
+
+local hash_miner = {
+    order = 105,
+    object_type = "Joker",
+    key = "hash_miner",
+    rarity = 2,
+    cost = 7,
+    eternal_compat = true,
+    pos = {x = 9, y = 13},
+    atlas = "jokers",
+    config = {
+        destroy_odds = 2,
+        revive_odds = 10,
+        per_corrupted = 2,
+        extra_value = 0
+    },
+    perishable_compat = true,
+    blueprint_compat = true,
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    loc_vars = function(self, q, card)
+        local corrupted = 0
+        for i, v in pairs(G.GAME.badarg or {}) do
+            corrupted = corrupted + 1
+        end
+        local n, d = SMODS.get_probability_vars(card, 1, card.ability.destroy_odds, "hash_miner")
+        local n2, d2 = SMODS.get_probability_vars(card, 1, card.ability.revive_odds, "hash_miner")
+        return {
+            vars = {
+                n, d,
+                n2, d2,
+                card.ability.per_corrupted,
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.after then
+            if SMODS.pseudorandom_probability(card, 'hash_miner', 1, card.ability.destroy_odds) then
+                if not G.GAME.badarg then G.GAME.badarg = {} end
+                G.GAME.badarg[context.scoring_name] = true
+                card_eval_status_text(
+					card,
+					"extra",
+					nil,
+					nil,
+					nil,
+					{ message = localize("k_corrupted_ex"), colour = G.C.RED }
+				)
+            end
+            for i, v in pairs(G.GAME.badarg or {}) do
+                if SMODS.pseudorandom_probability(card, 'hash_miner', 1, card.ability.revive_odds) then
+                    G.GAME.badarg[i] = nil
+                    card_eval_status_text(
+                        card,
+                        "extra",
+                        nil,
+                        nil,
+                        nil,
+                        { message = localize("k_recovered_ex"), colour = G.C.RED }
+                    )
+                end
+            end
+        end
+        if context.end_of_round and not context.individual and not context.blueprint and not context.repetition then     
+            local corrupted = 0
+            for i, v in pairs(G.GAME.badarg or {}) do
+                corrupted = corrupted + 1
+            end
+            SMODS.scale_card(card, {
+                ref_table = card.ability,
+                ref_value = "extra_value",
+                scalar_value = "per_corrupted",
+                operation = function(ref_table, ref_value, initial, change)
+                    ref_table[ref_value] = initial + (corrupted)*change
+                end,
+                scaling_message = {
+                    message = localize('k_val_up'),
+                    colour = G.C.MONEY
+                }
+            })
+            card:set_cost()
+        end
+    end,
+    entr_credits = {
+        idea = {"cassknows"},
+        art = {"candycanearter"}
+    }
+}
+
+local bell_curve = {
+    order = 107,
+    object_type = "Joker",
+    key = "bell_curve",
+    rarity = 1,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 7, y = 13},
+    atlas = "jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    perishable_compat = true,
+    blueprint_compat = true,
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.repetition and context.cardarea == G.play then
+            local index = 0
+            for i, v in pairs(G.play.cards) do
+                if v == context.other_card then index = i; break end
+            end
+            if index ~= 1 and index ~= #G.play.cards then
+                return {
+                    repetitions = 1
+                }
+            end
+        end
+    end,
+}
+
+local pineapple = {
+    order = 108,
+    object_type = "Joker",
+    key = "pineapple",
+    rarity = 2,
+    cost = 7,
+    eternal_compat = true,
+    pos = {x = 0, y = 15},
+    atlas = "jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    config = {
+        rounds = 5
+    },
+    pools = {Food = true},
+    perishable_compat = true,
+    blueprint_compat = true,
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.individual and not context.blueprint and not context.repetition) or context.forcetrigger then
+            local rcard = pseudorandom_element(G.playing_cards, "entr_pineapple")          
+            rcard.ability.perma_repetitions = rcard.ability.perma_repetitions + 1
+            if not context.forcetrigger then
+                if card.ability.rounds - 1 <= 0 then
+                    SMODS.destroy_cards(card, nil, nil, true)
+                    return {
+                        message = localize('k_eaten_ex'),
+                        colour = G.C.FILTER
+                    }
+                else
+                    card.ability.rounds = card.ability.rounds - 1
+                end
+            end
+            return {
+                message = localize("k_upgrade_ex")
+            }
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.rounds
+            }
+        }
+    end
+}
+
+local rubber_ball = {
+    order = 109,
+    object_type = "Joker",
+    key = "rubber_ball",
+    rarity = 1,
+    cost = 4,
+    eternal_compat = true,
+    pos = {x = 6, y = 14},
+    atlas = "jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers"
+        }
+    },
+    config = {
+        odds = 3,
+    },
+    perishable_compat = true,
+    loc_vars = function(self, q, card)
+        local n, d = SMODS.get_probability_vars(card, 1, card.ability.odds, "rubber_ball")
+        return {
+            vars = {
+                n, d
+            }
+        }
+    end
+}
+
+local stand_arrow = {
+    order = 110,
+    object_type = "Joker",
+    key = "stand_arrow",
+    rarity = 2,
+    cost = 8,
+    eternal_compat = true,
+    pos = {x = 8, y = 13},
+    atlas = "jokers",
+    config = {
+        left = 1,
+        left_mod = 1,
+        odds = 2,
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+            "e_entr_sunny",
+            "e_entr_solar",
+            "e_entr_freaky",
+            "e_entr_fractured"
+        }
+    },
+    perishable_compat = true,
+    loc_vars = function(self, q, card)
+        local options = {
+            {key ="e_polychrome", weight = 1},
+            {key ="e_negative", weight = 1},
+            {key ="e_entr_sunny", weight = 1},
+            {key ="e_entr_solar", weight = 1},
+            {key ="e_entr_freaky", weight = 1},
+            {key ="e_entr_fractured", weight = 1},
+        }
+        for i, v in pairs(options) do
+            q[#q+1] = G.P_CENTERS[v]
+        end
+        local n, d = SMODS.get_probability_vars(card, 1, card.ability.odds, "stand_arrow")
+        return {
+            vars = {
+                card.ability.left,
+                card.ability.left_mod,
+                n, d
+            }
+        }
+    end,
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and not context.repetition) or context.forcetrigger then
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
+        end
+    end, 
+    can_use = function(self, card)
+        local num = Entropy.GetHighlightedCards({G.jokers}, card, 1, 1)
+        local no_ed = false
+        for i, v in pairs(num) do
+            if not v.edition then no_ed = true end
+        end
+        if not no_ed then return end
+        return #num > 0 and #num <= 1 and to_big(card.ability.left) > to_big(0) 
+    end,
+    use = function(self, card)
+        card.ability.left = card.ability.left - 1
+        local cards = Entropy.GetHighlightedCards({G.jokers}, card, 1, 1)
+        for i, v in pairs(cards) do
+            if SMODS.pseudorandom_probability(v, 'stand_arrow', 1, card.ability.odds) and not SMODS.is_eternal(v) then
+                v:start_dissolve()
+            elseif not v.edition then
+                local edition = SMODS.poll_edition({
+                    options = {
+                        "e_polychrome",
+                        "e_negative",
+                        "e_entr_sunny",
+                        "e_entr_solar",
+                        "e_entr_freaky",
+                        "e_entr_fractured"
+                    },
+                    guaranteed = true
+                })
+                v:set_edition(edition)
+            end
+        end
+    end
+}
+
+local dancer = {
+    order = 111,
+    object_type = "Joker",
+    key = "dancer",
+    rarity = 1,
+    cost = 5,
+    eternal_compat = true,
+    pos = {x = 3, y = 15},
+    atlas = "jokers",
+    config = {
+        csl = 2,
+        discards = 1
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    perishable_compat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.csl,
+                -card.ability.discards
+            }
+        }
+    end,
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.forcetrigger then
+            Entropy.ChangeFullCSL(card.ability.csl)
+            G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.discards
+            ease_discard(-card.ability.discards)
+        end
+    end, 
+    add_to_deck = function(self, card)
+        Entropy.ChangeFullCSL(card.ability.csl)
+        G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.discards
+        ease_discard(-card.ability.discards)
+    end,
+    remove_from_deck = function(self, card)
+        Entropy.ChangeFullCSL(-card.ability.csl)
+        G.GAME.round_resets.discards = G.GAME.round_resets.discards + card.ability.discards
+        ease_discard(card.ability.discards)
+    end,
+    entr_credits = {
+        idea = {"cassknows"},
+        art = {"candycanearter"}
+    }
+}
+
+local kings_scepter = {
+    order = 112,
+    object_type = "Joker",
+    key = "kings_scepter",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 2, y = 15},
+    atlas = "jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    perishable_compat = true,
+    calculate = function(self, card, context)
+        if context.destroy_card and context.destroy_card.debuff and context.destroy_card.area == G.play then
+            return {remove = not SMODS.is_eternal(context.destroy_card)}
+        end
+    end, 
+    entr_credits = {
+        idea = {"cassknows"}
+    }
+}
+
+local monkeys_paw = {
+    order = 113,
+    object_type = "Joker",
+    key = "monkeys_paw",
+    atlas = "jokers",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 1, y = 15},
+    config = {
+        left = 3,
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+            "set_entr_inversions",
+            "set_entr_runes"
+        }
+    },
+    perishable_compat = true,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {set = "Other", key = "eternal"}
+        return {
+            vars = {
+                card.ability.left,
+            }
+        }
+    end,
+    can_use = function(self, card)
+        return to_big(card.ability.left) > to_big(0) and #G.consumeables.cards < G.consumeables.config.card_limit
+    end,
+    use = function(self, card)
+        card.ability.left = card.ability.left - 1
+        SMODS.add_card {
+            set = "Pact",
+            area = G.consumeables,
+            key_append = "entr_monkeys_paw"
+        }.ability.eternal = true
+    end
+}
+
+function Entropy.kind_to_set(kind, c)
+    local check = {
+        Arcana = "Tarot",
+        Celestial = "Planet",
+        Ethereal = "Spectral",
+        Buffoon = "Joker",
+        Inverted = c and "Twisted" or nil
+    }
+    local kind2 = check[kind] or kind
+    check.Inverted = "Twisted"
+    local check2 = check[kind] or kind
+    if not G.P_CENTER_POOLS[kind2] and not G.P_CENTER_POOLS[check2] then return end
+    return kind2
+end
+
+local magic_skin = {
+    order = 114,
+    object_type = "Joker",
+    key = "magic_skin",
+    rarity = 3,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 0, y = 14},
+    atlas = "jokers",
+    config = {
+        left = 0,
+        left_mod = 1,
+        cards = 2
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+        }
+    },
+    perishable_compat = true,
+    loc_vars = function(self, q, card)
+        local loc = G.STATE == G.STATES.SMODS_BOOSTER_OPENED and SMODS.OPENED_BOOSTER and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind)
+        if loc == "ERROR" or (SMODS.OPENED_BOOSTER and not Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind) and SMODS.OPENED_BOOSTER.config.center.create_card) then
+            loc = localize(SMODS.OPENED_BOOSTER.config.center.group_key)
+        end
+        if G.STATE ~= G.STATES.SMODS_BOOSTER_OPENED or (SMODS.OPENED_BOOSTER and (not Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind) and not SMODS.OPENED_BOOSTER.config.center.create_card)) or SMODS.OPENED_BOOSTER.config.center.kind == "Standard" then
+            loc = "none"
+        end
+        loc = loc or "ERROR"
+        if SMODS.OPENED_BOOSTER and SMODS.OPENED_BOOSTER.config.center.no_magic_skin then
+            loc = "none"
+        end
+        return {
+            vars = {
+                card.ability.left,
+                localize("k_"..string.lower(loc)),
+                card.ability.cards,
+                card.ability.left_mod
+            }
+        }
+    end,
+    can_use = function(self, card)
+        if SMODS.OPENED_BOOSTER and SMODS.OPENED_BOOSTER.config and SMODS.OPENED_BOOSTER.config.center.kind == "Standard" then
+            return
+        end
+        return to_big(card.ability.left) > to_big(0) and G.STATE == G.STATES.SMODS_BOOSTER_OPENED and (Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind) or SMODS.OPENED_BOOSTER.config.center.create_card)
+    end,
+    use = function(self, card)
+        card.ability.left = card.ability.left - 1
+        G.GAME.magic_skin_prob = (G.GAME.magic_skin_prob or 0) + 0.02
+        for i = 1, card.ability.cards do
+            if SMODS.OPENED_BOOSTER and not SMODS.OPENED_BOOSTER.config.center.no_magic_skin then
+                local k = SMODS.OPENED_BOOSTER and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind, true)
+                if not k and SMODS.OPENED_BOOSTER.config.center.create_card and type(SMODS.OPENED_BOOSTER.config.center.create_card) == "function" then
+                    local _card_to_spawn = SMODS.OPENED_BOOSTER.config.center:create_card(SMODS.OPENED_BOOSTER, i)
+                    local spawned
+                    if type((_card_to_spawn or {}).is) == 'function' and _card_to_spawn:is(Card) then
+                        spawned = _card_to_spawn
+                    else
+                        spawned = SMODS.create_card(_card_to_spawn)
+                    end
+                    if spawned.config.center.set == "Joker" then
+                        G.jokers:emplace(spawned)
+                    else    
+                        G.consumeables:emplace(spawned)
+                    end
+                    spawned:set_edition("e_negative")
+                else
+                    if k == "Planet" or k == "Tarot" then
+                        local rune
+                        local rare_rune
+                        if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
+                        if G.GAME.entr_diviner then
+                            if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
+                        end
+                        if rune then
+                            k = "Rune"
+                        end
+                    end
+                    SMODS.add_card {
+                        set = k or "Joker",
+                        area = k == "Twisted" and G.consumeables or nil,
+                        key_append = "entr_magic_skin",
+                        edition = "e_negative"
+                    }
+                end
+            end
+        end
+    end,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and not context.repetition) or context.forcetrigger then
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
+        end
+    end, 
+    entr_credits = {idea = {"Athebyne"}}
+}
+
+local lambda_calculus = {
+    order = 115,
+    object_type = "Joker",
+    key = "lambda_calculus",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 2, y = 14},
+    atlas = "jokers",
+    config = {
+        chips = 0
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    perishable_compat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.chips
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main then
+            local chips = card.ability.chips
+            card.ability.chips = 0
+            return {
+                chips = chips
+            }
+        end
+        if context.post_trigger and context.other_card ~= card then
+            local change = Entropy.gather_values(context.other_card)
+            if to_big(change) > to_big(0) then
+                card.ability.chips = card.ability.chips + change
+                card_eval_status_text(
+                    card,
+                    "extra",
+                    nil,
+                    nil,
+                    nil,
+                    { message = number_format(card.ability.chips), colour = G.C.BLUE }
+                )
+            end
+        end
+    end, 
+}
+
+function Entropy.gather_values(card)
+    local total = 0
+    for i, v in pairs(card.ability) do
+        if Entropy.is_number(v) and to_big(v) > to_big(1) and i ~= "order" then
+            total = total + v
+        elseif type(v) == "table" then
+            total = total + Entropy.gather_values({ability = v})
+        end
+    end
+    return total
+end
+
+local elderberries = {
+    order = 116,
+    object_type = "Joker",
+    key = "elderberries",
+    rarity = 2,
+    cost = 6,
+    pos = {x = 3, y = 14},
+    atlas = "jokers",
+    config = {
+        spectrals = 2
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    pools = {Food = true},
+    perishable_compat = true,
+    blueprint_compat = true,
+    demicoloncompat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                math.min(card.ability.spectrals, 100)
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.selling_self or context.forcetrigger then
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                func = function()
+                    local area
+                    if G.STATE == G.STATES.HAND_PLAYED then
+                        if not G.redeemed_vouchers_during_hand then
+                            G.redeemed_vouchers_during_hand =
+                                CardArea(G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, { type = "play", card_limit = 5 })
+                        end
+                        area = G.redeemed_vouchers_during_hand
+                    else
+                        area = G.play
+                    end
+                    for i = 1, card.ability.spectrals do
+                        local card = create_card("Spectral", G.play, nil, nil, nil, nil, nil, "entr_large_deck")
+                        if card.config.center.key == "j_joker" then
+                            card:set_ability(G.P_CENTERS.b_aura)
+                        end
+                        card:add_to_deck()
+                        area:emplace(card)
+
+                        local top_dynatext = nil
+                        
+                        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                                top_dynatext = DynaText({string = localize{type = 'name_text', set = card.config.center.set, key = card.config.center.key}, colours = {G.C.WHITE}, rotate = 1,shadow = true, bump = true,float=true, scale = 0.9, pop_in = 0.6/G.SPEEDFACTOR, pop_in_rate = 1.5*G.SPEEDFACTOR})
+                                card:juice_up(0.3, 0.5)
+                                play_sound('card1')
+                                play_sound('coin1')
+                                card.children.top_disp = UIBox{
+                                    definition =    {n=G.UIT.ROOT, config = {align = 'tm', r = 0.15, colour = G.C.CLEAR, padding = 0.15}, nodes={
+                                                        {n=G.UIT.O, config={object = top_dynatext}}
+                                                    }},
+                                    config = {align="tm", offset = {x=0,y=0},parent = card}
+                                }
+        
+                            return true end }))
+                        --G.GAME.current_round.voucher = nil
+
+
+                        delay(0.6)
+                        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 2.6, func = function()
+                            top_dynatext:pop_out(4)
+                            return true end }))
+                        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.5, func = function()
+                            card.children.top_disp:remove()
+                            card.children.top_disp = nil
+                        return true end }))
+
+                        if Cryptid.forcetriggerConsumableCheck(card) then
+                            Cryptid.forcetrigger(card, {no_sound = true})
+                        elseif card:can_use_consumeable() then
+                            card:use_consumeable()
+                        end
+                        G.E_MANAGER:add_event(Event{
+                            trigger = "after",
+                            func = function()
+                                card:start_dissolve()
+                                return true
+                            end
+                        })
+                    end
+                    return true
+                end
+            })
+            return nil, true
+        end
+    end, 
+}
+
+local blood_orange = {
+    order = 118,
+    object_type = "Joker",
+    key = "blood_orange",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 7, y = 14},
+    atlas = "jokers",
+    config = {
+        cards = 10
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+            "set_entr_inversions"
+        }
+    },
+    pools = {Food = true},
+    perishable_compat = true,
+    blueprint_compat = true,
+    demicoloncompat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.cards
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.remove_playing_cards or context.forcetrigger then
+            local eated
+            for i, v in pairs(context.removed or {true}) do
+                if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
+                    card.ability.cards = card.ability.cards - 1
+                    if card.ability.cards <= 0 then
+                        SMODS.destroy_cards(card, nil, nil, true)
+                        eated = true
+                    end
+                    G.E_MANAGER:add_event(Event{
+                        func = function()
+                            G.GAME.consumeable_buffer = 0
+                            SMODS.add_card{
+                                set = "Twisted",
+                                area = G.consumeables,
+                                key_append = "entr_blood_orange"
+                            }         
+                            return true
+                        end
+                    })
+                    G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+                    card_eval_status_text(
+                        card,
+                        "extra",
+                        nil,
+                        nil,
+                        nil,
+                        { message = eated and localize("k_eaten_ex") or localize("k_plus_inverted"), colour = G.C.RED }
+                    )
+                end
+            end
+        end
+    end, 
+}
+
+local false_vacuum_collapse = {
+    order = 119,
+    object_type = "Joker",
+    key = "false_vacuum_collapse",
+    rarity = 2,
+    cost = 8,
+    eternal_compat = true,
+    pos = {x = 9, y = 14},
+    atlas = "jokers",
+    config = {
+        cards = 10
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+            "set_entr_inversions"
+        }
+    },
+    perishable_compat = true,
+    blueprint_compat = true,
+    demicoloncompat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.cards
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.before then
+            card.area:remove_card(card)
+            G.play:emplace(card, "front")
+            card:highlight(true)
+            SMODS.change_base(card, "entr_nilsuit", "entr_nilrank")
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                blocking = false,
+                func = function()
+                    G.E_MANAGER:add_event(Event{
+                        trigger = "after",
+                        func = function()
+                            card.area:remove_card(card)
+                            G.jokers:emplace(card, "front")
+                            return true
+                        end
+                    })
+                    return true
+                end
+            })
+        end
+        if context.individual and context.card == card then
+            local d
+            for i = 2, #G.play.cards do
+                if G.play.cards[i] and not G.play.cards[i].getting_sucked and G.play.cards[i] ~= card and not d then
+                    G.play.cards[i].getting_sucked = true
+                    SMODS.destroy_cards(G.play.cards[i])
+                    d = true
+                end
+            end
+        end
+    end, 
+}
+
+
+local eval_card_ref = eval_card
+function eval_card(card, ...)
+    if card and not card.getting_sucked then
+        return eval_card_ref(card, ...)
+    end
+end
+
+local mark_of_the_beast = {
+    order = 120,
+    object_type = "Joker",
+    key = "mark_of_the_beast",
+    rarity = 2,
+    cost = 8,
+    eternal_compat = true,
+    pos = {x = 4, y = 14},
+    atlas = "jokers",
+    config = {
+        cards = 10
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+            "set_entr_inversions"
+        }
+    },
+    perishable_compat = true,
+    blueprint_compat = true,
+    demicoloncompat = true,
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.p_entr_twisted_pack_mega
+    end,
+    calculate = function(self, card, context)
+        if context.starting_shop or context.forcetrigger then
+            G.E_MANAGER:add_event(Event{
+                func = function()
+                    card:juice_up()
+                    return true
+                end
+            })
+            local card = Card(G.shop_booster.T.x + G.shop_booster.T.w/2,
+            G.shop_booster.T.y, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS["p_entr_twisted_pack_mega"], {bypass_discovery_center = true, bypass_discovery_ui = true})
+            card.ability.beast_mark = true
+            create_shop_card_ui(card, 'Booster', G.shop_booster)
+            card.ability.booster_pos = #G.shop_booster.cards + 1
+            card:start_materialize()
+            card.cost = 0
+            G.shop_booster:emplace(card)
+            return nil, true
+        end
+        if (context.reroll_shop and Entropy.has_rune("rune_entr_perthro")) then
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                func = function()
+                    G.E_MANAGER:add_event(Event{
+                        trigger = "after",
+                        func = function()
+                            card:juice_up()
+                            local card = Card(G.shop_booster.T.x + G.shop_booster.T.w/2,
+                            G.shop_booster.T.y, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS["p_entr_twisted_pack_mega"], {bypass_discovery_center = true, bypass_discovery_ui = true})
+                            card.ability.beast_mark = true
+                            create_shop_card_ui(card, 'Booster', G.shop_booster)
+                            card.ability.booster_pos = #G.shop_booster.cards + 1
+                            card:start_materialize()
+                            card.cost = 0
+                            G.shop_booster:emplace(card)
+                            return true
+                        end})
+                    return true
+                end
+            })
+        end
+    end, 
 }
 
 return {
@@ -4207,6 +6859,8 @@ return {
         slipstream,
         cass,
         crabus,
+        hexa,
+        grahkon,
         sandpaper,
         purple_joker,
         chalice_of_blood,
@@ -4245,6 +6899,45 @@ return {
         error_joker,
         thirteen_of_stars,
         diode,
-        prismatic_shard
+        prismatic_shard,
+        chameleon,
+        thanatophobia,
+        redkey,
+        polaroid,
+        car_battery,
+        chair,
+        captcha,
+        deck_enlargment_pills,
+        photocopy,
+        enlightenment,
+        black_rose_green_sun,
+        jack_off,
+        fast_food,
+        antipattern,
+        spiral_of_ants,
+        fork_bomb,
+        solar_panel,
+        kintsugi,
+        blooming_crimson,
+        overpump,
+        shadow_crystal,
+        miracle_berry,
+        meridian,
+        mango,
+        kitchenjokers,
+        hash_miner,
+        bell_curve,
+        pineapple,
+        rubber_ball,
+        stand_arrow,
+        dancer,
+        kings_scepter,
+        monkeys_paw,
+        magic_skin,
+        lambda_calculus,
+        elderberries,
+        blood_orange,
+        false_vacuum_collapse,
+        mark_of_the_beast
     }
 }

@@ -57,7 +57,7 @@ G.FUNCS.flame_handler = function(e)
       local exptime = math.exp(-0.4*G.real_dt)
       if to_big(G.ARGS.score_intensity.earned_score) >= to_big(G.ARGS.score_intensity.required_score) and to_big(G.ARGS.score_intensity.required_score) > to_big(0) then
         _F.intensity = ((G.pack_cards and not G.pack_cards.REMOVED) or (G.TAROT_INTERRUPT)) and 0 or math.max(0., math.log(G.ARGS.score_intensity.earned_score+1, 5)-2)
-          if type(_F.intensity) == "table" then
+          if Entropy.is_big(_F.intensity) then
               if _F.intensity > to_big(85) then
                   _F.intensity = 85
               else
@@ -413,4 +413,21 @@ local mod_chips_ref = mod_chips
 function mod_chips(_chips)
   if _chips then return mod_chips_ref(_chips) end
   return 1
+end
+
+local copy_tableref = copy_table
+function copy_table(tbl, iter, ...)
+  iter = iter or 100
+  if iter > 0 then
+    return copy_tableref(tbl, iter - 1, ...)
+  end
+end
+
+local get_areas_ref = SMODS.get_card_areas
+function SMODS.get_card_areas(...)
+  local ret = get_areas_ref(...)
+  for i, v in pairs(ret) do
+    v.cards = v.cards or {}
+  end
+  return ret
 end

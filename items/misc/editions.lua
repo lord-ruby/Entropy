@@ -21,7 +21,7 @@ local solar = {
           "set_entr_misc"
         }
     },
-	extra_cost = 10,
+	extra_cost = 6,
 	in_shop = true,
 	weight = 0.4,
     badge_color = HEX("fca849"),
@@ -52,7 +52,7 @@ local solar = {
 	end,
 	entr_credits = {
 		custom={key="shader",text="cassknows"}
-	}
+	},
 }
 
 
@@ -79,7 +79,7 @@ local fractured ={
           "set_entr_misc"
         }
     },
-	extra_cost = 10,
+	extra_cost = 8,
 	in_shop = true,
 	weight = 0.2,
     badge_color = HEX("fca849"),
@@ -113,8 +113,9 @@ local fractured ={
 		end
 	end,
 	entr_credits = {
-		custom={key="shader",text="cassknows"}
-	}
+		custom={key="shader",text="cassknows"},
+		idea = {"cassknows"}
+	},
 }
 SMODS.Shader({
     key="sunny",
@@ -141,6 +142,7 @@ local sunny = {
     },
 	in_shop = true,
 	weight = 0.8,
+	extra_cost = 2,
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
@@ -195,7 +197,7 @@ local freaky = {
           "set_entr_misc"
         }
     },
-	extra_cost = 18,
+	extra_cost = 6,
 	in_shop = true,
 	weight = 0.5,
     badge_color = HEX("fca849"),
@@ -225,8 +227,9 @@ local freaky = {
 		end
 	end,
 	entr_credits = {
-		custom={key="shader",text="cassknows"}
-	}
+		custom={key="shader",text="cassknows"},
+		idea = {"cassknows"}
+	},
 }
 
 if AurinkoAddons then
@@ -301,7 +304,7 @@ local neon = {
 		vol = 0.4,
 	},
 	config = {
-		cost_fac = 0.5
+		cost_fac = 0.9
 	},
 	dependencies = {
         items = {
@@ -313,21 +316,21 @@ local neon = {
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
-		return {vars={card and card.edition and card.edition.cost_fac or 0.5}}
+		return {vars={card and card.edition and card.edition.cost_fac or 0.9}}
     end,
-    calculate = function(self, card, context)
-
-	end,
 	entr_credits = {
-		custom={key="shader",text="cassknows"}
-	}
+		custom={key="shader",text="cassknows"},
+		idea = {"cassknows"}
+	},
 }
 
 local set_cost_ref = Card.set_cost
 function Card:set_cost()
 	set_cost_ref(self)
-	if self.edition and self.edition.key == "e_entr_neon" then
-		self.cost = self.cost * self.edition.cost_fac
+	for i, v in pairs(G.I.CARD) do
+		if v.edition and v.edition.key == "e_entr_neon" and v.area and v.area.config.type ~= "shop" then
+			self.cost = self.cost * v.edition.cost_fac
+		end
 	end
 	if Entropy.has_rune("rune_entr_avarice") then
 	    local cost = 0
@@ -339,6 +342,18 @@ function Card:set_cost()
 	end
 	if G.GAME.modifiers.entr_platinum and self.config.center.set == "Joker" then
 		self.cost = math.floor(self.cost * G.GAME.modifiers.entr_platinum)
+	end
+	if self.config.center.key == "j_entr_recursive_joker" and not self.ability.cost_set then
+		self.ability.cost_set = true
+		self.sell_cost = self.cost
+		self.sell_cost_label = self.facing == 'back' and '?' or number_format(self.sell_cost)
+	end
+	if next(SMODS.find_card("j_entr_kitchenjokers")) and self:is_food() then
+		local val = 1
+		for i, v in pairs(SMODS.find_card("j_entr_kitchenjokers")) do
+			val = val * v.ability.off_perc
+		end
+		self.cost = self.cost * val
 	end
 end
 
@@ -384,17 +399,20 @@ local lowres = {
 		end
 	end,
 	on_apply = function(card)
-		Cryptid.manipulate(card, {
-			value = 0.25
-		}, nil, true)
+		if not card.edition or not card.edition.lowres then
+			Cryptid.manipulate(card, {
+				value = 0.25
+			}, nil, true)
+		end
 	end,
 	on_remove = function(card)
 		Cryptid.manipulate(card, { value = 1 })
 		Cryptid.manipulate(card)
 	end,
 	entr_credits = {
-		custom={key="shader",text="cassknows"}
-	}
+		custom={key="shader",text="cassknows"},
+		idea = {"cassknows"}
+	},
 }
 
 SMODS.Shader({
@@ -465,8 +483,9 @@ local kaleidoscopic = {
 		end
 	end,
 	entr_credits = {
-		custom={key="shader",text="cassknows"}
-	}
+		custom={key="shader",text="cassknows"},
+		idea = {"cassknows"}
+	},
 }
 
 return {

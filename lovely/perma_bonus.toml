@@ -1,0 +1,107 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "perma_h_dollars = self.ability and self.ability.perma_h_dollars or 0,"
+position = "after"
+payload = """
+entr_perma_plus_asc = self.ability and self.ability.entr_perma_plus_asc or 0,
+entr_perma_h_plus_asc = self.ability and self.ability.entr_perma_h_plus_asc or 0,
+entr_perma_asc = self.ability and self.ability.entr_perma_asc or 0,
+entr_perma_h_asc = self.ability and self.ability.entr_perma_h_asc or 0,
+entr_perma_exp_asc = self.ability and self.ability.entr_perma_exp_asc or 0,
+entr_perma_h_exp_asc = self.ability and self.ability.entr_perma_h_exp_asc or 0,
+"""
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "bonus_x_chips = self.ability.perma_x_chips ~= 0 and (self.ability.perma_x_chips + 1) or nil,"
+position = "after"
+payload = """
+entr_perma_plus_asc = self.ability.entr_perma_plus_asc ~= 0 and self.ability.entr_perma_plus_asc or nil,
+entr_perma_h_plus_asc = self.ability.entr_perma_h_plus_asc ~= 0 and self.ability.entr_perma_h_plus_asc or nil,
+entr_perma_asc = self.ability.entr_perma_asc ~= 0 and (self.ability.entr_perma_asc + 1) or nil,
+entr_perma_h_asc = self.ability.entr_perma_h_asc ~= 0 and (self.ability.entr_perma_h_asc + 1) or nil,
+entr_perma_exp_asc = self.ability.entr_perma_exp_asc ~= 0 and (self.ability.entr_perma_exp_asc + 1) or nil,
+entr_perma_h_exp_asc = self.ability.entr_perma_h_exp_asc ~= 0 and (self.ability.entr_perma_h_exp_asc + 1) or nil,
+"""
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/utils.lua"]'
+pattern = '''
+if specific_vars and specific_vars.bonus_repetitions then
+        localize{type = 'other', key = 'card_extra_repetitions', nodes = desc_nodes, vars = {specific_vars.bonus_repetitions, localize(specific_vars.bonus_repetitions > 1 and 'b_retrigger_plural' or 'b_retrigger_single')}}
+    end
+'''
+position = "after"
+payload = '''
+if specific_vars and specific_vars.entr_perma_plus_asc then
+    localize{ type = "other", key = "entr_perma_plus_asc", nodes = desc_nodes, vars = {SMODS.signed(specific_vars.entr_perma_plus_asc)}}
+end
+if specific_vars and specific_vars.entr_perma_h_plus_asc then
+    localize{ type = "other", key = "entr_perma_h_plus_asc", nodes = desc_nodes, vars = {SMODS.signed(specific_vars.entr_perma_h_plus_asc)}}
+end
+if specific_vars and specific_vars.entr_perma_asc then
+    localize{ type = "other", key = "entr_perma_asc", nodes = desc_nodes, vars = {specific_vars.entr_perma_asc}}
+end
+if specific_vars and specific_vars.entr_perma_h_asc then
+    localize{ type = "other", key = "entr_perma_h_asc", nodes = desc_nodes, vars = {specific_vars.entr_perma_h_asc}}
+end
+if specific_vars and specific_vars.entr_perma_exp_asc then
+    localize{ type = "other", key = "entr_perma_exp_asc", nodes = desc_nodes, vars = {specific_vars.entr_perma_exp_asc}}
+end
+if specific_vars and specific_vars.entr_perma_h_exp_asc then
+    localize{ type = "other", key = "entr_perma_h_exp_asc", nodes = desc_nodes, vars = {specific_vars.entr_perma_h_exp_asc}}
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = """        -- TARGET: main scoring on played cards"""
+position = "before"
+payload = '''
+local entr_plus_asc = card:get_entr_plus_asc()
+if entr_plus_asc ~= 0 then
+    ret.playing_card.plus_asc = entr_plus_asc
+end
+local entr_asc = card:get_entr_asc()
+if entr_asc ~= 1 and entr_asc > 0 then
+    ret.playing_card.asc = entr_asc
+end
+local entr_exp_asc = card:get_entr_exp_asc()
+if entr_exp_asc ~= 1 then
+    ret.playing_card.exp_asc = entr_exp_asc
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = """        -- TARGET: main scoring on held cards"""
+position = "before"
+payload = '''
+local entr_plus_asc = card:get_entr_h_plus_asc()
+if entr_plus_asc ~= 0 then
+    ret.playing_card.plus_asc = entr_plus_asc
+end
+local entr_asc = card:get_entr_h_asc()
+if entr_asc ~= 1 and entr_asc > 0 then
+    ret.playing_card.asc = entr_asc
+end
+local entr_exp_asc = card:get_entr_h_exp_asc()
+if entr_exp_asc ~= 1 then
+    ret.playing_card.exp_asc = entr_exp_asc
+end
+'''
+match_indent = true

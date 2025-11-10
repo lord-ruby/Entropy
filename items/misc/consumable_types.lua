@@ -106,7 +106,7 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
 		shop_rate = 0.0,
 		loc_txt = {},
 		default = "c_entr_memory_leak",
-		can_be_pulled = true,
+		can_be_pulled = "b_pull",
 	})
 	SMODS.UndiscoveredSprite({
 		key = "Command",
@@ -166,4 +166,22 @@ SMODS.UndiscoveredSprite({
 	pos = { x = 999, y = 999 },
 	px = 71,
 	py = 95,
+})
+
+SMODS.ObjectType({
+	key = "Food",
+	default = "c_gros_michel",
+	cards = {},
+	inject = function(self)
+		SMODS.ObjectType.inject(self)
+		self:inject_card(G.P_CENTERS.j_gros_michel)
+		self:inject_card(G.P_CENTERS.j_egg)
+		self:inject_card(G.P_CENTERS.j_ice_cream)
+		self:inject_card(G.P_CENTERS.j_cavendish)
+		self:inject_card(G.P_CENTERS.j_turtle_bean)
+		self:inject_card(G.P_CENTERS.j_diet_cola)
+		self:inject_card(G.P_CENTERS.j_popcorn)
+		self:inject_card(G.P_CENTERS.j_ramen)
+		self:inject_card(G.P_CENTERS.j_selzer)
+	end,
 })

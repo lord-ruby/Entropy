@@ -72,13 +72,23 @@ for i, v in pairs(Entropy.find_runes("rune_entr_uruz")) do
 end
 G.GAME.InterferencePayoutMod = nil
 if G.GAME.RedBlindStates then
-        for i, v in pairs(G.GAME.RedBlindStates) do G.GAME.round_resets.blind_states[i] = v end
-        G.GAME.RedBlindStates = nil
-        G.GAME.round_resets.blind_states['Red'] = nil
+    G.E_MANAGER:add_event(Event{
+        func = function()
+            for i, v in pairs(G.GAME.RedBlindStates) do G.GAME.round_resets.blind_states[i] = v end
+            G.GAME.RedBlindStates = nil
+            G.GAME.round_resets.blind_states['Red'] = nil
+            return true
+        end
+    })
 end
 if G.GAME.round_resets.blind_states.Boss == "Defeated" then
         G.GAME.round_resets.blind_choices.Small = "bl_small"
         G.GAME.round_resets.blind_choices.Big = "bl_big"
+end
+if G.GAME.earl_modifiers then
+    G.GAME.modifiers.money_per_discard = G.GAME.earl_modifiers.discard
+    G.GAME.modifiers.money_per_hand = G.GAME.earl_modifiers.hand
+    G.GAME.earl_modifiers = nil
 end
 '''
 match_indent = true

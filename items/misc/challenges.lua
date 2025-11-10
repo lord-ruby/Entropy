@@ -78,13 +78,36 @@ function Game:start_run(args)
     if G.GAME.cry_percrate and not G.GAME.cry_percrate["rune"] then G.GAME.cry_percrate["rune"] = 0 end
     G.jokers.config.highlighted_limit = 1e100
     G.consumeables.config.highlighted_limit = 1e100
-end
-
-local set_abilityref = Card.set_ability
-function Card:set_ability(center, initial, delay)
-    set_abilityref(self, center, initial, delay)
-    if (G.GAME.modifiers.entr_reverse_redeo or G.GAME.ReverseRedeo) and self.config.center.key == "j_cry_redeo" then
-        self.ability.extra.ante_reduction = -1
+    if G.SPLASH_EE and not Entropy.IsEE() then
+        G.SPLASH_EE:remove()
+        G.SPLASH_EE = nil
+    end
+    if Entropy.IsEE() then
+        if not G.SPLASH_EE then
+            G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
+        end
+        G.E_MANAGER:add_event(Event{
+            trigger = "after",
+            blocking = false,
+            blockable = false,
+            delay = 1 * G.SETTINGS.GAMESPEED,
+            func = function()
+                G.GAME.EE_FADE = 0
+                G.SPLASH_EE:define_draw_steps({{
+                    shader = 'entr_entropic_vortex',
+                    send = {
+                        {name = 'time', ref_table = G.TIMERS, ref_value = 'REAL'},
+                        {name = 'vort_speed', val = 1},
+                        {name = 'colour_1', ref_table = G.C, ref_value = 'BLUE'},
+                        {name = 'colour_2', ref_table = G.C, ref_value = 'WHITE'},
+                        {name = 'mid_flash', val = 0},
+                        {name = 'transgender', ref_table = G.GAME, ref_value = "EE_FADE"},
+                        {name = 'vort_offset', val = (2*90.15315131*os.time())%100000},
+                    }}}
+                )
+                return true
+            end
+        })
     end
 end
 
@@ -237,12 +260,136 @@ local hyperaccelerated_bongcloud_opening = {
 	},
 }
 
+local paycheck_to_paycheck = {
+    object_type = "Challenge",
+	key = "paycheck_to_paycheck",
+	order = 4,
+    custom = {
+                {id = 'no_reward'},
+                {id = 'no_extra_hand_money'},
+    },
+    jokers = {
+		{ id = "j_entr_tenner", stickers = { "entr_aleph" } },
+        { id = "j_credit_card", stickers = { "entr_aleph" } },
+        { id = "j_entr_debit_card", stickers = { "entr_aleph" } },
+	},
+    consumeables = {
+        { id = "c_entr_strength", stickers = { "eternal" } },
+        { id = "c_entr_dreams", stickers = { "eternal" } },
+    },
+	deck = {
+		type = "Challenge Deck",
+	},
+}
+
+
+local variety_content = {
+    object_type = "Challenge",
+	key = "variety_content",
+	order = 5,
+    jokers = {
+		{ id = "j_entr_spiral_of_ants", stickers = { "entr_aleph" } },
+        { id = "j_entr_hash_miner", stickers = { "entr_aleph" } },
+        { id = "j_obelisk", stickers = { "entr_aleph" } },
+        { id = "j_entr_overpump", stickers = { "entr_aleph" } },
+        { id = "j_entr_antipattern", stickers = { "entr_aleph" } },
+	},
+    consumeables = {
+        { id = "c_temperance", edition = "negative" },
+        { id = "c_entr_statue" },
+        { id = "c_entr_mason" },
+    },
+	deck = {
+		type = "Challenge Deck",
+	},
+}
+
+
+local riffle_shuffle = {
+    object_type = "Challenge",
+	key = "riffle_shuffle",
+	order = 5,
+    jokers = {
+		{ id = "j_entr_meridian", stickers = { "entr_aleph" } },
+        { id = "j_entr_broadcast", stickers = { "entr_aleph" } },
+        { id = "j_entr_roulette", stickers = { "entr_aleph" } },
+        { id = "j_entr_crimson_flask", stickers = { "entr_aleph", "entr_pure" }, edition = "entr_lowres" },
+	},
+    consumeables = {
+        { id = "c_entr_ingwaz" },
+        { id = "c_entr_loyalty" },
+    },
+	deck = {
+		type = "Challenge Deck",
+	},
+}
+
+local phantom_hand_syndrome = {
+    object_type = "Challenge",
+	key = "phantom_hand_syndrome",
+	order = 6,
+    rules = {
+        modifiers = {
+            {id = "discards", value = -32},
+        }
+    },
+    jokers = {
+		{ id = "j_entr_jack_off", stickers = { "entr_aleph" } },
+        { id = "j_entr_nucleotide", stickers = { "entr_aleph" } },
+        { id = "j_castle", stickers = { "entr_aleph" } },
+        { id = "j_selzer" },
+	},
+    consumeables = {
+        { id = "c_medium" },
+        { id = "c_medium" },
+    },
+	deck = {
+		type = "Challenge Deck",
+	},
+}
+
+local eco_friendly = {
+    object_type = "Challenge",
+	key = "eco_friendly",
+	order = 7,
+    rules = {
+            custom = {
+                {id = 'no_reward'},
+                {id = 'no_extra_hand_money'},
+                {id = 'no_interest'}
+            },
+            modifiers = {
+            {id = "dollars", value = 20},
+        }
+        },
+    jokers = {
+		{ id = "j_entr_solar_panel", stickers = { "entr_aleph" } },
+        { id = "j_entr_car_battery", stickers = { "entr_aleph" } },
+        { id = "j_entr_recycling_bin", stickers = { "entr_aleph" } },
+	},
+    consumeables = {
+        { id = "c_entr_comet", stickers = { "eternal" } },
+        { id = "c_entr_comet", stickers = { "eternal" } },
+        { id = "c_entr_comet" },
+    },
+    vouchers = {
+        { id = "v_crystal_ball" },
+    },
+	deck = {
+		type = "Challenge Deck",
+	},
+}
 
 return {
     items = {
         lifelight,
         vesuvius,
         hyperaccelerated_bongcloud_opening,
+        paycheck_to_paycheck,
+        variety_content,
+        riffle_shuffle,
+        phantom_hand_syndrome,
+        eco_friendly,
         (SMODS.Mods["Cryptid"] or {}).can_load and hyperbolic_chamber or nil
     }
 }

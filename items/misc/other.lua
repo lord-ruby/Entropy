@@ -78,7 +78,7 @@ SMODS.Sticker:take_ownership("eternal", {
 			G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
 		end
 	end,
-})
+}, true)
 
 SMODS.Sticker:take_ownership("cry_absolute", {
     no_collection = true,
@@ -90,6 +90,8 @@ SMODS.PokerHandPart {
 	func = function(hand)
 		local eligible_cards = {}
 		local stones = 0
+		local all_pure = true
+		if G.GAME.starting_params.akyrs_starting_letters then return {} end
 		for i, card in ipairs(hand) do
 			if SMODS.has_no_suit(card) or card.config.center.key == "m_stone" 
 			or card.config.center.overrides_base_rank 
@@ -102,8 +104,11 @@ SMODS.PokerHandPart {
 			if (SMODS.Mods["Cryptid"] or {}).can_load and card.config.center.key == "m_stone" then
 				stones = stones + 1
 			end
+			if not card.ability.akyrs_special_card_type then
+				all_pure = false
+			end
 		end
-		if stones >= 5 then return {} end
+		if stones >= 5 or all_pure then return {} end
         local num = 5
 		if #eligible_cards >= num then
 			return { eligible_cards }
@@ -114,10 +119,10 @@ SMODS.PokerHandPart {
 
 SMODS.PokerHand{
 	key = "entr_derivative",
-	l_chips = 50,
+	l_chips = 30,
 	l_mult = 3,
-	chips = 160,
-	mult = 16,
+	chips = 80,
+	mult = 7,
 	visible = false,
 	example = {
 		{ "entr_nilsuit_K", true },
@@ -131,7 +136,12 @@ SMODS.PokerHand{
 			return { SMODS.merge_lists(parts.entr_derivative_part) }
 		end
 		return {}
-	end
+	end,
+	dependencies = {
+		items = {
+			"c_entr_wormhole"
+		}
+	}
 }
 
 local wormhole = {
@@ -174,7 +184,7 @@ local wormhole = {
 }
 
 function Entropy.l_chipsmult(hand, card, l_chips, l_mult)
-	update_hand_text({delay = 0}, {handname = hand, level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
+	update_hand_text({delay = 0}, {handname = localize(hand, "poker_hands"), level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
 	delay(1)
 	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
 		play_sound('tarot1')
@@ -209,7 +219,7 @@ function Entropy.l_chipsmult(hand, card, l_chips, l_mult)
 end
 
 function Entropy.xl_chips(hand, card, l_chips)
-	update_hand_text({delay = 0}, {handname = hand, level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
+	update_hand_text({delay = 0}, {handname = localize(hand, "poker_hands"), level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
 	delay(1)
 	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
 		play_sound('tarot1')
@@ -234,7 +244,7 @@ function Entropy.xl_chips(hand, card, l_chips)
 end
 
 function Entropy.xl_mult(hand, card, l_mult)
-	update_hand_text({delay = 0}, {handname = hand, level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
+	update_hand_text({delay = 0}, {handname = localize(hand, "poker_hands"), level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
 	delay(1)
 	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
 		play_sound('tarot1')
@@ -318,7 +328,7 @@ local theia = {
 	aurinko = true,
 	config = {
 		l_chips = 5,
-		l_mult = 0.5,
+		l_mult = 0.25,
 	},
 	loc_vars = function(self, q, card)
 		return {
@@ -478,6 +488,31 @@ local sputnik = {
 	can_use = function() return true end
 }
 
+SMODS.Atlas{  
+    key = "rubyhearts_lc",
+    px = 71,
+    py = 95,
+    path = "RubyDeck.png",
+}
+
+SMODS.Atlas{  
+	key = "rubyhearts_hc",
+	px = 71,
+	py = 95,
+	path = "RubyDeck2.png",
+}
+
+SMODS.DeckSkin{
+	key = "ruby_hearts",
+	suit = "Hearts",
+	ranks = {'2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King','Ace'},
+	lc_atlas = 'entr_rubyhearts_lc',
+	hc_atlas = 'entr_rubyhearts_hc',
+	posStyle = 'deck',
+	loc_txt = {
+        ['en-us'] = "Ruby"
+    },
+}
 
 return {
     items = {

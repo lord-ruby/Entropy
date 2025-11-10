@@ -297,23 +297,6 @@ local new = {
     end,
 }
 
-local rr = {
-    dependencies = {
-        items = {
-          "set_entr_inversions"
-        }
-    },
-	object_type = "Blind",
-    order = 4200,
-	key = "red",
-	pos = { x = 0, y = 0 },
-	atlas = "blinds",
-	boss_colour = HEX("FF0000"),
-    mult=1,
-    dollars = 3,
-    in_pool = function(self) return false end
-}
-
 local interference = {
     dependencies = {
         items = {
@@ -624,11 +607,7 @@ local fork = {
                 G.E_MANAGER:add_event(Event({
                     trigger="immediate",
                     func = function()
-                        local ed = pseudorandom_element(G.P_CENTER_POOLS.Enhanced)
-                        while ed.no_doe or G.GAME.banned_keys[ed.key] do
-                            ed = pseudorandom_element(G.P_CENTER_POOLS.Enhanced)
-                        end
-                        card:set_ability(ed)
+                        card:set_ability(SMODS.poll_enhancement({guaranteed = true, key = "entr_fork"}))
                         card:set_edition({
                             cry_glitched = true,
                         })
@@ -1272,10 +1251,10 @@ local hotfix_sticker = {
     apply = function(self,card,val) 
         card.ability.entr_hotfix = true
         card.ability.entr_hotfix_rounds = 15
-        if card.debuff then card.debuff = false end
+        if card.debuff then card:set_debuff(false) end
     end,
     calculate = function(self, card, context)
-        if card.debuff then card.debuff = false end
+        if card.debuff then card:set_debuff(false) end
     end
 }
 
@@ -1696,7 +1675,10 @@ local overload = {
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)
-    end
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    },
 }
 
 local badarg = {
@@ -1930,7 +1912,6 @@ return {
         quickload,
         break_card,
         new,
-        rr,
         interference,
         constant,
         pseudorandom,

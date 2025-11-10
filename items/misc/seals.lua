@@ -12,8 +12,8 @@ local crimson = {
     badge_colour = HEX("8a0050"),
     calculate = function(self, card, context)
         if (context.cardarea == G.play or context.cardarea == G.hand) and not context.crimson_trigger then
-            for i, v in ipairs(G.play.cards) do
-                if G.play.cards[i+1] == card or G.play.cards[i-1] == card then
+            for i, v in ipairs(card.area.cards) do
+                if card.area.cards[i+1] == card or card.area.cards[i-1] == card then
                     context.crimson_trigger = true
                     local eval, post = eval_card(v, context)
                     local effects = {eval}
@@ -55,29 +55,9 @@ local sapphire = {
     pos = {x=1,y=0},
     badge_colour = HEX("8653ff"),
     calculate = function(self, card, context)
-        if context.main_scoring and context.cardarea == G.play then
-            local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
-            G.FUNCS.get_poker_hand_info(G.play.cards)
-            local pkey = "regulus"
-            for i, v in pairs(Entropy.ReversePlanets) do
-                if v.name == text then pkey = v.new_key end
-            end
-            local key = "c_entr_"..pkey
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    if G.consumeables.config.card_count < G.consumeables.config.card_limit then
-                        local c = create_card("Consumables", G.consumeables, nil, nil, nil, nil, key) 
-                        c:add_to_deck()
-                        G.consumeables:emplace(c)
-                    end
-                    return true
-                end
-            }))
-        end
-        if context.forcetrigger then
-            local c = create_card("Consumables", G.consumeables, nil, nil, nil, nil, key) 
-            c:add_to_deck()
-            G.consumeables:emplace(c)
+        if (context.playing_card_end_of_round and context.cardarea == G.hand) or context.forcetrigger then
+            Entropy.ReversePlanetUse(G.GAME.last_hand_played, card, 0.25)
+             return { message = localize('k_level_up_ex'), colour = G.C.PURPLE }
         end
     end,
 }
@@ -186,9 +166,28 @@ local pink = {
     calculate = function(self, card, context)
         if context.pre_discard and context.cardarea == G.hand and card.highlighted then
             if not SMODS.is_eternal(card) then
-                card.ability.temporary2 = true
-                card:remove_from_deck()
-                card:start_dissolve()
+                local link = card.ability.link
+                if link then
+                    local cards = {card}
+                    for i, v in pairs(G.hand.cards) do
+                        if v.ability.link == link then
+                            cards[#cards+1] = v
+                        end
+                    end
+                    for i, v in pairs(G.discard.cards) do
+                        if v.ability.link == link then
+                            cards[#cards+1] = v
+                        end
+                    end
+                    for i, v in pairs(G.deck.cards) do
+                        if v.ability.link == link then
+                            cards[#cards+1] = v
+                        end
+                    end
+                    SMODS.destroy_cards(cards, nil)
+                else
+                    SMODS.destroy_cards(card, nil)
+                end
             end
             G.E_MANAGER:add_event(Event({
                 func = function()
@@ -328,7 +327,7 @@ local ornate = {
                 })
                 card.delay_dissolve = true
                 return {
-                    message = "+1 "..localize("k_rune"),
+                    message = localize("k_plus_rune"),
                     colour = G.C.PURPLE,
                 }
             end
@@ -353,7 +352,7 @@ local ornate = {
                 })
                 card.delay_dissolve = true
                 return {
-                    message = "+1 "..localize("k_rune"),
+                    message = localize("k_plus_rune"),
                     colour = G.C.PURPLE,
                 }
             end
@@ -420,7 +419,7 @@ local amber = {
                 })
                 card.delay_dissolve = true
                 return {
-                    message = "+1 "..localize("k_pact"),
+                    message = localize("k_plus_pact"),
                     colour = G.C.RED,
                 }
             end

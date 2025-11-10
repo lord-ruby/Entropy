@@ -10,6 +10,7 @@ local i = {
     "lib/loader",
     "lib/ui",
     "lib/fixes",
+    "lib/ascended",
 
     "items/misc/atlases",
     "items/misc/rarities",
@@ -60,6 +61,7 @@ Entropy.load_files(i)
 Entropy.display_name = SMODS.current_mod.display_name
 SMODS.current_mod.optional_features = {
 	retrigger_joker = true,
+    post_trigger = true,
 }
 
 if not Cryptid.mod_whitelist then Cryptid.mod_whitelist = {} end
@@ -91,6 +93,9 @@ if Cryptid.misprintize_value_blacklist then
     Cryptid.misprintize_value_blacklist.debuff_timer = false
     Cryptid.misprintize_value_blacklist.superego_copies = false
     Cryptid.misprintize_value_blacklist.entr_hotfix_rounds = false
+    Cryptid.misprintize_value_blacklist.debuff_timer = false
+    Cryptid.misprintize_value_blacklist.debuff_timer_max = false
+    Cryptid.misprintize_value_blacklist.left = false
 end
 SMODS.current_mod.calculate = function(self, context)
     return Entropy.misc_calculations(self, context)

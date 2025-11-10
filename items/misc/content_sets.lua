@@ -35,7 +35,7 @@ SMODS.ContentSet({
 	cry_order = 2,
 })
 
-if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
+if (SMODS.Mods["Cryptid"] or SMODS.Mods["vallkarri"] or {}).can_load then
 	SMODS.ContentSet({
 		key = "entropics",
 		atlas = "exotic_jokers",
@@ -86,4 +86,11 @@ SMODS.ContentSet({
 	atlas = "rune_atlas",
 	pos = { x = 4, y = 1 }, --jera
 	cry_order = 9,
+})
+
+SMODS.ContentSet({
+	key = "actives",
+	atlas = "jokers",
+	pos = { x = 3, y = 11 },
+	cry_order = 10,
 })

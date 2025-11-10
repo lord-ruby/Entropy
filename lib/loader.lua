@@ -227,6 +227,33 @@ function SMODS.injectItems(...)
             "j_entr_d10",
             "j_entr_d12",
             "j_entr_d100",
+            "j_entr_girldinner",
+            "j_entr_gold_bar",
+            "j_entr_prayer_card",
+            "j_entr_petrichor",
+            "j_entr_otherworldly_joker",
+            "j_entr_error",
+            "j_entr_thirteen_of_stars",
+            "j_entr_prismatic_shard",
+            "j_entr_redkey",
+            "j_entr_deck_enlargement_pills",
+            "j_entr_black_rose_green_sun",
+            "j_entr_jack_off",
+            "j_entr_antipattern",
+            "j_entr_spiral_of_ants",
+            "j_entr_fork_bomb",
+            "j_entr_kintsugi",
+            "j_entr_blooming_crimson",
+            "j_entr_overpump",
+            "j_entr_shadow_crystal",
+            "j_entr_meridian",
+            "j_entr_kitchenjokers",
+            "j_entr_stand_arrow",
+            "j_entr_magic_skin",
+            "j_entr_lambda_calculus",
+            "j_entr_mark_of_the_beast",
+            "j_entr_dice_shard",
+            "j_entr_nostalgic_d6"
 
         }
         SMODS.ObjectType({
@@ -258,6 +285,18 @@ function SMODS.injectItems(...)
         })
         SMODS.ObjectTypes.BlindTokens:inject()
 
+        G.P_CENTERS.c_entr_bl_entr_alabaster_anchor.entr_credits = {idea = {"cassknows"}}
+        G.P_CENTERS.c_entr_bl_entr_burgundy_baracuda.entr_credits = {idea = {"cassknows"}}
+        G.P_CENTERS.c_entr_bl_entr_citrine_comet.entr_credits = {idea = {"cassknows"}}
+        G.P_CENTERS.c_entr_bl_entr_diamond_dawn.entr_credits = {idea = {"cassknows"}}
+        G.P_CENTERS.c_entr_bl_entr_olive_orchard.entr_credits = {idea = {"cassknows"}}
+
+        G.P_CENTERS.c_entr_bl_entr_styx.entr_credits = {idea = {"cassknows"}}
+        G.P_CENTERS.c_entr_bl_entr_choir.entr_credits = {idea = {"cassknows"}}
+        G.P_CENTERS.c_entr_bl_entr_pandora.entr_credits = {idea = {"cassknows"}}
+        G.P_CENTERS.c_entr_bl_entr_cassandra.entr_credits = {idea = {"cassknows"}}
+        G.P_CENTERS.c_entr_bl_entr_labyrinth.entr_credits = {idea = {"cassknows"}}
+
         if MP then
             function MP.DECK.ban_card(card_id)
                 if card_id:sub(1, 1) == "j" then
@@ -283,6 +322,8 @@ function SMODS.injectItems(...)
                 end
             end
             MP.DECK.ban_card("j_entr_xekanos")
+            MP.DECK.ban_card("j_entr_prayer_card")
+            MP.DECK.ban_card("c_entr_raido")
         end
         for i, v in pairs(G.P_CENTERS) do
             if v.inversion then 
@@ -309,7 +350,42 @@ function SMODS.injectItems(...)
         })
         SMODS.ObjectTypes.Twisted:inject()
         SMODS.ObjectTypes.Sunny:inject()
-
+        SMODS.ObjectType({
+            key = "RedeemableBacks",
+            default = "b_red",
+            cards = {},
+            inject = function(self)
+                local cards = {
+                    "b_entr_twisted",
+                    --"b_entr_destiny",
+                    "b_entr_ambisinister",
+                    "b_entr_butterfly",
+                    "b_entr_gemstone",
+                    "b_entr_corrupted",
+                    HotPotato and "b_hpot_lime" or nil,
+                    HotPotato and "b_hpot_ublockdeck" or nil,
+                    HotPotato and "b_hpot_domn" or nil,
+                    HotPotato and "b_hpot_window" or nil,
+                }
+                SMODS.ObjectType.inject(self)
+                for i, v in pairs(cards) do
+                    self:inject_card(G.P_CENTERS[v])
+                end
+                self:inject_card(G.P_CENTERS.b_red)
+                self:inject_card(G.P_CENTERS.b_blue)
+                self:inject_card(G.P_CENTERS.b_yellow)
+                self:inject_card(G.P_CENTERS.b_green)
+                self:inject_card(G.P_CENTERS.b_black)
+                self:inject_card(G.P_CENTERS.b_magic)
+                self:inject_card(G.P_CENTERS.b_nebula)
+                self:inject_card(G.P_CENTERS.b_ghost)
+                self:inject_card(G.P_CENTERS.b_zodiac)
+                self:inject_card(G.P_CENTERS.b_painted)
+                self:inject_card(G.P_CENTERS.b_anaglyph)
+                self:inject_card(G.P_CENTERS.b_plasma)
+            end,
+        })
+        SMODS.ObjectTypes.RedeemableBacks:inject()
         G.entr_hooked = true
         SMODS.ObjectTypes.Dice:inject()
         if (SMODS.Mods["Cryptid"] or {}).can_load then

@@ -15,7 +15,7 @@ function G.UIDEF.bought_decks()
     end
     for k, v in ipairs(keys_used) do 
       if next(v) then
-        if #voucher_areas == 5 or #voucher_areas == 10 then 
+        if #voucher_areas % 7 == 0 then 
           table.insert(voucher_table_rows, 
           {n=G.UIT.R, config={align = "cm", padding = 0, no_fill = true}, nodes=voucher_tables}
           )
@@ -230,7 +230,7 @@ G.FUNCS.dont_reroll_boss = function(e)
     G.E_MANAGER:add_event(Event({
 		trigger = "before",
 		func = function()
-			play_sound("cry_forcetrigger", 1, 0.6)
+			play_sound((SMODS.Mods["Cryptid"] or {}).can_load and "cry_forcetrigger" or "cryl_forcetrigger", 1, 0.6)
 			return true
 		end,
 	}))
@@ -332,7 +332,7 @@ G.FUNCS.toggle_path = function(e)
     G.GAME.round_resets.path_toggled = true
     G.GAME.entr_alt = not G.GAME.entr_alt
     G.GAME.round_resets.blind_choices.Boss = get_new_boss()
-    ease_background_colour{new_colour = G.GAME.entr_alt and G.C.ALTBG or G.C.BLIND['Small'], contrast = 1}
+    ease_background_colour{new_colour = Entropy.get_bg_colour(), contrast = 1}
     G.ARGS.spin.real = (G.SETTINGS.reduced_motion and 0 or 1)*(G.GAME.entr_alt and 0.3 or -0.3)
     SMODS.calculate_context{entr_path_changed = true, on_alt_path = G.GAME.entr_alt}
     play_sound("highlight2")
@@ -358,6 +358,7 @@ G.FUNCS.can_reserve_card = function(e)
     if
         #G.consumeables.cards
         < G.consumeables.config.card_limit + (Cryptid.safe_get(c1, "edition", "negative") and 1 or 0)
+        and Entropy.can_be_pulled(c1)
     then
         e.config.colour = G.C.GREEN
         e.config.button = "reserve_card"

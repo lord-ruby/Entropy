@@ -42,6 +42,8 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
     Cryptid.edeck_sprites.enhancement.m_entr_prismatic = {atlas="entr_crypt_deck", pos = {x=3,y=1}}
     Cryptid.edeck_sprites.enhancement.m_entr_dark = {atlas="entr_crypt_deck", pos = {x=3,y=2}}
     Cryptid.edeck_sprites.enhancement.m_entr_ceramic = {atlas="entr_crypt_deck", pos = {x=1,y=4}}
+    Cryptid.edeck_sprites.enhancement.m_entr_ethereal = {atlas="entr_crypt_deck", pos = {x=4,y=4}}
+    Cryptid.edeck_sprites.enhancement.m_entr_samsara = {atlas="entr_crypt_deck", pos = {x=5,y=4}}
     Cryptid.edeck_sprites.sticker.entr_pinned = {atlas="entr_crypt_deck", pos = {x=4,y=1}}
     Cryptid.edeck_sprites.sticker.entr_hotfix = {atlas="entr_crypt_deck", pos = {x=5,y=1}}
     Cryptid.edeck_sprites.sticker.entr_pseudorandom = {atlas="entr_crypt_deck", pos = {x=6,y=1}}
@@ -255,6 +257,31 @@ local containment = {
   return {
     items = items
   }
+elseif (SMODS.Mods["vallkarri"] or {}).can_load then
+    Entropy.ValkarriOverCryptid = true
+    local files = {
+        "compat/cryptid/entropic_jokers",
+        "compat/cryptid/epic_jokers",
+        "compat/cryptid/exotic_jokers",
+    }
+    local items = Entropy.collect_files(files)
+    G.FUNCS.cry_asc_UI_set = function(e)
+        e.config.object.colours = { G.C.GOLD }
+        e.config.object:update_text()
+    end    
+    -- Needed because get_poker_hand_info isnt called at the end of the road
+    local evaluateroundref = G.FUNCS.evaluate_round
+    function G.FUNCS.evaluate_round()
+        evaluateroundref()
+        -- This is just the easiest way to check if its gold because lua is annoying
+        if G.C.UI_CHIPS[1] == G.C.GOLD[1] then
+            ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
+            ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
+        end
+    end
+    return {
+        items = items
+    }
 else
     G.FUNCS.cry_asc_UI_set = function(e)
         e.config.object.colours = { G.C.GOLD }
