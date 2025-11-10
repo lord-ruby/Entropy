@@ -6224,8 +6224,8 @@ local dancer = {
     rarity = 1,
     cost = 5,
     eternal_compat = true,
-    pos = {x = 0, y = 0},
-    atlas = "placeholder",
+    pos = {x = 3, y = 15},
+    atlas = "jokers",
     config = {
         csl = 2,
         discards = 1
