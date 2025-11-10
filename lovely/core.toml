@@ -2974,3 +2974,29 @@ if G.HUD:get_UIE_by_ID('hand_operator_container') and G.HUD:get_UIE_by_ID('hand_
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+{n=G.UIT.R, config={align = "cm", colour = mod.badge_colour or G.C.GREEN, r = 0.1, minw = 2, minh = 0.36, emboss = 0.05, padding = 0.03*size}, nodes={
+'''
+position = 'at'
+payload = '''
+{n=G.UIT.R, config={align = "cm", colour = mod.badge_colour or G.C.GREEN, shader = shader, r = 0.1, minw = 2, minh = 0.36, emboss = 0.05, padding = 0.03*size}, nodes={
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+for i, mod in ipairs(mods) do
+  local mod_name = mod.display_name
+'''
+position = 'after'
+payload = '''
+local shader
+if mod.id == "entr" then shader = "entr_brimstone_badge" end
+'''
+match_indent = true

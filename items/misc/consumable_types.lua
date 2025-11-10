@@ -106,7 +106,7 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
 		shop_rate = 0.0,
 		loc_txt = {},
 		default = "c_entr_memory_leak",
-		can_be_pulled = true,
+		can_be_pulled = "b_pull",
 	})
 	SMODS.UndiscoveredSprite({
 		key = "Command",

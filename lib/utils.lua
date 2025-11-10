@@ -1945,14 +1945,31 @@ end
 function Entropy.needs_pull_button(card)
     local center = card.config.center
     if not center.no_select and (SMODS.ConsumableTypes[center.set] and SMODS.ConsumableTypes[center.set].can_be_pulled or center.can_be_pulled) and not center.hidden then
-        return true
+        local loc = SMODS.ConsumableTypes[center.set] and SMODS.ConsumableTypes[center.set].can_be_pulled or center.can_be_pulled
+        return localize(type(loc) == "string" and loc or "b_select")
     end
     for i, v in pairs(card.ability.glitched_crown or {}) do
         local center = G.P_CENTERS[v]
         if center and not center.no_select and (SMODS.ConsumableTypes[center.set] and SMODS.ConsumableTypes[center.set].can_be_pulled or center.can_be_pulled) and not center.hidden then
-            return true
+            local loc = SMODS.ConsumableTypes[center.set] and SMODS.ConsumableTypes[center.set].can_be_pulled or center.can_be_pulled
+            return localize(type(loc) == "string" and loc or "b_select")
         end
     end
+end
+
+function Entropy.needs_use_button(card)
+    local center = card.config.center
+    local center_cant_use = false
+    if not (center.no_use_button or (SMODS.ConsumableTypes[center.set] and SMODS.ConsumableTypes[center.set].no_use_button)) then
+        center_cant_use = true
+    end
+    for i, v in pairs(card.ability.glitched_crown or {}) do
+        local center = G.P_CENTERS[v]
+        if not (center.no_use_button or (SMODS.ConsumableTypes[center.set] and SMODS.ConsumableTypes[center.set].no_use_button)) then
+            center_cant_use = true
+        end
+    end
+    return center_cant_use
 end
 
 function ReductionIndex(card, pool)
@@ -2049,8 +2066,8 @@ function Entropy.post_create_card(card, from_booster)
 
         key = "p_entr_twisted_pack_"..type
         set = "Booster"
-    elseif card.config and card.config.center and card.config.center.set == "Booster"
-    and to_big(pseudorandom("doc")) < to_big(1-(0.995^(G.GAME.entropy/2))) and G.STATE == G.STATES.SHOP and (not card.area or not card.area.config.collection) and Entropy.DeckOrSleeve("doc") then
+    elseif card.config and card.config.center and card.config.center.set == "Booster" and Entropy.DeckOrSleeve("doc")
+    and to_big(pseudorandom("doc")) < to_big(1-(0.995^(G.GAME.entropy/2))) and G.STATE == G.STATES.SHOP and (not card.area or not card.area.config.collection) then
         local type = (center.cost == 6 and "jumbo_1") or (center.cost == 8 and "mega_1") or "normal_"..pseudorandom_element({1,2},pseudoseed("doc"))
         card:set_ability(G.P_CENTERS["p_spectral_"..type])
         key = "p_spectral_"..type
@@ -2062,6 +2079,7 @@ function Entropy.post_create_card(card, from_booster)
             key = c.key
             card:set_ability(c)
             set = c.set
+            
         else
             local c = Entropy.GetPooledCenter(G.P_CENTERS[Entropy.Inversion(G.P_CENTERS[key])].set)
             key = c.key

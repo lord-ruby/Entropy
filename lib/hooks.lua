@@ -1233,7 +1233,7 @@ function G.UIDEF.use_and_sell_buttons(card)
               }},
           }}
     end
-    if card.config.center.use and card.area == G.pack_cards and G.pack_cards and (Entropy.needs_pull_button(card) or (not SMODS.OPENED_BOOSTER or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front)) and (card.ability.consumeable) then
+    if Entropy.needs_use_button(card) and card.config.center.use and card.area == G.pack_cards and G.pack_cards and (Entropy.needs_pull_button(card) or (not SMODS.OPENED_BOOSTER or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front)) and (card.ability.consumeable) then
         return {
             n = G.UIT.ROOT,
             config = { padding = -0.1, colour = G.C.CLEAR },
@@ -1260,7 +1260,7 @@ function G.UIDEF.use_and_sell_buttons(card)
                         {
                             n = G.UIT.T,
                             config = {
-                                text = card.ability.set == "Command" and localize("b_pull") or localize("b_select"),
+                                text = Entropy.needs_pull_button(card),
                                 colour = G.C.UI.TEXT_LIGHT,
                                 scale = 0.55,
                                 shadow = true,
@@ -1302,6 +1302,44 @@ function G.UIDEF.use_and_sell_buttons(card)
                 { n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
                 { n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
                 { n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
+                -- Betmma can't explain it, neither can I
+            },
+        }
+    elseif card.area == G.pack_cards and G.pack_cards and (Entropy.needs_pull_button(card) or (not SMODS.OPENED_BOOSTER or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front)) and (card.ability.consumeable) then
+        return {
+            n = G.UIT.ROOT,
+                config = { padding = -0.1, colour = G.C.CLEAR },
+                nodes = {
+                    {
+                    n = G.UIT.R,
+                    config = {
+                        ref_table = card,
+                        r = 0.08,
+                        padding = 0.1,
+                        align = "bm",
+                        minw = 0.5 * card.T.w - 0.15,
+                        minh = 0.7 * card.T.h,
+                        maxw = 0.7 * card.T.w - 0.15,
+                        hover = true,
+                        shadow = true,
+                        colour = G.C.UI.BACKGROUND_INACTIVE,
+                        one_press = true,
+                        button = "Do you know that this parameter does nothing?",
+                        func = card:is_playing_card() and "can_reserve_card_to_deck" or "can_reserve_card",
+                        handy_insta_action = 'use'
+                    },
+                    nodes = {
+                        {
+                            n = G.UIT.T,
+                            config = {
+                                text = Entropy.needs_pull_button(card),
+                                colour = G.C.UI.TEXT_LIGHT,
+                                scale = 0.55,
+                                shadow = true,
+                            },
+                        },
+                    },
+                },
                 -- Betmma can't explain it, neither can I
             },
         }
