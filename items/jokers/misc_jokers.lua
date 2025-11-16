@@ -5370,25 +5370,20 @@ local antipattern = {
     pos = {x = 4, y = 12},
     atlas = "jokers",
     loc_vars = function(self, q, card)
+        local hands_after_last_played = {}
         local hands = {}
-        for i, v in pairs(G.handlist) do
-            hands[#hands+1] = {}
-        end
-        for i, v in pairs(card.ability.hand_pairs) do
-            hands[v[1]] = hands[v[1]] or {}
-            hands[v[1]][#hands[v[1]]+1] = v[2]
-        end
-        for i, v in pairs(hands) do
-            local vars = {localize(i, "poker_hands")}
-            if #v > 0 then
-                for i, v2 in pairs(v) do
-                    vars[#vars+1] = localize(v2, "poker_hands")
-                end
-                for i = #vars, 12 do
-                    vars[#vars+1] = ""
-                end
-                q[#q+1] = {set = "Other", key = "antipattern_pair", vars = vars}
+        for i = 1, 13 do hands_after_last_played[i] = "" end
+        local last_played = card.ability.last_hand
+        for _,hand_pair in ipairs(card.ability.hand_pairs) do
+            -- hand_pair[1] is last-played, hand_pair[2] is currently-played
+            if hand_pair[1] == last_played then
+                hands[#hands+1] = localize(hand_pair[2], "poker_hands")
             end
+        end
+        for i, v in pairs(hands) do hands_after_last_played[i+1] = v end
+        if card.ability.last_hand ~= "" then
+            hands_after_last_played[1] = localize(card.ability.last_hand, "poker_hands")
+            q[#q+1] = {set = "Other", key = "antipattern_pair", vars = hands_after_last_played}
         end
         return {
             vars = {
@@ -6264,7 +6259,7 @@ local dancer = {
     end,
     entr_credits = {
         idea = {"cassknows"},
-        art = {"candycanearter"}
+        art = {"Lil. Mr. Slipstream"}
     }
 }
 
