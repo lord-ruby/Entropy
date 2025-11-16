@@ -6264,7 +6264,7 @@ local dancer = {
     end,
     entr_credits = {
         idea = {"cassknows"},
-        art = {"candycanearter"}
+        art = {"Lil. Mr. Slipstream"}
     }
 }
 
