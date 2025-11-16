@@ -2042,6 +2042,12 @@ function Entropy.rubber_ball_scoring(cards)
     return new_cards
 end
 
+local TrumpCardAllow = {
+    ["Planet"] = true,
+    ["Tarot"] = true,
+    ["Code"] = true
+}
+
 function Entropy.post_create_card(card, from_booster)
     if G.SETTINGS.paused then return end
     local set = card.config.center.set
@@ -2055,20 +2061,20 @@ function Entropy.post_create_card(card, from_booster)
         set = c.set
     elseif card.config and card.config.center
     and pseudorandom("trump_card") < 0.10 and G.GAME.TrumpCard and G.STATE == G.STATES.SMODS_BOOSTER_OPENED
-    and TrumpCardAllow[center.set] and (not card.area or not card.area.config.collection) then
+    and TrumpCardAllow[set] and (not card.area or not card.area.config.collection) then
         card:set_ability(G.P_CENTERS["c_entr_flipside"])
         key = "c_entr_flipside"
         set = "Spectral"
     elseif card.config and card.config.center and card.config.center.set == "Booster"
     and pseudorandom("supersede") < 0.20 and G.GAME.Supersede and G.STATE == G.STATES.SHOP and (not card.area or not card.area.config.collection) then
-        local type = (center.cost == 6 and "jumbo") or (center.cost == 8 and "mega") or "normal"
+        local type = (G.P_CENTERS[key].cost == 6 and "jumbo") or (G.P_CENTERS[key].cost == 8 and "mega") or "normal"
         card:set_ability(G.P_CENTERS["p_entr_twisted_pack_"..type])
 
         key = "p_entr_twisted_pack_"..type
         set = "Booster"
     elseif card.config and card.config.center and card.config.center.set == "Booster" and Entropy.DeckOrSleeve("doc")
     and to_big(pseudorandom("doc")) < to_big(1-(0.995^(G.GAME.entropy/2))) and G.STATE == G.STATES.SHOP and (not card.area or not card.area.config.collection) then
-        local type = (center.cost == 6 and "jumbo_1") or (center.cost == 8 and "mega_1") or "normal_"..pseudorandom_element({1,2},pseudoseed("doc"))
+        local type = (G.P_CENTERS[key].cost == 6 and "jumbo_1") or (G.P_CENTERS[key].cost == 8 and "mega_1") or "normal_"..pseudorandom_element({1,2},pseudoseed("doc"))
         card:set_ability(G.P_CENTERS["p_spectral_"..type])
         key = "p_spectral_"..type
         set = "Booster"

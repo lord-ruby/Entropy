@@ -2182,12 +2182,6 @@ function Tag:init(_tag, for_collection, _blind_type, ...)
     return ret
 end
 
-local TrumpCardAllow = {
-    ["Planet"] = true,
-    ["Tarot"] = true,
-    ["Code"] = true
-}
-
 G.FUNCS.has_inversion = function(e) 
     if G.GAME.last_inversion and G.GAME.last_inversion.key ~= "c_entr_master" then 
         e.config.colour = mix_colours(G.C.GREEN, G.C.JOKER_GREY, 0.8)
