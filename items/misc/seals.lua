@@ -172,22 +172,26 @@ local pink = {
                     for i, v in pairs(G.hand.cards) do
                         if v.ability.link == link then
                             cards[#cards+1] = v
+                            v.ability.temporary2 = true
                         end
                     end
                     for i, v in pairs(G.discard.cards) do
                         if v.ability.link == link then
                             cards[#cards+1] = v
+                            v.ability.temporary2 = true
                         end
                     end
                     for i, v in pairs(G.deck.cards) do
                         if v.ability.link == link then
                             cards[#cards+1] = v
+                            v.ability.temporary2 = true
                         end
                     end
                     SMODS.destroy_cards(cards, nil)
                 else
                     SMODS.destroy_cards(card, nil)
                 end
+                card.ability.temporary2 = true
             end
             G.E_MANAGER:add_event(Event({
                 func = function()
