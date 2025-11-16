@@ -2605,8 +2605,8 @@ local decs = {
 			c_entr_inferno = {
 				name = "Inferno",
 				text = {
-					"Destroy {C:attention}all{} Selected Cards",
-					"lost {C:money}$#1#{} for every card",
+					"Destroy {C:attention}all{} selected cards",
+					"Lose {C:money}$#1#{} for every card",
 					"past {C:attention}2{}"
 				}
 			},
