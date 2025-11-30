@@ -3560,6 +3560,11 @@ local abacus = {
     blueprint_compat = true,
     calculate = function(self, card, context)
         if (context.individual and context.other_card.base.nominal and to_big(context.other_card.base.nominal) > to_big(0) and context.cardarea == G.play) or context.forcetrigger then
+            if not context.other_card then
+                return {
+                    mult = 5
+                }
+            end
             local id = context.other_card:get_id()
             if id <= 10 or id > 14 and not SMODS.has_no_rank(context.other_card) then
                 return {
@@ -5068,15 +5073,49 @@ function Card:redeem_deck()
             self.children.bot_disp:remove()
             self.children.bot_disp = nil
         return true end }))
-
+        if self.children.use_button then self.children.use_button:remove(); self.children.use_button = nil end
+        if self.children.sell_button then self.children.sell_button:remove(); self.children.sell_button = nil end
+        if self.children.price then self.children.price:remove(); self.children.price = nil end
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.5, func = function()
             G.FUNCS.buy_deckorsleeve{
                 config = {
                     ref_table = self
                 }
             }
+            if G.booster_pack and (not (G.GAME.pack_choices and G.GAME.pack_choices > 1)) then
+                G.booster_pack.alignment.offset.y = G.booster_pack.alignment.offset.py
+                G.booster_pack.alignment.offset.py = nil
+            end
+            if G.shop then 
+                G.shop.alignment.offset.y = G.shop.alignment.offset.py
+                G.shop.alignment.offset.py = nil
+            end
+            if G.blind_select then
+                G.blind_select.alignment.offset.y = G.blind_select.alignment.offset.py
+                G.blind_select.alignment.offset.py = nil
+            end
+            if G.round_eval then
+                G.round_eval.alignment.offset.y = G.round_eval.alignment.offset.py
+                G.round_eval.alignment.offset.py = nil
+            end
         return true end }))
-
+        if G.GAME.pack_choices then G.GAME.pack_choices = G.GAME.pack_choices - 1 end
+        if G.booster_pack and not G.booster_pack.alignment.offset.py and (not (G.GAME.pack_choices and G.GAME.pack_choices > 1)) then
+            G.booster_pack.alignment.offset.py = G.booster_pack.alignment.offset.y
+            G.booster_pack.alignment.offset.y = G.ROOM.T.y + 29
+        end
+        if G.shop and not G.shop.alignment.offset.py then
+            G.shop.alignment.offset.py = G.shop.alignment.offset.y
+            G.shop.alignment.offset.y = G.ROOM.T.y + 29
+        end
+        if G.blind_select and not G.blind_select.alignment.offset.py then
+            G.blind_select.alignment.offset.py = G.blind_select.alignment.offset.y
+            G.blind_select.alignment.offset.y = G.ROOM.T.y + 39
+        end
+        if G.round_eval and not G.round_eval.alignment.offset.py then
+            G.round_eval.alignment.offset.py = G.round_eval.alignment.offset.y
+            G.round_eval.alignment.offset.y = G.ROOM.T.y + 29
+        end
     end
 end
 
@@ -6762,7 +6801,8 @@ local mark_of_the_beast = {
         q[#q+1] = G.P_CENTERS.p_entr_twisted_pack_mega
     end,
     calculate = function(self, card, context)
-        if context.starting_shop or context.forcetrigger then
+        if context.starting_shop and not card.ability.triggered then
+            card.ability.triggered = true
             G.E_MANAGER:add_event(Event{
                 func = function()
                     card:juice_up()
@@ -6779,6 +6819,18 @@ local mark_of_the_beast = {
             G.shop_booster:emplace(card)
             return nil, true
         end
+        if context.forcetrigger then
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                func = function()
+                    SMODS.add_card{
+                        area = G.consumeables,
+                        key = "p_entr_twisted_pack_mega"
+                    }
+                    return true
+            end })
+        end
+        if context.end_of_round then card.ability.triggered = nil end
         if (context.reroll_shop and Entropy.has_rune("rune_entr_perthro")) then
             G.E_MANAGER:add_event(Event{
                 trigger = "after",

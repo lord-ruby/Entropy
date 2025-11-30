@@ -3000,3 +3000,20 @@ local shader
 if mod.id == "entr" then shader = "entr_brimstone_badge" end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''game.lua'''
+pattern = '''
+local card = Card(G.shop_booster.T.x + G.shop_booster.T.w/2,
+'''
+position = 'before'
+payload = '''
+if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi) then
+  local set = Entropy.GetRandomSet(next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi)
+  local key = Entropy.GetPooledCenter(set).key
+  G.GAME.current_round.used_packs[i] = key
+end
+
+'''
+match_indent = true

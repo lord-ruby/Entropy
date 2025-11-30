@@ -648,13 +648,18 @@ G.FUNCS.reserve_booster = function(e)
     if G.GAME.pack_choices <= 0 then
         G.FUNCS.end_consumeable(nil, delay_fac)
     end
+    if c1.ability.glitched_crown then
+        local center = G.P_CENTERS[c1.ability.glitched_crown[c1.glitched_index]]
+        c1:set_ability(center)
+        c1.ability.glitched_crown = nil
+    end
     --c1:remove()
 end
 
 G.FUNCS.can_buy_deckorsleeve = function(e)
     local c1 = e.config.ref_table
     e.config.colour = G.C.GREEN
-    e.config.button = "buy_deckorsleeve"
+    e.config.button = "buy_deckorsleeve_2"
 end
 G.FUNCS.can_buy_deckorsleeve_from_shop = function(e)
     local c1 = e.config.ref_table
@@ -671,8 +676,46 @@ G.FUNCS.buy_deckorsleeve_from_shop = function(e)
     --G.GAME.DefineBoosterState = G.STATE
     --c1:open()
     ease_dollars(-c1.cost)
-    G.FUNCS.buy_deckorsleeve(e)
+    G.FUNCS.redeem_deckorsleeve(e)
 end
+
+G.FUNCS.buy_deckorsleeve_2 = function(e)
+    local c1 = e.config.ref_table
+    --G.GAME.DefineBoosterState = G.STATE
+    --c1:open()
+    G.FUNCS.redeem_deckorsleeve(e)
+end
+
+G.FUNCS.redeem_deckorsleeve = function(e)
+    G.E_MANAGER:add_event(Event{
+        trigger = "after",
+        func = function()
+    
+            local area
+            if G.STATE == G.STATES.HAND_PLAYED then
+                if not G.redeemed_vouchers_during_hand then
+                    G.redeemed_vouchers_during_hand =
+                        CardArea(G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, { type = "play", card_limit = 5 })
+                end
+                area = G.redeemed_vouchers_during_hand
+            else
+                area = G.play
+            end
+            
+            local card = e.config.ref_table
+            if card.config.center.key == "j_joker" then
+                card:set_ability(G.P_CENTERS.b_red)
+            end
+            card.area:remove_card(card)
+            card:add_to_deck()
+            area:emplace(card)
+            card.cost = 0
+            card:redeem_deck()
+            return true
+        end
+    })
+end
+
 G.FUNCS.buy_deckorsleeve = function(e)
     local c1 = e.config.ref_table
     --G.GAME.DefineBoosterState = G.STATE
@@ -710,6 +753,55 @@ G.FUNCS.buy_deckorsleeve = function(e)
         if i == "dollars" then ease_dollars(v) end
         if i == "spectral_rate" then G.GAME.spectral_rate = v end
         if i == "plincoins" then ease_plincoins(v) end
+        if i == "jokers" then
+            delay(0.4)
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    for k, v in ipairs(c1.config.center.jokers) do
+                        local card = create_card('Joker', G.jokers, nil, nil, nil, nil, v, 'deck')
+                        card:add_to_deck()
+                        G.jokers:emplace(card)
+    					card:start_materialize()
+                    end
+                return true
+                end
+            }))
+        end
+        if i == "voucher" then
+            G.GAME.used_vouchers[c1.config.center.config.voucher] = true
+            G.GAME.starting_voucher_count = (G.GAME.starting_voucher_count or 0) + 1
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    Card.apply_to_run(nil, G.P_CENTERS[c1.config.center.config.voucher])
+                    return true
+                end
+            }))
+        end
+        if i == "consumables" then
+            delay(0.4)
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    for k, v in ipairs(c1.config.center.config.consumables) do
+                        local card = create_card('Tarot', G.consumeables, nil, nil, nil, nil, v, 'deck')
+                        card:add_to_deck()
+                        G.consumeables:emplace(card)
+                    end
+                return true
+                end
+            }))
+        end
+        if i == "vouchers" then
+            for k, v in pairs(c1.config.center.config.vouchers) do
+                G.GAME.used_vouchers[v] = true
+                G.GAME.starting_voucher_count = (G.GAME.starting_voucher_count or 0) + 1
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        Card.apply_to_run(nil, G.P_CENTERS[v])
+                        return true
+                    end
+                }))
+            end
+        end
     end
     if c1.config and c1.config.center and c1.config.center.config and c1.config.center.config then
         if c1.config.center.key == "b_entr_doc" or c1.config.center.key == "sleeve_entr_doc" then
@@ -1753,8 +1845,8 @@ Entropy.ChaosConversions.Omen = "Twisted"
 Entropy.ChaosConversions.Pact = "Twisted"
 local ref = create_card
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append, dont_calculate,...)
-    if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi"))) and not forced_key then
-        _type = Entropy.GetRandomSet(next(find_joker("j_entr_parakmi")))
+    if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi) and not forced_key then
+        _type = Entropy.GetRandomSet(next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi)
 
     end
     if _type == "CBlind" then
@@ -1810,7 +1902,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
         card.ability.cry_prob = 1
         card.ability.extra.odds = 2 
 	end
-    if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi"))) and not forced_key then 
+    if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi) and not forced_key then 
         if not G.SETTINGS.paused and not G.GAME.akyrs_any_drag then
             card.fromdefine = true
         end

@@ -2267,6 +2267,13 @@ local decs = {
 					"Cycle between {C:attention}3{} options"
 				}
 			},
+			b_entr_discordant = {
+				name = "Discordant Deck",
+				text =  {
+					"Created Cards, Vouchers and Boosters",
+					"are replaced by a random card type"
+				}
+			},
 		},
 		Sleeve = {
 			sleeve_entr_twisted = {

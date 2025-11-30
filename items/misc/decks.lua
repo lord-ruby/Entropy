@@ -289,6 +289,23 @@ local corrupted = {
   }
 }
 
+local discordant = {
+  object_type = "Back",
+  order = 7007,
+  dependencies = {
+    items = {
+      "set_entr_decks"
+    }
+  },
+  config = { },
+  key = "discordant",
+  pos = { x = 7, y = 0 },
+  atlas = "decks",
+  apply = function()
+    G.GAME.modifiers.entr_parakmi = true
+  end,
+}
+
 if CardSleeves then
     CardSleeves.Sleeve {
       key = "twisted",
@@ -424,6 +441,7 @@ return {
       ambisinister,
       butterfly,
       gemstone,
-      corrupted
+      corrupted,
+      discordant
     }
   }

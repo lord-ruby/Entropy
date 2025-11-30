@@ -2109,3 +2109,19 @@ function Entropy.post_create_card(card, from_booster)
         end
     end
 end
+
+
+local get_next_vouchersref = SMODS.get_next_vouchers
+function SMODS.get_next_vouchers()
+    local vouchers = get_next_vouchersref()
+    if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi) then
+        vouchers.spawn = {}
+        for i, v in ipairs(vouchers) do
+            local set = Entropy.GetRandomSet(next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi)
+            local key = Entropy.GetPooledCenter(set).key
+            vouchers.spawn[key] = true
+            vouchers[i] = key
+        end
+    end
+    return vouchers
+end
