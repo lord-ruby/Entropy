@@ -5831,6 +5831,15 @@ local decs = {
 					"learn what it does",
 				},
 			},
+			undiscovered_cblind = {
+				name = "Not Discovered",
+				text = {
+					"Purchase or use",
+					"this card in an",
+					"unseeded run to",
+					"learn what it does",
+				},
+			},
 			undiscovered_transient = {
 				name = "Not Discovered",
 				text = {
