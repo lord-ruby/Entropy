@@ -295,3 +295,12 @@ if (SMODS.Mods.vallkarri or {}).can_load then
         py = 95,
     }
 end
+
+SMODS.Atlas {
+    key = 'blank',
+    path = 'stickers.png',
+    px = 1,
+    py = 1,
+    atlas_table = 'ANIMATION_ATLAS',
+    frames = 1
+}

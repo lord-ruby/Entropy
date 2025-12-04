@@ -25,7 +25,7 @@ function Entropy.RegisterBlinds()
             no_doe = true,
             blpos = v.pos,
             blatlas = v.atlas,
-            pos = {x = 0, y = 0},
+            pos = {x = 9999, y = 9999},
             --soul_pos = { x = 5, y = 0},
             in_pool = function()
                 return false
@@ -55,11 +55,20 @@ function Entropy.RegisterBlinds()
                 return false
             end,
             loc_vars = function(self,q,c)
-                q[#q+1]={set="Blind",key=self.config.blind}
+                if self.config.blind ~= "bl_small" and self.config.blind ~= "bl_big" then
+                    q[#q+1]={set="Blind",key=self.config.blind}
+                end
             end,
             set_sprites = function(self, card, front)
-                card.children.center.atlas = G.ANIMATION_ATLAS["blind_chips"]
-                card.children.center:set_sprite_pos({x=self.blpos.x or 0, y=self.blpos.y or 0})
+                local pos = self.blpos
+                if not pos then
+                    pos = {x = 0, y = 0}
+                end
+                if not self.discovered then
+                    pos = {x = 9999, y = 9999}
+                end
+                card.children.center.atlas = G.ANIMATION_ATLAS[not self.discovered and "entr_blank" or "blind_chips"]
+                card.children.center:set_sprite_pos({x=pos.x or 0, y=pos.y or 0})
             end,
             demicoloncompat = true,
             force_use = function(self, card, area)
@@ -85,7 +94,7 @@ function Entropy.RegisterBlinds()
                 --atlas="entr_consumables",
                 pixel_size = { w = 34, h = 34 },
                 display_size = { w = 68, h = 68 },
-                pos = {x = 0, y = 0},
+                pos = {x = 9999, y = 9999},
                 blpos = v.pos,
                 blatlas = v.atlas,
                 config = {
@@ -129,14 +138,21 @@ function Entropy.RegisterBlinds()
                 entr_credits = v.entr_credits,
                 cry_credits = v.cry_credits,
                 set_sprites = function(self, card, front)
+                    local pos = self.blpos
+                    if not pos then
+                        pos = {x = 9999, y = 9999}
+                    end
+                    if not self.discovered then
+                        pos = {x = 9999, y = 9999}
+                    end
                     if self.blatlas and G.ANIMATION_ATLAS[self.blatlas] and self.blatlas ~= "blind_chips" then
-                        card.children.center.sprite_pos = {x=self.blpos.x or 0, y=self.blpos.y or 0}
-                        card.children.center.atlas = G.ANIMATION_ATLAS[self.blatlas]
+                        card.children.center.sprite_pos = {x=pos.x or 0, y=pos.y or 0}
+                        card.children.center.atlas = G.ANIMATION_ATLAS[not self.discovered and "entr_blank" or self.blatlas]
                         card.children.center:reset()
-                        card.children.center.atlas = G.ANIMATION_ATLAS[self.blatlas]
+                        card.children.center.atlas = G.ANIMATION_ATLAS[not self.discovered and "entr_blank" or self.blatlas]
                     else
-                        card.children.center.atlas = G.ANIMATION_ATLAS["blind_chips"]
-                        card.children.center:set_sprite_pos({x=self.blpos.x or 0, y=self.blpos.y or 0})
+                        card.children.center.atlas = G.ANIMATION_ATLAS[not self.discovered and "entr_blank" or "blind_chips"]
+                        card.children.center:set_sprite_pos({x=pos.x or 0, y=pos.y or 0})
                     end
                 end,
                 set_badges = function(self, card, badges)
