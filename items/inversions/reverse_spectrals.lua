@@ -443,7 +443,7 @@ local ichor = {
         if joker then
             joker:start_dissolve()
             G.GAME.banned_keys[joker.config.center.key] = true
-            G.jokers:handle_card_limit(card.ability.num)
+            Entropy.handle_card_limit(G.jokers, card.ability.num)
             eval_card(joker, {banishing_card = true, banisher = card, card = joker, cardarea = joker.area})
         end
     end,

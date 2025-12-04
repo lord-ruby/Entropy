@@ -736,7 +736,7 @@ G.FUNCS.buy_deckorsleeve = function(e)
         end
         local diff = G.GAME.starting_params.joker_slots - orig
         if to_big(diff) > to_big(0) then
-            G.jokers:handle_card_limit(diff)
+            Entropy.handle_card_limit(G.jokers, diff)
         end
     end
     for i, v in pairs(c1.config and c1.config.center and c1.config.center.config or {}) do
@@ -748,8 +748,8 @@ G.FUNCS.buy_deckorsleeve = function(e)
             G.GAME.round_resets.discards = G.GAME.round_resets.discards + v 
             ease_discard(v)
         end
-        if i == "joker_slot" then G.jokers:handle_card_limit(v) end
-        if i == "hand_size" then G.hand:handle_card_limit(v) end
+        if i == "joker_slot" then Entropy.handle_card_limit(G.jokers, v) end
+        if i == "hand_size" then Entropy.handle_card_limit(G.hand, v) end
         if i == "dollars" then ease_dollars(v) end
         if i == "spectral_rate" then G.GAME.spectral_rate = v end
         if i == "plincoins" then ease_plincoins(v) end
@@ -959,7 +959,7 @@ end
 G.FUNCS.buy_slot = function(e)
     local c1 = e.config.ref_table
     ease_dollars(-e.config.ref_table.ability.buycost)
-    G.jokers:handle_card_limit(1)
+    Entropy.handle_card_limit(G.jokers, 1)
 end
 
 G.FUNCS.can_sell_slot = function(e)
@@ -976,7 +976,7 @@ end
 G.FUNCS.sell_slot = function(e)
     local c1 = e.config.ref_table
     ease_dollars(e.config.ref_table.ability.sellcost)
-    G.jokers:handle_card_limit(-1)
+    Entropy.handle_card_limit(G.jokers, -1)
 end
 
 G.FUNCS.can_use_joker = function(e)
@@ -1695,7 +1695,7 @@ function Game:update(dt)
         local slots_diff = (G.jokers.config.card_limit - #G.jokers.cards) - Entropy.last_slots
         local csl_diff = (G.hand.config.highlighted_limit) - Entropy.last_csl
         if csl_diff ~= 0 then
-            G.jokers:handle_card_limit(csl_diff)
+            Entropy.handle_card_limit(G.jokers, csl_diff)
         end
         if slots_diff ~= 0 then
             G.hand.config.highlighted_limit = G.hand.config.highlighted_limit + slots_diff
@@ -3354,7 +3354,7 @@ function end_round()
         end_roundref()
     end
     if G.GAME.candle_hand_size then 
-        G.hand:handle_card_limit(-G.GAME.candle_hand_size)
+        Entropy.handle_card_limit(G.hand, -G.GAME.candle_hand_size)
         G.GAME.candle_hand_size = nil
     end
     if G.GAME.vanish_selection_limit then

@@ -2423,7 +2423,7 @@ local cass = {
             if result == 1 then
                 local old = card.ability.hand_size
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "hand_size", scalar_value = "mod"})
-                G.hand:handle_card_limit(card.ability.hand_size - old)
+                Entropy.handle_card_limit(G.hand, card.ability.hand_size - old)
             elseif result == 2 then
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "selection_limit", scalar_value = "mod"})
                 Entropy.ChangeFullCSL(card.ability.mod)
@@ -2438,7 +2438,7 @@ local cass = {
             elseif result == 5 then
                 local old = card.ability.consumable_slots
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "consumable_slots", scalar_value = "mod"})
-                G.consumeables:handle_card_limit(card.ability.consumable_slots - old)
+                Entropy.handle_card_limit(G.consumeables, card.ability.consumable_slots - old)
             elseif result == 6 then
                 if to_big(card.ability.shop_slots) < to_big(4) then
                     SMODS.scale_card(card, {ref_table = card.ability, ref_value = "shop_slots", scalar_value = "mod"})
@@ -2459,7 +2459,7 @@ local cass = {
         end
     end,
     remove_from_deck = function(self, card)        
-        G.hand:handle_card_limit(-card.ability.hand_size)
+        Entropy.handle_card_limit(G.hand, -card.ability.hand_size)
         Entropy.ChangeFullCSL(-card.ability.selection_limit)
         if to_big(card.ability.hands) > to_big(0) then
             G.GAME.round_resets.hands = G.GAME.round_resets.hands - card.ability.hands
@@ -2469,7 +2469,7 @@ local cass = {
             G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.discards
             ease_discard(-card.ability.discards)
         end
-        G.consumeables:handle_card_limit(-card.ability.consumable_slots)        
+        Entropy.handle_card_limit(G.consumeables, -card.ability.consumable_slots)        
         G.E_MANAGER:add_event(Event({
             func = function() --card slot
                 -- why is this in an event?
@@ -2479,7 +2479,7 @@ local cass = {
         }))
     end,
     add_to_deck = function(self, card)
-        G.hand:handle_card_limit(card.ability.hand_size)
+        Entropy.handle_card_limit(G.hand, card.ability.hand_size)
         Entropy.ChangeFullCSL(card.ability.selection_limit)
         if to_big(card.ability.hands) > to_big(0) then
             G.GAME.round_resets.hands = G.GAME.round_resets.hands + card.ability.hands
@@ -2489,7 +2489,7 @@ local cass = {
             G.GAME.round_resets.discards = G.GAME.round_resets.discards + card.ability.discards
             ease_discard(card.ability.discards)
         end
-        G.consumeables:handle_card_limit(card.ability.consumable_slots)
+        Entropy.handle_card_limit(G.consumeables, card.ability.consumable_slots)
         G.E_MANAGER:add_event(Event({
             func = function() --card slot
                 -- why is this in an event?

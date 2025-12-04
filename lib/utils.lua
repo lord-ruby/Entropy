@@ -2125,3 +2125,8 @@ function SMODS.get_next_vouchers()
     end
     return vouchers
 end
+
+function Entropy.handle_card_limit(area, num)
+    area.config.card_limit = area.config.card_limit + num
+    area:handle_card_limit()
+end
