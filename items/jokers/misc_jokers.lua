@@ -5026,6 +5026,7 @@ local captcha = {
 
 function Card:redeem_deck()
     if self.ability.set == "Back" or self.ability.set == "Sleeve" then
+        local prev_state = G.STATE
         stop_use()
         if not self.config.center.discovered then
             discover_card(self.config.center)
@@ -5076,45 +5077,63 @@ function Card:redeem_deck()
         if self.children.use_button then self.children.use_button:remove(); self.children.use_button = nil end
         if self.children.sell_button then self.children.sell_button:remove(); self.children.sell_button = nil end
         if self.children.price then self.children.price:remove(); self.children.price = nil end
+        local in_pack = G.GAME.pack_choices
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.5, func = function()
             G.FUNCS.buy_deckorsleeve{
                 config = {
                     ref_table = self
                 }
             }
-            if G.booster_pack and (not (G.GAME.pack_choices and G.GAME.pack_choices > 1)) then
+            if G.booster_pack then
+                if G.GAME.pack_choices and G.GAME.pack_choices > 1 then
                 G.booster_pack.alignment.offset.y = G.booster_pack.alignment.offset.py
                 G.booster_pack.alignment.offset.py = nil
-            end
-            if G.shop then 
-                G.shop.alignment.offset.y = G.shop.alignment.offset.py
-                G.shop.alignment.offset.py = nil
-            end
-            if G.blind_select then
-                G.blind_select.alignment.offset.y = G.blind_select.alignment.offset.py
-                G.blind_select.alignment.offset.py = nil
-            end
-            if G.round_eval then
-                G.round_eval.alignment.offset.y = G.round_eval.alignment.offset.py
-                G.round_eval.alignment.offset.py = nil
+                elseif G.GAME.pack_choices then
+                    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.5, func = function()
+                        G.shop.alignment.offset.y = G.shop.alignment.offset.py
+                        G.shop.alignment.offset.py = nil
+                        return true
+                    end}))
+                end
+            elseif not in_pack then
+                if G.shop then 
+                    G.shop.alignment.offset.y = G.shop.alignment.offset.py
+                    G.shop.alignment.offset.py = nil
+                end
+                if G.blind_select then
+                    G.blind_select.alignment.offset.y = G.blind_select.alignment.offset.py
+                    G.blind_select.alignment.offset.py = nil
+                end
+                if G.round_eval then
+                    G.round_eval.alignment.offset.y = G.round_eval.alignment.offset.py
+                    G.round_eval.alignment.offset.py = nil
+                end
             end
         return true end }))
-        if G.GAME.pack_choices then G.GAME.pack_choices = G.GAME.pack_choices - 1 end
-        if G.booster_pack and not G.booster_pack.alignment.offset.py and (not (G.GAME.pack_choices and G.GAME.pack_choices > 1)) then
-            G.booster_pack.alignment.offset.py = G.booster_pack.alignment.offset.y
-            G.booster_pack.alignment.offset.y = G.ROOM.T.y + 29
-        end
-        if G.shop and not G.shop.alignment.offset.py then
-            G.shop.alignment.offset.py = G.shop.alignment.offset.y
-            G.shop.alignment.offset.y = G.ROOM.T.y + 29
-        end
-        if G.blind_select and not G.blind_select.alignment.offset.py then
-            G.blind_select.alignment.offset.py = G.blind_select.alignment.offset.y
-            G.blind_select.alignment.offset.y = G.ROOM.T.y + 39
-        end
-        if G.round_eval and not G.round_eval.alignment.offset.py then
-            G.round_eval.alignment.offset.py = G.round_eval.alignment.offset.y
-            G.round_eval.alignment.offset.y = G.ROOM.T.y + 29
+        if G.GAME.pack_choices then 
+            G.GAME.pack_choices = G.GAME.pack_choices - 1 
+            if G.GAME.pack_choices <= 0 then
+                G.CONTROLLER.interrupt.focus = true
+                if prev_state == G.STATES.SMODS_BOOSTER_OPENED and booster_obj.name:find('Arcana') then inc_career_stat('c_tarot_reading_used', 1) end
+                if prev_state == G.STATES.SMODS_BOOSTER_OPENED and booster_obj.name:find('Celestial') then inc_career_stat('c_planetarium_used', 1) end
+                G.FUNCS.end_consumeable(nil, delay_fac)
+            elseif G.booster_pack and not G.booster_pack.alignment.offset.py and (not (G.GAME.pack_choices and G.GAME.pack_choices > 1)) then
+                G.booster_pack.alignment.offset.py = G.booster_pack.alignment.offset.y
+                G.booster_pack.alignment.offset.y = G.ROOM.T.y + 29
+            end
+        else
+            if G.shop and not G.shop.alignment.offset.py then
+                G.shop.alignment.offset.py = G.shop.alignment.offset.y
+                G.shop.alignment.offset.y = G.ROOM.T.y + 29
+            end
+            if G.blind_select and not G.blind_select.alignment.offset.py then
+                G.blind_select.alignment.offset.py = G.blind_select.alignment.offset.y
+                G.blind_select.alignment.offset.y = G.ROOM.T.y + 39
+            end
+            if G.round_eval and not G.round_eval.alignment.offset.py then
+                G.round_eval.alignment.offset.py = G.round_eval.alignment.offset.y
+                G.round_eval.alignment.offset.y = G.ROOM.T.y + 29
+            end
         end
     end
 end
