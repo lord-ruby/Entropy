@@ -3484,12 +3484,13 @@ function create_usage_tabspage(args)
         label = { "<" },
         col = true
       }),
-      types[1+((page+1)*per_page)] and UIBox_button({
+      ((G.USAGE_PAGE or -1) + 1) < (math.ceil(#types/per_page) - 1) and UIBox_button({
         button = "usage_plus",
         label = { ">" },
         align = 'cl',
         col=true
-      })}}}})
+      }) or nil
+    }}}})
 end
 
 G.FUNCS.usage_plus = function(e)
