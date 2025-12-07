@@ -1505,7 +1505,9 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         for i, v in pairs(SMODS.find_card("j_entr_axeh")) do
             amount = amount * v.ability.asc_mod
         end
-        local orig = to_big((G.GAME.asc_power_hand or G.GAME.current_round.current_hand.cry_asc_num))
+        local hand
+        if G.GAME.asc_power_hand and G.GAME.asc_power_hand ~= 0 then hand = G.GAME.asc_power_hand end
+        local orig = to_big((hand or G.GAME.current_round.current_hand.cry_asc_num))
         if not G.GAME.asc_power_hand or G.GAME.asc_power_hand == 0 then G.GAME.asc_power_hand = G.GAME.current_round.current_hand.cry_asc_num end
         G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand) * to_big(amount)        
         local text = number_format(to_big(G.GAME.asc_power_hand))
@@ -1529,7 +1531,9 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         for i, v in pairs(SMODS.find_card("j_entr_axeh")) do
             amount = amount * v.ability.asc_mod
         end
-        local orig = to_big((G.GAME.asc_power_hand or G.GAME.current_round.current_hand.cry_asc_num))
+        local hand
+        if G.GAME.asc_power_hand and G.GAME.asc_power_hand ~= 0 then hand = G.GAME.asc_power_hand end
+        local orig = to_big((hand or G.GAME.current_round.current_hand.cry_asc_num))
         if not G.GAME.asc_power_hand or G.GAME.asc_power_hand == 0 then G.GAME.asc_power_hand = G.GAME.current_round.current_hand.cry_asc_num or 0 end
         G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand) + to_big(amount)
         local text = number_format(to_big(G.GAME.asc_power_hand))
@@ -1553,7 +1557,9 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         for i, v in pairs(SMODS.find_card("j_entr_axeh")) do
             amount = amount * v.ability.asc_mod
         end
-        local orig = to_big((G.GAME.asc_power_hand or G.GAME.current_round.current_hand.cry_asc_num))
+        local hand
+        if G.GAME.asc_power_hand and G.GAME.asc_power_hand ~= 0 then hand = G.GAME.asc_power_hand end
+        local orig = to_big((hand or G.GAME.current_round.current_hand.cry_asc_num))
         if not G.GAME.asc_power_hand or G.GAME.asc_power_hand == 0 then G.GAME.asc_power_hand = G.GAME.current_round.current_hand.cry_asc_num or 0 end
         G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand) ^ to_big(amount)
         local text = number_format(to_big(G.GAME.asc_power_hand))
@@ -1577,7 +1583,9 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
             amount = amount * v.ability.asc_mod
         end
         local e = card_eval_status_text
-        local orig = to_big((G.GAME.asc_power_hand or G.GAME.current_round.current_hand.cry_asc_num))
+        local hand
+        if G.GAME.asc_power_hand and G.GAME.asc_power_hand ~= 0 then hand = G.GAME.asc_power_hand end
+        local orig = to_big((hand or G.GAME.current_round.current_hand.cry_asc_num))
         if not G.GAME.asc_power_hand or G.GAME.asc_power_hand == 0 then G.GAME.asc_power_hand = G.GAME.current_round.current_hand.cry_asc_num or 1 end
         G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand):arrow(amount[1], amount[2])
         local text = number_format(to_big(G.GAME.asc_power_hand))
