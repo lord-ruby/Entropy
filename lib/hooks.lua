@@ -802,6 +802,24 @@ G.FUNCS.buy_deckorsleeve = function(e)
                 }))
             end
         end
+        if i == "consumable_slot" then
+            G.GAME.starting_params.consumable_slots = G.GAME.starting_params.consumable_slots + v
+        end
+        if i == "ante_scaling" then
+            G.GAME.starting_params.ante_scaling = v
+        end
+        if i == "boosters_in_shop" then
+            G.GAME.starting_params.boosters_in_shop = v
+        end
+        if i == "no_interest" then
+            G.GAME.modifiers.no_interest = true
+        end
+        if i == "extra_hand_bonus" then 
+            G.GAME.modifiers.money_per_hand = v
+        end
+        if i == "extra_discard_bonus" then 
+            G.GAME.modifiers.money_per_discard = v
+        end
     end
     if c1.config and c1.config.center and c1.config.center.config and c1.config.center.config then
         if c1.config.center.key == "b_abandoned" or c1.config.center.key == "sleeve_casl_abandoned" then
