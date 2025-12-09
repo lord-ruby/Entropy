@@ -820,15 +820,21 @@ G.FUNCS.buy_deckorsleeve = function(e)
         if i == "extra_discard_bonus" then 
             G.GAME.modifiers.money_per_discard = v
         end
-    end
-    if c1.config and c1.config.center and c1.config.center.config and c1.config.center.config then
-        if c1.config.center.key == "b_abandoned" or c1.config.center.key == "sleeve_casl_abandoned" then
+        if i == "no_faces" then
             for i, v in pairs(G.playing_cards) do
                 if v:is_face() then
                     SMODS.change_base(v, nil, pseudorandom_element({"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10"}, pseudoseed("abandoned_redeem")))
                 end
             end
-        elseif c1.config.center.key == "b_checkered" or c1.config.center.key == "sleeve_casl_checkered" then
+        end
+        if i == "randomize_rank_suit" then
+            for i, v in pairs(G.playing_cards) do
+                Entropy.randomize_rank_suit(v, true, true, "erratic_midgame")
+            end
+        end
+    end
+    if c1.config and c1.config.center and c1.config.center.config and c1.config.center.config then
+        if c1.config.center.key == "b_checkered" or c1.config.center.key == "sleeve_casl_checkered" then
             for i, v in pairs(G.playing_cards) do
                 if v:is_suit("Diamonds") then
                     SMODS.change_base(v, "Hearts")
@@ -837,10 +843,6 @@ G.FUNCS.buy_deckorsleeve = function(e)
                 else 
                     SMODS.change_base(v, pseudorandom_element({"Spades", "Hearts"}, pseudoseed("checkered_redeem")), nil)
                 end
-            end
-        elseif c1.config.center.key == "b_erratic" or c1.config.center.key == "sleeve_casl_erratic" then
-            for i, v in pairs(G.playing_cards) do
-                Entropy.randomize_rank_suit(v, true, true, "erratic_midgame")
             end
         elseif c1.config.center.key == "b_entr_doc" or c1.config.center.key == "sleeve_entr_doc" then
             -- G.E_MANAGER:add_event(Event({
