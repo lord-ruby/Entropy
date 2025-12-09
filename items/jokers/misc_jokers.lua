@@ -5088,7 +5088,7 @@ function Card:redeem_deck()
                 if G.GAME.pack_choices and G.GAME.pack_choices > 1 then
                 G.booster_pack.alignment.offset.y = G.booster_pack.alignment.offset.py
                 G.booster_pack.alignment.offset.py = nil
-                elseif G.GAME.pack_choices then
+                elseif G.GAME.pack_choices and G.shop then
                     G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.5, func = function()
                         G.shop.alignment.offset.y = G.shop.alignment.offset.py
                         G.shop.alignment.offset.py = nil
