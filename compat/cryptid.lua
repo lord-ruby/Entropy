@@ -139,6 +139,8 @@ local containment = {
                 return true
             end
             }))
+                else
+                    G.GAME.Entropy = 0
         end
         end,
         calculate = function(self,back,context)
