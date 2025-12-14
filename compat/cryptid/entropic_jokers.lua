@@ -4,6 +4,7 @@ local epitachyno = {
     key = "epitachyno",
     atlas = "exotic_jokers",
     rarity = "entr_entropic",
+	cost = 150,
     pos = {x=0,y=1},
     soul_pos = { x = 2, y = 1, extra = { x = 1, y = 1 } },
     config = {
