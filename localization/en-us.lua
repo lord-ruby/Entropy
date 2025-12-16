@@ -1155,9 +1155,14 @@ local decs = {
 			j_entr_jestradiol = {
                 name = "Jestradiol",
                 text = {
-                    "Use this Joker to turn up to {C:attention}#1#{}",
-					"selected cards into {C:attention}Queens{}",
-					"gains {C:attention}#2#{} use#<s>2# when defeating a Boss Blind"
+					{
+                    	"Use this Joker to turn up to {C:attention}#1#{}",
+						"selected cards into {C:attention}Queens{}",
+					},
+					{
+						"This Joker Gains {C:attention}#2#{} use#<s>2#",
+						"when defeating a Boss Blind"
+					}
                 },
             },
 			j_entr_penny = {
@@ -1340,11 +1345,16 @@ local decs = {
 			j_entr_grape_juice = {
                 name = "Grape Juice",
                 text = {
-                    "Use this Joker to",
-					"turn a random card held in hand",
-					"into a {C:attention}Bonus{}, {C:attention}Mult{}, or {C:attention}Wild{} card",
-					"gains {C:attention}#2#{} use#<s>2# when defeating a Boss Blind",
-					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+					{
+						"Use this Joker to",
+						"turn a random card held in hand",
+						"into a {C:attention}Bonus{}, {C:attention}Mult{}, or {C:attention}Wild{} card",
+					},
+					{
+						"This Joker gains {C:attention}#2#{} use#<s>2#",
+						"when defeating a Boss Blind",
+						"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+					}
                 },
             },
 			j_entr_petrichor = {
@@ -1420,19 +1430,29 @@ local decs = {
 			j_entr_redkey= {
                 name = "Red Key",
                 text = {
-					"Use this Joker to add an {C:attention}extra{} ",
-					"{C:red}Red Room{} Blind",
-					"gains {C:attention}#2#{} use#<s>2# when defeating a Boss Blind",
-					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+					{
+						"Use this Joker to add an {C:attention}extra{} ",
+						"{C:red}Red Room{} Blind",
+					},
+					{
+						"This Joker gains {C:attention}#2#{} use#<s>2#",
+						"when defeating a Boss Blind",
+						"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+					}
                 },
             },
 			j_entr_polaroid = {
                 name = "Polaroid",
                 text = {
+					{
 					"Use this Joker to copy another {C:attention}Jokers{}",
 					"abilities until next used",
-					"gains {C:attention}#2#{} use#<s>2# when defeating a Blind",
-					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+					},
+					{
+						"This Joker gains {C:attention}#2#{} use#<s>2#",
+						"when defeating a Blind",
+						"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+					}
                 },
             },
 			j_entr_car_battery = {
@@ -1454,11 +1474,16 @@ local decs = {
 			j_entr_captcha = {
                 name = "Captcha",
                 text = {
-					"Use this Joker to apply a random",
-					"{C:attention}Joker{}, {C:attention}Consumable{}, {C:attention}Booster Pack{} or {C:attention}Voucher{}",
-					"as an Enhancement to a {C:attention}Random{} Card held in hand",
-					"gains {C:attention}#2#{} use#<s>2# when defeating a Blind",
-					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+					{
+						"Use this Joker to apply a random",
+						"{C:attention}Joker{}, {C:attention}Consumable{}, {C:attention}Booster Pack{} or {C:attention}Voucher{}",
+						"as an Enhancement to a {C:attention}Random{} Card held in hand",
+					},
+					{
+						"This Joker gains {C:attention}#2#{} use#<s>2#",
+						"when defeating a Blind",
+						"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+					}
                 },
             },
 			j_entr_deck_enlargement_pills = {
@@ -1497,12 +1522,17 @@ local decs = {
 			j_entr_grahkon = {
                 name = "First Guardian, Grahkon",
                 text = {
-					"{C:attention}-#1#{} Blind Size",
-					"Increases by {X:attention,C:white}X#2#{} when a ",
-					"playing card is destroyed. Use this Joker to",
-					"destroy {C:attention}#3#{} random card#<s>3# in hand",
-					"gains {C:attention}#4#{} use#<s>4# when defeating a Blind",
-					"{C:inactive}(Currently {C:attention}#5#{C:inactive} use#<s>5#)"
+					{
+						"{C:attention}-#1#{} Blind Size",
+						"Increases by {X:attention,C:white}X#2#{} when a ",
+						"playing card is destroyed. Use this Joker to",
+						"destroy {C:attention}#3#{} random card#<s>3# in hand",
+					},
+					{
+						"This Joker gains {C:attention}#4#{} use#<s>4#",
+						"when defeating a Blind",
+						"{C:inactive}(Currently {C:attention}#5#{C:inactive} use#<s>5#)"
+					}
                 },
             },
 			j_entr_ybur = {
@@ -1716,11 +1746,16 @@ local decs = {
 			j_entr_dice_shard = {
                 name = "Dice Shard",
                 text = {
-					"Use this Joker to transform a Selected",
-					"{C:attention}Joker{} into the previous Joker",
-					"according to the collection order",
-					"gains {C:attention}#2#{} use#<s>2# when defeating a Blind",
-					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#, #3#)"
+					{
+						"Use this Joker to transform a Selected",
+						"{C:attention}Joker{} into the previous Joker",
+						"according to the collection order",
+					},
+					{
+						"This Joker gains {C:attention}#2#{} use#<s>2#",
+						"when defeating a Blind",
+						"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#, #3#)"
+					}
                 },
             },
 			j_entr_bell_curve = {
@@ -1752,12 +1787,17 @@ local decs = {
 			j_entr_stand_arrow = {
                 name = "Stand Arrow",
                 text = {
-					"Use this Joker to {C:red}destroy{} a selected",
-					"Joker with a {C:green}#3# in #4#{} chance",
-					"otherwise apply {C:dark_edition}Polychrome, Negative{}",
-					"{C:dark_edition}Sunny, Solar, Fractured{} or {C:dark_edition}Freaky{}",
-					"gains {C:attention}#2#{} use#<s>2# when defeating a Blind",
-					"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+					{
+						"Use this Joker to {C:red}destroy{} a selected",
+						"Joker with a {C:green}#3# in #4#{} chance",
+						"otherwise apply {C:dark_edition}Polychrome, Negative{}",
+						"{C:dark_edition}Sunny, Solar, Fractured{} or {C:dark_edition}Freaky{}",
+					},
+					{
+						"This Joker gains {C:attention}#2#{} use#<s>2#",
+						"when defeating a Blind",
+						"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+					}
                 },
             },
 			j_entr_dancer = {
@@ -1785,12 +1825,17 @@ local decs = {
 			j_entr_magic_skin = {
                 name = "Magic Skin",
                 text = {
-					"Use this Joker to create {C:attention}#3#{}",
-					"{C:dark_edition}Negative{} cards based on",
-					"the {C:attention}currently{} opened Booster Pack",
-					"gains {C:attention}#4#{} use#<s>4# when defeating a Blind",
-					"{C:inactive,s:0.8}Has a higher chance to show up after each use",
-					"{C:inactive}(Currently {C:attention}#2#{}, {C:attention}#1#{C:inactive} use#<s>1#)"
+					{
+						"Use this Joker to create {C:attention}#3#{}",
+						"{C:dark_edition}Negative{} cards based on",
+						"the {C:attention}currently{} opened Booster Pack",
+						"{C:inactive,s:0.8}Has a higher chance to show up after each use",
+					},
+					{
+						"This Joker gains {C:attention}#4#{} use#<s>4#",
+						"when defeating a Blind",
+						"{C:inactive}(Currently {C:attention}#2#{}, {C:attention}#1#{C:inactive} use#<s>1#)"
+					}
                 },
             },
 			j_entr_lambda_calculus = {
@@ -1843,6 +1888,25 @@ local decs = {
 					"{C:red}Mega Twisted Pack{} at the cost",
 					"of {C:attention}1{} random card from",
 					"{C:attention}full deck{}"
+                },
+            },
+
+			j_entr_echo_chamber = {
+                name = "Echo Chamber",
+                text = {
+					{
+						"Use this Joker to destroy a selected",
+						"{C:attention}Consumable{}, the last three",
+						"Consumables destroyed by this",
+						"Joker are {C:attention}Triggered{} again",
+						"when a consumable is used",
+						"{C:inactive}({V:1}#5#{}, {V:2}#6#{}, {V:3}#7#{C:inactive})"
+					},
+					{
+						"This Joker gains {C:attention}#2#{} use#<s>2#",
+						"after spending {C:money}$#3#{} in the shop",
+						"{C:inactive}(Currently {C:money}$#4#{}, {C:attention}#1#{C:inactive} use#<s>1#)"
+					}
                 },
             },
 		},

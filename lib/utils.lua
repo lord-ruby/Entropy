@@ -1,7 +1,7 @@
 function Entropy.GetHighlightedCards(cardareas, ignorecard, min, max, blacklist)
-    return Cryptid.get_highlighted_cards(cardareas, ignorecard or {}, min or 1, max or 1, blacklist and function(card)
+    return Cryptid.get_highlighted_cards(cardareas, ignorecard or {}, min or 1, max or 1, type(blacklist) == "table" and function(card)
             return not blacklist[card.config.center.key]
-    end)
+    end or blacklist)
 end
 
 function Cryptid.get_highlighted_cards(areas, ignore, min, max, blacklist, seed)

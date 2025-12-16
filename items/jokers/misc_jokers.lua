@@ -6768,8 +6768,10 @@ local false_vacuum_collapse = {
                     G.E_MANAGER:add_event(Event{
                         trigger = "after",
                         func = function()
-                            card.area:remove_card(card)
-                            G.jokers:emplace(card, "front")
+                            if card.area then
+                                card.area:remove_card(card)
+                                G.jokers:emplace(card, "front")
+                            end
                             return true
                         end
                     })
@@ -6876,6 +6878,124 @@ local mark_of_the_beast = {
             })
         end
     end, 
+}
+
+local echo_chamber = {
+    order = 121,
+    object_type = "Joker",
+    key = "echo_chamber",
+    rarity = 3,
+    cost = 10,   
+    eternal_compat = true,
+    pos = {x = 4, y = 15},
+    atlas = "jokers",
+    config = {
+        left = 1,
+        left_mod = 1,
+        current_spent = 0,
+        needed = 30,
+        destroyed = {
+
+        }
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+        }
+    },
+    loc_vars = function(self, q, card)
+        local c1 = card.ability.destroyed[1] and G.P_CENTERS[card.ability.destroyed[1]]
+        local c2 = card.ability.destroyed[2] and G.P_CENTERS[card.ability.destroyed[2]]
+        local c3 = card.ability.destroyed[3] and G.P_CENTERS[card.ability.destroyed[3]]
+        q[#q+1] = c1
+        q[#q+1] = c2
+        q[#q+1] = c3
+        return {
+            vars = {
+                card.ability.left,
+                card.ability.left_mod,
+                card.ability.needed,
+                card.ability.current_spent,
+                c1 and localize{type = "name_text", set = c1.set, key = c1.key} or localize("k_none"),
+                c2 and localize{type = "name_text", set = c2.set, key = c2.key} or localize("k_none"),
+                c3 and localize{type = "name_text", set = c3.set, key = c3.key} or localize("k_none"),
+                colours = {
+                    G.C.SECONDARY_SET[c1 and c1.set] or G.C.ORANGE,
+                    G.C.SECONDARY_SET[c2 and c2.set] or G.C.ORANGE,
+                    G.C.SECONDARY_SET[c3 and c3.set] or G.C.ORANGE,
+                }
+            }
+        }
+    end,
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if context.money_altered and to_big(context.amount) < to_big(0) and not context.blueprint and context.from_shop then
+            card.ability.current_spent = card.ability.current_spent - context.amount
+            local check 
+            while to_big(card.ability.current_spent) >= to_big(card.ability.needed) do
+                card.ability.current_spent = card.ability.current_spent - card.ability.needed
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod"})
+                check = true
+            end
+            if not check then
+                return {
+                    message = number_format(card.ability.current_spent).."/"..number_format(card.ability.needed)
+                }
+            end
+        end
+        if context.using_consumeable and not card.ability.dont then
+            card.ability.dont = true
+            for i, v in pairs(card.ability.destroyed) do
+                G.E_MANAGER:add_event(Event{
+                    trigger = "after",
+                    func = function()
+                        card_eval_status_text(
+                            card,
+                            "extra",
+                            nil,
+                            nil,
+                            nil,
+                            { message = localize{type = "name_text", set = G.P_CENTERS[v].set, key = G.P_CENTERS[v].key} }
+                        )
+                        return true
+                    end
+                })
+                G.E_MANAGER:add_event(Event{
+                    trigger = "after",
+                    delay = 0.1,
+                    func = function()
+                        Cryptid.forcetrigger(Entropy.GetDummy(G.P_CENTERS[v], G.jokers, card), context)
+                        return true
+                    end
+                })
+            end
+            G.E_MANAGER:add_event(Event{
+                func = function()
+                    card.ability.dont = nil
+                    return true
+                end
+            })
+        end
+    end,
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.consumeables, G.hand, G.jokers, G.pack_cards}, card, 1, 1, function(card)
+            return card.ability.consumeable and not card.config.center.hidden
+        end)
+        return #cards == 1 and to_big(card.ability.left) > to_big(0)
+    end,
+    use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.consumeables, G.hand, G.jokers, G.pack_cards}, card, 1, 1, function(card)
+            return card.ability.consumeable and not card.config.center.hidden
+        end)
+        for i, v in pairs(cards) do
+            table.insert(card.ability.destroyed, 1, v.config.center_key)
+            v:start_dissolve()
+        end
+        for i = 4, #card.ability.destroyed do
+            card.ability.destroyed[i] = nil
+        end
+        card.ability.left = card.ability.left - 1
+    end
 }
 
 return {
@@ -7007,6 +7127,7 @@ return {
         elderberries,
         blood_orange,
         false_vacuum_collapse,
-        mark_of_the_beast
+        mark_of_the_beast,
+        echo_chamber
     }
 }
