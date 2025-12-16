@@ -184,6 +184,13 @@ local wormhole = {
 }
 
 function Entropy.l_chipsmult(hand, card, l_chips, l_mult)
+	if next(SMODS.find_card("j_entr_strawberry_pie")) and hand ~= "High Card" then
+        for i, v in pairs(SMODS.find_card("j_entr_strawberry_pie")) do
+            if SMODS.pseudorandom_probability(v, v.ability.num, v.ability.denom, "entr_strawberry") then
+                hand = "High Card"
+            end
+        end 
+    end
 	update_hand_text({delay = 0}, {handname = localize(hand, "poker_hands"), level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
 	delay(1)
 	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
@@ -219,6 +226,13 @@ function Entropy.l_chipsmult(hand, card, l_chips, l_mult)
 end
 
 function Entropy.xl_chips(hand, card, l_chips)
+	if next(SMODS.find_card("j_entr_strawberry_pie")) and hand ~= "High Card" then
+        for i, v in pairs(SMODS.find_card("j_entr_strawberry_pie")) do
+            if SMODS.pseudorandom_probability(v, v.ability.num, v.ability.denom, "entr_strawberry") then
+                hand = "High Card"
+            end
+        end 
+    end
 	update_hand_text({delay = 0}, {handname = localize(hand, "poker_hands"), level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
 	delay(1)
 	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
@@ -244,6 +258,13 @@ function Entropy.xl_chips(hand, card, l_chips)
 end
 
 function Entropy.xl_mult(hand, card, l_mult)
+	if next(SMODS.find_card("j_entr_strawberry_pie")) and hand ~= "High Card" then
+        for i, v in pairs(SMODS.find_card("j_entr_strawberry_pie")) do
+            if SMODS.pseudorandom_probability(v, v.ability.num, v.ability.denom, "entr_strawberry") then
+                hand = "High Card"
+            end
+        end 
+    end
 	update_hand_text({delay = 0}, {handname = localize(hand, "poker_hands"), level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
 	delay(1)
 	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
