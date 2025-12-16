@@ -1519,6 +1519,9 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         end
         amount = amount * mult
     end
+    if string.find(key, "chip") and next(SMODS.find_card("j_entr_yogurt")) then
+        SMODS.calculate_context({entr_chips_calculated = true, other_card = scored_card or effect.card})    
+    end
     ret = scie(effect, scored_card, key, amount, from_edition)
     if ret then
         return ret

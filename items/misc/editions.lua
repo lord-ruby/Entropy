@@ -511,7 +511,7 @@ local gilded = {
 	weight = 0.75,
     badge_color = HEX("ff7900"),
     loc_vars = function(self,q,card)
-		return {vars={card and card.edition and card.edition.triggers or 2, card and card.edition and card.edition.cards or 2}, key = card.ability.consumeable and "e_entr_gilded_consumable" or nil}
+		return {vars={card and card.edition and card.edition.triggers or 2, card and card.edition and card.edition.cards or 2}, key = card and card.ability and card.ability.consumeable and "e_entr_gilded_consumable" or nil}
     end,
     calculate = function(self, card, context)
 		if (context.retrigger_joker_check or context.repetition) and context.other_card == card then

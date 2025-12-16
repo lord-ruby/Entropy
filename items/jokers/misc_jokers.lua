@@ -6887,6 +6887,7 @@ local echo_chamber = {
     rarity = 3,
     cost = 10,   
     eternal_compat = true,
+    blueprint_compat = true,
     pos = {x = 4, y = 15},
     atlas = "jokers",
     config = {
@@ -6943,7 +6944,7 @@ local echo_chamber = {
                 }
             end
         end
-        if context.using_consumeable and not card.ability.dont then
+        if (context.using_consumeable and not card.ability.dont) or context.forcetrigger then
             card.ability.dont = true
             for i, v in pairs(card.ability.destroyed) do
                 G.E_MANAGER:add_event(Event{
@@ -6996,6 +6997,121 @@ local echo_chamber = {
         end
         card.ability.left = card.ability.left - 1
     end
+}
+
+local milk = {
+    order = 122,
+    object_type = "Joker",
+    key = "milk",
+    rarity = 1,
+    cost = 6,   
+    eternal_compat = true,
+    pos = {x = 0, y = 0},
+    atlas = "placeholder",
+    config = {
+        chips = 0,
+        chips_mod = 20,
+        chips_max = 100
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    demicoloncompat = true,
+    blueprint_compat = true,
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.j_entr_yogurt
+        return {
+            vars = {
+                card.ability.chips,
+                card.ability.chips_mod,
+                card.ability.chips_max
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.end_of_round and not context.individual and not context.repetition and not SMODS.last_hand_oneshot then
+            SMODS.scale_card(card, {
+                ref_table = card.ability,
+                ref_value = "chips",
+                scalar_value = "chips_mod",
+                no_message = card.ability.chips >= card.ability.chips_max - card.ability.chips_mod
+            })
+            if card.ability.chips >= card.ability.chips_max then
+                card.ability.chips = card.ability.chips_max
+                Entropy.FlipThen({card}, function(c)
+                    c:set_ability(G.P_CENTERS.j_entr_yogurt)
+                end)
+                return {
+                    message = localize("k_spoiled_ex")
+                }
+            end
+        end
+        if context.joker_main or context.forcetrigger then
+            return {
+                chips = card.ability.chips
+            }
+        end
+    end,
+}
+
+local yogurt = {
+    order = 123,
+    object_type = "Joker",
+    key = "yogurt",
+    rarity = 1,
+    cost = 6,   
+    eternal_compat = true,
+    pos = {x = 0, y = 0},
+    atlas = "placeholder",
+    config = {
+        chips = 100,
+        chips_mod = 5,
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    demicoloncompat = true,
+    blueprint_compat = true,
+    in_pool = function() return false end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.chips,
+                card.ability.chips_mod,
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.entr_chips_calculated and context.other_card ~= card then
+            SMODS.scale_card(card, {
+                ref_table = card.ability,
+                ref_value = "chips",
+                scalar_value = "chips_mod",
+                no_message = card.ability.chips <= card.ability.chips_mod,
+                operation = "-",
+                scaling_message = {
+                    message = localize("k_downgrade_ex"),
+                    colour = G.C.RED
+                }
+            })
+            if card.ability.chips <= card.ability.chips_mod then
+                card.ability.chips = 0
+                SMODS.destroy_cards(card, nil, true)
+                return {
+                    message = localize("k_spoiled_ex")
+                }
+            end
+        end
+        if context.joker_main or context.forcetrigger then
+            return {
+                chips = card.ability.chips
+            }
+        end
+    end,
 }
 
 return {
@@ -7128,6 +7244,8 @@ return {
         blood_orange,
         false_vacuum_collapse,
         mark_of_the_beast,
-        echo_chamber
+        echo_chamber,
+        milk,
+        yogurt
     }
 }

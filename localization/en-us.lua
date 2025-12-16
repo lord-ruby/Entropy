@@ -1909,6 +1909,27 @@ local decs = {
 					}
                 },
             },
+
+			j_entr_milk = {
+                name = "Milk Carton",
+                text = {
+					"This Joker gains {C:blue}+#2#{}",
+					"Chips when a round is won",
+					"in more than {C:attention}One{} hand",
+					"Turns into {C:attention}Yogurt{} after",
+					"reaching {C:blue}#3#{} Chips",
+					"{C:inactive}(Currently {C:blue}+#1# {C:inactive}Chips)"
+                },
+            },
+			j_entr_yogurt = {
+                name = "Yogurt",
+                text = {
+					"This Joker loses {C:blue}#2#{}",
+					"Chips when any chip effect",
+					"is triggered",
+					"{C:inactive}(Currently {C:blue}+#1# {C:inactive}Chips)"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
@@ -2294,13 +2315,13 @@ local decs = {
 			},
 			b_entr_doc = {
 				name = "Deck of Containment",
-				text =  {
-								"Gain {X:dark_edition,C:white}Entropy{} when playing",
-								"Editioned/Enhanced cards, secret hands or",
-								"using consumables. {C:entr_entropic}Beyond{}, {C:cry_exotic}Gateway{}",
-								"and {C:spectral}Spectral Packs{} show up more often",
-								"chips are lowered based on {X:dark_edition,C:white}Entropy{}"
-						}
+				text = {
+					"Gain {X:dark_edition,C:white}Entropy{} when playing",
+					"Editioned/Enhanced cards, secret hands or",
+					"using consumables. {C:entr_entropic}Beyond{}, {C:cry_exotic}Gateway{}",
+					"and {C:spectral}Spectral Packs{} show up more often",
+					"chips are lowered based on {X:dark_edition,C:white}Entropy{}"
+				}
 			},
 			b_entr_crafting = {
 				name = "Deck of Destiny",
@@ -6414,7 +6435,8 @@ local decs = {
 			k_idea = "Ideas",
 			k_art = "Art",
 			k_music = "Music",
-
+			k_spoiled_ex = "Spoiled!",
+			k_downgrade_ex = "Downgrade!",
 			k_star = "Star",
 			b_star_cards = "Star Cards",	
 			k_planet_multiverse = Cryptid_config.family_mode and "Multiverse" or "The Actual Fucking Multiverse",

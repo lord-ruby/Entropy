@@ -115,7 +115,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     tex.b = tex.b-delta + delta*maxfac*0.7 - 0.1;
     tex.a = tex.a*(0.8*max(min(1., max(0.,0.3*max(low*0.2, delta)+ min(max(maxfac*0.1,0.), 0.4)) ), 0.) + 0.15*maxfac*(0.1+delta));
     colour = colour * vec4(1.5, .3, 0, 0.5) + (vec4(0.7, 0.3, 0, 0.75) * colour) + (vec4(0.6, 0.2, 0, 1.25) * colour);
-    colour.a = 0.5 + 22.5 * pNoise(uv * 2. + gilded.x/25., 10);
+    colour.a = 0.5 + 22.5 * pNoise(uv * 2.5 + gilded.x/25., 10);
     tex.a = 1.25 * tex.a;
     return dissolve_mask(tex*colour, texture_coords, uv);
 }
