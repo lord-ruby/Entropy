@@ -70,9 +70,9 @@ local fractured ={
         retrig = 3
     },
 	sound = {
-		sound = "entr_e_solar",
+		sound = "entr_e_fractured",
 		per = 1,
-		vol = 0.4,
+		vol = 0.8,
 	},
 	dependencies = {
         items = {
@@ -266,7 +266,7 @@ if AurinkoAddons then
 				trigger = "after",
 				delay = 0.2,
 				func = function()
-					play_sound("multhit1")
+					play_sound("entr_e_rizz")
 					card:juice_up(0.8, 0.5)
 					return true
 				end,
@@ -299,9 +299,8 @@ local neon = {
     key="neon",
     shader="neon",
 	sound = {
-		sound = "multhit1",
-		per = 1,
-		vol = 0.4,
+		sound = "entr_e_neon",
+		per = 1,		
 	},
 	config = {
 		cost_fac = 0.9
@@ -369,9 +368,9 @@ local lowres = {
     key="lowres",
     shader="lowres",
 	sound = {
-		sound = "multhit1",
+		sound = "entr_e_lowres",
 		per = 1,
-		vol = 0.4,
+		vol = 1,
 	},
 	config = {
 		triggers = 2,
@@ -427,9 +426,9 @@ local kaleidoscopic = {
     key="kaleidoscopic",
     shader="kaleidoscopic",
 	sound = {
-		sound = "multhit1",
+		sound = "entr_e_kaleidoscopic",
 		per = 1,
-		vol = 0.4,
+		vol = 0.8,
 	},
 	config = {
 		cards = 2
@@ -488,6 +487,67 @@ local kaleidoscopic = {
 	},
 }
 
+SMODS.Shader({
+    key="gilded",
+    path="gilded.fs"
+})
+
+local gilded = {
+	object_type = "Edition",
+	order = 9000+5,
+    key="gilded",
+    shader="gilded",
+	sound = {
+		sound = "entr_e_gilded",
+		per = 1,
+	},
+	dependencies = {
+        items = {
+          "set_entr_misc"
+        }
+    },
+	extra_cost = 3,
+	in_shop = true,
+	weight = 0.75,
+    badge_color = HEX("ff7900"),
+    loc_vars = function(self,q,card)
+		return {vars={card and card.edition and card.edition.triggers or 2, card and card.edition and card.edition.cards or 2}, key = card.ability.consumeable and "e_entr_gilded_consumable" or nil}
+    end,
+    calculate = function(self, card, context)
+		if (context.retrigger_joker_check or context.repetition) and context.other_card == card then
+			return {
+				repetitions = 1
+			}
+		end
+		if context.pre_using_consumeable and context.consumeable == card then
+			card.delay_dissolve = {type = "after_after", delay = 1.5}
+            G.E_MANAGER:add_event(Event{
+				trigger = "after",
+				delay = 0.5,
+				func = function()
+					G.E_MANAGER:add_event(Event{
+						trigger = "after",
+						delay = 1,
+						func = function()
+							Cryptid.forcetrigger(Entropy.GetDummy(card.config.center, G.consumeables, card), context)
+							return true
+						end
+					})
+					return true
+				end
+			})
+        end
+	end,
+}
+
+local card_click = Card.click
+function Card:click(...)
+	if G.SETTINGS.paused and self.edition and G.P_CENTERS[self.edition.key] and G.P_CENTERS[self.edition.key].sound then
+		play_sound(G.P_CENTERS[self.edition.key].sound.sound, G.P_CENTERS[self.edition.key].sound.volume)
+	end
+	return card_click(self, ...)
+end
+
 return {
     items = {
         solar,
@@ -496,6 +556,7 @@ return {
 		freaky,
 		neon,
 		lowres,
-		kaleidoscopic
+		kaleidoscopic,
+		gilded
     }
 }

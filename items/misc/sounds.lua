@@ -65,3 +65,33 @@ SMODS.Sound({
 	path = "bounce.ogg",
 	volume = 1.4
 })
+
+SMODS.Sound({
+	key = "e_lowres",
+	path = "e_lowres.ogg",
+	volume = 1.2
+})
+
+SMODS.Sound({
+	key = "e_gilded",
+	path = "e_gilded.ogg",
+	volume = 1.3
+})
+
+SMODS.Sound({
+	key = "e_kaleidoscopic",
+	path = "e_kaleidoscopic.ogg",
+	volume = 0.9
+})
+
+SMODS.Sound({
+	key = "e_fractured",
+	path = "e_fractured.ogg",
+	volume = 1.2,
+})
+
+SMODS.Sound({
+	key = "e_neon",
+	path = "e_neon.ogg",
+	volume = 1.2
+})

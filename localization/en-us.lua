@@ -2262,6 +2262,19 @@ local decs = {
 					"cards in this cards area"
 				},
 			},
+			e_entr_gilded  = {
+				name = "Gilded",
+				text = {
+					"{C:attention}Retrigger{} this card"
+				},
+			},
+			e_entr_gilded_consumable = {
+				name = "Gilded",
+				text = {
+					"Triggered {C:attention}twice{}",
+					"when used"
+				},
+			},
 		},
 		Back = {
 			b_entr_twisted = {
@@ -4203,6 +4216,14 @@ local decs = {
 					"becomes {C:dark_edition}Kaleidoscopic{}"	
 				},
 			},
+			tag_entr_gilded = {
+				name = "Gilded Tag",
+				text = { 
+					"Next base Edition shop",
+					"Joker is free and",
+					"becomes {C:dark_edition}Gilded{}"	
+				},
+			},
 
 			tag_entr_ascendant_rare = {
 				name = "{C:gold}Rare Tag{}",
@@ -4320,6 +4341,10 @@ local decs = {
 			tag_entr_ascendant_kaleidoscopic = {
 				name = "{C:gold}Kaleidoscopic Tag{}",
 				text = { "{C:attention}All{} shop items are {C:dark_edition}Kaleidoscopic{}" },
+			},
+			tag_entr_ascendant_gilded = {
+				name = "{C:gold}Kaleidoscopic Tag{}",
+				text = { "{C:attention}All{} shop items are {C:dark_edition}Gilded{}" },
 			},
 
 			tag_entr_ascendant_infdiscard = {
@@ -6557,6 +6582,7 @@ local decs = {
 			entr_neon = "Neon",
 			entr_lowres = "Low-Res",
 			entr_kaleidoscopic = "Kaleidoscopic",
+			entr_gilded = "Gilded",
 			entr_fractured = "Fractured",
 			entr_freaky = "Freaky",
 			entr_yellow_sign = "Yellow Sign",

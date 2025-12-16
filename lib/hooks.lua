@@ -1863,12 +1863,35 @@ function Card:start_dissolve(dissolve_colours, silent, dissolve_time_fac, no_jui
         SMODS.calculate_context({card_being_destroyed=true, card=self, cardarea == self.area})
     end
     if self.delay_dissolve then
-        G.E_MANAGER:add_event(Event{
-            func = function()
-                start_dissolveref(self, dissolve_colours, silent, dissolve_time_fac, no_juice)
-                return true
-            end
-        })
+        local s = self.delay_dissolve
+        local d
+        if type(s) == "table" then s = s.type; d = s.delay end
+        if s == "after_after" then
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                blocking = false,
+                func = function()
+                    G.E_MANAGER:add_event(Event{
+                        trigger = "after",
+                        delay = d,
+                        func = function()
+                            start_dissolveref(self, dissolve_colours, silent, dissolve_time_fac, no_juice)
+                            return true
+                        end
+                    })
+                    return true
+                end
+            })
+        else
+            G.E_MANAGER:add_event(Event{
+                trigger = type(s) == "string" and s or nil,
+                delay = d,
+                func = function()
+                    start_dissolveref(self, dissolve_colours, silent, dissolve_time_fac, no_juice)
+                    return true
+                end
+            })
+        end
     else    
         start_dissolveref(self, dissolve_colours, silent, dissolve_time_fac, no_juice)
     end
@@ -2343,6 +2366,9 @@ G.FUNCS.use_card = function(e, mute, nosave)
     local twis = G.GAME.modifiers.entr_twisted
     G.GAME.modifiers.entr_twisted = nil
     local card = e.config.ref_table
+    if card.ability.consumeable then
+        SMODS.calculate_context({pre_using_consumeable = true, consumeable = card, area = card.from_area})
+    end
     card.ability.bypass_aleph = true
     ref(e, mute, nosave)
     G.GAME.modifiers.entr_twisted = twis
