@@ -7121,10 +7121,10 @@ local box_of_chocolates = {
     order = 124,
     object_type = "Joker",
     key = "box_of_chocolates",
-    rarity = 2,
+    rarity = 1,
     cost = 8,   
     eternal_compat = true,
-    pos = {x = 1, y = 0},
+    pos = {x = 0, y = 0},
     atlas = "placeholder",
     config = {
         uses = 12
