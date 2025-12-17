@@ -6976,6 +6976,7 @@ local echo_chamber = {
                     return true
                 end
             })
+            return nil, true
         end
     end,
     can_use = function(self, card)

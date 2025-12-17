@@ -2322,7 +2322,8 @@ local AscendantTags = {
     tag_entr_kaleidoscopic = "tag_entr_ascendant_kaleidoscopic",
     tag_entr_neon = "tag_entr_ascendant_neon",
     tag_entr_lowres = "tag_entr_ascendant_lowres",
-    tag_entr_arcane = "tag_entr_ascendant_arcane"
+    tag_entr_arcane = "tag_entr_ascendant_arcane",
+    tag_entr_gilded = "tag_entr_ascendant_gilded"
 }
 for i, v in pairs(AscendantTags) do Entropy.AscendedTags[i]=v end
 

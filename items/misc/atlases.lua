@@ -139,6 +139,15 @@ SMODS.Atlas {
     atlas_table = 'ANIMATION_ATLAS'
 }
 
+SMODS.Atlas {
+    key = 'redroom', 
+    path = 'blinds.png', 
+    px = 34, 
+    py = 34, 
+    frames = 8, 
+    atlas_table = 'ANIMATION_ATLAS'
+}
+
 SMODS.Atlas { 
     key = 'ruby_atlas', 
     path = 'ruby.png', 

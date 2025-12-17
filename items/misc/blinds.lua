@@ -1045,8 +1045,8 @@ local rr = {
     order = 4200,
 	key = "red",
 	pos = { x = 0, y = 0 },
-	atlas = "blinds",
-	boss_colour = HEX("FF0000"),
+	atlas = "redroom",
+	boss_colour = HEX("a0001a"),
     mult=1,
     dollars = 3,
     in_pool = function(self) return false end

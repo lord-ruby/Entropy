@@ -1900,7 +1900,8 @@ local decs = {
 						"Consumables destroyed by this",
 						"Joker are {C:attention}Triggered{} again",
 						"when a consumable is used",
-						"{C:inactive}({V:1}#5#{}, {V:2}#6#{}, {V:3}#7#{C:inactive})"
+						"{C:inactive}({V:1}#5#{}, {V:2}#6#{}, {V:3}#7#{C:inactive})",
+						"{C:inactive}(Hidden consumables excluded)"
 					},
 					{
 						"This Joker gains {C:attention}#2#{} use#<s>2#",

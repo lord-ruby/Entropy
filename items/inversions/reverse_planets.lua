@@ -169,9 +169,13 @@ function Entropy.ChunkLocVars(self, q, card, instant, noengulf)
 end
 
 function Entropy.ReversePlanetUse(handname, card, amt)
-  if next(SMODS.find_card("j_entr_strawberry_pie")) and handname ~= "High Card" then
-    handname = "High Card"
-  end
+  if next(SMODS.find_card("j_entr_strawberry_pie")) and hand ~= "High Card" then
+        for i, v in pairs(SMODS.find_card("j_entr_strawberry_pie")) do
+            if SMODS.pseudorandom_probability(v, v.ability.num, v.ability.denom, "entr_strawberry") then
+                handname = "High Card"
+            end
+        end 
+    end
   if not card then card = {ability={level=1}} end
   local level = amt
   amt = 1
@@ -577,6 +581,15 @@ end, func = function(self, card, area, copier, number)
     end
   end
   pseudoshuffle(hands, pseudoseed("entr_sputnik"))
+  if next(SMODS.find_card("j_entr_strawberry_pie")) and hand ~= "High Card" then
+      for i, v in pairs(SMODS.find_card("j_entr_strawberry_pie")) do
+          if SMODS.pseudorandom_probability(v, v.ability.num, v.ability.denom, "entr_strawberry") then
+              for i, v in pairs(hands) do
+                hands[i] = "High Card"
+              end
+          end
+      end 
+  end
   for i = 1, math.min(card.ability.hands, #hands) do
     Entropy.ReversePlanetUse(hands[i], card, card.ability.amt + (G.GAME.entr_black_dwarf or 0))
   end

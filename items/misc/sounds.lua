@@ -11,7 +11,7 @@ SMODS.Sound({
 	key = "music_red_room",
 	path = "music_red_room.ogg",
 	select_music_track = function()
-		return G.GAME.round_resets.blind_states.Red == "Current" and 10^5
+		return G.GAME.blind and G.GAME.blind.name == "bl_entr_red" and 10^5
 	end,
 })
 SMODS.Sound({
