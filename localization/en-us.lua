@@ -6580,7 +6580,10 @@ local decs = {
 			k_plus_inverted = "+1 Twisted Card",
 
 			k_switch_ex = "Switch!",
-			k_bounce_ex = "Bounce!"
+			k_bounce_ex = "Bounce!",
+
+			ph_red_1 = "???",
+			ph_red_2 = "???",
 		},
 		v_dictionary = {
 			card_art = "Card Art: #1#",

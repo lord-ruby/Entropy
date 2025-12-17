@@ -3054,3 +3054,28 @@ for i=1, #G.hand.highlighted do
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+elseif not run_info then
+'''
+position = 'before'
+payload = '''
+elseif type == 'Red' then
+  local dt1 = DynaText({string = {{string = localize('ph_red_1'), colour = G.C.RED}}, colours = {G.C.BLACK}, scale = 0.55, silent = true, pop_delay = 4.5, shadow = true, bump = true, maxw = 3})
+    local dt2 = DynaText({string = {{string = localize('ph_red_2'), colour = G.C.WHITE}},colours = {G.C.CHANCE}, scale = 0.35, silent = true, pop_delay = 4.5, shadow = true, maxw = 3})
+    extras = 
+    {n=G.UIT.R, config={align = "cm"}, nodes={
+      {n=G.UIT.R, config={align = "cm", padding = 0.07, r = 0.1, colour = {0,0,0,0.12}, minw = 2.9}, nodes={
+        {n=G.UIT.R, config={align = "cm"}, nodes={
+          {n=G.UIT.O, config={object = dt1}},
+        }},
+        {n=G.UIT.R, config={align = "cm"}, nodes={
+          {n=G.UIT.O, config={object = dt2}},
+        }},
+      }},
+    }}
+'''
+match_indent = true
