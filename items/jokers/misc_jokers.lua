@@ -7124,7 +7124,7 @@ local box_of_chocolates = {
     rarity = 2,
     cost = 8,   
     eternal_compat = true,
-    pos = {x = 0, y = 0},
+    pos = {x = 1, y = 0},
     atlas = "placeholder",
     config = {
         uses = 12
@@ -7179,6 +7179,9 @@ local box_of_chocolates = {
             return ret
         end
     end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
 }
 
 return {
