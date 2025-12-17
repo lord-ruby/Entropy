@@ -7021,6 +7021,7 @@ local milk = {
     },
     demicoloncompat = true,
     blueprint_compat = true,
+    pools = {Food = true},
     loc_vars = function(self, q, card)
         q[#q+1] = G.P_CENTERS.j_entr_yogurt
         return {
@@ -7077,6 +7078,7 @@ local yogurt = {
     },
     demicoloncompat = true,
     blueprint_compat = true,
+    pools = {Food = true},
     in_pool = function() return false end,
     loc_vars = function(self, q, card)
         return {
@@ -7101,7 +7103,7 @@ local yogurt = {
             })
             if card.ability.chips <= card.ability.chips_mod then
                 card.ability.chips = 0
-                SMODS.destroy_cards(card, nil, true)
+                SMODS.destroy_cards(card, nil, nil, true)
                 return {
                     message = localize("k_spoiled_ex")
                 }
@@ -7111,6 +7113,70 @@ local yogurt = {
             return {
                 chips = card.ability.chips
             }
+        end
+    end,
+}
+
+local box_of_chocolates = {
+    order = 124,
+    object_type = "Joker",
+    key = "box_of_chocolates",
+    rarity = 2,
+    cost = 8,   
+    eternal_compat = true,
+    pos = {x = 0, y = 0},
+    atlas = "placeholder",
+    config = {
+        uses = 12
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    demicoloncompat = true,
+    blueprint_compat = true,
+    pools = {Food = true},
+    in_pool = function() return false end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.uses
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.post_open_booster then
+            local ret = {}
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                blocking = false,
+                delay = 1,
+                func = function()
+                    G.E_MANAGER:add_event(Event{
+                        trigger = "after",
+                        blocking = false,
+                        func = function()
+                            local card = pseudorandom_element(G.pack_cards.cards, pseudoseed("j_entr_chocolates"))
+                            local r = Cryptid.forcetrigger(card, context)
+                            SMODS.calculate_effect({message = localize("k_forcetrigger_ex"), colour = G.C.PURPLE}, card)
+                            return true
+                        end
+                    })
+                    return true
+                end
+            })
+            card.ability.uses = card.ability.uses - 1
+            if card.ability.uses <= 0 then
+                ret.message = localize("k_eaten_ex")
+                ret.colour = G.C.FILTER
+                SMODS.destroy_cards(card, nil, nil, true)
+            else
+                ret.message = "-1"
+                ret.colour = G.C.RED
+            end
+            ret.card = card
+            return ret
         end
     end,
 }
@@ -7247,6 +7313,7 @@ return {
         mark_of_the_beast,
         echo_chamber,
         milk,
-        yogurt
+        yogurt,
+        box_of_chocolates
     }
 }

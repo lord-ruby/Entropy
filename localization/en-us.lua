@@ -1931,6 +1931,14 @@ local decs = {
 					"{C:inactive}(Currently {C:blue}+#1# {C:inactive}Chips)"
                 },
             },
+			j_entr_box_of_chocolates = {
+                name = "Box of Chocolates",
+                text = {
+					"{C:attention}Forcetrigger{} a random card",
+					"from the next {C:attention}#1#{}",
+					"opened {C:attention}Booster Packs{}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
@@ -6436,6 +6444,7 @@ local decs = {
 			k_idea = "Ideas",
 			k_art = "Art",
 			k_music = "Music",
+			k_forcetrigger_ex = "Forcetrigger!",
 			k_spoiled_ex = "Spoiled!",
 			k_downgrade_ex = "Downgrade!",
 			k_star = "Star",
