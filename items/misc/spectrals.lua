@@ -308,10 +308,11 @@ local null = {
 local antithesis = {
     key = "antithesis",
     set = "Spectral",
-    order = 80,
+    order = 1000+2,
     object_type = "Consumable",
-    atlas = "consumables",
-    pos = {x=3,y=8},
+    atlas = "consumables2",
+    pos = {x=1,y=3},
+    soul_pos = {x = 5, y = 3, extra = {x = 4, y = 3}},
     dependencies = {
         items = {
           "set_entr_spectrals"
