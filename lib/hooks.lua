@@ -4691,3 +4691,19 @@ function hotpot_horsechicot_market_section_init_cards()
   end
   G.harvest_cost = G.harvest_cost or 0
 end
+
+
+local forcetrigger_ref = Cryptid.forcetrigger
+function Cryptid.forcetrigger(card, ...)
+    if card.ability.consumeable then
+        local center = card.config.center
+        if center and center.calculate then
+            center:calculate(card, {pre_using_self = true, consumeable = card, area = card.from_area})
+        end
+        local edition = card.edition and G.P_CENTERS[card.edition.key]
+        if edition and edition.calculate then
+            edition:calculate(card, {pre_using_self = true, consumeable = card, area = card.from_area})
+        end
+    end
+    return forcetrigger_ref(card, ...)
+end
