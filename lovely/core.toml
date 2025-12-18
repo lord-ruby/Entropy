@@ -3079,3 +3079,19 @@ elseif type == 'Red' then
     }}
 '''
 match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''
+SMODS.calculate_context({using_consumeable = true, consumeable = card, area = card.from_area})
+'''
+position = 'before'
+payload = '''
+local center = card.config.center
+if center and center.calculate then
+  center:calculate(card, {using_self = true, consumeable = card, area = card.from_area})
+end
+'''
+match_indent = true

@@ -1939,6 +1939,14 @@ local decs = {
 					"opened {C:attention}Booster Packs{}"
                 },
             },
+			j_entr_carrot_cake = {
+                name = "Carrot Cake",
+                text = {
+					"The next {C:attention}#1#{}",
+					"created consumables will",
+					"appear {C:dark_edition}Gilded{}"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

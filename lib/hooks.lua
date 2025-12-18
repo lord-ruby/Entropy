@@ -1994,7 +1994,8 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
                     local ret = c.config.center:calculate(c, {
                         get_consumable_type = true,
                         set = card.config.center.set,
-                        hidden = card.config.center.hidden
+                        hidden = card.config.center.hidden,
+                        other_card = card
                     })
                     if ret and (ret.set or ret.key) then
                         card:set_ability(ret.key and G.P_CENTERS[ret.key] or Entropy.GetPooledCenter(ret.set))
@@ -2003,6 +2004,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
                 end
             end
         end
+    end
+    if card and card.ability and card.ability.consumeable then
+        SMODS.calculate_context{entr_consumable_created = true, other_card = card}
     end
     if next(SMODS.find_card("j_entr_kitchenjokers")) and card:is_food() then
         card:set_edition("e_entr_lowres")
@@ -2371,6 +2375,14 @@ G.FUNCS.use_card = function(e, mute, nosave)
     G.GAME.modifiers.entr_twisted = nil
     local card = e.config.ref_table
     if card.ability.consumeable then
+        local center = card.config.center
+        if center and center.calculate then
+            center:calculate(card, {pre_using_self = true, consumeable = card, area = card.from_area})
+        end
+        local edition = card.edition and G.P_CENTERS[card.edition.key]
+        if edition and edition.calculate then
+            edition:calculate(card, {pre_using_self = true, consumeable = card, area = card.from_area})
+        end
         SMODS.calculate_context({pre_using_consumeable = true, consumeable = card, area = card.from_area})
     end
     card.ability.bypass_aleph = true

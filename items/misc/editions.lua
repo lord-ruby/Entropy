@@ -519,7 +519,7 @@ local gilded = {
 				repetitions = 1
 			}
 		end
-		if context.pre_using_consumeable and context.consumeable == card then
+		if context.pre_using_self and context.consumeable == card then
 			card.delay_dissolve = {type = "after_after", delay = 1.5}
             G.E_MANAGER:add_event(Event{
 				trigger = "after",

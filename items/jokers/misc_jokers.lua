@@ -7184,6 +7184,55 @@ local box_of_chocolates = {
     }
 }
 
+local carrot_cake = {
+    order = 125,
+    object_type = "Joker",
+    key = "carrot_cake",
+    rarity = 2,
+    cost = 8,   
+    eternal_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+    config = {
+        uses = 10
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    demicoloncompat = true,
+    blueprint_compat = true,
+    pools = {Food = true},
+    in_pool = function() return false end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {key = 'e_entr_gilded_consumable', set = 'Edition', config = {}}
+        return {
+            vars = {
+                card.ability.uses
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.entr_consumable_created and not context.other_card.will_be_gilded then
+            context.other_card:set_edition("e_entr_gilded")
+            context.other_card.will_be_gilded = true 
+            card.ability.uses = card.ability.uses - 1
+            local ret = {}
+            if card.ability.uses <= 0 then
+                ret.message = localize("k_eaten_ex")
+                ret.colour = G.C.FILTER
+                SMODS.destroy_cards(card, nil, nil, true)
+            else
+                ret.message = "-1"
+                ret.colour = G.C.RED
+            end
+            ret.card = card
+            return ret
+        end
+    end,    
+}
+
 return {
     items = {
         surreal,
@@ -7317,6 +7366,7 @@ return {
         echo_chamber,
         milk,
         yogurt,
-        box_of_chocolates
+        box_of_chocolates,
+        carrot_cake
     }
 }
