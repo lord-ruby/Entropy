@@ -539,6 +539,7 @@ function Entropy.RareTag(rarity, key, ascendant, colour, pos, fac, legendary,ord
                     tag:yep("+", G.C.RARITY[colour], function()
                         card:start_materialize()
                         card.misprint_cost_fac = 0 or fac
+                        card.ability.couponed = true
                         card:set_cost()
                         return true
                     end)
