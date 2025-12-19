@@ -201,6 +201,7 @@ local sunny_joker = {
             "set_entr_misc_jokers"
         }
     },
+    pixel_size = { h = 70 },
     perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
@@ -807,6 +808,7 @@ local skullcry = {
             "set_entr_misc_jokers"
         }
     },
+    pixel_size = { h = 70 },
     perishable_compat = true,
     blueprint_compat = true,
     eternal_compat = true,
