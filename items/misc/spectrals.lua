@@ -312,7 +312,7 @@ local antithesis = {
     object_type = "Consumable",
     atlas = "consumables2",
     pos = {x=1,y=3},
-    soul_pos = {x = 5, y = 3, extra = {x = 4, y = 3}},
+    soul_pos = {x = 3, y = 3, extra = {x = 2, y = 3}},
     dependencies = {
         items = {
           "set_entr_spectrals"

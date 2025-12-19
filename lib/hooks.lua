@@ -1510,12 +1510,12 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         local mult = 1
         for i, v in pairs(SMODS.find_card("j_entr_error")) do
             mult = mult * pseudorandom("entr_error", 95000, 120000)/100000
-            G.E_MANAGER:add_event(Event{
-                func = function()
-                    v:juice_up()
-                    return true
-                end
-            })
+            -- G.E_MANAGER:add_event(Event{
+            --     func = function()
+            --         v:juice_up()
+            --         return true
+            --     end
+            -- })
         end
         amount = amount * mult
     end

@@ -313,3 +313,13 @@ SMODS.Atlas {
     atlas_table = 'ANIMATION_ATLAS',
     frames = 1
 }
+
+SMODS.Atlas {
+    key = 'curses_big',
+    path = 'curses_big.png',
+    px = 75,
+    py = 75,
+    atlas_table = 'ANIMATION_ATLAS',
+    frames = 17,
+    fps = 8
+}

@@ -88,6 +88,7 @@ return {
         marked,
         trump_card,
         diviner,
-        providence
+        providence,
+        
     }
 }
