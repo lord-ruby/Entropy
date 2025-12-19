@@ -105,7 +105,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     float t = 1543.1954 + brimstone_badge.y * 0.32151;
 
-    float scale_const = 10;
+    float scale_const = 10.0;
 
     float cx = uv.x * scale_const * 0.45;
     float cy = uv.y * scale_const * 1.5;
@@ -115,19 +115,19 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     hsl.x = 0.99;
     hsl.y = 0.9;
-    hsl.z = 0;
+    hsl.z = 0.0;
 
     //float pulse = pow(2 * abs(pow(mod(-0.16 * cy - 0.15 * t - sin(5.2 * cx + 0.3 * t)/2 - sin(12.3 * cx + 0.11 * t)/5, 1), 2) - 0.5), 2);
 
-    float flame1 = pow((sin(1.11 * cx - sin(1.11 * t))), 2) + pow((sin(1.11 * cy + 1.00 * t - sin(7 * t + 1.2 * cx))), 2);
-    float flame2 = pow((sin(2.10 * cx - sin(0.40 * t))), 2) + pow((sin(3.04 * cy + 2.41 * t - sin(-7 * t + 2 * cx))), 2);
-    float flame3 = pow((sin(6.14 * cx - sin(2.40 * t))), 2) + pow((sin(2.14 * cy + 3.41 * t)), 2);
+    float flame1 = pow((sin(1.11 * cx - sin(1.11 * t))), 2.0) + pow((sin(1.11 * cy + 1.00 * t - sin(7.0 * t + 1.2 * cx))), 2.0);
+    float flame2 = pow((sin(2.10 * cx - sin(0.40 * t))), 2.0) + pow((sin(3.04 * cy + 2.41 * t - sin(-7.0 * t + 2.0 * cx))), 2.0);
+    float flame3 = pow((sin(6.14 * cx - sin(2.40 * t))), 2.0) + pow((sin(2.14 * cy + 3.41 * t)), 2.0);
     //float flame4 = max(0, pow((sin(44.1 * cx - sin(4.77 * t))), 2) + pow((sin(0.66 * cy + 9.14 * t - sin(1.23 * t + cx))), 2));
     
-    float flamebundle = (- flame1 * flame2 - flame1 * flame3 + flame2 * flame3)/4;
+    float flamebundle = (- flame1 * flame2 - flame1 * flame3 + flame2 * flame3)/4.0;
 
-    hsl.z += (1.2 * flame1 + 1.1 * flame2 + 0.7 * flame3 + flamebundle)/4;// * pulse;
-    hsl.x -= flamebundle/7;
+    hsl.z += (1.2 * flame1 + 1.1 * flame2 + 0.7 * flame3 + flamebundle)/4.0;// * pulse;
+    hsl.x -= flamebundle/7.0;
 
     //hsl.z = pow(hsl.z, 2)/(pow(hsl.z, 2) + 1);
     
@@ -144,5 +144,5 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     //rgb.b += flame2;
     //rgb.g += flame3;
 
-    return vec4(rgb.r, rgb.g, rgb.b, 1);
+    return vec4(rgb.r, rgb.g, rgb.b, 1.0);
 }
