@@ -428,7 +428,7 @@ function Entropy.create_rune(key, pos, indicator_key, order, credits, loc_vars, 
     }
 end
 
-local fehu = Entropy.create_rune("fehu", {x=0,y=0}, "rune_entr_fehu", 6001)
+local fehu = Entropy.create_rune("fehu", {x=0,y=0}, "rune_entr_fehu", 6001, nil, nil, nil, {x = 0, y = 1})
 local fehu_indicator = {
     object_type = "RuneTag",
     order = 7001,
@@ -455,7 +455,7 @@ local fehu_indicator = {
     end
 }
 
-local uruz = Entropy.create_rune("uruz", {x=1,y=0}, "rune_entr_uruz", 6002)
+local uruz = Entropy.create_rune("uruz", {x=1,y=0}, "rune_entr_uruz", 6002, nil, nil, nil, {x = 1, y = 1})
 local uruz_indicator = {
     object_type = "RuneTag",
     order = 7002,
@@ -466,7 +466,7 @@ local uruz_indicator = {
     dependencies = {items = {"set_entr_runes"}},
 }
 
-local thurisaz = Entropy.create_rune("thurisaz", {x=2,y=0}, "rune_entr_thurisaz", 6003)
+local thurisaz = Entropy.create_rune("thurisaz", {x=2,y=0}, "rune_entr_thurisaz", 6003, nil, nil, nil, {x = 2, y = 1})
 local thurisaz_indicator = {
     object_type = "RuneTag",
     order = 7003,
@@ -507,7 +507,7 @@ local thurisaz_indicator = {
     end
 }
 
-local ansuz = Entropy.create_rune("ansuz", {x=3,y=0}, "rune_entr_ansuz", 6004)
+local ansuz = Entropy.create_rune("ansuz", {x=3,y=0}, "rune_entr_ansuz", 6004, nil, nil, nil, {x = 3, y = 1})
 local ansuz_indicator = {
     object_type = "RuneTag",
     order = 7004,
@@ -545,7 +545,7 @@ local raido = Entropy.create_rune("raido", {x=4,y=0}, "rune_entr_raido", 6005, n
     return {
         n, d
     }
-end)
+end, nil, {x = 4, y = 1})
 local raido_indicator = {
     object_type = "RuneTag",
     order = 7005,
@@ -574,7 +574,7 @@ local raido_indicator = {
     end
 }
 
-local kaunan = Entropy.create_rune("kaunan", {x=5,y=0}, "rune_entr_kaunan", 6006)
+local kaunan = Entropy.create_rune("kaunan", {x=5,y=0}, "rune_entr_kaunan", 6006, nil, nil, nil, {x = 5, y = 1})
 local kaunan_indicator = {
     object_type = "RuneTag",
     order = 7006,
@@ -599,7 +599,7 @@ local kaunan_indicator = {
     end
 }
 
-local gebo = Entropy.create_rune("gebo", {x=6,y=0}, "rune_entr_gebo", 6007)
+local gebo = Entropy.create_rune("gebo", {x=6,y=0}, "rune_entr_gebo", 6007, nil, nil, nil, {x = 6, y = 1})
 local gebo_indicator = {
     object_type = "RuneTag",
     order = 7007,
@@ -637,7 +637,7 @@ local gebo_indicator = {
     end
 }
 
-local wunjo = Entropy.create_rune("wunjo", {x=0,y=1}, "rune_entr_wunjo", 6008)
+local wunjo = Entropy.create_rune("wunjo", {x=0,y=2}, "rune_entr_wunjo", 6008, nil, nil, nil, {x = 0, y = 3})
 local wunjo_indicator = {
     object_type = "RuneTag",
     order = 7008,
@@ -674,7 +674,7 @@ local wunjo_indicator = {
     end
 }
 
-local haglaz = Entropy.create_rune("haglaz", {x=1,y=1}, "rune_entr_haglaz", 6009)
+local haglaz = Entropy.create_rune("haglaz", {x=1,y=2}, "rune_entr_haglaz", 6009, nil, nil, nil, {x = 1, y = 3})
 local haglaz_indicator = {
     object_type = "RuneTag",
     order = 7009,
@@ -722,7 +722,7 @@ local haglaz_indicator = {
 }
 
 
-local naudiz = Entropy.create_rune("naudiz", {x=2,y=1}, "rune_entr_naudiz", 6010)
+local naudiz = Entropy.create_rune("naudiz", {x=2,y=2}, "rune_entr_naudiz", 6010, nil, nil, nil, {x = 2, y = 3})
 local naudiz_indicator = {
     object_type = "RuneTag",
     order = 7010,
@@ -785,7 +785,7 @@ G.FUNCS.can_redeem = function(e)
     end
 end
 
-local isaz = Entropy.create_rune("isaz", {x=3,y=1}, "rune_entr_isaz", 6011)
+local isaz = Entropy.create_rune("isaz", {x=3,y=2}, "rune_entr_isaz", 6011, nil, nil, nil, {x = 3, y = 3})
 local isaz_indicator = {
     object_type = "RuneTag",
     order = 7011,
@@ -806,7 +806,7 @@ local isaz_indicator = {
     end,
 }
 
-local jera = Entropy.create_rune("jera", {x=4,y=1}, "rune_entr_jera", 6012)
+local jera = Entropy.create_rune("jera", {x=4,y=2}, "rune_entr_jera", 6012, nil, nil, nil, {x = 4, y = 3})
 local jera_indicator = {
     object_type = "RuneTag",
     order = 7012,
@@ -837,7 +837,7 @@ local jera_indicator = {
     end
 }
 
-local ihwaz = Entropy.create_rune("ihwaz", {x=5,y=1}, "rune_entr_ihwaz", 6013)
+local ihwaz = Entropy.create_rune("ihwaz", {x=5,y=2}, "rune_entr_ihwaz", 6013, nil, nil, nil, {x = 5, y = 3})
 local ihwaz_indicator = {
     object_type = "RuneTag",
     order = 7013,
@@ -876,7 +876,7 @@ local ihwaz_indicator = {
     end
 }
 
-local perthro = Entropy.create_rune("perthro", {x=6,y=1}, "rune_entr_perthro", 6014)
+local perthro = Entropy.create_rune("perthro", {x=6,y=2}, "rune_entr_perthro", 6014, nil, nil, nil, {x = 6, y = 3})
 local perthro_indicator = {
     object_type = "RuneTag",
     order = 7014,
@@ -918,7 +918,7 @@ local perthro_indicator = {
     end
 }
 
-local algiz = Entropy.create_rune("algiz", {x=0,y=2}, "rune_entr_algiz", 6015)
+local algiz = Entropy.create_rune("algiz", {x=0,y=4}, "rune_entr_algiz", 6015, nil, nil, nil, {x = 0, y = 5})
 local algiz_indicator = {
     object_type = "RuneTag",
     order = 7015,
@@ -939,7 +939,7 @@ local algiz_indicator = {
     end
 }
 
-local sowilo = Entropy.create_rune("sowilo", {x=1,y=2}, "rune_entr_sowilo", 6016)
+local sowilo = Entropy.create_rune("sowilo", {x=1,y=4}, "rune_entr_sowilo", 6016, nil, nil, nil, {x = 1, y = 5})
 local sowilo_indicator = {
     object_type = "RuneTag",
     order = 7016,
@@ -960,7 +960,7 @@ local sowilo_indicator = {
     end
 }
 
-local tiwaz = Entropy.create_rune("tiwaz", {x=2,y=2}, "rune_entr_tiwaz", 6017)
+local tiwaz = Entropy.create_rune("tiwaz", {x=2,y=4}, "rune_entr_tiwaz", 6017, nil, nil, nil, {x = 2, y = 5})
 local tiwaz_indicator = {
     object_type = "RuneTag",
     order = 7017,
@@ -999,7 +999,7 @@ local tiwaz_indicator = {
     end
 }
 
-local berkano = Entropy.create_rune("berkano", {x=3,y=2}, "rune_entr_berkano", 6018)
+local berkano = Entropy.create_rune("berkano", {x=3,y=4}, "rune_entr_berkano", 6018, nil, nil, nil, {x = 3, y = 5})
 local berkano_indicator = {
     object_type = "RuneTag",
     order = 7018,
@@ -1045,7 +1045,7 @@ local berkano_indicator = {
     end
 }
 
-local ehwaz = Entropy.create_rune("ehwaz", {x=4,y=2}, "rune_entr_ehwaz", 6019)
+local ehwaz = Entropy.create_rune("ehwaz", {x=4,y=4}, "rune_entr_ehwaz", 6019, nil, nil, nil, {x = 4, y = 5})
 local ehwaz_indicator = {
     object_type = "RuneTag",
     order = 7019,
@@ -1108,7 +1108,7 @@ local ehwaz_indicator = {
     end
 }
 
-local mannaz = Entropy.create_rune("mannaz", {x=5,y=2}, "rune_entr_mannaz", 6020)
+local mannaz = Entropy.create_rune("mannaz", {x=5,y=4}, "rune_entr_mannaz", 6020, nil, nil, nil, {x = 5, y = 5})
 local mannaz_indicator = {
     object_type = "RuneTag",
     order = 7020,
@@ -1131,7 +1131,7 @@ local mannaz_indicator = {
     end
 }
 
-local laguz = Entropy.create_rune("laguz", {x=6,y=2}, "rune_entr_laguz", 6021)
+local laguz = Entropy.create_rune("laguz", {x=6,y=4}, "rune_entr_laguz", 6021, nil, nil, nil, {x = 6, y = 5})
 local laguz_indicator = {
     object_type = "RuneTag",
     order = 7021,
@@ -1154,7 +1154,7 @@ local laguz_indicator = {
     end
 }
 
-local ingwaz = Entropy.create_rune("ingwaz", {x=0,y=3}, "rune_entr_ingwaz", 6022)
+local ingwaz = Entropy.create_rune("ingwaz", {x=0,y=6}, "rune_entr_ingwaz", 6022, nil, nil, nil, {x = 0, y = 7})
 local ingwaz_indicator = {
     object_type = "RuneTag",
     order = 7022,
@@ -1178,7 +1178,7 @@ local ingwaz_indicator = {
     end
 }
 
-local dagaz = Entropy.create_rune("dagaz", {x=1,y=3}, "rune_entr_dagaz", 6023)
+local dagaz = Entropy.create_rune("dagaz", {x=1,y=6}, "rune_entr_dagaz", 6023, nil, nil, nil, {x = 1, y = 7})
 local dagaz_indicator = {
     object_type = "RuneTag",
     order = 7023,
@@ -1213,7 +1213,7 @@ local dagaz_indicator = {
     end
 }
 
-local othila = Entropy.create_rune("othila", {x=2,y=3}, "rune_entr_othila", 6024)
+local othila = Entropy.create_rune("othila", {x=2,y=6}, "rune_entr_othila", 6024, nil, nil, nil, {x = 2, y = 7})
 local othila_indicator = {
     object_type = "RuneTag",
     order = 7024,
@@ -1233,7 +1233,7 @@ local othila_indicator = {
     end
 }
 
-local oss = Entropy.create_rune("oss", {x=3,y=3}, "rune_entr_oss", 6025, {art = {"Lil. Mr. Slipstream"}}, nil, true, {x=4,y=3})
+local oss = Entropy.create_rune("oss", {x=3,y=6}, "rune_entr_oss", 6025, {art = {"Lil. Mr. Slipstream"}}, nil, true, {x=3,y=7})
 local oss_indicator = {
     object_type = "RuneTag",
     order = 7025,

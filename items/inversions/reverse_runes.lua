@@ -26,7 +26,7 @@ local avarice = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=0,y=4},
+    pos = {x=0,y=8},
     order = 7601,
     key = "avarice",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -70,7 +70,8 @@ local avarice = {
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)
-    end
+    end,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
 }
 
 local rage_indicator = Entropy.create_mark("rage", 7052, {x = 1, y = 4})
@@ -78,7 +79,7 @@ local rage = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=1,y=4},
+    pos = {x=1,y=8},
     order = 7602,
     key = "rage",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -110,6 +111,7 @@ local rage = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -120,7 +122,7 @@ local thorns = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=2,y=4},
+    pos = {x=2,y=8},
     order = 7603,
     key = "thorns",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -153,6 +155,7 @@ local thorns = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -163,7 +166,7 @@ local denial = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=3,y=4},
+    pos = {x=3,y=8},
     order = 7604,
     key = "denial",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -196,6 +199,7 @@ local denial = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -217,7 +221,7 @@ local chains = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=4,y=4},
+    pos = {x=4,y=8},
     order = 7605,
     key = "chains",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -235,6 +239,7 @@ local chains = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -245,7 +250,7 @@ local decay = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=5,y=4},
+    pos = {x=5,y=8},
     order = 7606,
     key = "decay",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -288,6 +293,7 @@ local decay = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -311,7 +317,7 @@ local envy = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=6,y=4},
+    pos = {x=6,y=8},
     order = 7607,
     key = "envy",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -338,6 +344,7 @@ local envy = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -372,7 +379,7 @@ local youth = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=0,y=5},
+    pos = {x=0,y=9},
     order = 7608,
     key = "youth",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -412,6 +419,7 @@ local youth = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -422,7 +430,7 @@ local shards = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=1,y=5},
+    pos = {x=1,y=9},
     order = 7609,
     key = "shards",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -449,6 +457,7 @@ local shards = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -547,7 +556,7 @@ local desire = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=2,y=5},
+    pos = {x=2,y=9},
     order = 7610,
     key = "desire",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -589,6 +598,7 @@ local desire = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -599,7 +609,7 @@ local ice = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=3,y=5},
+    pos = {x=3,y=9},
     order = 7611,
     key = "ice",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -666,6 +676,7 @@ local ice = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -704,7 +715,7 @@ local gluttony = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=4,y=5},
+    pos = {x=4,y=9},
     order = 7612,
     key = "gluttony",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -730,6 +741,7 @@ local gluttony = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -746,7 +758,7 @@ local rebirth = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=5,y=5},
+    pos = {x=5,y=9},
     order = 7613,
     key = "rebirth",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -769,6 +781,7 @@ local rebirth = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -779,7 +792,7 @@ local despair = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=6,y=5},
+    pos = {x=6,y=9},
     order = 7614,
     key = "despair",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -823,6 +836,7 @@ local despair = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -850,7 +864,7 @@ local strength = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=0,y=6},
+    pos = {x=0,y=10},
     order = 7615,
     key = "strength",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -909,6 +923,7 @@ local strength = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -919,7 +934,7 @@ local darkness = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=1,y=6},
+    pos = {x=1,y=10},
     order = 7616,
     key = "darkness",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -953,6 +968,7 @@ local darkness = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -963,7 +979,7 @@ local freedom = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=2,y=6},
+    pos = {x=2,y=10},
     order = 7617,
     key = "freedom",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -995,6 +1011,7 @@ local freedom = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1005,7 +1022,7 @@ local eternity = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=3,y=6},
+    pos = {x=3,y=10},
     order = 7618,
     key = "eternity",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -1051,6 +1068,7 @@ local eternity = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1084,7 +1102,7 @@ local loyalty = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=4,y=6},
+    pos = {x=4,y=10},
     order = 7619,
     key = "loyalty",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -1103,6 +1121,7 @@ local loyalty = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1132,7 +1151,7 @@ local brimstone = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=5,y=6},
+    pos = {x=5,y=10},
     order = 7620,
     key = "brimstone",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -1157,6 +1176,7 @@ local brimstone = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1167,7 +1187,7 @@ local dreams = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=6,y=6},
+    pos = {x=6,y=10},
     order = 7621,
     key = "dreams",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -1196,6 +1216,7 @@ local dreams = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1206,7 +1227,7 @@ local energy = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=0,y=7},
+    pos = {x=0,y=11},
     order = 7622,
     key = "energy",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -1234,6 +1255,7 @@ local energy = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1255,7 +1277,7 @@ local awakening = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=2,y=7},
+    pos = {x=2,y=11},
     order = 7623,
     key = "awakening",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -1285,6 +1307,7 @@ local awakening = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1295,7 +1318,7 @@ local blood = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=1,y=7},
+    pos = {x=1,y=11},
     order = 7624,
     key = "blood",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -1343,6 +1366,7 @@ local blood = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1353,9 +1377,11 @@ local serpents = {
     object_type = "Consumable",
     set = "Omen",
     atlas = "rune_atlas",
-    pos = {x=3,y=7},
+    pos = {x=3,y=11},
+    soul_pos = {x=999, y=999, extra = {x=4, y=11}},
     order = 7625,
     key = "serpents",
+    entr_redraw_soul = true,
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
     inversion = "c_entr_oss",
     immutable = true,
@@ -1386,6 +1412,7 @@ local serpents = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
