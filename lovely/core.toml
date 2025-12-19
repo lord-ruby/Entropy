@@ -2013,17 +2013,6 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
-target = "functions/UI_definitions.lua"
-pattern = '''local card = create_card(v.type, area, nil, nil, nil, nil, nil, 'sho')'''
-position = "at"
-payload = '''
-local card = create_card(v.type, area, nil, nil, nil, nil, nil, 'sho')
-Entropy.post_create_card(card)
-'''
-match_indent = true 
-
-[[patches]]
-[patches.pattern]
 target = "card.lua"
 pattern = '''pack_cards[i] = card'''
 position = "after"

@@ -2017,6 +2017,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
     if next(SMODS.find_card("j_entr_kitchenjokers")) and card:is_food() then
         card:set_edition("e_entr_lowres")
     end
+    Entropy.post_create_card(card)
     return card
 end
 
