@@ -1955,7 +1955,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
             end
             if #valid > 0 then
                 Entropy.has_rune("rune_entr_oss").triggered = true
-                return ref(_type, area, legendary, _rarity, skip_materialize, false, pseudorandom_element(valid, pseudoseed("rune_entr_oss")).key, key_append, dont_calculate, ...)
+                local card =  ref(_type, area, legendary, _rarity, skip_materialize, false, pseudorandom_element(valid, pseudoseed("rune_entr_oss")).key, key_append, dont_calculate, ...)
+                Entropy.post_create_card(card, area == G.pack_cards, forced_key)
+                return card
             end
         elseif not forced_key then
             if Entropy.has_rune("rune_entr_mannaz") and (Entropy.has_rune("rune_entr_mannaz").num_triggered or 0) <= 1 then
@@ -1964,7 +1966,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
                     Entropy.has_rune("rune_entr_mannaz").num_triggered = 2
                     Entropy.has_rune("rune_entr_mannaz").triggered = true
                 end
-                return ref("Spectral", area or G.pack_cards, nil, nil, true, true, nil, "rune_entr_mannaz", dont_calculate, ...)
+                local card = ref("Spectral", area or G.pack_cards, nil, nil, true, true, nil, "rune_entr_mannaz", dont_calculate, ...)
+                Entropy.post_create_card(card, area == G.pack_cards, forced_key)
+                return card
             end
         end
     end
@@ -2017,7 +2021,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
     if next(SMODS.find_card("j_entr_kitchenjokers")) and card:is_food() then
         card:set_edition("e_entr_lowres")
     end
-    Entropy.post_create_card(card)
+    Entropy.post_create_card(card, area == G.pack_cards, forced_key)
     return card
 end
 

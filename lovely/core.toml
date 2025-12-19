@@ -2014,16 +2014,6 @@ match_indent = true
 [[patches]]
 [patches.pattern]
 target = "card.lua"
-pattern = '''pack_cards[i] = card'''
-position = "after"
-payload = '''
-Entropy.post_create_card(card, true)
-'''
-match_indent = true 
-
-[[patches]]
-[patches.pattern]
-target = "card.lua"
 pattern = '''
 if self.ability.consumeable.mod_num >= #G.hand.highlighted and #G.hand.highlighted >= (self.ability.consumeable.min_highlighted or 1) then'''
 position = "at"

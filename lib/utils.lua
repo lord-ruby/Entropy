@@ -2049,7 +2049,7 @@ local TrumpCardAllow = {
     ["Code"] = true
 }
 
-function Entropy.post_create_card(card, from_booster)
+function Entropy.post_create_card(card, from_booster, forced_key)
     if G.SETTINGS.paused then return end
     local set = card.config.center.set
     local key = card.config.center.key
@@ -2081,7 +2081,7 @@ function Entropy.post_create_card(card, from_booster)
         set = "Booster"
     end
     if Entropy.Inversion(G.P_CENTERS[key]) and not G.SETTINGS.paused and (G.GAME.modifiers.entr_twisted or set == "Planet" and G.GAME.entr_princess) and not card.multiuse and (not card.ability or not card.ability.fromflipside) then
-        if Entropy.allow_spawning(G.P_CENTERS[key]) and Entropy.allow_spawning(G.P_CENTERS[Entropy.Inversion(G.P_CENTERS[key])]) then
+        if (Entropy.allow_spawning(G.P_CENTERS[key]) and Entropy.allow_spawning(G.P_CENTERS[Entropy.Inversion(G.P_CENTERS[key])])) or forced_key or card.config.center.hidden then
             local c = G.P_CENTERS[Entropy.Inversion(G.P_CENTERS[key])]
             key = c.key
             card:set_ability(c)
