@@ -3,7 +3,7 @@ local surreal = {
     object_type = "Joker",
     key = "surreal_joker",
     config = {
-        qmult = 4
+        qmult = 8
     },
     rarity = 1,
     cost = 3,
