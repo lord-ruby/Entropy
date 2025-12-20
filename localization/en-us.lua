@@ -4397,7 +4397,7 @@ local decs = {
 				text = { "{C:attention}All{} shop items are {C:dark_edition}Kaleidoscopic{}" },
 			},
 			tag_entr_ascendant_gilded = {
-				name = "{C:gold}Kaleidoscopic Tag{}",
+				name = "{C:gold}Gilded Tag{}",
 				text = { "{C:attention}All{} shop items are {C:dark_edition}Gilded{}" },
 			},
 
