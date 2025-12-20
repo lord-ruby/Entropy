@@ -5028,6 +5028,7 @@ local captcha = {
 
 function Card:redeem_deck()
     if self.ability.set == "Back" or self.ability.set == "Sleeve" then
+        G.GAME.current_round.voucher.spawn[self.config.center_key] = nil
         local prev_state = G.STATE
         stop_use()
         if not self.config.center.discovered then
@@ -5079,7 +5080,7 @@ function Card:redeem_deck()
         if self.children.use_button then self.children.use_button:remove(); self.children.use_button = nil end
         if self.children.sell_button then self.children.sell_button:remove(); self.children.sell_button = nil end
         if self.children.price then self.children.price:remove(); self.children.price = nil end
-        local in_pack = G.GAME.pack_choices
+        local in_pack = ((G.GAME.pack_choices and G.GAME.pack_choices > 0) or G.STATE == G.STATES.SMODS_BOOSTER_OPENED) and G.STATE ~= G.STATES.SHOP
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.5, func = function()
             G.FUNCS.buy_deckorsleeve{
                 config = {
@@ -5115,7 +5116,7 @@ function Card:redeem_deck()
                 end
             end
         return true end }))
-        if G.GAME.pack_choices then 
+        if in_pack then 
             G.GAME.pack_choices = G.GAME.pack_choices - 1 
             if G.GAME.pack_choices <= 0 then
                 G.CONTROLLER.interrupt.focus = true

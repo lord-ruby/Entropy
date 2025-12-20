@@ -2022,6 +2022,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
         card:set_edition("e_entr_lowres")
     end
     Entropy.post_create_card(card, area == G.pack_cards, forced_key)
+    if card.config.center.set == "Back" or card.config.center.set == "Sleeve" then
+        card.cost = 10
+    end
     return card
 end
 
@@ -4717,4 +4720,16 @@ function Cryptid.forcetrigger(card, ...)
         end
     end
     return forcetrigger_ref(card, ...)
+end
+
+local gnv_ref = SMODS.get_next_vouchers
+function SMODS.get_next_vouchers(vouchers)
+    local ret = gnv_ref(vouchers)
+    if G.GAME.deck_voucher_rate and (G.GAME.deck_voucher_round or 0) % G.GAME.deck_voucher_rate == 0 then
+        local center = Entropy.GetPooledCenter("Back").key
+        ret[#ret+1] = center
+        ret.spawn[center] = true
+    end
+    G.GAME.deck_voucher_round = (G.GAME.deck_voucher_round or -1) + 1
+    return ret
 end

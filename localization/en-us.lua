@@ -2877,6 +2877,21 @@ local decs = {
 					"used {C:purple}Rune{} each round"
 				},
 			},
+			v_entr_starter_kit = {
+				name = "Starter Kit",
+				text = {
+					"{C:attention}Booster Packs{} may",
+					"appear in the shop"
+				},
+			},
+			v_entr_expansion_pack = {
+				name = "Expansion Pack",
+				text = {
+					"Create a {C:attention}Deck{}",
+					"in the Voucher slots",
+					"every {C:attention}2{} antes"
+				},
+			},
 		},
 		Command = {
 			c_entr_memory_leak = {

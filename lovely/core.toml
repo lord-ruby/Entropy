@@ -3074,3 +3074,50 @@ if center and center.calculate then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+for _, v in ipairs(SMODS.ConsumableType.ctype_buffer) do
+    if not (v == 'Tarot' or v == 'Planet' or v == 'Spectral') then
+        table.insert(rates, { type = v, val = G.GAME[v:lower()..'_rate'] })
+    end
+end
+'''
+position = 'before'
+payload = '''
+if G.GAME.booster_rate then
+  table.insert(rates, { type = "Booster", val = G.GAME.booster_rate })
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+local args = {set = v.type, area = area, key_append = 'sho'}
+'''
+position = 'after'
+payload = '''
+if G.GAME.booster_rate then
+  if pseudorandom("entr_shop_booster") < G.GAME.booster_rate / _total_weight then args.set = "Booster" end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+for _, v in ipairs(rates) do
+'''
+position = 'before'
+payload = '''
+local _total_weight = 0
+for _, v in ipairs(rates) do
+  _total_weight = _total_weight + v.val or 0
+end
+'''
+match_indent = true
