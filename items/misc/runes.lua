@@ -392,14 +392,21 @@ function Entropy.create_rune(key, pos, indicator_key, order, credits, loc_vars, 
         soul_set = spectral and "Rune" or nil,
         hidden = spectral,
         dependencies = {items = {"set_entr_runes"}},
-        use = function()
+        use = function(self, card)
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('tarot1')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
             G.E_MANAGER:add_event(Event({
                 trigger = "after",
+                delay = 0.5,
 				func = function()
                     add_rune(Tag(indicator_key))
                     return true
                 end
             }))
+            delay(1.3)
         end,
         demicoloncompat = true,
         force_use = function()
