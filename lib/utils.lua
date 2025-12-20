@@ -640,12 +640,12 @@ function Entropy.DeckOrSleeve(key)
     if key == "doc" and G.GAME.modifiers.doc_antimatter then num = num + 1 end
     if key == "butterfly" and G.GAME.modifiers.butterfly_antimatter then num = num + 1 end
     if CardSleeves then
-        if G.GAME.selected_sleeve == ("sleeve_entr_"..key) then num = num + 1 end
+        if G.GAME.selected_sleeve == ("sleeve_entr_"..key) or G.GAME.selected_sleeve == key then num = num + 1 end
     end
     for i, v in pairs(G.GAME.entr_bought_decks or {}) do
-        if v == "b_entr_"..key then num = num + 1 end
+        if v == "b_entr_"..key or v == key then num = num + 1 end
     end
-    if  G.GAME.selected_back and G.GAME.selected_back.effect.center.original_key == key then num = num + 1 end
+    if  G.GAME.selected_back and (G.GAME.selected_back.effect.center.original_key == key or G.GAME.selected_back.effect.center.key == key) then num = num + 1 end
     return num > 0 and num or nil
 end
 

@@ -93,9 +93,9 @@ local starter_kit = {
     order = -2000+5,
     key = "starter_kit",
     atlas = "vouchers",
-    pos = {x=1, y=1},
+    pos = {x=0, y=2},
     redeem = function(self, card)
-        G.GAME.booster_rate = 4
+        G.GAME.booster_rate = 8
     end,
     unredeem = function(self, card) 
         G.GAME.booster_rate = nil
@@ -112,7 +112,7 @@ local expansion_pack = {
     order = -2000+6,
     key = "expansion_pack",
     atlas = "vouchers",
-    pos = {x=1, y=1},
+    pos = {x=1, y=2},
     requires = {"v_entr_starter_kit"},
     redeem = function(self, card)
         G.GAME.deck_voucher_rate = 2

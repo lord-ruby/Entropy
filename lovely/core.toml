@@ -3121,3 +3121,36 @@ for _, v in ipairs(rates) do
 end
 '''
 match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+pattern = '''
+if v.name == 'Black Hole' or v.name == 'The Soul' or v.hidden then
+    add = false
+end
+'''
+position = 'before'
+payload = '''
+local _total_weight = 0
+if v.set == "Back" or v.set == "Sleeve" then
+    if Entropy.DeckOrSleeve(v.key) or G.GAME.used_jokers[v.key] then
+        add = false
+    end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+pattern = '''
+elseif _type == 'Edition' then _pool[#_pool + 1] = "e_foil"
+'''
+position = 'before'
+payload = '''
+elseif _type == 'Back' then _pool[#_pool + 1] = "b_red"
+elseif _type == 'Sleeve' then _pool[#_pool + 1] = "Sleeve_casl_red"
+'''
+match_indent = true

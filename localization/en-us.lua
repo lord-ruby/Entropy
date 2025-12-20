@@ -2881,7 +2881,8 @@ local decs = {
 				name = "Starter Kit",
 				text = {
 					"{C:attention}Booster Packs{} may",
-					"appear in the shop"
+					"replace cards in",
+					"the shop"
 				},
 			},
 			v_entr_expansion_pack = {
