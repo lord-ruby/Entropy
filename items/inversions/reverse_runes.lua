@@ -280,7 +280,7 @@ local decay = {
             table.remove(hands, ind)
         end
 
-        SMODS.smart_level_up_hand(card, "High Card", false, card.ability.most_played)
+        SMODS.smart_level_up_hand(card, hand, false, card.ability.most_played)
         Entropy.pact_mark("rune_entr_decay")
     end,
     can_use = function()
@@ -396,17 +396,19 @@ local youth = {
             if not v.ability.debuff_timer then jokers[#jokers+1] = v end
         end
         local dcard = pseudorandom_element(jokers, pseudoseed("entr_youth"))
-        dcard.ability.debuff_timer = card.ability.rounds
-        dcard.ability.debuff_timer_max = card.ability.rounds
-        dcard:set_debuff(true)
-        card_eval_status_text(
-            dcard,
-            "extra",
-            nil,
-            nil,
-            nil,
-            { message = localize("k_debuffed"), colour = G.C.RED }
-        )
+        if dcard then
+            dcard.ability.debuff_timer = card.ability.rounds
+            dcard.ability.debuff_timer_max = card.ability.rounds
+            dcard:set_debuff(true)
+            card_eval_status_text(
+                dcard,
+                "extra",
+                nil,
+                nil,
+                nil,
+                { message = localize("k_debuffed"), colour = G.C.RED }
+            )
+        end
         Entropy.pact_mark("rune_entr_youth")
     end,
     can_use = function()
