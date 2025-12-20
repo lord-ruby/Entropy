@@ -523,10 +523,12 @@ payload = '''
 if not G.hand.highlighted[i].ability.scarred then 
   draw_card(G.hand, G.discard, i*100/highlighted_count, 'down', false, G.hand.highlighted[i]) 
   num = (num or 0) + 1
-else 
-  num = (num or 0) + 1
+elseif #G.hand.cards >= G.hand.config.card_limit then
+  o_num = (o_num or 0) + 1
   overdraw = true
-end 
+else
+  num = (num or 0) + 1
+end
 '''
 match_indent = true
 
@@ -538,6 +540,7 @@ position = "before"
 payload = '''
 local num
 local overdraw
+local o_num
 '''
 match_indent = true
 
@@ -547,7 +550,30 @@ target = "functions/state_events.lua"
 pattern = "G.GAME.round_scores.cards_discarded.amt = G.GAME.round_scores.cards_discarded.amt + #cards"
 position = "before"
 payload = '''
-if overdraw and num and num > 0 then G.FUNCS.draw_from_deck_to_hand(num) end
+if overdraw and o_num and o_num > 0 then 
+  SMODS.overdraw_cards = o_num
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''
+if G.GAME.blind.name == 'The Serpent' and
+        G.STATE == G.STATES.DRAW_TO_HAND and
+        not G.GAME.blind.disabled and
+        (G.GAME.current_round.hands_played > 0 or
+        G.GAME.current_round.discards_used > 0) then
+            G.hand.config.card_limits.blind_restriction = hand_space - math.min(#G.deck.cards, 3)
+            hand_space = math.min(#G.deck.cards, 3)
+    end
+'''
+position = "before"
+payload = '''
+if SMODS.overdraw_cards then
+  hand_space = hand_space + SMODS.overdraw_cards
+end
 '''
 match_indent = true
 
