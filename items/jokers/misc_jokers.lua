@@ -3410,16 +3410,17 @@ local jestradiol = {
     end,
     use_key = "b_transition",
     can_use = function(self, card)
-        return to_big(card.ability.left) > to_big(0)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.left)
+        return to_big(card.ability.left) > to_big(0) and #cards > 0 and #cards <= card.ability.left
     end,
     use = function(self, card)
-        local cards = {}
-        for i, v in pairs(G.hand.highlighted) do
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.left)
+        for i, v in pairs(cards) do
             if to_big(card.ability.left) > to_big(0) then
-                cards[#cards+1] = v
                 card.ability.left = card.ability.left - 1
             end
         end
+        card.ability.left = math.max(card.ability.left, 0)
         Entropy.FlipThen(cards, function(card)
             SMODS.change_base(card, nil, "Queen")
         end)
