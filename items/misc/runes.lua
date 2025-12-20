@@ -402,21 +402,26 @@ function Entropy.create_rune(key, pos, indicator_key, order, credits, loc_vars, 
                 trigger = "after",
                 delay = 0.5,
 				func = function()
-                    add_rune(Tag(indicator_key))
+                    local tag = add_rune(Tag(indicator_key))
+                    G.E_MANAGER:add_event(Event({
+                        trigger = "after",
+                        delay = 0.2,
+                        func = function()
+                            if tag then
+                                tag:juice_up()
+                            end
+                            return true
+                        end
+                    }))
                     return true
                 end
             }))
+            
             delay(1.3)
         end,
         demicoloncompat = true,
-        force_use = function()
-            G.E_MANAGER:add_event(Event({
-				func = function()
-                    trigger = "after",
-                    add_rune(Tag(indicator_key))
-                    return true
-                end
-            }))
+        force_use = function(self, card)
+            self:use(card)
         end,
         loc_vars = function(self, q, card)
             if loc_vars then
