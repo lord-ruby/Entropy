@@ -1223,11 +1223,9 @@ local othila_indicator = {
     atlas = "rune_indicators",
     dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
-        if context.selling_card then
+        if context.selling_card_cost then
             return {
-                func = function()
-                    ease_dollars((G.GAME.providence and 4 or 2) * context.card.sell_cost)
-                end
+                cost = context.cost + context.original_cost * (G.GAME.providence and 4 or 2)
             }
         end
     end

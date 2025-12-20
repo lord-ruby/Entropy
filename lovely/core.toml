@@ -3154,3 +3154,28 @@ elseif _type == 'Back' then _pool[#_pool + 1] = "b_red"
 elseif _type == 'Sleeve' then _pool[#_pool + 1] = "Sleeve_casl_red"
 '''
 match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''
+ease_dollars(self.sell_cost)
+'''
+position = 'at'
+payload = '''
+local cost = self.sell_cost
+if Entropy.has_rune("rune_entr_othila") then
+    for i, v in pairs(Entropy.find_runes("rune_entr_othila")) do
+        local ret = v.key and G.P_RUNES[v.key] and G.P_RUNES[v.key]:calculate(v, {selling_card_cost = true, cost = cost, original_cost = self.sell_cost})
+        if ret and ret.cost then
+            cost = ret.cost
+        end
+        v:yep("+", G.C.PURPLE, function()
+            return true
+        end)
+    end
+end
+ease_dollars(cost)
+'''
+match_indent = true
