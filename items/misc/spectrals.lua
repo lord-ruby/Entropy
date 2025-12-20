@@ -321,13 +321,16 @@ local antithesis = {
     hidden = true,
     soul_set = "Spectral",
     use = function(self, card, area, copier)
-        
-        for i = 1, #G.jokers.cards do
-            G.jokers.cards[i].ability.eternal = not G.jokers.cards[i].ability.eternal
-        end
+        G.GAME.entr_antithesis_active = true
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('tarot1')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
+        delay(1)
     end,
     can_use = function(self, card)
-        return G.jokers and #G.jokers.cards > 0
+        return true
 	end,
     entr_credits = {
         idea = {"cassknows"}

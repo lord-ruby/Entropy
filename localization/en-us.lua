@@ -4123,8 +4123,10 @@ local decs = {
 			c_entr_antithesis = {
 				name = "Antithesis",
 				text = {
-					"Toggle {C:purple,E:1}Eternal{}",
-					"for {C:attention}all{} held Jokers"
+					"Drawn cards gain {C:attention}Editions{}",
+					"based on the {C:attention}Collection{} order",
+					"until the next round",
+					"{C:inactive}(Excludes {C:dark_edition}Negative{C:inactive})"
 				}
 			},
 			c_entr_oss = {

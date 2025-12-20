@@ -180,6 +180,8 @@ function end_round()
         trigger = 'immediate',
         func = (function() G.GAME.asc_power_hand = 0; G.GAME.current_round.current_hand.cry_asc_num = 0;G.GAME.current_round.current_hand.cry_asc_num_text = '';return true end)
       }))
+    G.GAME.entr_antithesis_active = nil
+    G.GAME.antithesis_index = nil
 end
 
 local set_debuffref = Card.set_debuff

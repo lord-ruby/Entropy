@@ -8,14 +8,23 @@ priority = -1
 target = "functions/common_events.lua"
 pattern = 'if card and card.playing_card then SMODS.drawn_cards[#SMODS.drawn_cards+1] = card end'
 position = "after"
-payload = '''if card and card.playing_card and next(SMODS.find_card("j_entr_jokerinyellow")) then
-                for i, v in pairs(G.jokers.cards) do
-                    if v.config.center.key == "j_entr_jokerinyellow" then
-                        if SMODS.pseudorandom_probability(v, 'kiy', 1, v.ability.extra.odds) then
-                            card.ability.entr_yellow_sign = true
-                        end
-                    end
+payload = '''
+if card and card.playing_card then
+    if next(SMODS.find_card("j_entr_jokerinyellow")) then
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center.key == "j_entr_jokerinyellow" then
+                if SMODS.pseudorandom_probability(v, 'kiy', 1, v.ability.extra.odds) then
+                    card.ability.entr_yellow_sign = true
                 end
             end
+        end
+    end
+end
+if to == G.hand and G.GAME.entr_antithesis_active then
+    G.GAME.antithesis_index = (G.GAME.antithesis_index or 1) + 1
+    if G.P_CENTER_POOLS.Edition[G.GAME.antithesis_index] and G.P_CENTER_POOLS.Edition[G.GAME.antithesis_index].key == "e_negative" then G.GAME.antithesis_index = G.GAME.antithesis_index + 1 end
+    if G.GAME.antithesis_index > #G.P_CENTER_POOLS.Edition then G.GAME.antithesis_index = 2 end
+    if G.P_CENTER_POOLS.Edition[G.GAME.antithesis_index] then card:set_edition(G.P_CENTER_POOLS.Edition[G.GAME.antithesis_index].key) end
+end
 '''
 match_indent = true
