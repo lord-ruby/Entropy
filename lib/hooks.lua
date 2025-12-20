@@ -2022,9 +2022,6 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
         card:set_edition("e_entr_lowres")
     end
     Entropy.post_create_card(card, area == G.pack_cards, forced_key)
-    if card.config.center.set == "Back" or card.config.center.set == "Sleeve" then
-        card.cost = 10
-    end
     return card
 end
 
@@ -2247,6 +2244,7 @@ function ease_ante(mod)
                 end
             end
         end
+        local t
         for i, v in pairs(G.GAME.runes or {}) do
             if G.P_RUNES[v.key].calculate then
                 local ret = G.P_RUNES[v.key]:calculate(v, {entr_ante_change = mod})
@@ -2256,10 +2254,14 @@ function ease_ante(mod)
                     end)
                     if ret.ante_mod then
                         mod = ret.ante_mod
+                        t = v
                         break
                     end
                 end
             end
+        end
+        if t then
+            SMODS.calculate_context({rune_triggered = true, rune = v})
         end
         ease_anteref(mod * mult, a)
     end

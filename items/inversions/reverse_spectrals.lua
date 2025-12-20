@@ -487,7 +487,7 @@ local rejuvenate = {
 
     atlas = "consumables",
     config = {
-        dollars = -15,
+        dollars = -10,
         num = 2
     },
 	pos = {x=8,y=5},

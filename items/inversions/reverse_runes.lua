@@ -996,7 +996,7 @@ local freedom = {
     end,
     config = {
         selection_limit = 2,
-        hand_size = 2
+        hand_size = 1
     },
     use = function(self, rcard)
         Entropy.handle_card_limit(G.hand, -rcard.ability.hand_size)

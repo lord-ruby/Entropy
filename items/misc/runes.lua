@@ -745,6 +745,7 @@ local naudiz_indicator = {
     dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
         if context.buying_card and to_big(context.card.cost) > to_big(G.GAME.dollars) then
+            SMODS.calculate_context({rune_triggered = true, rune = rune})
             return {
                 --remove = true,
                 func = function()
@@ -899,6 +900,7 @@ local perthro_indicator = {
     dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
         if context.reroll_shop then
+            SMODS.calculate_context({rune_triggered = true, rune = rune})
             return {
                 rune_break = true,
                 func = function()
@@ -1068,6 +1070,7 @@ local ehwaz_indicator = {
     dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
         if context.skip_blind then
+            SMODS.calculate_context({rune_triggered = true, rune = rune})
             local card = context.removed and context.removed[1] or context.destroy_card
             local bl = ({Boss = "Big", Big = "Small"})[G.GAME.blind_on_deck]
             local o = G.GAME.round_resets.blind_states[bl == "Big" and "Small" or "Big"]
@@ -1177,6 +1180,7 @@ local ingwaz_indicator = {
     dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
         if context.pseudorandom_result and not rune.triggered then
+            SMODS.calculate_context({rune_triggered = true, rune = rune})
             if not G.GAME.providence or pseudorandom("rune_entr_ingwaz") < 0.66 then
                 rune.triggered = true
                 return {

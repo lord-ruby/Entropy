@@ -3167,6 +3167,7 @@ payload = '''
 local cost = self.sell_cost
 if Entropy.has_rune("rune_entr_othila") then
     for i, v in pairs(Entropy.find_runes("rune_entr_othila")) do
+        SMODS.calculate_context({rune_triggered = true, rune = v})
         local ret = v.key and G.P_RUNES[v.key] and G.P_RUNES[v.key]:calculate(v, {selling_card_cost = true, cost = cost, original_cost = self.sell_cost})
         if ret and ret.cost then
             cost = ret.cost

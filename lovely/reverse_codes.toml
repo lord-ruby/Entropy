@@ -69,6 +69,7 @@ for i, v in pairs(Entropy.find_runes("rune_entr_uruz")) do
             return true
         end
     })
+    SMODS.calculate_context({rune_triggered = true, rune = v})
 end
 G.GAME.InterferencePayoutMod = nil
 if G.GAME.RedBlindStates then

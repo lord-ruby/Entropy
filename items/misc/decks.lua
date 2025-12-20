@@ -271,7 +271,7 @@ end
 
 local corrupted = {
   object_type = "Back",
-  order = 7006,
+  order = 7007,
   dependencies = {
     items = {
       "set_entr_decks"
@@ -291,7 +291,7 @@ local corrupted = {
 
 local discordant = {
   object_type = "Back",
-  order = 7007,
+  order = 7008,
   dependencies = {
     items = {
       "set_entr_decks"
