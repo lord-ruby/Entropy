@@ -6458,7 +6458,11 @@ local magic_skin = {
     end,
     use = function(self, card)
         card.ability.left = card.ability.left - 1
-        G.GAME.magic_skin_prob = (G.GAME.magic_skin_prob or 0) + 0.02
+        G.GAME.magic_skin_uses = (G.GAME.magic_skin_uses or 0) + 1
+        if G.GAME.magic_skin_uses > 1 then
+            G.GAME.magic_skin_prob = (10 - (100/(G.GAME.magic_skin_uses+10)))/20
+            G.GAME.magic_skin_prob = G.GAME.magic_skin_prob * (G.GAME.magic_skin_prob ^ 0.75)
+        end
         for i = 1, card.ability.cards do
             if SMODS.OPENED_BOOSTER and not SMODS.OPENED_BOOSTER.config.center.no_magic_skin then
                 local k = SMODS.OPENED_BOOSTER and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind, true)
