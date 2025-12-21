@@ -640,7 +640,7 @@ local iota = {
 				if to_big(G.GAME.hands[handname].level) > to_big(1) then
 					G.GAME.blind.triggered = true
 					if not check then
-						level_up_hand(G.GAME.blind.children.animatedSprite, handname, nil, -1)
+						SMODS.upgrade_poker_hands{hands = handname, from = G.GAME.blind.children.animatedSprite, level_up = -1}
 						G.GAME.blind:wiggle()
 					end
 				end

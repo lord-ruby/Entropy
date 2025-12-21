@@ -600,7 +600,7 @@ local kaunan_indicator = {
             local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
             G.FUNCS.get_poker_hand_info(G.play.cards)
             local amount = G.GAME.providence and 2 or 1
-            level_up_hand(rune, text, nil, amount)
+            SMODS.upgrade_poker_hands{hands = text, from = rune, level_up = amount}
             return {
                 --remove = true,
                 func = function()
@@ -965,7 +965,7 @@ local sowilo_indicator = {
     calculate = function(self, rune, context)
         if context.pre_discard then
             local text = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
-            Entropy.ReversePlanetUse(text, rune, G.GAME.providence and 4 or 2)
+            SMODS.upgrade_poker_hands({hands = hand, from = rune, ascension_power = G.GAME.providence and 4 or 2})
             return {
                 func = function()
                 end,

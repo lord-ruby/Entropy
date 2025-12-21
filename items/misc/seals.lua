@@ -57,7 +57,7 @@ local sapphire = {
     calculate = function(self, card, context)
         if (context.playing_card_end_of_round and context.cardarea == G.hand) or context.forcetrigger then
              return { message = localize('k_level_up_ex'), colour = G.C.PURPLE, func = function()
-                Entropy.ReversePlanetUse(G.GAME.last_hand_played, card, 0.25)
+                SMODS.upgrade_poker_hands({hands = G.GAME.last_hand_played, from = card, ascension_power = 0.25})
              end}
         end
     end,

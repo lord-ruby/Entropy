@@ -219,7 +219,7 @@ SMODS.Consumable:take_ownership("cry_white_hole",
           then
             if v ~= _hand or not modest then
               removed_levels = removed_levels + this_removed_levels
-              level_up_hand(used_consumable, v, true, -this_removed_levels)
+              SMODS.upgrade_poker_hands{hands = v, from = used_consumable, level_up = -this_removed_levels}
             end
           end
         end
@@ -231,9 +231,9 @@ SMODS.Consumable:take_ownership("cry_white_hole",
         level = G.GAME.hands[_hand].level,
       })
       if modest then
-        level_up_hand(used_consumable, _hand, false, 4)
+        SMODS.upgrade_poker_hands{hands = v, from = used_consumable, level_up = 4}
       else
-        level_up_hand(used_consumable, _hand, false, (3 * to_big(removed_levels)))
+        SMODS.upgrade_poker_hands{hands = v, from = used_consumable, level_up = (3 * to_big(removed_levels))}
       end
       update_hand_text(
         { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
@@ -257,7 +257,7 @@ SMODS.Consumable:take_ownership("cry_white_hole",
           local this_removed_levels = G.GAME.hands[v].level - 1
           removed_levels = removed_levels + this_removed_levels
           if v ~= _hand or not modest then
-            level_up_hand(used_consumable, v, true, -this_removed_levels)
+            SMODS.upgrade_poker_hands{hands = v, from = used_consumable, level_up = -this_removed_levels}
           end
         end
       end
@@ -268,9 +268,9 @@ SMODS.Consumable:take_ownership("cry_white_hole",
         level = G.GAME.hands[_hand].level,
       })
       if modest then
-        level_up_hand(used_consumable, _hand, false, 4 * number)
+        SMODS.upgrade_poker_hands{hands = v, from = used_consumable, level_up = 4 * number}
       else
-        level_up_hand(used_consumable, _hand, false, ((to_big(3) ^ to_big(number)) * removed_levels))
+        SMODS.upgrade_poker_hands{hands = v, from = used_consumable, level_up =  ((to_big(3) ^ to_big(number)) * removed_levels)}
       end
       update_hand_text(
         { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },

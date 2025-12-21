@@ -1057,7 +1057,7 @@ local eternity = {
                 hand = i
             end
         end
-        Entropy.ReversePlanetUse(hand, rcard, rcard.ability.asc_power + (G.GAME.entr_black_dwarf or 0))
+        SMODS.upgrade_poker_hands({hands = hand, from = rcard, ascension_power = rcard.ability.asc_power + (G.GAME.entr_black_dwarf or 0)})
         Entropy.pact_mark("rune_entr_eternity")
     end,
     can_use = function()

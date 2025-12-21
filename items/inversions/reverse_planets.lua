@@ -517,7 +517,7 @@ end, func = function(self, card, copier, area, number)
     end
   end
   local hand = pseudorandom_element(hands, pseudoseed("entr_threefour"))
-  Entropy.ReversePlanetUse(hand, card, G.GAME.hands[hand].l_mult / 3 + (G.GAME.entr_black_dwarf or 0))
+  SMODS.upgrade_poker_hands({hands = hand, from = card, ascension_power = G.GAME.hands[hand].l_mult / 3 + (G.GAME.entr_black_dwarf or 0)})
 end, config = {bdwarf = 0.5}, loc_vars = function(self, q, card) return {vars = {card.ability.bdwarf}} end}
 
 Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="",key="sputnik",sprite_pos={x=4,y=2}, new_key="fuzzball", prefix = "entr", atlas = "consumables2", set_badges = function(self, card, badges)
@@ -540,7 +540,7 @@ end, func = function(self, card, area, copier, number)
       end 
   end
   for i = 1, math.min(card.ability.hands, #hands) do
-    Entropy.ReversePlanetUse(hands[i], card, card.ability.amt + (G.GAME.entr_black_dwarf or 0))
+    SMODS.upgrade_poker_hands({hands = hand, from = card, ascension_power = card.ability.amt + (G.GAME.entr_black_dwarf or 0)})
   end
 end, config = {amt = 1, hands = 3}, loc_vars = function(self, q, card) return {vars = {card.ability.hands, card.ability.amt + (G.GAME.entr_black_dwarf or 0)}} end}
 
