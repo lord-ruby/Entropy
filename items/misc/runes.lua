@@ -397,7 +397,7 @@ function Entropy.create_rune(key, pos, indicator_key, order, credits, loc_vars, 
         dependencies = {items = {"set_entr_runes"}},
         use = function(self, card)
             G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
-                play_sound('tarot1')
+                play_sound('entr_runes')
                 if card and card.juice_up then card:juice_up(0.8, 0.5) end
                 G.TAROT_INTERRUPT_PULSE = true
                 return true end }))
@@ -1284,7 +1284,7 @@ local oss_indicator = {
 }
 
 local data = NFS.newFileData(Entropy.path .."/assets/glint.png")
-local _glint = love.graphics.newImage(data);
+local _glint = love.graphics.newImage(data)
 SMODS.Shader({
     key="providence",
     path="providence.fs",

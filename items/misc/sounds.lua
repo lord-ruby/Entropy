@@ -100,3 +100,8 @@ SMODS.Sound({
 	key = "pacts",
 	path = "pacts.ogg",
 })
+
+SMODS.Sound({
+	key = "runes",
+	path = "runes.ogg",
+})

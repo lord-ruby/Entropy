@@ -245,7 +245,7 @@ local denial = {
     loc_vars = function(self, q, card)
         local name = localize("k_none")
         if G.GAME.last_sold_card and not G.GAME.banned_keys[G.GAME.last_sold_card] then
-            name = localize{type = "name_text", set = G.P_CENTERS[G.GAME.last_sold_card], key = G.GAME.last_sold_card}
+            name = localize{type = "name_text", set = G.P_CENTERS[G.GAME.last_sold_card].set, key = G.GAME.last_sold_card}
         end
         return {
             vars = {
