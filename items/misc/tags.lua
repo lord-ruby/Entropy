@@ -892,6 +892,7 @@ local unbounded_pack = {
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true)
 		end
 	end,
+	hidden = true,
 	group_key = "k_spectral_pack",
 	cry_digital_hallucinations = {
 		colour = G.C.SECONDARY_SET.Spectral,

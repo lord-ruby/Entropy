@@ -5537,8 +5537,8 @@ local decs = {
 				name = "Pact of Avarice",
 				text = {
 					"Duplicated your highest {C:attention}Sell Value{}",
-					"Joker then set all {C:attention}Current{} and {C:attention}Future{}",
-					"sell values to {C:red}0{}",
+					"Joker then multply all {C:attention}Current{} and {C:attention}Future{}",
+					"sell values by {X:red,C:white}X0.25{}",
 					"{C:inactive}(Must have room, Strips negative)"
 				}
 			},
@@ -5562,14 +5562,15 @@ local decs = {
 				text = {
 					"Create a {C:attention}copy{} of the last {C:attention}sold{} card",
 					"then {C:red}banish{} that card",
-					"{C:inactive}(Must have room){}"
+					"{C:inactive}(Currently: {C:attention}#1#{C:inactive}, Must have room){}"
 				}
 			},
 			c_entr_chains = {
 				name = "Pact of Chains",
 				text = {
-					"Retrigger all {C:attention}Eternal{} Playing Cards",
-					"The first {C:attention}drawn{} card each round becomes {C:attention}Eternal{}"
+					"Retrigger all {C:attention}Eternal{}",
+					"Playing Card, the first {C:attention}drawn{} card",
+					"each round becomes {C:attention}Eternal{}"
 				}
 			},
 			c_entr_decay = {
@@ -5616,7 +5617,8 @@ local decs = {
 				name = "Pact of Ice",
 				text = {
 					"Redeem {C:attention}#1#{} random {C:attention}Vouchers{}",
-					"Your most {C:attention}levelled{} hand {C:red}cannot{} change levels"
+					"Your most {C:attention}levelled{} hand",
+					"{C:red}cannot{} change levels"
 				}
 			},
 			c_entr_gluttony = {
@@ -5695,7 +5697,8 @@ local decs = {
 			c_entr_energy = {
 				name = "Pact of Energy",
 				text = {
-					"Apply random {C:dark_edition}Editions{} to last discarded hand",
+					"Apply random {C:dark_edition}Editions{}",
+					"to the last discarded hand",
 					"{C:red}-#1#{} Discard#<s>1#"
 				}
 			},	
@@ -5703,7 +5706,8 @@ local decs = {
 				name = "Pact of Blood",
 				text = {
 					"Randomly Link {C:attention}#1#{}",
-					"playing cards from your {C:attention}full deck{} together"
+					"playing cards from your",
+					"{C:attention}full deck{} together"
 				}
 			},		
 			c_entr_awakening = {

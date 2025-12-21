@@ -335,8 +335,8 @@ function Card:set_cost()
 		end
 	end
 	if Entropy.has_rune("rune_entr_avarice") then
-	    local cost = 0
-        self.sell_cost = cost
+	    local cost_fac = 0.25 ^ #Entropy.find_runes("rune_entr_avarice")
+        self.sell_cost = self.sell_cost * cost
         self.sell_cost_label = self.facing == 'back' and '?' or number_format(self.sell_cost)
 	end
 	if G.GAME.entr_booster_cost and self.config.center.set == "Booster" then

@@ -198,6 +198,17 @@ local denial = {
         end
         return true
     end,
+    loc_vars = function(self, q, card)
+        local name = localize("k_none")
+        if G.GAME.last_sold_card and not G.GAME.banned_keys[G.GAME.last_sold_card] then
+            name = localize{type = "name_text", set = G.P_CENTERS[G.GAME.last_sold_card], key = G.GAME.last_sold_card}
+        end
+        return {
+            vars = {
+                name
+            }
+        }
+    end,
     demicoloncompat = true,
     entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
@@ -258,7 +269,7 @@ local decay = {
     config = {
         level = 1,
         hands = 2,
-        most_played = 2
+        most_played = 3
     },
     loc_vars = function(self, q, card) return {vars = {card.ability.level, card.ability.hands, card.ability.most_played}} end,
     use = function(self, card)
@@ -958,7 +969,7 @@ local darkness = {
             joker:set_edition("e_negative")
         end
         local level = Entropy.pact_mark("rune_entr_darkness")
-        G.GAME.modifiers.flipped_cards = 5 / (level ^ 0.5)
+        G.GAME.modifiers.flipped_cards = 4 / (level ^ 0.5)
     end,
     can_use = function()
         return true
@@ -1196,7 +1207,7 @@ local dreams = {
     inversion = "c_entr_laguz",
     immutable = true,
     config = {
-        tags = 6
+        tags = 8
     },
     loc_vars = function(self, q, card) return {vars = {math.min(card.ability.tags, 20)}} end,
     use = function(self, card)
