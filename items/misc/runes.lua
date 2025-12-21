@@ -73,6 +73,7 @@ end
 
 function create_UIBox_your_collection_rune_tags_content(page)
 	page = page or 1
+    G.your_collection_runes = {}
 	local tag_matrix = {}
 	local rows = 5
 	local cols = 6
@@ -89,6 +90,7 @@ function create_UIBox_your_collection_rune_tags_content(page)
 			local temp_tag = Tag(v.key, true)
 			if not v.discovered then temp_tag.hide_ability = true end
 			local temp_tag_ui, temp_tag_sprite = temp_tag:generate_UI()
+            G.your_collection_runes[#G.your_collection_runes+1] = {tag = temp_tag, sprite = temp_tag_sprite}
 			tag_matrix[row][col] = {
 				n = G.UIT.C,
 				config = { align = "cm", padding = 0.1 },
@@ -209,7 +211,7 @@ end
 
 function add_rune(_tag, no_copy)
     G.HUD_runes = G.HUD_runes or {}
-    local tag_sprite_ui = _tag:generate_UI()
+    local tag_sprite_ui, tag_sprite = _tag:generate_UI()
     G.HUD_runes[#G.HUD_runes+1] = UIBox{
         definition = {n=G.UIT.ROOT, config={align = "tm", padding = 0.05, colour = G.C.CLEAR}, nodes={
           tag_sprite_ui
@@ -230,6 +232,7 @@ function add_rune(_tag, no_copy)
     _tag.HUD_rune = G.HUD_runes[#G.HUD_runes]
     _tag.HUD_tag = _tag.HUD_rune
     _tag.is_rune = true
+    _tag.HUD_sprite = tag_sprite
     if #G.HUD_runes > 6 then
 		for i = 2, #G.HUD_runes do
 			G.HUD_runes[i].config.offset.y = -0.9 + 0.9 * (6 / #G.HUD_runes)
@@ -1279,6 +1282,17 @@ local oss_indicator = {
         end
     end
 }
+
+local _glint = love.graphics.newImage("Mods/Entropy/assets/glint.png");
+SMODS.Shader({
+    key="providence",
+    path="providence.fs",
+    send_vars = function (sprite, card)
+        return {
+            extra_img = _glint
+        }
+    end,
+})
 
 return {
     items = {

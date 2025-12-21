@@ -13,6 +13,15 @@ function Card:draw(layer)
                 self.children.floating_sprite:draw_shader('dissolve', nil, nil, nil, self.children.center, scale_mod, rotate_mod)
             end
         end
+        if self.config.center.set == "Rune" and  Entropy.providence_ui_active(self) then
+            self.children.center:draw_shader('entr_providence', nil, self.ARGS.send_to_shader)
+            if self.children.floating_sprite then
+                local scale_mod = 0.07 + 0.02*math.sin(1.8*G.TIMERS.REAL) + 0.00*math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL))*math.pi*14)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^3
+                local rotate_mod = 0.05*math.sin(1.219*G.TIMERS.REAL) + 0.00*math.sin((G.TIMERS.REAL)*math.pi*5)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^2
+                self.children.floating_sprite:draw_shader('dissolve',0, nil, nil, self.children.center,scale_mod, rotate_mod,nil, 0.1 + 0.03*math.sin(1.8*G.TIMERS.REAL),nil, 0.6)
+                self.children.floating_sprite:draw_shader('dissolve', nil, nil, nil, self.children.center, scale_mod, rotate_mod)
+            end
+        end
         if self.config.center.tsoul_pos then
             local scale_mod2 = 0.07 -- + 0.02*math.cos(1.8*G.TIMERS.REAL) + 0.00*math.cos((G.TIMERS.REAL - math.floor(G.TIMERS.REAL))*math.pi*14)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^3
             local rotate_mod2 = 0 --0.05*math.cos(1.219*G.TIMERS.REAL) + 0.00*math.cos((G.TIMERS.REAL)*math.pi*5)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^2
@@ -1748,6 +1757,40 @@ function Game:update(dt)
             obj.pos.x = 0
         end
 	end
+    if G.GAME.runes then
+        for i, v in pairs(G.GAME.runes) do
+            if Entropy.providence_ui_active(v) and v.shader ~= "entr_providence" and v.HUD_sprite then 
+                v.shader = "entr_providence" 
+                v.HUD_sprite:define_draw_steps({
+                    {shader = 'dissolve', shadow_height = 0.05},
+                    {shader = v.shader},
+                })
+            elseif not Entropy.providence_ui_active(v) and v.shader ~= "dissolve" and v.HUD_sprite then
+                 v.shader = "dissolve" 
+                 v.HUD_sprite:define_draw_steps({
+                    {shader = 'dissolve', shadow_height = 0.05},
+                    {shader = v.shader},
+                })
+            end
+        end
+    end
+    if G.your_collection_runes then
+        for i, v in pairs(G.your_collection_runes) do
+            if Entropy.providence_ui_active(v.tag) and v.tag.shader ~= "entr_providence" then 
+                v.tag.shader = "entr_providence" 
+                v.sprite:define_draw_steps({
+                    {shader = 'dissolve', shadow_height = 0.05},
+                    {shader = v.tag.shader},
+                })
+            elseif not Entropy.providence_ui_active(v.tag) and v.tag.shader ~= "dissolve" then
+                 v.tag.shader = "dissolve" 
+                 v.sprite:define_draw_steps({
+                    {shader = 'dissolve', shadow_height = 0.05},
+                    {shader = v.tag.shader},
+                })
+            end
+        end
+    end
     entr_xekanos_dt = entr_xekanos_dt + dt
     entr_grahkon_dt = entr_grahkon_dt + dt
     bdt = bdt + dt
@@ -4229,6 +4272,7 @@ G.FUNCS.exit_overlay_menu_code = function(e)
 	if G.GAME.CODE_DESTROY_CARD then
         G.GAME.CODE_DESTROY_CARD.ability.bypass_aleph = true
     end
+    G.your_collection_runes = nil
     ref(e)
 end
 
