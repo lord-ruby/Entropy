@@ -100,11 +100,13 @@ function Entropy.ReverseSuitUse(self, card, area, copier, num)
     cry_Declare1 = true,
     cry_Declare2 = true
   }
+  local hands = {}
   for i, v in pairs(handnames) do
     if not declare[v] or G.GAME.hands[v].declare_cards then
-      Entropy.ReversePlanetUse(v, card, (card.ability.level + (G.GAME.entr_black_dwarf or 0)) * (num or 1))
+      hands[#hands+1] = v
     end
   end
+  SMODS.upgrade_poker_hands({hands = handnames, from = card, ascension_power = (card.ability.level + (G.GAME.entr_black_dwarf or 0)) * num})
 end
 function Entropy.ReverseSuitLocVars(self, q, card, instant, noengulf)
   return {
@@ -169,64 +171,7 @@ function Entropy.ChunkLocVars(self, q, card, instant, noengulf)
 end
 
 function Entropy.ReversePlanetUse(handname, card, amt)
-  if next(SMODS.find_card("j_entr_strawberry_pie")) and hand ~= "High Card" then
-        for i, v in pairs(SMODS.find_card("j_entr_strawberry_pie")) do
-            if SMODS.pseudorandom_probability(v, v.ability.num, v.ability.denom, "entr_strawberry") then
-                handname = "High Card"
-            end
-        end 
-    end
-  if not card then card = {ability={level=1}} end
-  local level = amt
-  amt = 1
-  local used_consumable = copier or card
-  local c = copy_table(G.C.UI_CHIPS)
-  local m = copy_table(G.C.UI_MULT)
-  delay(0.4)
-  update_hand_text(
-    { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-    { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = "..." }
-  )
-  G.GAME.hands[handname].AscensionPower = to_big((G.GAME.hands[handname].AscensionPower or 0)) + to_big(level*amt) 
-  delay(1.0)
-  G.E_MANAGER:add_event(Event({
-    trigger = "after",
-    delay = 0.2,
-    func = function()
-      play_sound("tarot1")
-      ease_colour(G.C.UI_CHIPS, HEX("ffb400"), 0.1)
-      ease_colour(G.C.UI_MULT, HEX("ffb400"), 0.1)
-      Cryptid.pulse_flame(0.01, sunlevel)
-      if used_consumable.juice_up then used_consumable:juice_up(0.8, 0.5) end
-      G.E_MANAGER:add_event(Event({
-        trigger = "after",
-        blockable = false,
-        blocking = false,
-        delay = 1.2,
-        func = function()
-          ease_colour(G.C.UI_CHIPS, c, 1)
-          ease_colour(G.C.UI_MULT, m, 1)
-          return true
-        end,
-      }))
-      return true
-    end,
-  }))
-  update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = (to_big(level*amt) > to_big(0) and "+" or "")..number_format(to_big(level*amt) ) })
-  delay(1.6)
-  if card.edition and to_big(amt or 1) > to_big(0) and not noengulf and Engulf then
-    if Engulf.SpecialFuncs[card.config.center.key] then 
-    else Engulf.EditionHand(card, handname, card.edition, amt, instant) end 
-  end
-  delay(1.6)
-  update_hand_text(
-    { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
-    { mult = 0, chips = 0, handname = "", level = "" }
-  )
-  delay(1)
-  G.hand:parse_highlighted()
-  G.GAME.current_round.current_hand.cry_asc_num = 0
-  G.GAME.current_round.current_hand.cry_asc_num_text = ""
+    SMODS.upgrade_poker_hands({hands = handname, from = card, ascension_power = amt * (card.ability.level + (G.GAME.entr_black_dwarf or 0))})  
 end
 
 local planets = {}
@@ -257,10 +202,14 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
     
     can_bulk_use = true,
     use = function(self, card, area, copier)
-        if func then func(self, card,area,copier) else Entropy.ReversePlanetUse(card.ability.handname, card, ((G.GAME.entr_black_dwarf or 0) + card.ability.level)) end
+        if func then func(self, card,area,copier) else 
+          Entropy.ReversePlanetUse(card.ability.handname, card, 1) 
+        end
     end,
     bulk_use = function(self, card, area, copier, number)
-      if func then func(self, card,area,copier,number) else Entropy.ReversePlanetUse(card.ability.handname, card, ((G.GAME.entr_black_dwarf or 0) + card.ability.level) * number) end
+      if func then func(self, card,area,copier,number) else 
+        Entropy.ReversePlanetUse(card.ability.handname, card, number) 
+      end
     end,
     can_use = function(self, card)
         return true
@@ -542,7 +491,7 @@ end, func = function(self, card, area, copier, number)
       hand = i
     end
   end
-  Entropy.ReversePlanetUse(hand, card, card.ability.amt + (G.GAME.entr_black_dwarf or 0))
+  SMODS.upgrade_poker_hands({hands = hand, from = card, ascension_power = card.ability.amt + (G.GAME.entr_black_dwarf or 0)})
 end, config = {amt = 0.5}, loc_vars = function(self, q, card) return {vars = {card.ability.amt + (G.GAME.entr_black_dwarf or 0)}} end}
 
 Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="",key="chiron",sprite_pos={x=2,y=2}, new_key="coatlicue", prefix = "entr", atlas = "consumables2", set_badges = function(self, card, badges)
@@ -555,7 +504,7 @@ end, func = function(self, card, copier, area, number)
     end
   end
   local hand = pseudorandom_element(hands, pseudoseed("entr_coatlicue"))
-  Entropy.ReversePlanetUse(hand, card, G.GAME.hands[hand].l_chips / 25 + (G.GAME.entr_black_dwarf or 0))
+  SMODS.upgrade_poker_hands({hands = hand, from = card, ascension_power = G.GAME.hands[hand].l_chips / 25 + (G.GAME.entr_black_dwarf or 0)})
 end, config = {bdwarf = 0.5}, loc_vars = function(self, q, card) return {vars = {card.ability.bdwarf}} end}
 
 Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="",key="neith",sprite_pos={x=3,y=2}, new_key="threefour", prefix = "entr", atlas = "consumables2", set_badges = function(self, card, badges)

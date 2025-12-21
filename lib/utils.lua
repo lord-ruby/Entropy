@@ -2131,3 +2131,109 @@ function Entropy.handle_card_limit(area, num)
     area.config.card_limit = area.config.card_limit + num
     area:handle_card_limit()
 end
+
+local upgrade_hands_ref = SMODS.upgrade_poker_hands
+function SMODS.upgrade_poker_hands(args)
+    if type(args.hands) == "string" then args.hands = {args.hands} end
+    if next(SMODS.find_card("j_entr_strawberry_pie")) and hand ~= "High Card" then
+        for i, v in pairs(SMODS.find_card("j_entr_strawberry_pie")) do
+            for index, hand in pairs(args.hands) do
+                if SMODS.pseudorandom_probability(v, v.ability.num, v.ability.denom, "entr_strawberry") then
+                    args.hands[index] = "High Card"
+                end
+            end
+        end 
+    end
+    if args.ascension_power then
+        local card = args.from
+        for i, v in pairs(args.hands) do
+            local amt = args.ascension_power
+            local handname = v
+            local used_consumable = card
+            local c
+            local m
+            if not args.instant then
+                c = copy_table(G.C.UI_CHIPS)
+                m = copy_table(G.C.UI_MULT)
+                delay(0.4)
+                update_hand_text(
+                    { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
+                    { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = "..." }
+                )
+            end
+            G.GAME.hands[handname].AscensionPower = to_big((G.GAME.hands[handname].AscensionPower or 0)) + to_big(amt) 
+            if not args.instant then
+                delay(1.0)
+                G.E_MANAGER:add_event(Event({
+                    trigger = "after",
+                    delay = 0.2,
+                    func = function()
+                    play_sound("tarot1")
+                    ease_colour(G.C.UI_CHIPS, HEX("ffb400"), 0.1)
+                    ease_colour(G.C.UI_MULT, HEX("ffb400"), 0.1)
+                    Cryptid.pulse_flame(0.01, sunlevel)
+                    if used_consumable and used_consumable.juice_up then used_consumable:juice_up(0.8, 0.5) end
+                    G.E_MANAGER:add_event(Event({
+                        trigger = "after",
+                        blockable = false,
+                        blocking = false,
+                        delay = 1.2,
+                        func = function()
+                        ease_colour(G.C.UI_CHIPS, c, 1)
+                        ease_colour(G.C.UI_MULT, m, 1)
+                        return true
+                        end,
+                    }))
+                    return true
+                    end,
+                }))
+            end
+            if not args.instant then
+                update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = (to_big(amt) > to_big(0) and "+" or "")..number_format(to_big(amt) ) })
+                delay(1.6)
+            end
+            if card and card.edition and to_big(amt or 1) > to_big(0) and not noengulf and Engulf then
+                if Engulf.SpecialFuncs[card.config.center.key] then 
+                else Engulf.EditionHand(card, handname, card.edition, amt, instant) end 
+            end
+            if not args.instant then
+                delay(1.6)
+                update_hand_text(
+                    { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+                    { mult = 0, chips = 0, handname = "", level = "" }
+                )
+                delay(1)
+            end
+            G.hand:parse_highlighted()
+            G.GAME.current_round.current_hand.cry_asc_num = 0
+            G.GAME.current_round.current_hand.cry_asc_num_text = ""
+        end
+        return
+    end
+    if args.per_level then
+        local mult = args.per_level.mult
+        local chips = args.per_level.chips
+        if mult or chips then
+            for i, v in pairs(args.hands) do
+                Entropy.l_chipsmult(v, args.from, chips, mult, args.instant)
+            end
+        end
+        return
+    end
+    if args.x_per_level then
+        local mult = args.x_per_level.mult
+        local chips = args.x_per_level.chips
+        if mult then
+            for i, v in pairs(args.hands) do
+                Entropy.xl_mult(v, args.from, mult, args.instant)
+            end
+        end
+        if chips then
+            for i, v in pairs(args.hands) do
+                Entropy.xl_chips(v, args.from, chips, args.instant)
+            end
+        end
+        return
+    end
+    return upgrade_hands_ref(args)
+end

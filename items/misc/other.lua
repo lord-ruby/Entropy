@@ -183,109 +183,100 @@ local wormhole = {
 	end,
 }
 
-function Entropy.l_chipsmult(hand, card, l_chips, l_mult)
-	if next(SMODS.find_card("j_entr_strawberry_pie")) and hand ~= "High Card" then
-        for i, v in pairs(SMODS.find_card("j_entr_strawberry_pie")) do
-            if SMODS.pseudorandom_probability(v, v.ability.num, v.ability.denom, "entr_strawberry") then
-                hand = "High Card"
-            end
-        end 
-    end
-	update_hand_text({delay = 0}, {handname = localize(hand, "poker_hands"), level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
-	delay(1)
-	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
-		play_sound('tarot1')
-		if card and card.juice_up then card:juice_up(0.8, 0.5) end
-		G.TAROT_INTERRUPT_PULSE = true
-		return true end 
-	}))
-	update_hand_text({delay = 0}, {handname = localize("k_level_chips"), chips = G.GAME.hands[hand].l_chips, mult = G.GAME.hands[hand].l_mult})
-	delay(2)
+function Entropy.l_chipsmult(hand, card, l_chips, l_mult, instant)
+	if not instant then
+		update_hand_text({delay = 0}, {handname = localize(hand, "poker_hands"), level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
+		delay(1)
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('tarot1')
+			if card and card.juice_up then card:juice_up(0.8, 0.5) end
+			G.TAROT_INTERRUPT_PULSE = true
+			return true end 
+		}))
+		update_hand_text({delay = 0}, {handname = localize("k_level_chips"), chips = G.GAME.hands[hand].l_chips, mult = G.GAME.hands[hand].l_mult})
+		delay(2)
+	end
 	G.GAME.hands[hand].l_chips = G.GAME.hands[hand].l_chips + l_chips
-	update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {chips = G.GAME.hands[hand].l_chips, StatusText = true})
-	delay(0.7)
-	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
-		play_sound('tarot1')
-		if card and card.juice_up then card:juice_up(0.8, 0.5) end
-		G.TAROT_INTERRUPT_PULSE = true
-		return true end 
-	}))
-	update_hand_text({delay = 0}, {handname = localize("k_level_mult"), chips = G.GAME.hands[hand].l_chips, mult = G.GAME.hands[hand].l_mult})
-	delay(2)
-	G.GAME.hands[hand].l_mult = G.GAME.hands[hand].l_mult + l_mult
-	update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {mult = G.GAME.hands[hand].l_mult, StatusText = true})
-	delay(0.7)
-	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
-		play_sound('tarot1')
-		if card and card.juice_up then card:juice_up(0.8, 0.5) end
-		G.TAROT_INTERRUPT_PULSE = true
-		return true end 
-	}))
-	delay(1.3)
+	if not instant then
+		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {chips = G.GAME.hands[hand].l_chips, StatusText = true})
+		delay(0.7)
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('tarot1')
+			if card and card.juice_up then card:juice_up(0.8, 0.5) end
+			G.TAROT_INTERRUPT_PULSE = true
+			return true end 
+		}))
+		update_hand_text({delay = 0}, {handname = localize("k_level_mult"), chips = G.GAME.hands[hand].l_chips, mult = G.GAME.hands[hand].l_mult})
+		delay(2)
+		G.GAME.hands[hand].l_mult = G.GAME.hands[hand].l_mult + l_mult
+		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {mult = G.GAME.hands[hand].l_mult, StatusText = true})
+		delay(0.7)
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('tarot1')
+			if card and card.juice_up then card:juice_up(0.8, 0.5) end
+			G.TAROT_INTERRUPT_PULSE = true
+			return true end 
+		}))
+		delay(1.3)
+	end
 	Cryptid.reset_to_none()
 end
 
-function Entropy.xl_chips(hand, card, l_chips)
-	if next(SMODS.find_card("j_entr_strawberry_pie")) and hand ~= "High Card" then
-        for i, v in pairs(SMODS.find_card("j_entr_strawberry_pie")) do
-            if SMODS.pseudorandom_probability(v, v.ability.num, v.ability.denom, "entr_strawberry") then
-                hand = "High Card"
-            end
-        end 
-    end
-	update_hand_text({delay = 0}, {handname = localize(hand, "poker_hands"), level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
-	delay(1)
-	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
-		play_sound('tarot1')
-		if card and card.juice_up then card:juice_up(0.8, 0.5) end
-		G.TAROT_INTERRUPT_PULSE = true
-		return true end 
-	}))
-	update_hand_text({delay = 0}, {handname = localize("k_level_chips"), chips = G.GAME.hands[hand].l_chips, mult = G.GAME.hands[hand].l_mult})
-	delay(2)
+function Entropy.xl_chips(hand, card, l_chips, instant)
+	if not instant then
+		update_hand_text({delay = 0}, {handname = localize(hand, "poker_hands"), level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
+		delay(1)
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('tarot1')
+			if card and card.juice_up then card:juice_up(0.8, 0.5) end
+			G.TAROT_INTERRUPT_PULSE = true
+			return true end 
+		}))
+		update_hand_text({delay = 0}, {handname = localize("k_level_chips"), chips = G.GAME.hands[hand].l_chips, mult = G.GAME.hands[hand].l_mult})
+		delay(2)
+	end
 	G.GAME.hands[hand].l_chips = G.GAME.hands[hand].l_chips * l_chips
-	update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {chips = "X"..number_format(l_chips), StatusText = true})
-	delay(0.7)
-	update_hand_text({delay = 0}, {handname = localize("k_level_mult"), chips = G.GAME.hands[hand].l_chips, mult = G.GAME.hands[hand].l_mult})
-	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
-		play_sound('tarot1')
-		if card and card.juice_up then card:juice_up(0.8, 0.5) end
-		G.TAROT_INTERRUPT_PULSE = true
-		return true end 
-	}))
-	delay(1.3)
+	if not instant then
+		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {chips = "X"..number_format(l_chips), StatusText = true})
+		delay(0.7)
+		update_hand_text({delay = 0}, {handname = localize("k_level_mult"), chips = G.GAME.hands[hand].l_chips, mult = G.GAME.hands[hand].l_mult})
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('tarot1')
+			if card and card.juice_up then card:juice_up(0.8, 0.5) end
+			G.TAROT_INTERRUPT_PULSE = true
+			return true end 
+		}))
+		delay(1.3)
+	end
 	Cryptid.reset_to_none()
 end
 
-function Entropy.xl_mult(hand, card, l_mult)
-	if next(SMODS.find_card("j_entr_strawberry_pie")) and hand ~= "High Card" then
-        for i, v in pairs(SMODS.find_card("j_entr_strawberry_pie")) do
-            if SMODS.pseudorandom_probability(v, v.ability.num, v.ability.denom, "entr_strawberry") then
-                hand = "High Card"
-            end
-        end 
-    end
-	update_hand_text({delay = 0}, {handname = localize(hand, "poker_hands"), level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
-	delay(1)
-	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
-		play_sound('tarot1')
-		if card and card.juice_up then card:juice_up(0.8, 0.5) end
-		G.TAROT_INTERRUPT_PULSE = true
-		return true end 
-	}))
-	update_hand_text({delay = 0}, {handname = localize("k_level_mult"), chips = G.GAME.hands[hand].l_chips, mult = G.GAME.hands[hand].l_mult})
-	delay(2)
+function Entropy.xl_mult(hand, card, l_mult, instant)
+	if not instant then
+		update_hand_text({delay = 0}, {handname = localize(hand, "poker_hands"), level = G.GAME.hands[hand].level, mult = Entropy.ascend_hand(G.GAME.hands[hand].mult, hand), chips = Entropy.ascend_hand(G.GAME.hands[hand].chips, hand)})
+		delay(1)
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('tarot1')
+			if card and card.juice_up then card:juice_up(0.8, 0.5) end
+			G.TAROT_INTERRUPT_PULSE = true
+			return true end 
+		}))
+		update_hand_text({delay = 0}, {handname = localize("k_level_mult"), chips = G.GAME.hands[hand].l_chips, mult = G.GAME.hands[hand].l_mult})
+		delay(2)
+	end
 	G.GAME.hands[hand].l_mult = G.GAME.hands[hand].l_mult * l_mult
-	update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {mult = "X"..number_format(l_mult), StatusText = true})
-	delay(0.7)
-	update_hand_text({delay = 0}, {handname = localize("k_level_mult"), chips = G.GAME.hands[hand].l_chips, mult = G.GAME.hands[hand].l_mult})
-	G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
-		play_sound('tarot1')
-		if card and card.juice_up then card:juice_up(0.8, 0.5) end
-		G.TAROT_INTERRUPT_PULSE = true
-		return true end 
-	}))
-	delay(1.3)
+	if not intant then
+		update_hand_text({sound = 'button', volume = 0.7, pitch = 0.9, delay = 0}, {mult = "X"..number_format(l_mult), StatusText = true})
+		delay(0.7)
+		update_hand_text({delay = 0}, {handname = localize("k_level_mult"), chips = G.GAME.hands[hand].l_chips, mult = G.GAME.hands[hand].l_mult})
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+			play_sound('tarot1')
+			if card and card.juice_up then card:juice_up(0.8, 0.5) end
+			G.TAROT_INTERRUPT_PULSE = true
+			return true end 
+		}))
+		delay(1.3)
+	end
 	Cryptid.reset_to_none()
 end
 
@@ -325,7 +316,7 @@ local tyche = {
 			end
 		end
 		local hand = pseudorandom_element(hands, pseudoseed("entr_tyche"))
-		Entropy.l_chipsmult(hand, card, card.ability.l_chips, card.ability.l_mult)
+		SMODS.upgrade_poker_hands({hands = hand, from = card, per_level = {chips = card.ability.l_chips, mult = card.ability.l_mult}})
 	end,
 	demicoloncompat = true,
 	force_use = function(self, card, area)
@@ -369,7 +360,7 @@ local theia = {
 				hand = i
 			end
 		end
-		Entropy.l_chipsmult(hand, card, card.ability.l_chips, card.ability.l_mult)
+		SMODS.upgrade_poker_hands({hands = hand, from = card, per_level = {chips = card.ability.l_chips, mult = card.ability.l_mult}})
 	end,
 	demicoloncompat = true,
 	force_use = function(self, card, area)
@@ -412,7 +403,7 @@ local chiron = {
 			end
 		end
 		local hand = pseudorandom_element(hands, pseudoseed("entr_chrion"))
-		Entropy.xl_chips(hand, card, card.ability.xl_chips)
+		SMODS.upgrade_poker_hands({hands = hand, from = card, x_per_level = {chips = card.ability.xl_chips}})
 	end,
 	demicoloncompat = true,
 	force_use = function(self, card, area)
@@ -455,7 +446,7 @@ local neith = {
 			end
 		end
 		local hand = pseudorandom_element(hands, pseudoseed("entr_neith"))
-		Entropy.xl_mult(hand, card, card.ability.xl_mult)
+		SMODS.upgrade_poker_hands({hands = hand, from = card, x_per_level = {mult = card.ability.xl_mult}})
 	end,
 	demicoloncompat = true,
 	force_use = function(self, card, area)

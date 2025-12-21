@@ -236,12 +236,12 @@ if AurinkoAddons then
 	AurinkoAddons.entr_solar = function(card, hand, instant, amount)
 		if to_big(G.GAME.hands[hand].AscensionPower or 0) > to_big(0) then
 			local num = G.GAME.hands[hand].AscensionPower * ((card.edition.sol-1) ^ (amount or 1))
-			Entropy.ReversePlanetUse(hand, card, num, nil, true)
+			SMODS.upgrade_poker_hands({hands = hand, from = card, ascension_power = num})
 		end
 	end
 	AurinkoAddons.entr_sunny = function(card, hand, instant, amount)
 		local num = 4*(amount or 1)
-		Entropy.ReversePlanetUse(hand, card, num, nil, true)
+		SMODS.upgrade_poker_hands({hands = hand, from = card, ascension_power = num})
 	end
 	AurinkoAddons.entr_freaky = function(card, hand, instant, amount)
 		local hand_chips = G.GAME.hands[hand].chips

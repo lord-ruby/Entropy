@@ -27,7 +27,7 @@ local action_supernova = function()
             max_level = v.AscensionPower
         end
     end
-    Entropy.ReversePlanetUse(hand_type, {ability = {}}, -2)
+    SMODS.upgrade_poker_hands({hands = hand_type, ascension_power = -2})
 end
 local function action_remove_phantom(key)
     if key == "entr_weirdhack_collapse" then
