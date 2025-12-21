@@ -1947,6 +1947,15 @@ local decs = {
 					"appear {C:dark_edition}Gilded{}"
                 },
             },
+			j_entr_twisted_pair = {
+                name = "Twisted Pair",
+                text = {
+					"Retrigger all cards played",
+					"All retriggered cards score",
+					"with {X:attention,C:white}X#1#{} card values",
+					"temporarily"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {

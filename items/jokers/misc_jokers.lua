@@ -7237,6 +7237,52 @@ local carrot_cake = {
     end,    
 }
 
+local twisted_pair = {
+    order = 125,
+    object_type = "Joker",
+    key = "twisted_pair",
+    rarity = 2,
+    cost = 8,   
+    eternal_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+    config = {
+        value_fac = 0.75
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    demicoloncompat = true,
+    blueprint_compat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.value_fac
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.repetition and context.cardarea == G.play then
+            local c = context.other_card
+            c.ability.entr_value_fac = (c.ability.entr_value_fac or 1) * card.ability.value_fac
+            G.E_MANAGER:add_event(Event{
+                func = function()
+                    c.ability.entr_value_fac = nil
+                    return true
+                end
+            })
+            return {
+                repetitions = 1
+            }
+        end
+    end,    
+    entr_credits = {
+        idea = {"Nxkoo"}
+    }
+}
+
 return {
     items = {
         surreal,
@@ -7371,6 +7417,7 @@ return {
         milk,
         yogurt,
         box_of_chocolates,
-        carrot_cake
+        carrot_cake,
+        twisted_pair
     }
 }
