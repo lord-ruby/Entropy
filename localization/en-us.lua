@@ -6483,6 +6483,7 @@ local decs = {
 			k_idea = "Ideas",
 			k_art = "Art",
 			k_music = "Music",
+			k_music_sound = "Music / Sounds",
 			k_forcetrigger_ex = "Forcetrigger!",
 			k_spoiled_ex = "Spoiled!",
 			k_downgrade_ex = "Downgrade!",

@@ -3206,3 +3206,22 @@ end
 ease_dollars(cost)
 '''
 match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = '''tag.lua'''
+pattern = '''
+_self.config.h_popup_config = (_self.T.x > G.ROOM.T.w*0.4) and
+  {align =  'cl', offset = {x=-0.1,y=0},parent = _self} or
+  {align =  'cr', offset = {x=0.1,y=0},parent = _self}
+'''
+position = 'after'
+payload = '''
+if G.P_RUNES[self.key] then
+_self.config.h_popup_config = (_self.T.y > G.ROOM.T.y*0.2) and
+  {align =  'cl', offset = {x=-0.1,y=0},parent = _self} or
+  {align =  'cl', offset = {x=-0.1,y=0.65},parent = _self}
+end
+'''
+match_indent = true

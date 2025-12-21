@@ -95,3 +95,8 @@ SMODS.Sound({
 	path = "e_neon.ogg",
 	volume = 1.2
 })
+
+SMODS.Sound({
+	key = "pacts",
+	path = "pacts.ogg",
+})

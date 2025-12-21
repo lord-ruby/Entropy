@@ -49,6 +49,11 @@ local avarice = {
                 G.jokers:emplace(copy)
             end
         end
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         Entropy.pact_mark("rune_entr_avarice")
         if h then
             for i, v in pairs(G.I.CARD) do
@@ -91,13 +96,29 @@ local rage = {
                 cards[#cards+1] = v
             end
         end
+        local s
         if #cards > 0 then 
             local a_cards = {}
             pseudoshuffle(cards, pseudoseed("entr_rage"))
             for i = 1, math.max(math.floor(#cards/5), math.min(#cards, 5)) do
                 a_cards[#a_cards+1] = cards[i]
             end
-            SMODS.destroy_cards(a_cards)
+            for i, v in pairs(a_cards) do
+                s = true
+                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                    play_sound('entr_pacts')
+                    if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                    G.TAROT_INTERRUPT_PULSE = true
+                    return true end }))
+                SMODS.destroy_cards(v)
+            end
+        end
+        if not s then
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
         end
         Entropy.pact_mark("rune_entr_rage")
     end,
@@ -133,15 +154,31 @@ local thorns = {
     loc_vars = function(self, q, card) return {vars = {card.ability.extra}} end,
     use = function(self, card)
         local jokers = {}
+        local s
         for i, v in pairs(G.jokers.cards) do
             if not v.edition then jokers[#jokers+1] = v end
         end
         if #jokers > 0 then
             pseudoshuffle(jokers, pseudoseed("entr_thorns"))
             for i = 1, math.min(card.ability.extra, #jokers) do
-                jokers[i]:set_edition(poll_edition("entr_thorns_edition", nil, nil, true))
-                jokers[i].ability.rental = true
+                s = true
+                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                    play_sound('entr_pacts')
+                    if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                    G.TAROT_INTERRUPT_PULSE = true
+                    return true end }))
+                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                    jokers[i]:set_edition(poll_edition("entr_thorns_edition", nil, nil, true))
+                    jokers[i].ability.rental = true
+                    return true end }))
             end
+        end
+        if not s then
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
         end
         Entropy.pact_mark("rune_entr_thorns")
     end,
@@ -172,6 +209,11 @@ local denial = {
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
     inversion = "c_entr_ansuz",
     use = function(self, card)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         if G.GAME.last_sold_card and not G.GAME.banned_keys[G.GAME.last_sold_card] then
             local area = G.consumeables
             local buffer = G.GAME.consumeable_buffer
@@ -180,10 +222,12 @@ local denial = {
                 buffer = G.GAME.joker_buffer
             end
             if #area.cards + buffer < area.config.card_limit then
-                SMODS.add_card{
-                    key = G.GAME.last_sold_card,
-                    area = area
-                }
+                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                    SMODS.add_card{
+                        key = G.GAME.last_sold_card,
+                        area = area
+                    }
+                    return true end }))
             end
             G.GAME.banned_keys[G.GAME.last_sold_card] = true
         end
@@ -238,6 +282,11 @@ local chains = {
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
     inversion = "c_entr_raido",
     use = function(self, card)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         Entropy.pact_mark("rune_entr_chains")
     end,
     can_use = function()
@@ -273,6 +322,11 @@ local decay = {
     },
     loc_vars = function(self, q, card) return {vars = {card.ability.level, card.ability.hands, card.ability.most_played}} end,
     use = function(self, card)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         local hand = "High Card"
         for i, v in pairs(G.GAME.hands) do
             if v.played > G.GAME.hands[hand].played then hand = i end
@@ -290,7 +344,6 @@ local decay = {
             end
             table.remove(hands, ind)
         end
-
         SMODS.smart_level_up_hand(card, hand, false, card.ability.most_played)
         Entropy.pact_mark("rune_entr_decay")
     end,
@@ -340,6 +393,11 @@ local envy = {
                 destructible[#destructible+1] = v
             end
         end
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         if #destructible > 0 then
             pseudorandom_element(destructible, pseudoseed("entr_envy")):start_dissolve()
         end
@@ -406,6 +464,11 @@ local youth = {
         for i, v in pairs(G.jokers.cards) do
             if not v.ability.debuff_timer then jokers[#jokers+1] = v end
         end
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         local dcard = pseudorandom_element(jokers, pseudoseed("entr_youth"))
         if dcard then
             dcard.ability.debuff_timer = card.ability.rounds
@@ -451,12 +514,26 @@ local shards = {
     loc_vars = function(self, q, card) q[#q+1] = G.P_CENTERS.e_entr_fractured end,
     use = function(self, card)
         local jokers = {}
+        local s
         for i, v in pairs(G.jokers.cards) do
             if not v.edition or not v.edition.entr_fractured then jokers[#jokers+1] = v end
         end
         if #jokers > 0 then
             local dcard = pseudorandom_element(jokers, pseudoseed("entr_shards"))
             dcard:set_edition("e_entr_fractured")
+            s = true
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
+        end
+        if not s then
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
         end
         Entropy.pact_mark("rune_entr_shards")
     end,
@@ -519,7 +596,11 @@ function Card:start_dissolve(...)
         local copy = copy_card(self)
         copy:add_to_deck()
         table.insert(G.playing_cards, copy)
-        G.hand:emplace(copy)
+        if G.GAME.blind.in_blind then
+            G.hand:emplace(copy)
+        else
+            G.deck:emplace(copy)
+        end
     else
         return start_dissolveref(self, ...)
     end
@@ -559,7 +640,11 @@ function Card:shatter(...)
         local copy = copy_card(self)
         copy:add_to_deck()
         table.insert(G.playing_cards, copy)
-        G.hand:emplace(copy)
+        if G.GAME.blind.in_blind then
+            G.hand:emplace(copy)
+        else
+            G.deck:emplace(copy)
+        end
     else
         return shatter(self, ...)
     end
@@ -580,12 +665,20 @@ local desire = {
     loc_vars = function(self, q, card) return {vars = {math.min(card.ability.create, 20)}} end,
     use = function(self, card)
         local cards = {}
+        local s
         for i, v in pairs(G.consumeables.cards) do if v ~= card or (card.edition and card.edition.card_limit) then cards[#cards+1] = v end end
         for i = 1, math.min(card.ability.create, 20) do
             local type = pseudorandom_element({"Spectral", "Omen"}, pseudoseed("entr_desire"))
             if G.GAME.consumeable_buffer + #cards < G.consumeables.config.card_limit - (card.edition and card.edition.card_limit or 0) then
+                s = true
+                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                    play_sound('entr_pacts')
+                    if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                    G.TAROT_INTERRUPT_PULSE = true
+                    return true end }))
                 G.E_MANAGER:add_event(Event{
                     trigger = "after",
+                    delay = 0.4,
                     func = function()
                         SMODS.add_card{
                             area = G.consumeables,
@@ -597,6 +690,13 @@ local desire = {
                 G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
             end
         end
+        if not s then
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
+        end 
         G.GAME.consumeable_buffer = 0
         G.GAME.entr_booster_cost = (G.GAME.entr_booster_cost or 1) + 0.5
         Entropy.pact_mark("rune_entr_desire")
@@ -633,6 +733,11 @@ local ice = {
     loc_vars = function(self, q, card) return {vars = {math.min(card.ability.create, 20)}} end,
     use = function(self, card)
         local area
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
 		if G.STATE == G.STATES.HAND_PLAYED then
 			if not G.redeemed_vouchers_during_hand then
 				G.redeemed_vouchers_during_hand =
@@ -742,6 +847,11 @@ local gluttony = {
         for i, v in pairs(G.I.CARD) do
             if v.ability and v.ability.consumeable then v.ability.eternal = true end
         end
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         Entropy.pact_mark("rune_entr_gluttony")
     end,
     can_use = function()
@@ -782,6 +892,11 @@ local rebirth = {
     loc_vars = function(self, q, card) return {vars = {math.min(card.ability.hand_size, 1000)}} end,
     use = function(self, card)
         Entropy.handle_card_limit(G.hand, - math.min(card.ability.hand_size, 1000))
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         Entropy.pact_mark("rune_entr_rebirth")
     end,
     can_use = function()
@@ -816,6 +931,7 @@ local despair = {
     },
     loc_vars = function(self, q, card) return {vars = {G.hand and G.hand.config.card_limit or 8, card.ability.percentage, card.ability.rounds}} end,
     use = function(self, card)
+        local s
         local cards = {}
         for i, v in pairs(G.playing_cards) do
             cards[#cards+1] = v
@@ -826,9 +942,18 @@ local despair = {
             while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
                 enhancement = pseudorandom_element(G.P_CENTER_POOLS["Enhanced"], pseudoseed("entr_despair")).key
             end
-            cards[i]:flip()
-            cards[i]:set_ability(G.P_CENTERS[enhancement])
-            cards[i]:flip()
+            s = true
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                cards[i]:flip()
+                cards[i]:set_ability(G.P_CENTERS[enhancement])
+                cards[i]:flip()
+                return true end }))
+
         end
         pseudoshuffle(cards, pseudoseed("entr_despair"))
         for i = 1, math.floor(card.ability.percentage / 100 * #cards) do
@@ -836,6 +961,13 @@ local despair = {
             dcard.ability.debuff_timer = card.ability.rounds
             dcard.ability.debuff_timer_max = card.ability.rounds
             dcard:set_debuff(true)
+        end
+        if not s then
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
         end
         Entropy.pact_mark("rune_entr_despair")
     end,
@@ -905,8 +1037,13 @@ local strength = {
         if not card then card = pseudorandom_element(cards, pseudoseed("entr_strength")) end
         if card and card.T then
             for i = 1, math.min(rcard.ability.copies, 100) do
+                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                    play_sound('entr_pacts')
+                    if rcard and rcard.juice_up then rcard:juice_up(0.8, 0.5) end
+                    G.TAROT_INTERRUPT_PULSE = true
+                    return true end }))
                 card_eval_status_text(
-                    card,
+                    rcard,
                     "extra",
                     nil,
                     nil,
@@ -916,7 +1053,11 @@ local strength = {
                 local copy = copy_card(card)
                 copy:add_to_deck()
                 table.insert(G.playing_cards, copy)
-                G.hand:emplace(copy)
+                if G.GAME.blind.in_blind then
+                    G.hand:emplace(copy)
+                else
+                    G.deck:emplace(copy)
+                end
             end
         end
         local joker = pseudorandom_element(G.jokers.cards, pseudoseed("entr_strength"))
@@ -968,6 +1109,11 @@ local darkness = {
         if joker then
             joker:set_edition("e_negative")
         end
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         local level = Entropy.pact_mark("rune_entr_darkness")
         G.GAME.modifiers.flipped_cards = 4 / (level ^ 0.5)
     end,
@@ -1012,6 +1158,11 @@ local freedom = {
     use = function(self, rcard)
         Entropy.handle_card_limit(G.hand, -rcard.ability.hand_size)
         Entropy.ChangeFullCSL(rcard.ability.selection_limit)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         Entropy.pact_mark("rune_entr_freedom")
     end,
     can_use = function()
@@ -1052,6 +1203,11 @@ local eternity = {
     },
     use = function(self, rcard)
         local cards = {}
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         for i, v in pairs(G.jokers.cards) do
             if not SMODS.is_eternal(v) then
                 cards[#cards+1] = v
@@ -1122,6 +1278,11 @@ local loyalty = {
     inversion = "c_entr_ehwaz",
     immutable = true,
     use = function(self, rcard)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         Entropy.pact_mark("rune_entr_loyalty")
     end,
     can_use = function()
@@ -1177,6 +1338,11 @@ local brimstone = {
     use = function(self, card)
         G.GAME.round_resets.hands = G.GAME.round_resets.hands - card.ability.hands
         ease_hands_played(-card.ability.hands)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         Entropy.pact_mark("rune_entr_brimstone")
     end,
     can_use = function()
@@ -1212,8 +1378,15 @@ local dreams = {
     loc_vars = function(self, q, card) return {vars = {math.min(card.ability.tags, 20)}} end,
     use = function(self, card)
         for i = 1, math.min(card.ability.tags, 20) do
-            tag = Tag(get_next_tag_key())
-            add_tag(tag)
+            local tag = Tag(get_next_tag_key())
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                add_tag(tag)
+                return true end }))
         end
         G.GAME.modifiers.no_blind_reward = G.GAME.modifiers.no_blind_reward or {}
         G.GAME.modifiers.no_blind_reward.Small = true
@@ -1251,8 +1424,23 @@ local energy = {
     },
     loc_vars = function(self, q, card) return {vars = {card.ability.discards}} end,
     use = function(self, card)
+        local s
+        
         for i, v in pairs(G.GAME.last_discarded or {}) do
             v:set_edition(poll_edition("entr_energy", nil, true, true))
+            s = true
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
+        end
+        if not s then
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
         end
         G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.discards
         ease_discard(-card.ability.discards)
@@ -1303,11 +1491,23 @@ local awakening = {
     use = function(self, card)
         local mod = math.floor(card and card.ability.shop_size or 1)
         SMODS.change_booster_limit(-mod)
-        local card = SMODS.add_card{
-            set = "Voucher",
-            area = G.consumeables
-        }
-        card:set_edition("e_negative")
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
+        G.E_MANAGER:add_event(Event{
+            trigger = "after",
+            delay = 0.2,
+            func = function()
+                local card = SMODS.add_card{
+                    set = "Voucher",
+                    area = G.consumeables
+                }
+                card:set_edition("e_negative")
+                return true
+            end
+        })
         Entropy.pact_mark("rune_entr_awakening")
     end,
     can_use = function()
@@ -1342,6 +1542,7 @@ local blood = {
     },
     loc_vars = function(self, q, card) q[#q+1] = {set="Other",key="link", vars = {"[LINK_KEY]"}}; return {vars = {card.ability.random}} end,
     use = function(self, card)
+        local s
         local cards = {}
         for i, v in pairs(G.playing_cards) do
             if v.base then cards[#cards+1] = v end
@@ -1366,6 +1567,20 @@ local blood = {
             end
             v.ability.link = linktxt
             v:juice_up()
+            s = true
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
+            
+        end
+        if not s then
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
         end
         Entropy.pact_mark("rune_entr_blood")
     end,
@@ -1409,10 +1624,17 @@ local serpents = {
             end
         end
         local key = pseudorandom_element(omens, pseudoseed("entr_serpents"))
-        SMODS.add_card{
-            key = key,
-            area = G.consumeables
-        }
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+            SMODS.add_card{
+                key = key,
+                area = G.consumeables
+            }
+            return true end }))
         Entropy.pact_mark("rune_entr_serpents")
     end,
     can_use = function()

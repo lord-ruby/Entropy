@@ -126,7 +126,7 @@ function Entropy.generate_credits_nodes(table, type)
 					n = G.UIT.O,
 					config = {
 						object = DynaText({
-							string = localize("k_"..type),
+							string = localize("k_"..(type == "music" and "music_sound" or type)),
 							colours = { G.C.IMPORTANT },
 							shadow = true,
 							scale = 0.7,
@@ -271,7 +271,7 @@ local entropyTabs = function()
 						["Athebyne"] = true,
 						["InvalidOS"] = true,
 					},
-					music = {gemstonez=true}
+					music = {gemstonez=true, Grahkon = true}
 				}
 				for i, v in pairs(G.P_CENTERS) do if v.entr_credits then
 					if v.entr_credits.idea then for i, v in pairs(v.entr_credits.idea) do credits.idea[v] = true end end
