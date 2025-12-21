@@ -217,6 +217,7 @@ local denial = {
         if G.GAME.last_sold_card and not G.GAME.banned_keys[G.GAME.last_sold_card] then
             local area = G.consumeables
             local buffer = G.GAME.consumeable_buffer
+            local key = G.GAME.last_sold_card
             if G.P_CENTERS[G.GAME.last_sold_card].set == "Joker" then
                 area = G.jokers
                 buffer = G.GAME.joker_buffer
@@ -224,12 +225,13 @@ local denial = {
             if #area.cards + buffer < area.config.card_limit then
                 G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
                     SMODS.add_card{
-                        key = G.GAME.last_sold_card,
+                        key = key,
+                        set = G.P_CENTERS[key].set,
                         area = area
                     }
+                    G.GAME.banned_keys[G.GAME.last_sold_card] = true
                     return true end }))
             end
-            G.GAME.banned_keys[G.GAME.last_sold_card] = true
         end
         Entropy.pact_mark("rune_entr_denial")
     end,
