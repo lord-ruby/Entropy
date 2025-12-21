@@ -270,6 +270,7 @@ local entropyTabs = function()
 						["triple6lexi"]=true,
 						["Athebyne"] = true,
 						["InvalidOS"] = true,
+						["FirstTry"] = true
 					},
 					music = {gemstonez=true, Grahkon = true}
 				}

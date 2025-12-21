@@ -1283,7 +1283,8 @@ local oss_indicator = {
     end
 }
 
-local _glint = love.graphics.newImage("Mods/Entropy/assets/glint.png");
+local data = NFS.newFileData(Entropy.path .."/assets/glint.png")
+local _glint = love.graphics.newImage(data);
 SMODS.Shader({
     key="providence",
     path="providence.fs",

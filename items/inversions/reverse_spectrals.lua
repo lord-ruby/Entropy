@@ -564,7 +564,7 @@ local crypt = {
             end 
         end
         Entropy.FlipThen(Entropy.GetHighlightedCards({G.jokers}, card2, 1, card2.ability.select), function(v, area)
-            if v ~= joker then            
+            if v ~= joker and v and joker then            
                 copy_card(joker, v)
                 v:set_edition()
                 v:set_debuff(true)
