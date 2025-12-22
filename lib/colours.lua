@@ -11,7 +11,9 @@ G.C.Entropy.Dissolve = {
     Omen = G.C.Entropy.Omen,
     Command = G.C.Entropy.Command,
     Fraud = G.C.Entropy.Fraud,
-    Transient = G.C.Entropy.Transient
+    Transient = G.C.Entropy.Transient,
+    Pact = G.C.Entropy.Pact,
+    Rune = G.C.Entropy.Rune
 }
 
 G.C.ALTBG = HEX("41566f")

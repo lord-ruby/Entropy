@@ -3225,3 +3225,16 @@ _self.config.h_popup_config = (_self.T.y > G.ROOM.T.y*0.2) and
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+delay(0.4); SMODS.ante_end = true; ease_ante(1); SMODS.ante_end = nil; delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})
+'''
+position = 'after'
+payload = '''
+G.GAME.round_resets.blind_choices.Small = "bl_small"
+G.GAME.round_resets.blind_choices.Big = "bl_big"
+'''
+match_indent = true

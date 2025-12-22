@@ -82,10 +82,6 @@ if G.GAME.RedBlindStates then
         end
     })
 end
-if G.GAME.round_resets.blind_states.Boss == "Defeated" then
-        G.GAME.round_resets.blind_choices.Small = "bl_small"
-        G.GAME.round_resets.blind_choices.Big = "bl_big"
-end
 if G.GAME.earl_modifiers then
     G.GAME.modifiers.money_per_discard = G.GAME.earl_modifiers.discard
     G.GAME.modifiers.money_per_hand = G.GAME.earl_modifiers.hand
