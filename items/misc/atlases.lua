@@ -323,3 +323,10 @@ SMODS.Atlas {
     frames = 17,
     fps = 8
 }
+
+SMODS.Atlas {
+        key = "marked",
+        path = "hold_me.png",
+        px = 71,
+        py = 95,
+    }

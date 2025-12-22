@@ -4642,8 +4642,15 @@ end
 local calc_main_scoring = SMODS.calculate_main_scoring
 function SMODS.calculate_main_scoring(context, scoring_hand)
     local fvc_cards = {}
+    local added_cards = {}
     for i, v in pairs(G.play.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
     for i, v in pairs(G.jokers.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
+    for _, card in pairs(G.I.CARD) do
+        if card.ability and card.ability.entr_marked then
+            fvc_cards[#fvc_cards+1] = card
+            added_cards[#added_cards+1] = card
+        end
+    end
     if context.cardarea ~= G.play or (not next(SMODS.find_card('j_entr_rubber_ball')) and not next(fvc_cards)) then
 	    calc_main_scoring(context, scoring_hand)
     end
@@ -4651,6 +4658,7 @@ function SMODS.calculate_main_scoring(context, scoring_hand)
         if not G.rubber_cards or #G.rubber_cards.cards == 0 then
             G.rubber_cards = {cards = Entropy.rubber_ball_scoring(scoring_hand)}
         end
+        for i, v in pairs(added_cards) do G.rubber_cards.cards[#G.rubber_cards.cards+1] = v end
 		context.cardarea = G.rubber_cards
         context.scoring_hand = G.rubber_cards.cards
 		calc_main_scoring(context, G.rubber_cards.cards)

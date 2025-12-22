@@ -1956,6 +1956,15 @@ local decs = {
 					"temporarily"
                 },
             },
+			j_entr_texas_hold_em = {
+                name = "Texas Hold 'Em",
+                text = {
+					"{C:red}-#1#{} Card Selection Limit",
+					"apply {C:attention}Marked{} to the",
+					"first {C:attention}#2#{} cards drawn",
+					"each blind"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
@@ -2394,8 +2403,9 @@ local decs = {
 			b_entr_discordant = {
 				name = "Malformed Deck",
 				text =  {
-					"Created Cards, Vouchers and Boosters",
-					"are replaced by a random card type"
+					"Created {C:attention}Cards{}, {C:attention}Vouchers{}",
+					"and {C:attention}Boosters{} are replaced",
+					"by a random card type"
 				}
 			},
 		},
@@ -6106,6 +6116,14 @@ local decs = {
                     '{C:attention}Stake{} difficulty'
                 }
             },
+			entr_marked = {
+				name = "Marked",
+				text = {
+					"Always added to",
+					"each played hand",
+					"this rounded"
+				}
+			},
 			entr_crimson_seal = {
 				name = "Crimson Seal",
 				text = {
@@ -6647,6 +6665,7 @@ local decs = {
 		labels = {
 			banana = "Banana",
 			entr_pinned = "Invariant",
+			entr_marked = "Marked",
 			entr_hotfix = "Hotfixed",
 			temporary = "Temporary",
 			entr_pseudorandom = "Pseudorandom",

@@ -7287,6 +7287,95 @@ local twisted_pair = {
     }
 }
 
+local texas_hold_em = {
+    order = 127,
+    object_type = "Joker",
+    key = "texas_hold_em",
+    rarity = 2,
+    cost = 8,   
+    eternal_compat = true,
+    pos = {x = 5, y = 15},
+    atlas = "jokers",
+    config = {
+        cards_added = 3,
+        csl = 2,
+        added_cards = {}
+    },
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    demicoloncompat = true,
+    blueprint_compat = true,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {set = "Other", key = "entr_marked", vars = {}}
+        return {
+            vars = {
+                card.ability.csl,
+                card.ability.cards_added,
+            }
+        }
+    end,
+    add_to_deck = function(self, card) Entropy.ChangeFullCSL(-card.ability.csl) end,
+    remove_from_deck = function(self, card) Entropy.ChangeFullCSL(card.ability.csl) end,
+    calculate = function(self, card, context)
+        if context.first_hand_drawn and context.hand_drawn then
+            card.ability.added_cards = {}
+            for i = 1, math.min(#context.hand_drawn, card.ability.cards_added) do
+                context.hand_drawn[i].ability.entr_marked = true
+                context.hand_drawn[i]:juice_up()
+            end
+        end
+        if context.before then
+            for i, v in pairs(G.I.CARD) do
+                if type(v) == "table" and v.ability and v.ability.entr_marked then
+                    if v.area then
+                        v.area:remove_card(v)
+                    end
+                    local h = v
+                    G.E_MANAGER:add_event(Event{
+                        func = function()
+                            h:highlight(true)
+                            return true
+                        end
+                    })
+                    G.play:emplace(v)
+                end
+            end
+        end
+        if context.end_of_round and not context.repetition and not context.individual and not context.blueprint then
+            for i, v in pairs(G.I.CARD) do
+                if type(v) == "table" and v.ability and v.ability.entr_marked then
+                    v.ability.entr_marked = nil
+                end
+            end
+        end
+    end,    
+    entr_credits = {
+        idea = {"cassknows"},
+        art = {"Camostar34"}
+    }
+}
+
+SMODS.Sticker({
+        badge_colour = G.C.RED,
+        prefix_config = { key = false },
+        key = "entr_marked",
+        atlas = "marked",
+        pos = { x = 0, y = 0 },
+        should_apply = false,
+        no_collection = true,
+        draw = function(self, card) --don't draw shine
+            local notilt = nil
+            if card.area and card.area.config.type == "deck" then
+                notilt = true
+            end
+            G.shared_stickers[self.key].role.draw_major = card
+            G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+        end,
+    })
+
 return {
     items = {
         surreal,
@@ -7422,6 +7511,7 @@ return {
         yogurt,
         box_of_chocolates,
         carrot_cake,
-        twisted_pair
+        twisted_pair,
+        texas_hold_em
     }
 }

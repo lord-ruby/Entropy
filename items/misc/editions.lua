@@ -408,8 +408,7 @@ local lowres = {
 		end
 	end,
 	on_remove = function(card)
-		Cryptid.manipulate(card, { value = 1 })
-		Cryptid.manipulate(card)
+		Cryptid.manipulate(card, { value = 4 }, nil, true)		
 	end,
 	entr_credits = {
 		custom={key="shader",text="cassknows"},
