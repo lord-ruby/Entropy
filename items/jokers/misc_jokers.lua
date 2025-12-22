@@ -7242,7 +7242,7 @@ local carrot_cake = {
 }
 
 local twisted_pair = {
-    order = 125,
+    order = 126,
     object_type = "Joker",
     key = "twisted_pair",
     rarity = 2,

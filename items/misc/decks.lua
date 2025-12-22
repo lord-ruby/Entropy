@@ -299,7 +299,7 @@ local discordant = {
   },
   config = { },
   key = "discordant",
-  pos = { x = 7, y = 0 },
+  pos = { x = 8, y = 0 },
   atlas = "decks",
   apply = function()
     G.GAME.modifiers.entr_parakmi = true

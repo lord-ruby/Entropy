@@ -2392,7 +2392,7 @@ local decs = {
 				}
 			},
 			b_entr_discordant = {
-				name = "Discordant Deck",
+				name = "Malformed Deck",
 				text =  {
 					"Created Cards, Vouchers and Boosters",
 					"are replaced by a random card type"
