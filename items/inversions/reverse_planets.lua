@@ -540,7 +540,7 @@ end, func = function(self, card, area, copier, number)
       end 
   end
   for i = 1, math.min(card.ability.hands, #hands) do
-    SMODS.upgrade_poker_hands({hands = hand, from = card, ascension_power = card.ability.amt + (G.GAME.entr_black_dwarf or 0)})
+    SMODS.upgrade_poker_hands({hands = hands[i], from = card, ascension_power = card.ability.amt + (G.GAME.entr_black_dwarf or 0)})
   end
 end, config = {amt = 1, hands = 3}, loc_vars = function(self, q, card) return {vars = {card.ability.hands, card.ability.amt + (G.GAME.entr_black_dwarf or 0)}} end}
 
