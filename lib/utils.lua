@@ -601,7 +601,6 @@ Entropy.EEWhitelist["bl_cry_sapphire_stamp"]=true
 Entropy.EEWhitelist["bl_entr_burgundy_baracuda"]=true
 Entropy.EEWhitelist["bl_entr_diamond_dawn"]=true
 Entropy.EEWhitelist["bl_entr_olive_orchard"]=true
-Entropy.EEWhitelist["bl_entr_scarlet_sun"]=true
 Entropy.EEWhitelist["bl_entr_citrine_comet"]=true
 
 function Entropy.GetEEBlinds()
@@ -2135,6 +2134,7 @@ end
 local upgrade_hands_ref = SMODS.upgrade_poker_hands
 function SMODS.upgrade_poker_hands(args)
     if type(args.hands) == "string" then args.hands = {args.hands} end
+    if not args.hands then args.hands = {} end
     if next(SMODS.find_card("j_entr_strawberry_pie")) and hand ~= "High Card" then
         for i, v in pairs(SMODS.find_card("j_entr_strawberry_pie")) do
             for index, hand in pairs(args.hands) do

@@ -968,7 +968,7 @@ local sowilo_indicator = {
     calculate = function(self, rune, context)
         if context.pre_discard then
             local text = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
-            SMODS.upgrade_poker_hands({hands = hand, from = rune, ascension_power = G.GAME.providence and 4 or 2})
+            SMODS.upgrade_poker_hands({hands = text, from = rune, ascension_power = G.GAME.providence and 4 or 2})
             return {
                 func = function()
                 end,

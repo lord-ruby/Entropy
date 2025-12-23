@@ -2526,7 +2526,7 @@ local decs = {
 				name = "Endurance",
 				text = {
 					"Multiply #1# selected card#<s>1#",
-					"values by {C:attention}#2#{} then",
+					"values by {X:attention,C:white}X#2#{} then",
 					"debuff it for {C:attention}#3#{} rounds"
 				}
 			},

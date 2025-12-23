@@ -1670,7 +1670,9 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
     end
     if key == 'xlog_chips' then
         local chips = SMODS.Scoring_Parameters["chips"]
-        chips.current = mod_chips(chips.current * math.max(math.log(to_big(chips.current) < to_big(0) and 1 or chips.current, amount), 1))
+        local gt = to_big(chips.current) < to_big(0) and 1 or chips.current
+        local log = Talisman and Big and to_big(gt):log(to_big(amount)) or math.log(gt, amount)
+        chips.current = mod_chips(to_big(chips.current) * math.max(log, 1))
         update_hand_text({delay = 0}, {chips = chips.current})
         if not Talisman or not Talisman.config_file.disable_anims then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'chips', 1, percent, nil, nil, "Chips Xlog(Chips)", G.C.BLUE, "entr_e_rizz", 0.6)
@@ -2303,7 +2305,6 @@ function ease_ante(mod)
                     if ret.ante_mod then
                         mod = ret.ante_mod
                         t = v
-                        break
                     end
                 end
             end

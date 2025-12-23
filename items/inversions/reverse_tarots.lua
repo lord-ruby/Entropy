@@ -673,30 +673,18 @@ local endurance = {
     },
     config = {
         select = 1,
-        factor = 1.5,
-        rounds = 3
+        factor = 1.25,
     },
     pos = {x=1,y=1},
     inversion = "c_strength",
     use = function(self, card2)
         local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card2, 1, card2.ability.select)
+        G.GAME.endurance_rounds = (G.GAME.endurance_rounds or 2) + 1
         for i, card in pairs(cards) do
-            card.ability.debuff_timer = (card.ability.debuff_timer or 0) + card2.ability.rounds
-            card.ability.debuff_timer_max = (card.ability.debuff_timer_max or 0) + card2.ability.rounds
+            card.ability.debuff_timer = (card.ability.debuff_timer or 0) + G.GAME.endurance_rounds
+            card.ability.debuff_timer_max = (card.ability.debuff_timer_max or 0) + G.GAME.endurance_rounds
             if not Card.no(card, "immutable", true) then
                 Cryptid.manipulate(card, { value=card2.ability.factor })
-            end
-            card:set_debuff(true)
-            card:juice_up()
-        end
-    end,
-    bulk_use = function(self,card2,area,copier,amt)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, card.ability.select)
-        for i, card in pairs(cards) do
-            card.ability.debuff_timer = (card.ability.debuff_timer or 0) + card2.ability.rounds
-            card.ability.debuff_timer_max = (card.ability.debuff_timer_max or 0) + card2.ability.rounds
-            if not Card.no(card, "immutable", true) then
-                Cryptid.manipulate(card, { value=card2.ability.factor^to_big(amt) })
             end
             card:set_debuff(true)
             card:juice_up()
@@ -711,7 +699,7 @@ local endurance = {
             vars = {
                 card.ability.select,
                 card.ability.factor,
-                card.ability.rounds
+                G.GAME.endurance_rounds or 3 
             }
         }
     end,
