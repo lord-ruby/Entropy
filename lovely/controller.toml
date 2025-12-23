@@ -5,7 +5,7 @@ priority = -1
 
 [[patches]]
 [patches.pattern]
-target = "card.lua"
+target = "functions/UI_definitions.lua"
 pattern = '''
 if (card.area == G.jokers and G.jokers or card.area == G.consumeables and G.consumeables) and G.STATE ~= G.STATES.TUTORIAL then --Add a sell button
     base_attach.children.sell = G.UIDEF.card_focus_button{
@@ -19,7 +19,7 @@ payload = '''
 if card.config.center.set == "Joker" and G.jokers and card.config.center.use then
     base_attach.children.use = G.UIDEF.card_focus_button{
       card = card, parent = base_attach, type = 'use',
-      func = 'can_use_joker", button = 'use_joker', card_width = card_width
+      func = 'can_use_joker', button = 'use_joker', card_width = card_width
     }
 end
 if card.area == G.pack_cards and Entropy.needs_pull_button(card) then
