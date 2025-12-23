@@ -7505,7 +7505,7 @@ local amaryllis = {
             }))
             return nil, true
         end
-        if card.ability.colour == "purple" and context.individual and context.other_card:is_face() and context.cardarea == G.hand then
+        if card.ability.colour == "purple" and context.individual and context.other_card:is_face() and context.cardarea == G.hand and not context.end_of_round then
             return {
                 balance = true
             }
