@@ -4532,7 +4532,7 @@ if HotPotato then
                         }},
                     }},
                     (Entropy.CanSwitchAltPath() and {n=G.UIT.R,config={id = 'change_path_button', align = "cm", minw = 1.8, minh = 1, r=0.15,colour = G.C.PURPLE, button = 'toggle_path', hover = true,shadow = true, func='can_toggle_path'}, nodes = {
-                        {n=G.UIT.R, config={align = "cm", padding = 0.07, focus_args = {button = 'y', orientation = 'cr'}, func = 'set_button_pip'}, nodes={
+                        {n=G.UIT.R, config={align = "cm", padding = 0.07, focus_args = {button = 'leftshoulder', orientation = 'cr'}, func = 'set_button_pip'}, nodes={
                             {n=G.UIT.R, config={align = "cm", maxw = 1.3}, nodes={
                             {n=G.UIT.T, config={text = localize(G.GAME.entr_alt and 'b_change_path_3' or 'b_change_path_1'), scale = 0.4, colour = G.C.WHITE, shadow = true}}
                             }},
