@@ -7395,7 +7395,7 @@ local fasciation = {
     loc_vars = function(self, q, card)
         return {
             vars = {
-                #G.jokers.cards
+                G.jokers and #G.jokers.cards
             }
         }
     end,
@@ -7407,6 +7407,115 @@ local fasciation = {
             }
         end
     end,    
+}
+
+local amaryllis = {
+    order = 127,
+    object_type = "Joker",
+    key = "amaryllis",
+    rarity = 3,
+    cost = 10,   
+    eternal_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        colour = "white",
+        hands = 3,
+        dollars = 20
+    },
+    demicoloncompat = true,
+    blueprint_compat = true,
+    loc_vars = function(self, q, card)
+        if card.ability.colour == "pink" then
+            q[#q+1] = G.P_CENTER_POOLS.e_entr_freaky
+        end
+        return {
+            vars = {
+                card.ability.hands,
+                card.ability.dollars
+            },
+            key = "j_entr_amaryllis_"..card.ability.colour
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.round_eval and not context.individual and not context.repetition then
+            G.E_MANAGER:add_event(Event{
+                func = function()
+                    local colour = pseudorandom_element({
+                        "red", "white", "pink", "orange", "purple", "yellow"
+                    }, pseudoseed("entr_amaryllis_change"))
+                    local colour_map = {
+                        red = G.C.RED,
+                        white = G.C.BLACK,
+                        pink = G.C.Entropy.Omen,
+                        orange = G.C.FILTER,
+                        purple = G.C.PURPLE,
+                        yellow = G.C.GOLD
+                    }
+                    card.ability.colour = colour
+                    SMODS.calculate_effect(
+                        { message = localize("k_switch_ex"), colour = colour_map[colour] },
+                        context.blueprint_card or card)
+                    return true
+                end
+            })
+        end
+        if card.ability.colour == "red" and context.before then
+            Entropy.FlipThen(G.play.cards, function(c) SMODS.change_base(c, "Hearts") end)
+        end
+        if card.ability.colour == "white" and context.setting_blind then
+            if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
+                G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        SMODS.add_card({
+                            set = "Rune"
+                        })
+                        G.GAME.consumeable_buffer = 0
+                        return true
+                    end 
+                })
+                return {
+                    message = localize("k_plus_rune"),
+                    colour = G.C.PURPLE
+                }
+            end
+        end
+        if card.ability.colour == "pink" and context.first_hand_drawn then
+            local card = pseudorandom_element(G.hand.cards, pseudoseed("entr_amaryllis_pink"))
+            if card then
+                card:set_edition("e_entr_freaky")
+            end
+            return nil, true
+        end
+        if card.ability.colour == "orange" and context.setting_blind then
+             G.E_MANAGER:add_event(Event({
+                func = function()
+                    ease_hands_played(card.ability.hands)
+                    SMODS.calculate_effect(
+                        { message = localize { type = 'variable', key = 'a_hands', vars = { card.ability.hands } } },
+                        context.blueprint_card or card)
+                    return true
+                end
+            }))
+            return nil, true
+        end
+        if card.ability.colour == "purple" and context.individual and context.other_card:is_face() and context.cardarea == G.hand then
+            return {
+                balance = true
+            }
+        end
+    end,   
+    calc_dollar_bonus = function(self, card)
+        if card.ability.colour == "yellow" then
+            return card.ability.dollars
+        end
+    end
 }
 
 return {
@@ -7546,6 +7655,7 @@ return {
         carrot_cake,
         twisted_pair,
         texas_hold_em,
-        fasciation
+        fasciation,
+        amaryllis
     }
 }

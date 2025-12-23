@@ -547,6 +547,17 @@ function Card:click(...)
 	if G.SETTINGS.paused and self.edition and G.P_CENTERS[self.edition.key] and G.P_CENTERS[self.edition.key].sound then
 		play_sound(G.P_CENTERS[self.edition.key].sound.sound, G.P_CENTERS[self.edition.key].sound.volume)
 	end
+	if G.SETTINGS.paused and self.config and self.config.center_key == "j_entr_amaryllis" then
+		self.ability.colour = ({
+			white = "red",
+			red = "pink",
+			pink = "orange",
+			orange = "purple",
+			purple = "yellow",
+			yellow = "white"
+		})[self.ability.colour]
+		self:juice_up()
+	end
 	return card_click(self, ...)
 end
 

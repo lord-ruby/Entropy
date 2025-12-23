@@ -1974,6 +1974,88 @@ local decs = {
 					"{C:inactive}(Currently: {C:attention}#1#{C:inactive})"
                 },
             },
+			j_entr_amaryllis = {name = "Amaryllis", text = {""}},
+			j_entr_amaryllis_white = {
+                name = "White Amaryllis",
+                text = {
+					{
+						"Create a {C:purple}Rune{} card",
+						"when {C:attention}Blind{} is selected",
+						"{C:inactive}(Must have room)"
+					},
+					{
+						"Switches colour at",
+						"end of round"
+					}
+                },
+            },
+			j_entr_amaryllis_red = {
+                name = "Red Amaryllis",
+                text = {
+					{
+						"Played cards are",
+						"converted to {C:hearts}Hearts"
+					},
+					{
+						"Switches colour at",
+						"end of round"
+					}
+                },
+            },
+			j_entr_amaryllis_pink = {
+                name = "Pink Amaryllis",
+                text = {
+					{
+						"A random card in the",
+						"first {C:attention}drawn{} hand",
+						"becomes {C:entr_freaky}Freaky{}"
+					},
+					{
+						"Switches colour at",
+						"end of round"
+					}
+                },
+            },
+			j_entr_amaryllis_orange = {
+                name = "Orange Amaryllis",
+                text = {
+					{
+						"when {C:attention}Blind{} is selected",
+						"gain {C:blue}+#1#{} hands"
+					},
+					{
+						"Switches colour at",
+						"end of round"
+					}
+                },
+            },
+			j_entr_amaryllis_purple = {
+                name = "Purple Amaryllis",
+                text = {
+					{
+						"Each {C:attention}Face Card{}",
+						"held in hand balances",
+						"{C:blue}Chips{} and {C:red}Mult{}"
+					},
+					{
+						"Switches colour at",
+						"end of round"
+					}
+                },
+            },
+			j_entr_amaryllis_yellow = {
+                name = "Yellow Amaryllis",
+                text = {
+					{
+						"Earn {C:gold}$#2#{} at",
+						"end of round",
+					},
+					{
+						"Switches colour at",
+						"end of round"
+					}
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
