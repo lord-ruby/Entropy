@@ -7376,6 +7376,39 @@ SMODS.Sticker({
         end,
     })
 
+local fasciation = {
+    order = 126,
+    object_type = "Joker",
+    key = "fasciation",
+    rarity = 2,
+    cost = 8,   
+    eternal_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    demicoloncompat = true,
+    blueprint_compat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                #G.jokers.cards
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.repetition and context.cardarea == G.play and context.other_card == G.play.cards[1] then
+            local c = context.other_card
+            return {
+                repetitions = #G.jokers.cards
+            }
+        end
+    end,    
+}
+
 return {
     items = {
         surreal,
@@ -7512,6 +7545,7 @@ return {
         box_of_chocolates,
         carrot_cake,
         twisted_pair,
-        texas_hold_em
+        texas_hold_em,
+        fasciation
     }
 }

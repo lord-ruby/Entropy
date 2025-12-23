@@ -1965,6 +1965,15 @@ local decs = {
 					"each blind"
                 },
             },
+			j_entr_fasciation = {
+                name = "Fasciation",
+                text = {
+					"Retrigger the {C:antention}first{}",
+					"played card once for",
+					"each {C:attention}Joker{} card",
+					"{C:inactive}(Currently: {C:attention}#1#{C:inactive})"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
