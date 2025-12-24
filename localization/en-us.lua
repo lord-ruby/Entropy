@@ -2067,6 +2067,24 @@ local decs = {
 					"{C:inactive}(Currently: {C:attention}#1#{C:inactive}, {C:attention}#2#{C:inactive}, {C:attention}#3#{C:inactive})"
                 },
             },
+			j_entr_brownies = {
+				name = "Brownies",
+				text = {
+					"Earn {C:gold}$#1#{} when",
+					"the next {C:attention}#2#{} consumables",
+					"are used"
+				}
+			},
+			j_entr_redacted = {
+				name = "{X:white,C:entr_transparent}______{} Joker",
+				text = {
+					"Flip a random Joker",
+					"and apply {C:attention}rental{} when",
+					"Blind is selected",
+					"{C:attention}rental{} Jokers give",
+					"{C:mult}+#1#{} Mult"
+				}
+			},
 		},
 		Blind = {
 			bl_entr_red = {

@@ -7588,6 +7588,106 @@ local cooking_pot = {
     end,   
 }
 
+local brownies = {
+    order = 129,
+    object_type = "Joker",
+    key = "brownies",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        dollars = 3,
+        cards_left = 10,
+    },
+    demicoloncompat = true,
+    blueprint_compat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.dollars,
+                card.ability.cards_left
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.using_consumeable then            
+            card.ability.cards_left = card.ability.cards_left - 1
+            if card.ability.cards_left <= 0 then
+                SMODS.destroy_cards(card, nil, nil, true)
+                return {
+                    dollars = card.ability.dollars,
+                    message = localize("k_eaten_ex")
+                }
+            end
+            return {
+                dollars = card.ability.dollars,
+                message = "-1",
+                colour = G.C.RED
+            }
+        end
+    end,   
+}
+
+local redacted = {
+    order = 130,
+    object_type = "Joker",
+    key = "redacted",
+    rarity = 2,
+    cost = 7,
+    eternal_compat = true,
+    pos = {x = 6, y = 15},
+    atlas = "jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        mult = 10
+    },
+    demicoloncompat = true,
+    blueprint_compat = true,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {set = "Other", key = "rental", vars = {3}}
+        return {
+            vars = {
+                card.ability.mult
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.setting_blind then            
+            local cards = {}
+            local cards_not_strict = {}
+            for i, v in pairs(G.jokers.cards) do
+                if v ~= card then
+                    cards_not_strict[#cards_not_strict+1] = v
+                    if not v.ability.rental then cards[#cards+1] = v end
+                end
+            end
+            local rcard = pseudorandom_element(cards, pseudoseed("redadcted")) or pseudorandom_element(cards_not_strict, pseudoseed("redacted"))
+            if rcard then
+                rcard:flip()
+                rcard.ability.rental = true
+            end
+            card:juice_up()
+            return nil, true
+        end
+        if context.joker_main then
+            for i, v in pairs(G.jokers.cards) do 
+                if v.ability.rental then G.E_MANAGER:add_event(Event{func = function() card:juice_up() return true end}) SMODS.calculate_effect{mult = card.ability.mult, card = v} end
+            end
+            return nil, true
+        end
+    end,   
+}
 
 return {
     items = {
@@ -7728,6 +7828,8 @@ return {
         texas_hold_em,
         fasciation,
         amaryllis,
-        cooking_pot
+        cooking_pot,
+        brownies,
+        redacted,
     }
 }
