@@ -163,7 +163,7 @@ local dr_sunshine = {
     atlas = "jokers",
     pools = { ["Sunny"] = true, },
     demicoloncompat = true,
-    loc_vars = function(self, info_queue, card)
+    loc_vars = function(self, q, card)
         if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
         return {
             vars = {
@@ -210,7 +210,7 @@ local sunny_joker = {
     atlas = "jokers",
     demicoloncompat = true,
     pools = { ["Meme"] = true, ["Sunny"] = true, },
-    loc_vars = function(self, info_queue, card)
+    loc_vars = function(self, q, card)
         if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
         return {
             vars = {
@@ -312,7 +312,7 @@ local solar_dagger = {
     demicoloncompat = true,
     config = { x_asc = 1 },
     pools = { ["Sunny"] = true, },
-    loc_vars = function(self, info_queue, card)
+    loc_vars = function(self, q, card)
         if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
         return {
             vars = {
@@ -1102,7 +1102,7 @@ local sunny_side_up = {
         ["Sunny"] = true,
         ["Food"] = true
     },
-    loc_vars = function(self, info_queue, center)
+    loc_vars = function(self, q, center)
         if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
         return {
             vars = {
