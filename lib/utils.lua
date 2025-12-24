@@ -1527,6 +1527,7 @@ end
 
 local card_eval_status_text_ref = card_eval_status_text
 function card_eval_status_text(card, ...)
+    if card.silent then return end
     if G.deck and card and card.area == G.butterfly_jokers and G.deck.cards[1] then
         return card_eval_status_text_ref(G.deck.cards[1], ...)
     else    

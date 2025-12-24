@@ -288,6 +288,7 @@ local entropy_card = {
     atlas = "reverse_legendary",
     demicoloncompat=true,
     loc_vars = function(self, info_queue, card)
+        if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
         return {
             vars = {
                 number_format(card.ability.x_asc_mod),

@@ -1,6 +1,7 @@
 
 # Entropy
-A chaotic Balatro mod
+A Balatro mod focused on Inverted Consumables and expanding on Vanilla mechanics in various other ways
+Generally Vanilla adjacent but not exactly Vanilla+
 
 [Download CryptLib](https://github.com/SpectralPack/Cryptlib)
 

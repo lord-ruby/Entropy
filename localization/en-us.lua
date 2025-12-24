@@ -2056,6 +2056,17 @@ local decs = {
 					}
                 },
             },
+			j_entr_cooking_pot = {
+                name = "Cooking Pot",
+                text = {
+					"Obtained {C:attention}Food{} Jokers are",
+					"instead added to this Joker",
+					"without being able to degrade",
+					"{C:red}self-destructs{} after {C:attention}3{}",
+					"{C:attention}Food{} Jokers obtained",
+					"{C:inactive}(Currently: {C:attention}#1#{C:inactive}, {C:attention}#2#{C:inactive}, {C:attention}#3#{C:inactive})"
+                },
+            },
 		},
 		Blind = {
 			bl_entr_red = {
@@ -5872,6 +5883,16 @@ local decs = {
 			},
 		},
 		Other = {
+			asc_power_tutorial = {
+				name = "Ascension Power Explanation",
+				text = {
+					"Ascension Power multiplies",
+					"{C:blue}Chips{} and {C:mult}Mult",
+					"by {X:gold,C:white}X(1.25 ^ Power)",
+					"{C:inactive,s:0.8}Ex. +0.5 Asc Power -> X1.11 Chips/Mult",
+					"{C:inactive,s:0.6}This popup can be disabled in the config"
+				}
+			},
 			antipattern_pair = {
 				name = "Antipattern",
 				text = {
@@ -6582,7 +6603,8 @@ local decs = {
 
 			entr_code_sudo = "OVERRIDE",
 			entr_code_sudo_previous = "OVERRIDE AS PREVIOUS",
-
+			k_cooked_ex = "Cooked!",
+			k_entr_asc_tutorial = "Enable Ascension Power tooltip",
 			k_entr_faster_ante_scaling = "Scale Blind scores quicker if you have an Entropic Joker",
 			k_entr_entropic_music = "Entropic Jokers (Joker in Greek by gemstonez)",
 			k_entr_blind_tokens = "Enable Blind Tokens",

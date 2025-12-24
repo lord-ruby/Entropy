@@ -413,6 +413,7 @@ local radiant = {
 		return true
 	end,
 	loc_vars = function(self, info_queue, card)
+		if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
 		return {
             vars = {
                 card.ability.extra.asc_pow

@@ -27,6 +27,7 @@ local solar = {
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
+		if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
         return {vars={card and card.edition and card.edition.sol or 1.4}}
     end,
     calculate = function(self, card, context)
@@ -146,6 +147,7 @@ local sunny = {
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
+		if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
         return {vars={card and card.edition and card.edition.sol or 4}}
     end,
     calculate = function(self, card, context)

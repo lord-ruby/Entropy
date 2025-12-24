@@ -3243,6 +3243,9 @@ end
 local card_addref = Card.add_to_deck
 function Card:add_to_deck(...)
     card_addref(self, ...)
+    if self.ability.set == "Joker" and not self.original_card and self:is_food() then
+        SMODS.calculate_context{entr_food_added = true, other_card = self}
+    end
     if self.ability.set == "Joker" or self.ability.consumeable and self.config.center.key ~= "c_entr_detour" then
         G.GAME.detour_set = self.ability.set
     end
@@ -3932,7 +3935,7 @@ G.FUNCS.evaluate_play = function(e)
     })
 end
 
-function Entropy.GetDummy(center, area, self)
+function Entropy.GetDummy(center, area, self, silent)
     local abil = copy_table(center.config) or {}
     abil.consumeable = copy_table(abil)
     abil.name = center.name or center.key
@@ -3963,7 +3966,9 @@ function Entropy.GetDummy(center, area, self)
             return self:juice_up(...)
         end,
         start_dissolve = function(_, ...)
-            return self:start_dissolve(...)
+            if not _.silent then
+                return self:start_dissolve(...)
+            end
         end,
         remove = function(_, ...)
             return self:remove(...)
@@ -3996,7 +4001,8 @@ function Entropy.GetDummy(center, area, self)
         eligible_strength_jokers = eligible_editionless_jokers,
         eligible_editionless_jokers = eligible_editionless_jokers,
         T = self.t,
-        VT = self.VT
+        VT = self.VT,
+        silent = silent
     }
     for i, v in pairs(Card) do
         if type(v) == "function" and i ~= "flip_side" then

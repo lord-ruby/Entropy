@@ -8,5 +8,6 @@ return {
 	["inversion_queues"] = 2,
 	["curses_enabled"] = true,
 	["corrupted_speed"] = 100,
-	["profile_prefix"] = true
+	["profile_prefix"] = true,
+	["asc_power_tutorial"] = true
 }

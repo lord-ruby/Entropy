@@ -164,6 +164,7 @@ local dr_sunshine = {
     pools = { ["Sunny"] = true, },
     demicoloncompat = true,
     loc_vars = function(self, info_queue, card)
+        if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
         return {
             vars = {
                 number_format(card.ability.plus_asc_mod),
@@ -210,6 +211,7 @@ local sunny_joker = {
     demicoloncompat = true,
     pools = { ["Meme"] = true, ["Sunny"] = true, },
     loc_vars = function(self, info_queue, card)
+        if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
         return {
             vars = {
                 number_format(card.ability.plus_asc),
@@ -311,6 +313,7 @@ local solar_dagger = {
     config = { x_asc = 1 },
     pools = { ["Sunny"] = true, },
     loc_vars = function(self, info_queue, card)
+        if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
         return {
             vars = {
                 number_format(card.ability.x_asc)
@@ -1100,6 +1103,7 @@ local sunny_side_up = {
         ["Food"] = true
     },
     loc_vars = function(self, info_queue, center)
+        if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
         return {
             vars = {
                 number_format(center.ability.asc),
@@ -4332,6 +4336,7 @@ local desert = {
         end
     end,
     loc_vars = function(self, q, card)
+        if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
         return {
             vars = {
                 card.ability.asc_mod,
@@ -4518,6 +4523,7 @@ local thirteen_of_stars = {
             "set_entr_misc_jokers",
         }
     },
+    loc_vars = function(self, q, card) if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end end,
     calculate = function(self, card, context)
         if (context.joker_main) or context.forcetrigger then
             local text = G.FUNCS.get_poker_hand_info(G.play.cards)
@@ -4608,6 +4614,7 @@ local prismatic_shard = {
         end
     end,
     loc_vars = function(self, q, card)
+        if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
         return {
             vars = {
                 card.ability.mult,
@@ -5330,6 +5337,7 @@ local black_rose_green_sun = {
         end
     end,
     loc_vars = function(self, q, card)
+        if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
         return {
             vars = {
                 card.ability.asc_pow
@@ -5702,6 +5710,7 @@ local blooming_crimson = {
         end
     end,
     loc_vars = function(self, q, card)
+        if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
         return {
             vars = {
                 card.ability.xmult,
@@ -7518,6 +7527,68 @@ local amaryllis = {
     end
 }
 
+local cooking_pot = {
+    order = 128,
+    object_type = "Joker",
+    key = "cooking_pot",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        foods = {}
+    },
+    demicoloncompat = true,
+    blueprint_compat = true,
+    loc_vars = function(self, q, card)
+        for i, v in pairs(card.ability.foods) do
+            q[#q+1] = G.P_CENTERS[v]
+        end
+        return {
+            vars = {
+                card.ability.foods[1] and localize{type = "name_text", set = G.P_CENTERS[card.ability.foods[1]].set, key = card.ability.foods[1]} or localize("k_none"),
+                card.ability.foods[2] and localize{type = "name_text", set = G.P_CENTERS[card.ability.foods[2]].set, key = card.ability.foods[2]} or localize("k_none"),
+                card.ability.foods[3] and localize{type = "name_text", set = G.P_CENTERS[card.ability.foods[3]].set, key = card.ability.foods[3]} or localize("k_none"),
+            },
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.entr_food_added then
+            card.ability.foods[#card.ability.foods+1] = context.other_card.config.center.key
+            if #card.ability.foods > 3 then
+                SMODS.destroy_cards(card, nil, nil, true)
+                return {
+                    message = localize("k_destroyed_ex")
+                }
+            end
+            SMODS.destroy_cards(context.other_card, nil, nil, true)
+            return {
+                message = localize("k_cooked_ex")
+            }
+        end
+        local retted
+        for i, v in pairs(card.ability.foods) do
+            local dummy = Entropy.GetDummy(G.P_CENTERS[v], G.jokers, card, true)
+            local ret, retr = Card.calculate_joker(dummy, context)
+            if ret or retr then SMODS.calculate_effect{message =  localize{type = "name_text", set = G.P_CENTERS[v].set, key = v}, card = card} end
+            if ret and ret.card == dummy then ret.card = card end
+            for index, effect in pairs(ret or {}) do
+                SMODS.calculate_individual_effect(ret, dummy, index, effect)
+                retted = true
+            end
+            if retr then retted = true end
+        end
+        if retted then return nil, true end
+    end,   
+}
+
+
 return {
     items = {
         surreal,
@@ -7656,6 +7727,7 @@ return {
         twisted_pair,
         texas_hold_em,
         fasciation,
-        amaryllis
+        amaryllis,
+        cooking_pot
     }
 }
