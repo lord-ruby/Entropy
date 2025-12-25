@@ -2094,6 +2094,12 @@ function Entropy.post_create_card(card, from_booster, forced_key)
             set = c.set
         end
     end
+    if Entropy.Inversion(G.P_CENTERS[key]) and not G.SETTINGS.paused and G.GAME.entr_perma_inversions and G.GAME.entr_perma_inversions[key] and not card.multiuse and (not card.ability or not card.ability.fromflipside) then
+        local c = G.P_CENTERS[Entropy.Inversion(G.P_CENTERS[key])]
+        key = c.key
+        card:set_ability(c)
+        set = c.set
+    end
     set = G.P_CENTERS[key] and G.P_CENTERS[key].set or set
     if G.GAME.modifiers.glitched_items and not (set == "Default" or set == "Enhanced") then
         local gc = {key}

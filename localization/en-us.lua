@@ -2085,6 +2085,22 @@ local decs = {
 					"{C:mult}+#1#{} Mult"
 				}
 			},
+			j_entr_void_cradle = {
+				name = "Void Cradle",
+				text = {
+					{
+						"Use this Joker to {C:red}Invert{}",
+						"a selected Consumable",
+						"All {C:attention}future{} instances of",
+						"this consumable are",
+						"also {C:red}Inverted{}"
+					},
+					{
+						"This Joker Gains {C:attention}#2#{} use#<s>2#",
+						"when defeating a Boss Blind"
+					}
+				}
+			},
 		},
 		Blind = {
 			bl_entr_red = {

@@ -7689,6 +7689,53 @@ local redacted = {
     end,   
 }
 
+local void_cradle = {
+    order = 131,
+    object_type = "Joker",
+    key = "void_cradle",
+    rarity = 2,
+    cost = 8,
+    eternal_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+    config = {
+        left = 1,
+        left_mod = 1
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+        }
+    },
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.left,
+                card.ability.left_mod
+            }
+        }
+    end,
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition) or context.forcetrigger then
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
+        end
+    end,
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.consumeables}, card, 1, card.ability.left, function(c) return Entropy.Inversion(c) end)
+        return to_big(card.ability.left) > to_big(0) and #cards > 0 and #cards <= card.ability.left
+    end,
+    use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.consumeables}, card, 1, card.ability.left, function(c) return Entropy.Inversion(c) end)
+        Entropy.FlipThen(cards, function(c) 
+            G.GAME.entr_perma_inversions[c.config.center.key] = Entropy.Inversion(c);
+            c:set_ability(G.P_CENTERS[Entropy.Inversion(c)])
+        end)
+        G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
+        card.ability.left = math.max(card.ability.left, 0)
+    end
+}
+
 return {
     items = {
         surreal,
@@ -7703,7 +7750,7 @@ return {
         rusty_shredder,
         chocolate_egg,
         lotteryticket,
-        devilled_suns,
+        devilled_suns,        
         eden,
         seventyseven,
         tesseract,
@@ -7831,5 +7878,6 @@ return {
         cooking_pot,
         brownies,
         redacted,
+        void_cradle
     }
 }
