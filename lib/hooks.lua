@@ -3249,7 +3249,7 @@ function Card:add_to_deck(...)
     if self.ability.set == "Joker" or self.ability.consumeable and self.config.center.key ~= "c_entr_detour" then
         G.GAME.detour_set = self.ability.set
     end
-    if self.is_sunny and self:is_sunny() and self.area == G.jokers then 
+    if self:is_sunny() and self.area == G.jokers then 
         check_for_unlock({ type = "sunny_joker" })
     end
 end

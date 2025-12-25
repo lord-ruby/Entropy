@@ -7613,7 +7613,7 @@ local brownies = {
         }
     end,
     calculate = function(self, card, context)
-        if context.using_consumeable or contedxt.forcetrigger then            
+        if context.using_consumeable or context.forcetrigger then            
             card.ability.cards_left = card.ability.cards_left - 1
             if card.ability.cards_left <= 0 then
                 SMODS.destroy_cards(card, nil, nil, true)
