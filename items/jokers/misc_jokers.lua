@@ -7786,6 +7786,22 @@ local arachnophobia = {
     end,   
 }
 
+local pound_of_flesh = {
+    order = 133,
+    object_type = "Joker",
+    key = "pound_of_flesh",
+    rarity = 2,
+    cost = 8,
+    eternal_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },  
+}
+
 return {
     items = {
         surreal,
@@ -7929,6 +7945,7 @@ return {
         brownies,
         redacted,
         void_cradle,
-        arachnophobia
+        arachnophobia,
+        pound_of_flesh
     }
 }

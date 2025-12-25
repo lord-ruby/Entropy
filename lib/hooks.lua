@@ -3718,6 +3718,9 @@ end
 
 local ref = create_shop_card_ui
 function create_shop_card_ui(card, type, area)
+    if (card.config.center.set == "Voucher" or card.config.center.set == "Booster" or type == "Voucher" or type == "Booster") and next(SMODS.find_card("j_entr_pound_of_flesh")) then
+        card.ability.beast_mark =(card.ability.set == "Voucher" or type == "Voucher") and 3 or true
+    end
     if card.config.center.set == "Back" or card.config.center.set == "Sleeve" then
         G.E_MANAGER:add_event(Event({
             trigger = 'after',

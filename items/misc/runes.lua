@@ -790,6 +790,16 @@ G.FUNCS.can_open = function(e)
         e.config.colour = G.C.GREEN
         e.config.button = 'use_card'
     end
+    if e.config.ref_table.ability.beast_mark then
+        local num = type(e.config.ref_table.ability.beast_mark) == "number" and e.config.ref_table.ability.beast_mark or 1
+        if #G.deck.cards >= num then
+            e.config.colour = G.C.GREEN
+            e.config.button = 'use_card'
+        elseif not Entropy.has_rune("rune_entr_naudiz") then
+            e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+            e.config.button = nil
+        end
+    end
 end
 
 local can_redeem_ref = G.FUNCS.can_redeem
@@ -798,6 +808,16 @@ G.FUNCS.can_redeem = function(e)
     if Entropy.has_rune("rune_entr_naudiz") then
         e.config.colour = G.C.GREEN
         e.config.button = 'use_card'
+    end
+    if e.config.ref_table.ability.beast_mark then
+        local num = type(e.config.ref_table.ability.beast_mark) == "number" and e.config.ref_table.ability.beast_mark or 1
+        if #G.deck.cards >= num then
+            e.config.colour = G.C.GREEN
+            e.config.button = 'use_card'
+        elseif not Entropy.has_rune("rune_entr_naudiz") then
+            e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+            e.config.button = nil
+        end
     end
 end
 

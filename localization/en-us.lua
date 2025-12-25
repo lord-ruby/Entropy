@@ -2111,6 +2111,15 @@ local decs = {
 					"{C:inactive}(Must have room)"
 				}
 			},
+			j_entr_pound_of_flesh = {
+				name = "A Pound of Flesh",
+				text = {
+					"All {C:attention}Booster Packs{} instead cost",
+					"{C:attention}1{} random card from {C:attention}full deck{}",
+					"All {C:attention}Vouchers{} instead cost {C:attention}3{}",
+					"random cards from {C:attention}full deck{}"
+				}
+			},
 		},
 		Blind = {
 			bl_entr_red = {
