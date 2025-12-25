@@ -7761,12 +7761,12 @@ local arachnophobia = {
     end,
     calculate = function(self, card, context)
         if context.before then            
-            card.ability.needed_triggers = 0
+            card.ability.triggers = 0
         end
         if context.individual and context.other_card:get_id() == 8 then
-            card.ability.needed_triggers = card.ability.needed_triggers + 1
+            card.ability.triggers = card.ability.triggers + 1
         end
-        if context.joker_main and card.ability.needed_triggers >= 5 or context.forcetrigger then
+        if context.joker_main and card.ability.triggers >= card.ability.needed_triggers or context.forcetrigger then
             if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
                 G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
                 G.E_MANAGER:add_event(Event{
