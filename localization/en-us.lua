@@ -2101,6 +2101,16 @@ local decs = {
 					}
 				}
 			},
+			j_entr_arachnophobia = {
+				name = "Arachnophobia",
+				text = {
+					"Create an {C:entr_omen}Omen{}",
+					"card if {C:attention}#1#{} or more",
+					"{C:attention}8{}'s are scored in",
+					"one hand",
+					"{C:inactive}(Must have room)"
+				}
+			},
 		},
 		Blind = {
 			bl_entr_red = {

@@ -7151,7 +7151,6 @@ local box_of_chocolates = {
             "set_entr_misc_jokers",
         }
     },
-    demicoloncompat = true,
     blueprint_compat = true,
     pools = {Food = true},
     in_pool = function() return false end,
@@ -7218,7 +7217,6 @@ local carrot_cake = {
             "set_entr_misc_jokers",
         }
     },
-    demicoloncompat = true,
     blueprint_compat = true,
     pools = {Food = true},
     in_pool = function() return false end,
@@ -7267,7 +7265,6 @@ local twisted_pair = {
             "set_entr_misc_jokers",
         }
     },
-    demicoloncompat = true,
     blueprint_compat = true,
     loc_vars = function(self, q, card)
         return {
@@ -7329,9 +7326,9 @@ local texas_hold_em = {
     add_to_deck = function(self, card) Entropy.ChangeFullCSL(-card.ability.csl) end,
     remove_from_deck = function(self, card) Entropy.ChangeFullCSL(card.ability.csl) end,
     calculate = function(self, card, context)
-        if context.first_hand_drawn and context.hand_drawn then
+        if context.first_hand_drawn and context.hand_drawn or context.forcetrigger then
             card.ability.added_cards = {}
-            for i = 1, math.min(#context.hand_drawn, card.ability.cards_added) do
+            for i = 1, math.min(#(context.hand_drawn or G.hand.cards), card.ability.cards_added) do
                 context.hand_drawn[i].ability.entr_marked = true
                 context.hand_drawn[i]:juice_up()
             end
@@ -7399,7 +7396,6 @@ local fasciation = {
             "set_entr_misc_jokers",
         }
     },
-    demicoloncompat = true,
     blueprint_compat = true,
     loc_vars = function(self, q, card)
         return {
@@ -7617,7 +7613,7 @@ local brownies = {
         }
     end,
     calculate = function(self, card, context)
-        if context.using_consumeable then            
+        if context.using_consumeable or contedxt.forcetrigger then            
             card.ability.cards_left = card.ability.cards_left - 1
             if card.ability.cards_left <= 0 then
                 SMODS.destroy_cards(card, nil, nil, true)
@@ -7680,7 +7676,7 @@ local redacted = {
             card:juice_up()
             return nil, true
         end
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             for i, v in pairs(G.jokers.cards) do 
                 if v.ability.rental then G.E_MANAGER:add_event(Event{func = function() card:juice_up() return true end}) SMODS.calculate_effect{mult = card.ability.mult, card = v} end
             end
@@ -7736,6 +7732,60 @@ local void_cradle = {
     end
 }
 
+local arachnophobia = {
+    order = 132,
+    object_type = "Joker",
+    key = "arachnophobia",
+    rarity = 2,
+    cost = 8,
+    eternal_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        triggers = 0,
+        needed_triggers = 5
+    },
+    demicoloncompat = true,
+    blueprint_compat = true,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.needed_triggers
+            }
+        }
+    end,
+    calculate = function(self, card, context)
+        if context.before then            
+            card.ability.needed_triggers = 0
+        end
+        if context.individual and context.other_card:get_id() == 8 then
+            card.ability.needed_triggers = card.ability.needed_triggers + 1
+        end
+        if context.joker_main and card.ability.needed_triggers >= 5 or context.forcetrigger then
+            if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
+                G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        SMODS.add_card{set = "Omen", area = G.consumables}
+                        G.GAME.consumeable_buffer = 0
+                        return true
+                    end
+                })
+                return {
+                    message = localize("k_plus_omen"),
+                    G.C.Entropy.Omen
+                }
+            end
+            return nil, true
+        end
+    end,   
+}
+
 return {
     items = {
         surreal,
@@ -7750,7 +7800,7 @@ return {
         rusty_shredder,
         chocolate_egg,
         lotteryticket,
-        devilled_suns,        
+        devilled_suns,            
         eden,
         seventyseven,
         tesseract,
@@ -7878,6 +7928,7 @@ return {
         cooking_pot,
         brownies,
         redacted,
-        void_cradle
+        void_cradle,
+        arachnophobia
     }
 }
