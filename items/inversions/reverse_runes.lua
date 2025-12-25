@@ -457,7 +457,7 @@ local youth = {
     inversion = "c_entr_wunjo",
     config = {
         extra = 1,
-        rounds = 3
+        rounds = 5
     },
     loc_vars = function(self, q, card) return {vars = {card.ability.extra, card.ability.rounds}} end,
     use = function(self, card)

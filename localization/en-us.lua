@@ -2543,7 +2543,8 @@ local decs = {
 				name = "Corrupted Deck",
 				text =  {
 					"{C:attention}Jokers{} and {C:attention}Consumables{}",
-					"Cycle between {C:attention}3{} options"
+					"Cycle between {C:attention}3{} options",
+					"{C:red}-1{} Shop Slot"
 				}
 			},
 			b_entr_discordant = {
@@ -2551,7 +2552,8 @@ local decs = {
 				text =  {
 					"Created {C:attention}Cards{}, {C:attention}Vouchers{}",
 					"and {C:attention}Boosters{} are replaced",
-					"by a random card type"
+					"by a random card type",
+					"Rerolls scale {C:red}Twice{} as fast"
 				}
 			},
 		},
@@ -2620,7 +2622,8 @@ local decs = {
 				name = "Corrupted Sleeve",
 				text =  {
 					"{C:attention}Jokers{} and {C:attention}Consumables{}",
-					"Cycle between {C:attention}2{} options"
+					"Cycle between {C:attention}2{} options",
+					"{C:red}-1{} Shop Slot"
 				}
 			},
 		},

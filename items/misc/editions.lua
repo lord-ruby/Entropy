@@ -9,7 +9,7 @@ local solar = {
     key="solar",
     shader="solar",
     config = {
-        sol = 1.25
+        sol = 1.2
     },
 	sound = {
 		sound = "entr_e_solar",
@@ -329,6 +329,7 @@ local set_cost_ref = Card.set_cost
 function Card:set_cost()
 	if self.config.center.set == "Back" or self.config.center.set == "Sleeve" then
 		self.config.center.cost = 15
+		self.base_cost = 15
 	end
 	set_cost_ref(self)
 	for i, v in pairs(G.I.CARD) do

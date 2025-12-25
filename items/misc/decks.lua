@@ -277,11 +277,11 @@ local corrupted = {
       "set_entr_decks"
     }
   },
-  config = { },
   key = "corrupted",
   pos = { x = 7, y = 0 },
   atlas = "decks",
   apply = function()
+    change_shop_size(-1)
     G.GAME.modifiers.glitched_items = (G.GAME.modifiers.glitched_items or 2) + 1
   end,
   entr_credits = {
@@ -302,9 +302,16 @@ local discordant = {
   pos = { x = 8, y = 0 },
   atlas = "decks",
   apply = function()
+    G.GAME.modifiers.entr_reroll_fac = 2
     G.GAME.modifiers.entr_parakmi = true
   end,
 }
+
+local crc_ref = calculate_reroll_cost
+function calculate_reroll_cost(...)
+    local ret = crc_ref(...)
+    G.GAME.current_round.reroll_cost = (G.GAME.round_resets.temp_reroll_cost or G.GAME.round_resets.reroll_cost) + G.GAME.current_round.reroll_cost_increase * ((G.GAME.modifiers.entr_reroll_fac or 1) - 1)
+end
 
 if CardSleeves then
     CardSleeves.Sleeve {
@@ -427,6 +434,7 @@ if CardSleeves then
     atlas = "sleeves",
     pos = { x = 7, y = 0 },
     apply = function()
+      change_shop_size(-1)
       G.GAME.modifiers.glitched_items = (G.GAME.modifiers.glitched_items or 0) + 2
     end,
   }

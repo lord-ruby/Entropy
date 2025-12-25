@@ -2163,7 +2163,7 @@ local debit_card = {
     atlas = "jokers",
     config = {
         amount = 1,
-        needed = 35,
+        needed = 40,
         current_spent = 0,
         current = 0
     },
