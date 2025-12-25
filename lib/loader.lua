@@ -28,7 +28,7 @@ function SMODS.injectItems(...)
     loadmodsref(...)
 
     G.ASSET_ATLAS["cry_gameset"] = Entropy.GamesetAtlas
-
+    StockingStuffer.Ruby.get_dummy = Entropy.GetDummy
     if not G.entr_hooked then
 
         local oldfunc = Game.main_menu
