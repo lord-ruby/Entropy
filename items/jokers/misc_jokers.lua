@@ -6441,7 +6441,7 @@ local magic_skin = {
     loc_vars = function(self, q, card)
         local loc = G.STATE == G.STATES.SMODS_BOOSTER_OPENED and SMODS.OPENED_BOOSTER and Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind)
         if loc == "ERROR" or (SMODS.OPENED_BOOSTER and not Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind) and SMODS.OPENED_BOOSTER.config.center.create_card) then
-            loc = localize(SMODS.OPENED_BOOSTER.config.center.group_key)
+            loc = SMODS.OPENED_BOOSTER.config.center.group_key
         end
         if G.STATE ~= G.STATES.SMODS_BOOSTER_OPENED or (SMODS.OPENED_BOOSTER and (not Entropy.kind_to_set(SMODS.OPENED_BOOSTER.config.center.kind) and not SMODS.OPENED_BOOSTER.config.center.create_card)) or SMODS.OPENED_BOOSTER.config.center.kind == "Standard" then
             loc = "none"
@@ -6453,7 +6453,7 @@ local magic_skin = {
         return {
             vars = {
                 card.ability.left,
-                localize("k_"..string.lower(loc)),
+                localize("k_"..string.lower(loc)) ~= "ERROR" and localize("k_"..string.lower(loc)) or localize(string.lower(loc)),
                 card.ability.cards,
                 card.ability.left_mod
             }
