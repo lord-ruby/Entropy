@@ -237,3 +237,49 @@ payload = '''
 if tag.key == "tag_valk_kitty" or tag.key == "tag_entr_ascendant_kitty" then
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS stocking "main.lua"]'''
+pattern = '''
+table.insert(collection.nodes[1].nodes[1].nodes[1].nodes[2].nodes[1].nodes,
+    {n=G.UIT.C, config = {align='cm'}, nodes = {
+        {n=G.UIT.R, config = {colour=G.C.WHITE, padding = 0.05, emboss = 0.05, maxh = 0.6, minh = 0.6, minw = 0.6, r=0.1, align='cm'}, nodes = {
+            {n=G.UIT.R, config = {align='cm', colour=HEX("22A617"), button = 'stocking_stuffer_help', hover = true, button_dist = 0, maxh = 0.5, minh = 0.5, minw = 0.5, r=0.1}, nodes = {
+                {n=G.UIT.T, config={text='?', scale = 0.4, colour = G.C.WHITE, shadow = true}}
+            }}
+        }}
+    }}
+)
+'''
+position = "at"
+payload = '''
+for i, v in pairs(collection.nodes[1].nodes[1].nodes[1].nodes[2].nodes) do
+    table.insert(collection.nodes[1].nodes[1].nodes[1].nodes[2].nodes[i].nodes,
+        {n=G.UIT.C, config = {align='cm'}, nodes = {
+            {n=G.UIT.R, config = {colour=G.C.WHITE, padding = 0.05, emboss = 0.05, maxh = 0.6, minh = 0.6, minw = 0.6, r=0.1, align='cm'}, nodes = {
+                {n=G.UIT.R, config = {align='cm', colour=HEX("22A617"), button = 'stocking_stuffer_help', hover = true, button_dist = 0, maxh = 0.5, minh = 0.5, minw = 0.5, r=0.1}, nodes = {
+                    {n=G.UIT.T, config={text='?', scale = 0.4, colour = G.C.WHITE, shadow = true}}
+                }}
+            }}
+        }}
+    )
+    break
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS stocking "main.lua"]'''
+pattern = '''
+table.insert(ret_val.nodes[1].nodes[1].nodes[1].nodes[1].nodes, tag)
+'''
+position = "at"
+payload = '''
+for i, v in pairs(ret_val.nodes[1].nodes[1].nodes[1].nodes) do
+    table.insert(ret_val.nodes[1].nodes[1].nodes[1].nodes[i].nodes, tag)
+    break
+end
+'''
+match_indent = true
