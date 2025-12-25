@@ -7400,7 +7400,7 @@ local fasciation = {
     loc_vars = function(self, q, card)
         return {
             vars = {
-                G.jokers and #G.jokers.cards
+                G.jokers and #G.jokers.cards or 0
             }
         }
     end,
@@ -7421,7 +7421,7 @@ local amaryllis = {
     rarity = 3,
     cost = 10,   
     eternal_compat = true,
-    pos = {x = 1, y = 0},
+    pos = {x = 2, y = 0},
     atlas = "placeholder",
     dependencies = {
         items = {
