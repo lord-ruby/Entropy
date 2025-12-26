@@ -227,7 +227,7 @@ function get_type_colour(_c, card)
     if Entropy.IsEE() and card.debuff then
       return Entropy.reverse_legendary_gradient
     end
-    if card.ability and card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]] then
+    if card and card.ability and card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]] then
         return get_type_colourref(G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]], card)
     end
     return get_type_colourref(_c, card)
