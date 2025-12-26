@@ -552,6 +552,9 @@ G.FUNCS.open_booster = function(e)
     G.GAME.DefineBoosterState = G.STATE
     delay(0.1)
     local area = c1.area
+    if area == G.shop_vouchers then
+        G.GAME.current_round.voucher.spawn[c1.config.center_key] = nil
+    end
     if c1.ability.booster_pos then G.GAME.current_round.used_packs[c1.ability.booster_pos] = 'USED' end
     --draw_card(G.hand, G.play, 1, 'up', true, card, nil, true) 
     if not c1.from_tag then 
@@ -4003,8 +4006,9 @@ function Entropy.GetDummy(center, area, self, silent)
         sell_cost = self.sell_cost,
         eligible_strength_jokers = eligible_editionless_jokers,
         eligible_editionless_jokers = eligible_editionless_jokers,
-        T = self.t,
+        T = self.T,
         VT = self.VT,
+        CT = self.CT,
         silent = silent
     }
     for i, v in pairs(Card) do
@@ -4801,4 +4805,13 @@ function SMODS.get_next_vouchers(vouchers)
     end
     G.GAME.deck_voucher_round = (G.GAME.deck_voucher_round or -1) + 1
     return ret
+end
+
+local buy_ref = G.FUNCS.buy_from_shop
+function G.FUNCS.buy_from_shop(e)
+    local card = e.config.ref_table
+    if card.area == G.shop_vouchers then
+        G.GAME.current_round.voucher.spawn[card.config.center_key] = nil
+    end
+    return buy_ref(e)
 end

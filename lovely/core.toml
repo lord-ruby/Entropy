@@ -3270,3 +3270,21 @@ G.GAME.round_resets.blind_choices.Small = "bl_small"
 G.GAME.round_resets.blind_choices.Big = "bl_big"
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/button_callbacks.lua'''
+pattern = '''
+draw_card(G.hand, G.play, 1, 'up', true, card, nil, true) 
+if not card.from_tag then 
+  G.GAME.round_scores.cards_purchased.amt = G.GAME.round_scores.cards_purchased.amt + 1
+end
+e.config.ref_table:open()
+'''
+position = 'before'
+payload = '''
+if area == G.shop_vouchers then
+    G.GAME.current_round.voucher.spawn[card.config.center_key] = nil
+end
+'''
+match_indent = true
