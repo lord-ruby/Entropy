@@ -1157,7 +1157,7 @@ local decs = {
                 text = {
 					{
                     	"Use this Joker to turn up to {C:attention}#1#{}",
-						"selected cards into {C:attention}Queens{}",
+						"selected cards into {C:entr_trans}Queens{}",
 					},
 					{
 						"This Joker Gains {C:attention}#2#{} use#<s>2#",
@@ -4375,7 +4375,7 @@ local decs = {
 				text = {
 					"Win Ante is {C:red}10{}",
 					"{s:0.8}Applies all previous Stakes",
-					"{s:0.7}Trans Rights",
+					"{C:entr_trans,s:0.7}Trans Rights",
 				},
 			},
 			stake_entr_zenith = {

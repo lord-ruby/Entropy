@@ -9,6 +9,14 @@ Entropy.entropic_gradient = SMODS.Gradient {
     }
 }
 
+Entropy.transgender_gradient = SMODS.Gradient {
+    key = "transgender_gradient",
+    colours = {
+        HEX("5bcefa"),
+        HEX("f5a9b8"),
+    }
+}
+
 Entropy.reverse_legendary_gradient = SMODS.Gradient {
     key = "reverse_legendary_gradient",
     colours = {
@@ -67,7 +75,8 @@ function loc_colour(_c, default)
             entr_eqmult = HEX("cb7f7f"),
             entr_eqchips = HEX("5b89a6"),
             entr_freaky = HEX("ff00ea"),
-            entr_transparent = {0,0,0,0}
+            entr_transparent = {0,0,0,0},
+            entr_trans = Entropy.transgender_gradient
         }
 
         for k, v in pairs(new_colors) do
