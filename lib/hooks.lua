@@ -1550,18 +1550,15 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         return ret
     end
     if (key == 'eq_mult' or key == 'Eqmult_mod') then 
-        local mult = SMODS.Scoring_Parameters["mult"]
-        mult.current = amount
-        update_hand_text({delay = 0}, {mult = mult.current})
+        mult = mod_mult(amount)
         if not Talisman or not Talisman.config_file.disable_anims then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent)
         end
         return true
     end
     if (key == 'eq_chips' or key == 'Eqchips_mod') then 
-        local chips = SMODS.Scoring_Parameters["chips"]
-        chips.current = amount
-        update_hand_text({delay = 0}, {chips = chips.current})
+        local chips = hand_chips
+        hand_chips = mod_chips(amount)
         if not Talisman or not Talisman.config_file.disable_anims then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'chips', amount, percent, nil, nil, "="..amount.. " Chips", G.C.BLUE)
         end
@@ -1672,11 +1669,10 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         return true
     end
     if key == 'xlog_chips' then
-        local chips = SMODS.Scoring_Parameters["chips"]
-        local gt = to_big(chips.current) < to_big(0) and 1 or chips.current
+        local chips = hand_chips
+        local gt = to_big(chips) < to_big(0) and 1 or chips
         local log = Talisman and Big and to_big(gt):log(to_big(amount)) or math.log(gt, amount)
-        chips.current = mod_chips(to_big(chips.current) * math.max(log, 1))
-        update_hand_text({delay = 0}, {chips = chips.current})
+        hand_chips = mod_chips(to_big(chips) * math.max(log, 1))
         if not Talisman or not Talisman.config_file.disable_anims then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'chips', 1, percent, nil, nil, "Chips Xlog(Chips)", G.C.BLUE, "entr_e_rizz", 0.6)
         end
