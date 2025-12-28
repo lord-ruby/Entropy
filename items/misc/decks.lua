@@ -165,7 +165,10 @@ local gemstone = {
           }
         end
     end
-  end
+  end,
+  entr_credits = {
+    art = {"mailingway"}
+  }
 }
 local update_ref = Card.update
 function Card:update(dt, ...)

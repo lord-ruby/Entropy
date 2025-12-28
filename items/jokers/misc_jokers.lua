@@ -7150,8 +7150,8 @@ local twisted_pair = {
     rarity = 2,
     cost = 8,   
     eternal_compat = true,
-    pos = {x = 1, y = 0},
-    atlas = "placeholder",
+    pos = {x = 0, y = 16},
+    atlas = "jokers",
     config = {
         value_fac = 0.75
     },
@@ -7184,7 +7184,8 @@ local twisted_pair = {
         end
     end,    
     entr_credits = {
-        idea = {"Nxkoo"}
+        idea = {"Nxkoo"},
+        art = {"mailingway"}
     }
 }
 
@@ -7721,13 +7722,16 @@ local pound_of_flesh = {
     rarity = 2,
     cost = 8,
     eternal_compat = true,
-    pos = {x = 1, y = 0},
-    atlas = "placeholder",
+    pos = {x = 9, y = 15},
+    atlas = "jokers",
     dependencies = {
         items = {
             "set_entr_misc_jokers",
         }
     },  
+    entr_credits = {
+        art = {"mailingway"}
+    }
 }
 
 local fthof = {
