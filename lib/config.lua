@@ -284,7 +284,8 @@ local entropyTabs = function()
 						["triple6lexi"]=true,
 						["Athebyne"] = true,
 						["InvalidOS"] = true,
-						["FirstTry"] = true
+						["FirstTry"] = true,
+						["Eris"] = true
 					},
 					music = {gemstonez=true, Grahkon = true}
 				}

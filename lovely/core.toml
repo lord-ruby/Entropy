@@ -3323,15 +3323,3 @@ for _, key in ipairs(G.GAME.current_round.voucher or {}) do
 end
 '''
 match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = '''engine/text.lua'''
-pattern = '''
-local end_index = #self.strings[self.focused_string].letters
-'''
-position = "before"
-payload = '''
-self.strings[self.focused_string] = self.strings[self.focused_string] or {letters = {}}
-'''
-match_indent = true
