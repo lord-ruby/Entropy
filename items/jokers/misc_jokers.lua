@@ -7624,8 +7624,8 @@ local void_cradle = {
     rarity = 2,
     cost = 8,
     eternal_compat = true,
-    pos = {x = 1, y = 0},
-    atlas = "placeholder",
+    pos = {x = 2, y = 16},
+    atlas = "jokers",
     config = {
         left = 1,
         left_mod = 1
@@ -7661,7 +7661,8 @@ local void_cradle = {
         end)
         G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
         card.ability.left = math.max(card.ability.left, 0)
-    end
+    end,
+    entr_credits = {art = {"mailingway"}}
 }
 
 local arachnophobia = {
