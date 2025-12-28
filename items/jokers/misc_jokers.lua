@@ -7318,8 +7318,8 @@ local fasciation = {
     rarity = 2,
     cost = 8,   
     eternal_compat = true,
-    pos = {x = 1, y = 0},
-    atlas = "placeholder",
+    pos = {x = 1, y = 16},
+    atlas = "jokers",
     dependencies = {
         items = {
             "set_entr_misc_jokers",
@@ -7341,6 +7341,9 @@ local fasciation = {
             }
         end
     end,    
+    entr_credits = {
+        art = {"LFMoth"}
+    }
 }
 
 local amaryllis = {
