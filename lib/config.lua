@@ -157,6 +157,13 @@ function Entropy.generate_credits_nodes(table, type)
 			end
 			::continue::
 		end
+		if i == "lord.ruby" then
+			for _, v in pairs(G.P_CENTERS) do
+				if v.set ~= "Content Set" and v.set ~= "CBlind" and (not v.entr_credits or not v.entr_credits.art or not v.entr_credits.idea or not v.entr_credits.code) then
+					cards_with_credit[#cards_with_credit+1] = v
+				end
+			end
+		end
 		G.FUNCS["entr_credit_"..i] = function(e)
             G.SETTINGS.paused = true
 			G.E_MANAGER:add_event(Event{
@@ -196,6 +203,7 @@ end
 local overlay_ref = G.FUNCS.overlay_menu
 G.FUNCS.overlay_menu = function(...)
 	local ret = overlay_ref(...)
+	G.dont_display_credit = nil
 	G.only_display_credit = nil
 	return ret
 end

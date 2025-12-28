@@ -398,20 +398,28 @@ function SMODS.create_mod_badges(obj, badges)
 		if not obj.entr_credit or (obj.entr_credits.art or obj.entr_credits.code or obj.entr_credits.idea or obj.entr_credits.custom) then
 			local scale_fac = {}
 			local min_scale_fac = 1
-			local strings =  G.only_display_credit and {} or {Entropy.display_name}
-			for _, v in ipairs({ "idea", "art", "code" }) do
-				if obj.entr_credits and obj.entr_credits[v] then
-					if type(obj.entr_credits[v]) == "string" then obj.entr_credits[v] = {obj.entr_credits[v]} end
-					for i = 1, #obj.entr_credits[v] do
-                        if not G.only_display_credit or G.only_display_credit == obj.entr_credits[v][i] then
-            				strings[#strings + 1] =
-							    localize({ type = "variable", key = "cry_" .. v, vars = { obj.entr_credits[v][i] } })[1]
+			local strings = (G.only_display_credit) and {} or {Entropy.display_name}
+            if G.only_display_credit == "lord.ruby" then
+                for _, v in ipairs({ "idea", "art", "code" }) do
+                    if not obj.entr_credits or not obj.entr_credits[v] then
+                         strings[#strings + 1] = localize({ type = "variable", key = "cry_" .. v, vars = { "lord.ruby" } })[1]
+                    end
+                end
+            else
+                for _, v in ipairs({ "idea", "art", "code" }) do
+                    if obj.entr_credits and obj.entr_credits[v] then
+                        if type(obj.entr_credits[v]) == "string" then obj.entr_credits[v] = {obj.entr_credits[v]} end
+                        for i = 1, #obj.entr_credits[v] do
+                            if not G.only_display_credit or G.only_display_credit == obj.entr_credits[v][i] then
+                                strings[#strings + 1] =
+                                    localize({ type = "variable", key = "cry_" .. v, vars = { obj.entr_credits[v][i] } })[1]
+                            end
                         end
-					end
-				end
-			end
-            if obj.entr_credits and obj.entr_credits.custom then
-                strings[#strings + 1] = localize({ type="variable", key = obj.entr_credits.custom.key, vars = { obj.entr_credits.custom.text } })
+                    end
+                end
+                if obj.entr_credits and obj.entr_credits.custom then
+                    strings[#strings + 1] = localize({ type="variable", key = obj.entr_credits.custom.key, vars = { obj.entr_credits.custom.text } })
+                end
             end
 			for i = 1, #strings do
 				scale_fac[i] = calc_scale_fac(strings[i])

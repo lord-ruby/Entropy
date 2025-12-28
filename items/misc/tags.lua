@@ -1188,7 +1188,7 @@ local blind_pack = {
         	"set_entr_tags",
         }
     },
-	order = 95,
+	order = -10000+95.5,
 	shiny_atlas="entr_shiny_ascendant_tags",
     key = "blind",
     set = "Booster",

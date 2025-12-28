@@ -18,7 +18,8 @@ local twisted = {
         G.GAME.round_resets.blind_choices.Boss = get_new_boss()
         ease_background_colour{new_colour = Entropy.get_bg_colour(), contrast = 1}
         if G.ARGS.spin then G.ARGS.spin.real = (G.SETTINGS.reduced_motion and 0 or 1)*(G.GAME.entr_alt and 0.3 or -0.3) end
-    end
+    end,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}}
 }
 
 local redefined = {
@@ -36,6 +37,7 @@ local redefined = {
     apply = function(self)
         G.GAME.modifiers.ccd2 = true
     end,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}}
 }
 
 
@@ -98,7 +100,8 @@ local ambisinister = {
     Entropy.last_slots = nil
   end,
   entr_credits = {
-      idea = {"cassknows"}
+      idea = {"cassknows"},
+      art = {"Lil. Mr. Slipstream"}
   },
 }
 
@@ -327,7 +330,8 @@ if CardSleeves then
         if G.ARGS.spin then
           G.ARGS.spin.real = (G.SETTINGS.reduced_motion and 0 or 1)*(G.GAME.entr_alt and 0.3 or -0.3)
         end
-      end
+      end,
+      entr_credits = {art = {"Lil. Mr. Slipstream"}}
     }
     CardSleeves.Sleeve {
       key = "ccd2",
@@ -335,7 +339,8 @@ if CardSleeves then
       pos = { x = 1, y = 0 },
       apply = function()
         G.GAME.modifiers.ccd2 = true
-      end
+      end,
+      entr_credits = {art = {"Lil. Mr. Slipstream"}}
     }
 
     CardSleeves.Sleeve {
@@ -365,7 +370,8 @@ if CardSleeves then
             c:set_edition("e_negative")
             return true
           end}))
-      end
+      end,
+      entr_credits = {art = {"Lil. Mr. Slipstream"}}
     }
 
   CardSleeves.Sleeve {
@@ -377,7 +383,8 @@ if CardSleeves then
       G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots + 3
       Entropy.last_csl = nil
       Entropy.last_slots = nil
-    end
+    end,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}}
   }
 
 
@@ -439,6 +446,7 @@ if CardSleeves then
       change_shop_size(-1)
       G.GAME.modifiers.glitched_items = (G.GAME.modifiers.glitched_items or 0) + 2
     end,
+    entr_credits = {art = {"LFMoth"}}
   }
 end
 

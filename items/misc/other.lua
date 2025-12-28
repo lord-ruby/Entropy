@@ -155,7 +155,7 @@ local wormhole = {
 	key = "wormhole",
 	config = { hand_type = "entr_derivative", softlock = true },
 	pos = { x = 3, y = 0 },
-	order = 1,
+	order = 5001,
 	atlas = "consumables2",
 	aurinko = true,
 	set_card_type_badge = function(self, card, badges)
@@ -290,7 +290,7 @@ local tyche = {
 	set = "Planet",
 	key = "tyche",
 	pos = { x = 0, y = 1 },
-	order = 2,
+	order = 5002,
 	atlas = "consumables2",
 	aurinko = true,
 	config = {
@@ -335,7 +335,7 @@ local theia = {
 	set = "Planet",
 	key = "theia",
 	pos = { x = 1, y = 1 },
-	order = 3,
+	order = 5003,
 	atlas = "consumables2",
 	aurinko = true,
 	config = {
@@ -379,7 +379,7 @@ local chiron = {
 	set = "Planet",
 	key = "chiron",
 	pos = { x = 2, y = 1 },
-	order = 4,
+	order = 5004,
 	atlas = "consumables2",
 	aurinko = true,
 	config = {
@@ -422,7 +422,7 @@ local neith = {
 	set = "Planet",
 	key = "neith",
 	pos = { x = 3, y = 1 },
-	order = 5,
+	order = 5005,
 	atlas = "consumables2",
 	aurinko = true,
 	config = {
@@ -465,7 +465,7 @@ local sputnik = {
 	set = "Planet",
 	key = "sputnik",
 	pos = { x = 4, y = 1 },
-	order = 6,
+	order = 5006,
 	atlas = "consumables2",
 	aurinko = true,
 	config = {

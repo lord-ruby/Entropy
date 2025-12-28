@@ -356,7 +356,7 @@ local comet = {
     set = "Tarot",
     atlas = "consumables2",
     object_type = "Consumable",
-    order = -1000,
+    order = -999,
     dependencies = {
         items = {
             "set_entr_misc",

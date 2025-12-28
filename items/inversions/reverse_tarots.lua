@@ -3,7 +3,7 @@ local master = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900,
+    order = -901,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -84,7 +84,7 @@ local mason = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900 + 1,
+    order = -901 + 1,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -132,7 +132,7 @@ local oracle = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900 + 2,
+    order = -901 + 2,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -186,7 +186,7 @@ local princess = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900 + 3,
+    order = -901 + 3,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -227,7 +227,7 @@ local servant = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900 + 4,
+    order = -901 + 4,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -289,7 +289,7 @@ local heretic = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900 + 6,
+    order = -901 + 6,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -351,7 +351,7 @@ local feud = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900 + 6,
+    order = -901 + 5.5,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -410,7 +410,7 @@ local scar = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900 + 7,
+    order = -901 + 7,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -474,7 +474,7 @@ local dagger = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900 + 8,
+    order = -901 + 8,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -538,7 +538,7 @@ local earl = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900 + 8,
+    order = -901 + 9,
     dependencies = {
         items = {
             "set_entr_inversions"

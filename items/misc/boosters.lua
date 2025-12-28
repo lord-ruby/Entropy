@@ -228,7 +228,7 @@ local voucher = {
         }
     },
 	object_type = "Booster",
-    order = -1000,
+    order = -1001.1,
     key = "voucher_pack",
     set = "Booster",
     config = { extra = 5, choose = 2 },

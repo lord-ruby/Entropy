@@ -74,7 +74,7 @@ local shatter = {
     key = "shatter",
     set = "Spectral",
     
-    order = 37,
+    order = 900+37,
     object_type = "Consumable",
     config = {limit = 1, csl = 1},
     atlas = "consumables",
@@ -115,7 +115,7 @@ local destiny = {
     key = "destiny",
     set = "Spectral",
     
-    order = 36,
+    order = 900+36,
     object_type = "Consumable",
     atlas = "consumables",
     immutable = true,
@@ -175,7 +175,7 @@ local lust = {
     key = "lust",
     set = "Spectral",
     
-    order = 38,
+    order = 900+38,
     object_type = "Consumable",
     config = {limit = 2},
     atlas = "consumables",
@@ -232,7 +232,7 @@ local null = {
     key = "null",
     set = "Spectral",
     
-    order = 39,
+    order = 900+39,
     object_type = "Consumable",
     config = {create = 5},
     atlas = "consumables",
@@ -349,7 +349,7 @@ local enchant = {
         }
     },
     object_type = "Consumable",
-    order = 40,
+    order = 900+40,
     key = "enchant",
     set = "Spectral",
     
@@ -385,7 +385,7 @@ local manifest = {
         }
     },
     object_type = "Consumable",
-    order = 41,
+    order = 900+41,
     key = "manifest",
     set = "Spectral",
     

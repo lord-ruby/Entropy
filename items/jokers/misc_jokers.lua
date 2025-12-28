@@ -1078,7 +1078,7 @@ local phantom_shopper = {
 }
 
 local sunny_side_up = {
-    order = 21,
+    order = 21.5,
     object_type = "Joker",
     key = "sunny_side_up",
     config = {
@@ -1200,7 +1200,7 @@ local sunflower_seeds = {
 }
 
 local tenner = {
-    order = 23,
+    order = 23.5,
     object_type = "Joker",
     key = "tenner",
     rarity = 1,
@@ -3642,7 +3642,7 @@ local arbitration = {
 }
 
 local masterful_gambit = {
-    order = 60,
+    order = 60.5,
     object_type = "Joker",
     key = "masterful_gambit",
     rarity = 1,
@@ -4061,7 +4061,7 @@ local scribbled_joker = {
 }
 
 local jokers_against_humanity = {
-    order = 68,
+    order = 68.5,
     object_type = "Joker",
     key = "jokers_against_humanity",
     rarity = 1,
@@ -5182,7 +5182,7 @@ SMODS.Booster:take_ownership_by_kind("Standard", {
         end
         return card
     end
-})
+}, true)
 
 local enlightenment = {
     order = 89,
@@ -7311,7 +7311,7 @@ SMODS.Sticker({
     })
 
 local fasciation = {
-    order = 126,
+    order = 128,
     object_type = "Joker",
     key = "fasciation",
     rarity = 2,
@@ -7343,7 +7343,7 @@ local fasciation = {
 }
 
 local amaryllis = {
-    order = 127,
+    order = 129,
     object_type = "Joker",
     key = "amaryllis",
     rarity = 3,
@@ -7452,7 +7452,7 @@ local amaryllis = {
 }
 
 local cooking_pot = {
-    order = 128,
+    order = 130,
     object_type = "Joker",
     key = "cooking_pot",
     rarity = 2,
@@ -7513,7 +7513,7 @@ local cooking_pot = {
 }
 
 local brownies = {
-    order = 129,
+    order = 131,
     object_type = "Joker",
     key = "brownies",
     rarity = 2,
@@ -7560,7 +7560,7 @@ local brownies = {
 }
 
 local redacted = {
-    order = 130,
+    order = 132,
     object_type = "Joker",
     key = "redacted",
     rarity = 2,
@@ -7614,7 +7614,7 @@ local redacted = {
 }
 
 local void_cradle = {
-    order = 131,
+    order = 133,
     object_type = "Joker",
     key = "void_cradle",
     rarity = 2,
@@ -7661,7 +7661,7 @@ local void_cradle = {
 }
 
 local arachnophobia = {
-    order = 132,
+    order = 134,
     object_type = "Joker",
     key = "arachnophobia",
     rarity = 2,
@@ -7715,7 +7715,7 @@ local arachnophobia = {
 }
 
 local pound_of_flesh = {
-    order = 133,
+    order = 135,
     object_type = "Joker",
     key = "pound_of_flesh",
     rarity = 2,
@@ -7731,7 +7731,7 @@ local pound_of_flesh = {
 }
 
 local fthof = {
-    order = 134,
+    order = 136,
     object_type = "Joker",
     key = "fthof",
     rarity = 3,

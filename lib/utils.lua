@@ -2353,3 +2353,23 @@ function SMODS.add_voucher_to_shop(key, ...)
     end
     return card
 end
+
+
+function find_dupes(order)
+    local orders = {}
+    local dupes = {}
+    for i, v in pairs(G.P_CENTERS) do
+        if v.cry_order and (not order or v.cry_order == order) and v.set ~= "Content Set" and v.set ~= "CBlind" then
+            if orders[v.cry_order] then
+                dupes[v.cry_order] = true
+            else
+                orders[v.cry_order] = true
+            end
+        end
+    end
+    for i, v in pairs(G.P_CENTERS) do
+        if dupes[v.cry_order or -1.1] and v.set ~= "Content Set" and v.set ~= "CBlind" then
+            print(v.key..": "..v.cry_order)
+        end
+    end
+end
