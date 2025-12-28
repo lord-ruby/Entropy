@@ -3518,31 +3518,26 @@ local radar = {
     order = 56,
     object_type = "Joker",
     key = "radar",
-    rarity = 1,
+    rarity = 2,
     cost = 6,   
     eternal_compat = true,
     pos = {x = 7, y = 8},
     atlas = "jokers",
-    config = {
-        dollar_mult = 1
-    },
     dependencies = {
         items = {
             "set_entr_misc_jokers",
         }
     },
-    perishable_compat = true,
     loc_vars = function(self, q, card)
         return {
             vars = {
-                card.ability.dollar_mult,
-                card.ability.dollar_mult * Entropy.played_hands(5)
+                G.GAME.last_hand_played and G.GAME.hands[G.GAME.last_hand_played] and G.GAME.hands[G.GAME.last_hand_played].level or 0
             }
         }
     end,
-    demicoloncompat = true,
+    perishable_compat = true,
     calc_dollar_bonus = function(self, card)
-        return card.ability.dollar_mult * Entropy.played_hands(5)
+        return G.GAME.last_hand_played and G.GAME.hands[G.GAME.last_hand_played] and G.GAME.hands[G.GAME.last_hand_played].level
     end
 }
 
@@ -3567,7 +3562,7 @@ local abacus = {
     perishable_compat = true,
     blueprint_compat = true,
     calculate = function(self, card, context)
-        if (context.individual and context.other_card.base.nominal and to_big(context.other_card.base.nominal) > to_big(0) and context.cardarea == G.play) or context.forcetrigger then
+        if (context.individual and context.other_card.base.nominal and to_big(context.other_card.base.nominal + (context.other_card.ability.bonus or 0)) > to_big(0) and context.cardarea == G.play) or context.forcetrigger then
             if not context.other_card then
                 return {
                     mult = 5
@@ -3576,7 +3571,7 @@ local abacus = {
             local id = context.other_card:get_id()
             if id <= 10 or id > 14 and not SMODS.has_no_rank(context.other_card) then
                 return {
-                    mult = math.ceil(context.other_card.base.nominal / 2)
+                    mult = math.ceil((context.other_card.base.nominal + (context.other_card.ability.bonus or 0)) / 2)
                 }
             end
         end
@@ -3976,8 +3971,8 @@ local girldinner = {
     pos = {x = 8, y = 9},
     atlas = "jokers",
     config = {
-        mult = 3,
-        chips = 40
+        mult = 8,
+        chips = 60
     },
     dependencies = {
         items = {
@@ -7362,7 +7357,34 @@ local texas_hold_em = {
     entr_credits = {
         idea = {"cassknows"},
         art = {"Camostar34"}
-    }
+    },
+    generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+        SMODS.Center.generate_ui(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+        
+        local cards = {}
+        for i, v in pairs(G.I.CARD) do
+            if v.ability and v.ability.entr_marked and not v.ability.entr_marked_bypass then
+                local s = v:save()
+                local c = Card(0,0, G.CARD_W, G.CARD_H, pseudorandom_element(G.P_CARDS,pseudoseed("")), G.P_CENTERS.c_base)
+                c:load(s)
+                c.ability = SMODS.shallow_copy(c.ability)
+                c.ability.entr_marked_bypass = true
+                v.ability.entr_marked_bypass = nil                
+                table.insert(cards, c)
+            end
+        end
+        if #cards > 0 then
+            Entropy.card_area_preview(G.entrCardsPrev, desc_nodes, {
+                cards = cards,
+                override = true,
+                w = 2.2,
+                h = 0.6,
+                ml = 0,
+                scale = 0.5,
+                func_delay = 1.0,
+            })
+        end
+    end,
 }
 
 SMODS.Sticker({

@@ -1183,10 +1183,10 @@ local decs = {
 			j_entr_radar = {
                 name = "Radar",
                 text = {
-                    "Earn {C:money}$#1#{} for each",
-					"Poker Hand played more than",
-					"{C:attention}5{} times, at end of round",
-					"{C:inactive}(Currently {C:money}$#2#{C:inactive})"
+                    "Earn the last played",
+					"{C:attention}poker hands{} level",
+					"as money at end of round",
+					"{C:inactive}(Currently {C:money}$#1#{C:inactive})"
                 },
             },
 			j_entr_abacus = {
@@ -1194,7 +1194,7 @@ local decs = {
                 text = {
                     "Scored number cards give",
 					"one half of their",
-					"base {C:blue}chips{} as {C:red}mult{}"
+					"{C:blue}chips{} as {C:red}mult{}"
                 },
             },
 			j_entr_matryoshka_dolls = {
@@ -1476,8 +1476,10 @@ local decs = {
                 text = {
 					{
 						"Use this Joker to apply a random",
-						"{C:attention}Joker{}, {C:attention}Consumable{}, {C:attention}Booster Pack{} or {C:attention}Voucher{}",
-						"as an Enhancement to a {C:attention}Random{} Card held in hand",
+						"{C:attention}Joker{}, {C:attention}Consumable{}",
+						"{C:attention}Booster Pack{} or {C:attention}Voucher{}",
+						"as an Enhancement to a",
+						"{C:attention}Random{} Card held in hand"
 					},
 					{
 						"This Joker gains {C:attention}#2#{} use#<s>2#",
@@ -1697,9 +1699,11 @@ local decs = {
 			j_entr_shadow_crystal = {
                 name = "Shadow Crystal",
                 text = {
-                    "Consumables have a {C:green}#1# in #2#{} chance",
-					"to also trigger their {C:red}Inverted{} counterparts",
-					"{C:inactive}(If Possible, Hidden consumables excluded)"
+                    "Consumables have a {C:green}#1# in #2#{}",
+					" chance to also trigger their",
+					"{C:red}Inverted{} counterparts",
+					"{C:inactive}(If Possible)",
+					"{C:inactive}(Hidden Consumables Excluded)"
                 },
             },
 			j_entr_miracle_berry = {
@@ -6289,7 +6293,7 @@ local decs = {
 				text = {
 					"Always added to",
 					"each played hand",
-					"this rounded"
+					"this round"
 				}
 			},
 			entr_crimson_seal = {

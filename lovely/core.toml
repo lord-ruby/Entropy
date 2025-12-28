@@ -3288,3 +3288,13 @@ if area == G.shop_vouchers then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''engine/event.lua'''
+pattern = '''        other = {}'''
+position = "after"
+payload = ''',
+entr_desc = {},
+'''
+match_indent = true

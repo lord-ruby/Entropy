@@ -1529,13 +1529,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
     if next(SMODS.find_card("j_entr_error")) and type(amount) == "number" then
         local mult = 1
         for i, v in pairs(SMODS.find_card("j_entr_error")) do
-            mult = mult * pseudorandom("entr_error", 95000, 120000)/100000
-            -- G.E_MANAGER:add_event(Event{
-            --     func = function()
-            --         v:juice_up()
-            --         return true
-            --     end
-            -- })
+            mult = mult + pseudorandom("entr_error", 95000, 120000)/100000 - 1
         end
         amount = amount * mult
     end
@@ -2239,7 +2233,18 @@ function Cryptid.ascend(num, curr2) -- edit this function at your leisure
 end
 
 local pokerhandinforef = G.FUNCS.get_poker_hand_info
-function G.FUNCS.get_poker_hand_info(_cards)
+function G.FUNCS.get_poker_hand_info(cards)
+    local _cards = {}
+    for _, card in pairs(cards) do
+        _cards[#_cards+1] = card
+    end
+    for _, card in pairs(G.I.CARD) do
+        if card.ability and card.ability.entr_marked then
+            if not card.highlighted then
+                _cards[#_cards+1] = card
+            end
+        end
+    end
     G.GAME.current_round.current_hand.cry_asc_num = 0
     if next(SMODS.find_card("j_entr_helios")) or (Entropy.BlindIs("bl_entr_scarlet_sun") and not G.GAME.blind.disabled) then G.GAME.used_vouchers.v_cry_hyperspacetether = true end
     local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
