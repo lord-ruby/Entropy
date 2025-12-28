@@ -2248,7 +2248,7 @@ function G.FUNCS.get_poker_hand_info(cards)
     end
     for _, card in pairs(G.I.CARD) do
         if card.ability and card.ability.entr_marked then
-            if not card.highlighted then
+            if not card.highlighted and not Entropy.InTable(cards, card) then
                 _cards[#_cards+1] = card
             end
         end
@@ -4672,7 +4672,7 @@ function SMODS.calculate_main_scoring(context, scoring_hand)
     for i, v in pairs(G.play.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
     for i, v in pairs(G.jokers.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
     for _, card in pairs(G.I.CARD) do
-        if card.ability and card.ability.entr_marked and not card.highlighted then
+        if card.ability and card.ability.entr_marked and not card.highlighted and not Entropy.InTable(scoring_hand or context.scoring_hand, card) then
             fvc_cards[#fvc_cards+1] = card
             added_cards[#added_cards+1] = card
         end
