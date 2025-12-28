@@ -1444,7 +1444,7 @@ function Entropy.get_arrow_color(operator)
     return colours[operator]
 end
 
-function Entropy.GetPooledCenter(_type, twisted, _rarity)
+function Entropy.GetPooledCenter(_type, twisted, _rarity, _noparakmi)
     local area = area or G.jokers
     local center = G.P_CENTERS.b_red
         
@@ -1475,7 +1475,7 @@ function Entropy.GetPooledCenter(_type, twisted, _rarity)
     if _type == 'Base' then 
         forced_key = 'c_base'
     end
-
+    G.GAME.entr_parakmi_bypass = _noparakmi
     if forced_key and not G.GAME.banned_keys[forced_key] then 
         center = G.P_CENTERS[forced_key]
         _type = (center.set ~= 'Default' and center.set or _type)
@@ -1490,6 +1490,7 @@ function Entropy.GetPooledCenter(_type, twisted, _rarity)
 
         center = G.P_CENTERS[center]
     end
+    G.GAME.entr_parakmi_bypass = nil
     return center
 end
 
@@ -2121,13 +2122,15 @@ end
 local get_next_vouchersref = SMODS.get_next_vouchers
 function SMODS.get_next_vouchers()
     local vouchers = get_next_vouchersref()
-    if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi) then
-        vouchers.spawn = {}
-        for i, v in ipairs(vouchers) do
-            local set = Entropy.GetRandomSet(next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi)
-            local key = Entropy.GetPooledCenter(set).key
-            vouchers.spawn[key] = true
-            vouchers[i] = key
+    if not G.GAME.entr_parakmi_bypass then
+        if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi) then
+            vouchers.spawn = {}
+            for i, v in ipairs(vouchers) do
+                local set = Entropy.GetRandomSet(next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi)
+                local key = Entropy.GetPooledCenter(set).key
+                vouchers.spawn[key] = true
+                vouchers[i] = key
+            end
         end
     end
     return vouchers
@@ -2333,11 +2336,20 @@ Entropy.card_area_preview = function(cardArea, desc_nodes, config)
 end
 
 local add_v_ref = SMODS.add_voucher_to_shop
-function SMODS.add_voucher_to_shop(...)
-    local card = add_v_ref(...)
-    if card.config.center.set == "Voucher" then
+function SMODS.add_voucher_to_shop(key, ...)
+    local card = add_v_ref(key, ...)
+    if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi) then
+        G.E_MANAGER:add_event(Event{
+            trigger = "before",
+            func = function()
+                SMODS.calculate_context({modify_shop_voucher = true, card = card, first_of_ante = not G.GAME.entr_vouchers_set})
+                G.GAME.entr_vouchers_set = true
+                return true
+            end
+        })
+    else    
         SMODS.calculate_context({modify_shop_voucher = true, card = card, first_of_ante = not G.GAME.entr_vouchers_set})
+        G.GAME.entr_vouchers_set = true
     end
-    G.GAME.entr_vouchers_set = true
     return card
 end

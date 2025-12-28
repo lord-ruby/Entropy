@@ -7750,8 +7750,9 @@ local fthof = {
     calculate = function(self, card, context)
         if context.modify_shop_voucher and context.first_of_ante then
             local key = Entropy.GetPooledCenter("Joker", nil, 3).key
+            G.GAME.entr_parakmi_bypass = true
             local card = context.card
-            if card and card.config.center.set == "Voucher" then
+            if card and not (G.GAME.current_round.voucher.editions or {})[card.config.center.key] then
                 for i, v in pairs(G.GAME.current_round.voucher) do
                     if v == card.config.center.key then    
                         G.GAME.current_round.voucher.spawn[v] = nil
@@ -7771,6 +7772,7 @@ local fthof = {
             end
             G.GAME.current_round.voucher.editions = G.GAME.current_round.voucher.editions or {}
             G.GAME.current_round.voucher.editions[key] = "e_entr_gilded"
+            G.GAME.entr_parakmi_bypass = nil
             return nil, true
         end
         if context.buying_card and SMODS.pseudorandom_probability(card, 'entr_fthof', 1, card.ability.extra.odds) then
