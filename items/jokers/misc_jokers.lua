@@ -2219,6 +2219,7 @@ local birthday_card = {
         }
     },
     eternal_compat = true,
+    pixel_size = { h = 95 / 1.2 },
     pos = { x = 9, y = 6 },
     atlas = "jokers",
     config = {
