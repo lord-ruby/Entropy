@@ -289,7 +289,7 @@ local heretic = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -901 + 6,
+    order = -901 + 5.5,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -351,7 +351,7 @@ local feud = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -901 + 5.5,
+    order = -901 + 6,
     dependencies = {
         items = {
             "set_entr_inversions"
