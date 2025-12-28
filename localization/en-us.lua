@@ -2124,6 +2124,16 @@ local decs = {
 					"random cards from {C:attention}full deck{}"
 				}
 			},
+			j_entr_fthof = {
+				name = "Force the Hand of Fate",
+				text = {
+					"{C:attention}Vouchers{} in the shop are",
+					"replaced by {C:dark_edition}Gilded{} {C:red}Rare{} Jokers",
+					"{C:green}#1# in #2#{} chance to {C:red}self-destruct{} ",
+					"when buying any other card from",
+					"the {C:attention}shop{}"
+				}
+			},
 		},
 		Blind = {
 			bl_entr_red = {
@@ -6678,6 +6688,7 @@ local decs = {
 			k_forcetrigger_ex = "Forcetrigger!",
 			k_spoiled_ex = "Spoiled!",
 			k_downgrade_ex = "Downgrade!",
+			k_backfired_ex = "Backfired!",
 			k_star = "Star",
 			b_star_cards = "Star Cards",	
 			k_planet_multiverse = Cryptid_config.family_mode and "Multiverse" or "The Actual Fucking Multiverse",

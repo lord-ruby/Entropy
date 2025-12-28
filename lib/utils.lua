@@ -1444,7 +1444,7 @@ function Entropy.get_arrow_color(operator)
     return colours[operator]
 end
 
-function Entropy.GetPooledCenter(_type, twisted)
+function Entropy.GetPooledCenter(_type, twisted, _rarity)
     local area = area or G.jokers
     local center = G.P_CENTERS.b_red
         
@@ -2330,4 +2330,14 @@ Entropy.card_area_preview = function(cardArea, desc_nodes, config)
         end
     end
     return uiEX, cardarea
+end
+
+local add_v_ref = SMODS.add_voucher_to_shop
+function SMODS.add_voucher_to_shop(...)
+    local card = add_v_ref(...)
+    if card.config.center.set == "Voucher" then
+        SMODS.calculate_context({modify_shop_voucher = true, card = card, first_of_ante = not G.GAME.entr_vouchers_set})
+    end
+    G.GAME.entr_vouchers_set = true
+    return card
 end

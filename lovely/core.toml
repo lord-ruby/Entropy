@@ -3298,3 +3298,26 @@ payload = ''',
 entr_desc = {},
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''game.lua'''
+pattern = '''
+for _, key in ipairs(G.GAME.current_round.voucher or {}) do
+    if G.P_CENTERS[key] and G.GAME.current_round.voucher.spawn[key] then
+        SMODS.add_voucher_to_shop(key)
+    end
+end
+'''
+position = "at"
+payload = '''
+for _, key in ipairs(G.GAME.current_round.voucher or {}) do
+    if G.P_CENTERS[key] and G.GAME.current_round.voucher.spawn[key] then
+        local card = SMODS.add_voucher_to_shop(key)
+        if card and G.GAME.current_round.voucher.editions and G.GAME.current_round.voucher.editions[key] then
+            card:set_edition(G.GAME.current_round.voucher.editions[key])
+        end
+    end
+end
+'''
+match_indent = true

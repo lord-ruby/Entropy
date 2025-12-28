@@ -3160,111 +3160,6 @@ local alles = {
     end
 }
 
-local feynman_point = {
-    order = 50,
-    object_type = "Joker",
-    key = "feynman_point",
-    rarity = 3,
-    cost = 8,
-    dependencies = {
-        items = {            
-            "set_entr_inversions"
-        }
-    },
-    config = {
-        nearest = 0.1,
-        nearest_mod = 0.05
-    },
-    eternal_compat = true,
-    perishable_compat = true,
-    pos = { x = 7, y = 7 },
-    atlas = "jokers",
-    loc_vars = function(self, q, card)
-        return {
-            vars = {
-                number_format(card.ability.nearest),
-                number_format(card.ability.nearest_mod)
-            }
-        }
-    end,
-    calculate = function(self, card, context)
-        if context.pseudorandom_result and context.result and not context.blueprint then
-            if not context.trigger_obj or (context.trigger_obj.config.center or {}).key ~= "j_cry_boredom" then
-                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "nearest", scalar_value = "nearest_mod", message_colour = G.C.GREEN})
-            end
-        end
-    end
-}
-
-local calculate_jokerref = Card.calculate_joker
-function Card:calculate_joker(...)
-    local abil
-    if self.ability.entr_pure then
-        abil = copy_table(self.ability)        
-    end
-    local ret = calculate_jokerref(self, ...)
-    if next(SMODS.find_card("j_entr_feynman_point")) and self.config.center.key ~= "j_entr_feynman_point" and not self.config.center.immutable and self.area == G.jokers then
-        local highest = 0
-        for i, v in pairs(SMODS.find_card("j_entr_feynman_point")) do
-            if to_big(v.ability.nearest) > to_big(highest) then
-                highest = v.ability.nearest
-            end
-        end
-        if to_big(highest) > to_big(0) then
-            Cryptid.manipulate(self, {
-                func = function(num, args, is_big, name)
-                    if to_big(num) <= to_big(1) then return num end
-                    local nnum = is_big and highest * math.floor(to_big(num) / highest) or (highest * math.floor(num / highest))
-                    if to_big(nnum) < to_big(num) then return nnum + highest end
-                    if to_big(nnum) < to_big(highest) then return highest end
-                    return nnum
-                end,
-                dont_stack = true,
-                no_deck_effects = true
-            })
-        end
-    end
-    if self.ability.entr_pure then
-        self.ability = abil
-    end
-    return ret
-end
-
-local set_abilityref = Card.set_ability
-function Card:set_ability(...)
-    set_abilityref(self, ...)
-    if self.config.center and self.config.center.set == "Joker" and self.config.center.key ~= "j_entr_feynman_point" then
-        if next(SMODS.find_card("j_entr_feynman_point")) then
-            local highest = 0
-            for i, v in pairs(SMODS.find_card("j_entr_feynman_point")) do
-                if to_big(v.ability.nearest) > to_big(highest) then
-                    highest = v.ability.nearest
-                end
-            end
-            if to_big(highest) > to_big(0) then
-                G.E_MANAGER:add_event(Event{
-                    trigger = "after",
-                    blocking = false,
-                    func = function()
-                        Cryptid.manipulate(self, {
-                            func = function(num, args, is_big, name)
-                                if to_big(num) <= to_big(1) then return num end
-                                local nnum = is_big and highest * math.floor(to_big(num) / highest) or (highest * math.floor(num / highest))
-                                if to_big(nnum) < to_big(num) then return nnum + highest end
-                                if to_big(nnum) < to_big(highest) then return highest end
-                                return nnum
-                            end,
-                            dont_stack = true,
-                            no_deck_effects = true
-                        })
-                        return true
-                    end
-                })
-            end
-        end
-    end
-end
-
 local neuroplasticity = {
     order = 51,
     object_type = "Joker",
@@ -7811,7 +7706,7 @@ local arachnophobia = {
                 }
             end
             return nil, true
-        end
+        end 
     end,   
 }
 
@@ -7829,6 +7724,68 @@ local pound_of_flesh = {
             "set_entr_misc_jokers",
         }
     },  
+}
+
+local fthof = {
+    order = 134,
+    object_type = "Joker",
+    key = "fthof",
+    rarity = 3,
+    cost = 10,
+    eternal_compat = true,
+    pos = {x = 7, y = 15},
+    atlas = "jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        extra = {odds = 3}
+    },
+    calculate = function(self, card, context)
+        if context.modify_shop_voucher and context.first_of_ante then
+            local key = Entropy.GetPooledCenter("Joker", nil, 3).key
+            local card = context.card
+            if card and card.config.center.set == "Voucher" then
+                for i, v in pairs(G.GAME.current_round.voucher) do
+                    if v == card.config.center.key then    
+                        G.GAME.current_round.voucher.spawn[v] = nil
+                        G.GAME.current_round.voucher.spawn[key] = true
+                        G.GAME.current_round.voucher[i] = key
+                        break
+                    end
+                end
+                card:set_ability(G.P_CENTERS[key])
+            else    
+                card = SMODS.add_voucher_to_shop(key)
+                G.GAME.current_round.voucher[#G.GAME.current_round.voucher+1] = key
+                G.GAME.current_round.voucher.spawn[key] = true
+            end
+            if card then
+                card:set_edition("e_entr_gilded")
+            end
+            G.GAME.current_round.voucher.editions = G.GAME.current_round.voucher.editions or {}
+            G.GAME.current_round.voucher.editions[key] = "e_entr_gilded"
+            return nil, true
+        end
+        if context.buying_card and SMODS.pseudorandom_probability(card, 'entr_fthof', 1, card.ability.extra.odds) then
+            SMODS.destroy_cards(card, nil, nil, true)
+            return {
+                message = localize("k_backfired_ex"),
+                colour = G.C.RED
+            }
+        end
+    end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.e_entr_gilded
+        local n, d = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "entr_fthof")
+        return {
+            vars = {
+                n, d
+            }
+        }
+    end
 }
 
 return {
@@ -7975,6 +7932,7 @@ return {
         redacted,
         void_cradle,
         arachnophobia,
-        pound_of_flesh
+        pound_of_flesh,
+        fthof
     }
 }
