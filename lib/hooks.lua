@@ -4661,7 +4661,7 @@ function SMODS.calculate_main_scoring(context, scoring_hand)
     for i, v in pairs(G.play.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
     for i, v in pairs(G.jokers.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
     for _, card in pairs(G.I.CARD) do
-        if card.ability and card.ability.entr_marked then
+        if card.ability and card.ability.entr_marked and not card.highlighted then
             fvc_cards[#fvc_cards+1] = card
             added_cards[#added_cards+1] = card
         end

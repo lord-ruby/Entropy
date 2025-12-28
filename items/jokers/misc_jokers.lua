@@ -7324,9 +7324,15 @@ local texas_hold_em = {
     calculate = function(self, card, context)
         if context.first_hand_drawn and context.hand_drawn or context.forcetrigger then
             card.ability.added_cards = {}
-            for i = 1, math.min(#(context.hand_drawn or G.hand.cards), card.ability.cards_added) do
-                context.hand_drawn[i].ability.entr_marked = true
-                context.hand_drawn[i]:juice_up()
+            local cards = {}
+            for i, v in pairs(context.hand_drawn) do
+                if not v.ability.entr_marked then cards[#cards+1] = v end
+            end
+            if #cards > 0 then
+                for i = 1, math.min(#(cards or G.hand.cards), card.ability.cards_added) do
+                    cards[i].ability.entr_marked = true
+                    cards[i]:juice_up()
+                end
             end
         end
         if context.before then
