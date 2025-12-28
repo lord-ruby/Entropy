@@ -2047,6 +2047,9 @@ local opal = {
             }
         end
     end,
+    entr_credits = {
+        art = {"mailingway"}
+    }
 }
 
 local inkbleed = {
@@ -7032,8 +7035,8 @@ local box_of_chocolates = {
     rarity = 1,
     cost = 8,   
     eternal_compat = true,
-    pos = {x = 0, y = 0},
-    atlas = "placeholder",
+    pos = {x = 8, y = 15},
+    atlas = "jokers",
     config = {
         uses = 12
     },
@@ -7087,7 +7090,8 @@ local box_of_chocolates = {
         end
     end,
     entr_credits = {
-        idea = {"cassknows"}
+        idea = {"cassknows"},
+        art = {"mailingway"}
     }
 }
 
