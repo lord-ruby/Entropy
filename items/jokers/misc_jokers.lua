@@ -7776,11 +7776,20 @@ local fthof = {
             return nil, true
         end
         if context.buying_card and SMODS.pseudorandom_probability(card, 'entr_fthof', 1, card.ability.extra.odds) then
-            SMODS.destroy_cards(card, nil, nil, true)
-            return {
-                message = localize("k_backfired_ex"),
-                colour = G.C.RED
-            }
+            local is_voucher
+            for i, v in pairs(G.GAME.current_round.voucher) do
+                if v == context.card.config.center_key then
+                    is_voucher = true
+                    break
+                end
+            end
+            if not is_voucher then
+                SMODS.destroy_cards(card, nil, nil, true)
+                return {
+                    message = localize("k_backfired_ex"),
+                    colour = G.C.RED
+                }
+            end
         end
     end,
     loc_vars = function(self, q, card)
