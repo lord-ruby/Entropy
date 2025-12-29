@@ -577,45 +577,21 @@ local lotteryticket = {
     end,
     calculate = function (self, card, context)
         if context.end_of_round and not context.individual and not context.blueprint and not context.repetition then            
-            if SMODS.pseudorandom_probability(card, 'lottery', 1, card.ability.extra.odds * card.ability.extra.odds2) then
-                G.E_MANAGER:add_event(Event({
-                    func = function()
-                        ease_dollars(card.ability.extra.payoutlarge-card.ability.extra.lose)
-                        return true
-                    end
-                }))
-                return {
-                    message = localize("$")..number_format(card.ability.extra.payoutlarge),
-                    colour = G.C.GOLD
-                }
-            elseif SMODS.pseudorandom_probability(card, 'lottery', 1, card.ability.extra.odds) then
-                G.E_MANAGER:add_event(Event({
-                    func = function()
-                        ease_dollars(card.ability.extra.payoutsmall-card.ability.extra.lose)
-                        return true
-                    end
-                }))
-                return {
-                    message = localize("$")..number_format(card.ability.extra.payoutsmall),
-                    colour = G.C.GOLD
-                }
-            else
-                G.E_MANAGER:add_event(Event({
-                    func = function()
-                        ease_dollars(-card.ability.extra.lose)
-                        return true
-                    end
-                }))
-                return {
-                    message = localize("k_nope_ex"),
-                    colour = G.C.RED
-                }
-            end
+            return {
+                dollars = -card.ability.extra.lose
+            }
         end
         if context.forcetrigger then
             ease_dollars(card.ability.extra.payoutlarge-card.ability.extra.lose)
         end
     end,
+    calc_dollar_bonus = function(self, card)
+        if SMODS.pseudorandom_probability(card, 'lottery', 1, card.ability.extra.odds * card.ability.extra.odds2) then
+            return card.ability.extra.payoutlarge
+        elseif SMODS.pseudorandom_probability(card, 'lottery', 1, card.ability.extra.odds) then
+            return card.ability.extra.payoutsmall
+        end
+    end
 }
 
 local devilled_suns = {

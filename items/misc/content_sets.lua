@@ -48,7 +48,7 @@ end
 SMODS.ContentSet({
 	key = "vouchers",
 	atlas = "vouchers",
-	pos = { x = 2, y = 0 },
+	pos = { x = 1, y = 1 },
 	cry_order = 4,
 })
 
@@ -84,7 +84,8 @@ SMODS.ContentSet({
 SMODS.ContentSet({
 	key = "runes",
 	atlas = "rune_atlas",
-	pos = { x = 4, y = 1 }, --jera
+	soul_pos = { x = 4, y =1 },
+	pos = { x = 4, y = 0 }, --raido
 	cry_order = 9,
 })
 
