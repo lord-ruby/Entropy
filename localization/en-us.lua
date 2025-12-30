@@ -2101,7 +2101,8 @@ local decs = {
 					},
 					{
 						"This Joker Gains {C:attention}#2#{} use#<s>2#",
-						"when defeating a Boss Blind"
+						"when defeating a Boss Blind",
+						"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
 					}
 				}
 			},
@@ -3864,7 +3865,7 @@ local decs = {
 			c_entr_charm = {
 				name = "Charm",
 				text = {
-					"Apply {C:attention}Kaleidoscopic{} and",
+					"Apply {C:attention}Gilded{} and",
 					"{C:attention}Eternal{} to a selected Joker",
 				}
 			},

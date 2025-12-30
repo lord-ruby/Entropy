@@ -200,6 +200,9 @@ function Card:update(dt, ...)
             self.children.floating_sprite.atlas = G.ASSET_ATLAS[_center[G.SETTINGS.colourblind_option and 'hc_atlas' or 'lc_atlas'] or _center.atlas or _center.set]
             self.children.floating_sprite:set_sprite_pos(_center.soul_pos or {x=9999,y=9999})
           end
+          if self.config.center.set_sprites then
+              self.config.center:set_sprites(self, self.children.front, true)
+          end
           if self.states.hover.is then
               self:stop_hover()
               self:hover()

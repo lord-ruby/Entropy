@@ -1757,7 +1757,7 @@ function Entropy.show_flipside()
             return true
         end
     end
-    return next(SMODS.find_card("c_entr_flipside")) or next(SMODS.find_card("c_entr_dagaz")) or Entropy.has_rune("rune_entr_dagaz") or next(SMODS.find_card("j_entr_shadow_crystal"))
+    return next(SMODS.find_card("c_entr_flipside")) or next(SMODS.find_card("j_entr_void_cradle")) or next(SMODS.find_card("c_entr_dagaz")) or Entropy.has_rune("rune_entr_dagaz") or next(SMODS.find_card("j_entr_shadow_crystal"))
 end
 
 function Entropy.randomise_once(card, types, seed)

@@ -209,8 +209,8 @@ local ward = {
             if not SMODS.is_eternal(v) and not v.ability.cry_absolute then
                 local joker = G.jokers.cards[i]
                 total = total + joker.cost
-                joker.ability.debuff_timer = card.ability.rounds
-                joker.ability.debuff_timer_max = card.ability.rounds
+                joker.ability.debuff_timer = (joker.ability.debuff_timer or 0) + card.ability.rounds
+                joker.ability.debuff_timer_max = (joker.ability.debuff_timer_max or 0) + card.ability.rounds 
                 joker:set_debuff(true)
             end
         end
@@ -616,7 +616,7 @@ local charm = {
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
         for i, v in pairs(Entropy.GetHighlightedCards({G.jokers}, card2, 1, card2.ability.select)) do
-            v:set_edition("e_entr_kaleidoscopic")
+            v:set_edition("e_entr_gilded")
             v.ability.eternal = true
 
         end
@@ -626,7 +626,7 @@ local charm = {
         return #cards <= card.ability.select and #cards > 0
 	end,
     loc_vars = function(self, q, card)
-        q[#q+1] = G.P_CENTERS.e_entr_kaleidoscopic
+        q[#q+1] = G.P_CENTERS.e_entr_gilded
         q[#q+1] = {key="eternal",set="Other"}
         return {
             vars = {

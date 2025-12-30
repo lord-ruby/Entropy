@@ -59,8 +59,11 @@ function Entropy.RegisterBlinds()
                     q[#q+1]={set="Blind",key=self.config.blind}
                 end
             end,
-            set_sprites = function(self, card, front)
+            set_sprites = function(self, card, front, gc)
                 local pos = self.blpos
+                if card.ability and card.ability.glitched_crown then
+                    pos = G.P_CENTERS[card.ability.glitched_crown[card.glitched_index] or self.key].blpos
+                end
                 if not pos then
                     pos = {x = 0, y = 0}
                 end
@@ -69,6 +72,7 @@ function Entropy.RegisterBlinds()
                 end
                 card.children.center.atlas = G.ANIMATION_ATLAS[not self.discovered and "entr_blank" or "blind_chips"]
                 card.children.center:set_sprite_pos({x=pos.x or 0, y=pos.y or 0})
+                if gc then card.children.center.T.h = 2 end
             end,
             demicoloncompat = true,
             force_use = function(self, card, area)
@@ -137,23 +141,29 @@ function Entropy.RegisterBlinds()
                 end,
                 entr_credits = v.entr_credits,
                 cry_credits = v.cry_credits,
-                set_sprites = function(self, card, front)
+                set_sprites = function(self, card, front, gc)
                     local pos = self.blpos
+                    local atlas = self.blatlas
+                    if card.ability and card.ability.glitched_crown then
+                        pos = G.P_CENTERS[card.ability.glitched_crown[card.glitched_index] or self.key].blpos
+                        atlas = G.P_CENTERS[card.ability.glitched_crown[card.glitched_index] or self.key].blatlas
+                    end
                     if not pos then
                         pos = {x = 9999, y = 9999}
                     end
                     if not self.discovered then
                         pos = {x = 9999, y = 9999}
                     end
-                    if self.blatlas and G.ANIMATION_ATLAS[self.blatlas] and self.blatlas ~= "blind_chips" then
+                    if atlas and G.ANIMATION_ATLAS[atlas] and atlas ~= "blind_chips" then
                         card.children.center.sprite_pos = {x=pos.x or 0, y=pos.y or 0}
-                        card.children.center.atlas = G.ANIMATION_ATLAS[not self.discovered and "entr_blank" or self.blatlas]
+                        card.children.center.atlas = G.ANIMATION_ATLAS[not self.discovered and "entr_blank" or atlas]
                         card.children.center:reset()
-                        card.children.center.atlas = G.ANIMATION_ATLAS[not self.discovered and "entr_blank" or self.blatlas]
+                        card.children.center.atlas = G.ANIMATION_ATLAS[not self.discovered and "entr_blank" or atlas]
                     else
                         card.children.center.atlas = G.ANIMATION_ATLAS[not self.discovered and "entr_blank" or "blind_chips"]
                         card.children.center:set_sprite_pos({x=pos.x or 0, y=pos.y or 0})
                     end
+                    if gc then card.children.center.T.h = 2 end
                 end,
                 set_badges = function(self, card, badges)
                     if v.original_mod then badges[#badges+1] = create_badge(v.original_mod.name, v.original_mod.badge_colour, G.C.WHITE, 1 ) end

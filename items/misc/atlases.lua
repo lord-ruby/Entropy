@@ -306,15 +306,6 @@ if (SMODS.Mods.vallkarri or {}).can_load then
 end
 
 SMODS.Atlas {
-    key = 'blank',
-    path = 'stickers.png',
-    px = 1,
-    py = 1,
-    atlas_table = 'ANIMATION_ATLAS',
-    frames = 1
-}
-
-SMODS.Atlas {
     key = 'curses_big',
     path = 'curses_big.png',
     px = 75,

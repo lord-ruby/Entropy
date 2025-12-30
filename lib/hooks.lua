@@ -868,7 +868,7 @@ G.FUNCS.buy_deckorsleeve = function(e)
                     SMODS.change_base(v, "Hearts")
                 elseif v:is_suit("Clubs") then
                     SMODS.change_base(v, "Spades")
-                else 
+                elseif not v:is_suit("Hearts") and not  v:is_suit("Spades") then
                     SMODS.change_base(v, pseudorandom_element({"Spades", "Hearts"}, pseudoseed("checkered_redeem")), nil)
                 end
             end
