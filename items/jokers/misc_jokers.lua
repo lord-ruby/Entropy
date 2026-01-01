@@ -586,10 +586,12 @@ local lotteryticket = {
         end
     end,
     calc_dollar_bonus = function(self, card)
-        if SMODS.pseudorandom_probability(card, 'lottery', 1, card.ability.extra.odds * card.ability.extra.odds2) then
-            return card.ability.extra.payoutlarge
-        elseif SMODS.pseudorandom_probability(card, 'lottery', 1, card.ability.extra.odds) then
-            return card.ability.extra.payoutsmall
+        if SMODS.pseudorandom_probability(card, 'lottery', 1, card.ability.extra.odds) then
+            if SMODS.pseudorandom_probability(card, 'lottery', 1, card.ability.extra.odds2) then
+                return card.ability.extra.payoutlarge
+            else
+                return card.ability.extra.payoutsmall
+            end
         end
     end
 }

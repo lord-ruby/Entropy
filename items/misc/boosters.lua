@@ -250,6 +250,7 @@ local voucher = {
     draw_hand = false,
     weight = 0,
     kind = "Voucher",
+    in_pool = function() return false end,
     create_card = function (self, card, i) 
         return create_card("Voucher", G.pack_cards)
     end,
