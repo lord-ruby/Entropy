@@ -1976,7 +1976,7 @@ Entropy.ChaosConversions.Star = "Twisted"
 Entropy.ChaosConversions.Omen = "Twisted"
 Entropy.ChaosConversions.Pact = "Twisted"
 local ref = create_card
-function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append, dont_calculate,...)
+function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append, ...)
     if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi) and not forced_key and not G.GAME.entr_parakmi_bypass then
         _type = Entropy.GetRandomSet(next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi)
 
@@ -1988,7 +1988,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
         local element = "c_"..pseudorandom_element(Entropy.BlindC, pseudoseed(key_append or "parakmi"))
         forced_key = forced_key or element
     end
-    if area == G.pack_cards and not dont_calculate then
+    if area == G.pack_cards and not G.entr_dont_calculate then
         if soulable and not forced_key and Entropy.has_rune("rune_entr_oss") then
             local valid = {}
             for _, v in ipairs(SMODS.Consumable.legendaries) do
@@ -2017,13 +2017,13 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
                     Entropy.has_rune("rune_entr_mannaz").num_triggered = 2
                     Entropy.has_rune("rune_entr_mannaz").triggered = true
                 end
-                local card = ref("Spectral", area or G.pack_cards, nil, nil, true, true, nil, "rune_entr_mannaz", dont_calculate, ...)
+                local card = ref("Spectral", area or G.pack_cards, nil, nil, true, true, nil, "rune_entr_mannaz", ...)
                 Entropy.post_create_card(card, area == G.pack_cards, forced_key)
                 return card
             end
         end
     end
-    local card = ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append, dont_calculate, ...)
+    local card = ref(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append, ...)
     if card and card.ability and card.ability.name == "entr-solarflare" then
 		card:set_edition("e_entr_solar", true, nil, true)
 	end
@@ -2073,6 +2073,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
         card:set_edition("e_entr_lowres")
     end
     Entropy.post_create_card(card, area == G.pack_cards, forced_key)
+    G.entr_dont_calculate = nil
     return card
 end
 
