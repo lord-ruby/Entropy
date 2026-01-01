@@ -3,7 +3,7 @@
     "id": "entr",
     "version": "1.1.0",
     "website_url": "https://github.com/lord-ruby/Entropy/tree/main",
-    "description": "A chaotic Balatro mod. Adds inverted consumables as well as various other miscelaneous mechanics.",
+    "description": "A Chaotic Balatro mod focused on Inverted Consumables and expanding on Vanilla mechanics in various other ways. Generally Vanilla adjacent but not exactly Vanilla+",
     "prefix": "entr",
     "author": ["Ruby", "The Entropy Discord"],
     "main_file": "Entropy.lua",

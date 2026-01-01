@@ -2024,7 +2024,7 @@ local decs = {
                 name = "Orange Amaryllis",
                 text = {
 					{
-						"when {C:attention}Blind{} is selected",
+						"When {C:attention}Blind{} is selected",
 						"gain {C:blue}+#1#{} hands"
 					},
 					{
