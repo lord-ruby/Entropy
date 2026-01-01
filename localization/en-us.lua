@@ -5289,7 +5289,8 @@ local decs = {
 						"Marked by {C:red}Brimstone{}"
 					},
 					{
-						"{X:mult,C:white}X3.6{} Mult after hand played"
+						"{X:mult,C:white}X3.6{} Mult after hand played",
+						"on the {C:attention}final hand{} of round"
 					}
 				}
 			},
@@ -5867,6 +5868,7 @@ local decs = {
 				name = "Pact of Brimstone",
 				text = {
 					"{X:mult,C:white}X3.6{} Mult after hand played",
+					"on the {C:attention}final hand{} of round",
 					"{C:blue}-#1#{} Hands"
 				}
 			},

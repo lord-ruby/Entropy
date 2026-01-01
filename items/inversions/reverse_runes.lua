@@ -1304,7 +1304,7 @@ local loyalty = {
 }
 
 local brimstone_indicator = Entropy.create_mark("brimstone", 7070, {x = 5, y = 6}, function(self, rune, context)
-    if context.final_scoring_step then
+    if context.final_scoring_step and G.GAME.current_round.hands_left <= 0 then
         G.E_MANAGER:add_event(Event{
             func = function()
                 attention_text({
