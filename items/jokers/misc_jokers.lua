@@ -3629,7 +3629,7 @@ local masterful_gambit = {
     pos = {x = 2, y = 9},
     atlas = "jokers",
     config = {
-        dollars = 2
+        dollars = 3
     },
     dependencies = {
         items = {
@@ -6620,7 +6620,7 @@ local false_vacuum_collapse = {
     order = 119,
     object_type = "Joker",
     key = "false_vacuum_collapse",
-    rarity = 2,
+    rarity = 3,
     cost = 8,
     eternal_compat = true,
     pos = {x = 9, y = 14},
