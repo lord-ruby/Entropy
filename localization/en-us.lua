@@ -887,7 +887,7 @@ local decs = {
 				name = "Broadcast",
 				text = {
 					"Copies the {C:attention}#1#{}#2# Jokers effect",
-					"Increases by {C:attention}1{} when hand played",
+					"Increases by {C:attention}1{} at end of round",
 					"Resets after reaching your {C:attention}last{} Joker"
 				}
 			},

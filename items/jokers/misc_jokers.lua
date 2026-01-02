@@ -1789,7 +1789,7 @@ local broadcast = {
         }
     end,
     calculate = function(self, card, context)
-        if context.after and not context.blueprint and not context.repetition then
+        if context.end_of_round and not context.blueprint and not context.repetition and not context.individual then
             card.ability.extra = card.ability.extra + 1
             if card.ability.extra > #G.jokers.cards then
                 card.ability.extra = 1
