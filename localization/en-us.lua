@@ -380,7 +380,7 @@ local decs = {
 			j_entr_strawberry_pie = {
 				name = "Strawberry Pie",
 				text = {
-					"Flush, Straight and Full House",
+					"{C:attention}Flush{}, {C:attention}Straight{} and {C:attention}Full House",
 					"level-ups are redirected to",
 					"{C:attention}High Card{}",
 				}

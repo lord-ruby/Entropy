@@ -464,24 +464,13 @@ local kaleidoscopic = {
 				context.kaleidoscopic = true
 				context.edition = nil
 				local eval, post = SMODS.eval_individual(v, context)
+				eval = eval or {}
 				local effects = {eval}
 				if context.main_scoring then 
 					eval.chips = v.base.nominal + v.ability.bonus or 0
 					SMODS.calculate_context({individual = true, other_card=v, cardarea = v.area})
 				end
 				for _,v in ipairs(post or {}) do effects[#effects+1] = v end
-				if eval.retriggers then
-					for rt = 1, #eval.retriggers do
-						local rt_eval, rt_post = SMODS.eval_individual(v, context)
-						table.insert(effects, {eval.retriggers[rt]})
-						table.insert(effects, rt_eval)
-						for _, v in ipairs(rt_post) do effects[#effects+1] = v end
-						if context.main_scoring then 
-							table.insert(effects, {chips = v.base.nominal + v.ability.bonus or 0}) 
-							SMODS.calculate_context({individual = true, other_card=v, cardarea = v.area})
-						end
-					end
-				end
 				SMODS.trigger_effects(effects, v)
 				context.kaleidoscopic = nil
 			end

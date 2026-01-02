@@ -356,7 +356,7 @@ function Entropy.RandomForcetrigger(card, num,context)
 						{ message = localize("cry_demicolon"), colour = G.C.GREEN }
 					)
 				elseif v.base.id and (not v.edition or v.edition.key ~= "e_entr_fractured") then
-					local results = SMODS.eval_individual(v, {cardarea=G.play,main_scoring=true, forcetrigger=true, individual=true})
+					local results = SMODS.eval_individual(v, {cardarea=G.play,main_scoring=true, forcetrigger=true, individual=true}) or {}
 					if results then
 						for i, v2 in pairs(results) do
 							for i2, result in pairs(type(v2) == "table" and v2 or {}) do
@@ -364,7 +364,7 @@ function Entropy.RandomForcetrigger(card, num,context)
 							end
 						end
 					end
-					local results = SMODS.eval_individual(v, {cardarea=G.hand,main_scoring=true, forcetrigger=true, individual=true})
+					local results = SMODS.eval_individual(v, {cardarea=G.hand,main_scoring=true, forcetrigger=true, individual=true}) or {}
 					if results then
 						for i, v2 in pairs(results) do
 							for i2, result in pairs(type(v2) == "table" and v2 or {}) do
@@ -1178,7 +1178,7 @@ end
 function Entropy.GetRepetitions(card)
     local res2 = {}
     for i, v in ipairs(G.jokers.cards) do
-        local res = SMODS.eval_individual(v, {repetition=true, other_card=card,cardarea=card.area,card_effects={{},{}}})
+        local res = SMODS.eval_individual(v, {repetition=true, other_card=card,cardarea=card.area,card_effects={{},{}}}) or {}
         if res.jokers and res.jokers.repetitions then
             res2.repetitions = (res2.repetitions or 0) + res.jokers.repetitions
         end

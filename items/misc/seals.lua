@@ -11,15 +11,24 @@ local crimson = {
     pos = {x=0,y=0},
     badge_colour = HEX("8a0050"),
     calculate = function(self, card, context)
-        if (context.cardarea == G.play or context.cardarea == G.hand) and not context.crimson_trigger then
+        if (context.cardarea == G.play or context.cardarea == G.hand) and not card.crimson_trigger then
             for i, v in ipairs(card.area.cards) do
                 if card.area.cards[i+1] == card or card.area.cards[i-1] == card then
-                    context.crimson_trigger = true
                     local eval, post = SMODS.eval_individual(v, context)
                     eval = eval or {}
                     local effects = {eval}
-                    if (eval and next(eval)) or (post and next(post)) or context.main_scoring then
+                    if (eval and next(eval)) or (post and next(post)) or (context.main_scoring and context.cardarea == G.play) then
                         SMODS.calculate_effect({message = localize("k_again_ex"), colour = HEX("8a0050"), card = v})
+                        if not card.crimson_trigger then
+                            G.E_MANAGER:add_event(Event{
+                                trigger = "before",
+                                func = function()
+                                    card.crimson_trigger = nil
+                                    return true
+                                end
+                            })
+                        end
+                        card.crimson_trigger = true
                     end
                     if context.main_scoring then 
                         G.message_card = v
@@ -31,7 +40,6 @@ local crimson = {
                     SMODS.trigger_effects(effects, v)
                 end
             end
-            context.crimson_trigger = nil
         end
     end,
 }
