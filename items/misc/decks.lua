@@ -319,7 +319,8 @@ local discordant = {
 local crc_ref = calculate_reroll_cost
 function calculate_reroll_cost(...)
     local ret = crc_ref(...)
-    G.GAME.current_round.reroll_cost = (G.GAME.round_resets.temp_reroll_cost or G.GAME.round_resets.reroll_cost) + G.GAME.current_round.reroll_cost_increase * ((G.GAME.modifiers.entr_reroll_fac or 1))
+    G.GAME.current_round.reroll_cost = G.GAME.current_round.reroll_cost + G.GAME.current_round.reroll_cost_increase * ((G.GAME.modifiers.entr_reroll_fac or 1) - 1)
+    return ret
 end
 
 if CardSleeves then
