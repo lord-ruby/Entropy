@@ -3855,11 +3855,10 @@ local decs = {
 			c_entr_crypt = {
 				name = "Crypt",
 				text = {
-					"Select {C:attention}#1#{} Jokers",
-					"convert the {C:attention}left{} Joker",
-					"into the {C:attention}right{} Joker",
-					"then {C:attention}strip{} its edition",
-					"and debuff it for {C:attention}#2#{} rounds"
+					"Select {C:attention}#1#{} Jokers and",
+					"debuff a {C:attention}random{} selected",
+					"Joker then turn it into the",
+					"{C:attention}other{} Joker"
 				}
 			},
 			c_entr_charm = {

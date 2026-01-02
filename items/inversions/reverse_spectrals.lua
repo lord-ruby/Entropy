@@ -552,24 +552,18 @@ local crypt = {
     atlas = "consumables",
     config = {
         select = 2,
-        rounds = 3,
     },
 	pos = {x=9,y=5},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
-        local joker = nil
-        for i, v in pairs(G.jokers.cards) do 
-            if v.highlighted then 
-                joker = v 
-            end 
-        end
-        Entropy.FlipThen(Entropy.GetHighlightedCards({G.jokers}, card2, 1, card2.ability.select), function(v, area)
-            if v ~= joker and v and joker then            
-                copy_card(joker, v)
-                v:set_edition()
-                v:set_debuff(true)
-                v.ability.debuff_timer = (v.ability.debuff_timer or 0) + card2.ability.rounds
-                v.ability.debuff_timer_max = (v.ability.debuff_timer_max or 0) + card2.ability.rounds
+        local jokers = Entropy.GetHighlightedCards({G.jokers}, card2, 1, card2.ability.select)
+        local selected = pseudorandom_element(jokers, pseudoseed("entr_crypt"))
+        Entropy.FlipThen(jokers, function(v, area)
+            if v ~= selected and v and selected then            
+                copy_card(selected, v)
+                if v.edition and v.edition.key == "e_negative" then
+                    v:set_edition()
+                end
             end
         end)
 
@@ -579,11 +573,20 @@ local crypt = {
         return #cards > 1 and #cards <= card.ability.select
 	end,
     loc_vars = function(self, q, card)
+        local main_end = {}
+        if G.jokers and G.jokers.cards then
+            for _, joker in ipairs(G.jokers.cards) do
+                if joker.edition and joker.edition.negative then
+                    localize { type = 'other', key = 'remove_negative', nodes = main_end, vars = {} }
+                    break
+                end
+            end
+        end
         return {
             vars = {
                 card.ability.select,
-                card.ability.rounds
-            }
+            },
+            main_end = main_end[1]
         }
     end,
     entr_credits = {

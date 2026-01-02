@@ -679,7 +679,7 @@ local endurance = {
     inversion = "c_strength",
     use = function(self, card2)
         local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card2, 1, card2.ability.select)
-        G.GAME.endurance_rounds = (G.GAME.endurance_rounds or 2) + 1
+        G.GAME.endurance_rounds = (G.GAME.endurance_rounds or 3)
         for i, card in pairs(cards) do
             card.ability.debuff_timer = (card.ability.debuff_timer or 0) + G.GAME.endurance_rounds
             card.ability.debuff_timer_max = (card.ability.debuff_timer_max or 0) + G.GAME.endurance_rounds
@@ -689,6 +689,7 @@ local endurance = {
             card:set_debuff(true)
             card:juice_up()
         end
+        G.GAME.endurance_rounds = G.GAME.endurance_rounds + 1
     end,
     can_use = function(self, card)
         local num = #Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, card.ability.select)
