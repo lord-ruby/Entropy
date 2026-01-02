@@ -2725,7 +2725,7 @@ target = '''=[SMODS Cryptid "lib/forcetrigger.lua"]'''
 pattern = "if Talisman and not Talisman.config_file.disable_anims then"
 position = "at"
 payload = '''
-if Talisman and not Talisman.config_file.disable_anims and (not context or not context.no_sound) then
+if not Entropy.should_skip_animations() and (not context or not context.no_sound) then
 '''
 match_indent = true
 
@@ -2735,7 +2735,7 @@ target = '''=[SMODS Cryptlib "forcetrigger.lua"]'''
 pattern = "if Talisman and not Talisman.config_file.disable_anims then"
 position = "at"
 payload = '''
-if Talisman and not Talisman.config_file.disable_anims and (not context or not context.no_sound) then
+if not Entropy.should_skip_animations() and (not context or not context.no_sound) then
 '''
 match_indent = true
 
@@ -3321,5 +3321,17 @@ for _, key in ipairs(G.GAME.current_round.voucher or {}) do
         end
     end
 end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+if not (v.name == 'e_negative' and _no_neg) then -- skip return if negative is selected and _no_neg is true
+'''
+position = "at"
+payload = '''
+if not (v.name == 'e_negative' and _no_neg) and not G.GAME.banned_keys[v.name] then -- skip return if negative is selected and _no_neg is true or edition is banned
 '''
 match_indent = true

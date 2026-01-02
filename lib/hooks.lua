@@ -1538,6 +1538,9 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         local mult = 1
         for i, v in pairs(SMODS.find_card("j_entr_error")) do
             mult = mult + pseudorandom("entr_error", 95000, 120000)/100000 - 1
+            if not Entropy.should_skip_animations() then
+                v:juice_up()
+            end
         end
         amount = amount * mult
     end
@@ -1577,12 +1580,16 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         if not G.GAME.asc_power_hand or G.GAME.asc_power_hand == 0 then G.GAME.asc_power_hand = G.GAME.current_round.current_hand.cry_asc_num end
         G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand) * to_big(amount)        
         local text = number_format(to_big(G.GAME.asc_power_hand))
-        G.E_MANAGER:add_event(Event({
-            func = function()
-                G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
-                return true
-            end
-        }))
+                if not Entropy.should_skip_animations() then
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
+                    return true
+                end
+            }))
+        else    
+            G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
+        end
         card_eval_status_text = function() end
         scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
@@ -1603,12 +1610,16 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         if not G.GAME.asc_power_hand or G.GAME.asc_power_hand == 0 then G.GAME.asc_power_hand = G.GAME.current_round.current_hand.cry_asc_num or 0 end
         G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand) + to_big(amount)
         local text = number_format(to_big(G.GAME.asc_power_hand))
-        G.E_MANAGER:add_event(Event({
-            func = function()
-                G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
-                return true
-            end
-        }))
+        if not Entropy.should_skip_animations() then
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
+                    return true
+                end
+            }))
+        else    
+            G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
+        end
         card_eval_status_text = function() end
         scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
@@ -1629,12 +1640,16 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         if not G.GAME.asc_power_hand or G.GAME.asc_power_hand == 0 then G.GAME.asc_power_hand = G.GAME.current_round.current_hand.cry_asc_num or 0 end
         G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand) ^ to_big(amount)
         local text = number_format(to_big(G.GAME.asc_power_hand))
-        G.E_MANAGER:add_event(Event({
-            func = function()
-                G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
-                return true
-            end
-        }))
+        if not Entropy.should_skip_animations() then
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
+                    return true
+                end
+            }))
+        else    
+            G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
+        end
         card_eval_status_text = function() end
         scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
@@ -1655,12 +1670,16 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         if not G.GAME.asc_power_hand or G.GAME.asc_power_hand == 0 then G.GAME.asc_power_hand = G.GAME.current_round.current_hand.cry_asc_num or 1 end
         G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand):arrow(amount[1], amount[2])
         local text = number_format(to_big(G.GAME.asc_power_hand))
-        G.E_MANAGER:add_event(Event({
-            func = function()
-                G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
-                return true
-            end
-        }))
+        if not Entropy.should_skip_animations() then
+            G.E_MANAGER:add_event(Event({
+                func = function()
+                    G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
+                    return true
+                end
+            }))
+        else    
+            G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
+        end
         card_eval_status_text = function() end
         scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
@@ -1908,7 +1927,7 @@ local ref = level_up_hand
 function level_up_hand(card, hand, instant, amount, ...)
     if next(SMODS.find_card("j_entr_strawberry_pie")) and hand ~= "High Card" then
         for i, v in pairs(SMODS.find_card("j_entr_strawberry_pie")) do
-            if SMODS.pseudorandom_probability(v, v.ability.num, v.ability.denom, "entr_strawberry") then
+            if hand == "Full House" or hand == "Straight" or hand == "Flush" then
                 hand = "High Card"
             end
         end 
@@ -4612,44 +4631,6 @@ if HotPotato then
             }}
         }}
     end
-end
-
-local smods_poll_edref = SMODS.poll_edition
-function SMODS.poll_edition(args)
-    local unordered_options = args.options or get_current_pool("Edition", nil, nil, _key or 'edition_generic')
-    local _options = {}
-    for _, edition in ipairs(unordered_options) do
-        if G.P_CENTERS[edition] and not G.P_CENTERS[edition].no_doe and not G.GAME.banned_keys[edition] then
-            if G.P_CENTERS[edition].vanilla then
-                table.insert(_options, 1, edition)
-            else
-                table.insert(_options, edition)
-            end
-        end
-    end
-    args.options = _options
-    return smods_poll_edref(args)
-end
-
-local poll_edref = poll_edition
-function poll_edition(_key, _mod, _no_neg, _guaranteed, options)
-    if not options then
-		if _key == "wheel_of_fortune" or _key == "aura" then -- set base game edition polling
-			options = { 'e_negative', 'e_polychrome', 'e_holo', 'e_foil' }
-		end
-	end
-    local unordered_options = options or get_current_pool("Edition", nil, nil, _key or 'edition_generic')
-    local _options = {}
-    for _, edition in ipairs(unordered_options) do
-        if G.P_CENTERS[edition] and not G.P_CENTERS[edition].no_doe and not G.GAME.banned_keys[edition] then
-            if G.P_CENTERS[edition].vanilla then
-                table.insert(_options, 1, edition)
-            else
-                table.insert(_options, edition)
-            end
-        end
-    end
-    return poll_edref(_key, _mod, _no_neg, _guaranteed, _options)
 end
 
 local gcp = get_current_pool

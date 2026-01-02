@@ -615,8 +615,22 @@ local charm = {
 	pos = {x=11,y=5},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
+        local editions = {}
+        for i, v in pairs(G.P_CENTER_POOLS.Edition) do
+            if v.key ~= "e_negative" and v.key ~= "e_base" then
+                editions[#editions+1] = {
+                    weight = 1,
+                    name = v.key
+                }
+            end
+        end
         for i, v in pairs(Entropy.GetHighlightedCards({G.jokers}, card2, 1, card2.ability.select)) do
-            v:set_edition("e_entr_gilded")
+            local edition = SMODS.poll_edition({
+                key = "entr_charm",
+                options = editions,
+                guaranteed = true
+            })
+            v:set_edition(edition)
             v.ability.eternal = true
 
         end

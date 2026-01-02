@@ -305,7 +305,8 @@ local neon = {
 		per = 1,		
 	},
 	config = {
-		cost_fac = 0.9
+		cost_fac = 0.9,
+		cost_fac_playing = 0.95
 	},
 	dependencies = {
         items = {
@@ -317,7 +318,7 @@ local neon = {
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
-		return {vars={card and card.edition and card.edition.cost_fac or 0.9}}
+		return {vars={card and card.edition and (card:is_playing_card() and card.edition.cost_fac_playing or card.edition.cost_fac) or 0.9}}
     end,
 	entr_credits = {
 		custom={key="shader",text="cassknows"},
@@ -333,8 +334,8 @@ function Card:set_cost()
 	end
 	set_cost_ref(self)
 	for i, v in pairs(G.I.CARD) do
-		if v.edition and v.edition.key == "e_entr_neon" and v.area and v.area.config.type ~= "shop" then
-			self.cost = self.cost * v.edition.cost_fac
+		if v.edition and v.edition.key == "e_entr_neon" and v.area and v.area.config.type ~= "shop" and not v.debuff then
+			self.cost = self.cost * (v:is_playing_card() and v.edition.cost_fac_playing or v.edition.cost_fac) or 1
 		end
 	end
 	if Entropy.has_rune("rune_entr_avarice") then

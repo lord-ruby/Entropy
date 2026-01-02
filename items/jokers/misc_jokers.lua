@@ -87,14 +87,6 @@ local strawberry_pie = {
     atlas = "jokers",
     demicoloncompat = true,
     pools = { ["Food"] = true },
-    loc_vars = function(self, q, card)
-        local n, d = SMODS.get_probability_vars(card, card.ability.num, card.ability.denom, "entr_strawberry")
-        return {
-            vars = {
-                n, d
-            }
-        }
-    end
 }
 
 local recursive_joker = {
@@ -648,7 +640,7 @@ local eden = {
     key = "eden",
     name="entr-eden",
     config = {
-        asc=3
+        asc=2.5
     },
     rarity = 2,
     cost = 4,
@@ -6100,12 +6092,12 @@ local stand_arrow = {
     perishable_compat = true,
     loc_vars = function(self, q, card)
         local options = {
-            {key ="e_polychrome", weight = 1},
-            {key ="e_negative", weight = 1},
-            {key ="e_entr_sunny", weight = 1},
-            {key ="e_entr_solar", weight = 1},
-            {key ="e_entr_freaky", weight = 1},
-            {key ="e_entr_fractured", weight = 1},
+            "e_polychrome",
+            "e_negative",
+            "e_entr_sunny",
+            "e_entr_solar",
+            "e_entr_freaky",
+            "e_entr_fractured"
         }
         for i, v in pairs(options) do
             q[#q+1] = G.P_CENTERS[v]
@@ -6142,13 +6134,14 @@ local stand_arrow = {
                 v:start_dissolve()
             elseif not v.edition then
                 local edition = SMODS.poll_edition({
+                    key = "entr_stand_arrow",
                     options = {
-                        "e_polychrome",
-                        "e_negative",
-                        "e_entr_sunny",
-                        "e_entr_solar",
-                        "e_entr_freaky",
-                        "e_entr_fractured"
+                        {name ="e_polychrome", weight = 1},
+                        {name ="e_negative", weight = 1},
+                        {name ="e_entr_sunny", weight = 1},
+                        {name ="e_entr_solar", weight = 1},
+                        {name ="e_entr_freaky", weight = 1},
+                        {name ="e_entr_fractured", weight = 1},
                     },
                     guaranteed = true
                 })
@@ -6833,8 +6826,18 @@ local echo_chamber = {
                 }
             end
         end
-        if (context.using_consumeable and not card.ability.dont) or context.forcetrigger then
-            card.ability.dont = true
+    end,
+    can_use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.consumeables, G.hand, G.jokers, G.pack_cards}, card, 1, 1, function(card)
+            return card.ability.consumeable and not card.config.center.hidden
+        end)
+        return #cards == 1 and to_big(card.ability.left) > to_big(0)
+    end,
+    use = function(self, card)
+        local cards = Entropy.GetHighlightedCards({G.consumeables, G.hand, G.jokers, G.pack_cards}, card, 1, 1, function(card)
+            return card.ability.consumeable and not card.config.center.hidden
+        end)
+        if #cards > 0 then
             for i, v in pairs(card.ability.destroyed) do
                 G.E_MANAGER:add_event(Event{
                     trigger = "after",
@@ -6859,25 +6862,7 @@ local echo_chamber = {
                     end
                 })
             end
-            G.E_MANAGER:add_event(Event{
-                func = function()
-                    card.ability.dont = nil
-                    return true
-                end
-            })
-            return nil, true
         end
-    end,
-    can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.consumeables, G.hand, G.jokers, G.pack_cards}, card, 1, 1, function(card)
-            return card.ability.consumeable and not card.config.center.hidden
-        end)
-        return #cards == 1 and to_big(card.ability.left) > to_big(0)
-    end,
-    use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.consumeables, G.hand, G.jokers, G.pack_cards}, card, 1, 1, function(card)
-            return card.ability.consumeable and not card.config.center.hidden
-        end)
         for i, v in pairs(cards) do
             table.insert(card.ability.destroyed, 1, v.config.center_key)
             v:start_dissolve()

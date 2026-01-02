@@ -464,7 +464,7 @@ local youth = {
         ease_ante(-card.ability.extra)
         local jokers = {}
         for i, v in pairs(G.jokers.cards) do
-            if not v.ability.debuff_timer then jokers[#jokers+1] = v end
+            if not SMODS.is_eternal(dcard) then jokers[#jokers+1] = v end
         end
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
             play_sound('entr_pacts')
@@ -473,17 +473,9 @@ local youth = {
             return true end }))
         local dcard = pseudorandom_element(jokers, pseudoseed("entr_youth"))
         if dcard then
-            dcard.ability.debuff_timer = card.ability.rounds
-            dcard.ability.debuff_timer_max = card.ability.rounds
-            dcard:set_debuff(true)
-            card_eval_status_text(
-                dcard,
-                "extra",
-                nil,
-                nil,
-                nil,
-                { message = localize("k_debuffed"), colour = G.C.RED }
-            )
+            if not SMODS.is_eternal(dcard) then
+                dcard:start_dissolve()
+            end
         end
         Entropy.pact_mark("rune_entr_youth")
     end,

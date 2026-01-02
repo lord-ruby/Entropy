@@ -2145,10 +2145,10 @@ local upgrade_hands_ref = SMODS.upgrade_poker_hands
 function SMODS.upgrade_poker_hands(args)
     if type(args.hands) == "string" then args.hands = {args.hands} end
     if not args.hands then args.hands = {} end
-    if next(SMODS.find_card("j_entr_strawberry_pie")) and hand ~= "High Card" then
+    if next(SMODS.find_card("j_entr_strawberry_pie")) then
         for i, v in pairs(SMODS.find_card("j_entr_strawberry_pie")) do
             for index, hand in pairs(args.hands) do
-                if SMODS.pseudorandom_probability(v, v.ability.num, v.ability.denom, "entr_strawberry") then
+                if args.hands[index] == "Full House" or args.hands[index] == "Straight" or args.hands[index] == "Flush" then
                     args.hands[index] = "High Card"
                 end
             end
@@ -2354,22 +2354,7 @@ function SMODS.add_voucher_to_shop(key, ...)
     return card
 end
 
-
-function find_dupes(order)
-    local orders = {}
-    local dupes = {}
-    for i, v in pairs(G.P_CENTERS) do
-        if v.cry_order and (not order or v.cry_order == order) and v.set ~= "Content Set" and v.set ~= "CBlind" then
-            if orders[v.cry_order] then
-                dupes[v.cry_order] = true
-            else
-                orders[v.cry_order] = true
-            end
-        end
-    end
-    for i, v in pairs(G.P_CENTERS) do
-        if dupes[v.cry_order or -1.1] and v.set ~= "Content Set" and v.set ~= "CBlind" then
-            print(v.key..": "..v.cry_order)
-        end
-    end
+function Entropy.should_skip_animations(strict)
+    if Talisman and Talisman.config_file.disable_anims then return true end
+    if Handy and Handy.animation_skip.value >= (strict and 4 or 3) then return true end
 end

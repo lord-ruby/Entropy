@@ -380,9 +380,9 @@ local decs = {
 			j_entr_strawberry_pie = {
 				name = "Strawberry Pie",
 				text = {
-					"{C:green}#1# in #2#{} chance for",
-					"Other hand level-ups to be",
-					"redirected to {C:attention}High Card{}",
+					"Flush, Straight and Full House",
+					"level-ups are redirected to",
+					"{C:attention}High Card{}",
 				}
 			},
 			j_entr_recursive_joker = {
@@ -1903,7 +1903,7 @@ local decs = {
 						"{C:attention}Consumable{}, the last three",
 						"Consumables destroyed by this",
 						"Joker are {C:attention}Triggered{} again",
-						"when a consumable is used",
+						"when another consumable is destroyed",
 						"{C:inactive}({V:1}#5#{}, {V:2}#6#{}, {V:3}#7#{C:inactive})",
 						"{C:inactive}(Hidden consumables excluded)"
 					},
@@ -3865,7 +3865,7 @@ local decs = {
 			c_entr_charm = {
 				name = "Charm",
 				text = {
-					"Apply {C:attention}Gilded{} and",
+					"Apply a {C:attention}Random{} {C:dark_edition}Edition{} and",
 					"{C:attention}Eternal{} to a selected Joker",
 				}
 			},
@@ -5775,9 +5775,8 @@ local decs = {
 			c_entr_youth = {
 				name = "Pact of Youth",
 				text = {
+					"{C:attention}Destroy{} a random Joker",
 					"{C:attention}-#1#{} Ante",
-					"A random Joker is {C:red}debuffed{}",
-					"for {C:attention}#2#{} round#<s>2#"
 				}
 			},
 			c_entr_shards = {

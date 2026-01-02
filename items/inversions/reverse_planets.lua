@@ -527,25 +527,25 @@ end, config = {bdwarf = 0.5}, loc_vars = function(self, q, card) return {vars = 
 Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="",key="sputnik",sprite_pos={x=4,y=2}, new_key="fuzzball", prefix = "entr", atlas = "consumables2", set_badges = function(self, card, badges)
   badges[1] = create_badge(localize("k_spatial_anomaly"), get_type_colour(self or card.config, card), nil, 1.2)
 end, func = function(self, card, area, copier, number)
-  local hands = {}
-  for i, v in pairs(G.GAME.hands) do
-    if v.visible then
-      hands[#hands+1] = i
-    end
-  end
-  pseudoshuffle(hands, pseudoseed("entr_sputnik"))
-  if next(SMODS.find_card("j_entr_strawberry_pie")) and hand ~= "High Card" then
-      for i, v in pairs(SMODS.find_card("j_entr_strawberry_pie")) do
-          if SMODS.pseudorandom_probability(v, v.ability.num, v.ability.denom, "entr_strawberry") then
-              for i, v in pairs(hands) do
-                hands[i] = "High Card"
-              end
-          end
-      end 
-  end
-  for i = 1, math.min(card.ability.hands, #hands) do
-    SMODS.upgrade_poker_hands({hands = hands[i], from = card, ascension_power = card.ability.amt + (G.GAME.entr_black_dwarf or 0)})
-  end
+	local hands = {}
+	for i, v in pairs(G.GAME.hands) do
+		if v.visible then
+			hands[#hands+1] = i
+		end
+	end
+	pseudoshuffle(hands, pseudoseed("entr_sputnik"))
+	if next(SMODS.find_card("j_entr_strawberry_pie")) and hand ~= "High Card" then
+		for i, v in pairs(SMODS.find_card("j_entr_strawberry_pie")) do
+			for i, v in pairs(hands) do
+				if hands[i] == "Full House" or hands[i] == "Straight" or hands[i] == "Flush" then
+					hands[i] = "High Card"
+				end
+			end
+		end 
+	end
+	for i = 1, math.min(card.ability.hands, #hands) do
+		SMODS.upgrade_poker_hands({hands = hands[i], from = card, ascension_power = card.ability.amt + (G.GAME.entr_black_dwarf or 0)})
+	end
 end, config = {amt = 1, hands = 3}, loc_vars = function(self, q, card) return {vars = {card.ability.hands, card.ability.amt + (G.GAME.entr_black_dwarf or 0)}} end}
 
 function Entropy.RegisterReversePlanets()

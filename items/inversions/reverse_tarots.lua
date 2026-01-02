@@ -500,7 +500,7 @@ local dagger = {
             total = total + card.base.nominal + (card.ability.bonus or 0)
         end
         SMODS.destroy_cards(cards)
-        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = G.GAME.hands[_hand].level, mult = Entropy.ascend_hand(G.GAME.hands[_hand].mult, _hand), chips = Entropy.ascend_hand(G.GAME.hands[_hand].chips, _hand), handname = localize(_hand, "poker_hands"), StatusText = true })
+        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = G.GAME.hands[_hand].level, mult = Entropy.ascend_hand(G.GAME.hands[_hand].mult, _hand), chips = Entropy.ascend_hand(G.GAME.hands[_hand].chips, _hand), handname = localize(_hand, "poker_hands") })
         delay(1.6)
         update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { chips = "+"..total, handname = localize(_hand, "poker_hands"), StatusText = true })
         delay(2.6)
