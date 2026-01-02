@@ -15,11 +15,17 @@ local crimson = {
             for i, v in ipairs(card.area.cards) do
                 if card.area.cards[i+1] == card or card.area.cards[i-1] == card then
                     context.crimson_trigger = true
-                    local eval, post = eval_card(v, context)
+                    local eval, post = SMODS.eval_individual(v, context)
+                    eval = eval or {}
                     local effects = {eval}
+                    if (eval and next(eval)) or (post and next(post)) or context.main_scoring then
+                        SMODS.calculate_effect({message = localize("k_again_ex"), colour = HEX("8a0050"), card = v})
+                    end
                     if context.main_scoring then 
+                        G.message_card = v
                         eval.chips = v.base.nominal + v.ability.bonus or 0
                         SMODS.calculate_context({individual = true, other_card=v, cardarea = v.area, scoring_hand = context.scoring_hand})
+                        G.message_card = nil
                     end
                     for _,v in ipairs(post or {}) do effects[#effects+1] = v end
                     SMODS.trigger_effects(effects, v)

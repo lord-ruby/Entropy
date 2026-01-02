@@ -419,7 +419,7 @@ local metamorphosis = {
                         context.cardarea = G.jokers
                         local text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta = G.FUNCS.get_poker_hand_info(G.play.cards)
                         for i, v in pairs(G.jokers.cards) do
-                          local res = eval_card(v, {cardarea = G.jokers, joker_main = true, full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands})
+                          local res = SMODS.eval_individual(v, {cardarea = G.jokers, joker_main = true, full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands})
                           if res and res.jokers then 
                             res = res.jokers
                             for i2, v2 in pairs(res) do

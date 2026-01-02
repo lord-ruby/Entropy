@@ -1544,6 +1544,10 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         end
         amount = amount * mult
     end
+    if G.message_card then
+        effect.message_card = G.message_card
+        scored_card = G.message_card
+    end
     if string.find(key, "chip") and next(SMODS.find_card("j_entr_yogurt")) then
         SMODS.calculate_context({entr_chips_calculated = true, other_card = scored_card or effect.card})    
     end
@@ -4383,7 +4387,7 @@ function copy_card(old, new, ...)
         SMODS.calculate_context{copying_card = true, original_card = old, new_card = copy}
     end
     for i, v in pairs(G.play and G.play.cards or {}) do
-        eval_card(v, {copying_card = true, original_card = old, new_card = copy})
+        SMODS.eval_individual(v, {copying_card = true, original_card = old, new_card = copy})
     end
     if old.base and old.base.nominal then copy.base.nominal = old.base.nominal end
     G.GAME.modifiers.entr_twisted = tw

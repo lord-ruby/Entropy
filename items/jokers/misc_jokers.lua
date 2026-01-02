@@ -381,7 +381,7 @@ local insatiable_dagger = {
                         card:juice_up(0.8, 0.8)
                         sliced_card:start_dissolve({ HEX("a800ff") }, nil, 1.6)
                         G.GAME.banned_keys[sliced_card.config.center.key] = true
-                        eval_card(sliced_card, {banishing_card = true, banisher = card, card = sliced_card, cardarea = sliced_card.area})
+                        SMODS.eval_individual(sliced_card, {banishing_card = true, banisher = card, card = sliced_card, cardarea = sliced_card.area})
                         play_sound("slice1", 0.96 + math.random() * 0.08)
                         local check2
                         if not Card.no(G.jokers.cards[check], "immutable", true) then

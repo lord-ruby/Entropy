@@ -444,7 +444,7 @@ local ichor = {
             joker:start_dissolve()
             G.GAME.banned_keys[joker.config.center.key] = true
             Entropy.handle_card_limit(G.jokers, card.ability.num)
-            eval_card(joker, {banishing_card = true, banisher = card, card = joker, cardarea = joker.area})
+            SMODS.eval_individual(joker, {banishing_card = true, banisher = card, card = joker, cardarea = joker.area})
         end
     end,
     can_use = function(self, card)

@@ -49,7 +49,7 @@ local jokerinyellow = {
                     func = function()
                         local card = pseudorandom_element(cards, pseudoseed("kiy"))
                         if card then
-                            eval_card(card, {banishing_card = true, banisher = card, card = card, cardarea = G.jokers})
+                            SMODS.eval_individual(card, {banishing_card = true, banisher = card, card = card, cardarea = G.jokers})
                             card:start_dissolve()
                             G.GAME.banned_keys[card.config.center.key] = true
                             card_eval_status_text(
@@ -82,7 +82,7 @@ local jokerinyellow = {
                         func = function()
                             local card = pseudorandom_element(cards, pseudoseed("kiy"))
                             if card then
-                                eval_card(card, {banishing_card = true, banisher = card, card = card, cardarea = G.jokers})
+                                SMODS.eval_individual(card, {banishing_card = true, banisher = card, card = card, cardarea = G.jokers})
                                 card:start_dissolve()
                                 G.GAME.banned_keys[card.config.center.key] = true
                                 card_eval_status_text(
