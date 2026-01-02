@@ -1060,6 +1060,19 @@ function Cryptid.misprintize(card, ...)
     end
 end
 
+local calculate_jokerref = Card.calculate_joker
+function Card:calculate_joker(...)
+    local abil
+    if self.ability.entr_pure then
+        abil = copy_table(self.ability)        
+    end
+    local ret = calculate_jokerref(self, ...)
+    if self.ability.entr_pure then
+        self.ability = abil
+    end
+    return ret
+end
+
 local transcend = {
     dependencies = {
         items = {
