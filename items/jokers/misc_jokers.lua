@@ -3406,7 +3406,10 @@ local radar = {
     perishable_compat = true,
     calc_dollar_bonus = function(self, card)
         return G.GAME.last_hand_played and G.GAME.hands[G.GAME.last_hand_played] and G.GAME.hands[G.GAME.last_hand_played].level
-    end
+    end,
+    entr_credits = {
+        art = {"mailingway"}
+    }
 }
 
 local abacus = {

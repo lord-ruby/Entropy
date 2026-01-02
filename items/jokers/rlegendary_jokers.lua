@@ -569,7 +569,7 @@ local ssac = {
                 local c_r = G.consumeables.cards[#G.consumeables.cards] and Cryptid.forcetrigger(G.consumeables.cards[#G.consumeables.cards], context) or {}
                 local v = G.play.cards[#G.play.cards]
                 if G.play.cards and v then
-                    local results = SMODS.eval_individual(v, {cardarea=G.play,main_scoring=true, forcetrigger=true, individual=true})
+                    local results = SMODS.eval_individual(v, {cardarea=G.play,main_scoring=true, forcetrigger=true, individual=true}) or {}
                     if results then
                         for i, v2 in pairs(results) do
                             for i2, result in pairs(type(v2) == "table" and v2 or {}) do
@@ -577,7 +577,7 @@ local ssac = {
                             end
                         end
                     end
-                    local results = SMODS.eval_individual(v, {cardarea=G.hand,main_scoring=true, forcetrigger=true, individual=true})
+                    local results = SMODS.eval_individual(v, {cardarea=G.hand,main_scoring=true, forcetrigger=true, individual=true}) or {}
                     if results then
                         for i, v2 in pairs(results) do
                             for i2, result in pairs(type(v2) == "table" and v2 or {}) do
