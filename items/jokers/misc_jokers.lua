@@ -7280,7 +7280,7 @@ local fasciation = {
     order = 128,
     object_type = "Joker",
     key = "fasciation",
-    rarity = 2,
+    rarity = 3,
     cost = 8,   
     eternal_compat = true,
     pos = {x = 1, y = 16},
@@ -7291,19 +7291,20 @@ local fasciation = {
         }
     },
     blueprint_compat = true,
-    loc_vars = function(self, q, card)
-        return {
-            vars = {
-                G.jokers and #G.jokers.cards or 0
-            }
-        }
-    end,
     calculate = function(self, card, context)
-        if context.repetition and context.cardarea == G.play and context.other_card == G.play.cards[1] then
-            local c = context.other_card
-            return {
-                repetitions = #G.jokers.cards
-            }
+        if context.repetition and context.cardarea == G.play then
+            local reps = 0
+            for i, v in pairs(context.scoring_hand) do
+                if v == context.other_card then break end
+                if v:is_suit(context.other_card.base.suit) then
+                    reps = reps + 1
+                end
+            end
+            if reps > 0 then
+                return {
+                    repetitions = reps
+                }
+            end
         end
     end,    
     entr_credits = {

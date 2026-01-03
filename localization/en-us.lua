@@ -1971,10 +1971,9 @@ local decs = {
 			j_entr_fasciation = {
                 name = "Fasciation",
                 text = {
-					"Retrigger the {C:antention}first{}",
-					"played card once for",
-					"each {C:attention}Joker{} card",
-					"{C:inactive}(Currently: {C:attention}#1#{C:inactive})"
+					"Retrigger each scored card",
+					"once for every {C:attention}previous{} scored",
+					"card with the same {C:attention}suit{}"
                 },
             },
 			j_entr_amaryllis = {name = "Amaryllis", text = {""}},

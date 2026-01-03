@@ -206,13 +206,11 @@ local ward = {
     use = function(self, card, area, copier)
         local total = 0
         for i, v in pairs(G.jokers.cards) do
-            if not SMODS.is_eternal(v) and not v.ability.cry_absolute then
-                local joker = G.jokers.cards[i]
-                total = total + joker.cost
-                joker.ability.debuff_timer = (joker.ability.debuff_timer or 0) + card.ability.rounds
-                joker.ability.debuff_timer_max = (joker.ability.debuff_timer_max or 0) + card.ability.rounds 
-                joker:set_debuff(true)
-            end
+            local joker = G.jokers.cards[i]
+            total = total + joker.cost
+            joker.ability.debuff_timer = (joker.ability.debuff_timer or 0) + card.ability.rounds
+            joker.ability.debuff_timer_max = (joker.ability.debuff_timer_max or 0) + card.ability.rounds 
+            joker:set_debuff(true)
         end
         ease_dollars(total * card.ability.sellmult)
     end,

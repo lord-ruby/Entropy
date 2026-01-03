@@ -1081,7 +1081,7 @@ local G_UIDEF_use_and_sell_buttons_ref = G.UIDEF.use_and_sell_buttons
 function G.UIDEF.use_and_sell_buttons(card)
 	local abc = G_UIDEF_use_and_sell_buttons_ref(card)
 	-- Allow code cards to be reserved
-    if card.area == G.consumeables and (card.config.center.set == "Voucher" or card.ability.set == "Voucher") then
+    if (card.area == G.consumeables or card.area == G.jokers) and (card.config.center.set == "Voucher" or card.ability.set == "Voucher") then
         sell = {n=G.UIT.C, config={align = "cr"}, nodes={
             {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = 'sell'}, nodes={
               {n=G.UIT.B, config = {w=0.1,h=0.6}},

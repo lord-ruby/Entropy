@@ -3349,3 +3349,15 @@ payload = '''
 if not (v.name == 'e_negative' and _no_neg) and not G.GAME.banned_keys[v.name] then -- skip return if negative is selected and _no_neg is true or edition is banned
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''
+for kk, vv in pairs(G.playing_cards) do
+'''
+position = "before"
+payload = '''
+G.playing_cards = G.playing_cards or {}
+'''
+match_indent = true

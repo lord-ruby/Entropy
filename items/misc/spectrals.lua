@@ -177,7 +177,7 @@ local lust = {
     
     order = 900+38,
     object_type = "Consumable",
-    config = {limit = 2},
+    config = {limit = 1},
     atlas = "consumables",
     pos = {x=4,y=Cryptid_config.family_mode and 8 or 7},
     dependencies = {

@@ -542,7 +542,7 @@ local ansuz_indicator = {
                 end
             }
         end
-        if context.entr_add_rune and context.rune and context.rune.key ~= "rune_entr_ansuz" then
+        if context.entr_add_rune and context.rune and context.rune.key ~= "rune_entr_ansuz" and not G.P_RUNES[context.rune.key].is_pact then
             return {
                 func = function()
                     add_rune(Tag(context.rune.key), true)
