@@ -291,7 +291,7 @@ local corrupted = {
   atlas = "decks",
   apply = function()
     change_shop_size(-1)
-    G.GAME.modifiers.glitched_items = (G.GAME.modifiers.glitched_items or 2) + 1
+    G.GAME.modifiers.glitched_items = (G.GAME.modifiers.glitched_items or 1) + 1
   end,
   entr_credits = {
     art = {"LFMoth"}
