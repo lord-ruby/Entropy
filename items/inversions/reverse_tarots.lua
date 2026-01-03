@@ -463,9 +463,17 @@ local scarred = {
     key = "scarred",
     no_sticker_sheet = true,
     prefix_config = { key = false },
-    badge_colour = HEX("973737"),
+    badge_colour = HEX("fd5f56"),
     apply = function(self,card,val)
         card.ability.scarred = true
+    end,
+    draw = function(self, card) --don't draw shine
+        local notilt = nil
+        if card.area and card.area.config.type == "deck" then
+            notilt = true
+        end
+        G.shared_stickers[self.key].role.draw_major = card
+        G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
     end,
 }
 

@@ -398,7 +398,7 @@ local link = {
     order = 2500 + 0,
     no_sticker_sheet = true,
     prefix_config = { key = false },
-    badge_colour = HEX("FF00FF"),
+    badge_colour = HEX("59ffe8"),
     loc_vars = function(self,q,card)
         return {
             vars = {
@@ -412,9 +412,14 @@ local link = {
         end
         card.ability.link = G.GAME.link
     end,
-    calculate = function(self, card, context)
-
-    end
+    draw = function(self, card) --don't draw shine
+        local notilt = nil
+        if card.area and card.area.config.type == "deck" then
+            notilt = true
+        end
+        G.shared_stickers[self.key].role.draw_major = card
+        G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+    end,
 }
 
 local ichor = {
@@ -1002,10 +1007,18 @@ local pure = {
     key = "entr_pure",
     no_sticker_sheet = true,
     prefix_config = { key = false },
-    badge_colour = HEX("c75985"),
+    badge_colour = HEX("fd56e9"),
     should_apply = false,
     apply = function(self,card,val)
         card.ability.entr_pure = true
+    end,
+    draw = function(self, card) --don't draw shine
+        local notilt = nil
+        if card.area and card.area.config.type == "deck" then
+            notilt = true
+        end
+        G.shared_stickers[self.key].role.draw_major = card
+        G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
     end,
 }
 

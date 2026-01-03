@@ -7266,7 +7266,6 @@ SMODS.Sticker({
         atlas = "marked",
         pos = { x = 0, y = 0 },
         should_apply = false,
-        no_collection = true,
         draw = function(self, card) --don't draw shine
             local notilt = nil
             if card.area and card.area.config.type == "deck" then
