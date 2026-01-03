@@ -725,7 +725,6 @@ local nokharg  = {
     dependencies = {
         items = {
           "set_entr_inversions",
-          "set_entr_actives"
         }
     },
     rarity = "entr_reverse_legendary",
@@ -744,7 +743,6 @@ local nokharg  = {
         blind_size_mod = 0.1
     },
     loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue+1] = {key = 'e_negative_playing_card', set = 'Edition', config = {extra = 1}}
         return {
             vars = {
                 card.ability.blind_size,
@@ -752,25 +750,47 @@ local nokharg  = {
             }
         }
     end,
-    can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
-        return #cards > 0
-    end,
-    use = function(self, card)
-        Entropy.FlipThen(Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select), function(c) 
-            c:set_edition("e_negative")
-            SMODS.scale_card(card, {
-                ref_table = card.ability,
-                ref_value = "blind_size",
-                scalar_value = "blind_size_mod"
-            })
-        end)
-    end,
     calculate = function(self, card, context)
         if (context.setting_blind and not context.blueprint and not card.getting_sliced) or context.forcetrigger then
             G.GAME.blind.chips = G.GAME.blind.chips * card.ability.blind_size
             G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
             G.HUD_blind:recalculate()
+        end
+        if (context.after and G.GAME.current_round.discards_left >= G.GAME.round_resets.discards) or context.forcetrigger then
+            local cards=  {}
+            for i, v in pairs(G.play.cards) do
+                G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+                local card_copied = copy_card(v, nil, nil, G.playing_card)
+                card_copied:add_to_deck()
+                G.deck.config.card_limit = G.deck.config.card_limit + 1
+                table.insert(G.playing_cards, card_copied)
+                G.hand:emplace(card_copied)
+                card_copied.states.visible = nil
+                cards[#cards+1] = card_copied
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        card_copied:start_materialize()
+                        return true
+                    end
+                }))
+                SMODS.scale_card(card, {
+                    ref_table = card.ability,
+                    ref_value = "blind_size",
+                    scalar_value = "blind_size_mod"
+                })
+            end
+            return {
+                message = localize('k_copied_ex'),
+                colour = G.C.CHIPS,
+                func = function() -- This is for timing purposes, it runs after the message
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            SMODS.calculate_context({ playing_card_added = true, cards = cards })
+                            return true
+                        end
+                    }))
+                end
+            }
         end
     end,
     pronouns = "he_him",

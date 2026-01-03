@@ -1586,10 +1586,9 @@ local decs = {
 			j_entr_nokharg = {
                 name = "Nokharg",
                 text = {
-					"Use this Joker to turn selected",
-					"playing cards {C:dark_edition}Negative{}",
-					"and increase blind size by {C:attention}#2#{}",
-					"for each card selected",
+					"Copies Played hand if no {C:red}discards{}",
+					"have been used in the {C:attention}current round{}",
+					"{X:attention,C:white}+X#2#{} Blind size for every copied card",
 					"{C:inactive}(Currently {X:attention,C:white}X#1#{C:inactive} Blind Size)"
                 },
             },
