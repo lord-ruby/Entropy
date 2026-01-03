@@ -388,6 +388,20 @@ end
 '''
 match_indent = true
 
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+end
+
+function UnBlind_create_UIBox_blind_tag(blind_choice)      
+'''
+position = "before"
+payload = '''
+end
+'''
+match_indent = true
+
 ### display exponential blind 3
 [[patches]]
 [patches.pattern]

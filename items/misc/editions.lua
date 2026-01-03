@@ -318,7 +318,7 @@ local neon = {
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
-		return {vars={card and card.edition and (card:is_playing_card() and card.edition.cost_fac_playing or card.edition.cost_fac) or 0.9}}
+		return {vars={card and card.edition and (card.is_playing_card() and card:is_playing_card() and card.edition.cost_fac_playing or card.edition.cost_fac) or 0.9}}
     end,
 	entr_credits = {
 		custom={key="shader",text="cassknows"},

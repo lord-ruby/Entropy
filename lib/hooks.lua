@@ -4813,3 +4813,18 @@ function G.FUNCS.buy_from_shop(e)
     end
     return buy_ref(e)
 end
+
+local unblind_void_ref = UnBlind_create_UIBox_blind
+function UnBlind_create_UIBox_blind(type)
+    if Entropy.CanEeSpawn() then
+        if to_big(G.GAME.round_resets.ante) < to_big(32) then G.GAME.EEBeaten = false end
+        if G.GAME.EEBuildup or (to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) then
+            G.GAME.round_resets.blind_choices.Boss = "bl_entr_endless_entropy_phase_one"
+            G.GAME.round_resets.blind_choices.Small = "bl_entr_void"
+            G.GAME.round_resets.blind_choices.Big = "bl_entr_void"
+            G.GAME.EEBuildup = true
+            ease_background_colour{new_colour = HEX("5f5f5f"), contrast = 3}
+        end
+    end
+    return unblind_void_ref(type)
+end
