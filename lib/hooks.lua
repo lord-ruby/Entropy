@@ -256,19 +256,25 @@ function Card:set_ability(center, initial, delay)
         if link and not initial then
             for i, v in pairs(G.hand.cards) do
                 if v.ability.link == link then
-                    set_abilityref(v, center, initial, delay)
+                    if (v.config and v.config.center ~= "m_entr_disavowed" and (not v.entr_aleph or v.ability.bypass_aleph)) or G.SETTINGS.paused then
+                        set_abilityref(v, center, initial, delay)
+                    end
                     v.ability.link = link 
                 end
             end
             for i, v in pairs(G.discard.cards) do
                 if v.ability.link == link then
-                    set_abilityref(v, center, initial, delay)
+                    if (v.config and v.config.center ~= "m_entr_disavowed" and (not v.entr_aleph or v.ability.bypass_aleph)) or G.SETTINGS.paused then
+                        set_abilityref(v, center, initial, delay)
+                    end
                     v.ability.link = link 
                 end
             end
             for i, v in pairs(G.deck.cards) do
                 if v.ability.link == link then
-                    set_abilityref(v, center, initial, delay) 
+                    if (v.config and v.config.center ~= "m_entr_disavowed" and (not v.entr_aleph or v.ability.bypass_aleph)) or G.SETTINGS.paused then
+                        set_abilityref(v, center, initial, delay)
+                    end
                     v.ability.link = link
                 end
             end
