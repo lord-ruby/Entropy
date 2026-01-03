@@ -236,8 +236,6 @@ local epsilon = {
     in_pool = function()
         return G.GAME.entr_alt
     end,
-	calculate = function(self, blind, context)
-    end
 }
 
 local zeta = {
@@ -291,7 +289,7 @@ local eta = {
         return G.GAME.entr_alt
     end,
     calculate = function(self, blind, context)
-        if context.after then
+        if context.after and not G.GAME.blind.disabled then
             G.GAME.blind.suit_debuffed = pseudorandom_element({"Spades", "Hearts", "Diamonds", "Clubs"}, pseudoseed("eta_suit"))
             for i, v in ipairs(G.hand.cards) do
                 SMODS.recalc_debuff(v)
@@ -387,19 +385,21 @@ local iota = {
     end,
 	in_pool = function() return G.GAME.entr_alt end,
 	calculate = function(self, blind, context)
-		for k, _ in pairs(Entropy.GetIota()) do
-			s = G.P_BLINDS[k]
-			if s.calculate then
-				s:calculate(blind, context)
+		if not G.GAME.blind.disabled then
+			for k, _ in pairs(Entropy.GetIota()) do
+				s = G.P_BLINDS[k]
+				if s.calculate then
+					s:calculate(blind, context)
+				end
+			end
+			if context.after then
+				G.GAME.iotablind = pseudorandom_element(G.P_BLINDS) 
+				while not G.GAME.iotablind.boss or G.GAME.iotablind.boss.showdown do
+					G.GAME.iotablind = pseudorandom_element(G.P_BLINDS) 
+				end
+				G.GAME.blind:set_text()
 			end
 		end
-        if context.after then
-            G.GAME.iotablind = pseudorandom_element(G.P_BLINDS) 
-            while not G.GAME.iotablind.boss or G.GAME.iotablind.boss.showdown do
-                G.GAME.iotablind = pseudorandom_element(G.P_BLINDS) 
-            end
-            G.GAME.blind:set_text()
-        end
 	end,
 	set_blind = function(self, reset, silent)
         G.GAME.iotablind = pseudorandom_element(G.P_BLINDS) 
@@ -926,7 +926,7 @@ local nu = {
         return G.GAME.entr_alt
     end,
 	calculate = function(self, blind, context)
-		if context.individual and context.cardarea == G.play then
+		if context.individual and context.cardarea == G.play and not G.GAME.blind.disabled then
 			G.GAME.cry_payload = to_big((G.GAME.cry_payload or 1)) * to_big(0.8)
 		end
 	end
@@ -955,7 +955,7 @@ local xi = {
         return G.GAME.entr_alt
     end,
 	calculate = function(self, blind, context)
-		if context.pre_discard and not G.GAME.blind.discarded then
+		if context.pre_discard and not G.GAME.blind.discarded and not G.GAME.blind.disabled then
 			Entropy.FlipThen(G.hand.highlighted, function(card)
 				card.ability.eternal = true
 			end)
@@ -987,7 +987,7 @@ local omicron = {
         return G.GAME.entr_alt
     end,
 	calculate = function(self, blind, context)
-		if context.after then
+		if context.after and not G.GAME.blind.disabled then
 			G.E_MANAGER:add_event(Event {
 				trigger = "after",
 				func = function()
@@ -1045,8 +1045,6 @@ local rho = {
     in_pool = function()
         return G.GAME.entr_alt
     end,
-	calculate = function(self, blind, context)
-	end
 }
 
 local sigma = {
@@ -1412,7 +1410,7 @@ local choir = {
         return G.GAME.entr_alt
     end,
 	calculate = function(self, blind, context)
-		if context.post_trigger and not context.other_card.debuff then
+		if context.post_trigger and not context.other_card.debuff and not G.GAME.blind.disabled then
 			context.other_card:set_debuff(true)
 			context.other_card:juice_up()
 			G.GAME.blind.triggered = true
@@ -1481,7 +1479,7 @@ local cassandra = {
 		return {vars = {1}}
 	end,
 	calculate = function(self, blind, context)
-		if context.before then
+		if context.before and not G.GAME.blind.disabled then
 			for i, v in ipairs(G.jokers.cards) do
 				if pseudorandom("cassandra") < G.GAME.probabilities.normal / (5) then
 					v:set_debuff(true)

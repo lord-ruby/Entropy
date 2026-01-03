@@ -32,8 +32,8 @@ local surreal = {
             G.GAME.current_round.current_hand.mult = card.ability.qmult
             update_hand_text({delay = 0}, {chips = G.GAME.current_round.current_hand.chips and hand_chips, mult = card.ability.qmult})
             return {
-                Eqmult_mod = not Entropy.BlindIs("bl_entr_theta") and card.ability.qmult,
-                Eqchips_mod = Entropy.BlindIs("bl_entr_theta") and card.ability.qmult
+                Eqmult_mod = (not Entropy.BlindIs("bl_entr_theta") or G.GAME.blind.disabled) and card.ability.qmult,
+                Eqchips_mod = (Entropy.BlindIs("bl_entr_theta") and not G.GAME.blind.disabled) and card.ability.qmult
             }
         end
     end
