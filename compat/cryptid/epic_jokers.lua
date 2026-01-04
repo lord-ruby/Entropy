@@ -565,10 +565,10 @@ local caviar = {
 
 return {
     items = {
-        not Entropy.ValkarriOverCryptid and burnt_m or nil,
+        ( not Entropy.ValkarriOverCryptid or not Entropy.MDJOverCryptid ) and burnt_m or nil,
         chaos,
         dni,
-        not Entropy.ValkarriOverCryptid and trapezium or nil,
+        ( not Entropy.ValkarriOverCryptid or not Entropy.MDJOverCryptid ) and trapezium or nil,
         antireal,
         jokezmann_brain,
         metanoia,
