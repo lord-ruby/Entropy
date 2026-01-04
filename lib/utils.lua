@@ -275,11 +275,11 @@ function Entropy.ModifyHandCardNF(modifications, cards)
     end
 end
 
-function Entropy.FindPreviousInPool(item, pool)
+function Entropy.FindPreviousInPool(item, pool, ignore)
     for i, v in pairs(G.P_CENTER_POOLS[pool]) do
         if G.P_CENTER_POOLS[pool][i].key == item then
             local ind = i - 1
-            while G.GAME.banned_keys[G.P_CENTER_POOLS[pool][ind].key] or G.P_CENTER_POOLS[pool][ind].no_doe do
+            while G.GAME.banned_keys[G.P_CENTER_POOLS[pool][ind].key] or G.P_CENTER_POOLS[pool][ind].no_doe or ind == ignore do
                 ind = ind - 1
             end
             return G.P_CENTER_POOLS[pool][ind].key

@@ -186,13 +186,17 @@ local lust = {
         }
     },
     use = function(self, card, area, copier)
-        Entropy.FlipThen(Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.limit), function(card)
+        local cards = {}
+        local rcards = {}
+        for i, v in pairs(G.hand.cards) do if not v.edition then cards[#cards+1] = v end end
+        pseudoshuffle(cards, pseudoseed("entr_lust"))
+        for i = 1, math.min(#cards, card.ability.limit) do rcards[#rcards+1] = cards[i] end
+        Entropy.FlipThen(rcards, function(card)
             card:set_edition("e_entr_freaky")
         end)
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.limit)
-        return num > 0 and num <= card.ability.limit
+        return G.hand and #G.hand.cards > 0
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = G.P_CENTERS.e_entr_freaky

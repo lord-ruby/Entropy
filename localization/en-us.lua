@@ -3797,8 +3797,8 @@ local decs = {
 				text = {
 					"Destroy 1 selected {C:attention}Editioned{}",
 					"Joker then apply the {C:attention}previous{} Edition",
-					"to all cards in hand",
-					"{C:inactive}(Currently: #1#){}"
+					"to {C:attention}#2#{} random cards in hand",
+					"{C:inactive}(Currently: {C:dark_edition}#1#{C:inactive}, Excludes {C:dark_edition}Negative{C:inactive})"
 				}
 			},
 			c_entr_changeling = {
@@ -4297,7 +4297,7 @@ local decs = {
 				name = "Lust",
 				text = {
 					"Apply {C:dark_edition}Freaky{} to",
-					"{C:attention}#1#{} selected cards in hand",
+					"{C:attention}#1#{} random card#<s>1# in hand",
 				}
 			},
 			c_entr_null = {

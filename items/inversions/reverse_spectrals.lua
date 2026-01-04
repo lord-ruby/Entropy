@@ -150,13 +150,18 @@ local siphon = {
 
     atlas = "consumables",
     config = {
-        chipmult = 3
+        cards = 3
     },
 	pos = {x=10,y=4},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
-        local lower = Entropy.FindPreviousInPool(G.jokers.highlighted[1].edition.key, "Edition")
-        Entropy.FlipThen(G.hand.cards, function(card, area)
+        local lower = Entropy.FindPreviousInPool(G.jokers.highlighted[1].edition.key, "Edition", "e_negative")
+        local cards = {}
+        local rcards = {}
+        for i, v in pairs(G.hand.cards) do if not v.edition then cards[#cards+1] = v end end
+        pseudoshuffle(cards, pseudoseed("entr_siphon"))
+        for i = 1, math.min(#cards, card2.ability.cards) do rcards[#rcards+1] = cards[i] end
+        Entropy.FlipThen(rcards, function(card, area)
             card:set_edition(lower)
         end)
         G.jokers.highlighted[1]:start_dissolve()
@@ -169,13 +174,14 @@ local siphon = {
         and G.jokers.highlighted[1].ability and not G.jokers.highlighted[1].ability.cry_absolute
 	end,
     loc_vars = function(self, q, card)
-        local str = "none"
-        if G.jokers and #G.jokers.highlighted > 0 and G.jokers.highlighted[1].edition and Entropy.FindPreviousInPool(G.jokers.highlighted[1].edition.key, "Edition") then
-            str = G.localization.descriptions.Edition[Entropy.FindPreviousInPool(G.jokers.highlighted[1].edition.key, "Edition")].name
+        local str = localize("k_none")
+        if G.jokers and #G.jokers.highlighted > 0 and G.jokers.highlighted[1].edition and Entropy.FindPreviousInPool(G.jokers.highlighted[1].edition.key, "Edition", "e_negative") then
+            str = G.localization.descriptions.Edition[Entropy.FindPreviousInPool(G.jokers.highlighted[1].edition.key, "Edition", "e_negative")].name
         end
         return {
             vars = {
-                str
+                str,
+                card.ability.cards
             }
         }
     end,
