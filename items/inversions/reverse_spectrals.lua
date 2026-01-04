@@ -441,19 +441,16 @@ local ichor = {
 
     atlas = "consumables",
     config = {
-        num = 2
+        num = 1
     },
 	pos = {x=7,y=5},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card, area, copier)
-        local joker = pseudorandom_element(Entropy.FilterTable(G.jokers.cards, function(card)
-            return card.edition and card.edition.key == "e_negative"
-        end), pseudoseed("ichor"))
+        local joker = pseudorandom_element(G.jokers.cards, pseudoseed("entr_ichor"))
+        Entropy.handle_card_limit(G.jokers, 1)
         if joker then
-            joker:start_dissolve()
-            G.GAME.banned_keys[joker.config.center.key] = true
-            Entropy.handle_card_limit(G.jokers, card.ability.num)
-            SMODS.eval_individual(joker, {banishing_card = true, banisher = card, card = joker, cardarea = joker.area})
+            joker:juice_up()
+            joker.ability.extra_slots_used = joker.ability.extra_slots_used + 1
         end
     end,
     can_use = function(self, card)
@@ -800,9 +797,6 @@ local quasar = {
     inversion = "c_black_hole",
 
     atlas = "consumables",
-    config = {
-        level = 2
-    },
     no_select = true,
     soul_rate = 0,
     hidden = true, 
@@ -814,18 +808,13 @@ local quasar = {
         local used_consumable = copier or card
         delay(0.4)
         local max=0
-        local ind="High Card"
-        for i, v in pairs(G.GAME.hands) do
-            if v.played > max then
-                max = v.played
-                ind = i
-            end
-        end
         update_hand_text(
           { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-          { handname = localize(ind,'poker_hands'), chips = "...", mult = "...", level = "" }
+          { handname = localize("k_all_hands"), chips = "...", mult = "...", level = "" }
         )
-        G.GAME.hands[ind].AscensionPower = to_big(G.GAME.hands[ind].AscensionPower or 0) + to_big(G.GAME.hands[ind].level) * to_big(amt) * to_big(card.ability.level)
+        for i, v in pairs(G.GAME.hands) do
+            G.GAME.hands[i].AscensionPower = to_big(G.GAME.hands[i].AscensionPower or 0) + to_big(G.GAME.hands[i].level) * to_big(amt) * to_big(0.5)
+        end
         delay(1.0)
         G.E_MANAGER:add_event(Event({
           trigger = "after",
@@ -850,7 +839,7 @@ local quasar = {
             return true
           end,
         }))
-        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+"..(to_big(G.GAME.hands[ind].level) * to_big(amt) * to_big(card.ability.level)) })
+        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+ ..." })
         delay(1.0)
         delay(2.6)
         update_hand_text(
@@ -865,21 +854,6 @@ local quasar = {
         return true
 	end,
     no_select = true,
-    loc_vars = function(self, q, card)
-        local max=0
-        local ind="High Card"
-        for i, v in pairs(G.GAME.hands) do
-            if v.played > max then
-                max = v.played
-                ind = i
-            end
-        end
-        return {
-            vars = {
-                G.GAME.hands[ind].level * card.ability.level
-            }
-        }
-    end,
     entr_credits = {
         art = {"Lil. Mr. Slipstream"}
     },

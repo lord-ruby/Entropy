@@ -302,7 +302,7 @@ local solar_dagger = {
     pos = { x = 6, y = 1 },
     atlas = "jokers",
     demicoloncompat = true,
-    config = { x_asc = 1 },
+    config = { x_asc = 0 },
     pools = { ["Sunny"] = true, },
     loc_vars = function(self, q, card)
         if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
@@ -329,12 +329,12 @@ local solar_dagger = {
                         return true
                     end,
                 }))
-                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "x_asc", scalar_table = {sell_cost = sliced_card.sell_cost * 0.1}, scalar_value = "sell_cost"})
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "x_asc", scalar_table = {sell_cost = sliced_card.sell_cost * 0.25}, scalar_value = "sell_cost"})
             end
         end
         if context.joker_main then
             return {
-                asc = card.ability.x_asc
+                plus_asc = card.ability.x_asc
             }
         end
     end,

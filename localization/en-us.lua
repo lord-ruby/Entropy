@@ -448,9 +448,10 @@ local decs = {
 				text = {
 					"When {C:attention}Blind{} is selected",
 					"destroy Joker to the right",
-					"and permanently add {C:attention}one tenth{}",
-					"its sell value to this Jokers {C:gold}Ascension Power{}",
-					"{C:inactive}(Currently: {X:gold,C:white}X#1#{} {C:inactive}Ascension Power){}"
+					"and permanently add {C:attention}one quarter{}",
+					"its sell value to this Jokers",
+					"{C:gold}Ascension Power{}",
+					"{C:inactive}(Currently: {C:gold}#1#{} {C:inactive}Ascension Power){}"
 				}
 			},
 			j_entr_insatiable_dagger = {
@@ -3703,18 +3704,19 @@ local decs = {
 			c_entr_pulsar = {
 				name = "Pulsar",
 				text = {
-					"Upgrade every",
-					"{C:legendary,E:1}poker hand{}",
-					"{C:gold}+#1#{} Ascension Power",
+					"Upgrade your most played",
+					"{C:legendary,E:1}poker hand{}'s Ascension Power",
+					"by {X:gold,C:white}X3{} its current level",
+					"{C:inactive}({C:gold}+#1#{C:inactive} Ascension Power)",
+
 				}
 			},
 			c_entr_quasar = {
 				name = "Quasar",
 				text = {
-					"Upgrade your most played",
-					"{C:legendary,E:1}poker hand{} based",
-					"on its current level",
-					"{C:gold}+#1#{} Ascension Power",
+					"Upgrade every {C:legendary,E:1}poker hand{}'s",
+					"Ascension Power by one half",
+					"of its {C:attention}current{} level"
 				}
 			},
 
@@ -3819,8 +3821,8 @@ local decs = {
 			c_entr_ichor = {
 				name = "Ichor",
 				text = {
-					"Banish a {C:attention}random{} held",
-					"{C:dark_edition}Negative{} Joker",
+					"A {C:attention}random{} held Joker",
+					"takes up {C:dark_edition}+1{} Joker slot",
 					"{C:dark_edition}+#1#{} Joker slots"
 				}
 			},
