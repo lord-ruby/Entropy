@@ -1,5 +1,5 @@
-local rarity = Entropy.ValkarriOverCryptid and "valk_renowned" or "cry_epic"
-local set = Entropy.ValkarriOverCryptid and "set_entr_misc_jokers" or "set_cry_epic"
+local rarity = Entropy.ValkarriOverCryptid and "valk_renowned" or Entropy.MDJOverCryptid and "MDJ_veryrare" or "cry_epic"
+local set = ( Entropy.ValkarriOverCryptid or Entropy.MDJOverCryptid ) and "set_entr_misc_jokers" or "set_cry_epic"
 
 local burnt_m = {
     order = 250,
