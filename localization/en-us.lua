@@ -2785,7 +2785,7 @@ local decs = {
 				name = "The Princess",
 				text = {
 					"For the {C:attention}remainder{} of",
-					"the {C:attention}current{} ante"
+					"the {C:attention}current{} ante",
 					"{C:planet}Planet{} cards are replaced",
 					"by {C:purple}Star{} cards"
 				}
@@ -3817,7 +3817,7 @@ local decs = {
 				name = "Ward",
 				text = {
 					"Debuff {C:attention}1{} random Joker",
-					"for {C:attention}#2#{} rounds then earn"
+					"for {C:attention}#2#{} rounds then earn",
 					"{X:gold,C:white}X#1#{} its sell value",
 				}
 			},
