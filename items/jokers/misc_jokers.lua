@@ -7518,8 +7518,8 @@ local brownies = {
     rarity = 2,
     cost = 6,
     eternal_compat = true,
-    pos = {x = 1, y = 0},
-    atlas = "placeholder",
+    pos = {x = 0, y = 17},
+    atlas = "jokers",
     dependencies = {
         items = {
             "set_entr_misc_jokers",
