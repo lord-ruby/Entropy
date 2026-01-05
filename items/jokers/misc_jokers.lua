@@ -7319,8 +7319,8 @@ local amaryllis = {
     rarity = 3,
     cost = 10,   
     eternal_compat = true,
-    pos = {x = 2, y = 0},
-    atlas = "placeholder",
+    pos = {x = 4, y = 16},
+    atlas = "jokers",
     dependencies = {
         items = {
             "set_entr_misc_jokers",
@@ -7347,26 +7347,39 @@ local amaryllis = {
     end,
     calculate = function(self, card, context)
         if context.round_eval and not context.individual and not context.repetition then
-            G.E_MANAGER:add_event(Event{
-                func = function()
-                    local colour = pseudorandom_element({
-                        "red", "white", "pink", "orange", "purple", "yellow"
-                    }, pseudoseed("entr_amaryllis_change"))
-                    local colour_map = {
-                        red = G.C.RED,
-                        white = G.C.BLACK,
-                        pink = G.C.Entropy.Omen,
-                        orange = G.C.FILTER,
-                        purple = G.C.PURPLE,
-                        yellow = G.C.GOLD
-                    }
-                    card.ability.colour = colour
-                    SMODS.calculate_effect(
-                        { message = localize("k_switch_ex"), colour = colour_map[colour] },
-                        context.blueprint_card or card)
-                    return true
-                end
-            })
+            if not card.ability.entr_pure then --:trollgore:
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        local colour = pseudorandom_element({
+                            "red", "white", "pink", "orange", "purple", "yellow"
+                        }, pseudoseed("entr_amaryllis_change"))
+                        local colour_map = {
+                            red = G.C.RED,
+                            white = G.C.BLACK,
+                            pink = G.C.Entropy.Omen,
+                            orange = G.C.FILTER,
+                            purple = G.C.PURPLE,
+                            yellow = G.C.GOLD
+                        }
+                        local x_map = {
+                            red = 5,
+                            white = 4,
+                            pink = 6,
+                            orange = 7,
+                            purple = 8,
+                            yellow = 9
+                        }
+                        card.ability.colour = colour
+                        SMODS.calculate_effect(
+                            { message = localize("k_switch_ex"), colour = colour_map[colour], func = function()
+                                card.children.center:set_sprite_pos({x = x_map[colour], y = 16})
+                                card:juice_up()
+                            end},
+                            card)
+                        return true
+                    end
+                })
+            end
         end
         if card.ability.colour == "red" and context.before then
             Entropy.FlipThen(G.play.cards, function(c) SMODS.change_base(c, "Hearts") end)
@@ -7418,6 +7431,22 @@ local amaryllis = {
         if card.ability.colour == "yellow" then
             return card.ability.dollars
         end
+    end,
+    set_sprites = function(self, card)
+        G.E_MANAGER:add_event(Event{
+            func = function()
+                local x_map = {
+                    red = 5,
+                    white = 4,
+                    pink = 6,
+                    orange = 7,
+                    purple = 8,
+                    yellow = 9
+                }
+                card.children.center:set_sprite_pos({x = x_map[card.ability.colour], y = 16})
+                return true
+            end
+        })
     end
 }
 

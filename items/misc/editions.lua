@@ -550,6 +550,15 @@ function Card:click(...)
 			yellow = "white"
 		})[self.ability.colour]
 		self:juice_up()
+		local x_map = {
+			red = 5,
+			white = 4,
+			pink = 6,
+			orange = 7,
+			purple = 8,
+			yellow = 9
+		}
+		self.children.center:set_sprite_pos({x = x_map[self.ability.colour], y = 16})
 	end
 	return card_click(self, ...)
 end
