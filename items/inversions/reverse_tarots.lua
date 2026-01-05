@@ -91,7 +91,7 @@ local mason = {
         }
     },
     config = {
-        create = 2
+        create = 3
     },
     inversion = "c_magician",
     pos = {x=1, y = 0},
@@ -753,9 +753,11 @@ local advisor = {
                 local card = Card(0,0, G.CARD_W, G.CARD_H, G.P_CARDS[v[1]], G.P_CENTERS.c_base)
                 if v[3] then
                     card:set_ability(G.P_CENTERS[v[3]])
+                else
+                    card:set_ability(SMODS.poll_enhancement{key = "entr_advisor", guaranteed = true})
                 end
                 G.hand:emplace(card)
-                card.ability.temporary = true
+                
             end
         end
     end,

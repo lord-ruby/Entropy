@@ -2579,7 +2579,7 @@ function Card:set_ability(center, f, s)
     if (G.GAME.modifiers.entr_reverse_redeo or G.GAME.ReverseRedeo) and self.config.center.key == "j_cry_redeo" then
         self.ability.extra.ante_reduction = -1
     end
-    if self.ability.consumeable and Entropy.has_rune("rune_entr_gluttony") then
+    if self.ability and self.ability.consumeable and Entropy.has_rune("rune_entr_gluttony") then
         self.ability.eternal = true
     end
 end

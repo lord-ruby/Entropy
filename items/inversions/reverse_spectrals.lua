@@ -204,20 +204,18 @@ local ward = {
     inversion = "c_wraith",
     atlas = "consumables",
     config = {
-        sellmult = 2,
-        rounds = 1
+        sellmult = 3,
+        rounds = 3
     },
 	pos = {x=11,y=4},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card, area, copier)
-        local total = 0
-        for i, v in pairs(G.jokers.cards) do
-            local joker = G.jokers.cards[i]
-            total = total + joker.cost
-            joker.ability.debuff_timer = (joker.ability.debuff_timer or 0) + card.ability.rounds
-            joker.ability.debuff_timer_max = (joker.ability.debuff_timer_max or 0) + card.ability.rounds 
-            joker:set_debuff(true)
-        end
+        local joker = pseudorandom_element(G.jokers.cards, pseudoseed("entr_ward"))
+        local total = joker.sell_cost
+        joker.ability.debuff_timer = (joker.ability.debuff_timer or 0) + card.ability.rounds
+        joker.ability.debuff_timer_max = (joker.ability.debuff_timer_max or 0) + card.ability.rounds 
+        joker:set_debuff(true)
+        joker:juice_up()
         ease_dollars(total * card.ability.sellmult)
     end,
     can_use = function(self, card)
@@ -253,29 +251,25 @@ local disavow = {
     set = "Omen",
     inversion = "c_sigil",
     atlas = "consumables",
-    config = {
-        sellmult = 2
-    },
 	pos = {x=12,y=4},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card, area, copier)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, 1)
+        local enh = cards[1] and cards[1].config.center_key or "m_base"
         Entropy.FlipThen(G.hand.cards, function(card, area, ind)
-            local func = Entropy.EnhancementFuncs[card.config.center.key] or function(card)
-                card:set_edition("e_cry_glitched")
-            end
-            if card.config.center.key ~= "c_base" then 
-                local ability = card.ability
-                card:set_ability(G.P_CENTERS.m_entr_disavowed)
-                card.ability = ability
-                card.ability.disavow = true
-                func(card)
+            if card == cards[1] then
+                card:set_ability(G.P_CENTERS["m_entr_disavowed"])
+            else
+                card:set_ability(G.P_CENTERS[enh])
             end
         end)
     end,
     can_use = function(self, card)
-        return G.hand and #G.hand.cards > 0
+        local cards = #Entropy.GetHighlightedCards({G.hand}, card, 1, 1)
+        return cards > 0 and cards <= 1
 	end,
     loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.m_entr_disavowed
     end,
     entr_credits = {
         idea = {"CapitalChirp"},
@@ -286,44 +280,6 @@ local disavow = {
         self:use(card)
     end
 }
-
-local EnhancementFuncs = {
-    m_bonus = function(card) card.ability.bonus = 100 end,
-    m_mult = function(card) card.ability.x_mult = card.ability.x_mult * 1.5 end,
-    m_glass = function(card) card.temporary2=true;card:shatter() end,
-    m_steel = function(card) card.ability.x_mult = (card.ability.x_mult+1)^2 end,
-    m_stone = function(card) card.ability.bonus = (card.base.nominal^2) end,
-    m_gold = function(card) ease_dollars(20) end,
-    m_lucky = function(card)
-        if pseudorandom("disavow") < 0.5 then
-            card.ability.x_mult = card.ability.x_mult * 1.5
-        else    
-            ease_dollars(20)
-        end
-    end,
-    m_cry_echo = function(card) 
-        local card2 = copy_card(card) 
-        card2:set_ability(G.P_CENTERS.c_base)
-        card2:add_to_deck()
-        G.hand:emplace(card2)
-    end,
-    m_cry_light = function(card)
-        card.ability.x_mult = card.ability.x_mult * 4
-    end,
-    m_entr_flesh = function(card)
-        card.temporary2=true;card:start_dissolve()
-    end,
-    m_entr_dark = function(card)
-        card.ability.h_x_chips = card.ability.xchips ^ 2
-    end,
-    m_entr_prismatic = function(card)
-        card.ability.x_mult = card.ability.extra.eemult ^ 1.5
-    end,
-    m_cry_abstract = function(card)
-        card.ability.x_mult = card.ability.extra.Emult ^ 3
-    end
-}
-for i, v in pairs(EnhancementFuncs) do Entropy.EnhancementFuncs[i] = v end
 
 local pact = {
     dependencies = {

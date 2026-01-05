@@ -2753,7 +2753,7 @@ local decs = {
 			c_entr_advisor = {
 				name = "The Advisor",
 				text = {
-					"Create a {C:attention}temporary{} copy",
+					"Create an {C:attention}Enhanced{} copy",
 					"of your most played hands {C:attention}example{}",
 					"and {C:attention}draw{} it to hand"
 				}
@@ -2784,8 +2784,10 @@ local decs = {
 			c_entr_princess = {
 				name = "The Princess",
 				text = {
-					"For the {C:attention}remainder{} of the {C:attention}current{} ante",
-					"{C:planet}Planet{} cards are replaced by {C:purple}Star{} cards"
+					"For the {C:attention}remainder{} of",
+					"the {C:attention}current{} ante"
+					"{C:planet}Planet{} cards are replaced",
+					"by {C:purple}Star{} cards"
 				}
 			},
 			c_entr_imp = {
@@ -2798,8 +2800,9 @@ local decs = {
 			c_entr_oracle = {
 				name = "The Oracle",
 				text = {
-					"Enhance {C:attention}#1#{} random card#<s>1# held in",
-					"hand into {C:attention}Editioned{} {C:purple}CCD Star{} Cards"
+					"Enhance {C:attention}#1#{} random card#<s>1#",
+					"held in hand into an",
+					"{C:attention}Editioned{} {C:purple}Star{} card"
 				}
 			},
 			c_entr_ocean = {
@@ -3813,9 +3816,9 @@ local decs = {
 			c_entr_ward = {
 				name = "Ward",
 				text = {
-					"Debuff {C:attention}all{} Jokers for {C:attention}#2#{} rounds",
-					"then give {X:gold,C:white}X#1#{} their buy",
-					"value in dollars"
+					"Debuff {C:attention}1{} random Joker",
+					"for {C:attention}#2#{} rounds then earn"
+					"{X:gold,C:white}X#1#{} its sell value",
 				}
 			},
 			c_entr_ichor = {
@@ -3949,9 +3952,9 @@ local decs = {
 			c_entr_disavow = {
 				name = "Disavow",
 				text = {
-					"Boost cards held in {C:attention}hand{} based",
-					"on their Enhancement, then strip their",
-					"Enhancement {C:attention}permanently{}",
+					"{C:red}Disavow{} {C:attention}1{} Selected Card",
+					"held in hand. All {C:attention}other{} cards held",
+					"in hand gain its Enhancement"
 				}
 			},
 			c_entr_regenerate = {
@@ -3967,7 +3970,7 @@ local decs = {
 				name = "Purity",
 				text = {
 					"Apply a {C:dark_edition}Pure{} sticker to",
-					"{C:attention}#1#{} selected joker#<s>1#"
+					"{C:attention}#1#{} selected Joker#<s>1#"
 				}
 			},
 			c_entr_transcend = {
