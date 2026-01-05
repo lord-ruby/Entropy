@@ -756,8 +756,9 @@ local advisor = {
                 else
                     card:set_ability(SMODS.poll_enhancement{key = "entr_advisor", guaranteed = true})
                 end
+                card:add_to_deck()
                 G.hand:emplace(card)
-                
+                table.insert(G.playing_cards, card)
             end
         end
     end,
