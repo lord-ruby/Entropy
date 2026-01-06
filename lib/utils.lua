@@ -1734,13 +1734,13 @@ function Entropy.load_files(files)
 end
 
 function Entropy.has_rune(key)
-    for i, v in pairs(G.GAME.runes or {}) do
+    for i, v in pairs(G.runes or {}) do
         if v.key == key and not v.triggered then return v end
     end
 end
 function Entropy.find_runes(key)
     local runes = {}
-    for i, v in pairs(G.GAME.runes or {}) do
+    for i, v in pairs(G.runes or {}) do
         if v.key == key and not v.triggered then runes[#runes+1]=v end
     end
     return runes

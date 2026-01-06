@@ -209,30 +209,101 @@ function SMODS.collection_pool(_base_pool, include, ...)
     return pool
 end
 
+function Tag:generate_UI_rune(_size)
+    _size = _size or 0.8
+
+    local tag_sprite_tab = nil
+
+    local tag_sprite = SMODS.create_sprite(0, 0, _size*1, _size*1, SMODS.get_atlas((not self.hide_ability) and G.P_TAGS[self.key].atlas or "tags"), (self.hide_ability) and G.tag_undiscovered.pos or self.pos)
+    tag_sprite.T.scale = 1
+    tag_sprite_tab = {n= G.UIT.C, config={align = "cm", ref_table = self, group = self.tally}, nodes={
+        {n=G.UIT.O, config={w=_size*1,h=_size*1, colour = G.C.BLUE, object = tag_sprite, focus_with_object = true}},
+        self.ability.count and self.ability.count > 1 and {n=G.UIT.C, config = {align = 'cm'}, nodes = {
+            {n=G.UIT.R, config = {colour = G.C.BLACK, align = 'cm', r=1, padding = 0.1}, nodes = {
+                {n=G.UIT.O, config={object = DynaText({scale = 0.3, string = {{ref_table = self.ability, ref_value = 'count', prefix = 'x'}}, colours = {G.C.RED}, shadow = true})}},
+            }} or nil
+        }}
+    }}
+    tag_sprite:define_draw_steps({
+        {shader = 'dissolve', shadow_height = 0.05},
+        {shader = 'dissolve'},
+    })
+    tag_sprite.float = true
+    tag_sprite.states.hover.can = true
+    tag_sprite.states.drag.can = false
+    tag_sprite.states.collide.can = true
+    tag_sprite.config = {tag = self, force_focus = true}
+
+    tag_sprite.hover = function(_self)
+        if not G.CONTROLLER.dragging.target or G.CONTROLLER.using_touch then 
+            if not _self.hovering and _self.states.visible then
+                _self.hovering = true
+                if _self == tag_sprite then
+                    _self.hover_tilt = 3
+                    _self:juice_up(0.05, 0.02)
+                    play_sound('paper1', math.random()*0.1 + 0.55, 0.42)
+                    if self.hover_sound and not self.hide_ability then
+                    	play_sound(self.hover_sound(), 1.26, 0.12);
+                    end
+                    play_sound('tarot2', math.random()*0.1 + 0.55, 0.09)
+                end
+
+                self:get_uibox_table(tag_sprite)
+                _self.config.h_popup =  G.UIDEF.card_h_popup(_self)
+                _self.config.h_popup_config = (_self.T.x > G.ROOM.T.w*0.4) and
+                    {align =  'cl', offset = {x=-0.1,y=0},parent = _self} or
+                    {align =  'cr', offset = {x=0.1,y=0},parent = _self}
+                if G.P_RUNES[self.key] then
+                _self.config.h_popup_config = (_self.T.y > G.ROOM.T.y*0.2) and
+                  {align =  'cl', offset = {x=-0.1,y=0},parent = _self} or
+                  {align =  'cl', offset = {x=-0.1,y=0.65},parent = _self}
+                end
+                Node.hover(_self)
+                if _self.children.alert then 
+                    _self.children.alert:remove()
+                    _self.children.alert = nil
+                    if self.key and G.P_TAGS[self.key] then G.P_TAGS[self.key].alerted = true end
+                    G:save_progress()
+                end
+            end
+        end
+    end
+    tag_sprite.stop_hover = function(_self) _self.hovering = false; Node.stop_hover(_self); _self.hover_tilt = 0 end
+
+    tag_sprite:juice_up()
+    self.tag_sprite = tag_sprite
+
+    return tag_sprite_tab, tag_sprite
+end
+
+
 function add_rune(_tag, no_copy)
     G.HUD_runes = G.HUD_runes or {}
-    local tag_sprite_ui, tag_sprite = _tag:generate_UI()
+    local tag_sprite_ui, tag_sprite = _tag:generate_UI_rune()
     G.HUD_runes[#G.HUD_runes+1] = UIBox{
         definition = {n=G.UIT.ROOT, config={align = "tm", padding = 0.05, colour = G.C.CLEAR}, nodes={
           tag_sprite_ui
         }},
         config = {
           align = G.HUD_runes[1] and 'bm' or 'tri',
-          offset = G.HUD_runes[1] and {x=0,y=0} or {x=1,y=0},
+          offset = G.HUD_runes[1] and {x=0,y=0} or {x=_tag.ability.count and _tag.ability.count > 1 and 1.25 or 1,y=0},
           major = G.HUD_runes[1] and G.HUD_runes[#G.HUD_runes] or G.ROOM_ATTACH}
     }
     discover_card(G.P_RUNES[_tag.key])
     unlock_card(G.P_RUNES[_tag.key])
   
-    for i = 1, #G.GAME.runes do
-      G.GAME.runes[i]:apply_to_run({type = 'tag_add', tag = _tag})
+    for i = 1, #G.runes do
+        if G.runes[i].apply_to_run then
+            G.runes[i]:apply_to_run({type = 'tag_add', tag = _tag})
+        end
     end
     
-    G.GAME.runes[#G.GAME.runes+1] = _tag
+    G.runes[#G.runes+1] = _tag
     _tag.HUD_rune = G.HUD_runes[#G.HUD_runes]
     _tag.HUD_tag = _tag.HUD_rune
     _tag.is_rune = true
     _tag.HUD_sprite = tag_sprite
+    _tag.ability.index = #G.HUD_runes
     if #G.HUD_runes > 6 then
 		for i = 2, #G.HUD_runes do
 			G.HUD_runes[i].config.offset.y = -0.9 + 0.9 * (6 / #G.HUD_runes)
@@ -313,10 +384,10 @@ end
 
 function Tag:remove_rune_from_game()
     local tag_key = nil
-    for k, v in pairs(G.GAME.runes) do
+    for k, v in pairs(G.runes) do
         if v == self then tag_key = k end
     end
-    table.remove(G.GAME.runes, tag_key)
+    table.remove(G.runes, tag_key)
 end
 
 function calculate_runes(context)
@@ -326,8 +397,8 @@ function calculate_runes(context)
         func = true,
         nope = true
     }
-    if not G.GAME.runes then G.GAME.runes = {} end
-    for i, v in pairs(G.GAME.runes) do
+    if not G.runes then G.runes = {} end
+    for i, v in pairs(G.runes) do
         if v.key and G.P_RUNES[v.key] and G.P_RUNES[v.key].calculate then
             local ret = G.P_RUNES[v.key]:calculate(v, context)
             if ret then

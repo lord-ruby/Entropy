@@ -2811,7 +2811,7 @@ local purple_joker = {
 
 function Entropy.sum_pacts()
     local total = 0
-    for i, v in pairs(G.GAME.runes or {}) do
+    for i, v in pairs(G.runes or {}) do
         if G.P_RUNES[v.key].is_pact then
             total = total + v.ability.count or 1
         end

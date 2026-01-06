@@ -1789,8 +1789,8 @@ function Game:update(dt)
             obj.pos.x = 0
         end
 	end
-    if G.GAME.runes then
-        for i, v in pairs(G.GAME.runes) do
+    if G.runes then
+        for i, v in pairs(G.runes) do
             if Entropy.providence_ui_active(v) and v.shader ~= "entr_providence" and v.HUD_sprite then 
                 v.shader = "entr_providence" 
                 v.HUD_sprite:define_draw_steps({
@@ -2337,7 +2337,7 @@ function ease_ante(mod)
             end
         end
         local t
-        for i, v in pairs(G.GAME.runes or {}) do
+        for i, v in pairs(G.runes or {}) do
             if G.P_RUNES[v.key].calculate then
                 local ret = G.P_RUNES[v.key]:calculate(v, {entr_ante_change = mod})
                 if ret then
@@ -4833,4 +4833,13 @@ function UnBlind_create_UIBox_blind(type)
         end
     end
     return unblind_void_ref(type)
+end
+
+local blind_calc_ref = Blind.calculate
+function Blind:calculate(context, ...)
+    local obj = self.config.blind
+    if obj then
+
+        return blind_calc_ref(self, context, ...)
+    end
 end

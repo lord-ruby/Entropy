@@ -5119,7 +5119,8 @@ local decs = {
 						"Marked by {C:red}Avarice{}"
 					},
 					{
-						"All sell values are {C:red}0{}"
+						"All sell values are",
+						"multiplied by {X:red,C:white}X#1#{}"
 					}
 				}
 			},
@@ -5279,8 +5280,8 @@ local decs = {
 						"Marked by {C:red}Loyalty{}"
 					},
 					{
-						"Interest Rate is now every {C:money}$4{}",
-						"{X:mult,C:white}X0.5{} Mult every other hand"
+						"Interest Rate is now every {C:money}$#1#{}",
+						"{X:mult,C:white}X#2#{} Mult every other hand"
 					}
 				}
 			},
@@ -5291,7 +5292,7 @@ local decs = {
 						"Marked by {C:red}Brimstone{}"
 					},
 					{
-						"{X:mult,C:white}X3.6{} Mult after hand played",
+						"{X:mult,C:white}X#1#{} Mult after hand played",
 						"on the {C:attention}final hand{} of round"
 					}
 				}

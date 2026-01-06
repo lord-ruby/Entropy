@@ -1,12 +1,28 @@
 function Entropy.pact_mark(key)
-    if not Entropy.has_rune(key) then
-        add_rune(Tag(key))
+    local tag = Entropy.has_rune(key)
+    if not tag then
+        tag = Tag(key)
+        add_rune(tag)
+        tag.ability.count = (tag.ability.count or 0) + 1
+    else
+        tag.ability.count = (tag.ability.count or 0) + 1
+        local index = tag.ability.index
+        G.HUD_runes[index]:remove()
+        local tag_sprite_ui, tag_sprite = tag:generate_UI_rune()
+        G.HUD_runes[index] = UIBox{
+            definition = {n=G.UIT.ROOT, config={align = "tm", padding = 0.05, colour = G.C.CLEAR}, nodes={
+            tag_sprite_ui
+            }},
+            config = {
+            align = index > 1 and 'bm' or 'tri',
+            offset = index > 1 and {x=0,y=0} or {x=1.25,y=0},
+            major = index > 1 and G.HUD_runes[index-1] or G.ROOM_ATTACH}
+        }
     end
-    Entropy.has_rune(key).ability.count = (Entropy.has_rune(key).ability.count or 0) + 1
-    return Entropy.has_rune(key).ability.count
+    return tag.ability.count
 end
 
-function Entropy.create_mark(key, order, pos, calculate, credits)
+function Entropy.create_mark(key, order, pos, calculate, credits, loc_vars)
     return {
         object_type = "RuneTag",
         order = order,
@@ -17,11 +33,18 @@ function Entropy.create_mark(key, order, pos, calculate, credits)
         dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
         calculate = calculate,
         is_pact = true,
-        no_providence = true
+        no_providence = true,
+        loc_vars = loc_vars or nil
     }
 end
 
-local avarice_indicator = Entropy.create_mark("avarice", 7051, {x = 0, y = 4})
+local avarice_indicator = Entropy.create_mark("avarice", 7051, {x = 0, y = 4}, nil, nil, function(self, q, rune)
+    return {
+        vars = {
+            0.25 ^ (rune.ability.count or 1)
+        }
+    }
+end)
 local avarice = {
     object_type = "Consumable",
     set = "Pact",
@@ -424,7 +447,7 @@ local envy = {
 local retriggers_ref = SMODS.calculate_retriggers
 SMODS.calculate_retriggers = function(card, context, _ret)
     local retriggers = retriggers_ref(card, context, _ret)
-    for _, rune in ipairs(G.GAME.runes or {}) do
+    for _, rune in ipairs(G.runes or {}) do
         if G.P_RUNES[rune.key].calculate then
             local eval, post = G.P_RUNES[rune.key]:calculate(rune, {retrigger_rune_check = true, other_card = card, other_context = context, other_ret = _ret})
             if eval and eval.repetitions then
@@ -1245,7 +1268,7 @@ local loyalty_indicator = Entropy.create_mark("loyalty", 7069, {x = 4, y = 6}, f
             func = function()
                 attention_text({
                     scale = 1.4,
-                    text = localize({ type = "variable", key = "a_xmult", vars = { 0.5 * rune.ability.count }}),
+                    text = localize({ type = "variable", key = "a_xmult", vars = { 0.5 ^ rune.ability.count }}),
                     hold = 2,
                     align = "cm",
                     offset = { x = 0, y = -2.7 },
@@ -1255,11 +1278,19 @@ local loyalty_indicator = Entropy.create_mark("loyalty", 7069, {x = 4, y = 6}, f
             end
         })
         return {
-            Xmult_mod = 0.5 * rune.ability.count,
+            Xmult_mod = 0.5 ^ rune.ability.count,
         }
     elseif context.final_scoring_step then
         rune.ability.hand = rune.ability.hand + 1
     end
+end, nil, function(self, q, rune)
+    return {
+        vars = {
+            math.max(5 - (rune.ability.count or 1), 1),
+            0.5 ^ (rune.ability.count or 1)
+
+        }
+    }
 end)
 local loyalty = {
     object_type = "Consumable",
@@ -1314,6 +1345,12 @@ local brimstone_indicator = Entropy.create_mark("brimstone", 7070, {x = 5, y = 6
             Xmult_mod = 3.6 * rune.ability.count,
         }
     end
+end, nil, function(self, q, rune)
+    return {
+        vars = {
+            3.6 * (rune.ability.count or 1)
+        }
+    }
 end)
 local brimstone = {
     object_type = "Consumable",
