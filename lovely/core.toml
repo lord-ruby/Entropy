@@ -3379,3 +3379,23 @@ payload = '''
 G.playing_cards = G.playing_cards or {}
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/card_draw.lua"]'''
+pattern = '''
+if self.ability.name == 'Invisible Joker' and (self.config.center.discovered or self.bypass_discovery_center) then
+    if self:should_draw_base_shader() then
+        self.children.center:draw_shader('voucher', nil, self.ARGS.send_to_shader)
+    end
+end
+'''
+position = "before"
+payload = '''
+if self.config.center.set == "Omen" and self.sprite_facing == "front" then
+    if self:should_draw_base_shader() then
+      self.children.center:draw_shader('booster', nil, self.ARGS.send_to_shader)
+    end
+end
+'''
+match_indent = true
