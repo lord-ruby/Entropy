@@ -1,5 +1,5 @@
-local rarity = Entropy.ValkarriOverCryptid and "valk_exquisite" or Entropy.MDJOverCryptid and "MDJ_unlegendary" or "cry_epic"
-local set = ( Entropy.ValkarriOverCryptid or Entropy.MDJOverCryptid ) and "set_entr_misc_jokers" or "set_cry_epic"
+local rarity = Entropy.ValkarriOverCryptid and "valk_exquisite" or Entropy.MDJOverCryptid and "MDJ_unlegendary" or "cry_exotic"
+local set = ( Entropy.ValkarriOverCryptid or Entropy.MDJOverCryptid ) and "set_entr_misc_jokers" or "set_cry_exotic"
 
 local stillicidium = {
     order = 500,
