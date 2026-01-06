@@ -5753,8 +5753,8 @@ local meridian = {
         }
     },
     loc_vars = function(self, q, card)
-        local index = 0
-        for i, v in pairs(card.area.cards) do
+        local index = 1
+        for i, v in pairs(card.area and card.area.cards or {}) do
             if v == card then index = i break end
         end
         return {
