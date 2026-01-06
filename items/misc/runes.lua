@@ -221,8 +221,8 @@ function Tag:generate_UI_rune(_size)
         self.ability.count and self.ability.count > 1 and {n=G.UIT.C, config = {align = 'cm'}, nodes = {
             {n=G.UIT.R, config = {colour = G.C.BLACK, align = 'cm', r=1, padding = 0.1}, nodes = {
                 {n=G.UIT.O, config={object = DynaText({scale = 0.3, string = {{ref_table = self.ability, ref_value = 'count', prefix = 'x'}}, colours = {G.C.RED}, shadow = true})}},
-            }} or nil
-        }}
+            }}
+        }} or nil
     }}
     tag_sprite:define_draw_steps({
         {shader = 'dissolve', shadow_height = 0.05},
