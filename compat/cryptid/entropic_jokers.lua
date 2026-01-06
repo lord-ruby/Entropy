@@ -1001,9 +1001,9 @@ local heimartai = {
 return {
     items = {
         epitachyno,
-        not Entropy.ValkarriOverCryptid and helios or nil,
+        ( not Entropy.ValkarriOverCryptid or not Entropy.MDJOverCryptid ) and helios or nil,
         xekanos,
-        not Entropy.ValkarriOverCryptid and dekatria or nil,
+        ( not Entropy.ValkarriOverCryptid or not Entropy.MDJOverCryptid ) and dekatria or nil,
         anaptyxi,
         parakmi,
         exousia,

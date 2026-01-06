@@ -139,6 +139,8 @@ local containment = {
                 return true
             end
             }))
+                else
+                    G.GAME.entropy = 0
         end
         end,
         calculate = function(self,back,context)
@@ -259,6 +261,31 @@ local containment = {
   }
 elseif (SMODS.Mods["vallkarri"] or {}).can_load then
     Entropy.ValkarriOverCryptid = true
+    local files = {
+        "compat/cryptid/entropic_jokers",
+        "compat/cryptid/epic_jokers",
+        "compat/cryptid/exotic_jokers",
+    }
+    local items = Entropy.collect_files(files)
+    G.FUNCS.cry_asc_UI_set = function(e)
+        e.config.object.colours = { G.C.GOLD }
+        e.config.object:update_text()
+    end    
+    -- Needed because get_poker_hand_info isnt called at the end of the road
+    local evaluateroundref = G.FUNCS.evaluate_round
+    function G.FUNCS.evaluate_round()
+        evaluateroundref()
+        -- This is just the easiest way to check if its gold because lua is annoying
+        if G.C.UI_CHIPS[1] == G.C.GOLD[1] then
+            ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
+            ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
+        end
+    end
+    return {
+        items = items
+    }
+elseif (SMODS.Mods["MyDreamJournal"] or {}).can_load then
+    Entropy.MDJOverCryptid = true
     local files = {
         "compat/cryptid/entropic_jokers",
         "compat/cryptid/epic_jokers",
