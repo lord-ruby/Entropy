@@ -7068,8 +7068,8 @@ local carrot_cake = {
     rarity = 2,
     cost = 8,   
     eternal_compat = true,
-    pos = {x = 1, y = 0},
-    atlas = "placeholder",
+    pos = {x = 1, y = 17},
+    atlas = "jokers",
     config = {
         uses = 10
     },
