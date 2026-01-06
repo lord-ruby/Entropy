@@ -6885,8 +6885,8 @@ local milk = {
     rarity = 1,
     cost = 6,   
     eternal_compat = true,
-    pos = {x = 0, y = 0},
-    atlas = "placeholder",
+    pos = {x = 2, y = 17},
+    atlas = "jokers",
     config = {
         chips = 0,
         chips_mod = 20,
@@ -6943,8 +6943,8 @@ local yogurt = {
     rarity = 1,
     cost = 6,   
     eternal_compat = true,
-    pos = {x = 0, y = 0},
-    atlas = "placeholder",
+    pos = {x = 3, y = 17},
+    atlas = "jokers",
     config = {
         chips = 100,
         chips_mod = 5,
