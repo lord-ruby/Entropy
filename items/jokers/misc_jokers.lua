@@ -2367,7 +2367,7 @@ local slipstream = {
             }
         }
     end,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    entr_credits = {art = {"Lil. Mr. Slipstream"}, idea = {"Lil. Mr. Slipstream"}},
     dependencies = {
         items = {
             "set_entr_misc_jokers",
@@ -2498,7 +2498,8 @@ local cass = {
         }
     },
     entr_credits = {
-        idea = {"cassknows"}
+        idea = {"cassknows"},
+        art = {"Lil. Mr. Slipstream"}
     },
 }
 
@@ -2576,7 +2577,7 @@ local crabus = {
             }
         }
     end,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    entr_credits = {art = {"Lil. Mr. Slipstream"}, idea = {"Crabus"}},
     dependencies = {
         items = {
             "set_entr_misc_jokers",
@@ -2613,7 +2614,7 @@ local hexa = {
             }
         }
     end,
-    entr_credits = {art = {"HexaCryonic"}},
+    entr_credits = {art = {"HexaCryonic"}, idea = {"HexaCryonic"}},
     dependencies = {
         items = {
             "set_entr_misc_jokers",
@@ -2651,7 +2652,7 @@ local grahkon = {
             }
         }
     end,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    entr_credits = {art = {"Lil. Mr. Slipstream"}, idea = {"Grahkon"}},
     dependencies = {
         items = {
             "set_entr_actives",

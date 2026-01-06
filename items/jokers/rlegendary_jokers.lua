@@ -476,7 +476,8 @@ local zelavi = {
         }
     },
     entr_credits = {
-        art = {"Lil. Mr. Slipstream"}
+        art = {"Lil. Mr. Slipstream"},
+        idea = {"Lil. Mr. Slipstream"},
     },
     rarity = "entr_reverse_legendary",
     cost = 20,
@@ -553,7 +554,8 @@ local ssac = {
     atlas = "ruby_atlas",
     demicoloncompat=true,
     entr_credits = {
-        art = {"Lil. Mr. Slipstream"}
+        art = {"Lil. Mr. Slipstream"},
+        idea = {"cassknows"},
     },
     loc_vars = function(self, info_queue, card)
         return {
@@ -595,9 +597,6 @@ local ssac = {
             end
         end
     end,
-    entr_credits = {
-        idea = {"cassknows"}
-    },
     pronouns = "she_her",
 }
 
@@ -622,7 +621,8 @@ local subarc = {
         mod = 0.05
     },
     entr_credits = {
-        art = {"Lil. Mr. Slipstream"}
+        art = {"Lil. Mr. Slipstream"},
+        idea = {"crabus"},
     },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue+1] = G.P_CENTERS.e_entr_sunny
@@ -697,7 +697,8 @@ local axeh = {
     atlas = "ruby_atlas",
     demicoloncompat=true,
     entr_credits = {
-        art = {"HexaCryonic"}
+        art = {"HexaCryonic"},
+        idea = {"HexaCryonic"},
     },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue+1] = G.P_CENTERS.j_entr_sunny_joker
@@ -736,7 +737,8 @@ local nokharg  = {
     atlas = "grahkon_atlas",
     demicoloncompat=true,
     entr_credits = {
-        art = {"Lil. Mr. Slipstream"}
+        art = {"Lil. Mr. Slipstream"},
+        idea = {"Grahkon"},
     },
     config = {
         blind_size = 1,
