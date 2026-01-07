@@ -487,7 +487,7 @@ local youth = {
         ease_ante(-card.ability.extra)
         local jokers = {}
         for i, v in pairs(G.jokers.cards) do
-            if not SMODS.is_eternal(dcard) then jokers[#jokers+1] = v end
+            if not SMODS.is_eternal(v) then jokers[#jokers+1] = v end
         end
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
             play_sound('entr_pacts')
