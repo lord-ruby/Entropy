@@ -13,43 +13,36 @@ local oekrep = {
     rarity = "entr_reverse_legendary",
     cost = 20,
     
+    config = {
+        extra = {odds = 3, numerator = 2}
+    },
 
     blueprint_compat = true,
     eternal_compat = true,
     pos = { x = 4, y = 0 },
     soul_pos = { x = 4, y = 1 },
     atlas = "reverse_legendary",
-    loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue + 1] = {key = 'e_negative_consumable', set = 'Edition', config = {extra = 1}}
+    loc_vars = function(self, q, card)
+        q[#q+1] = {key = 'e_negative_consumable', set = 'Edition', config = {extra = 1}}
+        local new_numerator, new_denominator = SMODS.get_probability_vars(card, card.ability.extra.numerator, card.ability.extra.odds, "entr_oekrep")
+        return {
+            vars = {
+                new_numerator,
+                new_denominator
+            }
+        }
     end,
     immutable = true,
     demicoloncompat = true,
     calculate = function (self, card, context)
-        if context.ending_shop or context.forcetrigger then
-            if #G.consumeables.cards > 0 then
-                local e = pseudorandom_element(G.consumeables.cards, pseudoseed("roekrep"))
-                local set = e.config.center.set
-                local tries = 0
-                while not Entropy.BoosterSets[set] and tries < 100 do
-                    e = pseudorandom_element(G.consumeables.cards, pseudoseed("roekrep"))
-                    set = e.config.center.set
-                    tries = tries + 1
-                end 
-                if Entropy.BoosterSets[set] then
-                    local c = create_card("Booster", G.consumeables, nil, nil, nil, nil, key) 
-                    c:set_ability(G.P_CENTERS[Entropy.BoosterSets[set] or "p_standard_normal_1"] or G.P_CENTERS["p_standard_normal_1"])
-                    c:add_to_deck()
-                    c.T.w = c.T.w *  2.0/2.6
-                    c.T.h = c.T.h *  2.0/2.6
-                    table.insert(G.consumeables.cards, c)
-                    c.area = G.consumeables
-                    c:set_edition("e_negative")
-                    c.RPerkeoPack = true
-                    G.consumeables:align_cards()
+        if context.starting_shop then
+            for i, v in pairs(G.shop_booster.cards) do
+                if SMODS.pseudorandom_probability(card, 'entr_oekrep', card.ability.extra.numerator, card.ability.extra.odds) and v.config.center.kind ~= "Standard" then 
+                    v:set_edition("e_negative")
                 end
             end
         end
-    end
+    end,
 }
 
 local tocihc = {
@@ -93,7 +86,7 @@ local tocihc = {
     end,
     immutable = true,
     calculate = function (self, card, context)
-        if (context.setting_blind and not card.getting_sliced) or context.forcetrigger then
+        if (context.entr_reversing_blind) or context.forcetrigger then
             local tag
             local type = G.GAME.blind:get_type()
 
@@ -120,7 +113,18 @@ local tocihc = {
                     end
                 end
             end
-            add_tag(tag)
+            return {
+                message = localize("k_skipped_q"),
+                colour = Entropy.reverse_legendary_gradient,
+                func = function()
+                    G.E_MANAGER:add_event(Event{
+                        func = function()
+                            add_tag(tag)
+                            return true
+                        end
+                    })
+                end
+            }
         end
     end
 }

@@ -3399,3 +3399,69 @@ if self.config.center.set == "Omen" and self.sprite_facing == "front" then
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+G.FUNCS.draw_from_hand_to_discard()
+if G.GAME.blind_on_deck == "Boss" then
+'''
+position = "at"
+payload = '''
+G.FUNCS.draw_from_hand_to_discard()
+local tocihc
+for i, v in pairs(SMODS.find_card("j_entr_tocihc")) do
+  if pseudorandom("entr_tocihc") < 0.5 then tocihc = true end
+end
+if G.GAME.blind_on_deck == "Boss" and not tocihc then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+if G.GAME.round_resets.blind == G.P_BLINDS.bl_small then
+    G.GAME.round_resets.blind_states.Small = 'Defeated'
+elseif G.GAME.round_resets.blind == G.P_BLINDS.bl_big then
+    G.GAME.round_resets.blind_states.Big = 'Defeated'
+elseif G.GAME.blind_on_deck ~= "Red" then
+    G.GAME.current_round.voucher = SMODS.get_next_vouchers()
+    G.GAME.round_resets.blind_states.Boss = 'Defeated'
+    for k, v in ipairs(G.playing_cards) do
+        v.ability.played_this_ante = nil
+    end
+end
+'''
+position = "at"
+payload = '''
+G.FUNCS.draw_from_hand_to_discard()
+local tocihc
+for i, v in pairs(SMODS.find_card("j_entr_tocihc")) do
+  if pseudorandom("entr_tocihc") < 0.5 then tocihc = true end
+end
+if not tocihc then
+  if G.GAME.blind_on_deck == "Small" then
+      G.GAME.round_resets.blind_states.Small = 'Defeated'
+  elseif G.GAME.blind_on_deck == "Big" then
+      G.GAME.round_resets.blind_states.Big = 'Defeated'
+  elseif G.GAME.blind_on_deck ~= "Red" then
+      G.GAME.current_round.voucher = SMODS.get_next_vouchers()
+      G.GAME.round_resets.blind_states.Boss = 'Defeated'
+      for k, v in ipairs(G.playing_cards) do
+          v.ability.played_this_ante = nil
+      end
+  end
+else
+  SMODS.calculate_context({entr_reversing_blind = true})
+  if G.GAME.blind_on_deck == "Small" then
+      G.GAME.round_resets.blind_states.Small = 'Select'
+  elseif G.GAME.blind_on_deck == "Big" then
+      G.GAME.round_resets.blind_states.Big = 'Select'
+  elseif G.GAME.blind_on_deck ~= "Red" then
+      G.GAME.round_resets.blind_states.Boss = 'Select'
+  end
+end
+'''
+match_indent = true

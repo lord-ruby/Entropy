@@ -257,9 +257,10 @@ local decs = {
 			j_entr_oekrep = {
 				name = "Oekrep",
 				text = {
-					"create a {C:dark_edition}Negative{} Mega Booster Pack ",
-					"at the end of the {C:attention}shop{}",
-					"based on one {C:attention}random{} consumable"
+					"Consumables can be {C:attention}selected{}",
+					"from all Booster Packs",
+					"{C:green}#1# in #2#{} chance for Booster",
+					"Packs to spawn {C:dark_edition}Negative{}"
 				}
 			},
 			j_entr_kciroy = {
@@ -274,10 +275,9 @@ local decs = {
 			j_entr_tocihc = {
 				name = "Tocihc",
 				text = {
-					"Create the {C:attention}current{} Blind's skip",
-					"Tag when Blind is selected",
-					"Reduce non-Boss Blind sizes by {C:attention}80%{}",
-					"{C:inactive}(Currently: #1#){}"
+					"Fixed {C:green}50%{} chance to not",
+					"progress when beating a Blind",
+					"and obtain the Blinds {C:attention}Skip Tag{}",
 				}
 			},
 			j_entr_teluobirt = {
@@ -6694,6 +6694,7 @@ local decs = {
 			k_spoiled_ex = "Spoiled!",
 			k_downgrade_ex = "Downgrade!",
 			k_backfired_ex = "Backfired!",
+			k_skipped_q = "Skipped?",
 			k_star = "Star",
 			b_star_cards = "Star Cards",	
 			k_planet_multiverse = Cryptid_config.family_mode and "Multiverse" or "The Actual Fucking Multiverse",

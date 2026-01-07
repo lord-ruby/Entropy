@@ -359,6 +359,7 @@ local link = {
     no_sticker_sheet = true,
     prefix_config = { key = false },
     badge_colour = HEX("59ffe8"),
+    should_apply = false,
     loc_vars = function(self,q,card)
         return {
             vars = {

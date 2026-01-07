@@ -1941,11 +1941,17 @@ end
 
 function Entropy.can_be_pulled(card)
     local center = card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]] or card.config.center
+    if not card:selectable_from_pack(SMODS.OPENED_BOOSTER) and next(SMODS.find_card("j_entr_oekrep")) and card.ability.consumeable then
+        return not center.hidden and not center.no_select
+    end
     return not center.no_select and (SMODS.ConsumableTypes[center.set] and SMODS.ConsumableTypes[center.set].can_be_pulled or center.can_be_pulled) and not center.hidden
 end
 
 function Entropy.needs_pull_button(card)
     local center = card.config.center
+    if not card:selectable_from_pack(SMODS.OPENED_BOOSTER) and next(SMODS.find_card("j_entr_oekrep")) and card.ability.consumeable then
+        return not center.hidden and not center.no_select and localize("b_select")
+    end
     if not center.no_select and (SMODS.ConsumableTypes[center.set] and SMODS.ConsumableTypes[center.set].can_be_pulled or center.can_be_pulled) and not center.hidden then
         local loc = SMODS.ConsumableTypes[center.set] and SMODS.ConsumableTypes[center.set].can_be_pulled or center.can_be_pulled
         return localize(type(loc) == "string" and loc or "b_select")
