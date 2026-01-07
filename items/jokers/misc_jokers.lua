@@ -1448,7 +1448,7 @@ local grotesque_joker = {
         for i, v in pairs(G.playing_cards) do
             if v.config and v.config.center_key == "m_entr_flesh" then return true end
         end
-    end
+    end,
     loc_vars = function(self, q, card) return {vars = {
         number_format(card.ability.xmult_mod), 
         number_format(card.ability.xchips_mod), 
