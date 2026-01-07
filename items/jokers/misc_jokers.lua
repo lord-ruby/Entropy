@@ -2582,7 +2582,7 @@ local crabus = {
             }
         }
     end,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}, idea = {"Crabus"}},
+    entr_credits = {art = {"Lil. Mr. Slipstream"}, idea = {"crabus"}},
     dependencies = {
         items = {
             "set_entr_misc_jokers",
