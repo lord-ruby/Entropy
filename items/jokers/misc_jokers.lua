@@ -7713,6 +7713,9 @@ local arachnophobia = {
             return nil, true
         end 
     end,   
+    entr_credits = {
+        art = {"pangaea47"}
+    }
 }
 
 local pound_of_flesh = {
