@@ -11,7 +11,7 @@
     "badge_colour": "FE0001",
     "dependencies": [
         "Steamodded (>=1.0.0~BETA-01224a)",
-        "Cryptlib (>=1.3)"
+        "Cryptlib"
     ],
     "conflicts": [
     ],
