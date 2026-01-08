@@ -587,6 +587,7 @@ position = "before"
 payload = '''
 if SMODS.overdraw_cards then
   hand_space = hand_space + SMODS.overdraw_cards
+  SMODS.overdraw_cards = nil
 end
 '''
 match_indent = true
