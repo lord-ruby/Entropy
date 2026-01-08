@@ -11,33 +11,37 @@ local crimson = {
     pos = {x=0,y=0},
     badge_colour = HEX("8a0050"),
     calculate = function(self, card, context)
-        if (context.cardarea == G.play or context.cardarea == G.hand) and not context.crimson_trigger then
-            for i, v in ipairs(card.area.cards) do
+        if (context.cardarea == G.play or context.cardarea == G.hand) and not card.crimson_trigger and not card.crimson_trigger2 then
+            for i, v in ipairs(card.area and card.area.cards or {}) do
                 if card.area.cards[i+1] == card or card.area.cards[i-1] == card then
-                    context.crimson_trigger = true
+                    card.crimson_trigger2 = true
                     local eval, post = eval_card(v, context)
+                    eval = eval or {}
                     local effects = {eval}
+                    if (eval and next(eval)) or (post and next(post)) or (context.main_scoring and context.cardarea == G.play) then
+                        SMODS.calculate_effect({message = localize("k_again_ex"), colour = HEX("8a0050"), card = v})
+                        if not card.crimson_trigger then
+                            G.E_MANAGER:add_event(Event{
+                                trigger = "before",
+                                func = function()
+                                    card.crimson_trigger = nil
+                                    return true
+                                end
+                            })
+                        end
+                        card.crimson_trigger = true
+                    end
+                    card.crimson_trigger2 = nil
                     if context.main_scoring then 
+                        G.message_card = v
                         eval.chips = v.base.nominal + v.ability.bonus or 0
                         SMODS.calculate_context({individual = true, other_card=v, cardarea = v.area, scoring_hand = context.scoring_hand})
+                        G.message_card = nil
                     end
                     for _,v in ipairs(post or {}) do effects[#effects+1] = v end
-                    if eval.retriggers then
-                        for rt = 1, #eval.retriggers do
-                            local rt_eval, rt_post = eval_card(v, context)
-                            table.insert(effects, {eval.retriggers[rt]})
-                            table.insert(effects, rt_eval)
-                            for _, v in ipairs(rt_post) do effects[#effects+1] = v end
-                            if context.main_scoring then 
-                                table.insert(effects, {chips = v.base.nominal + v.ability.bonus or 0}) 
-                                SMODS.calculate_context({individual = true, other_card=v, cardarea = v.area, scoring_hand = context.scoring_hand})
-                            end
-                        end
-                    end
                     SMODS.trigger_effects(effects, v)
                 end
             end
-            context.crimson_trigger = nil
         end
     end,
 }
@@ -56,8 +60,9 @@ local sapphire = {
     badge_colour = HEX("8653ff"),
     calculate = function(self, card, context)
         if (context.playing_card_end_of_round and context.cardarea == G.hand) or context.forcetrigger then
-            Entropy.ReversePlanetUse(G.GAME.last_hand_played, card, 0.25)
-             return { message = localize('k_level_up_ex'), colour = G.C.PURPLE }
+             return { message = localize('k_level_up_ex'), colour = G.C.PURPLE, func = function()
+                SMODS.upgrade_poker_hands({hands = G.GAME.last_hand_played, from = card, ascension_power = 0.25})
+             end}
         end
     end,
 }

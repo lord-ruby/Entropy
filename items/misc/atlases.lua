@@ -139,6 +139,15 @@ SMODS.Atlas {
     atlas_table = 'ANIMATION_ATLAS'
 }
 
+SMODS.Atlas {
+    key = 'redroom', 
+    path = 'blinds.png', 
+    px = 34, 
+    py = 34, 
+    frames = 8, 
+    atlas_table = 'ANIMATION_ATLAS'
+}
+
 SMODS.Atlas { 
     key = 'ruby_atlas', 
     path = 'ruby.png', 
@@ -295,3 +304,20 @@ if (SMODS.Mods.vallkarri or {}).can_load then
         py = 95,
     }
 end
+
+SMODS.Atlas {
+    key = 'curses_big',
+    path = 'curses_big.png',
+    px = 75,
+    py = 75,
+    atlas_table = 'ANIMATION_ATLAS',
+    frames = 17,
+    fps = 8
+}
+
+SMODS.Atlas {
+        key = "marked",
+        path = "hold_me.png",
+        px = 71,
+        py = 95,
+    }

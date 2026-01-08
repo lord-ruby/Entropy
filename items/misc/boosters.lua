@@ -201,7 +201,8 @@ function create_inverted_card(area, seed)
                 Entropy.has_rune("rune_entr_mannaz").num_triggered = 2
                 Entropy.has_rune("rune_entr_mannaz").triggered = true
             end
-            return create_card("Spectral", area or G.pack_cards, nil, nil, true, true, nil, "rune_entr_mannaz", true)
+            G.entr_dont_calculate = true
+            return create_card("Spectral", area or G.pack_cards, nil, nil, true, true, nil, "rune_entr_mannaz")
         end
     end
     if num - 0.003 <= 0 then
@@ -228,7 +229,7 @@ local voucher = {
         }
     },
 	object_type = "Booster",
-    order = -1000,
+    order = -990.1,
     key = "voucher_pack",
     set = "Booster",
     config = { extra = 5, choose = 2 },
@@ -249,6 +250,7 @@ local voucher = {
     draw_hand = false,
     weight = 0,
     kind = "Voucher",
+    in_pool = function() return false end,
     create_card = function (self, card, i) 
         return create_card("Voucher", G.pack_cards)
     end,

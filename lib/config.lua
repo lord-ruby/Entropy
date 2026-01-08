@@ -86,6 +86,12 @@ local entrConfigTab = function()
 		callback = function()
         end,
 	})
+	entr_nodes[#entr_nodes + 1] = create_toggle({
+		label = localize("k_entr_asc_tutorial"),
+		active_colour = HEX("40c76d"),
+		ref_table = Entropy.config,
+		ref_value = "asc_power_tutorial",
+	})
 	entr_nodes[#entr_nodes+1] = create_slider({
 		label = localize('k_entr_corrupted_speed'), 
 		w = 5, 
@@ -126,7 +132,7 @@ function Entropy.generate_credits_nodes(table, type)
 					n = G.UIT.O,
 					config = {
 						object = DynaText({
-							string = localize("k_"..type),
+							string = localize("k_"..(type == "music" and "music_sound" or type)),
 							colours = { G.C.IMPORTANT },
 							shadow = true,
 							scale = 0.7,
@@ -150,6 +156,13 @@ function Entropy.generate_credits_nodes(table, type)
 				end
 			end
 			::continue::
+		end
+		if i == "lord.ruby" then
+			for _, v in pairs(G.P_CENTERS) do
+				if v.set ~= "Content Set" and v.set ~= "CBlind" and (not v.entr_credits or not v.entr_credits.art or not v.entr_credits.idea or not v.entr_credits.code) then
+					cards_with_credit[#cards_with_credit+1] = v
+				end
+			end
 		end
 		G.FUNCS["entr_credit_"..i] = function(e)
             G.SETTINGS.paused = true
@@ -190,6 +203,7 @@ end
 local overlay_ref = G.FUNCS.overlay_menu
 G.FUNCS.overlay_menu = function(...)
 	local ret = overlay_ref(...)
+	G.dont_display_credit = nil
 	G.only_display_credit = nil
 	return ret
 end
@@ -270,8 +284,10 @@ local entropyTabs = function()
 						["triple6lexi"]=true,
 						["Athebyne"] = true,
 						["InvalidOS"] = true,
+						["FirstTry"] = true,
+						["Eris"] = true
 					},
-					music = {gemstonez=true}
+					music = {gemstonez=true, Grahkon = true}
 				}
 				for i, v in pairs(G.P_CENTERS) do if v.entr_credits then
 					if v.entr_credits.idea then for i, v in pairs(v.entr_credits.idea) do credits.idea[v] = true end end

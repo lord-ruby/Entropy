@@ -4,6 +4,7 @@ local epitachyno = {
     key = "epitachyno",
     atlas = "exotic_jokers",
     rarity = "entr_entropic",
+	cost = 150,
     pos = {x=0,y=1},
     soul_pos = { x = 2, y = 1, extra = { x = 1, y = 1 } },
     config = {
@@ -1000,9 +1001,9 @@ local heimartai = {
 return {
     items = {
         epitachyno,
-        not Entropy.ValkarriOverCryptid and helios or nil,
+        ( not Entropy.ValkarriOverCryptid or not Entropy.MDJOverCryptid ) and helios or nil,
         xekanos,
-        not Entropy.ValkarriOverCryptid and dekatria or nil,
+        ( not Entropy.ValkarriOverCryptid or not Entropy.MDJOverCryptid ) and dekatria or nil,
         anaptyxi,
         parakmi,
         exousia,

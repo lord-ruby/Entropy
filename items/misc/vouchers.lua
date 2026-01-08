@@ -83,11 +83,52 @@ local providence = {
     end
 }
 
+local starter_kit = {
+    dependencies = {
+        items = {
+          "set_entr_vouchers",
+        }
+    },
+	object_type = "Voucher",
+    order = -2000+5,
+    key = "starter_kit",
+    atlas = "vouchers",
+    pos = {x=0, y=2},
+    redeem = function(self, card)
+        G.GAME.booster_rate = 8
+    end,
+    unredeem = function(self, card) 
+        G.GAME.booster_rate = nil
+    end
+}
+
+local expansion_pack = {
+    dependencies = {
+        items = {
+          "set_entr_vouchers",
+        }
+    },
+	object_type = "Voucher",
+    order = -2000+6,
+    key = "expansion_pack",
+    atlas = "vouchers",
+    pos = {x=1, y=2},
+    requires = {"v_entr_starter_kit"},
+    redeem = function(self, card)
+        G.GAME.deck_voucher_rate = 2
+    end,
+    unredeem = function(self, card) 
+        G.GAME.deck_voucher_rate = nil
+    end
+}
+
 return {
     items = {
         marked,
         trump_card,
         diviner,
-        providence
+        providence,
+        starter_kit,
+        expansion_pack
     }
 }

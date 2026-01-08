@@ -40,4 +40,5 @@ if (SMODS.Mods["TSpectrals"] or {}).can_load then
         end
         set_spritesref(self,_center,_front)
     end
+    Entropy.entropic_gradient = Entropy.transgender_gradient
 end

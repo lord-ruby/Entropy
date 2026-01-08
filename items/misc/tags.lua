@@ -338,9 +338,50 @@ local kaleidoscopic = {
 	min_ante = 4,
 }
 
-local arcane = {
+local gilded = {
 	object_type = "Tag",
 	order = -4,
+	dependencies = {
+	  items = {
+		"set_entr_tags"
+	  }
+	},
+	atlas = "tags",
+	pos = { x = 4, y = 1 },
+	key = "gilded",
+	config = { type = "store_joker_modify", edition = "entr_gilded" },
+	loc_vars = function(self, info_queue, tag)
+		info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_gilded
+	end,
+	apply = function(self, tag, context)
+		if context.type == "store_joker_modify" then
+			local _applied = nil
+			if Cryptid.forced_edition and Cryptid.forced_edition() then
+				tag:nope()
+			end
+			if not context.card.edition and not context.card.temp_edition and context.card.ability.set == "Joker" then
+				local lock = tag.ID
+				G.CONTROLLER.locks[lock] = true
+				context.card.temp_edition = true
+				tag:yep("+", G.C.DARK_EDITION, function()
+					context.card:set_edition("e_entr_gilded", true)
+					context.card.ability.couponed = true
+					context.card:set_cost()
+					context.card.temp_edition = nil
+					G.CONTROLLER.locks[lock] = nil
+					return true
+				end)
+				_applied = true
+				tag.triggered = true
+			end
+		end
+	end,
+	min_ante = 3,
+}
+
+local arcane = {
+	object_type = "Tag",
+	order = -3,
 	dependencies = {
 	  items = {
 		"set_entr_tags"
@@ -625,6 +666,7 @@ local fractured_asc = Entropy.EditionTag("e_entr_fractured", "fractured", true, 
 local freaky_asc = Entropy.EditionTag("e_entr_freaky", "freaky", true, {x=7,y=5},20.75)
 
 local kaleidoscopic_asc = Entropy.EditionTag("e_entr_kaleidoscopic", "kaleidoscopic", true, {x=7,y=2},20.9)
+local gilded_asc = Entropy.EditionTag("e_entr_gilded", "gilded", true, {x=7,y=0},20.95)
 
 local cat_asc = {
 	object_type = "Tag",
@@ -850,6 +892,7 @@ local unbounded_pack = {
 			return create_card("Spectral", G.pack_cards, nil, nil, true, true)
 		end
 	end,
+	hidden = true,
 	group_key = "k_spectral_pack",
 	cry_digital_hallucinations = {
 		colour = G.C.SECONDARY_SET.Spectral,
@@ -1145,7 +1188,7 @@ local blind_pack = {
         	"set_entr_tags",
         }
     },
-	order = 95,
+	order = -10000+95.5,
 	shiny_atlas="entr_shiny_ascendant_tags",
     key = "blind",
     set = "Booster",
@@ -1534,6 +1577,7 @@ return {
 		solar,
 		fractured,
 		kaleidoscopic,
+		gilded,
 		rare,
 		epic,
 		legendary,
@@ -1584,6 +1628,7 @@ return {
 		neon_asc,
 		lowres_asc,
 		kaleidoscopic_asc,
+		gilded_asc,
 		arcane,
 		asc_arcane
 	}

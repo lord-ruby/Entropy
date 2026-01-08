@@ -1,5 +1,5 @@
-local rarity = Entropy.ValkarriOverCryptid and "valk_renowned" or "cry_epic"
-local set = Entropy.ValkarriOverCryptid and "set_entr_misc_jokers" or "set_cry_epic"
+local rarity = Entropy.ValkarriOverCryptid and "valk_renowned" or Entropy.MDJOverCryptid and "MDJ_veryrare" or "cry_epic"
+local set = ( Entropy.ValkarriOverCryptid or Entropy.MDJOverCryptid ) and "set_entr_misc_jokers" or "set_cry_epic"
 
 local burnt_m = {
     order = 250,
@@ -419,7 +419,7 @@ local metamorphosis = {
                         context.cardarea = G.jokers
                         local text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta = G.FUNCS.get_poker_hand_info(G.play.cards)
                         for i, v in pairs(G.jokers.cards) do
-                          local res = eval_card(v, {cardarea = G.jokers, joker_main = true, full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands})
+                          local res = SMODS.eval_individual(v, {cardarea = G.jokers, joker_main = true, full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands}) or {}
                           if res and res.jokers then 
                             res = res.jokers
                             for i2, v2 in pairs(res) do
@@ -565,10 +565,10 @@ local caviar = {
 
 return {
     items = {
-        not Entropy.ValkarriOverCryptid and burnt_m or nil,
+        ( not Entropy.ValkarriOverCryptid or not Entropy.MDJOverCryptid ) and burnt_m or nil,
         chaos,
         dni,
-        not Entropy.ValkarriOverCryptid and trapezium or nil,
+        ( not Entropy.ValkarriOverCryptid or not Entropy.MDJOverCryptid ) and trapezium or nil,
         antireal,
         jokezmann_brain,
         metanoia,

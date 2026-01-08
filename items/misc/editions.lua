@@ -9,7 +9,7 @@ local solar = {
     key="solar",
     shader="solar",
     config = {
-        sol = 1.25
+        sol = 1.2
     },
 	sound = {
 		sound = "entr_e_solar",
@@ -27,6 +27,7 @@ local solar = {
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
+		if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
         return {vars={card and card.edition and card.edition.sol or 1.4}}
     end,
     calculate = function(self, card, context)
@@ -70,9 +71,9 @@ local fractured ={
         retrig = 3
     },
 	sound = {
-		sound = "entr_e_solar",
+		sound = "entr_e_fractured",
 		per = 1,
-		vol = 0.4,
+		vol = 0.8,
 	},
 	dependencies = {
         items = {
@@ -146,6 +147,7 @@ local sunny = {
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
+		if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
         return {vars={card and card.edition and card.edition.sol or 4}}
     end,
     calculate = function(self, card, context)
@@ -236,12 +238,12 @@ if AurinkoAddons then
 	AurinkoAddons.entr_solar = function(card, hand, instant, amount)
 		if to_big(G.GAME.hands[hand].AscensionPower or 0) > to_big(0) then
 			local num = G.GAME.hands[hand].AscensionPower * ((card.edition.sol-1) ^ (amount or 1))
-			Entropy.ReversePlanetUse(hand, card, num, nil, true)
+			SMODS.upgrade_poker_hands({hands = hand, from = card, ascension_power = num})
 		end
 	end
 	AurinkoAddons.entr_sunny = function(card, hand, instant, amount)
 		local num = 4*(amount or 1)
-		Entropy.ReversePlanetUse(hand, card, num, nil, true)
+		SMODS.upgrade_poker_hands({hands = hand, from = card, ascension_power = num})
 	end
 	AurinkoAddons.entr_freaky = function(card, hand, instant, amount)
 		local hand_chips = G.GAME.hands[hand].chips
@@ -266,7 +268,7 @@ if AurinkoAddons then
 				trigger = "after",
 				delay = 0.2,
 				func = function()
-					play_sound("multhit1")
+					play_sound("entr_e_rizz")
 					card:juice_up(0.8, 0.5)
 					return true
 				end,
@@ -299,12 +301,12 @@ local neon = {
     key="neon",
     shader="neon",
 	sound = {
-		sound = "multhit1",
-		per = 1,
-		vol = 0.4,
+		sound = "entr_e_neon",
+		per = 1,		
 	},
 	config = {
-		cost_fac = 0.9
+		cost_fac = 0.9,
+		cost_fac_playing = 0.95
 	},
 	dependencies = {
         items = {
@@ -316,7 +318,7 @@ local neon = {
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
-		return {vars={card and card.edition and card.edition.cost_fac or 0.9}}
+		return {vars={card and card.edition and (card.is_playing_card and card:is_playing_card() and card.edition.cost_fac_playing or card.edition.cost_fac) or 0.9}}
     end,
 	entr_credits = {
 		custom={key="shader",text="cassknows"},
@@ -326,15 +328,19 @@ local neon = {
 
 local set_cost_ref = Card.set_cost
 function Card:set_cost()
+	if self.config.center.set == "Back" or self.config.center.set == "Sleeve" then
+		self.config.center.cost = 15
+		self.base_cost = 15
+	end
 	set_cost_ref(self)
 	for i, v in pairs(G.I.CARD) do
-		if v.edition and v.edition.key == "e_entr_neon" and v.area and v.area.config.type ~= "shop" then
-			self.cost = self.cost * v.edition.cost_fac
+		if v.edition and v.edition.key == "e_entr_neon" and v.area and v.area.config.type ~= "shop" and not v.debuff then
+			self.cost = self.cost * (v:is_playing_card() and v.edition.cost_fac_playing or v.edition.cost_fac) or 1
 		end
 	end
 	if Entropy.has_rune("rune_entr_avarice") then
-	    local cost = 0
-        self.sell_cost = cost
+	    local cost_fac = 0.25 ^ #Entropy.find_runes("rune_entr_avarice")
+        self.sell_cost = self.sell_cost * cost_fac
         self.sell_cost_label = self.facing == 'back' and '?' or number_format(self.sell_cost)
 	end
 	if G.GAME.entr_booster_cost and self.config.center.set == "Booster" then
@@ -369,9 +375,9 @@ local lowres = {
     key="lowres",
     shader="lowres",
 	sound = {
-		sound = "multhit1",
+		sound = "entr_e_lowres",
 		per = 1,
-		vol = 0.4,
+		vol = 1,
 	},
 	config = {
 		triggers = 2,
@@ -406,8 +412,7 @@ local lowres = {
 		end
 	end,
 	on_remove = function(card)
-		Cryptid.manipulate(card, { value = 1 })
-		Cryptid.manipulate(card)
+		Cryptid.manipulate(card, { value = 4 }, nil, true)		
 	end,
 	entr_credits = {
 		custom={key="shader",text="cassknows"},
@@ -427,9 +432,9 @@ local kaleidoscopic = {
     key="kaleidoscopic",
     shader="kaleidoscopic",
 	sound = {
-		sound = "multhit1",
+		sound = "entr_e_kaleidoscopic",
 		per = 1,
-		vol = 0.4,
+		vol = 0.8,
 	},
 	config = {
 		cards = 2
@@ -458,25 +463,14 @@ local kaleidoscopic = {
 			for i, v in pairs(actual) do
 				context.kaleidoscopic = true
 				context.edition = nil
-				local eval, post = eval_card(v, context)
+				local eval, post = SMODS.eval_individual(v, context)
+				eval = eval or {}
 				local effects = {eval}
 				if context.main_scoring then 
 					eval.chips = v.base.nominal + v.ability.bonus or 0
 					SMODS.calculate_context({individual = true, other_card=v, cardarea = v.area})
 				end
 				for _,v in ipairs(post or {}) do effects[#effects+1] = v end
-				if eval.retriggers then
-					for rt = 1, #eval.retriggers do
-						local rt_eval, rt_post = eval_card(v, context)
-						table.insert(effects, {eval.retriggers[rt]})
-						table.insert(effects, rt_eval)
-						for _, v in ipairs(rt_post) do effects[#effects+1] = v end
-						if context.main_scoring then 
-							table.insert(effects, {chips = v.base.nominal + v.ability.bonus or 0}) 
-							SMODS.calculate_context({individual = true, other_card=v, cardarea = v.area})
-						end
-					end
-				end
 				SMODS.trigger_effects(effects, v)
 				context.kaleidoscopic = nil
 			end
@@ -488,6 +482,87 @@ local kaleidoscopic = {
 	},
 }
 
+SMODS.Shader({
+    key="gilded",
+    path="gilded.fs"
+})
+
+local gilded = {
+	object_type = "Edition",
+	order = 9000+5,
+    key="gilded",
+    shader="gilded",
+	sound = {
+		sound = "entr_e_gilded",
+		per = 1,
+	},
+	dependencies = {
+        items = {
+          "set_entr_misc"
+        }
+    },
+	extra_cost = 3,
+	in_shop = true,
+	weight = 0.75,
+    badge_color = HEX("ff7900"),
+    loc_vars = function(self,q,card)
+		return {vars={card and card.edition and card.edition.triggers or 2, card and card.edition and card.edition.cards or 2}, key = card and card.ability and card.ability.consumeable and "e_entr_gilded_consumable" or nil}
+    end,
+    calculate = function(self, card, context)
+		if (context.retrigger_joker_check or context.repetition) and context.other_card == card then
+			return {
+				repetitions = 1
+			}
+		end
+		if context.pre_using_self and context.consumeable == card then
+			card.delay_dissolve = {type = "after_after", delay = 1.5}
+            G.E_MANAGER:add_event(Event{
+				trigger = "after",
+				delay = 0.5,
+				func = function()
+					G.E_MANAGER:add_event(Event{
+						trigger = "after",
+						delay = 1,
+						func = function()
+							Cryptid.forcetrigger(Entropy.GetDummy(card.config.center, G.consumeables, card), context)
+							return true
+						end
+					})
+					return true
+				end
+			})
+        end
+	end,
+}
+
+local card_click = Card.click
+function Card:click(...)
+	if G.SETTINGS.paused and self.edition and G.P_CENTERS[self.edition.key] and G.P_CENTERS[self.edition.key].sound then
+		play_sound(G.P_CENTERS[self.edition.key].sound.sound, G.P_CENTERS[self.edition.key].sound.volume)
+	end
+	if G.SETTINGS.paused and self.config and self.config.center_key == "j_entr_amaryllis" then
+		self.ability.colour = ({
+			white = "red",
+			red = "pink",
+			pink = "orange",
+			orange = "purple",
+			purple = "yellow",
+			yellow = "white"
+		})[self.ability.colour]
+		self:juice_up()
+		local x_map = {
+			red = 5,
+			white = 4,
+			pink = 6,
+			orange = 7,
+			purple = 8,
+			yellow = 9
+		}
+		self.children.center:set_sprite_pos({x = x_map[self.ability.colour], y = 16})
+	end
+	return card_click(self, ...)
+end
+
 return {
     items = {
         solar,
@@ -496,6 +571,7 @@ return {
 		freaky,
 		neon,
 		lowres,
-		kaleidoscopic
+		kaleidoscopic,
+		gilded
     }
 }

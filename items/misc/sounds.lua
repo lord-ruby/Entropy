@@ -11,7 +11,7 @@ SMODS.Sound({
 	key = "music_red_room",
 	path = "music_red_room.ogg",
 	select_music_track = function()
-		return G.GAME.round_resets.blind_states.Red == "Current" and 10^5
+		return G.GAME.blind and G.GAME.blind.name == "bl_entr_red" and 10^5
 	end,
 })
 SMODS.Sound({
@@ -64,4 +64,44 @@ SMODS.Sound({
 	key = "bounce",
 	path = "bounce.ogg",
 	volume = 1.4
+})
+
+SMODS.Sound({
+	key = "e_lowres",
+	path = "e_lowres.ogg",
+	volume = 1.2
+})
+
+SMODS.Sound({
+	key = "e_gilded",
+	path = "e_gilded.ogg",
+	volume = 1.3
+})
+
+SMODS.Sound({
+	key = "e_kaleidoscopic",
+	path = "e_kaleidoscopic.ogg",
+	volume = 0.9
+})
+
+SMODS.Sound({
+	key = "e_fractured",
+	path = "e_fractured.ogg",
+	volume = 1.2,
+})
+
+SMODS.Sound({
+	key = "e_neon",
+	path = "e_neon.ogg",
+	volume = 1.2
+})
+
+SMODS.Sound({
+	key = "pacts",
+	path = "pacts.ogg",
+})
+
+SMODS.Sound({
+	key = "runes",
+	path = "runes.ogg",
 })

@@ -1,12 +1,28 @@
 function Entropy.pact_mark(key)
-    if not Entropy.has_rune(key) then
-        add_rune(Tag(key))
+    local tag = Entropy.has_rune(key)
+    if not tag then
+        tag = Tag(key)
+        add_rune(tag)
+        tag.ability.count = (tag.ability.count or 0) + 1
+    else
+        tag.ability.count = (tag.ability.count or 0) + 1
+        local index = tag.ability.index
+        G.HUD_runes[index]:remove()
+        local tag_sprite_ui, tag_sprite = tag:generate_UI_rune()
+        G.HUD_runes[index] = UIBox{
+            definition = {n=G.UIT.ROOT, config={align = "tm", padding = 0.05, colour = G.C.CLEAR}, nodes={
+            tag_sprite_ui
+            }},
+            config = {
+            align = index > 1 and 'bm' or 'tri',
+            offset = index > 1 and {x=0,y=0} or {x=1.25,y=0},
+            major = index > 1 and G.HUD_runes[index-1] or G.ROOM_ATTACH}
+        }
     end
-    Entropy.has_rune(key).ability.count = (Entropy.has_rune(key).ability.count or 0) + 1
-    return Entropy.has_rune(key).ability.count
+    return tag.ability.count
 end
 
-function Entropy.create_mark(key, order, pos, calculate, credits)
+function Entropy.create_mark(key, order, pos, calculate, credits, loc_vars)
     return {
         object_type = "RuneTag",
         order = order,
@@ -17,16 +33,23 @@ function Entropy.create_mark(key, order, pos, calculate, credits)
         dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
         calculate = calculate,
         is_pact = true,
-        no_providence = true
+        no_providence = true,
+        loc_vars = loc_vars or nil
     }
 end
 
-local avarice_indicator = Entropy.create_mark("avarice", 7051, {x = 0, y = 4})
+local avarice_indicator = Entropy.create_mark("avarice", 7051, {x = 0, y = 4}, nil, nil, function(self, q, rune)
+    return {
+        vars = {
+            0.25 ^ (rune.ability.count or 1)
+        }
+    }
+end)
 local avarice = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=0,y=4},
+    pos = {x=0,y=8},
     order = 7601,
     key = "avarice",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -49,6 +72,11 @@ local avarice = {
                 G.jokers:emplace(copy)
             end
         end
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         Entropy.pact_mark("rune_entr_avarice")
         if h then
             for i, v in pairs(G.I.CARD) do
@@ -70,7 +98,8 @@ local avarice = {
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)
-    end
+    end,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
 }
 
 local rage_indicator = Entropy.create_mark("rage", 7052, {x = 1, y = 4})
@@ -78,7 +107,7 @@ local rage = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=1,y=4},
+    pos = {x=1,y=8},
     order = 7602,
     key = "rage",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -90,13 +119,29 @@ local rage = {
                 cards[#cards+1] = v
             end
         end
+        local s
         if #cards > 0 then 
             local a_cards = {}
             pseudoshuffle(cards, pseudoseed("entr_rage"))
             for i = 1, math.max(math.floor(#cards/5), math.min(#cards, 5)) do
                 a_cards[#a_cards+1] = cards[i]
             end
-            SMODS.destroy_cards(a_cards)
+            for i, v in pairs(a_cards) do
+                s = true
+                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                    play_sound('entr_pacts')
+                    if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                    G.TAROT_INTERRUPT_PULSE = true
+                    return true end }))
+                SMODS.destroy_cards(v)
+            end
+        end
+        if not s then
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
         end
         Entropy.pact_mark("rune_entr_rage")
     end,
@@ -110,6 +155,7 @@ local rage = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -120,7 +166,7 @@ local thorns = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=2,y=4},
+    pos = {x=2,y=8},
     order = 7603,
     key = "thorns",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -131,15 +177,31 @@ local thorns = {
     loc_vars = function(self, q, card) return {vars = {card.ability.extra}} end,
     use = function(self, card)
         local jokers = {}
+        local s
         for i, v in pairs(G.jokers.cards) do
             if not v.edition then jokers[#jokers+1] = v end
         end
         if #jokers > 0 then
             pseudoshuffle(jokers, pseudoseed("entr_thorns"))
             for i = 1, math.min(card.ability.extra, #jokers) do
-                jokers[i]:set_edition(poll_edition("entr_thorns_edition", nil, nil, true))
-                jokers[i].ability.rental = true
+                s = true
+                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                    play_sound('entr_pacts')
+                    if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                    G.TAROT_INTERRUPT_PULSE = true
+                    return true end }))
+                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                    jokers[i]:set_edition(poll_edition("entr_thorns_edition", nil, nil, true))
+                    jokers[i].ability.rental = true
+                    return true end }))
             end
+        end
+        if not s then
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
         end
         Entropy.pact_mark("rune_entr_thorns")
     end,
@@ -153,6 +215,7 @@ local thorns = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -163,26 +226,35 @@ local denial = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=3,y=4},
+    pos = {x=3,y=8},
     order = 7604,
     key = "denial",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
     inversion = "c_entr_ansuz",
     use = function(self, card)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         if G.GAME.last_sold_card and not G.GAME.banned_keys[G.GAME.last_sold_card] then
             local area = G.consumeables
             local buffer = G.GAME.consumeable_buffer
+            local key = G.GAME.last_sold_card
             if G.P_CENTERS[G.GAME.last_sold_card].set == "Joker" then
                 area = G.jokers
                 buffer = G.GAME.joker_buffer
             end
             if #area.cards + buffer < area.config.card_limit then
-                SMODS.add_card{
-                    key = G.GAME.last_sold_card,
-                    area = area
-                }
+                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                    SMODS.add_card{
+                        key = key,
+                        set = G.P_CENTERS[key].set,
+                        area = area
+                    }
+                    G.GAME.banned_keys[G.GAME.last_sold_card] = true
+                    return true end }))
             end
-            G.GAME.banned_keys[G.GAME.last_sold_card] = true
         end
         Entropy.pact_mark("rune_entr_denial")
     end,
@@ -195,7 +267,19 @@ local denial = {
         end
         return true
     end,
+    loc_vars = function(self, q, card)
+        local name = localize("k_none")
+        if G.GAME.last_sold_card and not G.GAME.banned_keys[G.GAME.last_sold_card] then
+            name = localize{type = "name_text", set = G.P_CENTERS[G.GAME.last_sold_card].set, key = G.GAME.last_sold_card}
+        end
+        return {
+            vars = {
+                name
+            }
+        }
+    end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -217,12 +301,17 @@ local chains = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=4,y=4},
+    pos = {x=4,y=8},
     order = 7605,
     key = "chains",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
     inversion = "c_entr_raido",
     use = function(self, card)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         Entropy.pact_mark("rune_entr_chains")
     end,
     can_use = function()
@@ -235,6 +324,7 @@ local chains = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -245,7 +335,7 @@ local decay = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=5,y=4},
+    pos = {x=5,y=8},
     order = 7606,
     key = "decay",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -253,10 +343,15 @@ local decay = {
     config = {
         level = 1,
         hands = 2,
-        most_played = 2
+        most_played = 3
     },
     loc_vars = function(self, q, card) return {vars = {card.ability.level, card.ability.hands, card.ability.most_played}} end,
     use = function(self, card)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         local hand = "High Card"
         for i, v in pairs(G.GAME.hands) do
             if v.played > G.GAME.hands[hand].played then hand = i end
@@ -274,8 +369,7 @@ local decay = {
             end
             table.remove(hands, ind)
         end
-
-        SMODS.smart_level_up_hand(card, "High Card", false, card.ability.most_played)
+        SMODS.smart_level_up_hand(card, hand, false, card.ability.most_played)
         Entropy.pact_mark("rune_entr_decay")
     end,
     can_use = function()
@@ -288,6 +382,7 @@ local decay = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -311,7 +406,7 @@ local envy = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=6,y=4},
+    pos = {x=6,y=8},
     order = 7607,
     key = "envy",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -323,6 +418,11 @@ local envy = {
                 destructible[#destructible+1] = v
             end
         end
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         if #destructible > 0 then
             pseudorandom_element(destructible, pseudoseed("entr_envy")):start_dissolve()
         end
@@ -338,6 +438,7 @@ local envy = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -346,7 +447,7 @@ local envy = {
 local retriggers_ref = SMODS.calculate_retriggers
 SMODS.calculate_retriggers = function(card, context, _ret)
     local retriggers = retriggers_ref(card, context, _ret)
-    for _, rune in ipairs(G.GAME.runes or {}) do
+    for _, rune in ipairs(G.runes or {}) do
         if G.P_RUNES[rune.key].calculate then
             local eval, post = G.P_RUNES[rune.key]:calculate(rune, {retrigger_rune_check = true, other_card = card, other_context = context, other_ret = _ret})
             if eval and eval.repetitions then
@@ -372,34 +473,33 @@ local youth = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=0,y=5},
+    pos = {x=0,y=9},
     order = 7608,
     key = "youth",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
     inversion = "c_entr_wunjo",
     config = {
         extra = 1,
-        rounds = 3
+        rounds = 5
     },
     loc_vars = function(self, q, card) return {vars = {card.ability.extra, card.ability.rounds}} end,
     use = function(self, card)
         ease_ante(-card.ability.extra)
         local jokers = {}
         for i, v in pairs(G.jokers.cards) do
-            if not v.ability.debuff_timer then jokers[#jokers+1] = v end
+            if not SMODS.is_eternal(v) then jokers[#jokers+1] = v end
         end
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         local dcard = pseudorandom_element(jokers, pseudoseed("entr_youth"))
-        dcard.ability.debuff_timer = card.ability.rounds
-        dcard.ability.debuff_timer_max = card.ability.rounds
-        dcard:set_debuff(true)
-        card_eval_status_text(
-            dcard,
-            "extra",
-            nil,
-            nil,
-            nil,
-            { message = localize("k_debuffed"), colour = G.C.RED }
-        )
+        if dcard then
+            if not SMODS.is_eternal(dcard) then
+                dcard:start_dissolve()
+            end
+        end
         Entropy.pact_mark("rune_entr_youth")
     end,
     can_use = function()
@@ -412,6 +512,7 @@ local youth = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -422,7 +523,7 @@ local shards = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=1,y=5},
+    pos = {x=1,y=9},
     order = 7609,
     key = "shards",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -430,12 +531,26 @@ local shards = {
     loc_vars = function(self, q, card) q[#q+1] = G.P_CENTERS.e_entr_fractured end,
     use = function(self, card)
         local jokers = {}
+        local s
         for i, v in pairs(G.jokers.cards) do
             if not v.edition or not v.edition.entr_fractured then jokers[#jokers+1] = v end
         end
         if #jokers > 0 then
             local dcard = pseudorandom_element(jokers, pseudoseed("entr_shards"))
             dcard:set_edition("e_entr_fractured")
+            s = true
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
+        end
+        if not s then
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
         end
         Entropy.pact_mark("rune_entr_shards")
     end,
@@ -449,13 +564,14 @@ local shards = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
 }
 
 function Card:is_playing_card()
-    if not G.deck then return end
+    if not G.deck or not self then return end
     if self.area == G.play and self.ability.consumeable then return end
     if (self.area == G.hand or self.area == G.play or self.area == G.discard) and (self.config.center.set == "Default" or self.config.center.set == "Enhanced") then return true end
     for i, v in pairs(G.playing_cards) do
@@ -497,7 +613,11 @@ function Card:start_dissolve(...)
         local copy = copy_card(self)
         copy:add_to_deck()
         table.insert(G.playing_cards, copy)
-        G.hand:emplace(copy)
+        if G.GAME.blind.in_blind then
+            G.hand:emplace(copy)
+        else
+            G.deck:emplace(copy)
+        end
     else
         return start_dissolveref(self, ...)
     end
@@ -537,7 +657,11 @@ function Card:shatter(...)
         local copy = copy_card(self)
         copy:add_to_deck()
         table.insert(G.playing_cards, copy)
-        G.hand:emplace(copy)
+        if G.GAME.blind.in_blind then
+            G.hand:emplace(copy)
+        else
+            G.deck:emplace(copy)
+        end
     else
         return shatter(self, ...)
     end
@@ -547,7 +671,7 @@ local desire = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=2,y=5},
+    pos = {x=2,y=9},
     order = 7610,
     key = "desire",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -558,12 +682,20 @@ local desire = {
     loc_vars = function(self, q, card) return {vars = {math.min(card.ability.create, 20)}} end,
     use = function(self, card)
         local cards = {}
+        local s
         for i, v in pairs(G.consumeables.cards) do if v ~= card or (card.edition and card.edition.card_limit) then cards[#cards+1] = v end end
         for i = 1, math.min(card.ability.create, 20) do
             local type = pseudorandom_element({"Spectral", "Omen"}, pseudoseed("entr_desire"))
             if G.GAME.consumeable_buffer + #cards < G.consumeables.config.card_limit - (card.edition and card.edition.card_limit or 0) then
+                s = true
+                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                    play_sound('entr_pacts')
+                    if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                    G.TAROT_INTERRUPT_PULSE = true
+                    return true end }))
                 G.E_MANAGER:add_event(Event{
                     trigger = "after",
+                    delay = 0.4,
                     func = function()
                         SMODS.add_card{
                             area = G.consumeables,
@@ -575,6 +707,13 @@ local desire = {
                 G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
             end
         end
+        if not s then
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
+        end 
         G.GAME.consumeable_buffer = 0
         G.GAME.entr_booster_cost = (G.GAME.entr_booster_cost or 1) + 0.5
         Entropy.pact_mark("rune_entr_desire")
@@ -589,6 +728,7 @@ local desire = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -599,7 +739,7 @@ local ice = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=3,y=5},
+    pos = {x=3,y=9},
     order = 7611,
     key = "ice",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -610,6 +750,11 @@ local ice = {
     loc_vars = function(self, q, card) return {vars = {math.min(card.ability.create, 20)}} end,
     use = function(self, card)
         local area
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
 		if G.STATE == G.STATES.HAND_PLAYED then
 			if not G.redeemed_vouchers_during_hand then
 				G.redeemed_vouchers_during_hand =
@@ -666,6 +811,7 @@ local ice = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -704,7 +850,7 @@ local gluttony = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=4,y=5},
+    pos = {x=4,y=9},
     order = 7612,
     key = "gluttony",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -714,10 +860,15 @@ local gluttony = {
     },
     loc_vars = function(self, q, card) return {vars = {math.min(card.ability.slots, 20)}} end,
     use = function(self, card)
-        G.consumeables:handle_card_limit(math.min(card.ability.slots, 20))
+        Entropy.handle_card_limit(G.consumeables, math.min(card.ability.slots, 20))
         for i, v in pairs(G.I.CARD) do
             if v.ability and v.ability.consumeable then v.ability.eternal = true end
         end
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         Entropy.pact_mark("rune_entr_gluttony")
     end,
     can_use = function()
@@ -730,6 +881,7 @@ local gluttony = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -746,7 +898,7 @@ local rebirth = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=5,y=5},
+    pos = {x=5,y=9},
     order = 7613,
     key = "rebirth",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -756,7 +908,12 @@ local rebirth = {
     },
     loc_vars = function(self, q, card) return {vars = {math.min(card.ability.hand_size, 1000)}} end,
     use = function(self, card)
-        G.hand:handle_card_limit(- math.min(card.ability.hand_size, 1000))
+        Entropy.handle_card_limit(G.hand, - math.min(card.ability.hand_size, 1000))
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         Entropy.pact_mark("rune_entr_rebirth")
     end,
     can_use = function()
@@ -769,6 +926,7 @@ local rebirth = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -779,7 +937,7 @@ local despair = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=6,y=5},
+    pos = {x=6,y=9},
     order = 7614,
     key = "despair",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -790,6 +948,7 @@ local despair = {
     },
     loc_vars = function(self, q, card) return {vars = {G.hand and G.hand.config.card_limit or 8, card.ability.percentage, card.ability.rounds}} end,
     use = function(self, card)
+        local s
         local cards = {}
         for i, v in pairs(G.playing_cards) do
             cards[#cards+1] = v
@@ -800,9 +959,18 @@ local despair = {
             while G.P_CENTERS[enhancement].no_doe or G.GAME.banned_keys[enhancement] do
                 enhancement = pseudorandom_element(G.P_CENTER_POOLS["Enhanced"], pseudoseed("entr_despair")).key
             end
-            cards[i]:flip()
-            cards[i]:set_ability(G.P_CENTERS[enhancement])
-            cards[i]:flip()
+            s = true
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.3, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                cards[i]:flip()
+                cards[i]:set_ability(G.P_CENTERS[enhancement])
+                cards[i]:flip()
+                return true end }))
+
         end
         pseudoshuffle(cards, pseudoseed("entr_despair"))
         for i = 1, math.floor(card.ability.percentage / 100 * #cards) do
@@ -810,6 +978,13 @@ local despair = {
             dcard.ability.debuff_timer = card.ability.rounds
             dcard.ability.debuff_timer_max = card.ability.rounds
             dcard:set_debuff(true)
+        end
+        if not s then
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
         end
         Entropy.pact_mark("rune_entr_despair")
     end,
@@ -823,6 +998,7 @@ local despair = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -850,7 +1026,7 @@ local strength = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=0,y=6},
+    pos = {x=0,y=10},
     order = 7615,
     key = "strength",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -878,8 +1054,13 @@ local strength = {
         if not card then card = pseudorandom_element(cards, pseudoseed("entr_strength")) end
         if card and card.T then
             for i = 1, math.min(rcard.ability.copies, 100) do
+                G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                    play_sound('entr_pacts')
+                    if rcard and rcard.juice_up then rcard:juice_up(0.8, 0.5) end
+                    G.TAROT_INTERRUPT_PULSE = true
+                    return true end }))
                 card_eval_status_text(
-                    card,
+                    rcard,
                     "extra",
                     nil,
                     nil,
@@ -889,7 +1070,11 @@ local strength = {
                 local copy = copy_card(card)
                 copy:add_to_deck()
                 table.insert(G.playing_cards, copy)
-                G.hand:emplace(copy)
+                if G.GAME.blind.in_blind then
+                    G.hand:emplace(copy)
+                else
+                    G.deck:emplace(copy)
+                end
             end
         end
         local joker = pseudorandom_element(G.jokers.cards, pseudoseed("entr_strength"))
@@ -909,6 +1094,7 @@ local strength = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -919,7 +1105,7 @@ local darkness = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=1,y=6},
+    pos = {x=1,y=10},
     order = 7616,
     key = "darkness",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -940,8 +1126,13 @@ local darkness = {
         if joker then
             joker:set_edition("e_negative")
         end
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         local level = Entropy.pact_mark("rune_entr_darkness")
-        G.GAME.modifiers.flipped_cards = 5 / (level ^ 0.5)
+        G.GAME.modifiers.flipped_cards = 4 / (level ^ 0.5)
     end,
     can_use = function()
         return true
@@ -953,6 +1144,7 @@ local darkness = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -963,7 +1155,7 @@ local freedom = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=2,y=6},
+    pos = {x=2,y=10},
     order = 7617,
     key = "freedom",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -978,11 +1170,16 @@ local freedom = {
     end,
     config = {
         selection_limit = 2,
-        hand_size = 2
+        hand_size = 1
     },
     use = function(self, rcard)
-        G.hand:handle_card_limit(-rcard.ability.hand_size)
+        Entropy.handle_card_limit(G.hand, -rcard.ability.hand_size)
         Entropy.ChangeFullCSL(rcard.ability.selection_limit)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         Entropy.pact_mark("rune_entr_freedom")
     end,
     can_use = function()
@@ -995,6 +1192,7 @@ local freedom = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1005,7 +1203,7 @@ local eternity = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=3,y=6},
+    pos = {x=3,y=10},
     order = 7618,
     key = "eternity",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -1022,6 +1220,11 @@ local eternity = {
     },
     use = function(self, rcard)
         local cards = {}
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         for i, v in pairs(G.jokers.cards) do
             if not SMODS.is_eternal(v) then
                 cards[#cards+1] = v
@@ -1038,7 +1241,7 @@ local eternity = {
                 hand = i
             end
         end
-        Entropy.ReversePlanetUse(hand, rcard, rcard.ability.asc_power + (G.GAME.entr_black_dwarf or 0))
+        SMODS.upgrade_poker_hands({hands = hand, from = rcard, ascension_power = rcard.ability.asc_power + (G.GAME.entr_black_dwarf or 0)})
         Entropy.pact_mark("rune_entr_eternity")
     end,
     can_use = function()
@@ -1051,6 +1254,7 @@ local eternity = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1064,7 +1268,7 @@ local loyalty_indicator = Entropy.create_mark("loyalty", 7069, {x = 4, y = 6}, f
             func = function()
                 attention_text({
                     scale = 1.4,
-                    text = localize({ type = "variable", key = "a_xmult", vars = { 0.5 * rune.ability.count }}),
+                    text = localize({ type = "variable", key = "a_xmult", vars = { 0.5 ^ rune.ability.count }}),
                     hold = 2,
                     align = "cm",
                     offset = { x = 0, y = -2.7 },
@@ -1074,23 +1278,36 @@ local loyalty_indicator = Entropy.create_mark("loyalty", 7069, {x = 4, y = 6}, f
             end
         })
         return {
-            Xmult_mod = 0.5 * rune.ability.count,
+            Xmult_mod = 0.5 ^ rune.ability.count,
         }
     elseif context.final_scoring_step then
         rune.ability.hand = rune.ability.hand + 1
     end
+end, nil, function(self, q, rune)
+    return {
+        vars = {
+            math.max(5 - (rune.ability.count or 1), 1),
+            0.5 ^ (rune.ability.count or 1)
+
+        }
+    }
 end)
 local loyalty = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=4,y=6},
+    pos = {x=4,y=10},
     order = 7619,
     key = "loyalty",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
     inversion = "c_entr_ehwaz",
     immutable = true,
     use = function(self, rcard)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         Entropy.pact_mark("rune_entr_loyalty")
     end,
     can_use = function()
@@ -1103,13 +1320,14 @@ local loyalty = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
 }
 
 local brimstone_indicator = Entropy.create_mark("brimstone", 7070, {x = 5, y = 6}, function(self, rune, context)
-    if context.final_scoring_step then
+    if context.final_scoring_step and G.GAME.current_round.hands_left <= 0 then
         G.E_MANAGER:add_event(Event{
             func = function()
                 attention_text({
@@ -1127,12 +1345,18 @@ local brimstone_indicator = Entropy.create_mark("brimstone", 7070, {x = 5, y = 6
             Xmult_mod = 3.6 * rune.ability.count,
         }
     end
+end, nil, function(self, q, rune)
+    return {
+        vars = {
+            3.6 * (rune.ability.count or 1)
+        }
+    }
 end)
 local brimstone = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=5,y=6},
+    pos = {x=5,y=10},
     order = 7620,
     key = "brimstone",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -1145,6 +1369,11 @@ local brimstone = {
     use = function(self, card)
         G.GAME.round_resets.hands = G.GAME.round_resets.hands - card.ability.hands
         ease_hands_played(-card.ability.hands)
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
         Entropy.pact_mark("rune_entr_brimstone")
     end,
     can_use = function()
@@ -1157,6 +1386,7 @@ local brimstone = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1167,20 +1397,27 @@ local dreams = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=6,y=6},
+    pos = {x=6,y=10},
     order = 7621,
     key = "dreams",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
     inversion = "c_entr_laguz",
     immutable = true,
     config = {
-        tags = 6
+        tags = 8
     },
     loc_vars = function(self, q, card) return {vars = {math.min(card.ability.tags, 20)}} end,
     use = function(self, card)
         for i = 1, math.min(card.ability.tags, 20) do
-            tag = Tag(get_next_tag_key())
-            add_tag(tag)
+            local tag = Tag(get_next_tag_key())
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                add_tag(tag)
+                return true end }))
         end
         G.GAME.modifiers.no_blind_reward = G.GAME.modifiers.no_blind_reward or {}
         G.GAME.modifiers.no_blind_reward.Small = true
@@ -1196,6 +1433,7 @@ local dreams = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1206,7 +1444,7 @@ local energy = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=0,y=7},
+    pos = {x=0,y=11},
     order = 7622,
     key = "energy",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -1217,8 +1455,23 @@ local energy = {
     },
     loc_vars = function(self, q, card) return {vars = {card.ability.discards}} end,
     use = function(self, card)
+        local s
+        
         for i, v in pairs(G.GAME.last_discarded or {}) do
             v:set_edition(poll_edition("entr_energy", nil, true, true))
+            s = true
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
+        end
+        if not s then
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
         end
         G.GAME.round_resets.discards = G.GAME.round_resets.discards - card.ability.discards
         ease_discard(-card.ability.discards)
@@ -1234,6 +1487,7 @@ local energy = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1255,7 +1509,7 @@ local awakening = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=2,y=7},
+    pos = {x=2,y=11},
     order = 7623,
     key = "awakening",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -1268,11 +1522,23 @@ local awakening = {
     use = function(self, card)
         local mod = math.floor(card and card.ability.shop_size or 1)
         SMODS.change_booster_limit(-mod)
-        local card = SMODS.add_card{
-            set = "Voucher",
-            area = G.consumeables
-        }
-        card:set_edition("e_negative")
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
+        G.E_MANAGER:add_event(Event{
+            trigger = "after",
+            delay = 0.2,
+            func = function()
+                local card = SMODS.add_card{
+                    set = "Voucher",
+                    area = G.consumeables
+                }
+                card:set_edition("e_negative")
+                return true
+            end
+        })
         Entropy.pact_mark("rune_entr_awakening")
     end,
     can_use = function()
@@ -1285,6 +1551,7 @@ local awakening = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1295,7 +1562,7 @@ local blood = {
     object_type = "Consumable",
     set = "Pact",
     atlas = "rune_atlas",
-    pos = {x=1,y=7},
+    pos = {x=1,y=11},
     order = 7624,
     key = "blood",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
@@ -1306,6 +1573,7 @@ local blood = {
     },
     loc_vars = function(self, q, card) q[#q+1] = {set="Other",key="link", vars = {"[LINK_KEY]"}}; return {vars = {card.ability.random}} end,
     use = function(self, card)
+        local s
         local cards = {}
         for i, v in pairs(G.playing_cards) do
             if v.base then cards[#cards+1] = v end
@@ -1330,6 +1598,20 @@ local blood = {
             end
             v.ability.link = linktxt
             v:juice_up()
+            s = true
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
+            
+        end
+        if not s then
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('entr_pacts')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
         end
         Entropy.pact_mark("rune_entr_blood")
     end,
@@ -1343,6 +1625,7 @@ local blood = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1353,9 +1636,11 @@ local serpents = {
     object_type = "Consumable",
     set = "Omen",
     atlas = "rune_atlas",
-    pos = {x=3,y=7},
+    pos = {x=3,y=11},
+    soul_pos = {x=999, y=999, extra = {x=4, y=11}},
     order = 7625,
     key = "serpents",
+    entr_redraw_soul = true,
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
     inversion = "c_entr_oss",
     immutable = true,
@@ -1370,10 +1655,17 @@ local serpents = {
             end
         end
         local key = pseudorandom_element(omens, pseudoseed("entr_serpents"))
-        SMODS.add_card{
-            key = key,
-            area = G.consumeables
-        }
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+            play_sound('entr_pacts')
+            if card and card.juice_up then card:juice_up(0.8, 0.5) end
+            G.TAROT_INTERRUPT_PULSE = true
+            return true end }))
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
+            SMODS.add_card{
+                key = key,
+                area = G.consumeables
+            }
+            return true end }))
         Entropy.pact_mark("rune_entr_serpents")
     end,
     can_use = function()
@@ -1386,6 +1678,7 @@ local serpents = {
         return true
     end,
     demicoloncompat = true,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end

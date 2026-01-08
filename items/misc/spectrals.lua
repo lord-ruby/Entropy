@@ -74,7 +74,7 @@ local shatter = {
     key = "shatter",
     set = "Spectral",
     
-    order = 37,
+    order = 900+37,
     object_type = "Consumable",
     config = {limit = 1, csl = 1},
     atlas = "consumables",
@@ -115,7 +115,7 @@ local destiny = {
     key = "destiny",
     set = "Spectral",
     
-    order = 36,
+    order = 900+36,
     object_type = "Consumable",
     atlas = "consumables",
     immutable = true,
@@ -175,9 +175,9 @@ local lust = {
     key = "lust",
     set = "Spectral",
     
-    order = 38,
+    order = 900+38,
     object_type = "Consumable",
-    config = {limit = 2},
+    config = {limit = 1},
     atlas = "consumables",
     pos = {x=4,y=Cryptid_config.family_mode and 8 or 7},
     dependencies = {
@@ -186,13 +186,17 @@ local lust = {
         }
     },
     use = function(self, card, area, copier)
-        Entropy.FlipThen(Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.limit), function(card)
+        local cards = {}
+        local rcards = {}
+        for i, v in pairs(G.hand.cards) do if not v.edition then cards[#cards+1] = v end end
+        pseudoshuffle(cards, pseudoseed("entr_lust"))
+        for i = 1, math.min(#cards, card.ability.limit) do rcards[#rcards+1] = cards[i] end
+        Entropy.FlipThen(rcards, function(card)
             card:set_edition("e_entr_freaky")
         end)
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.limit)
-        return num > 0 and num <= card.ability.limit
+        return G.hand and #G.hand.cards > 0
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = G.P_CENTERS.e_entr_freaky
@@ -232,7 +236,7 @@ local null = {
     key = "null",
     set = "Spectral",
     
-    order = 39,
+    order = 900+39,
     object_type = "Consumable",
     config = {create = 5},
     atlas = "consumables",
@@ -308,10 +312,11 @@ local null = {
 local antithesis = {
     key = "antithesis",
     set = "Spectral",
-    order = 80,
+    order = 1000+2,
     object_type = "Consumable",
-    atlas = "consumables",
-    pos = {x=3,y=8},
+    atlas = "consumables2",
+    pos = {x=1,y=3},
+    soul_pos = {x = 3, y = 3, extra = {x = 2, y = 3}},
     dependencies = {
         items = {
           "set_entr_spectrals"
@@ -320,13 +325,16 @@ local antithesis = {
     hidden = true,
     soul_set = "Spectral",
     use = function(self, card, area, copier)
-        
-        for i = 1, #G.jokers.cards do
-            G.jokers.cards[i].ability.eternal = not G.jokers.cards[i].ability.eternal
-        end
+        G.GAME.entr_antithesis_active = true
+        G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+                play_sound('tarot1')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                return true end }))
+        delay(1)
     end,
     can_use = function(self, card)
-        return G.jokers and #G.jokers.cards > 0
+        return true
 	end,
     entr_credits = {
         idea = {"cassknows"}
@@ -345,7 +353,7 @@ local enchant = {
         }
     },
     object_type = "Consumable",
-    order = 40,
+    order = 900+40,
     key = "enchant",
     set = "Spectral",
     
@@ -381,7 +389,7 @@ local manifest = {
         }
     },
     object_type = "Consumable",
-    order = 41,
+    order = 900+41,
     key = "manifest",
     set = "Spectral",
     

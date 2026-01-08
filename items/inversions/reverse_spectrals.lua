@@ -150,13 +150,18 @@ local siphon = {
 
     atlas = "consumables",
     config = {
-        chipmult = 3
+        cards = 3
     },
 	pos = {x=10,y=4},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
-        local lower = Entropy.FindPreviousInPool(G.jokers.highlighted[1].edition.key, "Edition")
-        Entropy.FlipThen(G.hand.cards, function(card, area)
+        local lower = Entropy.FindPreviousInPool(G.jokers.highlighted[1].edition.key, "Edition", "e_negative")
+        local cards = {}
+        local rcards = {}
+        for i, v in pairs(G.hand.cards) do if not v.edition then cards[#cards+1] = v end end
+        pseudoshuffle(cards, pseudoseed("entr_siphon"))
+        for i = 1, math.min(#cards, card2.ability.cards) do rcards[#rcards+1] = cards[i] end
+        Entropy.FlipThen(rcards, function(card, area)
             card:set_edition(lower)
         end)
         G.jokers.highlighted[1]:start_dissolve()
@@ -169,13 +174,14 @@ local siphon = {
         and G.jokers.highlighted[1].ability and not G.jokers.highlighted[1].ability.cry_absolute
 	end,
     loc_vars = function(self, q, card)
-        local str = "none"
-        if G.jokers and #G.jokers.highlighted > 0 and G.jokers.highlighted[1].edition and Entropy.FindPreviousInPool(G.jokers.highlighted[1].edition.key, "Edition") then
-            str = G.localization.descriptions.Edition[Entropy.FindPreviousInPool(G.jokers.highlighted[1].edition.key, "Edition")].name
+        local str = localize("k_none")
+        if G.jokers and #G.jokers.highlighted > 0 and G.jokers.highlighted[1].edition and Entropy.FindPreviousInPool(G.jokers.highlighted[1].edition.key, "Edition", "e_negative") then
+            str = G.localization.descriptions.Edition[Entropy.FindPreviousInPool(G.jokers.highlighted[1].edition.key, "Edition", "e_negative")].name
         end
         return {
             vars = {
-                str
+                str,
+                card.ability.cards
             }
         }
     end,
@@ -198,22 +204,18 @@ local ward = {
     inversion = "c_wraith",
     atlas = "consumables",
     config = {
-        sellmult = 2,
-        rounds = 1
+        sellmult = 3,
+        rounds = 3
     },
 	pos = {x=11,y=4},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card, area, copier)
-        local total = 0
-        for i, v in pairs(G.jokers.cards) do
-            if not SMODS.is_eternal(v) and not v.ability.cry_absolute then
-                local joker = G.jokers.cards[i]
-                total = total + joker.cost
-                joker.ability.debuff_timer = card.ability.rounds
-                joker.ability.debuff_timer_max = card.ability.rounds
-                joker:set_debuff(true)
-            end
-        end
+        local joker = pseudorandom_element(G.jokers.cards, pseudoseed("entr_ward"))
+        local total = joker.sell_cost
+        joker.ability.debuff_timer = (joker.ability.debuff_timer or 0) + card.ability.rounds
+        joker.ability.debuff_timer_max = (joker.ability.debuff_timer_max or 0) + card.ability.rounds 
+        joker:set_debuff(true)
+        joker:juice_up()
         ease_dollars(total * card.ability.sellmult)
     end,
     can_use = function(self, card)
@@ -249,29 +251,25 @@ local disavow = {
     set = "Omen",
     inversion = "c_sigil",
     atlas = "consumables",
-    config = {
-        sellmult = 2
-    },
 	pos = {x=12,y=4},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card, area, copier)
+        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, 1)
+        local enh = cards[1] and cards[1].config.center_key or "m_base"
         Entropy.FlipThen(G.hand.cards, function(card, area, ind)
-            local func = Entropy.EnhancementFuncs[card.config.center.key] or function(card)
-                card:set_edition("e_cry_glitched")
-            end
-            if card.config.center.key ~= "c_base" then 
-                local ability = card.ability
-                card:set_ability(G.P_CENTERS.m_entr_disavowed)
-                card.ability = ability
-                card.ability.disavow = true
-                func(card)
+            if card == cards[1] then
+                card:set_ability(G.P_CENTERS["m_entr_disavowed"])
+            else
+                card:set_ability(G.P_CENTERS[enh])
             end
         end)
     end,
     can_use = function(self, card)
-        return G.hand and #G.hand.cards > 0
+        local cards = #Entropy.GetHighlightedCards({G.hand}, card, 1, 1)
+        return cards > 0 and cards <= 1
 	end,
     loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.m_entr_disavowed
     end,
     entr_credits = {
         idea = {"CapitalChirp"},
@@ -282,44 +280,6 @@ local disavow = {
         self:use(card)
     end
 }
-
-local EnhancementFuncs = {
-    m_bonus = function(card) card.ability.bonus = 100 end,
-    m_mult = function(card) card.ability.x_mult = card.ability.x_mult * 1.5 end,
-    m_glass = function(card) card.temporary2=true;card:shatter() end,
-    m_steel = function(card) card.ability.x_mult = (card.ability.x_mult+1)^2 end,
-    m_stone = function(card) card.ability.bonus = (card.base.nominal^2) end,
-    m_gold = function(card) ease_dollars(20) end,
-    m_lucky = function(card)
-        if pseudorandom("disavow") < 0.5 then
-            card.ability.x_mult = card.ability.x_mult * 1.5
-        else    
-            ease_dollars(20)
-        end
-    end,
-    m_cry_echo = function(card) 
-        local card2 = copy_card(card) 
-        card2:set_ability(G.P_CENTERS.c_base)
-        card2:add_to_deck()
-        G.hand:emplace(card2)
-    end,
-    m_cry_light = function(card)
-        card.ability.x_mult = card.ability.x_mult * 4
-    end,
-    m_entr_flesh = function(card)
-        card.temporary2=true;card:start_dissolve()
-    end,
-    m_entr_dark = function(card)
-        card.ability.h_x_chips = card.ability.xchips ^ 2
-    end,
-    m_entr_prismatic = function(card)
-        card.ability.x_mult = card.ability.extra.eemult ^ 1.5
-    end,
-    m_cry_abstract = function(card)
-        card.ability.x_mult = card.ability.extra.Emult ^ 3
-    end
-}
-for i, v in pairs(EnhancementFuncs) do Entropy.EnhancementFuncs[i] = v end
 
 local pact = {
     dependencies = {
@@ -398,7 +358,8 @@ local link = {
     order = 2500 + 0,
     no_sticker_sheet = true,
     prefix_config = { key = false },
-    badge_colour = HEX("FF00FF"),
+    badge_colour = HEX("59ffe8"),
+    should_apply = false,
     loc_vars = function(self,q,card)
         return {
             vars = {
@@ -412,9 +373,14 @@ local link = {
         end
         card.ability.link = G.GAME.link
     end,
-    calculate = function(self, card, context)
-
-    end
+    draw = function(self, card) --don't draw shine
+        local notilt = nil
+        if card.area and card.area.config.type == "deck" then
+            notilt = true
+        end
+        G.shared_stickers[self.key].role.draw_major = card
+        G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+    end,
 }
 
 local ichor = {
@@ -432,19 +398,16 @@ local ichor = {
 
     atlas = "consumables",
     config = {
-        num = 2
+        num = 1
     },
 	pos = {x=7,y=5},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card, area, copier)
-        local joker = pseudorandom_element(Entropy.FilterTable(G.jokers.cards, function(card)
-            return card.edition and card.edition.key == "e_negative"
-        end), pseudoseed("ichor"))
+        local joker = pseudorandom_element(G.jokers.cards, pseudoseed("entr_ichor"))
+        Entropy.handle_card_limit(G.jokers, 1)
         if joker then
-            joker:start_dissolve()
-            G.GAME.banned_keys[joker.config.center.key] = true
-            G.jokers:handle_card_limit(card.ability.num)
-            eval_card(joker, {banishing_card = true, banisher = card, card = joker, cardarea = joker.area})
+            joker:juice_up()
+            joker.ability.extra_slots_used = joker.ability.extra_slots_used + 1
         end
     end,
     can_use = function(self, card)
@@ -487,7 +450,7 @@ local rejuvenate = {
 
     atlas = "consumables",
     config = {
-        dollars = -15,
+        dollars = -10,
         num = 2
     },
 	pos = {x=8,y=5},
@@ -500,7 +463,7 @@ local rejuvenate = {
         for i = 1, card2.ability.num do
             actual[i] = cards[i]
         end
-        local ed = SMODS.poll_edition({guaranteed = true, key = "entr_rejuvenate_ed"})
+        local ed = SMODS.poll_edition({guaranteed = true, key = "entr_rejuvenate_ed", no_negative = true})
         local enh = G.P_CENTERS[SMODS.poll_enhancement({guaranteed = true})]
         local seal = SMODS.poll_seal{guaranteed = true, key = "rejuvenate"}
         local card = Entropy.GetHighlightedCards({G.hand}, card2, 1, 1)[1] or pseudorandom_element(G.hand.cards, pseudoseed("rejuvenate"), 1, 1)
@@ -552,24 +515,18 @@ local crypt = {
     atlas = "consumables",
     config = {
         select = 2,
-        rounds = 3,
     },
 	pos = {x=9,y=5},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
-        local joker = nil
-        for i, v in pairs(G.jokers.cards) do 
-            if v.highlighted then 
-                joker = v 
-            end 
-        end
-        Entropy.FlipThen(Entropy.GetHighlightedCards({G.jokers}, card2, 1, card2.ability.select), function(v, area)
-            if v ~= joker then            
-                copy_card(joker, v)
-                v:set_edition()
-                v:set_debuff(true)
-                v.ability.debuff_timer = (v.ability.debuff_timer or 0) + card2.ability.rounds
-                v.ability.debuff_timer_max = (v.ability.debuff_timer_max or 0) + card2.ability.rounds
+        local jokers = Entropy.GetHighlightedCards({G.jokers}, card2, 1, card2.ability.select)
+        local selected = pseudorandom_element(jokers, pseudoseed("entr_crypt"))
+        Entropy.FlipThen(jokers, function(v, area)
+            if v ~= selected and v and selected then            
+                copy_card(selected, v)
+                if v.edition and v.edition.key == "e_negative" then
+                    v:set_edition()
+                end
             end
         end)
 
@@ -579,11 +536,20 @@ local crypt = {
         return #cards > 1 and #cards <= card.ability.select
 	end,
     loc_vars = function(self, q, card)
+        local main_end = {}
+        if G.jokers and G.jokers.cards then
+            for _, joker in ipairs(G.jokers.cards) do
+                if joker.edition and joker.edition.negative then
+                    localize { type = 'other', key = 'remove_negative', nodes = main_end, vars = {} }
+                    break
+                end
+            end
+        end
         return {
             vars = {
                 card.ability.select,
-                card.ability.rounds
-            }
+            },
+            main_end = main_end[1]
         }
     end,
     entr_credits = {
@@ -615,8 +581,22 @@ local charm = {
 	pos = {x=11,y=5},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card2, area, copier)
+        local editions = {}
+        for i, v in pairs(G.P_CENTER_POOLS.Edition) do
+            if v.key ~= "e_negative" and v.key ~= "e_base" then
+                editions[#editions+1] = {
+                    weight = 1,
+                    name = v.key
+                }
+            end
+        end
         for i, v in pairs(Entropy.GetHighlightedCards({G.jokers}, card2, 1, card2.ability.select)) do
-            v:set_edition("e_entr_kaleidoscopic")
+            local edition = SMODS.poll_edition({
+                key = "entr_charm",
+                options = editions,
+                guaranteed = true
+            })
+            v:set_edition(edition)
             v.ability.eternal = true
 
         end
@@ -626,7 +606,7 @@ local charm = {
         return #cards <= card.ability.select and #cards > 0
 	end,
     loc_vars = function(self, q, card)
-        q[#q+1] = G.P_CENTERS.e_entr_kaleidoscopic
+        q[#q+1] = G.P_CENTERS.e_entr_gilded
         q[#q+1] = {key="eternal",set="Other"}
         return {
             vars = {
@@ -774,9 +754,6 @@ local quasar = {
     inversion = "c_black_hole",
 
     atlas = "consumables",
-    config = {
-        level = 2
-    },
     no_select = true,
     soul_rate = 0,
     hidden = true, 
@@ -788,18 +765,13 @@ local quasar = {
         local used_consumable = copier or card
         delay(0.4)
         local max=0
-        local ind="High Card"
-        for i, v in pairs(G.GAME.hands) do
-            if v.played > max then
-                max = v.played
-                ind = i
-            end
-        end
         update_hand_text(
           { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-          { handname = localize(ind,'poker_hands'), chips = "...", mult = "...", level = "" }
+          { handname = localize("k_all_hands"), chips = "...", mult = "...", level = "" }
         )
-        G.GAME.hands[ind].AscensionPower = to_big(G.GAME.hands[ind].AscensionPower or 0) + to_big(G.GAME.hands[ind].level) * to_big(amt) * to_big(card.ability.level)
+        for i, v in pairs(G.GAME.hands) do
+            G.GAME.hands[i].AscensionPower = to_big(G.GAME.hands[i].AscensionPower or 0) + to_big(G.GAME.hands[i].level) * to_big(amt) * to_big(0.5)
+        end
         delay(1.0)
         G.E_MANAGER:add_event(Event({
           trigger = "after",
@@ -824,7 +796,7 @@ local quasar = {
             return true
           end,
         }))
-        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+"..(to_big(G.GAME.hands[ind].level) * to_big(amt) * to_big(card.ability.level)) })
+        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+ ..." })
         delay(1.0)
         delay(2.6)
         update_hand_text(
@@ -839,21 +811,6 @@ local quasar = {
         return true
 	end,
     no_select = true,
-    loc_vars = function(self, q, card)
-        local max=0
-        local ind="High Card"
-        for i, v in pairs(G.GAME.hands) do
-            if v.played > max then
-                max = v.played
-                ind = i
-            end
-        end
-        return {
-            vars = {
-                G.GAME.hands[ind].level * card.ability.level
-            }
-        }
-    end,
     entr_credits = {
         art = {"Lil. Mr. Slipstream"}
     },
@@ -985,10 +942,18 @@ local pure = {
     key = "entr_pure",
     no_sticker_sheet = true,
     prefix_config = { key = false },
-    badge_colour = HEX("c75985"),
+    badge_colour = HEX("fd56e9"),
     should_apply = false,
     apply = function(self,card,val)
         card.ability.entr_pure = true
+    end,
+    draw = function(self, card) --don't draw shine
+        local notilt = nil
+        if card.area and card.area.config.type == "deck" then
+            notilt = true
+        end
+        G.shared_stickers[self.key].role.draw_major = card
+        G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
     end,
 }
 
@@ -1041,6 +1006,19 @@ function Cryptid.misprintize(card, ...)
     if not card.ability.entr_pure then
         return misprintize(card, ...)
     end
+end
+
+local calculate_jokerref = Card.calculate_joker
+function Card:calculate_joker(...)
+    local abil
+    if self.ability.entr_pure then
+        abil = copy_table(self.ability)        
+    end
+    local ret = calculate_jokerref(self, ...)
+    if self.ability.entr_pure then
+        self.ability = abil
+    end
+    return ret
 end
 
 local transcend = {

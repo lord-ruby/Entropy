@@ -516,7 +516,7 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         pos = {x=12,y=3},
         use = function(self, card, area, copier)
             G.GAME.candle_hand_size = (G.GAME.candle_hand_size or 0) + math.min(card.ability.size, 10)
-            G.hand:handle_card_limit(math.min(card.ability.size, 10))
+            Entropy.handle_card_limit(G.hand, math.min(card.ability.size, 10))
         end,
         can_use = function(self, card)
             return G.GAME.blind.in_blind

@@ -779,13 +779,19 @@ local pulsar = {
         local amt = amt or 1
         local used_consumable = copier or card
         delay(0.4)
+        local max=0
+        local ind="High Card"
+        for i, v in pairs(G.GAME.hands) do
+            if v.played > max then
+                max = v.played
+                ind = i
+            end
+        end
         update_hand_text(
           { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-          { handname = localize('k_all_hands'), chips = "...", mult = "...", level = "" }
+          { handname = localize(ind,'poker_hands'), chips = "...", mult = "...", level = "" }
         )
-        for i, v in pairs(G.GAME.hands) do
-            v.AscensionPower = to_big(v.AscensionPower or 0) + to_big(card.ability.level*amt)
-        end
+        G.GAME.hands[ind].AscensionPower = to_big(G.GAME.hands[ind].AscensionPower or 0) + to_big(G.GAME.hands[ind].level) * to_big(amt) * to_big(card.ability.level)
         delay(1.0)
         G.E_MANAGER:add_event(Event({
           trigger = "after",
@@ -810,7 +816,8 @@ local pulsar = {
             return true
           end,
         }))
-        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+"..card.ability.level*amt })
+        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = "+"..(to_big(G.GAME.hands[ind].level) * to_big(amt) * to_big(card.ability.level)) })
+        delay(1.0)
         delay(2.6)
         update_hand_text(
           { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },

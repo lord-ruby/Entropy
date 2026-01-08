@@ -33,6 +33,8 @@ function Game:start_run(args)
             0, 
             {card_limit = 9999, type = 'joker', highlight_limit = 0}
         )
+    G.HUD_runes = {}
+    G.runes = {}
 	gsr(self, args)
 	if G.GAME.modifiers.entr_starting_ante_mten and not args.savetext then
         ease_ante(-11, nil, true)
@@ -55,24 +57,6 @@ function Game:start_run(args)
         -- for i, v in pairs(G.hand_text_area) do
         --     G.hand_text_area[i] = G.HUD:get_UIE_by_ID(v.config.id)
         -- end
-    end
-    G.HUD_runes = {}
-    local saveTable = args.savetext or nil
-    G.GAME.runes = {}
-    if saveTable then
-        local tags = saveTable.runes or {}
-        G.E_MANAGER:add_event(
-            Event{
-                func = function()
-                    for k, v in ipairs(tags) do
-                        local _tag = Tag(type(v) == "table" and v.key or v)
-                        if type(v) == "table" then _tag.ability = v.ability or _tag.ability end
-                        add_rune(_tag, nil, true)
-                    end
-                    return true
-                end
-            }
-        )
     end
     if not G.GAME.rune_rate then G.GAME.rune_rate = 0 end
     if G.GAME.cry_percrate and not G.GAME.cry_percrate["rune"] then G.GAME.cry_percrate["rune"] = 0 end

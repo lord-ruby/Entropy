@@ -510,6 +510,7 @@ local dice_shard = {
                 end
                 if ind < 1 then ind = 1 end
                 name = localize { type = 'name_text', key = G.P_CENTER_POOLS[cards[1].config.center.set][ind].key, set = G.P_CENTER_POOLS[cards[1].config.center.set][ind].set }
+                q[#q+1] = G.P_CENTER_POOLS[cards[1].config.center.set][ind]
             end
         end
         return {

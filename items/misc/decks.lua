@@ -18,7 +18,8 @@ local twisted = {
         G.GAME.round_resets.blind_choices.Boss = get_new_boss()
         ease_background_colour{new_colour = Entropy.get_bg_colour(), contrast = 1}
         if G.ARGS.spin then G.ARGS.spin.real = (G.SETTINGS.reduced_motion and 0 or 1)*(G.GAME.entr_alt and 0.3 or -0.3) end
-    end
+    end,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}}
 }
 
 local redefined = {
@@ -36,6 +37,7 @@ local redefined = {
     apply = function(self)
         G.GAME.modifiers.ccd2 = true
     end,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}}
 }
 
 
@@ -98,7 +100,8 @@ local ambisinister = {
     Entropy.last_slots = nil
   end,
   entr_credits = {
-      idea = {"cassknows"}
+      idea = {"cassknows"},
+      art = {"Lil. Mr. Slipstream"}
   },
 }
 
@@ -162,7 +165,10 @@ local gemstone = {
           }
         end
     end
-  end
+  end,
+  entr_credits = {
+    art = {"mailingway"}
+  }
 }
 local update_ref = Card.update
 function Card:update(dt, ...)
@@ -193,6 +199,9 @@ function Card:update(dt, ...)
           if self.children.floating_sprite then
             self.children.floating_sprite.atlas = G.ASSET_ATLAS[_center[G.SETTINGS.colourblind_option and 'hc_atlas' or 'lc_atlas'] or _center.atlas or _center.set]
             self.children.floating_sprite:set_sprite_pos(_center.soul_pos or {x=9999,y=9999})
+          end
+          if self.config.center.set_sprites then
+              self.config.center:set_sprites(self, self.children.front, true)
           end
           if self.states.hover.is then
               self:stop_hover()
@@ -227,7 +236,7 @@ function get_type_colour(_c, card)
     if Entropy.IsEE() and card.debuff then
       return Entropy.reverse_legendary_gradient
     end
-    if card.ability and card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]] then
+    if card and card.ability and card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]] then
         return get_type_colourref(G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]], card)
     end
     return get_type_colourref(_c, card)
@@ -271,23 +280,48 @@ end
 
 local corrupted = {
   object_type = "Back",
-  order = 7006,
+  order = 7007,
+  dependencies = {
+    items = {
+      "set_entr_decks"
+    }
+  },
+  key = "corrupted",
+  pos = { x = 7, y = 0 },
+  atlas = "decks",
+  apply = function()
+    change_shop_size(-1)
+    G.GAME.modifiers.glitched_items = (G.GAME.modifiers.glitched_items or 1) + 1
+  end,
+  entr_credits = {
+    art = {"LFMoth"}
+  }
+}
+
+local discordant = {
+  object_type = "Back",
+  order = 7008,
   dependencies = {
     items = {
       "set_entr_decks"
     }
   },
   config = { },
-  key = "corrupted",
-  pos = { x = 7, y = 0 },
+  key = "discordant",
+  pos = { x = 8, y = 0 },
   atlas = "decks",
   apply = function()
-    G.GAME.modifiers.glitched_items = (G.GAME.modifiers.glitched_items or 2) + 1
+    G.GAME.modifiers.entr_reroll_fac = 2
+    G.GAME.modifiers.entr_parakmi = true
   end,
-  entr_credits = {
-    art = {"LFMoth"}
-  }
 }
+
+local crc_ref = calculate_reroll_cost
+function calculate_reroll_cost(...)
+    local ret = crc_ref(...)
+    G.GAME.current_round.reroll_cost = G.GAME.current_round.reroll_cost + G.GAME.current_round.reroll_cost_increase * ((G.GAME.modifiers.entr_reroll_fac or 1) - 1)
+    return ret
+end
 
 if CardSleeves then
     CardSleeves.Sleeve {
@@ -300,8 +334,11 @@ if CardSleeves then
         G.GAME.entr_alt = not G.GAME.entr_alt
         G.GAME.round_resets.blind_choices.Boss = get_new_boss()
         ease_background_colour{new_colour = Entropy.get_bg_colour(), contrast = 1}
-        G.ARGS.spin.real = (G.SETTINGS.reduced_motion and 0 or 1)*(G.GAME.entr_alt and 0.3 or -0.3)
-      end
+        if G.ARGS.spin then
+          G.ARGS.spin.real = (G.SETTINGS.reduced_motion and 0 or 1)*(G.GAME.entr_alt and 0.3 or -0.3)
+        end
+      end,
+      entr_credits = {art = {"Lil. Mr. Slipstream"}}
     }
     CardSleeves.Sleeve {
       key = "ccd2",
@@ -309,7 +346,8 @@ if CardSleeves then
       pos = { x = 1, y = 0 },
       apply = function()
         G.GAME.modifiers.ccd2 = true
-      end
+      end,
+      entr_credits = {art = {"Lil. Mr. Slipstream"}}
     }
 
     CardSleeves.Sleeve {
@@ -339,7 +377,8 @@ if CardSleeves then
             c:set_edition("e_negative")
             return true
           end}))
-      end
+      end,
+      entr_credits = {art = {"Lil. Mr. Slipstream"}}
     }
 
   CardSleeves.Sleeve {
@@ -351,7 +390,8 @@ if CardSleeves then
       G.GAME.starting_params.joker_slots = G.GAME.starting_params.joker_slots + 3
       Entropy.last_csl = nil
       Entropy.last_slots = nil
-    end
+    end,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}}
   }
 
 
@@ -410,8 +450,10 @@ if CardSleeves then
     atlas = "sleeves",
     pos = { x = 7, y = 0 },
     apply = function()
+      change_shop_size(-1)
       G.GAME.modifiers.glitched_items = (G.GAME.modifiers.glitched_items or 0) + 2
     end,
+    entr_credits = {art = {"LFMoth"}}
   }
 end
 
@@ -424,6 +466,7 @@ return {
       ambisinister,
       butterfly,
       gemstone,
-      corrupted
+      corrupted,
+      discordant
     }
   }

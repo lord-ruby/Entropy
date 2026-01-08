@@ -28,7 +28,7 @@ function SMODS.injectItems(...)
     loadmodsref(...)
 
     G.ASSET_ATLAS["cry_gameset"] = Entropy.GamesetAtlas
-
+    if StockingStuffer then StockingStuffer.Ruby.get_dummy = Entropy.GetDummy end
     if not G.entr_hooked then
 
         local oldfunc = Game.main_menu
@@ -383,6 +383,9 @@ function SMODS.injectItems(...)
                 self:inject_card(G.P_CENTERS.b_painted)
                 self:inject_card(G.P_CENTERS.b_anaglyph)
                 self:inject_card(G.P_CENTERS.b_plasma)
+                self:inject_card(G.P_CENTERS.b_erratic)
+                self:inject_card(G.P_CENTERS.b_abandoned)
+                self:inject_card(G.P_CENTERS.b_checkered)
             end,
         })
         SMODS.ObjectTypes.RedeemableBacks:inject()

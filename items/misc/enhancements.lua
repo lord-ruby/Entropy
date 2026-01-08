@@ -356,7 +356,7 @@ local comet = {
     set = "Tarot",
     atlas = "consumables2",
     object_type = "Consumable",
-    order = -1000,
+    order = -999,
     dependencies = {
         items = {
             "set_entr_misc",
@@ -412,7 +412,8 @@ local radiant = {
 	in_pool = function()
 		return true
 	end,
-	loc_vars = function(self, info_queue, card)
+	loc_vars = function(self, q, card)
+		if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
 		return {
             vars = {
                 card.ability.extra.asc_pow

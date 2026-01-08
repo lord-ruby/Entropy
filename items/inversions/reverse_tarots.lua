@@ -3,7 +3,7 @@ local master = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900,
+    order = -901,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -84,14 +84,14 @@ local mason = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900 + 1,
+    order = -901 + 1,
     dependencies = {
         items = {
             "set_entr_inversions"
         }
     },
     config = {
-        create = 2
+        create = 3
     },
     inversion = "c_magician",
     pos = {x=1, y = 0},
@@ -132,7 +132,7 @@ local oracle = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900 + 2,
+    order = -901 + 2,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -186,7 +186,7 @@ local princess = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900 + 3,
+    order = -901 + 3,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -227,7 +227,7 @@ local servant = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900 + 4,
+    order = -901 + 4,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -289,7 +289,7 @@ local heretic = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900 + 6,
+    order = -901 + 5.5,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -351,7 +351,7 @@ local feud = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900 + 6,
+    order = -901 + 6,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -410,7 +410,7 @@ local scar = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900 + 7,
+    order = -901 + 7,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -463,9 +463,17 @@ local scarred = {
     key = "scarred",
     no_sticker_sheet = true,
     prefix_config = { key = false },
-    badge_colour = HEX("973737"),
+    badge_colour = HEX("fd5f56"),
     apply = function(self,card,val)
         card.ability.scarred = true
+    end,
+    draw = function(self, card) --don't draw shine
+        local notilt = nil
+        if card.area and card.area.config.type == "deck" then
+            notilt = true
+        end
+        G.shared_stickers[self.key].role.draw_major = card
+        G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
     end,
 }
 
@@ -474,7 +482,7 @@ local dagger = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900 + 8,
+    order = -901 + 8,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -500,7 +508,7 @@ local dagger = {
             total = total + card.base.nominal + (card.ability.bonus or 0)
         end
         SMODS.destroy_cards(cards)
-        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = G.GAME.hands[_hand].level, mult = Entropy.ascend_hand(G.GAME.hands[_hand].mult, _hand), chips = Entropy.ascend_hand(G.GAME.hands[_hand].chips, _hand), handname = localize(_hand, "poker_hands"), StatusText = true })
+        update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = G.GAME.hands[_hand].level, mult = Entropy.ascend_hand(G.GAME.hands[_hand].mult, _hand), chips = Entropy.ascend_hand(G.GAME.hands[_hand].chips, _hand), handname = localize(_hand, "poker_hands") })
         delay(1.6)
         update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { chips = "+"..total, handname = localize(_hand, "poker_hands"), StatusText = true })
         delay(2.6)
@@ -538,7 +546,7 @@ local earl = {
     set = "Fraud",
     atlas = "fraud",
     object_type = "Consumable",
-    order = -900 + 8,
+    order = -901 + 9,
     dependencies = {
         items = {
             "set_entr_inversions"
@@ -673,34 +681,23 @@ local endurance = {
     },
     config = {
         select = 1,
-        factor = 1.5,
-        rounds = 3
+        factor = 1.25,
     },
     pos = {x=1,y=1},
     inversion = "c_strength",
     use = function(self, card2)
         local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card2, 1, card2.ability.select)
+        G.GAME.endurance_rounds = (G.GAME.endurance_rounds or 3)
         for i, card in pairs(cards) do
-            card.ability.debuff_timer = (card.ability.debuff_timer or 0) + card2.ability.rounds
-            card.ability.debuff_timer_max = (card.ability.debuff_timer_max or 0) + card2.ability.rounds
+            card.ability.debuff_timer = (card.ability.debuff_timer or 0) + G.GAME.endurance_rounds
+            card.ability.debuff_timer_max = (card.ability.debuff_timer_max or 0) + G.GAME.endurance_rounds
             if not Card.no(card, "immutable", true) then
                 Cryptid.manipulate(card, { value=card2.ability.factor })
             end
             card:set_debuff(true)
             card:juice_up()
         end
-    end,
-    bulk_use = function(self,card2,area,copier,amt)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, card.ability.select)
-        for i, card in pairs(cards) do
-            card.ability.debuff_timer = (card.ability.debuff_timer or 0) + card2.ability.rounds
-            card.ability.debuff_timer_max = (card.ability.debuff_timer_max or 0) + card2.ability.rounds
-            if not Card.no(card, "immutable", true) then
-                Cryptid.manipulate(card, { value=card2.ability.factor^to_big(amt) })
-            end
-            card:set_debuff(true)
-            card:juice_up()
-        end
+        G.GAME.endurance_rounds = G.GAME.endurance_rounds + 1
     end,
     can_use = function(self, card)
         local num = #Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, card.ability.select)
@@ -711,7 +708,7 @@ local endurance = {
             vars = {
                 card.ability.select,
                 card.ability.factor,
-                card.ability.rounds
+                G.GAME.endurance_rounds or 3 
             }
         }
     end,
@@ -756,9 +753,12 @@ local advisor = {
                 local card = Card(0,0, G.CARD_W, G.CARD_H, G.P_CARDS[v[1]], G.P_CENTERS.c_base)
                 if v[3] then
                     card:set_ability(G.P_CENTERS[v[3]])
+                else
+                    card:set_ability(SMODS.poll_enhancement{key = "entr_advisor", guaranteed = true})
                 end
+                card:add_to_deck()
                 G.hand:emplace(card)
-                card.ability.temporary = true
+                table.insert(G.playing_cards, card)
             end
         end
     end,
