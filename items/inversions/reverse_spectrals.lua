@@ -463,7 +463,7 @@ local rejuvenate = {
         for i = 1, card2.ability.num do
             actual[i] = cards[i]
         end
-        local ed = SMODS.poll_edition({guaranteed = true, key = "entr_rejuvenate_ed"})
+        local ed = SMODS.poll_edition({guaranteed = true, key = "entr_rejuvenate_ed", no_negative = true})
         local enh = G.P_CENTERS[SMODS.poll_enhancement({guaranteed = true})]
         local seal = SMODS.poll_seal{guaranteed = true, key = "rejuvenate"}
         local card = Entropy.GetHighlightedCards({G.hand}, card2, 1, 1)[1] or pseudorandom_element(G.hand.cards, pseudoseed("rejuvenate"), 1, 1)
