@@ -3561,9 +3561,6 @@ local menger_sponge = {
                     scalar_value = "chips_mod",
                     operation = "X"
                 })
-                return {
-                    message = localize("k_upgrade_ex")
-                }
             end
         end
     end,
@@ -7463,8 +7460,8 @@ local cooking_pot = {
     rarity = 2,
     cost = 6,
     eternal_compat = true,
-    pos = {x = 1, y = 0},
-    atlas = "placeholder",
+    pos = {x = 4, y = 17},
+    atlas = "jokers",
     dependencies = {
         items = {
             "set_entr_misc_jokers",

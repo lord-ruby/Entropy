@@ -33,6 +33,8 @@ function Game:start_run(args)
             0, 
             {card_limit = 9999, type = 'joker', highlight_limit = 0}
         )
+    G.HUD_runes = {}
+    G.runes = {}
 	gsr(self, args)
 	if G.GAME.modifiers.entr_starting_ante_mten and not args.savetext then
         ease_ante(-11, nil, true)
