@@ -171,7 +171,7 @@ local trapezium = {
 			and context.other_joker.edition.retrig
 			and card ~= context.other_joker)
 		then
-			if not Talisman or not Talisman.config_file.disable_anims then
+			if not Entropy.should_skip_animations() then
 				G.E_MANAGER:add_event(Event({
 					func = function()
 						context.other_joker:juice_up(0.5, 0.5)

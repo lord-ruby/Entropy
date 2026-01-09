@@ -91,7 +91,7 @@ function Entropy.inversion_queue(card, _c, first_pass)
 end
 
 function Entropy.FlipThen(cardlist, func, before, after)
-    if not Talisman or not Talisman.config_file.disable_anims then
+    if not Entropy.should_skip_animations() then
         for i, v in ipairs(cardlist) do
             local card = cardlist[i]
             if card then
@@ -136,7 +136,7 @@ function Entropy.FlipThen(cardlist, func, before, after)
             )
         end
     end
-    if not Talisman or not Talisman.config_file.disable_anims then
+    if not Entropy.should_skip_animations() then
         for i, v in ipairs(cardlist) do
             local card = cardlist[i]
             if card then
@@ -2362,5 +2362,5 @@ end
 
 function Entropy.should_skip_animations(strict)
     if Talisman and Talisman.config_file.disable_anims then return true end
-    if Handy and Handy.animation_skip.value >= (strict and 4 or 3) then return true end
+    if Handy and Handy.animation_skip.get_value() >= (strict and 4 or 3) then return true end
 end
