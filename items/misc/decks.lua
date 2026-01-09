@@ -137,7 +137,7 @@ local gemstone = {
   atlas = "decks",
   loc_vars = function() 
     local n, d = SMODS.get_probability_vars(card, 1, 3, "entr_gemstone")
-    return {vars = {n, d1}}
+    return {vars = {n, d}}
   end,
   calculate = function(self, back, context)
     if context.using_consumeable and context.consumeable.config.center.set ~= "Rune" then
