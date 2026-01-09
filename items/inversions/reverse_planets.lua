@@ -106,7 +106,7 @@ function Entropy.ReverseSuitUse(self, card, area, copier, num)
       hands[#hands+1] = v
     end
   end
-  SMODS.upgrade_poker_hands({hands = handnames, from = card, ascension_power = (card.ability.level + (G.GAME.entr_black_dwarf or 0)) * num})
+  SMODS.upgrade_poker_hands({hands = handnames, from = card, ascension_power = (card.ability.level + (G.GAME.entr_black_dwarf or 0)) * (num or 1)})
 end
 function Entropy.ReverseSuitLocVars(self, q, card, instant, noengulf)
   return {

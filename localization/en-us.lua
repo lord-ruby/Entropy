@@ -5139,7 +5139,7 @@ local decs = {
 			rune_entr_denial = {
 				name = "Mark of Denial",
 				text = {
-					"Marked by {C:red}Thorns{}"
+					"Marked by {C:red}Denial{}"
 				}
 			},
 			rune_entr_chains = {
