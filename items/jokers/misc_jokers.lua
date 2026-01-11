@@ -381,7 +381,7 @@ local insatiable_dagger = {
                         card:juice_up(0.8, 0.8)
                         sliced_card:start_dissolve({ HEX("a800ff") }, nil, 1.6)
                         G.GAME.banned_keys[sliced_card.config.center.key] = true
-                        SMODS.eval_individual(sliced_card, {banishing_card = true, banisher = card, card = sliced_card, cardarea = sliced_card.area})
+                        eval_card(sliced_card, {banishing_card = true, banisher = card, card = sliced_card, cardarea = sliced_card.area})
                         play_sound("slice1", 0.96 + math.random() * 0.08)
                         local check2
                         if not Card.no(G.jokers.cards[check], "immutable", true) then
@@ -7218,13 +7218,6 @@ local texas_hold_em = {
                         end
                     })
                     G.play:emplace(v)
-                end
-            end
-        end
-        if context.end_of_round and not context.repetition and not context.individual and not context.blueprint then
-            for i, v in pairs(G.I.CARD) do
-                if type(v) == "table" and v.ability and v.ability.entr_marked then
-                    v.ability.entr_marked = nil
                 end
             end
         end

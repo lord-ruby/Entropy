@@ -37,7 +37,7 @@ local i = {
     --"items/jokers/epic_jokers",
     --"items/jokers/exotic_jokers",
     "items/jokers/rlegendary_jokers",
-    --"items/jokers/entropic_jokers",
+    "items/jokers/entropic_jokers",
 
     "items/jokers/dice_jokers",
 

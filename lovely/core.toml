@@ -3449,3 +3449,94 @@ else
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+match_indent = true
+position = 'after'
+pattern = '''
+info_boxes = {{n=G.UIT.R, config = {align="cm", padding = 0.05, card_pos = card.T.x }, nodes = info_cols}}
+'''
+payload = '''
+local AUT_ENTR_EPITACHYNO
+if card.ability and card.ability.epitach_consumeable then
+    AUT_ENTR_EPITACHYNO = Card.generate_UIBox_ability_table(Entropy.GetDummy(G.P_CENTERS[card.ability.epitach_consumeable], G.consumeables, card))
+end
+'''
+
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+match_indent = true
+position = 'before'
+pattern = '''
+if multi_boxes[1] then
+'''
+payload = '''
+if AUT_ENTR_EPITACHYNO then
+local target = ret_val.nodes[1].nodes[1].nodes[1].nodes
+    table.insert(target, #target, name_from_rows(AUT_ENTR_EPITACHYNO.name, is_playing_card and G.C.WHITE or nil))
+    table.insert(target, #target, desc_from_rows(AUT_ENTR_EPITACHYNO.main))
+end
+'''
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+match_indent = true
+position = 'at'
+pattern = '''
+p.current = G.GAME.hands[hand][name] or p.default_value
+'''
+payload = '''
+if G.entr_add_to_stats then
+
+else
+  p.current = G.GAME.hands[hand][name] or p.default_value
+end
+'''
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+match_indent = true
+position = 'at'
+pattern = '''
+G.GAME.hands[hand][parameter] = args.func(G.GAME.hands[hand][parameter], hand, parameter)
+'''
+payload = '''
+local c = G.GAME.hands[hand][parameter]
+G.GAME.hands[hand][parameter] = args.func(G.GAME.hands[hand][parameter], hand, parameter)
+local diff = c - G.GAME.hands[hand][parameter]
+if G.entr_add_to_stats then
+  SMODS.Scoring_Parameters[parameter].current = SMODS.Scoring_Parameters[parameter].current + diff
+  update_hand_text({nopulse = nil, delay = 0}, {[parameter] = SMODS.Scoring_Parameters[parameter].current})
+end
+'''
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+match_indent = true
+position = 'at'
+pattern = '''
+update_hand_text({delay = 0}, {[parameter] = G.GAME.hands[hand][parameter], StatusText = true})
+'''
+payload = '''
+local c = G.GAME.hands[hand][parameter]
+update_hand_text({delay = 0}, {[parameter] = G.entr_add_to_stats and SMODS.Scoring_Parameters[parameter].current or G.GAME.hands[hand][parameter], StatusText = true})
+'''
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/card_draw.lua"]'''
+match_indent = true
+position = 'at'
+pattern = '''
+if self.ability.name == 'The Soul' and (self.config.center.discovered or self.bypass_discovery_center) then
+'''
+payload = '''
+if (self.ability.name == 'The Soul' or self.ability.epitach_consumeable == "c_soul") and (self.config.center.discovered or self.bypass_discovery_center) then
+'''

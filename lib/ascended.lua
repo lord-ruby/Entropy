@@ -3,6 +3,18 @@ function G.FUNCS.get_poker_hand_info(_cards)
 	local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
 	-- Display text if played hand contains a Cluster and a Bulwark
 	-- Not Ascended hand related but this hooks in the same spot so i'm lumping it here anyways muahahahahahaha
+    local cards = {}
+    for _, card in pairs(_cards) do
+        cards[#cards+1] = card
+    end
+    for _, card in pairs(G.I.CARD) do
+        if card.ability and card.ability.entr_marked then
+            if not card.highlighted and not Entropy.InTable(_cards, card) then
+                cards[#cards+1] = card
+            end
+        end
+    end
+    _cards = cards
     local hidden = false
     for i, v in pairs(scoring_hand) do
         if v.facing == "back" then
@@ -66,9 +78,17 @@ function Cryptid.calculate_ascension_power(hand_name, hand_cards, hand_scoring_c
 	if Entropy.BlindIs("bl_entr_scarlet_sun") and not G.GAME.blind.disabled then
 		tether = true
 	end
+    if next(SMODS.find_card("j_entr_helios")) then
+		tether = true
+	end
 	local final = calculate_ascension_power_ref(hand_name, hand_cards, hand_scoring_cards, tether, bonus)
     if next(SMODS.find_card("j_entr_hexa")) then
         final = final * 3 * #SMODS.find_card("j_entr_hexa")
+    end
+    if next(SMODS.find_card("j_entr_helios")) then
+        local total = 0
+        for i, v in pairs(SMODS.find_card("j_entr_helios")) do total = total + v.ability.extra end
+        final = final * total
     end
     if next(SMODS.find_card("j_entr_axeh")) then
         for i, v in pairs(SMODS.find_card("j_entr_axeh")) do
@@ -85,11 +105,14 @@ end
 local hand_ascension_numbers_ref = Cryptid.hand_ascension_numbers
 function Cryptid.hand_ascension_numbers(hand_name, tether)
     if Entropy.BlindIs("bl_entr_scarlet_sun") then return 0 end
+    if next(SMODS.find_card("j_entr_helios")) then
+        tether = true
+    end
 	return hand_ascension_numbers_ref(hand_name, tether)
 end
 
 local asc_enabled_ref = Cryptid.ascension_power_enabled
 function Cryptid.ascension_power_enabled()
-	if next(SMODS.find_card("j_entr_hexa")) or Entropy.BlindIs("bl_entr_scarlet_sun") then return true end
+	if next(SMODS.find_card("j_entr_helios")) or next(SMODS.find_card("j_entr_hexa")) or Entropy.BlindIs("bl_entr_scarlet_sun") then return true end
 	if asc_enabled_ref then return asc_enabled_ref() end
 end

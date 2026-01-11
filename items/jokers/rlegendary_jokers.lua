@@ -92,18 +92,8 @@ local tocihc = {
 
             if type == "Boss" then
                 tag = Tag(get_next_tag_key())
-                if context.forcetrigger then
-                    G.GAME.blind.chips = G.GAME.blind.chips * 0.2
-                    G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-                    G.HUD_blind:recalculate()
-                end
             else
-                tag = Tag(G.GAME.round_resets.blind_tags[type])
-                if not context.blueprint then
-                    G.GAME.blind.chips = G.GAME.blind.chips * 0.2
-                end
-                G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-                G.HUD_blind:recalculate()
+                tag = Tag(G.GAME.round_resets.blind_tags[type])     
                 --card:juice_up()
             end
             if Cryptid.is_shiny then
@@ -575,7 +565,7 @@ local ssac = {
                 local c_r = G.consumeables.cards[#G.consumeables.cards] and Cryptid.forcetrigger(G.consumeables.cards[#G.consumeables.cards], context) or {}
                 local v = G.play.cards[#G.play.cards]
                 if G.play.cards and v then
-                    local results = SMODS.eval_individual(v, {cardarea=G.play,main_scoring=true, forcetrigger=true, individual=true}) or {}
+                    local results = eval_card(v, {cardarea=G.play,main_scoring=true, forcetrigger=true, individual=true}) or {}
                     if results then
                         for i, v2 in pairs(results) do
                             for i2, result in pairs(type(v2) == "table" and v2 or {}) do
@@ -583,7 +573,7 @@ local ssac = {
                             end
                         end
                     end
-                    local results = SMODS.eval_individual(v, {cardarea=G.hand,main_scoring=true, forcetrigger=true, individual=true}) or {}
+                    local results = eval_card(v, {cardarea=G.hand,main_scoring=true, forcetrigger=true, individual=true}) or {}
                     if results then
                         for i, v2 in pairs(results) do
                             for i2, result in pairs(type(v2) == "table" and v2 or {}) do

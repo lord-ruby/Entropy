@@ -119,6 +119,7 @@ function end_round()
     for i, v in pairs({G.jokers, G.hand, G.consumeables, G.discard, G.deck}) do
         for ind, card in pairs(v.cards) do
             if card.ability then
+                if card.ability.entr_marked then card.ability.entr_marked = nil end
                 if card.ability.entr_hotfix then
                     card.ability.entr_hotfix_rounds = (card.ability.entr_hotfix_rounds or 5) - 1
                     if to_big(card.ability.entr_hotfix_rounds) <= to_big(0) then
@@ -2248,21 +2249,11 @@ function Cryptid.ascend(num, curr2) -- edit this function at your leisure
         num2 = num2 + diff ^ 0.3
     end
     curr2 = num2
-    if next(SMODS.find_card("j_entr_helios")) then
-        local curr = 1
-        for i, v in pairs(G.jokers.cards) do
-            if not v.debuff and v.config.center.key == "j_entr_helios" and to_big(v.ability.extra):gt(curr) then
-                curr = v.ability.extra + 0.4
-            end
-        end
-        return num ^ (to_big((1.75 + snum)) * (to_big((curr2) * curr)))
-    else
-        return num * (to_big((1.25 + snum)) ^ to_big(curr2))
-    end
+    return num * (to_big((1.25 + snum)) ^ to_big(curr2))
 end
 
 local pokerhandinforef = G.FUNCS.get_poker_hand_info
-function G.FUNCS.get_poker_hand_info(cards)
+function G.FUNCS.get_poker_hand_info(cards,...)
     local _cards = {}
     for _, card in pairs(cards) do
         _cards[#_cards+1] = card
@@ -2275,8 +2266,7 @@ function G.FUNCS.get_poker_hand_info(cards)
         end
     end
     G.GAME.current_round.current_hand.cry_asc_num = 0
-    if next(SMODS.find_card("j_entr_helios")) or (Entropy.BlindIs("bl_entr_scarlet_sun") and not G.GAME.blind.disabled) then G.GAME.used_vouchers.v_cry_hyperspacetether = true end
-    local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
+    local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards,...)
     if text and G.GAME.badarg and G.GAME.badarg[text] and text ~= "NULL" then
         G.boss_throw_hand = true
         G.bad_arg = true
@@ -2972,7 +2962,7 @@ function create_card_for_shop(area)
     if card and card.ability.set == "Joker" and next(SMODS.find_card("j_entr_ieros")) then
         for i, v2 in pairs(G.jokers.cards) do
             if v2.config.center.key == "j_entr_ieros" then
-                while pseudorandom("ieros") < 0.33 do
+                if pseudorandom("ieros") < 0.66 then
                     local rare = nil
                     if card.config.center.rarity ~= "j_entr_entropic" then
                         rare = Entropy.GetNextRarity(card.config.center.rarity or 1) or card.config.center.rarity
@@ -4384,7 +4374,7 @@ function copy_card(old, new, ...)
         SMODS.calculate_context{copying_card = true, original_card = old, new_card = copy}
     end
     for i, v in pairs(G.play and G.play.cards or {}) do
-        SMODS.eval_individual(v, {copying_card = true, original_card = old, new_card = copy})
+        eval_card(v, {copying_card = true, original_card = old, new_card = copy})
     end
     if old.base and old.base.nominal then copy.base.nominal = old.base.nominal end
     G.GAME.modifiers.entr_twisted = tw
@@ -4542,8 +4532,8 @@ SMODS.Consumable:take_ownership("fool", {
     end
 }, true)
 
-local calculate_objref = SMODS.eval_individual
-function SMODS.eval_individual(individual, context)
+local calculate_objref = eval_card
+function eval_card(individual, context)
     if individual.object then
         return calculate_objref(individual, context)
     end

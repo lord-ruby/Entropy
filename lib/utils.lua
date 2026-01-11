@@ -356,7 +356,7 @@ function Entropy.RandomForcetrigger(card, num,context)
 						{ message = localize("cry_demicolon"), colour = G.C.GREEN }
 					)
 				elseif v.base.id and (not v.edition or v.edition.key ~= "e_entr_fractured") then
-					local results = SMODS.eval_individual(v, {cardarea=G.play,main_scoring=true, forcetrigger=true, individual=true}) or {}
+					local results = eval_card(v, {cardarea=G.play,main_scoring=true, forcetrigger=true, individual=true}) or {}
 					if results then
 						for i, v2 in pairs(results) do
 							for i2, result in pairs(type(v2) == "table" and v2 or {}) do
@@ -364,7 +364,7 @@ function Entropy.RandomForcetrigger(card, num,context)
 							end
 						end
 					end
-					local results = SMODS.eval_individual(v, {cardarea=G.hand,main_scoring=true, forcetrigger=true, individual=true}) or {}
+					local results = eval_card(v, {cardarea=G.hand,main_scoring=true, forcetrigger=true, individual=true}) or {}
 					if results then
 						for i, v2 in pairs(results) do
 							for i2, result in pairs(type(v2) == "table" and v2 or {}) do
@@ -1178,7 +1178,7 @@ end
 function Entropy.GetRepetitions(card)
     local res2 = {}
     for i, v in ipairs(G.jokers.cards) do
-        local res = SMODS.eval_individual(v, {repetition=true, other_card=card,cardarea=card.area,card_effects={{},{}}}) or {}
+        local res = eval_card(v, {repetition=true, other_card=card,cardarea=card.area,card_effects={{},{}}}) or {}
         if res.jokers and res.jokers.repetitions then
             res2.repetitions = (res2.repetitions or 0) + res.jokers.repetitions
         end
@@ -2168,6 +2168,8 @@ function SMODS.upgrade_poker_hands(args)
             local used_consumable = card
             local c
             local m
+            local chips = Entropy.ascend_hand(G.GAME.hands[handname].chips, handname)
+            local mult = Entropy.ascend_hand(G.GAME.hands[handname].mult, handname)
             if not args.instant then
                 c = copy_table(G.C.UI_CHIPS)
                 m = copy_table(G.C.UI_MULT)
@@ -2178,6 +2180,12 @@ function SMODS.upgrade_poker_hands(args)
                 )
             end
             G.GAME.hands[handname].AscensionPower = to_big((G.GAME.hands[handname].AscensionPower or 0)) + to_big(amt) 
+            chips = Entropy.ascend_hand(G.GAME.hands[handname].chips, handname) - chips
+            mult = Entropy.ascend_hand(G.GAME.hands[handname].mult, handname) - mult
+            if G.entr_add_to_stats then
+                SMODS.Scoring_Parameters.chips.current = SMODS.Scoring_Parameters.chips.current + chips
+                SMODS.Scoring_Parameters.mult.current = SMODS.Scoring_Parameters.mult.current + mult
+            end
             if not args.instant then
                 delay(1.0)
                 G.E_MANAGER:add_event(Event({
@@ -2363,4 +2371,15 @@ end
 function Entropy.should_skip_animations(strict)
     if Talisman and Talisman.config_file.disable_anims then return true end
     if Handy and Handy.animation_skip.get_value() >= (strict and 4 or 3) then return true end
+end
+
+function Entropy.get_random_rare(seed)
+    seed = seed or "entr_rare"
+    local cards = {}
+    for i, v in pairs(G.P_CENTERS) do
+        if (not v.in_pool or v:in_pool({})) and v.hidden then
+            cards[#cards+1] = v
+        end
+    end
+    return pseudorandom_element(cards, pseudoseed(seed))
 end

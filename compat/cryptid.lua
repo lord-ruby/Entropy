@@ -12,7 +12,6 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
     local files = {
         "compat/cryptid/cursed_jokers",
         "compat/cryptid/define",
-        "compat/cryptid/entropic_jokers",
         "compat/cryptid/epic_jokers",
         "compat/cryptid/exotic_jokers",
         "compat/cryptid/reverse_codes",
@@ -262,7 +261,6 @@ local containment = {
 elseif (SMODS.Mods["vallkarri"] or {}).can_load then
     Entropy.ValkarriOverCryptid = true
     local files = {
-        "compat/cryptid/entropic_jokers",
         "compat/cryptid/epic_jokers",
         "compat/cryptid/exotic_jokers",
     }
@@ -287,7 +285,6 @@ elseif (SMODS.Mods["vallkarri"] or {}).can_load then
 elseif (SMODS.Mods["MyDreamJournal"] or {}).can_load then
     Entropy.MDJOverCryptid = true
     local files = {
-        "compat/cryptid/entropic_jokers",
         "compat/cryptid/epic_jokers",
         "compat/cryptid/exotic_jokers",
     }

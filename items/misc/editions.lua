@@ -463,7 +463,7 @@ local kaleidoscopic = {
 			for i, v in pairs(actual) do
 				context.kaleidoscopic = true
 				context.edition = nil
-				local eval, post = SMODS.eval_individual(v, context)
+				local eval, post = eval_card(v, context)
 				eval = eval or {}
 				local effects = {eval}
 				if context.main_scoring then 

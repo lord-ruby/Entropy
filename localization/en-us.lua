@@ -212,17 +212,34 @@ local decs = {
 			j_entr_epitachyno = {
 				name = "Epitachyno",
 				text = {
- 					"{X:dark_edition,C:white}^#1#{} to all other Joker values",
-					"at the end of the {C:attention}shop{}",
-					"then increase {C:attention}exponent{} by {X:dark_edition,C:white}#2#{}"
+					{
+						"This Joker transforms into a",
+						"random {C:purple}Rare{} consumable when",
+						"a {C:attention}Blind{} is selected"
+					},
+					{
+                    	"Use this Joker to use",
+						"the {C:attention}current{} consumable",
+					},
+					{
+						"This Joker Gains {C:attention}#2#{} use#<s>2#",
+						"when defeating a Boss Blind",
+						"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+					}
 				}
 			},
 			j_entr_helios= {
 				name = "Helios",
 				text = {
- 					"{X:dark_edition,C:white}Infinite{} {C:attention}card selection limit{}",
-					"Ascension formula is now {X:dark_edition,C:white}^(#1#X#2#n){}",
-					"{C:attention}All cards{} contribute to {C:Attention}Ascension power{}"
+					{
+						"When a card is scored {C:attention}all{}",
+						"cards held in hand with the",
+						"same {C:attention}rank{} become {C:attention}Marked{}"
+					},
+					{
+						"All played cards provide",
+						"{C:gold}+#1#{} Ascension Power",
+					}
 				}
 			},
 			j_entr_xekanos = {
@@ -239,19 +256,16 @@ local decs = {
 			j_entr_ieros = {
 				name = "Ieros",
 				text = {
- 					"{X:dark_edition,C:white}33%{} chance to upgrade",
-					"Joker {C:attention}rarities{} in the shop recursively",
-					"Gain {X:dark_edition,C:white}^Chips{} when buying a Joker",
-					"based on the Joker's {C:attention}rarity{}",
-					"{C:inactive}(Currently: {}{X:dark_edition,C:white}^#1#{}{C:inactive}){}",
+ 					"{X:dark_edition,C:white}66%{} chance to upgrade",
+					"Joker {C:attention}rarities{} in the shop",
 				}
 			},
 			j_entr_dekatria = {
 				name = "Dekatria",
 				text = {
-					"This Joker gives {X:dark_edition,C:white}^#1#{} mult",
-					"for every {C:attention}Pair{} in played hand",
-					"All cards are {C:dark_edition}Jolly{}",
+					"When another {C:attention}Joker{} triggers",
+					"trigger the {C:planet}Planet{} or {C:purple}Star{}",
+					"card for the played {C:purple}Poker Hand{}"
 				}
 			},
 			j_entr_oekrep = {
@@ -328,7 +342,6 @@ local decs = {
 			j_entr_anaptyxi= {
 				name = "Anaptyxi",
 				text = {
-					"Scaling Jokers scale as a quadratic",
 					"Scaling Jokers scale all other Jokers by",
 					"{X:dark_edition,C:white}X#1#{} the same amount, then increase",
 					"this by {X:dark_edition,C:white}X#2#{} at the end of round",
@@ -810,56 +823,15 @@ local decs = {
 			j_entr_apeirostemma = {
 				name = "Apeirostemma",
 				text = {
-					"This Joker may cycle",
-					"between {C:attention}6{} different",
-					"effects"
-				}
-			},
-			j_entr_apeirostemma_1 = {
-				name = "Apeirostemma (D1)",
-				text = {
-					"Copy a {C:attention}random{} Joker and",
-					"a {C:attention}random{} consumable at",
-					"the end of the shop then apply negative",
-					"to the copied cards",
-					"{C:inactive}(Apeirostemma excluded){}"
-				}
-			},
-			j_entr_apeirostemma_2 = {
-				name = "Apeirostemma (D2)",
-				text = {
-					"{C:green}#1# in #2#{} chance",
-					"to {C:dark_edition}Force-Trigger{}",
-					"all other Jokers"
-				}
-			},
-			j_entr_apeirostemma_3 = {
-				name = "Apeirostemma (D3)",
-				text = {
-					"This Joker gains {X:dark_edition,C:white}^#1#{} Chips",
-					"if exactly {C:attention}3{} cards are played",
-					"{C:inactive}(Currently{} {X:dark_edition,C:white}^#2#{}{C:inactive}){}"
-				}
-			},
-			j_entr_apeirostemma_4 = {
-				name = "Apeirostemma (D4)",
-				text = {
-					"Reroll all Jokers to the {C:attention}Right{}",
-					"of this Joker when blind is selected"
-				}
-			},
-			j_entr_apeirostemma_5 = {
-				name = "Apeirostemma (D5)",
-				text = {
-					"When a shop item is bought",
-					"increase this Jokers values by",
-					"{C:attention}X(1 - 1.1){} excluding this effect"
-				}
-			},
-			j_entr_apeirostemma_6 = {
-				name = "Apeirostemma (D6)",
-				text = {
-					"Retrigger all cards {C:attention}3-9{} Times"
+					{
+                    	"Use this Joker to {C:attention}Retrigger{}",
+						"all selected cards for {C:attention}one{} round",
+					},
+					{
+						"This Joker gains {C:attention}#2#{} use#<s>2#",
+						"when defeating a Blind",
+						"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+					}
 				}
 			},
 
@@ -6588,7 +6560,6 @@ local decs = {
 		achievement_descriptions = {
 			ach_entr_event_horizon = "Use define to turn Obelisk into Sob",
 			ach_entr_here_comes_the_sun = "Obtain a Sunny Joker",
-			ach_entr_megalyteri = "Reach {50000} on Dekatria",
 			ach_entr_acheros = "Beat Ante 32s boss blind, Endless Entropy",
 			ach_entr_rift = "Beat Ante 8 on The Alternate Path",
 			ach_entr_katevaino = "Use Transcend on Parakmi",

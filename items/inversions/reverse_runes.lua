@@ -1637,7 +1637,7 @@ local serpents = {
     set = "Omen",
     atlas = "rune_atlas",
     pos = {x=3,y=11},
-    soul_pos = {x=999, y=999, extra = {x=4, y=11}},
+    soul_pos = {x=4, y=11},
     order = 7625,
     key = "serpents",
     entr_redraw_soul = true,

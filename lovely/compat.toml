@@ -283,3 +283,47 @@ for i, v in pairs(ret_val.nodes[1].nodes[1].nodes[1].nodes) do
 end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Cryptlib "utilities.lua"]'''
+pattern = '''
+local center = self.config.center
+'''
+position = "at"
+payload = '''
+local center = self.ability and self.ability.epitach_consumeable and G.P_CENTERS[self.ability.epitach_consumeable] or self.config.center
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Cryptlib "ascended.lua"]'''
+pattern = '''
+if check then
+    starting = (tether and #hand_cards or #hand_scoring_cards) - check
+end
+'''
+position = "after"
+payload = '''
+if next(SMODS.find_card("j_entr_helios")) then
+    starting = #hand_cards
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Cryptid "lib/ascended.lua"]'''
+pattern = '''
+if check then
+    starting = (tether and #hand_cards or #hand_scoring_cards) - check
+end
+'''
+position = "after"
+payload = '''
+if next(SMODS.find_card("j_entr_helios")) then
+    starting = #hand_cards
+end
+'''
+match_indent = true
