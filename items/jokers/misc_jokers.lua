@@ -6686,6 +6686,7 @@ function eval_card(card, ...)
     if card and not card.getting_sucked then
         return eval_card_ref(card, ...)
     end
+    return {}
 end
 
 local mark_of_the_beast = {

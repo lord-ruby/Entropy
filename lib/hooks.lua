@@ -4532,13 +4532,6 @@ SMODS.Consumable:take_ownership("fool", {
     end
 }, true)
 
-local calculate_objref = eval_card
-function eval_card(individual, context)
-    if individual.object then
-        return calculate_objref(individual, context)
-    end
-end
-
 if HotPotato then
     function PissDrawer.Shop.main_shop()
         -- Reroll button for unknown goddamn reason just stuck, so I'll unstuck it
