@@ -4384,7 +4384,7 @@ function copy_card(old, new, ...)
         SMODS.calculate_context{copying_card = true, original_card = old, new_card = copy}
     end
     for i, v in pairs(G.play and G.play.cards or {}) do
-        SMODS.eval_individual(v, {copying_card = true, original_card = old, new_card = copy})
+        eval_card(v, {copying_card = true, original_card = old, new_card = copy})
     end
     if old.base and old.base.nominal then copy.base.nominal = old.base.nominal end
     G.GAME.modifiers.entr_twisted = tw
@@ -4541,13 +4541,6 @@ SMODS.Consumable:take_ownership("fool", {
             G.GAME.last_tarot_planet ~= 'c_fool'
     end
 }, true)
-
-local calculate_objref = SMODS.eval_individual
-function SMODS.eval_individual(individual, context)
-    if individual.object then
-        return calculate_objref(individual, context)
-    end
-end
 
 if HotPotato then
     function PissDrawer.Shop.main_shop()
