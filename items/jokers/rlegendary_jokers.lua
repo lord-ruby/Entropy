@@ -594,82 +594,6 @@ local ssac = {
     pronouns = "she_her",
 }
 
-local subarc = {
-    order = 408,
-    object_type = "Joker",
-    key = "subarc",
-    dependencies = {
-        items = {
-          "set_entr_inversions",
-        }
-    },
-    rarity = "entr_reverse_legendary",
-    cost = 20,
-    blueprint_compat = true,
-    eternal_compat = true,
-    pos = {x=2, y=3},
-    soul_pos = {x = 3, y = 3},
-    atlas = "ruby_atlas",
-    demicoloncompat=true,
-    config = {
-        mod = 0.05
-    },
-    entr_credits = {
-        art = {"Lil. Mr. Slipstream"},
-        idea = {"crabus"},
-    },
-    loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue+1] = G.P_CENTERS.e_entr_sunny
-        info_queue[#info_queue+1] = G.P_CENTERS.e_entr_solar
-        return {
-            vars = {
-                card.ability.mod
-            }
-        }
-    end,
-    calculate = function(self, card2, context)
-        if context.before then
-            for i, v in pairs(G.I.CARD) do
-                v.repetitions_triggered = 0
-            end
-        end
-        if context.individual and context.cardarea == G.play then
-            context.other_card.repetitions_triggered = (context.other_card.repetitions_triggered or 0) + 1
-            if context.other_card.repetitions_triggered > 1 then
-                local card = context.other_card
-                if not card.edition and not card.solar and not card.sunny then
-                    card.sunny = true
-                    G.E_MANAGER:add_event(Event{
-                        func = function()
-                            card:set_edition("e_entr_sunny")
-                            card:juice_up()
-                            return true
-                        end
-                    })
-                elseif (card.edition and card.edition.entr_sunny) or (card.sunny and not card.solar) then
-                    card.solar = true
-                    G.E_MANAGER:add_event(Event{
-                        func = function()
-                            card:set_edition("e_entr_solar")
-                            card:juice_up()
-                            return true
-                        end
-                    })
-                elseif (card.edition and card.edition.entr_solar) or card.solar then
-                    card.edition.sol = card.edition.sol + card2.ability.mod
-                    G.E_MANAGER:add_event(Event{
-                        func = function()
-                            card:juice_up()
-                            return true
-                        end
-                    })
-                end
-            end
-        end
-    end,
-    pronouns = "he_him",
-}
-
 local axeh = {
     order = 409,
     object_type = "Joker",
@@ -802,7 +726,6 @@ return {
         ybur,
         ssac,
         zelavi,
-        subarc,
         axeh,
         nokharg,
         SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load and entropy_card or nil, --lazy so this goes here

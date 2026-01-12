@@ -217,7 +217,7 @@ local princess = {
     end,
 	
     entr_credits = {
-        idea = {"crabus"},
+        idea = {"user324897"},
         art = {"Lyman"}
     }
 }

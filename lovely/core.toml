@@ -146,7 +146,6 @@ Entropy.FixedRecipes = {
     m_luckym_luckym_luckym_luckym_lucky = "j_lucky_cat",
     m_entr_fleshm_entr_fleshm_entr_fleshm_entr_fleshm_entr_flesh = "j_entr_grotesque_joker",
     m_entr_disavowedm_entr_disavowedm_entr_disavowedm_entr_disavowedm_entr_disavowed = "j_entr_tesseract",
-    m_entr_darkm_entr_darkm_entr_darkm_entr_darkm_entr_dark = "j_entr_crabus",
     m_entr_ceramicm_entr_ceramicm_entr_ceramicm_entr_ceramicm_entr_ceramic = "j_entr_memento_mori",
     c_basec_basec_basec_basem_entr_disavowed = "j_entr_surreal_joker",
     c_basem_multm_multm_multm_mult = "j_entr_red_fourty",

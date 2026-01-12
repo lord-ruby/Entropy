@@ -1013,7 +1013,7 @@ local heimartai = {
             }
         end
     end,
-    entr_credits = {art = {"crabus"}}
+    entr_credits = {art = {"Lil. Mr. Slipstream"}}
 }
 
 return {

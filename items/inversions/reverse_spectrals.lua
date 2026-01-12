@@ -186,7 +186,7 @@ local siphon = {
         }
     end,
     entr_credits = {
-        idea = {"crabus"}
+        idea = {"user324897"}
     },
     --TODO figure this shit out when force used
 }
@@ -492,7 +492,7 @@ local rejuvenate = {
         }
     end,
     entr_credits = {
-        idea = {"crabus"},
+        idea = {"user324897"},
         art = {"Lil. Mr. Slipstream"}
     },
     demicoloncompat = true,
@@ -615,7 +615,7 @@ local charm = {
         }
     end,
     entr_credits = {
-        idea = {"crabus"}
+        idea = {"user324897"}
     },
     demicoloncompat = true,
     force_use = function(self, card)

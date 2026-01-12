@@ -1478,7 +1478,7 @@ local grotesque_joker = {
         end
     end,
     entr_credits = {
-        idea = {"crabus"},
+        idea = {"user324897"},
         art = {"LFMoth", "Lil. Mr. Slipstream"}
     }
 }
@@ -2505,88 +2505,6 @@ local cass = {
     entr_credits = {
         idea = {"cassknows"},
         art = {"Lil. Mr. Slipstream"}
-    },
-}
-
-local crabus = {
-    object_type = "Joker",
-    key = "crabus",
-    order = 303,
-    rarity = 4,
-    cost = 20,
-    atlas = "ruby_atlas",
-    pos = {x=0, y=3},
-    soul_pos = {x = 1, y = 3},
-    config = {
-        x_chips = 1,
-        x_chips_mod = 0.05
-    },
-    demicoloncompat = true,
-    perishable_compat = true,
-    blueprint_compat = true,
-    pronouns = "any_all",
-    calculate = function(self, card, context)
-        if context.before and not context.repetition and not context.blueprint then
-            local cards = {}
-            for i, v in pairs(context.full_hand) do
-                if not SMODS.in_scoring(v, context.scoring_hand) and v.config.center.key ~= "m_entr_dark" then cards[#cards+1] = v end
-            end
-            Entropy.FlipThen(cards, function(card)
-                card:set_ability(G.P_CENTERS.m_entr_dark)
-            end)
-        end
-        if context.setting_ability and not context.unchanged and context.new == "m_entr_dark" then
-            SMODS.scale_card(card, {
-                ref_table = card.ability,
-                ref_value = "x_chips",
-                scalar_value = "x_chips_mod"
-            })
-        end
-        if context.individual and context.cardarea == G.play and SMODS.has_enhancement(context.other_card, "m_entr_dark") then
-			local cards = {}
-			local suits = {}
-			for i, v in ipairs(G.play.cards) do
-				if v.config.center.key == "m_cry_abstract" or v.config.center.key == "m_stone" or v.config.center.key == "m_wild" then
-					if not suits[v.config.center.key] then
-						suits[v.config.center.key] = true
-						cards[#cards+1]=true
-					end
-				else
-					if not suits[v.base.suit] then
-						suits[v.base.suit] = true
-						cards[#cards+1]=true
-					end
-				end
-			end
-			for i, v in ipairs(cards) do
-				card_eval_status_text(
-					context.other_card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("k_upgrade_ex"), colour = G.C.GREEN }
-				)
-				context.other_card.ability.xchips = context.other_card.ability.xchips + context.other_card.ability.xchip_mod
-				delay(0.3)
-			end
-        end
-        if context.joker_main then return {x_chips = card.ability.x_chips} end
-    end,
-    loc_vars = function(self, q, card)
-        q[#q+1] = G.P_CENTERS.m_entr_dark
-        return {
-            vars = {
-                number_format(card.ability.x_chips_mod),
-                number_format(card.ability.x_chips),
-            }
-        }
-    end,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}, idea = {"crabus"}},
-    dependencies = {
-        items = {
-            "set_entr_misc_jokers",
-        }
     },
 }
 
@@ -4032,7 +3950,7 @@ local scribbled_joker = {
         end
     end,
     entr_credits = {
-        idea = {"crabus"}
+        idea = {"user324897"}
     }
 }
 
@@ -4086,7 +4004,7 @@ local jokers_against_humanity = {
         end
     end,
     entr_credits = {
-        idea = {"crabus"}
+        idea = {"user324897"}
     }
 }
 
@@ -4125,7 +4043,7 @@ local blind_collectible_pack = {
         end
     end,
     entr_credits = {
-        idea = {"crabus"}
+        idea = {"user324897"}
     }
 }
 
@@ -4167,7 +4085,7 @@ local prayer_card = {
         }
     end,
     entr_credits = {
-        idea = {"crabus"}
+        idea = {"user324897"}
     }
 }
 
@@ -5867,7 +5785,7 @@ local kitchenjokers = {
         }
     end,
     entr_credits = {
-        idea = {"cassknows", "crabus"}
+        idea = {"cassknows", "user324897"}
     }
 }
 
@@ -7855,7 +7773,6 @@ return {
         ruby,
         slipstream,
         cass,
-        crabus,
         hexa,
         grahkon,
         sandpaper,

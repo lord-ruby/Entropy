@@ -556,16 +556,6 @@ local decs = {
 					"{C:inactive}({C:dark_edition}+#5#{C:inactive} Consumable Slots, {C:attention}+#6#{C:inactive} Shop Slots)"
 				}
 			},
-			j_entr_crabus = {
-				name = "Crabus, Heir of Doom",
-				text = {
-					"Unscoring cards become {C:attention}Dark Cards{}",
-					"{C:attention}Dark Cards{} scale when played",
-					"This Joker gains {X:chips,C:white}X#1#{} chips",
-					"whenever a {C:attention}Dark Card{} is added",
-					"{C:inactive}(Currently: {X:chips,C:white}X#2#{C:inactive} Chips)"
-				}
-			},
 			j_entr_devilled_suns = {
 				name = "Devilled Suns",
 				text = {
@@ -1536,15 +1526,6 @@ local decs = {
 					"{C:attention}Joker{}, {C:attention}Playing Card{}, and {C:attention}Consumable{}",
 					"once for every two Base Ranks missing in the deck",
 					"{C:inactive}(Currently: {C:attention}#1#{C:inactive})"
-                },
-            },
-			j_entr_subarc = {
-                name = "Subarc",
-                text = {
-					"{C:attention}Retriggered{} Playing Card Editions are",
-					"Upgraded to {C:attention}Sunny{} and then {C:attention}Solar{}",
-					"Retriggered {C:attention}Solar{} cards gain",
-					"{X:gold,C:white}X#1#{} Ascension Power"
                 },
             },
 			j_entr_axeh = {
