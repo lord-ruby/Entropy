@@ -427,7 +427,6 @@ local ichor = {
     end,
     entr_credits = {
         idea = {"cassknows"},
-        art = {"LFMoth"}
     },
     demicoloncompat = true,
     force_use = function(self, card)
