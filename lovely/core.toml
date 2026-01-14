@@ -955,7 +955,10 @@ ease_hands_played(-1)
 payload = '''
 local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
 G.FUNCS.get_poker_hand_info(Entropy.GetHighlightedCards({G.hand}, card))
-if not G.GAME.badarg or (G.GAME.badarg and not G.GAME.badarg[text]) then ease_hands_played(-1) else
+if not G.GAME.badarg or (G.GAME.badarg and not G.GAME.badarg[text]) then
+	ease_hands_played(-1) 
+else
+
 end
 '''
 position = "at"
