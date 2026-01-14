@@ -1721,7 +1721,7 @@ pattern = "create_shop_card_ui(card, 'Booster', G.shop_booster)"
 position = "before"
 payload = '''
 if G.GAME.curse == "entr_darkness" then
-    if card.ability.extra and type(card.ability.exta) ~= "table" then
+    if card.ability.extra and type(card.ability.extra) ~= "table" then
         card.ability.extra = card.ability.extra - 1
         if to_big(card.ability.extra) < to_big(0) then 
             card.ability.extra = 0 
