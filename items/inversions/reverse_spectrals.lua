@@ -411,11 +411,7 @@ local ichor = {
         end
     end,
     can_use = function(self, card)
-        if not G.jokers then return false end
-        for i, v in pairs(G.jokers.cards) do
-            if v.edition and v.edition.key == "e_negative" then return true end
-        end
-        return false
+        return G.jokers
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = G.P_CENTERS.e_negative

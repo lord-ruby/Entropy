@@ -2962,14 +2962,12 @@ function create_card_for_shop(area)
     if card and card.ability.set == "Joker" and next(SMODS.find_card("j_entr_ieros")) then
         for i, v2 in pairs(G.jokers.cards) do
             if v2.config.center.key == "j_entr_ieros" then
-                if pseudorandom("ieros") < 0.66 then
-                    local rare = nil
-                    if card.config.center.rarity ~= "j_entr_entropic" then
-                        rare = Entropy.GetNextRarity(card.config.center.rarity or 1) or card.config.center.rarity
-                    end
-                    local new_card = Entropy.GetRandomRarityCard(rare)
-                    card:set_ability(G.P_CENTERS[new_card])
+                local rare = nil
+                if card.config.center.rarity ~= "j_entr_entropic" then
+                    rare = Entropy.GetNextRarity(card.config.center.rarity or 1) or card.config.center.rarity
                 end
+                local new_card = Entropy.GetRandomRarityCard(rare)
+                card:set_ability(G.P_CENTERS[new_card])
             end
         end
     end 

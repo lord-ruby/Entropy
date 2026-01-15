@@ -1,7 +1,7 @@
 [manifest]
 version = "1.0.0"
 dump_lua = true
-priority = -1
+priority = 1
 
 [[patches]]
 [patches.pattern]
@@ -325,5 +325,38 @@ payload = '''
 if next(SMODS.find_card("j_entr_helios")) then
     starting = #hand_cards
 end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+if burned then
+    burned_cards[#burned_cards + 1] = G.hand.highlighted[i]
+    G.hand.highlighted[i]:start_burn(G.hand)
+    else
+G.hand.highlighted[i].ability.discarded = true 
+'''
+position = "at"
+payload = '''
+if burned then
+    burned_cards[#burned_cards + 1] = G.hand.highlighted[i]
+    G.hand.highlighted[i]:start_burn(G.hand)
+else
+    G.hand.highlighted[i].ability.discarded = true 
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Blindside "tags/debuff.lua"]'''
+pattern = '''
+tag.ability.debuff_text = localize('k_debuff_tag') .. localize(tag.ability.debuffed_hand, 'poker_hands') 
+'''
+position = "at"
+payload = '''
+tag.ability.debuff_text = (localize('k_debuff_tag') or "") .. (localize(tag.ability.debuffed_hand, 'poker_hands') or tag.ability.debuffed_hand or "")
 '''
 match_indent = true

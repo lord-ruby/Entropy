@@ -640,40 +640,6 @@ local ieros = {
     demicoloncompat = true,
     soul_pos = { x = 2, y = 4, extra = { x = 1, y = 4 } },
     atlas = "exotic_jokers",
-    loc_vars = function(self, info_queue, card)
-        return {
-            vars = {
-                card.ability.e_chips
-            },
-        }
-    end,
-    calculate = function(self, card, context)
-        if context.buying_card and not context.retrigger_joker then
-			if context.card.ability.set == "Joker" then
-                SMODS.scale_card(card, {
-                    ref_table = card.ability,
-                    ref_value = "e_chips",
-                    scalar_table = {increase = (Entropy.ReverseRarityChecks[1] or 0)/20.0},
-                    scalar_value = "increase"
-                })
-            end
-        end
-        if context.forcetrigger then
-            SMODS.scale_card(card, {
-                ref_table = card.ability,
-                ref_value = "e_chips",
-                scalar_table = {increase = (Entropy.ReverseRarityChecks[1] or 0)/20.0},
-                scalar_value = "increase"
-            })
-        end
-        if context.joker_main or context.forcetrigger then
-            return {
-				Echip_mod = card.ability.e_chips,
-				message =  '^' .. number_format(card.ability.e_chips) .. ' Chips',
-				colour = { 0.8, 0.45, 0.85, 1 },
-			}
-        end
-    end,
     entr_credits = {
         art = {"Lil. Mr. Slipstream"}
     }

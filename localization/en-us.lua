@@ -256,8 +256,8 @@ local decs = {
 			j_entr_ieros = {
 				name = "Ieros",
 				text = {
- 					"{X:dark_edition,C:white}66%{} chance to upgrade",
-					"Joker {C:attention}rarities{} in the shop",
+ 					"Jokers in the shop",
+					"have {C:entr_entropic}Upgraded {C:attention}Rarities",
 				}
 			},
 			j_entr_dekatria = {
