@@ -153,7 +153,7 @@ local dr_sunshine = {
     eternal_compat = true,
     pos = { x = 4, y = 1 },
     atlas = "jokers",
-    pools = { ["Sunny"] = true, },
+    pools = { ["Sunny"] = true, ["Music"] = true },
     demicoloncompat = true,
     loc_vars = function(self, q, card)
         if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
@@ -1478,7 +1478,7 @@ local grotesque_joker = {
         end
     end,
     entr_credits = {
-        idea = {"user324897"},
+        idea = {"crabus"},
         art = {"LFMoth", "Lil. Mr. Slipstream"}
     }
 }
@@ -1691,6 +1691,7 @@ local memento_mori = {
     order = 32,
     object_type = "Joker",
     key = "memento_mori",
+    pools = {Music = true},
     rarity = 2,
     cost = 5,
     dependencies = {
@@ -3950,7 +3951,7 @@ local scribbled_joker = {
         end
     end,
     entr_credits = {
-        idea = {"user324897"}
+        idea = {"crabus"}
     }
 }
 
@@ -4004,7 +4005,7 @@ local jokers_against_humanity = {
         end
     end,
     entr_credits = {
-        idea = {"user324897"}
+        idea = {"crabus"}
     }
 }
 
@@ -4043,7 +4044,7 @@ local blind_collectible_pack = {
         end
     end,
     entr_credits = {
-        idea = {"user324897"}
+        idea = {"crabus"}
     }
 }
 
@@ -4085,7 +4086,7 @@ local prayer_card = {
         }
     end,
     entr_credits = {
-        idea = {"user324897"}
+        idea = {"crabus"}
     }
 }
 
@@ -5319,6 +5320,7 @@ local spiral_of_ants = {
             }
         }
     end,
+    pools = {Music = true},
     config = {
         last_card = 9999,
         chips = 0,
@@ -5785,7 +5787,7 @@ local kitchenjokers = {
         }
     end,
     entr_credits = {
-        idea = {"cassknows", "user324897"}
+        idea = {"cassknows", "crabus"}
     }
 }
 
@@ -6604,7 +6606,6 @@ function eval_card(card, ...)
     if card and not card.getting_sucked then
         return eval_card_ref(card, ...)
     end
-    return {}
 end
 
 local mark_of_the_beast = {
@@ -7137,6 +7138,13 @@ local texas_hold_em = {
                         end
                     })
                     G.play:emplace(v)
+                end
+            end
+        end
+        if context.end_of_round and not context.repetition and not context.individual and not context.blueprint then
+            for i, v in pairs(G.I.CARD) do
+                if type(v) == "table" and v.ability and v.ability.entr_marked then
+                    v.ability.entr_marked = nil
                 end
             end
         end
@@ -7773,6 +7781,7 @@ return {
         ruby,
         slipstream,
         cass,
+        crabus,
         hexa,
         grahkon,
         sandpaper,
