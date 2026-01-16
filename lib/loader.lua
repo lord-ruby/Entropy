@@ -24,9 +24,12 @@ function SMODS.injectItems(...)
         Cryptid.pin_debuff["entr_entropic"] = true
         Cryptid.pin_debuff["entr_reverse_legendary"] = true
     end
-
     loadmodsref(...)
-
+    for i, v in pairs(G.P_TAGS) do
+        if v.blindside then
+            SMODS.ObjectTypes.bld_obj_blindside.cards[#SMODS.ObjectTypes.bld_obj_blindside.cards+1] = v.key
+        end
+    end
     G.ASSET_ATLAS["cry_gameset"] = Entropy.GamesetAtlas
     if StockingStuffer then StockingStuffer.Ruby.get_dummy = Entropy.GetDummy end
     if not G.entr_hooked then

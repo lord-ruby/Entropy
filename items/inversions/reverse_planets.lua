@@ -42,7 +42,7 @@ function create_UIBox_current_hand_row(handname, simple)
     else
         if not (G.GAME.hands[handname]) then return {} end
         if not G.GAME.badarg then G.GAME.badarg = {} end
-        local color = (G.GAME.badarg and G.GAME.badarg[handname] and HEX("FF0000")) or (G.GAME.hands[handname].TranscensionPower and HEX("84e1ff")) or G.C.GOLD
+        local color = (G.GAME.badarg and G.GAME.badarg[handname] and HEX("FF0000")) or Entropy.get_asc_colour(G.GAME.hands[handname].AscensionPower)
         return (G.GAME.hands[handname].visible) and
         (not simple and
           {n=G.UIT.R, config={align = "cm", padding = 0.05, r = 0.1, colour = darken(G.C.JOKER_GREY, 0.1), emboss = 0.05, hover = true, force_focus = true, on_demand_tooltip = {text = localize(handname, 'poker_hand_descriptions'), filler = {func = create_UIBox_hand_tip, args = handname}}}, nodes={
@@ -51,9 +51,9 @@ function create_UIBox_current_hand_row(handname, simple)
                     {n=G.UIT.C, config={align = "cm", padding = 0.01, r = 0.1, colour = to_big(G.GAME.hands[handname].level) < to_big(2) and G.C.UI.TEXT_LIGHT or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands[handname].level))], minw = 1.1}, nodes={
                       {n=G.UIT.T, config={text = localize('k_level_prefix')..number_format(G.GAME.hands[handname].level, 1000000), scale = 0.45, colour = G.C.UI.TEXT_DARK}},
                     }},
-                    {n=G.UIT.T, config={text = "+", scale = 0.45, colour = color}},
+                    {n=G.UIT.T, config={text = to_big(G.GAME.hands[handname].AscensionPower) >= to_big(0) and "+" or "-", scale = 0.45, colour = color}},
                     {n=G.UIT.C, config={align = "cm", padding = 0.01, r = 0.1, colour = color, minw = 0.7}, nodes={
-                      {n=G.UIT.T, config={text = ""..number_format(to_big(G.GAME.hands[handname].AscensionPower) ^ to_big(G.GAME.hands[handname].TranscensionPower or 1), 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}}
+                      {n=G.UIT.T, config={text = ""..number_format(math.abs(to_big(G.GAME.hands[handname].AscensionPower) ^ to_big(G.GAME.hands[handname].TranscensionPower or 1)), 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}}
                     }}
                   }},
               {n=G.UIT.C, config={align = "cm", minw = 3.8, maxw = 3.8}, nodes={
@@ -575,8 +575,8 @@ function Entropy.StarLuaSingle(self,card,area,copier)
       delay = 0.2,
       func = function()
         play_sound("tarot1")
-        ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
-        ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
+        ease_colour(G.C.UI_CHIPS, copy_table(Entropy.get_asc_colour(card.ability.level)), 0.1)
+        ease_colour(G.C.UI_MULT, copy_table(Entropy.get_asc_colour(card.ability.level)), 0.1)
         Cryptid.pulse_flame(0.01, 1)
         used_consumable:juice_up(0.8, 0.5)
         G.E_MANAGER:add_event(Event({
@@ -668,8 +668,8 @@ function Entropy.StarLuaBulk(self,card,area,copier,number)
       delay = 0.2,
       func = function()
         play_sound("tarot1")
-        ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
-        ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
+        ease_colour(G.C.UI_CHIPS, copy_table(Entropy.get_asc_colour(card.ability.level*number*quota)), 0.1)
+        ease_colour(G.C.UI_MULT, copy_table(Entropy.get_asc_colour(card.ability.level*number*quota)), 0.1)
         Cryptid.pulse_flame(0.01, 1)
         used_consumable:juice_up(0.8, 0.5)
         G.E_MANAGER:add_event(Event({
@@ -760,8 +760,8 @@ function Entropy.StrangeSingle(self, card, area, copier,num)
     delay = 0.2,
     func = function()
       play_sound("tarot1")
-      ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
-      ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
+      ease_colour(G.C.UI_CHIPS, copy_table(Entropy.get_asc_colour(G.GAME.strange_star*(num or 1))), 0.1)
+      ease_colour(G.C.UI_MULT, copy_table(Entropy.get_asc_colour(G.GAME.strange_star*(num or 1))), 0.1)
       Cryptid.pulse_flame(0.01, sunlevel)
       used_consumable:juice_up(0.8, 0.5)
       G.E_MANAGER:add_event(Event({

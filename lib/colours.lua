@@ -17,3 +17,8 @@ G.C.Entropy.Dissolve = {
 }
 
 G.C.ALTBG = HEX("41566f")
+
+G.C.Entropy.ORANGE = HEX("ff5e00")
+
+G.C.Entropy.DARK_GRAY = HEX("6a7895")
+G.C.Entropy.LIGHT_GRAY = HEX("95ade0")

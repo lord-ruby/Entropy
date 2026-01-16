@@ -13,6 +13,7 @@ local i = {
     "compat/bunco",
     "compat/hotpotato",
     "compat/vallkarri",
+    "compat/blindside"
 }
 Entropy.load_files(i)
 

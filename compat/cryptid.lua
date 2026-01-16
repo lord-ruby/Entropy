@@ -266,7 +266,7 @@ elseif (SMODS.Mods["vallkarri"] or {}).can_load then
     }
     local items = Entropy.collect_files(files)
     G.FUNCS.cry_asc_UI_set = function(e)
-        e.config.object.colours = { G.C.GOLD }
+        e.config.object.colours = { Entropy.get_asc_colour(G.GAME.current_round.current_hand.cry_asc_num) }
         e.config.object:update_text()
     end    
     -- Needed because get_poker_hand_info isnt called at the end of the road
@@ -290,7 +290,7 @@ elseif (SMODS.Mods["MyDreamJournal"] or {}).can_load then
     }
     local items = Entropy.collect_files(files)
     G.FUNCS.cry_asc_UI_set = function(e)
-        e.config.object.colours = { G.C.GOLD }
+        e.config.object.colours = { Entropy.get_asc_colour(G.GAME.current_round.current_hand.cry_asc_num) }
         e.config.object:update_text()
     end    
     -- Needed because get_poker_hand_info isnt called at the end of the road
@@ -308,7 +308,7 @@ elseif (SMODS.Mods["MyDreamJournal"] or {}).can_load then
     }
 else
     G.FUNCS.cry_asc_UI_set = function(e)
-        e.config.object.colours = { G.C.GOLD }
+        e.config.object.colours = { Entropy.get_asc_colour(G.GAME.current_round.current_hand.cry_asc_num) }
         e.config.object:update_text()
     end    
     -- Needed because get_poker_hand_info isnt called at the end of the road

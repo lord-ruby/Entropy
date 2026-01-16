@@ -4660,6 +4660,71 @@ local decs = {
 				name = "{C:gold}Kitty Tag{}",
 				text = { "Every {C:attention}Kitty Tag{} owned", "Gives {X:chips,C:white}X#1#{} Chips" },
 			},
+
+			tag_entr_asc_additive = {
+				name = "{C:gold}Additive Tag{}",
+				text = { "{C:green}#1# in #2# chance to enhance", "played blinds" },
+			},
+			tag_entr_asc_max = {
+				name = "{C:gold}Max Tag{}",
+				text = { "{C:red}X2{} Mult and","{C:blue}X2{} Chips", "after hand is scored" },
+			},
+			tag_entr_asc_symmetry = {
+				name = "{C:gold}Symmetry Tag{}",
+				text = { "Retrigger each scoring blind","{C:green}#1# in #2# chance to retrigger", "each scoring blind twice" },
+			},
+			tag_entr_asc_recursive = {
+				name = "{C:gold}Recursive Tag{}",
+				text = { "{X:blue,C:white}X0.1{} Chips for", "each held tag", "{C:inactive}({X:blue,C:white}X#2#{C:inactive} Chips)" },
+			},
+			tag_entr_asc_wave = {
+				name = "{C:gold}Wave Tag{}",
+				text = { "Every {C:attention}played Blind{}", "counts in scoring" },
+			},
+			tag_entr_asc_prison_break = {
+				name = "{C:gold}Prisonbreak Tag{}",
+				text = { "Disable all {C:attention}Jokers", "this Ante" },
+			},
+			tag_entr_asc_collector = {
+				name = "{C:gold}Collector Tag{}",
+				text = { "Next opened {C:attention}Symbol Pack{}", "will have editioned upgraded Blinds" },
+			},
+			tag_entr_asc_memory = {
+				name = "{C:gold}Memory Tag{}",
+				text = { "Create a random {C:bld_keepsake,E:1}Editioned Keepsake{}", "{C:inactive}(Must have room)" },
+			},
+			tag_entr_asc_magic = {
+				name = "{C:gold}Magic Tag{}",
+				text = { "Create a random {C:attention,E:1}Editioned Trinket{}", "{C:inactive}(Must have room)" },
+			},
+			tag_entr_asc_debuff = {
+				name = "{C:gold}Debuff Tag{}",
+				text = { "Halve {C:blue}Chips{} and {C:red}Mult{} after scoring", "if played hand is a {C:attention}#1#{}" },
+			},
+			tag_entr_asc_joker = {
+				name = "{C:gold}Joker Tag{}",
+				text = { "{C:red}+0.5{} Mult to Joker", "after each played hand" },
+			},
+			tag_entr_asc_mantle = {
+				name = "{C:gold}Mantle Tag{}",
+				text = { "Each hand, {C:red}destroys{}", "{C:attention}1{} played blind" },
+			},
+			tag_entr_asc_awe = {
+				name = "{C:gold}Awe Tag{}",
+				text = { "Before each hand,", "{C:red}Debuff{} either your", "{C:attention}leftmost{} or {C:attention}rightmost{}", "Trinket" },
+			},
+			tag_entr_asc_downpour = {
+				name = "{C:gold}Downpour Tag{}",
+				text = { "After each hand,", "{C:green}#1# in #2#{} chance for each", "played Blind to lose", "all {C:attention}Modifiers{}" },
+			},
+			tag_entr_asc_voodoo = {
+				name = "{C:gold}Voodoo Tag{}",
+				text = { "Gives an unskippable", "{C:attention}Voodoo Pack{}" },
+			},
+			tag_entr_asc_burden = {
+				name = "{C:gold}Burden Tag{}",
+				text = { "After each hand,", "lose a {C:attention}third{} of held", "{C:money}money{} rounded down" },
+			},
 		},
 		["Rune Tag"] = {
 			rune_entr_fehu = {

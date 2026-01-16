@@ -76,7 +76,7 @@ function loc_colour(_c, default)
             entr_eqchips = HEX("5b89a6"),
             entr_freaky = HEX("ff00ea"),
             entr_transparent = {0,0,0,0},
-            entr_trans = Entropy.transgender_gradient
+            entr_trans = Entropy.transgender_gradient,
         }
 
         for k, v in pairs(new_colors) do
@@ -85,4 +85,10 @@ function loc_colour(_c, default)
     end
 
     return loc_colour_ref(_c, default)
+end
+
+local ease_colour_ref = ease_colour
+function ease_colour(orig, new, ...)
+    if new.colours then orig = new return end
+    return ease_colour_ref(orig, new, ...)
 end

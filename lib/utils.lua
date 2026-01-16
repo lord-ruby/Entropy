@@ -2383,3 +2383,8 @@ function Entropy.get_random_rare(seed)
     end
     return pseudorandom_element(cards, pseudoseed(seed))
 end
+
+function Entropy.get_asc_colour(amount, text) 
+    if(G.GAME.Overflow or (G.GAME.badarg and G.GAME.badarg[text])) then return HEX("FF0000") end
+    return to_big(amount) > to_big(0) and G.C.GOLD or G.C.Entropy.DARK_GRAY
+end

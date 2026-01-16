@@ -93,19 +93,21 @@ SMODS.PokerHandPart {
 		local all_pure = true
 		if G.GAME.starting_params.akyrs_starting_letters then return {} end
 		for i, card in ipairs(hand) do
-			if SMODS.has_no_suit(card) or card.config.center.key == "m_stone" 
-			or card.config.center.overrides_base_rank 
-			or card.base.suit == "entr_nilsuit" 
-			or card.base.value == "entr_nilrank" 
-			or SMODS.has_no_rank(card)
-			then --card.ability.name ~= "Gold Card"
-                eligible_cards[#eligible_cards+1] = card
-			end
-			if (SMODS.Mods["Cryptid"] or {}).can_load and card.config.center.key == "m_stone" then
-				stones = stones + 1
-			end
-			if not card.ability.akyrs_special_card_type then
-				all_pure = false
+			if not BLINDSIDE or not BLINDSIDE.is_blindside(card.config.center.key) then
+				if SMODS.has_no_suit(card) or card.config.center.key == "m_stone" 
+				or card.config.center.overrides_base_rank 
+				or card.base.suit == "entr_nilsuit" 
+				or card.base.value == "entr_nilrank" 
+				or SMODS.has_no_rank(card)
+				then --card.ability.name ~= "Gold Card"
+					eligible_cards[#eligible_cards+1] = card
+				end
+				if (SMODS.Mods["Cryptid"] or {}).can_load and card.config.center.key == "m_stone" then
+					stones = stones + 1
+				end
+				if not card.ability.akyrs_special_card_type then
+					all_pure = false
+				end
 			end
 		end
 		if stones >= 5 or all_pure then return {} end

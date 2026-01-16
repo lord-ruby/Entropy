@@ -798,8 +798,8 @@ local pulsar = {
           delay = 0.2,
           func = function()
             play_sound("tarot1")
-            ease_colour(G.C.UI_CHIPS, copy_table(G.C.GOLD), 0.1)
-            ease_colour(G.C.UI_MULT, copy_table(G.C.GOLD), 0.1)
+            ease_colour(G.C.UI_CHIPS, copy_table(Entropy.get_asc_colour(to_big(G.GAME.hands[ind].level) * to_big(amt) * to_big(card.ability.level))), 0.1)
+            ease_colour(G.C.UI_MULT, copy_table(Entropy.get_asc_colour(to_big(G.GAME.hands[ind].level) * to_big(amt) * to_big(card.ability.level))), 0.1)
             Cryptid.pulse_flame(0.01, sunlevel)
             used_consumable:juice_up(0.8, 0.5)
             G.E_MANAGER:add_event(Event({

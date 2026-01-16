@@ -1597,7 +1597,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         card_eval_status_text = e
         if not Entropy.should_skip_animations() then
-            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "X"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
+            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "X"..amount.." Asc", Entropy.get_asc_colour(amount), "entr_e_solar", 0.6)
         end
         return true
     end
@@ -1627,7 +1627,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         card_eval_status_text = e
         if not Entropy.should_skip_animations() then
-            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, (to_big(amount) < to_big(0) and "" or "+")..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
+            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, (to_big(amount) < to_big(0) and "" or "+")..amount.." Asc", Entropy.get_asc_colour(amount), "entr_e_solar", 0.6)
         end
         return true
     end
@@ -1657,7 +1657,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         card_eval_status_text = e
         if not Entropy.should_skip_animations() then
-            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "^"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
+            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "^"..amount.." Asc", Entropy.get_asc_colour(amount), "entr_e_solar", 0.6)
         end
         return true
     end
@@ -1687,7 +1687,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
         card_eval_status_text = e
         if not Entropy.should_skip_animations() then
-            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, Entropy.FormatArrowMult(amount[1], amount[2]).." Asc", G.C.GOLD, "entr_e_solar", 0.6)
+            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, Entropy.FormatArrowMult(amount[1], amount[2]).." Asc", Entropy.get_asc_colour(amount), "entr_e_solar", 0.6)
         end 
         return true
     end
@@ -3951,10 +3951,8 @@ G.FUNCS.evaluate_play = function(e)
     G.E_MANAGER:add_event(Event{
         trigger = "after",
         func = function()
-            if G.C.UI_CHIPS[1] == G.C.GOLD[1] then
-                ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
-                ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
-            end
+            ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
+            ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
             G.GAME.current_round.current_hand.cry_asc_num = 0
             G.GAME.current_round.current_hand.cry_asc_num_text = ""
             return true
