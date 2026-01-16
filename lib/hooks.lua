@@ -3876,7 +3876,7 @@ local evaluate_poker_hand_ref = evaluate_poker_hand
 function evaluate_poker_hand(cards)
     local results = evaluate_poker_hand_ref(cards)
     local top
-    if results.bld_blind_high then
+    if results.bld_blind_high and next(results.bld_blind_high) then
         results["High Card"] = {}
     end
     if G.GAME.overload then
