@@ -2280,7 +2280,7 @@ function G.FUNCS.get_poker_hand_info(cards,...)
     end
     local all_flesh = true
     for i, v in pairs(scoring_hand) do
-        if v.config.center.key ~= "m_entr_flesh" then all_flesh = false end
+        if type(v) == "table" and v.config and v.config.center and v.config.center.key ~= "m_entr_flesh" then all_flesh = false end
     end
     if all_flesh then
         if text == "Flush" then 
@@ -3876,6 +3876,9 @@ local evaluate_poker_hand_ref = evaluate_poker_hand
 function evaluate_poker_hand(cards)
     local results = evaluate_poker_hand_ref(cards)
     local top
+    if results.bld_blind_high then
+        results["High Card"] = {}
+    end
     if G.GAME.overload then
         for i, v in pairs(G.handlist) do
             if not top and results[v] and results[v][1] then

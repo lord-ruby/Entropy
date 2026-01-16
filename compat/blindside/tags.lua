@@ -146,8 +146,8 @@ SMODS.Tag {
     loc_vars = function(self, info_queue, tag)
         return {
             vars = {
-                1,
-                4,
+                2,
+                3,
             }
         }
     end,
