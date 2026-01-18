@@ -713,6 +713,88 @@ local decs = {
 					"#2#"
 				}
 			},
+
+			j_entr_scarlet_sun = {
+				name = "Scarlet Sun",
+				text = {
+					{
+						"Scores cards give",
+						"{C:attention}+#1#{} Ascension Power",
+					},
+					{
+						"Apply {C:dark_edition}Sunny{} to",
+						"scored {C:hearts}Hearts{}"
+					}
+				}
+			},
+			j_entr_burgundy_baracuda = {
+				name = "Burgundy Baracuda",
+				text = {
+					"At the end of the shop",
+					"{C:red}destroy{} a random consumable",
+					"and gain {X:mult,C:white}X#2#{} Mult",
+					"{C:inactive}(Currently: {X:mult,C:white}X#1#{C:inactive} Mult)"
+				}
+			},
+			j_entr_olive_orchard = {
+				name = "Olive Orchard",
+				text = {
+					{
+						"{C:green}#1# in #2#{} chance to create",
+						"a {C:dark_edition}Negative{} {C:attention}Perishable",
+						"copy of a random Joker when",
+						"Blind is selected",
+						"{C:inactive}(Excludes self)"
+					},
+					{
+						"This Joker gains {X:mult,C:white}X#4#{} Mult",
+						"when a card Perishes",
+						"{C:inactive}(Currently: {X:mult,C:white}X#3#{C:inactive} Mult)"
+					}
+				}
+			},
+			j_entr_citrine_comet = {
+				name = "Citrine Comet",
+				text = {
+					{
+						"Fixed {C:green}50%{} chance to",
+						"create a {C:red}Temporary{} {C:dark_edition}Negative{}",
+						"copy of all drawn cards"
+					},
+					{
+						"{C:dark_edition}Negative{} cards give",
+						"{C:attention}+1{} Card Selection Limit",
+						"when selected"
+					}
+				}
+			},
+
+			j_entr_diamond_dawn = {
+				name = "Diamond Dawn",
+				text = {
+					{
+						"Strip the Rank and Suit",
+						"from the {C:attention}rightmost{}",
+						"scored card every hand and",
+						"add it to this Jokers {C:money}Money{}",
+					},
+					{
+						"Earn {C:gold}$#1#{} at end of round"
+					}
+				}
+			},
+
+			j_entr_alabaster_anchor = {
+				name = "Alabster Anchor",
+				text = {
+					"When a card is {C:red}discarded{}",
+					"a random Joker gains {X:attention,C:white}X#1#{} values",
+					"and another random Joker gains",
+					"{X:attention,C:white}X#2#{} Values",
+					"{C:inactive}(Excludes Self)"
+				}
+			},
+
 			j_entr_skullcry = {
 				name = ":skullcry:",
 				text = {
@@ -6718,7 +6800,7 @@ local decs = {
 			k_ee_discard_1 = "Spread discarded card edition if 1 card discarded",
 			k_ee_discard_2 = "Create negatve banana copies of played cards",
 			k_ee_discard_3 = "Gain an Ascended Tag for each discarded card",
-			k_ee_discard_4 = "^^3 Mult",
+			k_ee_discard_4 = "^3 Mult",
 
 
 			k_before = "Before Scoring:",

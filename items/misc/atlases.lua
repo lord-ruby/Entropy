@@ -336,3 +336,12 @@ if (SMODS.Mods.Blindside or {}).can_load then
         py = 95
     }
 end
+
+if FinisherBossBlindStringMap then
+    SMODS.Atlas {
+        key = 'finity_jokers',
+        path = 'crossmod/finity_jokers.png',
+        px = 71,
+        py = 95
+    }
+end

@@ -972,6 +972,13 @@ function Card:highlight(is_highlighted)
 			G.jokers.cards[i].config.cry_multiply = (G.jokers.cards[i].config.cry_multiply or 1) * 0.95
 		end
 	end
+	if next(SMODS.find_card("j_entr_citrine_comet")) and card.edition and card.edition.negative then
+		if is_highlighted then
+			Entropy.ChangeFullCSL(1)
+		else	
+			Entropy.ChangeFullCSL(-1)
+		end
+	end
 	highlight_ref(self, is_highlighted)
 end
 
