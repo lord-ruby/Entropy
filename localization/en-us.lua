@@ -65,6 +65,89 @@ local decs = {
 					"{C:inactive}(Currently: {X:blue,C:white}X#1#{C:inactive})"
 				}
 			},
+
+			--BLINDSIDE
+			m_entr_scarlet_sun = {
+				name = "Scarlet Sun",
+				text = {
+					"{X:red,C:white}Red{}",
+					"While held in hand,",
+					"gives {C:gold}+#1#{} Ascension Power",
+					"for each {C:attention}played{} Blind"
+				}
+			},
+			m_entr_burgundy_baracuda = {
+				name = "Burgundy Baracuda",
+				text = {
+					{
+						"{X:red,C:white}Red{}",
+						"{X:mult,C:white}X#1#{} Mult",
+					},
+					{
+						"Retriggers {C:attention}#2#{} times",
+						"Resets when played"
+					},
+					{
+						"While held in hand",
+						"{C:attention}Burn{} all Blinds in",
+						"scoring hand and gain {C:attention}#3#{}",
+						"Retriggers for each",
+						"played Blind"
+					}
+				}
+			},
+			m_entr_diamond_dawn = {
+				name = "Diamond Dawn",
+				text = {
+					{
+						"{X:chips,C:white}Blue{}",
+						"Retriggers adjacent ",
+						"scoring Blinds {C:attention}#1#{} times"
+					},
+					{
+						"Copies the {C:attention}Hue{} of",
+						"adjacent Blinds"
+					},
+				}
+			},
+			m_entr_olive_orchard = {
+				name = "Olive Orchard",
+				text = {
+					"{X:green,C:white}Green{}",
+					"When this Blind is {C:attention}discarded{}",
+					"all Blinds held in hand gain",
+					"{X:mult,C:white}X#1#{} Mult"
+				}
+			},
+			m_entr_citrine_comet = {
+				name = "Citrine Comet",
+				text = {
+					"{X:gold,C:white}Yellow{}",
+					"Gains {C:gold}#2#{} Ascension Power",
+					"when another blind {C:attention}Burns{}",
+					"{C:inactive}(Currently: {C:gold}#1#{C:inactive} Ascension Power){}"
+				}
+			},
+			m_entr_alabaster_anchor = {
+				name = "Alabaster Anchor",
+				text = {
+					"{X:dark_edition,C:white}Faded{}",
+					"{C:dark_edition}Forcibly{} Upgrades",
+					"rightmost Blind if part of",
+					"scored hand",
+					"{C:inactive}(If possible)"
+				}
+			},
+			m_entr_alabaster_anchor_two = {
+				name = "Alabaster Anchor",
+				text = {
+					"{X:dark_edition,C:white}Faded{}",
+					"{C:dark_edition}Forcibly{} Upgrades",
+					"rightmost Blind twice if part",
+					"of scored hand",
+					"{C:inactive}(If possible)"
+				}
+			},
 		},
 		["Content Set"] = {
 			set_entr_inversions = {

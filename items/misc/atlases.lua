@@ -322,9 +322,17 @@ SMODS.Atlas {
         py = 95,
     }
 
-SMODS.Atlas {
-    key = 'blindside_tags',
-    path = 'crossmod/blindside_tags.png',
-    px = 34,
-    py = 34
-}
+if (SMODS.Mods.Blindside or {}).can_load then
+    SMODS.Atlas {
+        key = 'blindside_tags',
+        path = 'crossmod/blindside_tags.png',
+        px = 34,
+        py = 34
+    }
+    SMODS.Atlas {
+        key = 'blindside_blinds',
+        path = 'crossmod/blindside_blinds.png',
+        px = 71,
+        py = 95
+    }
+end
