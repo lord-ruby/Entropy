@@ -166,10 +166,11 @@ local dr_sunshine = {
     end,
     calculate = function(self, card, context)
         if context.remove_playing_cards and not context.blueprint or context.forcetrigger then
-            
-            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "plus_asc", scalar_value = "plus_asc_mod", operation = function(ref_table, ref_value, initial, change)
-                ref_table[ref_value] = initial + (context.removed and #context.removed or 1)*change
-            end})
+            if context.removed and #context.removed > 0 then
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "plus_asc", scalar_value = "plus_asc_mod", operation = function(ref_table, ref_value, initial, change)
+                    ref_table[ref_value] = initial + (context.removed and #context.removed or 1)*change
+                end})
+            end
         end
         if (context.joker_main or context.forcetrigger) and to_big(card.ability.plus_asc) > to_big(0) then
             return {
@@ -7573,14 +7574,14 @@ local void_cradle = {
     end,
     use = function(self, card)
         local cards = Entropy.GetHighlightedCards({G.jokers, G.consumeables, G,hand}, card, 1, card.ability.left, function(c) return Entropy.Inversion(c) end)
+        G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
         for i, v in pairs(cards) do
             local i = Entropy.Inversion(v)
-            if i ~= v.config.center.key then
+            if i ~= "c_entr_flipside" then
                 G.GAME.entr_perma_inversions[v.config.center.key] = i
             end
         end
         Entropy.invert(cards, true)
-        G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
         card.ability.left = math.max(card.ability.left - 1, 0)
     end,
     entr_credits = {art = {"mailingway"}}
@@ -7779,6 +7780,46 @@ local searing_joke = {
         }
     end
 }
+
+-- SMODS.draw_ignore_keys.searing_sprite1 = true
+-- SMODS.DrawStep({
+-- 	key = "searing_joke",
+-- 	order = 25,
+-- 	func = function(self)
+--         if self.config.center.key ~= "j_entr_searing_joke" then return end
+--         if not self.children.searing_sprite1 then 
+--             self.children.searing_sprite1 = Sprite(
+--                 0, 0, 43, 9, G.ASSET_ATLAS["entr_searing"], {x = 0, y = 0}
+--             )
+--         end
+
+--         self.children.searing_sprite1.role.draw_major = self
+--         local char_map = {
+--             ["0"] = {x = 0, y = 9},
+--             ["1"] = {x = 0, y = 5},
+--             ["2"] = {x = 0, y = 6},
+--             ["3"] = {x = 0, y = 7},
+--             ["4"] = {x = 0, y = 8},
+--             ["5"] = {x = 1, y = 5},
+--             ["6"] = {x = 1, y = 6},
+--             ["7"] = {x = 1, y = 7},
+--             ["8"] = {x = 1, y = 8},
+--             ["9"] = {x = 1, y = 9},
+--         }
+--         local str = number_format(self.ability.extra.xmult)
+--         local y = math.min(string.len(str)-1, 4)
+--         local scale = 1/(self.CT.scale + 0.05)
+--         self.children.searing_sprite1:set_sprite_pos({x=0, y=y})
+--         self.children.searing_sprite1:draw_shader(shader, nil, nil, nil, self.children.center, 0,0, (25 - 1.25 * (5 - y))/(71 * scale), 145/(95 * scale))
+--         string.reverse(str)
+--         for i = 1, string.len(str) do
+--             self.children.searing_sprite1:set_sprite_pos(char_map[str:sub(i, i)])
+--             self.children.searing_sprite1:draw_shader(shader, nil, nil, nil, self.children.center, 0,0, (25 - 1.25 * (5 - y) - (i - 1) * 7)/(71 * scale), 145/(95 * scale))
+--         end
+
+-- 	end,
+-- 	conditions = { vortex = false, facing = "front" },
+-- })
 
 return {
     items = {

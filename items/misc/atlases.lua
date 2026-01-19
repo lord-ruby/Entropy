@@ -345,3 +345,10 @@ if FinisherBossBlindStringMap then
         py = 95
     }
 end
+
+SMODS.Atlas {
+    key = "searing",
+    path = "searingjokesheet.png",
+    px = 43,
+    py = 9,
+}

@@ -93,7 +93,7 @@ end
 
 function Entropy.invert(cards, flip)
     if cards.start_dissolve then cards = {cards} end
-    if flip then
+    if flip and not Entropy.should_skip_animations() then
         Entropy.FlipThen(cards, {
         {func = function(c)
              c:juice_up()
@@ -2132,11 +2132,20 @@ function Entropy.post_create_card(card, from_booster, forced_key)
     local key = card.config.center.key
 
     if card.config and card.config.center and Entropy.FlipsideInversions and not Entropy.is_inverted(center)
-        and pseudorandom("marked") < 0.10 and G.GAME.Marked and G.STATE == G.STATES.SHOP and (not card.area or not card.area.config.collection) and Entropy.Inversion(center) then
-        local c = G.P_CENTERS[Entropy.Inversion(center)]
-        card:set_ability(c)
-        key = c.key
-        set = c.set
+        and pseudorandom("marked") < 0.10 and G.GAME.Marked and G.STATE == G.STATES.SHOP and (not card.area or not card.area.config.collection) and Entropy.Inversion(card) then
+        local ret = {}
+        if card.config.center.calculate then
+            ret = card.config.center:calculate(card, {being_inverted = true}) or {}
+        end
+        if not ret.prevent_inversion then
+            local c = G.P_CENTERS[Entropy.Inversion(card)]
+            card:set_ability(c)
+            key = c.key
+            set = c.set
+        end
+        if next(ret) and (not card.area or card.area.config.type ~= "shop") then
+            SMODS.calculate_effect(ret, card)
+        end
     elseif card.config and card.config.center
     and pseudorandom("trump_card") < 0.10 and G.GAME.TrumpCard and G.STATE == G.STATES.SMODS_BOOSTER_OPENED
     and TrumpCardAllow[set] and (not card.area or not card.area.config.collection) then
@@ -2157,25 +2166,43 @@ function Entropy.post_create_card(card, from_booster, forced_key)
         key = "p_spectral_"..type
         set = "Booster"
     end
-    if Entropy.Inversion(G.P_CENTERS[key]) and not G.SETTINGS.paused and (G.GAME.modifiers.entr_twisted or set == "Planet" and G.GAME.entr_princess) and not card.multiuse and (not card.ability or not card.ability.fromflipside) then
-        if (Entropy.allow_spawning(G.P_CENTERS[key]) and Entropy.allow_spawning(G.P_CENTERS[Entropy.Inversion(G.P_CENTERS[key])])) or forced_key or card.config.center.hidden then
-            local c = G.P_CENTERS[Entropy.Inversion(G.P_CENTERS[key])]
-            key = c.key
-            card:set_ability(c)
-            set = c.set
-            
-        else
-            local c = Entropy.GetPooledCenter(G.P_CENTERS[Entropy.Inversion(G.P_CENTERS[key])].set)
+    if Entropy.Inversion(card) and not G.SETTINGS.paused and (G.GAME.modifiers.entr_twisted or set == "Planet" and G.GAME.entr_princess) and not card.multiuse and (not card.ability or not card.ability.fromflipside) then
+        local ret = {}
+        if card.config.center.calculate then
+            ret = card.config.center:calculate(card, {being_inverted = true}) or {}
+        end
+        if not ret.prevent_inversion then
+            if (Entropy.allow_spawning(G.P_CENTERS[key]) and Entropy.allow_spawning(G.P_CENTERS[Entropy.Inversion(card)])) or forced_key or card.config.center.hidden then
+                local c = G.P_CENTERS[Entropy.Inversion(card)]
+                key = c.key
+                card:set_ability(c)
+                set = c.set
+                
+            else
+                local c = Entropy.GetPooledCenter(G.P_CENTERS[Entropy.Inversion(card)].set)
+                key = c.key
+                card:set_ability(c)
+                set = c.set
+            end
+        end
+        if next(ret) and (not card.area or card.area.config.type ~= "shop") then
+            SMODS.calculate_effect(ret, card)
+        end
+    end
+    if Entropy.Inversion(card) and not G.SETTINGS.paused and G.GAME.entr_perma_inversions and G.GAME.entr_perma_inversions[key] and not card.multiuse and (not card.ability or not card.ability.fromflipside) then
+        local ret = {}
+        if card.config.center.calculate then
+            ret = card.config.center:calculate(card, {being_inverted = true})  or {}
+        end
+        if not ret.prevent_inversion then
+            local c = G.P_CENTERS[Entropy.Inversion(card)]
             key = c.key
             card:set_ability(c)
             set = c.set
         end
-    end
-    if Entropy.Inversion(G.P_CENTERS[key]) and not G.SETTINGS.paused and G.GAME.entr_perma_inversions and G.GAME.entr_perma_inversions[key] and not card.multiuse and (not card.ability or not card.ability.fromflipside) then
-        local c = G.P_CENTERS[Entropy.Inversion(G.P_CENTERS[key])]
-        key = c.key
-        card:set_ability(c)
-        set = c.set
+        if next(ret) and (not card.area or card.area.config.type ~= "shop") then
+            SMODS.calculate_effect(ret, card)
+        end
     end
     set = G.P_CENTERS[key] and G.P_CENTERS[key].set or set
     if G.GAME.modifiers.glitched_items and not (set == "Default" or set == "Enhanced") then
@@ -2456,5 +2483,5 @@ end
 
 function Entropy.get_asc_colour(amount, text) 
     if(G.GAME.Overflow or (G.GAME.badarg and G.GAME.badarg[text])) then return HEX("FF0000") end
-    return to_big(amount) > to_big(0) and G.C.GOLD or G.C.Entropy.DARK_GRAY
+    return to_big(amount) >= to_big(0) and G.C.GOLD or G.C.Entropy.DARK_GRAY
 end
