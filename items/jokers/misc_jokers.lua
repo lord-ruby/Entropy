@@ -7761,6 +7761,8 @@ local searing_joke = {
                 ref_value = "xmult",
                 scalar_value = "xmult_mod"
             })
+            card.ability.extra.upgraded = true
+            card.children.center:set_sprite_pos({x = 6, y = 17})
             return {
                 prevent_inversion = true
             }
@@ -7778,48 +7780,67 @@ local searing_joke = {
                 card.ability.extra.xmult_mod
             }
         }
+    end,
+    set_sprites = function(self, card)
+        G.E_MANAGER:add_event(Event{
+            func = function()
+                if card.ability.extra.upgraded then
+                    card.children.center:set_sprite_pos({x = 6, y = 17})
+                end
+                return true
+            end
+        })
     end
 }
 
--- SMODS.draw_ignore_keys.searing_sprite1 = true
--- SMODS.DrawStep({
--- 	key = "searing_joke",
--- 	order = 25,
--- 	func = function(self)
---         if self.config.center.key ~= "j_entr_searing_joke" then return end
---         if not self.children.searing_sprite1 then 
---             self.children.searing_sprite1 = Sprite(
---                 0, 0, 43, 9, G.ASSET_ATLAS["entr_searing"], {x = 0, y = 0}
---             )
---         end
+local function _render_sprite(canvas, x, y, pos)
+        local quad = love.graphics.newQuad(43 * pos.x, 9 * pos.y, 43, 9, 71, 95)
+        canvas:renderTo(function() love.graphics.draw(G.ASSET_ATLAS["entr_searing"].image, quad, 0, 0, 0, 1, 1, -x, -y) end)
+end
 
---         self.children.searing_sprite1.role.draw_major = self
---         local char_map = {
---             ["0"] = {x = 0, y = 9},
---             ["1"] = {x = 0, y = 5},
---             ["2"] = {x = 0, y = 6},
---             ["3"] = {x = 0, y = 7},
---             ["4"] = {x = 0, y = 8},
---             ["5"] = {x = 1, y = 5},
---             ["6"] = {x = 1, y = 6},
---             ["7"] = {x = 1, y = 7},
---             ["8"] = {x = 1, y = 8},
---             ["9"] = {x = 1, y = 9},
---         }
---         local str = number_format(self.ability.extra.xmult)
---         local y = math.min(string.len(str)-1, 4)
---         local scale = 1/(self.CT.scale + 0.05)
---         self.children.searing_sprite1:set_sprite_pos({x=0, y=y})
---         self.children.searing_sprite1:draw_shader(shader, nil, nil, nil, self.children.center, 0,0, (25 - 1.25 * (5 - y))/(71 * scale), 145/(95 * scale))
---         string.reverse(str)
---         for i = 1, string.len(str) do
---             self.children.searing_sprite1:set_sprite_pos(char_map[str:sub(i, i)])
---             self.children.searing_sprite1:draw_shader(shader, nil, nil, nil, self.children.center, 0,0, (25 - 1.25 * (5 - y) - (i - 1) * 7)/(71 * scale), 145/(95 * scale))
---         end
+SMODS.draw_ignore_keys.searing_sprite = true
+SMODS.DrawStep({
+	key = "searing_joke",
+	order = 25,
+	func = function(self)
+        if self.config.center.key ~= "j_entr_searing_joke" then return end
 
--- 	end,
--- 	conditions = { vortex = false, facing = "front" },
--- })
+
+        if not self.children.searing_sprite then 
+            self.children.searing_sprite = SMODS.CanvasSprite(
+                0, 0, 71, 95, 71, 95, 1
+            )
+        end
+        local sprite = self.children.searing_sprite
+        love.graphics.push()
+        love.graphics.origin()
+        sprite.canvas:renderTo(love.graphics.clear, 0, 0, 0, 0)
+        local str = number_format(math.floor(self.ability.extra.xmult)):gsub("%,", "")
+        local len = string.len(str)
+        _render_sprite(sprite.canvas, 8 + 1 * (len - 1), 58, {x = 0, y = math.min(len-1, 4)})
+        local char_map = {
+            ["0"] = {x = 0, y = 9},
+            ["1"] = {x = 0, y = 5},
+            ["2"] = {x = 0, y = 6},
+            ["3"] = {x = 0, y = 7},
+            ["4"] = {x = 0, y = 8},
+            ["5"] = {x = 1, y = 5},
+            ["6"] = {x = 1, y = 6},
+            ["7"] = {x = 1, y = 7},
+            ["8"] = {x = 1, y = 8},
+            ["9"] = {x = 1, y = 9},
+        }
+        for i = 1, len do
+            _render_sprite(sprite.canvas, 8 + 1 * (len - 1) - 3 * ((len - i)), 58, char_map[str:sub(i,i)] or {x = 999, y = 999})
+        end
+
+        love.graphics.pop()
+
+        sprite.role.draw_major = self
+        sprite:draw_shader("dissolve", nil, nil, nil, self.children.center)
+	end,
+	conditions = { vortex = false, facing = "front" },
+})
 
 return {
     items = {
