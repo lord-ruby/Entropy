@@ -105,3 +105,9 @@ SMODS.Sound({
 	key = "runes",
 	path = "runes.ogg",
 })
+
+SMODS.Sound({
+	key = "invert",
+	path = "sfx_invert.ogg",
+	volume = 1.3
+})

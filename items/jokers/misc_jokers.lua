@@ -7568,17 +7568,20 @@ local void_cradle = {
         end
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.consumeables}, card, 1, card.ability.left, function(c) return Entropy.Inversion(c) end)
+        local cards = Entropy.GetHighlightedCards({G.jokers, G.consumeables, G.hand}, card, 1, card.ability.left, function(c) return Entropy.Inversion(c) end)
         return to_big(card.ability.left) > to_big(0) and #cards > 0 and #cards <= card.ability.left
     end,
     use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.consumeables}, card, 1, card.ability.left, function(c) return Entropy.Inversion(c) end)
-        Entropy.FlipThen(cards, function(c) 
-            G.GAME.entr_perma_inversions[c.config.center.key] = Entropy.Inversion(c);
-            c:set_ability(G.P_CENTERS[Entropy.Inversion(c)])
-        end)
+        local cards = Entropy.GetHighlightedCards({G.jokers, G.consumeables, G,hand}, card, 1, card.ability.left, function(c) return Entropy.Inversion(c) end)
+        for i, v in pairs(cards) do
+            local i = Entropy.Inversion(v)
+            if i ~= v.config.center.key then
+                G.GAME.entr_perma_inversions[v.config.center.key] = i
+            end
+        end
+        Entropy.invert(cards, true)
         G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
-        card.ability.left = math.max(card.ability.left, 0)
+        card.ability.left = math.max(card.ability.left - 1, 0)
     end,
     entr_credits = {art = {"mailingway"}}
 }
@@ -7732,6 +7735,51 @@ local fthof = {
     end
 }
 
+local searing_joke = {
+    order = 137,
+    object_type = "Joker",
+    key = "searing_joke",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 5, y = 17},
+    atlas = "jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        extra = {xmult = 2, xmult_mod = 1}
+    },
+    can_be_inverted = true,
+    calculate = function(self, card, context)
+        if context.being_inverted then
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "xmult",
+                scalar_value = "xmult_mod"
+            })
+            return {
+                prevent_inversion = true
+            }
+        end
+        if context.joker_main then
+            return {
+                xmult = card.ability.extra.xmult
+            }
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.extra.xmult,
+                card.ability.extra.xmult_mod
+            }
+        }
+    end
+}
+
 return {
     items = {
         surreal,
@@ -7877,6 +7925,7 @@ return {
         void_cradle,
         arachnophobia,
         pound_of_flesh,
-        fthof
+        fthof,
+        searing_joke
     }
 }

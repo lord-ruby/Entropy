@@ -2252,6 +2252,15 @@ local decs = {
 					"the {C:attention}shop{}"
 				}
 			},
+			j_entr_searing_joke = {
+				name = "Searing Joke",
+				text = {
+					"This Joker may be {C:red}Inverted{}",
+					"and gains {X:mult,C:white}X#2#{} Mult",
+					"when being {C:red}Inverted{}",
+					"{C:inactive}(Currently: {X:mult,C:white}X#1#{C:inactive} Mult)"
+				}
+			},
 		},
 		Blind = {
 			bl_entr_red = {

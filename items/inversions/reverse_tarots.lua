@@ -201,8 +201,8 @@ local princess = {
     use = function(self, card, area, copier)
         G.GAME.entr_princess = true
         for i, v in ipairs(G.I.CARD) do
-            if v.config and v.config.center and v.config.center.set == "Planet" and Entropy.Inversion(v.config.center) then
-                v:set_ability(G.P_CENTERS[Entropy.Inversion(v.config.center)])
+            if v.config and v.config.center and v.config.center.set == "Planet" then
+                Entropy.invert(v)
             end
         end
     end,

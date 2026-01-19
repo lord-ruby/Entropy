@@ -23,38 +23,23 @@ local flipside = {
         local actual = Entropy.FilterTable(cards, function(card)
             return Entropy.Inversion(card)
         end)
-        Entropy.FlipThen(cards, function(card)
-            if card.config.center.key == "c_entr_flipside" then
-                local cards2 = {}
-                for i, card in pairs(G.I.CARD) do
-                    if Entropy.Inversion(card) then
-                        cards2[#cards2+1] = card
-                    end
+        Entropy.invert(cards, true)
+    end,
+    can_be_inverted = true,
+    calculate = function(self, card, context)
+        if context.being_inverted then
+            local cards2 = {}
+            for i, card in pairs(G.I.CARD) do
+                if Entropy.Inversion(card) and card.config.center.key ~= "c_entr_flipside" then
+                    cards2[#cards2+1] = card
                 end
-                card:start_dissolve()
-                Entropy.FlipThen(cards2, function(card)
-                    card.ability.fromflipside = true
-                    card:set_ability(G.P_CENTERS[Entropy.Inversion(card)])
-                    if card.ability.glitched_crown then
-                        for i,v in pairs(card.ability.glitched_crown) do
-                            card.ability.glitched_crown[i] = Entropy.FlipsideInversions[v]
-                        end
-                    end
-                    card.ability.fromflipside = false
-                    SMODS.calculate_context({entr_consumable_inverted = true, card = card})
-                end)
-            else
-                card.ability.fromflipside = true
-                card:set_ability(G.P_CENTERS[Entropy.Inversion(card)])
-                if card.ability.glitched_crown then
-                    for i,v in pairs(card.ability.glitched_crown) do
-                        card.ability.glitched_crown[i] = Entropy.FlipsideInversions[v]
-                    end
-                end
-                card.ability.fromflipside = false
-                SMODS.calculate_context({entr_consumable_inverted = true, card = card})
             end
-        end)
+            card:start_dissolve()
+            Entropy.invert(cards2, true)
+            return {
+                prevent_inversion = true1
+            }
+        end
     end,
     loc_vars = function(self, q, card)
         return {

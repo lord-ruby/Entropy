@@ -22,7 +22,7 @@ local changeling = {
             actual[i] = cards[i]
         end
         Entropy.FlipThen(actual, function(card)
-            card:set_edition(SMODS.poll_edition({guaranteed = true, key = "entr_changeling"}))
+            card:set_edition(SMODS.poll_edition({guaranteed = true, key = "entr_changeling", no_negative = true}))
             SMODS.change_base(card, nil, pseudorandom_element({"King", "Queen", "Jack"}, pseudoseed("changeling_rank")), nil)
         end)
     end,

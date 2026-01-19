@@ -66,6 +66,7 @@ end
 
 function Entropy.Inversion(card)
     if not card then return end
+    if card.config.center and card.config.center.can_be_inverted then return card.config.center.key end
     return Entropy.FlipsideInversions[card.key or (card.config and card.config.center and card.config.center.key) or ""]
 end
 
@@ -76,8 +77,8 @@ end
 
 function Entropy.inversion_queue(card, _c, first_pass)
     local info_queue = {}
-    if (Entropy.Inversion(card) or _c.key == "c_entr_flipside") and first_pass and Entropy.show_flipside(card, _c) and Entropy.config.inversion_queues > 1 then 
-        if _c.key ~= "c_entr_flipside" then
+    if (Entropy.Inversion(card) or _c.key == "c_entr_flipside") and first_pass and Entropy.show_flipside(card, _c) and Entropy.config.inversion_queues > 1 and not c then 
+        if _c.key ~= "c_entr_flipside" and _c.key ~= Entropy.Inversion(card) then
           local inversion = G.P_CENTERS[Entropy.Inversion(_c)] 
           info_queue[#info_queue+1] = {key = "inversion_allowed", set = "Other", vars = {G.localization.descriptions[inversion.set][inversion.key].name}}
           if Entropy.config.inversion_queues > 2 then
@@ -90,6 +91,70 @@ function Entropy.inversion_queue(card, _c, first_pass)
     return info_queue
 end
 
+function Entropy.invert(cards, flip)
+    if cards.start_dissolve then cards = {cards} end
+    if flip then
+        Entropy.FlipThen(cards, {
+        {func = function(c)
+             c:juice_up()
+             play_sound("tarot1")
+        end, delay = 1.5},
+        {func = function(c)
+             c:juice_up()
+             play_sound("tarot1")
+        end, delay = 1.5},
+        {func = function(c)
+             c:juice_up()
+             play_sound("entr_invert")
+        end, delay = 1.5},
+        {func = function(c)
+            local i = Entropy.Inversion(c)
+            if i then
+                local ret = {}
+                if c.config.center.calculate then
+                    ret = c.config.center:calculate(c, {being_inverted = true})
+                end
+                if not ret.prevent_inversion then
+                    c.ability.fromflipside = true
+                    c:set_ability(G.P_CENTERS[i])
+                    if c.ability.glitched_crown then
+                        for i,v in pairs(c.ability.glitched_crown) do
+                            c.ability.glitched_crown[i] = Entropy.FlipsideInversions[v]
+                        end
+                    end
+                    c.ability.fromflipside = false
+                    SMODS.calculate_context({entr_consumable_inverted = true, card = c})
+                end
+                if next(ret) then
+                    SMODS.calculate_effect(ret, c)
+                end
+            end
+        end, delay = 2.2}})
+    else    
+        local i = Entropy.Inversion(c)
+        if i then
+            local ret = {}
+            if c.config.center.calculate then
+                ret = c.config.center:calculate(c, {being_inverted = true})
+            end
+            if not ret.prevent_inversion then
+                c.ability.fromflipside = true
+                c:set_ability(G.P_CENTERS[i])
+                if c.ability.glitched_crown then
+                    for i,v in pairs(c.ability.glitched_crown) do
+                        c.ability.glitched_crown[i] = Entropy.FlipsideInversions[v]
+                    end
+                end
+                c.ability.fromflipside = false
+                SMODS.calculate_context({entr_consumable_inverted = true, card = c})
+            end
+            if next(ret) then
+                SMODS.calculate_effect(ret, c)
+            end
+        end
+    end
+end
+
 function Entropy.FlipThen(cardlist, func, before, after)
     if not Entropy.should_skip_animations() then
         for i, v in ipairs(cardlist) do
@@ -99,7 +164,7 @@ function Entropy.FlipThen(cardlist, func, before, after)
                     Event(
                         {
                             trigger = "after",
-                            delay = 0.1,
+                            delay = 0.4,
                             func = function()
                                 if before then
                                     before(card)
@@ -122,18 +187,23 @@ function Entropy.FlipThen(cardlist, func, before, after)
     for i, v in ipairs(cardlist) do
         local card = cardlist[i]
         if card then
-            G.E_MANAGER:add_event(
-                Event(
-                    {
-                        trigger = "after",
-                        delay = 0.15,
-                        func = function()
-                            func(card, cardlist, i)
-                            return true
-                        end
-                    }
+            if type(func) ~= "table" then
+                func = {{func = func, delay = 0.5}}
+            end
+            for i, v in pairs(func) do
+                G.E_MANAGER:add_event(
+                    Event(
+                        {
+                            trigger = "after",
+                            delay = v.delay,
+                            func = function()
+                                v.func(card, cardlist, i)
+                                return true
+                            end
+                        }
+                    )
                 )
-            )
+            end
         end
     end
     if not Entropy.should_skip_animations() then
@@ -144,7 +214,7 @@ function Entropy.FlipThen(cardlist, func, before, after)
                     Event(
                         {
                             trigger = "after",
-                            delay = 0.1,
+                            delay = 0.4,
                             func = function()
                                 if card.flip then
                                     card:flip()
