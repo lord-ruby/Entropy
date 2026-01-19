@@ -785,7 +785,7 @@ local decs = {
 			},
 
 			j_entr_alabaster_anchor = {
-				name = "Alabster Anchor",
+				name = "Alabaster Anchor",
 				text = {
 					"When a card is {C:red}discarded{}",
 					"a random Joker gains {X:attention,C:white}X#1#{} values",

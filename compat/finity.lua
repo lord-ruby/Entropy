@@ -193,7 +193,7 @@ if FinisherBossBlindStringMap then
             if context.before then
                 local hearts = {}
                 for i, v in pairs(context.scoring_hand) do
-                    if v:is_suit("hearts") then hearts[#hearts+1] = v end
+                    if v:is_suit("Hearts") then hearts[#hearts+1] = v end
                 end
                 Entropy.FlipThen(hearts, function(c) c:set_edition("e_entr_sunny") end)
             end
