@@ -7761,8 +7761,7 @@ local searing_joke = {
                 ref_value = "xmult",
                 scalar_value = "xmult_mod"
             })
-            card.ability.extra.upgraded = true
-            card.children.center:set_sprite_pos({x = 6, y = 17})
+            card.ability.extra.upgraded = (card.ability.extra.upgraded or 0) + 1
             return {
                 prevent_inversion = true
             }
@@ -7781,20 +7780,10 @@ local searing_joke = {
             }
         }
     end,
-    set_sprites = function(self, card)
-        G.E_MANAGER:add_event(Event{
-            func = function()
-                if card.ability.extra.upgraded then
-                    card.children.center:set_sprite_pos({x = 6, y = 17})
-                end
-                return true
-            end
-        })
-    end
 }
 
 local function _render_sprite(canvas, x, y, pos)
-        local quad = love.graphics.newQuad(43 * pos.x, 9 * pos.y, 43, 9, 71, 95)
+        local quad = love.graphics.newQuad(43 * pos.x, 9 * pos.y, 43, 9, 142, 95)
         canvas:renderTo(function() love.graphics.draw(G.ASSET_ATLAS["entr_searing"].image, quad, 0, 0, 0, 1, 1, -x, -y) end)
 end
 
@@ -7830,10 +7819,35 @@ SMODS.DrawStep({
             ["8"] = {x = 1, y = 8},
             ["9"] = {x = 1, y = 9},
         }
+
+        local u_char_map = {
+            ["0"] = {x = 3, y = 3},
+            ["1"] = {x = 1, y = 2},
+            ["2"] = {x = 1, y = 3},
+            ["3"] = {x = 1, y = 4},
+            ["4"] = {x = 2, y = 1},
+            ["5"] = {x = 2, y = 2},
+            ["6"] = {x = 2, y = 3},
+            ["7"] = {x = 2, y = 4},
+            ["8"] = {x = 3, y = 1},
+            ["9"] = {x = 3, y = 2},
+        }
         for i = 1, len do
             _render_sprite(sprite.canvas, 8 + 1 * (len - 1) - 3 * ((len - i)), 58, char_map[str:sub(i,i)] or {x = 999, y = 999})
         end
 
+
+        local str2 = number_format(self.ability.extra.upgraded or 0):gsub("%,", "")
+        local len2 = string.len(str2)
+
+        local width = 26 + (self.ability.extra.upgraded and (6 + 8 * len2) or 0)
+
+        _render_sprite(sprite.canvas, 35 - width/2, 5, {x = 1, y = self.ability.extra.upgraded and 1 or 0})
+        if self.ability.extra.upgraded then
+            for i = 1, len2 do
+                _render_sprite(sprite.canvas, 35 + 25 - width/2 + (7 * i), 5, u_char_map[str2:sub(i,i)] or {x = 999, y = 999})
+            end
+        end
         love.graphics.pop()
 
         sprite.role.draw_major = self
