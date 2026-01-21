@@ -1850,11 +1850,12 @@ function Game:update(dt)
     or Entropy.BlindIs("bl_entr_endless_entropy_phase_two") 
     or Entropy.BlindIs("bl_entr_endless_entropy_phase_three") 
     or Entropy.BlindIs("bl_entr_endless_entropy_phase_four"))
+    or G.GAME.EE_SCREEN
     then
         G.GAME.EE_FADE = G.GAME.EE_FADE or 0
-        G.GAME.EE_FADE = G.GAME.EE_FADE + dt * 0.5
+        G.GAME.EE_FADE = G.GAME.EE_FADE + dt * 0.5 * (G.GAME.EE_FADE_SPEED or 1)
         eedt = eedt - dt
-        if eedt <= 0 then
+        if eedt <= 0 and G.GAME.blind then
             p_s = not p_s
             if p_s then
                 local atlas = "entr_blinds"
@@ -1872,11 +1873,15 @@ function Game:update(dt)
             end
         end
     end
-    if G.GAME.EE_R then
+    if G.GAME.EE_R and G.GAME.EE_FADE then
         if G.GAME.EE_FADE > 10 then
             G.GAME.EE_FADE = 10
         end
-        G.GAME.EE_FADE = G.GAME.EE_FADE - dt * 3
+        G.GAME.EE_FADE = G.GAME.EE_FADE - dt * 3 * (G.GAME.EE_FADE_SPEED or 1)
+        if G.GAME.EE_FADE <= 0 then
+            G.GAME.EE_R = nil
+            G.GAME.EE_FADE_SPEED = nil
+        end
     end
 end
 
@@ -4815,3 +4820,4 @@ function Blind:calculate(context, ...)
         return blind_calc_ref(self, context, ...)
     end
 end
+

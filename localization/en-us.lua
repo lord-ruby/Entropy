@@ -2261,6 +2261,21 @@ local decs = {
 					"{C:inactive}(Currently {X:mult,C:white}X#1#{C:inactive} Mult)"
 				}
 			},
+			j_entr_ancestral_recall = {
+				name = "Ancestral Recall",
+				text = {
+					{
+                    	"Use this Joker to draw {C:attention}three{}",
+						"extra cards then apply",
+						"{C:attention}Marked{} to them"
+					},
+					{
+						"This Joker gains {C:attention}#2#{} use#<s>2#",
+						"when defeating a Blind",
+						"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+					}
+				}
+			},
 		},
 		Blind = {
 			bl_entr_red = {
@@ -2542,7 +2557,7 @@ local decs = {
 				text = {
 					"#1# in 3 chance to",
 					"instead draw a random",
-					"Temporary card"
+					"Temporary card",
 					"when a card is drawn",
 				}
 			},

@@ -36,6 +36,76 @@ function SMODS.injectItems(...)
 
         local oldfunc = Game.main_menu
         Game.main_menu = function(change_context)
+            if not G.SAVED_GAME then 
+                G.SAVED_GAME = get_compressed(G.SETTINGS.profile..'/'..'save.jkr')
+                if G.SAVED_GAME ~= nil then G.SAVED_GAME = STR_UNPACK(G.SAVED_GAME) end
+                if G.SAVED_GAME == nil then
+                    e.config.colour = G.C.UI.BACKGROUND_INACTIVE
+                    e.config.button = nil
+                    return _can_continue
+                end
+            end
+            if G.SAVED_GAME.GAME and G.SAVED_GAME.GAME.EEBuildup then
+                G.E_MANAGER:add_event(Event{
+                    trigger = "after",
+                    blocking = false,
+                    blockable = false,
+                    delay = 0.25 * G.SETTINGS.GAMESPEED,
+                    func = function()
+                        G.GAME.EE_SCREEN = true 
+                        G.GAME.EE_R = true
+                        if not G.SPLASH_EE then
+                        G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
+                        G.GAME.EE_FADE = 0
+                        G.GAME.EE_FADE_SPEED = 10
+                        G.E_MANAGER:add_event(Event{
+                            trigger = "after",
+                            blocking = false,
+                            blockable = false,
+                            delay = 0.25 * G.SETTINGS.GAMESPEED,
+                            func = function()
+                            G.GAME.EE_FADE = 0
+                            G.SPLASH_EE:define_draw_steps({{
+                                shader = 'entr_entropic_vortex',
+                                send = {
+                                {name = 'time', ref_table = G.TIMERS, ref_value = 'REAL'},
+                                {name = 'vort_speed', val = 1},
+                                {name = 'colour_1', ref_table = G.C, ref_value = 'BLUE'},
+                                {name = 'colour_2', ref_table = G.C, ref_value = 'WHITE'},
+                                {name = 'mid_flash', val = 0},
+                                {name = 'transgender', ref_table = G.GAME, ref_value = "EE_FADE"},
+                                {name = 'vort_offset', val = (2*90.15315131*os.time())%100000},
+                                }}}
+                            )
+                            return true
+                            end
+                        })
+                        end
+                        return true
+                    end
+                })
+            else
+                G.E_MANAGER:add_event(Event{
+                    trigger = "after",
+                    blocking = false,
+                    blockable = false,
+                    delay = 0.25 * G.SETTINGS.GAMESPEED,
+                    func = function()
+                        G.E_MANAGER:add_event(Event{
+                            trigger = "after",
+                            blocking = false,
+                            blockable = false,
+                            delay = 0.25 * G.SETTINGS.GAMESPEED,
+                            func = function()
+                                G.GAME.EE_SCREEN = nil
+                                G.GAME.EE_R = true
+                                return true
+                            end
+                        })
+                        return true
+                    end
+                })
+            end
             local ret = oldfunc(change_context)
             G.SPLASH_BACK:define_draw_steps({
                 {

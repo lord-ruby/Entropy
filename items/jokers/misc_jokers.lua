@@ -7856,6 +7856,114 @@ SMODS.DrawStep({
 	conditions = { vortex = false, facing = "front" },
 })
 
+local ancestral_recall = {
+    order = 138,
+    object_type = "Joker",
+    key = "ancestral_recall",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 6, y = 17},
+    atlas = "jokers",
+    config = {
+        left = 1,
+        left_mod = 1
+    },
+    dependencies = {
+        items = {
+            "set_entr_actives",
+        }
+    },
+    loc_vars = function(self, q, card)
+        q[#q+1] = {set = "Other", key = "entr_marked"}
+        return {
+            vars = {
+                card.ability.left,
+                card.ability.left_mod
+            }
+        }
+    end,
+    demicoloncompat = true,
+    calculate = function(self, card, context)
+        if (context.end_of_round and not context.blueprint and not context.individual and not context.repetition) or context.forcetrigger then
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
+        end
+        if context.before then
+            for i, v in pairs(G.I.CARD) do
+                if type(v) == "table" and v.ability and v.ability.entr_marked then
+                    if v.area then
+                        v.area:remove_card(v)
+                    end
+                    local h = v
+                    G.E_MANAGER:add_event(Event{
+                        func = function()
+                            h:highlight(true)
+                            return true
+                        end
+                    })
+                    G.play:emplace(v)
+                end
+            end
+        end
+    end,
+    can_use = function(self, card)
+        local cards = G.deck.cards
+        return to_big(card.ability.left) > to_big(0) and #cards > 0 and G.GAME.blind and G.GAME.blind.in_blind
+    end,
+    use = function(self, card)
+        card.ability.left = card.ability.left - 1
+        for i = 1, math.min(3, #G.deck.cards) do
+            local card = draw_card(G.deck, G.hand, i*100/math.max(3, #G.deck.cards),'up', true)
+            local ind = i
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                func = function()
+                    local card = SMODS.drawn_cards[ind]
+                    if card then
+                        card:juice_up()
+                        card.ability.entr_marked = true
+                    end
+                    return true
+                end
+            })
+        end
+        G.E_MANAGER:add_event(Event{
+            trigger = "after",
+            func = function()
+                SMODS.drawn_cards = {}
+                return true
+            end
+        })
+    end,
+    generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+        SMODS.Center.generate_ui(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+        
+        local cards = {}
+        for i, v in pairs(G.I.CARD) do
+            if v.ability and v.ability.entr_marked and not v.ability.entr_marked_bypass then
+                local s = v:save()
+                local c = Card(0,0, G.CARD_W, G.CARD_H, pseudorandom_element(G.P_CARDS,pseudoseed("")), G.P_CENTERS.c_base)
+                c:load(s)
+                c.ability = SMODS.shallow_copy(c.ability)
+                c.ability.entr_marked_bypass = true
+                v.ability.entr_marked_bypass = nil                
+                table.insert(cards, c)
+            end
+        end
+        if #cards > 0 then
+            Entropy.card_area_preview(G.entrCardsPrev, desc_nodes, {
+                cards = cards,
+                override = true,
+                w = 2.2,
+                h = 0.6,
+                ml = 0,
+                scale = 0.5,
+                func_delay = 1.0,
+            })
+        end
+    end,
+}
+
 return {
     items = {
         surreal,
@@ -8002,6 +8110,7 @@ return {
         arachnophobia,
         pound_of_flesh,
         fthof,
-        searing_joke
+        searing_joke,
+        ancestral_recall
     }
 }

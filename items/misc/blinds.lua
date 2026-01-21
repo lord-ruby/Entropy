@@ -251,6 +251,7 @@ local phase1 = {
 		end
 	end,
 	set_blind = function()
+		G.GAME.EE_FADE_SPEED = nil
 		G.GAME.EE_R = nil
 		if not G.SPLASH_EE then
 			G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
@@ -311,6 +312,7 @@ local phase2 = {
 	end,
 	set_blind = function()
 		G.GAME.EE_R = nil
+		G.GAME.EE_FADE_SPEED = nil
 		if not G.SPLASH_EE then
 			G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
 			G.GAME.EE_FADE = 0
@@ -429,6 +431,7 @@ local phase3 = {
 		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 		G.HUD_blind:recalculate()
 		G.GAME.EE_R = nil
+		G.GAME.EE_FADE_SPEED = nil
 		if not G.SPLASH_EE then
 			G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
 			G.GAME.EE_FADE = 0
@@ -580,6 +583,7 @@ local phase4 = {
 			end
 		end
 		G.GAME.EE_R = nil
+		G.GAME.EE_FADE_SPEED = nil
 		if not G.SPLASH_EE then
 			G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
 			G.GAME.EE_FADE = 0

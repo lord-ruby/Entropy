@@ -27,6 +27,7 @@ local hyperbolic_chamber = {
 
 local gsr = Game.start_run
 function Game:start_run(args)
+    G.GAME.EE_SCREEN = nil
         G.butterfly_jokers = CardArea(
             9999, 9999,
             0,
