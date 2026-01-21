@@ -149,11 +149,7 @@ local destiny = {
     in_pool = function()
         return not Entropy.DeckOrSleeve("crafting")
     end,
-    weight = 0,
-    demicoloncompat = true,
-    force_use = function(self, card)
-        self:use(card)
-    end
+    weight = 0,    
 }
 
 local lust = {

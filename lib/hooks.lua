@@ -131,7 +131,9 @@ function end_round()
                 if card.ability.temporary or card.ability.temporary2 then
                     if card.area ~= G.hand and card.area ~= G.play and card.area ~= G.jokers and card.area ~= G.consumeables then card.states.visible = false end
                     card:remove_from_deck()
+                    G.entr_bypass_rebirth = true
                     card:start_dissolve()
+                    G.entr_bypass_rebirth = nil
                     if card.ability.temporary then remove_temp[#remove_temp+1]=card end
                 end
                 if card.ability.entr_yellow_sign then card.ability.entr_yellow_sign = nil end
@@ -1880,7 +1882,6 @@ function Game:update(dt)
         G.GAME.EE_FADE = G.GAME.EE_FADE - dt * 3 * (G.GAME.EE_FADE_SPEED or 1)
         if G.GAME.EE_FADE <= 0 then
             G.GAME.EE_R = nil
-            G.GAME.EE_FADE_SPEED = nil
         end
     end
 end

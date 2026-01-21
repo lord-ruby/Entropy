@@ -606,7 +606,7 @@ function Card:start_dissolve(...)
                 end
             })
         end
-    elseif Entropy.has_rune("rune_entr_rebirth") and self:is_playing_card() then
+    elseif Entropy.has_rune("rune_entr_rebirth") and self:is_playing_card() and not G.entr_bypass_rebirth then
         card_eval_status_text(
             self,
             "extra",
@@ -650,7 +650,7 @@ function Card:shatter(...)
                 end
             })
         end
-    elseif Entropy.has_rune("rune_entr_rebirth") and self:is_playing_card() then
+    elseif Entropy.has_rune("rune_entr_rebirth") and self:is_playing_card() and not G.entr_bypass_rebirth then
         card_eval_status_text(
             self,
             "extra",
