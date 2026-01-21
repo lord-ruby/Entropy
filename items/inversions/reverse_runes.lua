@@ -19,6 +19,11 @@ function Entropy.pact_mark(key)
             major = index > 1 and G.HUD_runes[index-1] or G.ROOM_ATTACH}
         }
     end
+    if #G.HUD_runes > 6 then
+		for i = 2, #G.HUD_runes do
+			G.HUD_runes[i].config.offset.y = -0.9 + 0.9 * (6 / #G.HUD_runes)
+		end
+	end
     return tag.ability.count
 end
 

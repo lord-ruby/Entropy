@@ -39,13 +39,8 @@ function SMODS.injectItems(...)
             if not G.SAVED_GAME then 
                 G.SAVED_GAME = get_compressed(G.SETTINGS.profile..'/'..'save.jkr')
                 if G.SAVED_GAME ~= nil then G.SAVED_GAME = STR_UNPACK(G.SAVED_GAME) end
-                if G.SAVED_GAME == nil then
-                    e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-                    e.config.button = nil
-                    return _can_continue
-                end
             end
-            if G.SAVED_GAME.GAME and G.SAVED_GAME.GAME.EEBuildup then
+            if G.SAVED_GAME and G.SAVED_GAME.GAME and G.SAVED_GAME.GAME.EEBuildup then
                 G.E_MANAGER:add_event(Event{
                     trigger = "after",
                     blocking = false,
