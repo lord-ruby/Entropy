@@ -1479,7 +1479,7 @@ local grotesque_joker = {
         end
     end,
     entr_credits = {
-        idea = {"crabus"},
+        idea = {"user324897"},
         art = {"LFMoth", "Lil. Mr. Slipstream"}
     }
 }
@@ -3952,7 +3952,7 @@ local scribbled_joker = {
         end
     end,
     entr_credits = {
-        idea = {"crabus"}
+        idea = {"user324897"}
     }
 }
 
@@ -4006,7 +4006,7 @@ local jokers_against_humanity = {
         end
     end,
     entr_credits = {
-        idea = {"crabus"}
+        idea = {"user324897"}
     }
 }
 
@@ -4045,7 +4045,7 @@ local blind_collectible_pack = {
         end
     end,
     entr_credits = {
-        idea = {"crabus"}
+        idea = {"user324897"}
     }
 }
 
@@ -4087,7 +4087,7 @@ local prayer_card = {
         }
     end,
     entr_credits = {
-        idea = {"crabus"}
+        idea = {"user324897"}
     }
 }
 
@@ -5788,7 +5788,7 @@ local kitchenjokers = {
         }
     end,
     entr_credits = {
-        idea = {"cassknows", "crabus"}
+        idea = {"cassknows", "user324897"}
     }
 }
 
@@ -8013,7 +8013,7 @@ return {
         ruby,
         slipstream,
         cass,
-        crabus,
+        user324897,
         hexa,
         grahkon,
         sandpaper,
