@@ -4648,18 +4648,47 @@ function SMODS.calculate_main_scoring(context, scoring_hand)
             added_cards[#added_cards+1] = card
         end
     end
-    if context.cardarea ~= G.play or (not next(SMODS.find_card('j_entr_rubber_ball')) and not next(fvc_cards)) then
+    local ff_planetarium
+    for i, v in pairs(SMODS.find_card("j_entr_planetarium")) do
+        if v.ability.extra.hand == "Flush Five" then ff_planetarium = true break end
+    end
+    if context.cardarea ~= G.play or (not next(SMODS.find_card('j_entr_rubber_ball')) and not next(fvc_cards) and not ff_planetarium) then
 	    calc_main_scoring(context, scoring_hand)
     end
-	if context.cardarea == G.play and (next(SMODS.find_card('j_entr_rubber_ball')) or next(fvc_cards)) then
+	if context.cardarea == G.play and (next(SMODS.find_card('j_entr_rubber_ball')) or next(fvc_cards) or ff_planetarium) then
         if not G.rubber_cards or #G.rubber_cards.cards == 0 then
             G.rubber_cards = {cards = Entropy.rubber_ball_scoring(scoring_hand)}
         end
         for i, v in pairs(added_cards) do G.rubber_cards.cards[#G.rubber_cards.cards+1] = v end
 		context.cardarea = G.rubber_cards
         context.scoring_hand = G.rubber_cards.cards
+        for i, v in pairs(G.rubber_cards.cards) do
+            if not SMODS.in_scoring(v, scoring_hand) then
+                local c = v
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        c:highlight(true)
+                        return true
+                    end
+                })
+            end
+        end
 		calc_main_scoring(context, G.rubber_cards.cards)
 		context.cardarea = G.play
+        for i, v in pairs(G.rubber_cards.cards) do
+            if not SMODS.in_scoring(v, scoring_hand) then
+                local c = v
+                G.E_MANAGER:add_event(Event{
+                    trigger = "after",
+                    blocking = false,
+                    delay = 3,
+                    func = function()
+                        c:highlight()
+                        return true
+                    end
+                })
+            end
+        end
         G.rubber_cards = nil
 	end
 	return

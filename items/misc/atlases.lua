@@ -352,3 +352,17 @@ SMODS.Atlas {
     px = 43,
     py = 9,
 }
+
+SMODS.Atlas {
+    key = "planetarium",
+    path = "planetarium.png",
+    px = 71,
+    py = 95,
+}
+
+SMODS.Atlas {
+    key = "modlogo",
+    path = "logo.png",
+    px = 583,
+    py = 280,
+}

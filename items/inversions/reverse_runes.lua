@@ -1023,6 +1023,20 @@ G.FUNCS.play_cards_from_highlighted = function(e)
         check_for_unlock({type = "anti_derivative"})
     end
     G.GAME.asc_power_hand = 0
+    for i, v in pairs(SMODS.find_card("j_entr_planetarium")) do
+        if v.ability.extra.hand == "Pair" then
+            local cards = {}
+            for i, v in pairs(G.hand.cards) do
+                if v.highlighted then cards[#cards+1] = v end
+            end
+            Entropy.FlipThen({cards[1], cards[#cards]}, function(c)
+                if c == cards[1] then
+                    copy_card(cards[#cards], cards[1])
+                end
+            end)
+            break
+        end
+    end
     play_ref(e)
 end
 

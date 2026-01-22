@@ -319,4 +319,47 @@ local entropyTabs = function()
 		},
 	}
 end
+
+SMODS.current_mod.custom_ui = function(nodes)
+    local logo = {
+        n = G.UIT.R,
+        config = {
+            align = 'cm',
+            colour = {0,0,0,0},
+            r = 0.3,
+            padding = 0.25
+        },
+        nodes = {
+            {
+                n = G.UIT.R,
+                config = { align = 'cm' },
+                nodes = {
+                    {
+                        n = G.UIT.O,
+                        config = {
+                            object = SMODS.create_sprite(
+                                5, 0,
+                                8,4,
+                                'entr_modlogo',
+                                { x = 0, y = 0 }
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+    table.insert(nodes, 2, logo)
+    return nodes
+end
+
+SMODS.current_mod.ui_config = {
+	author_colour = Entropy.reverse_legendary_gradient,
+    tab_button_colour = Entropy.reverse_legendary_gradient,
+	back_colour = Entropy.reverse_legendary_gradient,
+	bg_colour = adjust_alpha(G.C.BLACK, 0.95),
+	colour = darken(G.C.BLACK, .2),
+	outline_colour = lighten(G.C.BLACK, .2),
+}
+
 SMODS.current_mod.extra_tabs = entropyTabs

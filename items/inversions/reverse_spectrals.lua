@@ -164,14 +164,16 @@ local siphon = {
         Entropy.FlipThen(rcards, function(card, area)
             card:set_edition(lower)
         end)
-        G.jokers.highlighted[1]:start_dissolve()
+        if not SMODS.is_eternal(G.jokers.highlighted[1]) then
+            G.jokers.highlighted[1]:start_dissolve() 
+        end
     end,
     can_use = function(self, card)
         return G.jokers 
         and #G.jokers.highlighted == 1 
         and G.jokers.highlighted[1] 
         and G.jokers.highlighted[1].edition 
-        and G.jokers.highlighted[1].ability and not G.jokers.highlighted[1].ability.cry_absolute
+        and not SMODS.is_eternal(G.jokers.highlighted[1])
 	end,
     loc_vars = function(self, q, card)
         local str = localize("k_none")

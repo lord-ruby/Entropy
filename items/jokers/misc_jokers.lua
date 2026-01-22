@@ -7867,7 +7867,8 @@ local ancestral_recall = {
     atlas = "jokers",
     config = {
         left = 1,
-        left_mod = 1
+        left_mod = 1,
+        hands = -1
     },
     dependencies = {
         items = {
@@ -7879,7 +7880,8 @@ local ancestral_recall = {
         return {
             vars = {
                 card.ability.left,
-                card.ability.left_mod
+                card.ability.left_mod,
+                card.ability.hands
             }
         }
     end,
@@ -7927,6 +7929,10 @@ local ancestral_recall = {
                 end
             })
         end
+        ease_hands_played(card.ability.hands)
+        if G.GAME.current_round.hands_left <= 0 then
+            end_round()
+        end
         G.E_MANAGER:add_event(Event{
             trigger = "after",
             func = function()
@@ -7963,6 +7969,202 @@ local ancestral_recall = {
         end
     end,
 }
+
+local planetarium = {
+    order = 139,
+    object_type = "Joker",
+    key = "planetarium",
+    rarity = 3,
+    cost = 8,
+    eternal_compat = true,
+    pos = {x = 0, y = 0},
+    soul_pos = {x = 4, y = 2},
+    atlas = "planetarium",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        extra = {hand = "none", fullhouse_dollars = 4, fullhouse_mult = 1.5, threeoak_mult = 2}
+    },
+    calculate = function(self, card, context)
+        if context.using_consumeable then
+            local v = context.consumeable
+            local hand = v.ability.hand_type or v.ability.handname
+            if hand then
+                card.ability.extra.hand = hand
+                card:juice_up()
+            end
+        end
+        if card.ability.extra.hand == "High Card" then
+            if context.before then
+                for i, v in pairs(G.I.CARD) do
+                    if type(v) == "table" and v.ability and v.ability.entr_marked then
+                        if v.area then
+                            v.area:remove_card(v)
+                        end
+                        local h = v
+                        G.E_MANAGER:add_event(Event{
+                            func = function()
+                                h:highlight(true)
+                                return true
+                            end
+                        })
+                        G.play:emplace(v)
+                    end
+                end
+            end
+            if context.after then
+                for i, v in pairs(G.play.cards) do
+                    local c = v
+                    if not SMODS.in_scoring(v, context.scoring_hand) then
+                        G.E_MANAGER:add_event(Event{
+                            func = function()
+                                c:juice_up()
+                                c.ability.entr_marked = true
+                                return true
+                            end
+                        })
+                    end
+                end
+            end
+            if context.evaluate_poker_hand then
+                return {
+                    replace_scoring_hand = "High Card",
+                    replace_scoring_name = "High Card"
+                }
+            end
+        end
+        if card.ability.extra.hand == "Three of a Kind" then
+            if context.individual and context.cardarea == G.play then
+                local sum = 0
+                for i, v in pairs(G.play) do
+                    local id = v:get_id()
+                    if id > 0 then sum = sum + id end
+                end
+                if sum % 3 == 0 then
+                    return {
+                        xmult = card.ability.extra.threeoak_mult
+                    }
+                end
+            end
+        end
+        if card.ability.extra.hand == "Full House" then
+            if context.individual and context.cardarea == G.play then
+                local ids = {}
+                for i, v in pairs(context.scoring_hand) do
+                    local id = v:get_id()
+                    if id > 0 then ids[#ids+1] = id end
+                end
+                table.sort(ids)
+                return {
+                    dollars = context.other_card:get_id() == ids[1] and card.ability.extra.fullhouse_dollars or nil,
+                    xmult = context.other_card:get_id() == ids[#ids] and card.ability.extra.fullhouse_mult or nil
+                }
+            end
+        end
+        if card.ability.extra.hand == "Five of a Kind" then
+            if context.before and #G.play.cards == 5 then
+                Entropy.FlipThen(context.scoring_hand, function(c)
+                    Entropy.randomise_once(c, {
+                        "Enhancement","Enhancement","Enhancement","Enhancement",
+                        "Seal",
+                        "Edition","Edition",
+                    }, "entr_planetarium_5oak", true)
+                    Entropy.randomize_rank_suit(c, nil, true, "entr_planetarium_5oak_suit")
+                end)
+            end
+        end
+        if card.ability.extra.hand == "Flush Five" then
+            if context.end_of_round then
+                card.ability.extra.inactive = nil
+            end
+        end
+    end,
+    loc_vars = function(self, q, card)
+        if card.ability.extra.hand == "High Card" then
+            q[#q+1] = {set = "Other", key = "entr_marked"}
+        end
+        local vars = {}
+        if card.ability.extra.hand == "Three of a Kind" then
+            vars = {
+                card.ability.extra.threeoak_mult
+            }
+        end
+        if card.ability.extra.hand == "Full House" then
+            vars = {
+                card.ability.extra.fullhouse_dollars,
+                card.ability.extra.fullhouse_mult
+            }
+        end
+        return {
+            key = card.ability.extra.hand ~= "none" and "j_entr_planetarium_"..card.ability.extra.hand or nil,
+            vars = vars
+        }
+    end,
+    generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+        SMODS.Center.generate_ui(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+        if card.ability.extra.hand == "High Card" then
+            
+            local cards = {}
+            for i, v in pairs(G.I.CARD) do
+                if v.ability and v.ability.entr_marked and not v.ability.entr_marked_bypass then
+                    local s = v:save()
+                    local c = Card(0,0, G.CARD_W, G.CARD_H, pseudorandom_element(G.P_CARDS,pseudoseed("")), G.P_CENTERS.c_base)
+                    c:load(s)
+                    c.ability = SMODS.shallow_copy(c.ability)
+                    c.ability.entr_marked_bypass = true
+                    v.ability.entr_marked_bypass = nil                
+                    table.insert(cards, c)
+                end
+            end
+            if #cards > 0 then
+                Entropy.card_area_preview(G.entrCardsPrev, full_UI_table.multi_box[1], {
+                    cards = cards,
+                    override = true,
+                    w = 2.2,
+                    h = 0.6,
+                    ml = 0,
+                    scale = 0.5,
+                    func_delay = 1.0,
+                })
+            end
+        end
+    end,
+}
+
+SMODS.DrawStep({
+	key = "planetarium",
+	order = 25,
+	func = function(self)
+        if self.config.center.key ~= "j_entr_planetarium" then return end
+        local pos_map = {
+            ["High Card"] = {x = 1, y = 0},
+            ["Pair"] = {x = 2, y = 0},
+            ["Two Pair"] = {x = 3, y = 0},
+            ["Three of a Kind"] = {x = 4, y = 0},
+            ["Straight"] = {x = 5, y = 0},
+
+            ["Flush"] = {x = 1, y = 1},
+            ["Full House"] = {x = 2, y = 1},
+            ["Four of a Kind"] = {x = 3, y = 1},
+            ["Straight Flush"] = {x = 4, y = 1},
+            ["Five of a Kind"] = {x = 5, y = 1},
+
+            ["Flush House"] = {x = 1, y = 2},
+            ["Flush Five"] = {x = 2, y = 2},
+            ["entr_derivative"] = {x = 3, y = 2},
+        }
+        local pos = pos_map[self.ability.extra.hand] or {x = 4, y = 2}
+        if self.ability.extra.pos ~= pos and pos then
+            self.ability.extra.pos = pos
+            self.children.floating_sprite:set_sprite_pos(pos)
+            self.children.floating_sprite:reset()
+        end
+	end,
+	conditions = { vortex = false, facing = "front" },
+})
 
 return {
     items = {
@@ -8111,6 +8313,7 @@ return {
         pound_of_flesh,
         fthof,
         searing_joke,
-        ancestral_recall
+        ancestral_recall,
+        planetarium
     }
 }

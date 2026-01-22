@@ -1832,7 +1832,7 @@ function Entropy.show_flipside()
     return next(SMODS.find_card("c_entr_flipside")) or next(SMODS.find_card("j_entr_void_cradle")) or next(SMODS.find_card("c_entr_dagaz")) or Entropy.has_rune("rune_entr_dagaz") or next(SMODS.find_card("j_entr_shadow_crystal"))
 end
 
-function Entropy.randomise_once(card, types, seed)
+function Entropy.randomise_once(card, types, seed, noflip)
     local mtype = pseudorandom_element(types or {"Enhancement", "Edition", "Seal", "Base"}, pseudoseed(seed or "ihwaz"))    
     if mtype == "Edition" then
         local edition = SMODS.poll_edition({guaranteed = true, key = "entr_ihwaz"})
@@ -2117,6 +2117,22 @@ function Entropy.rubber_ball_scoring(cards)
     else
         for i, v in pairs(cards) do
             new_cards[#new_cards+1] = v
+        end
+    end
+    for i, v in pairs(SMODS.find_card("j_entr_planetarium")) do
+        if v.ability.extra.hand == "Flush Five" and not v.ability.extra.inactive then
+            local _card = copy_card(new_cards[1])
+            if _card then
+                G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+                v.ability.extra.inactive = true
+                _card:add_to_deck()
+                G.play:emplace(_card)
+                _card.states.visible = nil
+                _card:start_materialize()
+                G.deck.config.card_limit = G.deck.config.card_limit + 1
+                table.insert(G.playing_cards, _card)
+                new_cards[#new_cards+1] = _card
+            end
         end
     end
     return new_cards

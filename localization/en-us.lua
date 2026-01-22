@@ -2267,12 +2267,118 @@ local decs = {
 					{
                     	"Use this Joker to draw {C:attention}three{}",
 						"extra cards then apply",
-						"{C:attention}Marked{} to them"
+						"{C:attention}Marked{} to them",
+						"and lose {C:red}#3#{} Hands for",
+						"the rest of the current round"
 					},
 					{
 						"This Joker gains {C:attention}#2#{} use#<s>2#",
 						"when defeating a Blind",
 						"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+					}
+				}
+			},
+
+			j_entr_planetarium = {
+				name = "Planetarium",
+				text = {
+					"Changes {C:entr_ascended}Effect{} based on",
+					"the last used {C:planet}Planet{} or {C:purple}Star{}",
+					"card"
+				}
+			},
+
+			["j_entr_planetarium_High Card"] = {
+				name = "Planetarium: Pluto",
+				text = {
+					{
+						"All hands score as {C:attention}High Card{}"
+					},
+					{
+						"Apply {C:attention}Marked{} to",
+						"all unscored cards"
+					},
+					{
+						"Changes {C:entr_ascended}Effect{} based on",
+						"the last used {C:planet}Planet{} or {C:purple}Star{}",
+						"card"
+					}
+				}
+			},
+			["j_entr_planetarium_Pair"] = {
+				name = "Planetarium: Mercury",
+				text = {
+					{
+						"Before hand is played convert",
+						"the {C:attention}leftmost{} selected card",
+						"into the {C:attention}rightmost{} selected card"
+					},
+					{
+						"Changes {C:entr_ascended}Effect{} based on",
+						"the last used {C:planet}Planet{} or {C:purple}Star{}",
+						"card"
+					}
+				}
+			},
+			["j_entr_planetarium_Three of a Kind"] = {
+				name = "Planetarium: Venus",
+				text = {
+					{
+						"If played {C:attention}Ranks{} add",
+						"to a multiple of {C:attention}3{}",
+						"scored cards give {X:mult,C:white}X#1#{} Mult"
+					},
+					{
+						"Changes {C:entr_ascended}Effect{} based on",
+						"the last used {C:planet}Planet{} or {C:purple}Star{}",
+						"card"
+					}
+				}
+			},
+			["j_entr_planetarium_Full House"] = {
+				name = "Planetarium: Terra",
+				text = {
+					{
+						"Lowest {C:attention}rank{} in played hand",
+						"earns {C:money}$#1#{} when scored",
+						"Highest {C:attention}rank{} in played hand",
+						"gives {X:mult,C:white}X#2#{} Mult"
+					},
+					{
+						"Changes {C:entr_ascended}Effect{} based on",
+						"the last used {C:planet}Planet{} or {C:purple}Star{}",
+						"card"
+					}
+				}
+			},
+			["j_entr_planetarium_Five of a Kind"] = {
+				name = "Planetarium: Planet X",
+				text = {
+					{
+						"If exactly {C:attention}5{} cards",
+						"are played all {C:attention}scored{} cards",
+						"gain a random {C:attention}Modification{} and",
+						"ranomize suits"
+					},
+					{
+						"Changes {C:entr_ascended}Effect{} based on",
+						"the last used {C:planet}Planet{} or {C:purple}Star{}",
+						"card"
+					}
+				}
+			},
+			["j_entr_planetarium_Flush Five"] = {
+				name = "Planetarium: Eris",
+				text = {
+					{
+						"Copy the {C:attention}first{} scored card",
+						"each round then add it to",
+						"your {C:attention}played hand{}"
+					},
+					{
+						"Changes {C:entr_ascended}Effect{} based on",
+						"the last used {C:planet}Planet{} or {C:purple}Star{}",
+						"card"
 					}
 				}
 			},
@@ -6710,7 +6816,19 @@ local decs = {
                     "Toggles for various UI elements added by Entropy"
                 }
             }
-        }
+        },
+		Mod = {
+            entr = {
+				name = "Entropy",
+				text = {
+					"{s:1.2}A Very {C:red,s:1.2}Chaotic{s:1.2} Balatro mod inspired",
+					"{s:1.2}by {C:red,s:1.2}TBOI: Repentance{s:1.2} among other things",
+					"{s:1.2}focused on {C:red,s:1.2}Inverted{s:1.2} Consumables and",
+					"{s:1.2}expanding on Vanilla mechanics in various other ways",
+					"{s:1.2}Generally Vanilla adjacent but not exactly Vanilla{C:purple,s:1.2}+{}"
+				}
+			}
+		}
 	},
 	misc = {
 		tutorial = {
