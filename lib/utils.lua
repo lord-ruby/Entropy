@@ -1841,9 +1841,13 @@ function Entropy.randomise_once(card, types, seed, noflip)
     end
     if mtype == "Enhancement" then
         local enhancement = SMODS.poll_enhancement({guaranteed = true, key = seed or "entr_ihwaz"})
-        card:flip()
+        if not noflip then
+            card:flip()
+        end
         card:set_ability(G.P_CENTERS[enhancement])
-        card:flip()
+        if not noflip then
+            card:flip()
+        end
     end
     if mtype == "Seal" then
         local seal = SMODS.poll_seal{guaranteed = true, key = seed or "ihwaz"}
@@ -1851,9 +1855,13 @@ function Entropy.randomise_once(card, types, seed, noflip)
         card:juice_up()
     end
     if mtype == "Base" then
-        card:flip()
+        if not noflip then
+            card:flip()
+        end
         Entropy.randomize_rank_suit(card, true, true, seed or "ihwaz")
-        card:flip()
+        if not noflip then
+            card:flip()
+        end
     end
 end
 
@@ -1922,6 +1930,23 @@ end
 
 function Entropy.misc_calculations(self, context)
     if not context then return end
+    if context.before then
+        for i, v in pairs(G.I.CARD) do
+            if type(v) == "table" and v.ability and v.ability.entr_marked then
+                if v.area then
+                    v.area:remove_card(v)
+                end
+                local h = v
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        h:highlight(true)
+                        return true
+                    end
+                })
+                G.play:emplace(v)
+            end
+        end
+    end
     if context.repetition and context.cardarea == G.play and context.other_card then 
         local repetitions = 0
         local chains_count = Entropy.has_rune("rune_entr_chains") and Entropy.has_rune("rune_entr_chains").ability.count or 0

@@ -339,7 +339,7 @@ if FinisherBossBlindStringMap then
                         G.hand:emplace(copy)
                         copy:set_edition("e_negative")
                         copy.ability.temporary = true
-                        table.insert(G.playing_cards. copy)
+                        table.insert(G.playing_cards, copy)
                     end
                 end
             end
@@ -377,7 +377,7 @@ if FinisherBossBlindStringMap then
             card.ability.dollars_earn = 0
             G.E_MANAGER:add_event(Event{
                 func = function()
-                    SMODS.calculate_effect{card = card, message = localize("k_reset_ex"), colour = G.C.RED}
+                    SMODS.calculate_effect{card = card, message = localize("k_reset"), colour = G.C.RED}
                     return true
                 end
             })

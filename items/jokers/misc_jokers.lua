@@ -7125,30 +7125,6 @@ local texas_hold_em = {
                 end
             end
         end
-        if context.before then
-            for i, v in pairs(G.I.CARD) do
-                if type(v) == "table" and v.ability and v.ability.entr_marked then
-                    if v.area then
-                        v.area:remove_card(v)
-                    end
-                    local h = v
-                    G.E_MANAGER:add_event(Event{
-                        func = function()
-                            h:highlight(true)
-                            return true
-                        end
-                    })
-                    G.play:emplace(v)
-                end
-            end
-        end
-        if context.end_of_round and not context.repetition and not context.individual and not context.blueprint then
-            for i, v in pairs(G.I.CARD) do
-                if type(v) == "table" and v.ability and v.ability.entr_marked then
-                    v.ability.entr_marked = nil
-                end
-            end
-        end
     end,    
     entr_credits = {
         idea = {"cassknows"},
@@ -7747,7 +7723,7 @@ local searing_joke = {
     atlas = "jokers",
     dependencies = {
         items = {
-            "set_entr_misc_jokers",
+            "set_entr_inversions",
         }
     },
     config = {
@@ -7890,23 +7866,6 @@ local ancestral_recall = {
         if (context.end_of_round and not context.blueprint and not context.individual and not context.repetition) or context.forcetrigger then
             SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
         end
-        if context.before then
-            for i, v in pairs(G.I.CARD) do
-                if type(v) == "table" and v.ability and v.ability.entr_marked then
-                    if v.area then
-                        v.area:remove_card(v)
-                    end
-                    local h = v
-                    G.E_MANAGER:add_event(Event{
-                        func = function()
-                            h:highlight(true)
-                            return true
-                        end
-                    })
-                    G.play:emplace(v)
-                end
-            end
-        end
     end,
     can_use = function(self, card)
         local cards = G.deck.cards
@@ -7998,23 +7957,6 @@ local planetarium = {
             end
         end
         if card.ability.extra.hand == "High Card" then
-            if context.before then
-                for i, v in pairs(G.I.CARD) do
-                    if type(v) == "table" and v.ability and v.ability.entr_marked then
-                        if v.area then
-                            v.area:remove_card(v)
-                        end
-                        local h = v
-                        G.E_MANAGER:add_event(Event{
-                            func = function()
-                                h:highlight(true)
-                                return true
-                            end
-                        })
-                        G.play:emplace(v)
-                    end
-                end
-            end
             if context.after then
                 for i, v in pairs(G.play.cards) do
                     local c = v
@@ -8166,6 +8108,42 @@ SMODS.DrawStep({
 	conditions = { vortex = false, facing = "front" },
 })
 
+local double_down = {
+    order = 140,
+    object_type = "Joker",
+    key = "double_down",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 1, y = 0},
+    atlas = "placeholder",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    calculate = function(self, card, context)
+        if context.individual and not context.other_card.entr_will_be_marked and context.other_card.config.center_key == "m_lucky" then
+            local c = context.other_card
+            c.entr_will_be_marked = true
+            G.E_MANAGER:add_event(Event{
+                func = function()
+                    c.ability.entr_marked = true
+                    return true
+                end
+            })
+            return nil, true
+        end
+    end,
+    loc_vars = function(self, q)
+        q[#q+1] = G.P_CENTERS.m_lucky
+        q[#q+1] = {set = "Other", key = "entr_marked"}
+    end,
+    entr_credits = {
+        idea = {"cassknows"}
+    }
+}
+
 return {
     items = {
         surreal,
@@ -8314,6 +8292,7 @@ return {
         fthof,
         searing_joke,
         ancestral_recall,
-        planetarium
+        planetarium,
+        double_down
     }
 }

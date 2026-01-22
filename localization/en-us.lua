@@ -2283,8 +2283,8 @@ local decs = {
 				name = "Planetarium",
 				text = {
 					"Changes {C:entr_ascended}Effect{} based on",
-					"the last used {C:planet}Planet{} or {C:purple}Star{}",
-					"card"
+					"the last used hand specific",
+					"{C:planet}Planet{} or {C:purple}Star{} card"
 				}
 			},
 
@@ -2300,8 +2300,8 @@ local decs = {
 					},
 					{
 						"Changes {C:entr_ascended}Effect{} based on",
-						"the last used {C:planet}Planet{} or {C:purple}Star{}",
-						"card"
+						"the last used hand specific",
+						"{C:planet}Planet{} or {C:purple}Star{} card"
 					}
 				}
 			},
@@ -2315,8 +2315,8 @@ local decs = {
 					},
 					{
 						"Changes {C:entr_ascended}Effect{} based on",
-						"the last used {C:planet}Planet{} or {C:purple}Star{}",
-						"card"
+						"the last used hand specific",
+						"{C:planet}Planet{} or {C:purple}Star{} card"
 					}
 				}
 			},
@@ -2330,8 +2330,8 @@ local decs = {
 					},
 					{
 						"Changes {C:entr_ascended}Effect{} based on",
-						"the last used {C:planet}Planet{} or {C:purple}Star{}",
-						"card"
+						"the last used hand specific",
+						"{C:planet}Planet{} or {C:purple}Star{} card"
 					}
 				}
 			},
@@ -2346,8 +2346,8 @@ local decs = {
 					},
 					{
 						"Changes {C:entr_ascended}Effect{} based on",
-						"the last used {C:planet}Planet{} or {C:purple}Star{}",
-						"card"
+						"the last used hand specific",
+						"{C:planet}Planet{} or {C:purple}Star{} card"
 					}
 				}
 			},
@@ -2362,8 +2362,8 @@ local decs = {
 					},
 					{
 						"Changes {C:entr_ascended}Effect{} based on",
-						"the last used {C:planet}Planet{} or {C:purple}Star{}",
-						"card"
+						"the last used hand specific",
+						"{C:planet}Planet{} or {C:purple}Star{} card"
 					}
 				}
 			},
@@ -2377,11 +2377,18 @@ local decs = {
 					},
 					{
 						"Changes {C:entr_ascended}Effect{} based on",
-						"the last used {C:planet}Planet{} or {C:purple}Star{}",
-						"card"
+						"the last used hand specific",
+						"{C:planet}Planet{} or {C:purple}Star{} card"
 					}
 				}
 			},
+			j_entr_double_down = {
+				name = "Double Down",
+				text = {
+					"Apply {C:attention}Marked{} to",
+					"scored {C:attention}Lucky{} cards"
+				}
+			}
 		},
 		Blind = {
 			bl_entr_red = {
