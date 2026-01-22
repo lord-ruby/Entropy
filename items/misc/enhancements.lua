@@ -64,7 +64,7 @@ local prismatic = {
           "set_entr_entropics"
         }
     },
-	order = 10000+4,
+	order = math.huge,
 	object_type = "Enhancement",
 	key = "prismatic",
 	atlas = "enhancements",
