@@ -15,6 +15,7 @@ Entropy.AltBlinds = {}
 Entropy.FlipsideInversions = {}
 Entropy.FlipsidePureInversions = {}
 Entropy.EnhancementFuncs = {}
+Entropy.Planetarium = {}
 Entropy.RarityChecks = (Cryptid and Cryptid.memepack) and { --using legacy stuff to check for cryptid and not cryptlib
     [0]="cry_candy",
     1,

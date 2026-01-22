@@ -8023,6 +8023,9 @@ local planetarium = {
                 card.ability.extra.inactive = nil
             end
         end
+        if Entropy.Planetarium[card.ability.extra.hand] and Entropy.Planetarium[card.ability.extra.hand].calculate then
+            return Entropy.Planetarium[card.ability.extra.hand].calculate(self, card, context)
+        end
     end,
     loc_vars = function(self, q, card)
         if card.ability.extra.hand == "High Card" then
@@ -8039,6 +8042,9 @@ local planetarium = {
                 card.ability.extra.fullhouse_dollars,
                 card.ability.extra.fullhouse_mult
             }
+        end
+        if Entropy.Planetarium[card.ability.extra.hand] and Entropy.Planetarium[card.ability.extra.hand].loc_vars then
+            vars = Entropy.Planetarium[card.ability.extra.hand].loc_vars(self, q, card)
         end
         return {
             key = card.ability.extra.hand ~= "none" and "j_entr_planetarium_"..card.ability.extra.hand or nil,
@@ -8098,9 +8104,11 @@ SMODS.DrawStep({
             ["Flush Five"] = {x = 2, y = 2},
             ["entr_derivative"] = {x = 3, y = 2},
         }
-        local pos = pos_map[self.ability.extra.hand] or {x = 4, y = 2}
+        local comp = Entropy.Planetarium[self.ability.extra.hand] or {}
+        local pos = comp.pos or pos_map[self.ability.extra.hand] or {x = 4, y = 2}
         if self.ability.extra.pos ~= pos and pos then
             self.ability.extra.pos = pos
+            self.children.floating_sprite.atlas = comp.atlas or G.ASSET_ATLAS["entr_planetarium"]
             self.children.floating_sprite:set_sprite_pos(pos)
             self.children.floating_sprite:reset()
         end
