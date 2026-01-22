@@ -297,7 +297,7 @@ local decs = {
 				text = {
 					{
 						"This Joker transforms into a",
-						"random {C:purple}Hidden{} consumable when",
+						"random {C:legendary,E:1}hidden{} consumable when",
 						"a {C:attention}Blind{} is selected"
 					},
 					{
@@ -1716,7 +1716,7 @@ local decs = {
                 name = "Enlightenment",
                 text = {
 					"Allows {C:attention}The Fool{} to copy",
-					"any {C:red}non-Inverted{} or {C:red}Hidden{} consumable",
+					"any {C:red}non-Inverted{} or {C:red}hidden{} consumable",
 					"or Booster Pack, allows {C:red}The Master{} to copy",
 					"{C:red}Twisted Packs{}"
                 },
@@ -4244,7 +4244,7 @@ local decs = {
 			c_entr_serpents = {
 				name = "Pact of Serpents",
 				text = {
-					"Create a random {C:attention}Hidden{} consumable",
+					"Create a random {C:legendary,E:1}hidden{} consumable",
 					"{C:inactive}(May overflow){}"
 				}
 			},
@@ -4581,7 +4581,7 @@ local decs = {
 				name = "Rune of Oss",
 				text = {
 					"The next opened {C:attention}Booster Pack{}",
-					"will contain a {C:purple}Hidden{} consumable",
+					"will contain a {C:legendary,E:1}hidden{} consumable",
 					"{C:inactive}(If possible)"
 				}
 			},
@@ -4589,7 +4589,7 @@ local decs = {
 				name = "Rune of Oss{C:purple}+{}",
 				text = {
 					"The next opened {C:attention}Booster Pack{}",
-					"will contain a {C:purple}Hidden{} consumable",
+					"will contain a {C:legendary,E:1}hidden{} consumable",
 					"and a {C:purple}Rune{} is {C:purple,E:1}generated{} when this occurs",
 					"{C:inactive}(If possible)"
 				}
@@ -5417,7 +5417,7 @@ local decs = {
 				name = "Oss",
 				text = {
 					"The next opened {C:attention}Booster Pack{}",
-					"will contain a {C:purple}Hidden{} consumable",
+					"will contain a {C:legendary,E:1}hidden{} consumable",
 					"{C:inactive}(If possible)"
 				}
 			},
@@ -5425,7 +5425,7 @@ local decs = {
 				name = "Oss{C:purple}+{}",
 				text = {
 					"The next opened {C:attention}Booster Pack{}",
-					"will contain a {C:purple}Hidden{} consumable",
+					"will contain a {C:legendary,E:1}hidden{} consumable",
 					"and a {C:purple}Rune{} is {C:purple,E:1}generated{} when this occurs",
 					"{C:inactive}(If possible)"
 				}
