@@ -2348,7 +2348,7 @@ end
 local is_jollyref = Card.is_jolly
 function Card:is_jolly()
 	if next(SMODS.find_card("j_entr_dekatria")) then return true end
-    return is_jollyref(self)
+    return is_jollyref and is_jollyref(self) or nil
 end
 
 local AscendantTags = {
