@@ -240,31 +240,35 @@ local servant = {
     inversion = "c_emperor",
     pos = {x=4, y = 0},
     use = function(self, card, area, copier)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card, 1, card.ability.select)
+        local cards = Entropy.GetHighlightedCards({{cards = G.I.CARD}}, card, 1, card.ability.select)
         for i, v in pairs(cards) do
-            if Entropy.Inversion(v.config.center) then
+            if v.config and v.config.center and Entropy.Inversion(v.config.center) and v.ability and v.ability.consumeable then
                 local set = G.P_CENTERS[Entropy.Inversion(v.config.center)].set
                 for i = 1, card.ability.create do
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            if G.consumeables.config.card_count < G.consumeables.config.card_limit then
+                    if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                        G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+                        G.E_MANAGER:add_event(Event({
+                            func = function()
                                 local c = create_card(set, G.consumeables, nil, nil, nil, nil, nil)
                                 G.GAME.last_inversion = nil
                                 c:add_to_deck()
                                 G.consumeables:emplace(c)
+                                G.GAME.consumeable_buffer = 0
+                                return true
                             end
-                            return true
-                        end
-                    }))
+                        }))
+                    end
                 end
             end
 
         end
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card, 1, card.ability.select)
+        local cards = Entropy.GetHighlightedCards({{cards = G.I.CARD}}, card, 1, card.ability.select)
         local num = #cards
-        return num > 0 and num <= card.ability.select and Entropy.TableAny(cards, function(value) return Entropy.Inversion(value.config.center) end)
+        local offset = 0
+        if card.area == G.consumeables.cards then offset = -1 end
+        return num > 0 and num <= card.ability.select and Entropy.TableAny(cards, function(value) return Entropy.Inversion(value.config.center) end) and #G.consumeables.cards + offset < G.consumeables.config.card_limit
 	end,
     loc_vars = function(self, q, card)
         return {
