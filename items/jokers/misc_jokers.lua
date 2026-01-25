@@ -7768,7 +7768,8 @@ SMODS.DrawStep({
 	key = "searing_joke",
 	order = 25,
 	func = function(self)
-        if self.config.center.key ~= "j_entr_searing_joke" then return end
+        local card = self.ability.glitched_crown and self.ability.glitched_crown[self.glitched_index] or self.config.center_key
+        if card ~= "j_entr_searing_joke" or not G.P_CENTERS[card].discovered or not G.P_CENTERS[card].unlocked then return end
 
 
         if not self.children.searing_sprite then 
@@ -7945,7 +7946,7 @@ local planetarium = {
         }
     },
     config = {
-        extra = {hand = "none", fullhouse_dollars = 4, fullhouse_mult = 1.5, threeoak_mult = 2}
+        extra = {hand = "none", fullhouse_dollars = 4, fullhouse_mult = 1.5, threeoak_mult = 2, fouroak_discards = 1}
     },
     calculate = function(self, card, context)
         if context.using_consumeable then
@@ -8006,6 +8007,15 @@ local planetarium = {
                 }
             end
         end
+        if card.ability.extra.hand == "Four of a Kind" then
+            if context.joker_main then
+                ease_discard(card.ability.extra.fouroak_discards)
+                return {
+                    message = localize("k_plus_discard"),
+                    colour = G.C.RED
+                }
+            end
+        end
         if card.ability.extra.hand == "Five of a Kind" then
             if context.before and #G.play.cards == 5 then
                 Entropy.FlipThen(context.scoring_hand, function(c)
@@ -8021,6 +8031,21 @@ local planetarium = {
         if card.ability.extra.hand == "Flush Five" then
             if context.end_of_round then
                 card.ability.extra.inactive = nil
+            end
+        end
+        if card.ability.extra.hand == "entr_derivative" then
+            if context.end_of_round and not context.repetition and not context.individual and not context.blueprint then
+                local c = G.hand.cards[1]
+                if c then
+                    Entropy.FlipThen({c}, function(c)
+                        SMODS.change_base(c, "entr_nilsuit", "entr_nilrank")
+                    end)
+                end
+            end
+            if context.repetition and (context.cardarea == G.play or context.cardarea == G.hand) and Entropy.true_suitless(context.other_card) then
+                return {
+                    repetitions = 1
+                }
             end
         end
         if Entropy.Planetarium[card.ability.extra.hand] and Entropy.Planetarium[card.ability.extra.hand].calculate then
@@ -8041,6 +8066,11 @@ local planetarium = {
             vars = {
                 card.ability.extra.fullhouse_dollars,
                 card.ability.extra.fullhouse_mult
+            }
+        end
+        if card.ability.extra.hand == "Four of a Kind" then
+            vars = {
+                card.ability.extra.fouroak_discards
             }
         end
         if Entropy.Planetarium[card.ability.extra.hand] and Entropy.Planetarium[card.ability.extra.hand].loc_vars then
@@ -8301,6 +8331,7 @@ return {
         searing_joke,
         ancestral_recall,
         planetarium,
-        double_down
+        double_down,
+        wormwood
     }
 }

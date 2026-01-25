@@ -1855,7 +1855,7 @@ function Game:update(dt)
     or G.GAME.EE_SCREEN
     then
         G.GAME.EE_FADE = G.GAME.EE_FADE or 0
-        G.GAME.EE_FADE = G.GAME.EE_FADE + dt * 0.5 * (G.GAME.EE_FADE_SPEED or 1)
+        G.GAME.EE_FADE = G.GAME.EE_FADE + dt * 0.5 * (G.GAME.EE_FADE_SPEED or 4)
         eedt = eedt - dt
         if eedt <= 0 and G.GAME.blind then
             p_s = not p_s
@@ -1874,6 +1874,10 @@ function Game:update(dt)
                 eedt = math.random() * 0.4 + 0.1
             end
         end
+    end
+    if G.GAME.EE_FADE then
+        G.entr_rand_text = Entropy.srandom(6)
+        G.entr_rand_text2 = Entropy.srandom(6)
     end
     if G.GAME.EE_R and G.GAME.EE_FADE then
         if G.GAME.EE_FADE > 10 then
@@ -2787,6 +2791,64 @@ function Cryptid.antimatter_apply(skip)
   end
 end
 
+function G.FUNCS.can_enter_ee(e)
+    e.config.colour = G.C.CLEAR
+    e.config.button = 'enter_ee'
+end
+function G.FUNCS.enter_ee(e)
+    stop_use()
+    if G.blind_select then 
+        G.GAME.facing_blind = true
+        G.E_MANAGER:add_event(Event({
+          trigger = 'before', delay = 0.2,
+          func = function()
+            G.blind_select.alignment.offset.y = 40
+            G.blind_select.alignment.offset.x = 0
+            return true
+        end}))
+        G.E_MANAGER:add_event(Event({
+          trigger = 'immediate',
+          func = function()
+            ease_round(1)
+            inc_career_stat('c_rounds', 1)
+            if _DEMO then
+              G.SETTINGS.DEMO_ROUNDS = (G.SETTINGS.DEMO_ROUNDS or 0) + 1
+              inc_steam_stat('demo_rounds')
+              G:save_settings()
+            end
+            G.GAME.blind_on_deck = "Boss"
+            local _tag = e.UIBox:get_UIE_by_ID('tag_container')
+            G.GAME.round_resets.blind_tag = _tag and _tag.config and _tag.config.ref_table or nil
+            G.GAME.round_resets.blind = e.config.ref_table
+            G.GAME.round_resets.blind_states["Boss"] = 'Current'
+            G.blind_select:remove()
+            G.blind_select = nil
+            delay(0.2)
+            return true
+        end}))
+        G.E_MANAGER:add_event(Event({
+          trigger = 'immediate',
+          func = function()
+            new_round()
+            return true
+          end
+        }))
+        G.E_MANAGER:add_event(Event({
+          trigger = 'after',
+          func = function()
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                func = function()
+                    G.GAME.blind:set_blind(G.P_BLINDS.bl_entr_endless_entropy_phase_one)
+                    return true
+                end
+            }))
+            return true
+          end
+        }))
+    end
+end
+
 local uibox_ref = create_UIBox_blind_select
 function create_UIBox_blind_select()
     if G.GAME.USING_BREAK then
@@ -2832,6 +2894,68 @@ function create_UIBox_blind_select()
                 G.GAME.round_resets.blind_choices.Big = "bl_entr_void"
                 G.GAME.EEBuildup = true
                 ease_background_colour{new_colour = HEX("5f5f5f"), contrast = 3}
+                if not G.SPLASH_EE then
+                    G.GAME.EE_SCREEN = true
+                    G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
+                    G.GAME.EE_FADE = 0
+                    G.E_MANAGER:add_event(Event{
+                        trigger = "after",
+                        blocking = false,
+                        blockable = false,
+                        delay = 1 * G.SETTINGS.GAMESPEED,
+                        func = function()
+                            G.SPLASH_EE:define_draw_steps({{
+                                shader = 'entr_entropic_vortex',
+                                send = {
+                                    {name = 'time', ref_table = G.TIMERS, ref_value = 'REAL'},
+                                    {name = 'vort_speed', val = 1},
+                                    {name = 'colour_1', ref_table = G.C, ref_value = 'BLUE'},
+                                    {name = 'colour_2', ref_table = G.C, ref_value = 'WHITE'},
+                                    {name = 'mid_flash', val = 0},
+                                    {name = 'transgender', ref_table = G.GAME, ref_value = "EE_FADE"},
+                                    {name = 'vort_offset', val = (2*90.15315131*os.time())%100000},
+                                }}}
+                            )
+                            return true
+                        end
+                    })
+                end
+                attention_text({
+                    text = "CHALLENGE",
+                    scale = 1.1,
+                    hold = 60000,
+                    major = G.play,
+                    backdrop_colour = HEX("ff0000"),
+                    align = 'cm',
+                    offset = {x = 0, y = -3},
+                })
+                attention_text({
+                    text = "v",
+                    scale = 0.8,
+                    hold = 60000,
+                    major = G.play,
+                    align = 'cm',
+                    offset = {x = 0, y = -2.35},
+                })
+                local index = #G.I.UIBOX
+                local index2 = #G.I.UIBOX - 1
+                G.E_MANAGER:add_event(Event{
+                    blocking = false,
+                    blockable = false,
+                    func = function()
+                        if G.GAME.blind.in_blind then
+                            G.I.UIBOX[index]:remove()
+                            G.I.UIBOX[index2]:remove()
+                            table.remove(G.I.UIBOX, index)
+                            table.remove(G.I.UIBOX, index2)
+                            return true
+                        end
+                    end
+                })
+                --
+                return {n=G.UIT.ROOT, config = {align = 'tm',minw = 100, minh = 100, r = 0.15, colour = G.C.CLEAR,
+                    func = 'can_enter_ee', one_press = true, button = 'enter_ee'
+                }, nodes={}}
             end
         end
         if G.GAME.modifiers.zenith then

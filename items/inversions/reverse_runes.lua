@@ -1036,6 +1036,26 @@ G.FUNCS.play_cards_from_highlighted = function(e)
             end)
             break
         end
+        if v.ability.extra.hand == "Flush" then
+            local hcards = {}
+            for i, v in pairs(G.hand.cards) do
+                if v.highlighted then hcards[#hcards+1] = v end
+            end
+            local suit = hcards[1] and hcards[1].base.suit
+            if suit then
+                local cards = {}
+                for i = 2, #hcards do
+                    cards[#cards+1] = hcards[i]
+                end
+                pseudoshuffle(cards, pseudoseed("entr_planetarium_jupiter"))
+                Entropy.FlipThen({hcards[1], cards[1], cards[2]}, function(c)
+                    if c == cards[1] or c == cards[2] then
+                        SMODS.change_base(c, suit)
+                    end
+                end)
+            end
+            break
+        end
     end
     play_ref(e)
 end

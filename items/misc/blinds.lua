@@ -262,7 +262,6 @@ local phase1 = {
 				blockable = false,
 				delay = 1 * G.SETTINGS.GAMESPEED,
 				func = function()
-					G.GAME.EE_FADE = 0
 					G.SPLASH_EE:define_draw_steps({{
 						shader = 'entr_entropic_vortex',
 						send = {
@@ -322,7 +321,6 @@ local phase2 = {
 				blockable = false,
 				delay = 1 * G.SETTINGS.GAMESPEED,
 				func = function()
-					G.GAME.EE_FADE = 0
 					G.SPLASH_EE:define_draw_steps({{
 						shader = 'entr_entropic_vortex',
 						send = {
@@ -441,7 +439,6 @@ local phase3 = {
 				blockable = false,
 				delay = 1 * G.SETTINGS.GAMESPEED,
 				func = function()
-					G.GAME.EE_FADE = 0
 					G.SPLASH_EE:define_draw_steps({{
 						shader = 'entr_entropic_vortex',
 						send = {
@@ -593,7 +590,6 @@ local phase4 = {
 				blockable = false,
 				delay = 1 * G.SETTINGS.GAMESPEED,
 				func = function()
-					G.GAME.EE_FADE = 0
 					G.SPLASH_EE:define_draw_steps({{
 						shader = 'entr_entropic_vortex',
 						send = {
@@ -1062,6 +1058,22 @@ local rr = {
     dollars = 3,
     in_pool = function(self) return false end
 }
+if SMODS.ScreenShader then
+	SMODS.ScreenShader({
+		key="eeshader",
+		path="eeshader.fs",
+		send_vars = function (sprite, card)
+			local t = G.TIMERS.REAL or 0
+			t = t - 5000*math.floor(t/5000)
+			return {
+				realtime = t
+			}
+		end,
+		should_apply = function()
+			return G.GAME.EEBuildup or Entropy.IsEE() or (G.GAME.EE_FADE or 0) > 0
+		end
+	})
+end
 
 return {
 	items = {

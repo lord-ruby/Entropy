@@ -3543,3 +3543,33 @@ if self.ability.name == 'The Soul' and (self.config.center.discovered or self.by
 payload = '''
 if (self.ability.name == 'The Soul' or self.ability.epitach_consumeable == "c_soul") and (self.config.center.discovered or self.bypass_discovery_center) then
 '''
+
+[[patches]]
+[patches.pattern]
+target = '''functions/UI_definitions.lua'''
+match_indent = true
+position = 'at'
+pattern = '''
+{n=G.UIT.R, config={align = "cm"}, nodes={
+  {n=G.UIT.C, config={align = "cm", minw = lwidth, maxw = lwidth}, nodes={{n=G.UIT.T, config={text = localize('k_round'),colour = G.C.UI.TEXT_DARK, scale = scale*0.8}}}},
+  {n=G.UIT.C, config={align = "cm"}, nodes={{n=G.UIT.T, config={text = ': ',colour = G.C.UI.TEXT_DARK, scale = scale*0.8}}}},
+  {n=G.UIT.C, config={align = "cl", minw = rwidth, maxw = lwidth}, nodes={{n=G.UIT.T, config={text = tostring(saved_game.GAME.round),colour = G.C.RED, scale = 0.8*scale}}}}
+}},
+{n=G.UIT.R, config={align = "cm"}, nodes={
+  {n=G.UIT.C, config={align = "cm", minw = lwidth, maxw = lwidth}, nodes={{n=G.UIT.T, config={text = localize('k_ante'),colour = G.C.UI.TEXT_DARK, scale = scale*0.8}}}},
+  {n=G.UIT.C, config={align = "cm"}, nodes={{n=G.UIT.T, config={text = ': ',colour = G.C.UI.TEXT_DARK, scale = scale*0.8}}}},
+  {n=G.UIT.C, config={align = "cl", minw = rwidth, maxw = lwidth}, nodes={{n=G.UIT.T, config={text = tostring(saved_game.GAME.round_resets.ante),colour = G.C.BLUE, scale = 0.8*scale}}}}
+}},
+'''
+payload = '''
+{n=G.UIT.R, config={align = "cm"}, nodes={
+  {n=G.UIT.C, config={align = "cm", minw = lwidth, maxw = lwidth}, nodes={{n=G.UIT.T, config={text = localize('k_round'),colour = G.C.UI.TEXT_DARK, scale = scale*0.8}}}},
+  {n=G.UIT.C, config={align = "cm"}, nodes={{n=G.UIT.T, config={text = ': ',colour = G.C.UI.TEXT_DARK, scale = scale*0.8}}}},
+  {n=G.UIT.C, config={align = "cl", minw = rwidth, maxw = lwidth}, nodes={{n=G.UIT.T, config={text = tostring(saved_game.GAME.round),colour = G.SAVED_GAME.GAME.EEBuildup and Entropy.reverse_legendary_gradient or G.C.RED, scale = 0.8*scale}}}}
+}},
+{n=G.UIT.R, config={align = "cm"}, nodes={
+  {n=G.UIT.C, config={align = "cm", minw = lwidth, maxw = lwidth}, nodes={{n=G.UIT.T, config={text = localize('k_ante'),colour = G.C.UI.TEXT_DARK, scale = scale*0.8}}}},
+  {n=G.UIT.C, config={align = "cm"}, nodes={{n=G.UIT.T, config={text = ': ',colour = G.C.UI.TEXT_DARK, scale = scale*0.8}}}},
+  {n=G.UIT.C, config={align = "cl", minw = rwidth, maxw = lwidth}, nodes={{n=G.UIT.T, config={text = tostring(saved_game.GAME.round_resets.ante),colour = G.SAVED_GAME.GAME.EEBuildup and Entropy.reverse_legendary_gradient or G.C.BLUE, scale = 0.8*scale}}}}
+}},
+'''

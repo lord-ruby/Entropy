@@ -1014,6 +1014,8 @@ function Entropy.IsEE()
 end
 
 function Entropy.WinEE()
+    G.GAME.EE_SCREEN = false
+    G.GAME.EE_R = true
     G.E_MANAGER:add_event(Event({
         trigger = 'immediate',
         func = (function()

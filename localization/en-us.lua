@@ -2335,6 +2335,22 @@ local decs = {
 					}
 				}
 			},
+			["j_entr_planetarium_Flush"] = {
+				name = "Planetarium: Jupiter",
+				text = {
+					{
+						"Before hand is played convert",
+						"the {C:attention}suit{} of two other random",
+						"selected cards into the {C:attention}suit{}",
+						"of the leftmost selected card"
+					},
+					{
+						"Changes {C:entr_ascended}Effect{} based on",
+						"the last used hand specific",
+						"{C:planet}Planet{} or {C:purple}Star{} card"
+					}
+				}
+			},
 			["j_entr_planetarium_Full House"] = {
 				name = "Planetarium: Terra",
 				text = {
@@ -2343,6 +2359,20 @@ local decs = {
 						"earns {C:money}$#1#{} when scored",
 						"Highest {C:attention}rank{} in played hand",
 						"gives {X:mult,C:white}X#2#{} Mult"
+					},
+					{
+						"Changes {C:entr_ascended}Effect{} based on",
+						"the last used hand specific",
+						"{C:planet}Planet{} or {C:purple}Star{} card"
+					}
+				}
+			},
+			["j_entr_planetarium_Four of a Kind"] = {
+				name = "Planetarium: Mars",
+				text = {
+					{
+						"Gain {C:red}+#1#{} Discard#<s>1#",
+						"when a hand is played"
 					},
 					{
 						"Changes {C:entr_ascended}Effect{} based on",
@@ -2374,6 +2404,26 @@ local decs = {
 						"Copy the {C:attention}first{} scored card",
 						"each round then add it to",
 						"your {C:attention}played hand{}"
+					},
+					{
+						"Changes {C:entr_ascended}Effect{} based on",
+						"the last used hand specific",
+						"{C:planet}Planet{} or {C:purple}Star{} card"
+					}
+				}
+			},
+			["j_entr_planetarium_entr_derivative"] = {
+				name = "Planetarium: Interloper",
+				text = {
+					{
+						"Strip the {C:attention}rank{} and {C:attention}suit{}",
+						"of {C:attention}leftmost{} card held in hand",
+						"at the end of round"
+					},
+					{
+						"Retrigger all {C:attention}suitless{}",
+						"cards held in hand or",
+						"played"
 					},
 					{
 						"Changes {C:entr_ascended}Effect{} based on",
@@ -7165,6 +7215,7 @@ local decs = {
 			k_plus_omen = "+1 Omen",
 			k_plus_tag = "+1 Tag",
 			k_plus_inverted = "+1 Inverted Card",
+			k_plus_discard = "+1 Discard",
 
 			k_switch_ex = "Switch!",
 			k_bounce_ex = "Bounce!",

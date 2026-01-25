@@ -41,6 +41,7 @@ function SMODS.injectItems(...)
                 if G.SAVED_GAME ~= nil then G.SAVED_GAME = STR_UNPACK(G.SAVED_GAME) end
             end
             if G.SAVED_GAME and G.SAVED_GAME.GAME and G.SAVED_GAME.GAME.EEBuildup then
+                G.GAME.EEBuildup = true
                 G.E_MANAGER:add_event(Event{
                     trigger = "after",
                     blocking = false,
