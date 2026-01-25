@@ -4976,3 +4976,30 @@ function Blind:calculate(context, ...)
     end
 end
 
+local four_fingers_ref = SMODS.four_fingers
+function SMODS.four_fingers(type, ...)
+    local ret = four_fingers_ref(type, ...) or 5
+    for i, v in pairs(SMODS.find_card("j_entr_planetarium")) do
+        if v.ability.extra.hand == "Straight Flush" then
+            local level = (G.GAME.hands[G.calced_hand or ""] or {}).level 
+            if level then
+                ret = ret - math.floor(level/ 3)
+            end
+        end
+    end
+    return ret
+end
+
+local get_x_sameref = get_X_same
+function get_X_same(x, hand,...)
+    for i, v in pairs(SMODS.find_card("j_entr_planetarium")) do
+        if v.ability.extra.hand == "Straight Flush" then
+            local level = (G.GAME.hands[G.calced_hand or ""] or {}).level 
+            if level then
+                x = x - math.floor(level/ 3)
+            end
+        end
+    end
+    if x < 1 then x = 1 end
+    return get_x_sameref(x, hand,...)
+end

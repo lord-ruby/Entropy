@@ -2366,6 +2366,20 @@ local decs = {
 					}
 				}
 			},
+			["j_entr_planetarium_Straight"] = {
+				name = "Planetarium: Saturn",
+				text = {
+					{
+						"Earn {C:money}$#1#{} for each",
+						"{C:attention}unique{} rank in played hand"
+					},
+					{
+						"Changes {C:entr_ascended}Effect{} based on",
+						"the last used hand specific",
+						"{C:planet}Planet{} or {C:purple}Star{} card"
+					}
+				}
+			},
 			["j_entr_planetarium_Full House"] = {
 				name = "Planetarium: Terra",
 				text = {
@@ -2374,6 +2388,26 @@ local decs = {
 						"earns {C:money}$#1#{} when scored",
 						"Highest {C:attention}rank{} in played hand",
 						"gives {X:mult,C:white}X#2#{} Mult"
+					},
+					{
+						"Changes {C:entr_ascended}Effect{} based on",
+						"the last used hand specific",
+						"{C:planet}Planet{} or {C:purple}Star{} card"
+					}
+				}
+			},
+			["j_entr_planetarium_Straight Flush"] = {
+				name = "Planetarium: Neptune",
+				text = {
+					{
+						"{C:red}-1{} Level to",
+						"poker hands played",
+						"during the Boss Blind"
+					},
+					{
+						"Hands require {C:attention}1{}",
+						"less card to form for every",
+						"{C:attention}3{} levels they have"
 					},
 					{
 						"Changes {C:entr_ascended}Effect{} based on",

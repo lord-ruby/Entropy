@@ -7946,7 +7946,7 @@ local planetarium = {
         }
     },
     config = {
-        extra = {hand = "none", fullhouse_dollars = 4, fullhouse_mult = 1.5, threeoak_mult = 2, fouroak_discards = 1}
+        extra = {hand = "none", fullhouse_dollars = 4, fullhouse_mult = 1.5, threeoak_mult = 2, fouroak_discards = 1, straight_dollars = 2}
     },
     calculate = function(self, card, context)
         if context.using_consumeable then
@@ -7982,7 +7982,7 @@ local planetarium = {
         if card.ability.extra.hand == "Three of a Kind" then
             if context.individual and context.cardarea == G.play then
                 local sum = 0
-                for i, v in pairs(G.play) do
+                for i, v in pairs(G.play.cards) do
                     local id = v:get_id()
                     if id > 0 then sum = sum + id end
                 end
@@ -7991,6 +7991,23 @@ local planetarium = {
                         xmult = card.ability.extra.threeoak_mult
                     }
                 end
+            end
+        end
+        if card.ability.extra.hand == "Straight" then
+            if context.joker_main then
+                local ranks = {}
+                local nranks = 0
+                for i, v in pairs(G.play.cards) do
+                    local id = v:get_id()
+                    if id < 0 then id = 0 end
+                    if not ranks[id] then
+                        ranks[id] = true
+                        nranks = nranks + 1
+                    end
+                end
+                return {
+                    dollars = card.ability.extra.straight_dollars * nranks
+                }
             end
         end
         if card.ability.extra.hand == "Full House" then
@@ -8004,6 +8021,13 @@ local planetarium = {
                 return {
                     dollars = context.other_card:get_id() == ids[1] and card.ability.extra.fullhouse_dollars or nil,
                     xmult = context.other_card:get_id() == ids[#ids] and card.ability.extra.fullhouse_mult or nil
+                }
+            end
+        end
+        if card.ability.extra.hand == "Straight Flush" then
+            if context.before and G.GAME.blind_on_deck == "Boss" then
+                return {
+                    level_up = -1
                 }
             end
         end
@@ -8060,6 +8084,11 @@ local planetarium = {
         if card.ability.extra.hand == "Three of a Kind" then
             vars = {
                 card.ability.extra.threeoak_mult
+            }
+        end
+        if card.ability.extra.hand == "Straight" then
+            vars = {
+                card.ability.extra.straight_dollars
             }
         end
         if card.ability.extra.hand == "Full House" then

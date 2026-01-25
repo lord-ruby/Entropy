@@ -3573,3 +3573,34 @@ payload = '''
   {n=G.UIT.C, config={align = "cl", minw = rwidth, maxw = lwidth}, nodes={{n=G.UIT.T, config={text = tostring(saved_game.GAME.round_resets.ante),colour = G.SAVED_GAME.GAME.EEBuildup and Entropy.reverse_legendary_gradient or G.C.BLUE, scale = 0.8*scale}}}}
 }},
 '''
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+match_indent = true
+position = 'at'
+pattern = '''
+for _, v in ipairs(SMODS.PokerHandPart.obj_buffer) do
+  parts[v] = SMODS.PokerHandParts[v].func(hand) or {}
+end
+for k, _hand in pairs(SMODS.PokerHands) do
+  results[k] = _hand.evaluate(parts, hand) or {}
+end
+'''
+payload = '''
+for _, v in ipairs(SMODS.PokerHandPart.obj_buffer) do
+  parts[v] = SMODS.PokerHandParts[v].func(hand) or {}
+end
+for k, _hand in pairs(SMODS.PokerHands) do
+  G.calced_hand = k
+  for _, v in ipairs(SMODS.PokerHandPart.obj_buffer) do
+    if v ~= "_straight" or (k == "Straight" or k == "Straight Flush") then
+      parts[v] = SMODS.PokerHandParts[v].func(hand) or {}
+    else
+      parts[v] = {}
+    end
+  end
+  results[k] = _hand.evaluate(parts, hand) or {}
+end
+G.calced_hand = nil
+'''
