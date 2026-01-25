@@ -366,3 +366,10 @@ SMODS.Atlas {
     px = 583,
     py = 280,
 }
+
+SMODS.Atlas {
+    key = "apeirostemma",
+    path = "apeirostemma.png",
+    px = 71,
+    py = 95,
+}

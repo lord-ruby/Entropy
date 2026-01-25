@@ -766,7 +766,8 @@ local apeirostemma = {
     cost = 150,
     config = {
         left = 1,
-        left_mod = 1
+        left_mod = 1,
+        sprite = math.floor(math.random() * 5) + 1
     },
     eternal_compat = true,
     dependencies = {
@@ -776,9 +777,12 @@ local apeirostemma = {
     },
     blueprint_compat = true,
     demicoloncompat = true,
-    pos = { x = 3, y = 4 },
-    soul_pos = { x = 5, y = 4, extra = { x = 4, y = 4 } },
-    atlas = "exotic_jokers",
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 0, y = 1, extra = { x = 1, y = 0 } },
+    atlas = "apeirostemma",
+    set_ability = function(self, card)
+        card.ability.sprite = math.floor(pseudorandom("apeirostemma_sprite") * 5) + 1
+    end,
     calculate = function(self, card, context)
         if context.end_of_round then
             card.ability.extra = nil
@@ -836,6 +840,7 @@ local apeirostemma = {
             })
             delay(0.5)
         end
+        card.ability.sprite = math.floor(pseudorandom("apeirostemma_sprite") * 5) + 1
         card.ability.left = card.ability.left - 1
     end,
     loc_vars = function(self, q, card)
@@ -845,9 +850,33 @@ local apeirostemma = {
                 card.ability.left_mod
             }
         }
-    end
+    end,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}}
 }
 
+SMODS.DrawStep({
+	key = "apeirostemma",
+	order = 25,
+	func = function(self)
+        if self.config.center.key ~= "j_entr_apeirostemma" and self.config.center.discovered and self.config.center.unlocked then return end
+        local pos_map = {
+            {x = 0, y = 1},
+            {x = 1, y = 1},
+            {x = 2, y = 1},
+            
+            {x = 0, y = 2},
+            {x = 1, y = 2},
+            {x = 2, y = 2},
+        }
+        local pos = pos_map[self.ability.sprite] or {x = 0, y = 1}
+        if self.ability.pos ~= pos and pos then
+            self.ability.pos = pos
+            self.children.floating_sprite:set_sprite_pos(pos)
+            self.children.floating_sprite:reset()
+        end
+	end,
+	conditions = { vortex = false, facing = "front" },
+})
 
 local prismatikos = {
     order = 613,
