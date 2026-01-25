@@ -2320,6 +2320,21 @@ local decs = {
 					}
 				}
 			},
+			["j_entr_planetarium_Two Pair"] = {
+				name = "Planetarium: Uranus",
+				text = {
+					{
+						"Poker Hands calculate",
+						"with an extra copy of the",
+						"{C:attention}first{} and {C:attention}second{} played cards"
+					},
+					{
+						"Changes {C:entr_ascended}Effect{} based on",
+						"the last used hand specific",
+						"{C:planet}Planet{} or {C:purple}Star{} card"
+					}
+				}
+			},
 			["j_entr_planetarium_Three of a Kind"] = {
 				name = "Planetarium: Venus",
 				text = {
@@ -2437,6 +2452,20 @@ local decs = {
 				text = {
 					"Apply {C:attention}Marked{} to",
 					"scored {C:attention}Lucky{} cards"
+				}
+			},
+			j_entr_wormwood = {
+				name = "Wormwood",
+				text = {
+					{
+						"Playing cards permanently lose",
+						"{C:red}#1#{} Mult when scored",
+					},
+					{
+						"Scored cards give {C:gold}+#2#{}",
+						"Acension Power for each",
+						"{C:blue}chip{} they have"
+					}
 				}
 			}
 		},

@@ -3041,12 +3041,56 @@ end
 
 local evaluate_poker_hand_ref = evaluate_poker_hand
 function evaluate_poker_hand(hand)
-    local results = evaluate_poker_hand_ref(hand)
+    local newhand = {}
+    for i, v in pairs(hand) do
+        newhand[#newhand+1] = v
+    end
+    for i, v in pairs(SMODS.find_card("j_entr_planetarium")) do
+        if v.ability.extra.hand == "Two Pair" then
+            local c1 = newhand[1]
+            local c2 = newhand[2]
+            newhand[#newhand+1] = c1 
+            newhand[#newhand+1] = c2
+        end
+    end
+    local results = evaluate_poker_hand_ref(newhand)
     for i, v in ipairs(G.handlist) do
         if G.GAME.Interfered then
             results[v] = results[pseudorandom_element(G.handlist, pseudoseed("interfered"))]
         end
     end
+    for i, v in pairs(results) do
+        if G.GAME.atomikos_deleted and G.GAME.atomikos_deleted[i] then results[i] = {} end
+        if G.GAME.SudoHand and G.GAME.SudoHand[i] and #results[i] > 0 and Entropy.no_recurse_scoring(results) == i then results[G.GAME.SudoHand[i]] = results[i] end
+    end
+    local top
+    if results.bld_blind_high and next(results.bld_blind_high) then
+        results["High Card"] = {}
+    end
+    if G.GAME.overload then
+        for i, v in pairs(G.handlist) do
+            if not top and results[v] and results[v][1] then
+                top = {results[v][1]}
+                top.text = v
+                break
+            end
+        end
+        for i, v in pairs(G.handlist) do
+            if top then
+                results[v][1] = top[1]
+            end
+        end
+    end
+    if G.GAME.randomised_hand_map then
+        local results_copy = {}
+        for i, v in pairs(results) do
+            results_copy[i] = v
+        end
+        for i, v in pairs(G.GAME.randomised_hand_map) do
+            results[i] = results_copy[v]
+        end
+    end
+    results.top = top
     return results
 end
 
@@ -3860,15 +3904,6 @@ G.FUNCS.draw_from_deck_to_hand = function(e)
     draw_ref(e)
 end
 
-local evaluate_ref = evaluate_poker_hand
-function evaluate_poker_hand(hand)
-    local results = evaluate_ref(hand)
-    for i, v in pairs(results) do
-        if G.GAME.atomikos_deleted and G.GAME.atomikos_deleted[i] then results[i] = {} end
-        if G.GAME.SudoHand and G.GAME.SudoHand[i] and #results[i] > 0 and Entropy.no_recurse_scoring(results) == i then results[G.GAME.SudoHand[i]] = results[i] end
-    end
-    return results
-end
 
 local ref = create_shop_card_ui
 function create_shop_card_ui(card, type, area)
@@ -4000,40 +4035,6 @@ local visible_ref = SMODS.is_poker_hand_visible
 function SMODS.is_poker_hand_visible(handname)
     if G.GAME.atomikos_deleted and G.GAME.atomikos_deleted[handname] then return end
     return visible_ref(handname)
-end
-
-local evaluate_poker_hand_ref = evaluate_poker_hand
-function evaluate_poker_hand(cards)
-    local results = evaluate_poker_hand_ref(cards)
-    local top
-    if results.bld_blind_high and next(results.bld_blind_high) then
-        results["High Card"] = {}
-    end
-    if G.GAME.overload then
-        for i, v in pairs(G.handlist) do
-            if not top and results[v] and results[v][1] then
-                top = {results[v][1]}
-                top.text = v
-                break
-            end
-        end
-        for i, v in pairs(G.handlist) do
-            if top then
-                results[v][1] = top[1]
-            end
-        end
-    end
-    if G.GAME.randomised_hand_map then
-        local results_copy = {}
-        for i, v in pairs(results) do
-            results_copy[i] = v
-        end
-        for i, v in pairs(G.GAME.randomised_hand_map) do
-            results[i] = results_copy[v]
-        end
-    end
-    results.top = top
-    return results
 end
 
 local parse_ref = CardArea.parse_highlighted

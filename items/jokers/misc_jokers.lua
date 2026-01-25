@@ -8161,7 +8161,7 @@ local double_down = {
         }
     },
     calculate = function(self, card, context)
-        if context.individual and not context.other_card.entr_will_be_marked and context.other_card.config.center_key == "m_lucky" then
+        if context.individual and not context.other_card.entr_will_be_marked and context.other_card.config.center_key == "m_lucky" and context.cardarea == G.play then
             local c = context.other_card
             c.entr_will_be_marked = true
             G.E_MANAGER:add_event(Event{
@@ -8179,6 +8179,45 @@ local double_down = {
     end,
     entr_credits = {
         idea = {"cassknows"}
+    }
+}
+
+local wormwood = {
+    order = 141,
+    object_type = "Joker",
+    key = "wormwood",
+    rarity = 2,
+    cost = 6,
+    eternal_compat = true,
+    pos = {x = 7, y = 17},
+    atlas = "jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        minus_mult = -0.25,
+        asc_power_chips = 0.1
+    },
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play then
+            context.other_card.ability.perma_mult = context.other_card.ability.perma_mult + card.ability.minus_mult
+            return {
+                plus_asc = card.ability.asc_power_chips * context.other_card:get_chip_bonus()
+            }
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.minus_mult,
+                card.ability.asc_power_chips
+            }
+        }
+    end,
+    entr_credits = {
+        art = {"pangaea47"}
     }
 }
 
