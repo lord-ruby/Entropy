@@ -3591,16 +3591,54 @@ payload = '''
 for _, v in ipairs(SMODS.PokerHandPart.obj_buffer) do
   parts[v] = SMODS.PokerHandParts[v].func(hand) or {}
 end
+local recalc
+for i, v in pairs(SMODS.find_card("j_entr_planetarium")) do
+  if v.ability.extra.hand == "Straight Flush" then recalc = true end
+end
 for k, _hand in pairs(SMODS.PokerHands) do
   G.calced_hand = k
-  for _, v in ipairs(SMODS.PokerHandPart.obj_buffer) do
-    if v ~= "_straight" or (k == "Straight" or k == "Straight Flush") then
-      parts[v] = SMODS.PokerHandParts[v].func(hand) or {}
-    else
-      parts[v] = {}
+  if recalc then
+    for _, v in ipairs(SMODS.PokerHandPart.obj_buffer) do
+      if (v == "_straight" and (k == "Straight" or k == "Straight Flush"))
+      or ( v == "_2" and (k == "Pair" or k == "Two Pair" or k == "Full House" or k == "Flush House"))
+      or ( v == "_3" and (k == "Three of a Kind" or k == "Full House"))
+      or ( v == "_4" and (k == "Four of a Kind"))
+      or ( v == "_5" and (k == "Five of a Kind" or k == "Flush Five"))
+      or ( v == "_flush" and (k == "Flush" or k == "Flush House" or k == "Flush Five" or k == "Straight Flush"))
+      or (SMODS.PokerHandParts[v].original_mod and _hand.original_mods)
+      or v == "_highest"
+      then
+        parts[v] = SMODS.PokerHandParts[v].func(hand) or {}
+      else
+        parts[v] = {}
+      end
     end
   end
   results[k] = _hand.evaluate(parts, hand) or {}
 end
 G.calced_hand = nil
+'''
+
+[[patches]]
+[patches.pattern]
+target = '''cardarea.lua'''
+match_indent = true
+position = 'before'
+pattern = '''
+if #self.highlighted >= self.config.highlighted_limit then
+'''
+payload = '''
+local already = card.highlighted or #self.highlighted >= self.config.highlighted_limit
+'''
+
+[[patches]]
+[patches.pattern]
+target = '''cardarea.lua'''
+match_indent = true
+position = 'at'
+pattern = '''
+self:parse_highlighted()
+'''
+payload = '''
+if not already then self:parse_highlighted() end
 '''
