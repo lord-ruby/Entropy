@@ -4,7 +4,10 @@ local card_drawref = Card.draw
 function Card:draw(layer)
     local ref = card_drawref(self, layer)
     if self.config and self.config.center then
-        if self.config.center.set == "Rune" and  Entropy.providence_ui_active(self) then
+        if self.config.center.key == "c_entr_fervour" and G.GAME.entropy and G.GAME.entropy > 100 then
+            self.children.center:draw_shader('entr_rainbow', nil, self.ARGS.send_to_shader)
+        end
+        if self.config.center.set == "Rune" and Entropy.providence_ui_active(self) then
             self.children.center:draw_shader('entr_providence', nil, self.ARGS.send_to_shader)
             if self.children.floating_sprite then
                 local scale_mod = 0.07 + 0.02*math.sin(1.8*G.TIMERS.REAL) + 0.00*math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL))*math.pi*14)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^3
@@ -2611,10 +2614,18 @@ end
 SMODS.Booster:take_ownership_by_kind('Spectral', {
 	create_card = function(self, card, i)
 		G.GAME.entropy = G.GAME.entropy or 0
-		if to_big(pseudorandom("doc")) < to_big(1 - 0.997^(G.GAME.entropy/2)) and Entropy.DeckOrSleeve("doc") and Cryptid.enabled("c_entr_beyond") == true then
-			return create_card("Omen", G.pack_cards, nil, nil, true, true, "c_entr_beyond")
-		elseif to_big(pseudorandom("doc")) < to_big(1 - 0.996^(G.GAME.entropy/2)) and Entropy.DeckOrSleeve("doc") and Cryptid.enabled("c_cry_gateway") == true then
-			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
+		if to_big(pseudorandom("doc")) < to_big(1 - 0.997^(G.GAME.entropy/2)) and Entropy.DeckOrSleeve("doc") then
+            if Cryptid.enabled("c_entr_beyond") == true then
+			    return create_card("Omen", G.pack_cards, nil, nil, true, true, "c_entr_beyond")
+            elseif Cryptid.enabled("c_entr_fervour") then
+                return create_card("Omen", G.pack_cards, nil, nil, true, true, "c_entr_fervour")
+            end
+		elseif to_big(pseudorandom("doc")) < to_big(1 - 0.996^(G.GAME.entropy/2)) and Entropy.DeckOrSleeve("doc") then
+            if Cryptid.enabled("c_cry_gateway") == true then
+			    return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
+            else
+                return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_soul")
+            end
 		end
 		return create_card("Spectral", G.pack_cards, nil, nil, true, true, nil, "spe")
 	end
@@ -3254,6 +3265,17 @@ function Game:update(dt)
         end
 		cdt = 0
 	end
+    local ferv 
+    for i, v in pairs((G.pack_cards or {cards = {}}).cards or {}) do
+        if v.config.center.key == "c_entr_fervour" then ferv = true; break end
+    end
+    if ferv and G.GAME.entropy and G.GAME.entropy > 100 and 10^300 then
+        if not G.GAME.entr_vignette_power then G.GAME.entr_vignette_power = 100 end
+        G.GAME.entr_vignette_power = G.GAME.entr_vignette_power * 0.9 + 0.2 * 0.1
+    elseif G.GAME.entr_vignette_power then
+        G.GAME.entr_vignette_power = G.GAME.entr_vignette_power * 0.999 + 100 * 0.001
+        if G.GAME.entr_vignette_power > 75 then G.GAME.entr_vignette_power = nil end
+    end
 end
 
 local orig = create_UIBox_blind_popup

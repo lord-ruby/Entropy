@@ -3642,3 +3642,39 @@ self:parse_highlighted()
 payload = '''
 if not already then self:parse_highlighted() end
 '''
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/game_object.lua"]'''
+match_indent = true
+position = 'at'
+pattern = '''
+assert(o.mod == nil, "Created object should not have \"mod\" field defined.")
+'''
+payload = '''
+
+'''
+
+[[patches]]
+[patches.pattern]
+target = '''game.lua'''
+match_indent = true
+position = 'after'
+pattern = '''
+G.shop_booster:emplace(card)
+'''
+payload = '''
+Entropy.post_create_card(card, nil, nil)
+'''
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+match_indent = true
+position = 'after'
+pattern = '''
+G.shop_booster:emplace(card)
+'''
+payload = '''
+Entropy.post_create_card(card, nil, nil)
+'''

@@ -44,6 +44,18 @@ SMODS.Sound({
 })
 
 SMODS.Sound({
+	key = "music_entropic_ominous",
+	path = "music_entropic_ominous.ogg",
+	select_music_track = function()
+		local ferv 
+		for i, v in pairs((G.pack_cards or {cards = {}}).cards or {}) do
+			if v.config.center.key == "c_entr_fervour" then ferv = true; break end
+		end
+		return ferv and G.GAME.entropy and G.GAME.entropy > 100 and 10^300
+	end,
+})
+
+SMODS.Sound({
 	key = "e_solar",
 	path = "e_solar.ogg",
 })
@@ -110,4 +122,10 @@ SMODS.Sound({
 	key = "invert",
 	path = "sfx_invert.ogg",
 	volume = 1.3
+})
+
+SMODS.Sound({
+	key = "entropic_summon",
+	path = "entropic_summon.ogg",
+	volume = 2
 })

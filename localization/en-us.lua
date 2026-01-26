@@ -2895,6 +2895,16 @@ local decs = {
 					"Chips are lowered based on {X:dark_edition,C:white}Entropy{}"
 				}
 			},
+			b_entr_doc_cryptidless = {
+				name = "Deck of Containment",
+				text = {
+					"Gain {X:dark_edition,C:white}Entropy{} when playing",
+					"Editioned/Enhanced cards, secret hands or",
+					"using consumables, {C:entr_entropic}Fervour?{}, {C:cry_exotic}Soul{}",
+					"and {C:spectral}Spectral Packs{} show up more often",
+					"Chips are lowered based on {X:dark_edition,C:white}Entropy{}"
+				}
+			},
 			b_entr_crafting = {
 				name = "Deck of Destiny",
 				text =  {
@@ -2970,6 +2980,16 @@ local decs = {
 					"Gain {X:dark_edition,C:white}Entropy{} when playing",
 					"Editioned/Enhanced cards, secret hands or",
 					"using consumables, {C:entr_entropic}Beyond{}, {C:cry_exotic}Gateway{}",
+					"and {C:spectral}Spectral Packs{} show up more often",
+					"Chips are lowered based on {X:dark_edition,C:white}Entropy{}"
+				}
+			},
+			sleeve_entr_doc_cryptidless = {
+				name = "Anomalous Sleeve",
+				text = {
+					"Gain {X:dark_edition,C:white}Entropy{} when playing",
+					"Editioned/Enhanced cards, secret hands or",
+					"using consumables, {C:entr_entropic}Fervour?{}, {C:cry_exotic}Soul{}",
 					"and {C:spectral}Spectral Packs{} show up more often",
 					"Chips are lowered based on {X:dark_edition,C:white}Entropy{}"
 				}

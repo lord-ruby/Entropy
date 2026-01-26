@@ -679,6 +679,12 @@ local entropy = {
     end
 }
 
+SMODS.Shader({
+    key="rainbow",
+    path="rainbow.fs"
+})
+
+
 local fervour = {
     dependencies = {
         items = {
@@ -705,8 +711,15 @@ local fervour = {
 			trigger = "after",
 			delay = 0.4,
 			func = function()
-				play_sound("timpani")
-				local card = create_card("Joker", G.jokers, nil, "entr_reverse_legendary", nil, nil, nil, "entr_fervour")
+                local card
+                if G.GAME.entropy and G.GAME.entropy > 100 then
+                    play_sound("entr_entropic_summon")
+				    card = create_card("Joker", G.jokers, nil, "entr_entropic", nil, nil, nil, "entr_fervour")
+                    ease_entropy(-G.GAME.entropy)
+                else
+				    play_sound("timpani")
+				    card = create_card("Joker", G.jokers, nil, "entr_reverse_legendary", nil, nil, nil, "entr_fervour")
+                end
 				card:add_to_deck()
 				G.jokers:emplace(card)
 				card:juice_up(0.3, 0.5)

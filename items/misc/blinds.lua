@@ -1073,6 +1073,19 @@ if SMODS.ScreenShader then
 			return G.GAME.EEBuildup or Entropy.IsEE() or (G.GAME.EE_FADE or 0) > 0
 		end
 	})
+
+	SMODS.ScreenShader({
+		key="vignette",
+		path="vignette.fs",
+		send_vars = function (sprite, card)
+			return {
+				power = G.GAME.entr_vignette_power
+			}
+		end,
+		should_apply = function()
+			return G.GAME.entr_vignette_power
+		end
+	})
 end
 
 return {

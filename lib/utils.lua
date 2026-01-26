@@ -2175,7 +2175,6 @@ function Entropy.post_create_card(card, from_booster, forced_key)
     if G.SETTINGS.paused then return end
     local set = card.config.center.set
     local key = card.config.center.key
-
     if card.config and card.config.center and Entropy.FlipsideInversions and not Entropy.is_inverted(center)
         and pseudorandom("marked") < 0.10 and G.GAME.Marked and G.STATE == G.STATES.SHOP and (not card.area or not card.area.config.collection) and Entropy.Inversion(card) then
         if card.config.center_key ~= "c_entr_flipside" then
@@ -2269,6 +2268,17 @@ function Entropy.post_create_card(card, from_booster, forced_key)
         else
             card.ability.glitched_crown = gc
         end
+    end
+    if G.GAME.entropy and G.GAME.entropy > 100 then
+        G.E_MANAGER:add_event(Event{
+            func = function()
+                if card.config.center.key == "c_entr_fervour" then
+                    local eval = function() return true end
+                    juice_card_until(card, eval, true)
+                end
+                return true
+            end
+        })
     end
 end
 
