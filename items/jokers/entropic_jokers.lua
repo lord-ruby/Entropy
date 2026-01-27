@@ -772,7 +772,8 @@ local apeirostemma = {
     eternal_compat = true,
     dependencies = {
         items = {
-            "set_entr_entropics"
+            "set_entr_entropics",
+            "set_entr_actives"
         }
     },
     blueprint_compat = true,
@@ -858,7 +859,7 @@ SMODS.DrawStep({
 	key = "apeirostemma",
 	order = 25,
 	func = function(self)
-        if self.config.center.key ~= "j_entr_apeirostemma" and self.config.center.discovered and self.config.center.unlocked then return end
+        if self.config.center.key ~= "j_entr_apeirostemma" or not self.config.center.discovered or not self.config.center.unlocked then return end
         local pos_map = {
             {x = 0, y = 1},
             {x = 1, y = 1},
@@ -869,7 +870,7 @@ SMODS.DrawStep({
             {x = 2, y = 2},
         }
         local pos = pos_map[self.ability.sprite] or {x = 0, y = 1}
-        if self.ability.pos ~= pos and pos then
+        if self.ability.pos ~= pos and pos and self.children.floating_sprite then
             self.ability.pos = pos
             self.children.floating_sprite:set_sprite_pos(pos)
             self.children.floating_sprite:reset()

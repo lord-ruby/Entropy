@@ -2890,7 +2890,7 @@ local antiderivative = {
     cost = 10,
     dependencies = {
         items = {            
-            "set_entr_inversions"
+            "set_entr_misc_jokers"
         }
     },
     eternal_compat = true,
@@ -3026,7 +3026,7 @@ local alles = {
     cost = 6,
     dependencies = {
         items = {            
-            "set_entr_inversions"
+            "set_entr_misc_jokers"
         }
     },
     config = {
@@ -3067,7 +3067,7 @@ local neuroplasticity = {
     cost = 8,
     dependencies = {
         items = {            
-            "set_entr_inversions"
+            "set_entr_misc_jokers"
         }
     },    
     eternal_compat = true,
@@ -3127,7 +3127,7 @@ local dragonfruit = {
     cost = 6,
     dependencies = {
         items = {            
-            "set_entr_inversions"
+            "set_entr_misc_jokers"
         }
     },    
     eternal_compat = true,
@@ -6551,7 +6551,6 @@ local false_vacuum_collapse = {
     dependencies = {
         items = {
             "set_entr_misc_jokers",
-            "set_entr_inversions"
         }
     },
     perishable_compat = true,

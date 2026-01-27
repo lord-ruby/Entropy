@@ -707,26 +707,204 @@ local fervour = {
     tsoul_pos = {x=5,y=0},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card, area, copier)
-        G.E_MANAGER:add_event(Event({
-			trigger = "after",
-			delay = 0.4,
-			func = function()
-                local card
-                if G.GAME.entropy and G.GAME.entropy > 100 then
-                    play_sound("entr_entropic_summon")
-				    card = create_card("Joker", G.jokers, nil, "entr_entropic", nil, nil, nil, "entr_fervour")
+        if G.GAME.entropy and G.GAME.entropy > 100 then
+            G.entr_flashlight_distance = Entropy.max_diagonal()
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.5, func = function()
+                --play_sound('tarot1')
+                --if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                --G.TAROT_INTERRUPT_PULSE = true
+                G.entr_flashlight_enabled = true
+                local card_position = Entropy.get_card_pixel_pos(card)
+                G.entr_flashlight_center = card_position
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'ease',
+                    ease = 'inexpo',
+                    ref_table = G,
+                    ref_value = 'entr_flashlight_distance',
+                    ease_to = 100,
+                    delay = 0.5,
+                    timer = "REAL",
+                    func = (function(t) return t end),
+                    blockable = false,
+                }))
+                return true end 
+            }))
+            delay(1.75)
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = .6, func = function()
+                play_sound('tarot1')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'ease',
+                    ease = 'inexpo',
+                    ref_table = G,
+                    ref_value = 'entr_flashlight_distance',
+                    ease_to = G.entr_flashlight_distance * 3,
+                    delay = 0.5,
+                    timer = "REAL",
+                    func = (function(t) return t end),
+                    blockable = false,
+                }))
+                return true end 
+            }))
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 1.2, func = function()
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'ease',
+                    ease = 'inexpo',
+                    ref_table = G,
+                    ref_value = 'entr_flashlight_distance',
+                    ease_to = G.entr_flashlight_distance / 1.35,
+                    delay = 0.75,
+                    timer = "REAL",
+                    func = (function(t) return t end),
+                    blockable = false,
+                }))
+                return true end 
+            }))
+            delay(1.75)
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = .6, func = function()
+                play_sound('tarot1')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'ease',
+                    ease = 'inexpo',
+                    ref_table = G,
+                    ref_value = 'entr_flashlight_distance',
+                    ease_to = G.entr_flashlight_distance * 3,
+                    delay = 0.5,
+                    timer = "REAL",
+                    func = (function(t) return t end),
+                    blockable = false,
+                }))
+                return true end 
+            }))
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 1.2, func = function()
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'ease',
+                    ease = 'inexpo',
+                    ref_table = G,
+                    ref_value = 'entr_flashlight_distance',
+                    ease_to = G.entr_flashlight_distance / 1.35,
+                    delay = 0.75,
+                    timer = "REAL",
+                    func = (function(t) return t end),
+                    blockable = false,
+                }))
+                return true end 
+            }))
+            delay(1.75)
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = .6, func = function()
+                play_sound('tarot1')
+                if card and card.juice_up then card:juice_up(0.8, 0.5) end
+                G.TAROT_INTERRUPT_PULSE = true
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'ease',
+                    ease = 'inexpo',
+                    ref_table = G,
+                    ref_value = 'entr_flashlight_distance',
+                    ease_to = G.entr_flashlight_distance * 3,
+                    delay = 0.5,
+                    timer = "REAL",
+                    func = (function(t) return t end),
+                    blockable = false,
+                }))
+                return true end 
+            }))
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 1.2, func = function()
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'ease',
+                    ease = 'inexpo',
+                    ref_table = G,
+                    ref_value = 'entr_flashlight_distance',
+                    ease_to = G.entr_flashlight_distance / 1.35,
+                    delay = 0.75,
+                    timer = "REAL",
+                    func = (function(t) return t end),
+                    blockable = false,
+                }))
+                return true end 
+            }))
+            delay(1.75)
+            G.E_MANAGER:add_event(Event({
+                trigger = "after",
+                delay = 1.6,
+                func = function()
+                    local card
+                    play_sound("entr_entropic_summon", nil, 2)
+                    card = create_card("Joker", G.jokers, nil, "entr_entropic", nil, nil, nil, "entr_fervour")
                     ease_entropy(-G.GAME.entropy)
-                else
-				    play_sound("timpani")
-				    card = create_card("Joker", G.jokers, nil, "entr_reverse_legendary", nil, nil, nil, "entr_fervour")
+                    card:add_to_deck()
+                    G.jokers:emplace(card)
+                    card:juice_up(0.3, 0.5)
+                    G.entr_invert_enabled = true
+                    local card_position = Entropy.get_card_pixel_pos(card)
+                    G.entr_invert_center = card_position
+                    G.entr_invert_distance = 0
+                     G.E_MANAGER:add_event(Event({
+                        trigger = 'ease',
+                        ease = 'outexpo',
+                        ref_table = G,
+                        ref_value = 'entr_flashlight_distance',
+                        ease_to = 100000,
+                        delay = 2,
+                        timer = "REAL",
+                        func = (function(t) return t end),
+                        blockable = false,
+                    }), "other")
+                    G.E_MANAGER:add_event(Event({
+                        trigger = 'ease',
+                        ease = 'insine',
+                        ref_table = G,
+                        ref_value = 'entr_invert_distance',
+                        ease_to = Entropy.max_diagonal(),
+                        delay = 8,
+                        timer = "REAL",
+                        func = (function(t) return t end),
+                        blockable = false,
+                    }), "other")
+                    return true
+                end,
+            }))
+            G.E_MANAGER:add_event(Event({
+                trigger = "after",
+                delay = 1.6,
+                func = function()
+                    G.E_MANAGER:add_event(Event({
+                        trigger = "after",
+                        delay = 4,
+                        func = function()
+                            G.entr_flashlight_enabled = false
+                            return true
+                        end
+                    }), "other")
+                    G.E_MANAGER:add_event(Event({
+                        trigger = "after",
+                        delay = 4,
+                        func = function()
+                            G.entr_invert_enabled = false
+                            return true
+                        end
+                    }), "other")
+                    return true
                 end
-				card:add_to_deck()
-				G.jokers:emplace(card)
-				card:juice_up(0.3, 0.5)
-				return true
-			end,
-		}))
-		delay(0.6)
+            }))
+            delay(1.75)
+        else    
+            G.E_MANAGER:add_event(Event({
+                trigger = "after",
+                delay = 0.4,
+                func = function()
+                    play_sound("timpani")
+                    local card = create_card("Joker", G.jokers, nil, "entr_reverse_legendary", nil, nil, nil, "entr_fervour")
+                    card:add_to_deck()
+                    G.jokers:emplace(card)
+                    card:juice_up(0.3, 0.5)
+                    return true
+                end,
+            }))
+            delay(0.6)
+        end
     end,
     can_use = function(self, card)
         return G.jokers and #G.jokers.cards < G.jokers.config.card_limit
@@ -872,9 +1050,9 @@ if Engulf then
             end
         end
     }
-    Engulf.SpecialWhitelist["c_entr_pulsar"] = true
-    Engulf.SpecialWhitelist["c_entr_quasar"] = true
-    Engulf.SpecialWhitelist["Omen"] = true
+    --Engulf.SpecialWhitelist["c_entr_pulsar"] = true
+    --Engulf.SpecialWhitelist["c_entr_quasar"] = true
+    --Engulf.SpecialWhitelist["Omen"] = true
 end
 
 local regenerate = {

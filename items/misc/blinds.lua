@@ -1027,7 +1027,7 @@ SMODS.Shader({
 local void = {
     dependencies = {
         items = {
-          "set_entr_inversions"
+          "set_entr_blinds"
         }
     },
 	object_type = "Blind",
@@ -1045,7 +1045,7 @@ local void = {
 local rr = {
     dependencies = {
         items = {
-          "set_entr_inversions"
+          "set_entr_blinds"
         }
     },
 	object_type = "Blind",
@@ -1079,13 +1079,49 @@ if SMODS.ScreenShader then
 		path="vignette.fs",
 		send_vars = function (sprite, card)
 			return {
-				power = G.GAME.entr_vignette_power
+				power = G.GAME.entr_vignette_power or 2
 			}
 		end,
 		should_apply = function()
-			return G.GAME.entr_vignette_power
+			return G.GAME.entr_vignette_power or G.entr_invert_enabled
 		end
 	})
+	--TODO: special thanks in credits to lily for these two shaders
+	SMODS.ScreenShader {
+    key = "flashlight",
+    path = "flashlight.fs",
+    send_vars = function(self)
+		local t = G.TIMERS.REAL or 0
+		t = t - 5000*math.floor(t/5000)
+        return {
+            center_pos = G.entr_flashlight_center or { love.graphics.getWidth() / 2, love.graphics.getHeight() / 2 },
+            dist = G.entr_flashlight_distance or 500,
+			time = t or 0
+        }
+    end,
+    should_apply = function(self)
+        return G.entr_flashlight_enabled
+    end,
+    order = 5,
+
+	SMODS.ScreenShader {
+		key = "invert",
+		path = "invertradius.fs",
+		send_vars = function(self)
+			local t = G.TIMERS.REAL or 0
+			t = t - 5000*math.floor(t/5000)
+			return {
+				center_pos = G.entr_invert_center or { love.graphics.getWidth() / 2, love.graphics.getHeight() / 2 },
+				dist = G.entr_invert_distance or 500,
+				time = t or 0
+			}
+		end,
+		should_apply = function(self)
+			return G.entr_invert_enabled
+		end,
+		order = 7
+	}
+}
 end
 
 return {

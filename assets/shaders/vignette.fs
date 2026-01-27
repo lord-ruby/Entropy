@@ -9,6 +9,9 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	float a = sqrt(dx+dy);
 	a *= a;
 	a = pow(a, power);
+	a = 2. * (1. - a);
+	if (a > 1.) {a = 1.;};
+	a = 1. - a;
     return tex * vec4(1-a, 1-a, 1-a, 1);
 }
 

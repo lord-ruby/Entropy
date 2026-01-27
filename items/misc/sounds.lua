@@ -47,7 +47,7 @@ SMODS.Sound({
 	key = "music_entropic_ominous",
 	path = "music_entropic_ominous.ogg",
 	select_music_track = function()
-		local ferv 
+		local ferv = G.entr_invert_enabled
 		for i, v in pairs((G.pack_cards or {cards = {}}).cards or {}) do
 			if v.config.center.key == "c_entr_fervour" then ferv = true; break end
 		end

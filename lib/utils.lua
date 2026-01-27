@@ -2301,7 +2301,11 @@ function SMODS.get_next_vouchers()
 end
 
 function Entropy.handle_card_limit(area, num)
-    area.config.card_limit = area.config.card_limit + num
+    local off = 0
+    for i, v in pairs(area.cards) do
+        if v.ability and v.ability.extra_slots_used then off = off + v.ability.extra_slots_used end
+    end
+    area.config.card_limit = area.config.card_limit + num + off
     area:handle_card_limit()
 end
 
@@ -2579,4 +2583,21 @@ function SMODS.CanvasSprite:draw_from(other_obj, ms, mr, mx, my)
     )
     self:draw_boundingrect()
     love.graphics.pop()
+end
+
+
+function Entropy.get_card_pixel_pos(card)
+    return {
+        (G.ROOM.T.x + card.T.x + card.T.w * 0.5) * (G.TILESIZE * G.TILESCALE),
+        (G.ROOM.T.y + card.T.y + card.T.h * 0.5) * (G.TILESIZE * G.TILESCALE),
+    }
+end
+
+function Entropy.pythag(a, b)
+    local ax, ay, bx, by = a[1], a[2], b[1], b[2]
+    return math.sqrt(((ax - bx) ^ 2) + ((ay - by) ^ 2))
+end
+
+function Entropy.max_diagonal()
+    return Entropy.pythag({0, 0}, {love.graphics.getWidth(), love.graphics.getHeight()})
 end
