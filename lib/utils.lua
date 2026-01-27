@@ -2539,7 +2539,7 @@ function Entropy.get_random_rare(seed)
     seed = seed or "entr_rare"
     local cards = {}
     for i, v in pairs(G.P_CENTERS) do
-        if (not v.in_pool or v:in_pool({})) and v.hidden then
+        if (not v.in_pool or v:in_pool({})) and v.hidden and not v.no_doe then
             cards[#cards+1] = v
         end
     end
