@@ -2446,6 +2446,24 @@ local decs = {
 					}
 				}
 			},
+			["j_entr_planetarium_Flush House"] = {
+				name = "Planetarium: Ceres",
+				text = {
+					{
+						"This Joker gains {X:mult,C:white}X#1#{}",
+						"Mult for every {C:attention}Pair{} in",
+						"the winning hand and loses {X:mult,C:white}X#2#{}",
+						"Mult for every {C:attention}Suit{} in",
+						"the winning hand",
+						"{C:inactive}(Currently: {X:mult,C:white}X#3#{C:inactive} Mult)"
+					},
+					{
+						"Changes {C:entr_ascended}Effect{} based on",
+						"the last used hand specific",
+						"{C:planet}Planet{} or {C:purple}Star{} card"
+					}
+				}
+			},
 			["j_entr_planetarium_Flush Five"] = {
 				name = "Planetarium: Eris",
 				text = {

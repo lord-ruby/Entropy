@@ -1085,7 +1085,12 @@ local sunny_side_up = {
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
             local asc = card.ability.asc
-            if not context.blueprint then SMODS.scale_card(card, {ref_table = card.ability, ref_value = "asc", scalar_value = "asc_mod", operation = "-"}) end
+            if not context.blueprint then SMODS.scale_card(card, {ref_table = card.ability, ref_value = "asc", scalar_value = "asc_mod", operation = "-",
+                scaling_message = {
+                    message = localize("k_downgrade_ex"),
+                    colour = G.C.RED
+                }
+            }) end
             if to_big(card.ability.asc) > to_big(0) then
                 return {
                     plus_asc = asc
@@ -7945,7 +7950,7 @@ local planetarium = {
         }
     },
     config = {
-        extra = {hand = "none", fullhouse_dollars = 4, fullhouse_mult = 1.5, threeoak_mult = 2, fouroak_discards = 1, straight_dollars = 2}
+        extra = {hand = "none", fullhouse_dollars = 4, fullhouse_mult = 1.5, threeoak_mult = 2, fouroak_discards = 1, straight_dollars = 2,flushhouse_gain = 0.1, flushhouse_loss = 0.1, flushhouse_mult = 1}
     },
     calculate = function(self, card, context)
         if context.using_consumeable then
@@ -8039,6 +8044,58 @@ local planetarium = {
                 }
             end
         end
+        if card.ability.extra.hand == "Flush House" then
+            if context.joker_main then
+                return {
+                    xmult = card.ability.extra.flushhouse_mult
+                }
+            end
+            if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+                local num_pairs = 0
+                local suits = 0
+                local suit_map = {}
+                for i, v in pairs(SMODS.Suits) do
+                    for _, c in pairs(context.scoring_hand) do
+                        if c:is_suit(i) and not suit_map[i] then
+                            suit_map[i] = true
+                            suits = suits + 1  
+                         end
+                    end
+                end
+                for i = 1, #context.scoring_hand - 1 do
+                    for j = i + 1, #context.scoring_hand do
+                        local m, n = context.scoring_hand[i], context.scoring_hand[j]
+                        if m:get_id() == n:get_id() then
+                            num_pairs = num_pairs + 1
+                        end
+                    end
+                end
+                if num_pairs > 0 then
+                    SMODS.scale_card(card, {
+                        ref_table = card.ability.extra,
+                        ref_value = "flushhouse_mult",
+                        scalar_value = "flushhouse_gain",
+                        message_key = "a_xmult",
+                        message_colour = G.C.RED,
+                        operation = function(ref_table, ref_value, initial, change)
+                            ref_table[ref_value] = initial + change * num_pairs
+                        end
+                    })
+                end
+                if suits > 0 then
+                    SMODS.scale_card(card, {
+                        ref_table = card.ability.extra,
+                        ref_value = "flushhouse_mult",
+                        scalar_value = "flushhouse_loss",
+                        operation = function(ref_table, ref_value, initial, change)
+                            ref_table[ref_value] = initial - change * suits
+                        end,
+                        message_key = "a_xmult",
+                        message_colour = G.C.RED
+                    })
+                end
+            end
+        end
         if card.ability.extra.hand == "Five of a Kind" then
             if context.before and #G.play.cards == 5 then
                 Entropy.FlipThen(context.scoring_hand, function(c)
@@ -8099,6 +8156,13 @@ local planetarium = {
         if card.ability.extra.hand == "Four of a Kind" then
             vars = {
                 card.ability.extra.fouroak_discards
+            }
+        end
+        if card.ability.extra.hand == "Flush House" then
+            vars = {
+                card.ability.extra.flushhouse_gain,
+                card.ability.extra.flushhouse_loss,
+                card.ability.extra.flushhouse_mult
             }
         end
         if Entropy.Planetarium[card.ability.extra.hand] and Entropy.Planetarium[card.ability.extra.hand].loc_vars then
