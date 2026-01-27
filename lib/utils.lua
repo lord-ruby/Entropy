@@ -640,18 +640,59 @@ function Entropy.EditionTag(edition, key, ascendant, pos,order, credits)
         in_pool = ascendant and function() return false end or nil,
         apply = function(self, tag, context)
             if context.type == "store_joker_modify" then
-                tag:yep("+", G.C.RARITY[colour], function()
-                    for i, v in pairs(G.shop_jokers.cards) do
-                        v:set_edition(edition)
+                local any_to_edition
+                for i, v in pairs(G.shop_jokers.cards) do
+                    if not v.will_be_editioned then
+                        any_to_edition = true
+                        v.will_be_editioned = true
                     end
-                    for i, v in pairs(G.shop_booster.cards) do
-                        v:set_edition(edition)
+                end
+                for i, v in pairs(G.shop_booster.cards) do
+                    if not v.will_be_editioned then
+                        any_to_edition = true
+                        v.will_be_editioned = true
                     end
-                    for i, v in pairs(G.shop_vouchers.cards) do
-                        v:set_edition(edition)
+                end
+                for i, v in pairs(G.shop_vouchers.cards) do
+                    if not v.will_be_editioned then
+                        any_to_edition = true
+                        v.will_be_editioned = true
                     end
-                    return true
-                end)
+                end
+                if any_to_edition then
+                    tag:yep("+", G.C.RARITY[colour], function()
+                        for i, v in pairs(G.shop_jokers.cards) do
+                            if not v.edition then
+                                v:set_edition(edition)
+                            end
+                        end
+                        for i, v in pairs(G.shop_booster.cards) do
+                            if not v.edition then
+                                v:set_edition(edition)
+                            end
+                        end
+                        for i, v in pairs(G.shop_vouchers.cards) do
+                            if not v.edition then
+                                v:set_edition(edition)
+                            end
+                        end
+                        return true
+                    end)
+                end
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        for i, v in pairs(G.shop_jokers.cards) do
+                            v.will_be_editioned = nil
+                        end
+                        for i, v in pairs(G.shop_booster.cards) do
+                            v.will_be_editioned = nil
+                        end
+                        for i, v in pairs(G.shop_vouchers.cards) do
+                            v.will_be_editioned = nil
+                        end
+                        return true
+                    end
+                })
                 tag.triggered = true
             end
         end,
