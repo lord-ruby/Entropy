@@ -471,7 +471,9 @@ local nyctophobia = {
                     local cons = pseudorandom_element(G.consumeables.cards, pseudoseed("nyctophobia"))
                     if cons then
                         G.GAME.entr_used_cards = G.GAME.entr_used_cards or {}
-                        cons:start_dissolve()
+                        if not SMODS.is_eternal(cons) then
+                            cons:start_dissolve()
+                        end
                         local num = (G.GAME.entr_used_cards[cons.config.center.key] or 0)*2
                         if cons.getQty then
                             num = num * cons:getQty()

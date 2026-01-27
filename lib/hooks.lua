@@ -1699,7 +1699,8 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
     if key == 'xlog_chips' then
         local chips = hand_chips
         local gt = to_big(chips) < to_big(0) and 1 or chips
-        local log = Talisman and Big and to_big(gt):log(to_big(amount)) or math.log(gt, amount)
+        gt = to_big(gt)
+        local log = Talisman and Big and gt.log and gt:log(to_big(amount)) or math.log(gt, amount)
         hand_chips = mod_chips(to_big(chips) * math.max(log, 1))
         if not Entropy.should_skip_animations() then
             Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'chips', 1, percent, nil, nil, "Chips Xlog(Chips)", G.C.BLUE, "entr_e_rizz", 0.6)

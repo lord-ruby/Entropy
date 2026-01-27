@@ -364,11 +364,18 @@ if FinisherBossBlindStringMap then
         config = {
             dollars_earn = 0
         },
+        loc_vars = function(self, _, card)
+            return {
+                vars = {
+                    card.ability.dollars_earn
+                }
+            }
+        end,
         calculate = function(self, card, context)
             if context.after then
                 Entropy.FlipThen({G.play.cards[#G.play.cards]}, function(c)
                     card.ability.dollars_earn = card.ability.dollars_earn + (c.base.nominal + (c.ability.bonus or 0))
-                    SMODS.change_base(card, "entr_nilsuit", "entr_nilrank")
+                    SMODS.change_base(c, "entr_nilsuit", "entr_nilrank")
                 end)
             end
         end,
