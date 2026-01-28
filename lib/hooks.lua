@@ -1053,7 +1053,9 @@ end
 G.FUNCS.can_use_joker = function(e)
     local center = e.config.ref_table.config.center
     if
-        center.can_use and center:can_use(e.config.ref_table) and not G.CONTROLLER.locked and not e.config.ref_table.debuff
+        center.can_use and center:can_use(e.config.ref_table) and not e.config.ref_table.debuff
+        and G.STATE ~= G.STATES.HAND_PLAYED and G.STATE ~= G.STATES.DRAW_TO_HAND and G.STATE ~= G.STATES.PLAY_TAROT
+        and not (((G.play and #G.play.cards > 0) or (G.CONTROLLER.locked) or (G.GAME.STOP_USE and G.GAME.STOP_USE > 0)))
     then
         e.config.colour = G.C.RED
         e.config.button = "use_joker"
