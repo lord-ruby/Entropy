@@ -8271,7 +8271,34 @@ local double_down = {
     end,
     entr_credits = {
         idea = {"cassknows"}
-    }
+    },
+    generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+        SMODS.Center.generate_ui(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+        
+        local cards = {}
+        for i, v in pairs(G.I.CARD) do
+            if v.ability and v.ability.entr_marked and not v.ability.entr_marked_bypass then
+                local s = v:save()
+                local c = Card(0,0, G.CARD_W, G.CARD_H, pseudorandom_element(G.P_CARDS,pseudoseed("")), G.P_CENTERS.c_base)
+                c:load(s)
+                c.ability = SMODS.shallow_copy(c.ability)
+                c.ability.entr_marked_bypass = true
+                v.ability.entr_marked_bypass = nil                
+                table.insert(cards, c)
+            end
+        end
+        if #cards > 0 then
+            Entropy.card_area_preview(G.entrCardsPrev, desc_nodes, {
+                cards = cards,
+                override = true,
+                w = 2.2,
+                h = 0.6,
+                ml = 0,
+                scale = 0.5,
+                func_delay = 1.0,
+            })
+        end
+    end,
 }
 
 local wormwood = {

@@ -1,6 +1,6 @@
 if (SMODS.Mods["malverk"] or {}).can_load then
 	AltTexture({
-		key = "rubycardt",
+		key = "rubycard",
 		set = "Enhanced",
 		path = "malverk/enhancements.png",
 		loc_txt = {
@@ -14,7 +14,7 @@ if (SMODS.Mods["malverk"] or {}).can_load then
     TexturePack({
     key = "rubycard",
     textures = {
-        "entr_rubycardt",
+        "entr_rubycard",
     },
     loc_txt = {
         name = "Ruby over Prismatic",

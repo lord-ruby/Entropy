@@ -7,7 +7,9 @@ function Entropy.pact_mark(key)
     else
         tag.ability.count = (tag.ability.count or 0) + 1
         local index = tag.ability.index
-        G.HUD_runes[index]:remove()
+        if G.HUD_runes[index] then
+            G.HUD_runes[index]:remove()
+        end
         local tag_sprite_ui, tag_sprite = tag:generate_UI_rune()
         G.HUD_runes[index] = UIBox{
             definition = {n=G.UIT.ROOT, config={align = "tm", padding = 0.05, colour = G.C.CLEAR}, nodes={
