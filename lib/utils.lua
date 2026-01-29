@@ -1975,7 +1975,7 @@ function Entropy.misc_calculations(self, context)
     if not context then return end
     if context.before then
         for i, v in pairs(G.I.CARD) do
-            if type(v) == "table" and v.ability and v.ability.entr_marked then
+            if type(v) == "table" and v.ability and v.ability.entr_marked and not v.ability.entr_marked_bypass then
                 if v.area then
                     v.area:remove_card(v)
                 end
