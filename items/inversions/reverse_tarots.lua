@@ -1298,6 +1298,7 @@ local inferno = {
     end,
     use = function(self, card)
         local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        SMODS.calculate_context({remove_playing_cards = true, removed=cards})
         for i, v in pairs(cards) do
             v:start_dissolve()
         end

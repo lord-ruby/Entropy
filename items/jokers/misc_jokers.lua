@@ -7894,7 +7894,7 @@ local ancestral_recall = {
             })
         end
         ease_hands_played(card.ability.hands)
-        if G.GAME.current_round.hands_left <= 0 then
+        if G.GAME.current_round.hands_left <= -card.ability.hands then
             end_round()
         end
         G.E_MANAGER:add_event(Event{
