@@ -603,7 +603,6 @@ local charm = {
         return #cards <= card.ability.select and #cards > 0
 	end,
     loc_vars = function(self, q, card)
-        q[#q+1] = G.P_CENTERS.e_entr_gilded
         q[#q+1] = {key="eternal",set="Other"}
         return {
             vars = {

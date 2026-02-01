@@ -7119,7 +7119,7 @@ local texas_hold_em = {
         if context.first_hand_drawn and context.hand_drawn or context.forcetrigger then
             card.ability.added_cards = {}
             local cards = {}
-            for i, v in pairs(context.hand_drawn) do
+            for i, v in pairs(context.hand_drawn or G.hand.cards) do
                 if not v.ability.entr_marked then cards[#cards+1] = v end
             end
             if #cards > 0 then
@@ -8259,6 +8259,7 @@ local double_down = {
             G.E_MANAGER:add_event(Event{
                 func = function()
                     c.ability.entr_marked = true
+                    c.entr_will_be_marked = nil
                     return true
                 end
             })

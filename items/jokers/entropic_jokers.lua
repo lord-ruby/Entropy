@@ -564,6 +564,12 @@ local akyros = {
 
 if Cryptid.big_num_blacklist then Cryptid.big_num_blacklist["j_entr_katarraktis"] = true end
 
+local function _get_fib(n)
+    local phi = (1 + math.sqrt(5))/2
+    local res = math.floor((phi ^ (n + 1) - (1 - phi)^(n+1))/(math.sqrt(5)))
+    return res
+end
+
 local katarraktis = {
     order = 609,
     object_type = "Joker",
@@ -602,8 +608,8 @@ local katarraktis = {
             end
             local diff = ind - this_ind
             if diff >= 1 then
-                if diff > 17 then diff = 17 end
-                local triggers = 2 ^ (diff - 1)
+                local triggers = _get_fib(diff)
+                print(triggers)
                 return {
 					message = localize("k_again_ex"),
 					repetitions = to_number(math.floor(math.min(math.min(card.ability.basetriggers,32) * triggers, 65536))),
@@ -616,6 +622,11 @@ local katarraktis = {
         idea = {"cassknows"},
         art = {"cassknows"}
     }
+}
+
+SMODS.Font {
+  key = "phi",
+  path = "m6x11plusphi.ttf"
 }
 
 local ieros = {

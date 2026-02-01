@@ -504,8 +504,8 @@ local decs = {
 					"Retrigger the {C:attention}Joker{} to",
 					"the right {C:attention}#1#{} time#<s>1# then",
 					"retrigger each subsequent",
-					"{C:attention}Joker{} {X:dark_edition,C:white}twice{} as",
-					"many times as the previous"
+					"{C:attention}Joker{} {X:dark_edition,C:white,f:entr_phi}Xo{} as many",
+					"times as the previous"
 				}
 			},
 			j_entr_dr_sunshine = {
