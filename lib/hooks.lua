@@ -5028,3 +5028,12 @@ function get_X_same(x, hand,...)
     if x < 1 then x = 1 end
     return get_x_sameref(x, hand,...)
 end
+
+local scale_cardref = SMODS.scale_card
+function SMODS.scale_card(card, tbl, ...)
+    if card.ability.entr_pure then
+        SMODS.calculate_effect({card = card, message = localize("k_nope_ex"), colour = G.C.RED})
+    else    
+        return scale_cardref(card, tbl, ...)
+    end
+end
