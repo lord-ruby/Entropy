@@ -3684,21 +3684,26 @@ Entropy.post_create_card(card, nil, nil)
 target = '''=[SMODS _ "src/card_draw.lua"]'''
 pattern = '''
 else
-    self.children.floating_sprite:draw_shader('dissolve', 0, nil, nil, self.children.center,scale_mod, rotate_mod,nil, 0.1 + 0.03*math.sin(1.8*G.TIMERS.REAL),nil, 0.6)
+    self.children.floating_sprite:draw_shader('dissolve',0, nil, nil, self.children.center,scale_mod, rotate_mod,nil, 0.1 + 0.03*math.sin(1.8*G.TIMERS.REAL),nil, 0.6)
     self.children.floating_sprite:draw_shader('dissolve', nil, nil, nil, self.children.center, scale_mod, rotate_mod)
 end
 '''
 position = "before"
 payload = '''
 elseif self.config.center.rarity == "entr_reverse_legendary" and not self.config.center.no_rlegendary_outline then
+    local x_off = 0
+    local y_off = 0
     if self.config.center.key == "j_entr_ybur" then 
-      self.T.w = self.T.w * 3
+      self.T.w = G.CARD_W * 3
+      x_off = -0.055
+      y_off = -0.055
     end
-    self.children.floating_sprite:draw_shader('entr_pulseoutline', 0, nil, nil, self.children.center,scale_mod, rotate_mod,nil, 0.1 + 0.03*math.sin(1.8*G.TIMERS.REAL),nil, 0.6)
-    self.children.floating_sprite:draw_shader('entr_pulseoutline', nil, nil, nil, self.children.center, scale_mod, rotate_mod
+    self.children.floating_sprite:draw_shader('entr_pulseoutline', 0, nil, nil, self.children.center,scale_mod, rotate_mod,nil, 0.1 + 0.03*math.sin(1.8*G.TIMERS.REAL), nil, 0.6)
+    self.children.floating_sprite:draw_shader('entr_pulseoutline', nil, nil, nil, self.children.center, scale_mod, rotate_mod, (x_off or 0)*1.1*(-5.64+self.VT.x), --hardcoded bs
+    (y_off or 0)*1.1*(-5.64+self.VT.y)
     )
     if self.config.center.key == "j_entr_ybur" then 
-      self.T.w = self.T.w / 3
+      self.T.w = G.CARD_W
     end
 '''
 match_indent = true

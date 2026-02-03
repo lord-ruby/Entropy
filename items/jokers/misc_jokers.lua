@@ -2251,8 +2251,8 @@ local ruby = {
     rarity = 4,
     cost = 20,
     atlas = "ruby_atlas",
-    pos = {x=0, y=0},
-    soul_pos = {x = 1, y = 0},
+    pos = {x=1, y=0},
+    soul_pos = {x = 0, y = 0},
     config = {
         jokers_needed = 2,
         jokers = 0,

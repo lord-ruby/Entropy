@@ -397,8 +397,9 @@ local ybur = {
     blueprint_compat = true,
     eternal_compat = true,
     pos = {x=4, y=0},
-    soul_pos = {x = 0, y = 3},    
-    atlas = "ruby_atlas",
+    soul_pos = {x = 0, y = 3}, 
+    pixel_size = {w=71*3},
+    atlas = "rubysoul_big",
     demicoloncompat=true,
     loc_vars = function(self, info_queue, card)
         return {
@@ -450,6 +451,9 @@ local ybur = {
     end,
     set_sprites = function(self, card, front)
         if self.discovered or card.bypass_discovery_center then
+            card.children.center.scale.x = 71
+            card.children.center.atlas = G.ASSET_ATLAS.entr_ruby_atlas
+            card.children.center:reset()
             card.children.floating_sprite:remove()
             card.children.floating_sprite = SMODS.create_sprite(card.T.x, card.T.y, G.CARD_W, G.CARD_H, 'entr_rubysoul_big', { x = 0, y = 3 })
             card.children.floating_sprite.role.draw_major = card
