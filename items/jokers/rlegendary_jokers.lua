@@ -396,8 +396,8 @@ local ybur = {
     cost = 20,
     blueprint_compat = true,
     eternal_compat = true,
-    pos = {x=2, y=0},
-    soul_pos = {x = 1, y = 0},
+    pos = {x=4, y=0},
+    soul_pos = {x = 0, y = 3},    
     atlas = "ruby_atlas",
     demicoloncompat=true,
     loc_vars = function(self, info_queue, card)
@@ -417,14 +417,8 @@ local ybur = {
                     ref_table = card.ability,
                     ref_value = "e_chips",
                     scalar_value = "e_chips_mod",
-                    scaling_message = {
-                        message = localize({
-                            type = "variable",
-                            key = "a_powchips",
-                            vars = { card.ability.e_chips },
-                        }),
-                        colour = { 0.8, 0.45, 0.85, 1 }
-                    }
+                    message_key = "a_powchips",
+                    message_colour = { 0.8, 0.45, 0.85, 1 }
                 })
             end
             return {
@@ -451,6 +445,18 @@ local ybur = {
                     message = localize("k_reset")
                 }
             end
+        
+        end
+    end,
+    set_sprites = function(self, card, front)
+        if self.discovered or card.bypass_discovery_center then
+            card.children.floating_sprite:remove()
+            card.children.floating_sprite = SMODS.create_sprite(card.T.x, card.T.y, G.CARD_W, G.CARD_H, 'entr_rubysoul_big', { x = 0, y = 3 })
+            card.children.floating_sprite.role.draw_major = card
+            card.children.floating_sprite.states.hover.can = false
+            card.children.floating_sprite.states.click.can = false
+            card.children.floating_sprite.T.y = card.T.y
+            card.children.floating_sprite.T.x = card.T.x
         end
     end,
     pronouns = "she_her",
@@ -714,6 +720,24 @@ local nokharg  = {
         end
     end,
     pronouns = "he_him",
+}
+
+SMODS.Shader{
+    key = "pulseoutline",
+    path = "pulseoutline.fs",
+    send_vars = function()
+        local t = G.TIMERS.REAL or 0
+        t = t - 5000*math.floor(t/5000)
+        return {
+            realtime = t,
+            outline_color = {
+                Entropy.reverse_legendary_gradient[1],
+                Entropy.reverse_legendary_gradient[2],
+                Entropy.reverse_legendary_gradient[3],
+                Entropy.reverse_legendary_gradient[4],
+            }
+        }
+    end
 }
 
 return {

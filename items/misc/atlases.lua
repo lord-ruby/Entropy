@@ -373,3 +373,10 @@ SMODS.Atlas {
     px = 71,
     py = 95,
 }
+
+SMODS.Atlas {
+    key = "rubysoul_big",
+    path = "ruby.png",
+    px = 71*3,
+    py = 95,
+}

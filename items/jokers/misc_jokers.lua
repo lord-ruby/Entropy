@@ -7778,7 +7778,7 @@ SMODS.DrawStep({
 
         if not self.children.searing_sprite then 
             self.children.searing_sprite = SMODS.CanvasSprite(
-                0, 0, 71, 95, 71, 95, 1
+                {X=0, Y=0, W=71, H=95, canvasW=71, canvasH=95, canvasScale=1}
             )
         end
         local sprite = self.children.searing_sprite

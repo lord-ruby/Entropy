@@ -103,3 +103,25 @@ end
 if G.P_CENTERS.e_negative then
     G.P_CENTERS.e_negative.no_doe = true
 end
+
+SMODS.current_mod.menu_cards = function()
+    return {
+        func = function()
+            for i, v in pairs(G.title_top.cards) do
+                if v.config.center.key == "c_cryptid" then
+                    G.title_top:remove_card(v)
+                    v:remove()
+                end
+                if v.base and v.base.value and v.base.value == "Ace" then
+                    math.randomseed(os.time())
+                    if math.random() < 0.01 then
+                        v:set_edition("e_entr_freaky") 
+                    else
+                        v:set_edition("e_entr_solar") 
+                    end
+                end
+            end
+        end,
+        {key = "c_entr_entropy"}
+    }
+end
