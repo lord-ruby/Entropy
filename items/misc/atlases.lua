@@ -380,3 +380,10 @@ SMODS.Atlas {
     px = 71*3,
     py = 95,
 }
+
+SMODS.Atlas {
+    key = "titlecard",
+    path = "titlecard.png",
+    px = 122,
+    py = 122,
+}

@@ -2607,30 +2607,3 @@ end
 function Entropy.max_diagonal()
     return Entropy.pythag({0, 0}, {love.graphics.getWidth(), love.graphics.getHeight()})
 end
-
-local card_draw_ref = Card.draw
-function Card:draw(layer)
-    if self.config.center.key == "j_entr_ybur" then 
-      self.T.w = G.CARD_W * 3
-      self.children.center.true_scale = {x = 3}
-      self.children.floating_sprite.true_scale = self.children.floating_sprite.true_scale or {x = 3}
-    end
-    card_draw_ref(self, layer)
-    if self.config.center.key == "j_entr_ybur" then 
-      self.T.w = G.CARD_W
-    end
-end
-
-function prep_draw(moveable, scale, rotate, offset)
-    love.graphics.push()
-    love.graphics.scale(G.TILESCALE*G.TILESIZE)
-    love.graphics.translate(
-      (moveable.VT.x+moveable.VT.w/2 + (offset and offset.x or 0) + ((moveable.layered_parallax and moveable.layered_parallax.x) or ((moveable.parent and moveable.parent.layered_parallax and moveable.parent.layered_parallax.x)) or 0))*(moveable.true_scale and moveable.true_scale.p_x or 1),
-      moveable.VT.y+moveable.VT.h/2 + (offset and offset.y or 0) + ((moveable.layered_parallax and moveable.layered_parallax.y) or ((moveable.parent and moveable.parent.layered_parallax and moveable.parent.layered_parallax.y)) or 0))
-    if moveable.VT.r ~= 0 or moveable.juice or rotate then love.graphics.rotate(moveable.VT.r + (rotate or 0)) end
-    love.graphics.translate(
-        -scale*moveable.VT.w*(moveable.VT.scale)/2,
-        -scale*moveable.VT.h*(moveable.VT.scale)/2)
-    love.graphics.scale(moveable.VT.scale*scale)
-    love.graphics.scale(moveable.true_scale and moveable.true_scale.x or 1, moveable.true_scale and moveable.true_scale.y or 1)
-end

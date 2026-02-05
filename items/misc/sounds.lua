@@ -11,7 +11,7 @@ SMODS.Sound({
 	key = "music_red_room",
 	path = "music_red_room.ogg",
 	select_music_track = function()
-		return G.GAME.blind and G.GAME.blind.name == "bl_entr_red" and 10^5
+		return (G.GAME.blind and G.GAME.blind.name == "bl_entr_red") and 10^5
 	end,
 })
 SMODS.Sound({
@@ -39,7 +39,7 @@ SMODS.Sound({
             bl_entr_endless_entropy_phase_three=true,
             bl_entr_endless_entropy_phase_four=true
         }
-		return (G.GAME.blind and blinds[G.GAME.blind.config.blind.key]) and 10^306
+		return ((G.GAME.blind and blinds[G.GAME.blind.config.blind.key])) and 10^306
 	end,
 })
 
@@ -51,7 +51,7 @@ SMODS.Sound({
 		for i, v in pairs((G.pack_cards or {cards = {}}).cards or {}) do
 			if v.config.center.key == "c_entr_fervour" then ferv = true; break end
 		end
-		return ferv and G.GAME.entropy and G.GAME.entropy > 100 and 10^300
+		return (ferv and G.GAME.entropy and G.GAME.entropy > 100) and 10^300
 	end,
 })
 

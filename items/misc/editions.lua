@@ -665,6 +665,11 @@ function Card:click(...)
 	if G.SETTINGS.paused and self.edition and G.P_CENTERS[self.edition.key] and G.P_CENTERS[self.edition.key].sound then
 		play_sound(G.P_CENTERS[self.edition.key].sound.sound, G.P_CENTERS[self.edition.key].sound.volume)
 	end
+	if self.config.center.key == "j_entr_title_card" then
+		G.back_to_main = true
+		G.FUNCS["openModUI_entr"]()
+		G.back_to_main = nil
+	end
 	if G.SETTINGS.paused and self.config and self.config.center_key == "j_entr_amaryllis" then
 		self.ability.colour = ({
 			white = "red",

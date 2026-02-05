@@ -113,6 +113,12 @@ SMODS.current_mod.menu_cards = function()
                     v:remove()
                 end
                 if v.base and v.base.value and v.base.value == "Ace" then
+                    --G.title_top:remove_card(v)
+                    --v:remove()
+                    v:set_base()
+                    v:set_ability(G.P_CENTERS.j_entr_title_card)
+                    v.children.front:remove()
+                    v.children.front = nil
                     math.randomseed(os.time())
                     if math.random() < 0.01 then
                         v:set_edition("e_entr_freaky") 
@@ -122,6 +128,22 @@ SMODS.current_mod.menu_cards = function()
                 end
             end
         end,
-        {key = "c_entr_entropy"}
     }
 end
+
+SMODS.Joker {
+    key = "title_card",
+    atlas = "titlecard",
+    no_collection = true,
+    in_pool = function() return false end,
+    rarity = "entr_zenith",
+    pos = {x=0, y=0},
+    soul_pos = {x=1, y=0},
+    no_doe = true,
+    no_collection = true,
+    display_size = { w = 122, h = 122 },
+	in_pool = function()
+		return false
+	end,
+    cry_order = 999999
+}
