@@ -339,6 +339,7 @@ local containment = {
 	apply = function(self)
 		G.GAME.entropy = 0
 	end,
+  in_pool = function() return next(SMODS.find_card("j_entr_parakmi")) end, --redeem stuff
 	calculate = function(self,back,context)
 		if context.final_scoring_step and number_format(0.002 + (0.998^(G.GAME.entropy/2))) ~= "1" then
 			if not ({
@@ -384,13 +385,13 @@ local containment = {
 				if i > G.jokers.config.card_limit then ease_entropy(1) end
 			end
 		end
-    end,
+  end,
 	loc_vars = function()
 		return {
 			key = not (SMODS.Mods.Cryptid or {}).can_load and "b_entr_doc_cryptidless" or nil
 		}
-    end,
-  }
+  end,
+}
 
 if CardSleeves then
     CardSleeves.Sleeve {
@@ -534,6 +535,7 @@ if CardSleeves then
 			key = not (SMODS.Mods.Cryptid or {}).can_load and "sleeve_entr_doc_cryptidless" or nil
 		}
     end,
+    in_pool = function() return next(SMODS.find_card("j_entr_parakmi")) end, --redeem stuff
     apply = function()
 		if G.GAME.selected_back and G.GAME.selected_back.effect.center.original_key == "doc" then
 			G.E_MANAGER:add_event(Event({

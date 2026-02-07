@@ -370,20 +370,17 @@ local feud = {
     use = function(self, card, area, copier)
         local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
         local chips = 0
-        local bonus_chips = 0
         for i = 2, to_number(card.ability.select) do
             local new_card = cards[i]
             if new_card then
-                chips = chips + new_card.base.nominal
-                bonus_chips = bonus_chips + (new_card.ability and new_card.ability.bonus or 0)
+                chips = chips + c:get_chip_bonus()
                 SMODS.destroy_cards(new_card)
             end
         end
         local mult = card.ability.chip_mult
         Entropy.FlipThen(cards, function(card)
-            card.base.nominal = card.base.nominal + chips * mult
-            if to_big(bonus_chips) > to_big(0) then
-                card.ability.bonus = card.ability.bonus + bonus_chips * mult
+            if to_big(chips) > to_big(0) then
+                card.ability.bonus = card.ability.bonus + chips * mult
             end
 
         end)
@@ -509,7 +506,7 @@ local dagger = {
 			end
 		end
         for i, card in ipairs(cards) do
-            total = total + card.base.nominal + (card.ability.bonus or 0)
+            total = total + c:get_chip_bonus()
         end
         SMODS.destroy_cards(cards)
         update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = G.GAME.hands[_hand].level, mult = Entropy.ascend_hand(G.GAME.hands[_hand].mult, _hand), chips = Entropy.ascend_hand(G.GAME.hands[_hand].chips, _hand), handname = localize(_hand, "poker_hands") })

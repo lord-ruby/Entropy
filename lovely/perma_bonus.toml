@@ -30,6 +30,8 @@ entr_perma_asc = self.ability.entr_perma_asc ~= 0 and (self.ability.entr_perma_a
 entr_perma_h_asc = self.ability.entr_perma_h_asc ~= 0 and (self.ability.entr_perma_h_asc + 1) or nil,
 entr_perma_exp_asc = self.ability.entr_perma_exp_asc ~= 0 and (self.ability.entr_perma_exp_asc + 1) or nil,
 entr_perma_h_exp_asc = self.ability.entr_perma_h_exp_asc ~= 0 and (self.ability.entr_perma_h_exp_asc + 1) or nil,
+suit_bonus = self.ability.suit_bonus or nil,
+suit_level = G.GAME.SuitBuffs and G.GAME.SuitBuffs[self.base.suit] and G.GAME.SuitBuffs[self.base.suit].level or nil,
 """
 match_indent = true
 
@@ -60,6 +62,13 @@ if specific_vars and specific_vars.entr_perma_exp_asc then
 end
 if specific_vars and specific_vars.entr_perma_h_exp_asc then
     localize{ type = "other", key = "entr_perma_h_exp_asc", nodes = desc_nodes, vars = {specific_vars.entr_perma_h_exp_asc}}
+end
+if specific_vars and specific_vars.suit_bonus then
+    localize{type = 'other', key = 'entr_divider', nodes = desc_nodes, vars = {}}
+    localize{type = 'other', key = 'entr_card_suit_level', nodes = desc_nodes, vars = {localize(specific_vars.suit, 'suits_plural'), specific_vars.suit_bonus, specific_vars.suit_level, colours = {
+        G.C.SUITS[specific_vars.suit],
+        to_big(specific_vars.suit_level) < to_big(2) and G.C.BLACK or G.C.HAND_LEVELS[to_number(math.min(7, specific_vars.suit_level))]
+    }}}
 end
 '''
 match_indent = true

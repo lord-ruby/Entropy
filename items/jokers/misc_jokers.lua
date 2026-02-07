@@ -861,6 +861,9 @@ local dating_simbo = {
                 if context.destroying_card.ability.bonus then
                     SMODS.scale_card(card, {ref_table = card.ability, ref_value = "chips", scalar_table = context.destroying_card.ability, scalar_value = "bonus", no_message = true})
                 end
+                if context.destroying_card.ability.suit_bonus then
+                    SMODS.scale_card(card, {ref_table = card.ability, ref_value = "chips", scalar_table = context.destroying_card.ability, scalar_value = "suit_bonus", no_message = true})
+                end
                 return { remove = not SMODS.is_eternal(context.destroying_card) }
             end
         end
@@ -3364,7 +3367,7 @@ local abacus = {
     perishable_compat = true,
     blueprint_compat = true,
     calculate = function(self, card, context)
-        if (context.individual and context.other_card.base.nominal and to_big(context.other_card.base.nominal + (context.other_card.ability.bonus or 0)) > to_big(0) and context.cardarea == G.play) or context.forcetrigger then
+        if (context.individual and context.other_card.base.nominal and to_big(context.other_card.base:get_chip_bonus()) > to_big(0) and context.cardarea == G.play) or context.forcetrigger then
             if not context.other_card then
                 return {
                     mult = 5
@@ -3373,7 +3376,7 @@ local abacus = {
             local id = context.other_card:get_id()
             if id <= 10 or id > 14 and not SMODS.has_no_rank(context.other_card) then
                 return {
-                    mult = math.ceil((context.other_card.base.nominal + (context.other_card.ability.bonus or 0)) / 2)
+                    mult = math.ceil((context.other_card:get_chip_bonus()) / 2)
                 }
             end
         end

@@ -6946,6 +6946,13 @@ local decs = {
 				text = {
 					"{X:money,C:white}^#1#{} Ascension Power while held in hand"
 				}
+			},
+			entr_card_suit_level = {
+				text = {
+					"--------------",
+					"{S:0.8,V:1}#1#{} {S:0.8}({S:0.8,V:2}lvl.#3#{})",
+					"{C:blue}+#2#{} Chips"
+				}
 			}
 		},
 		Partner = {
