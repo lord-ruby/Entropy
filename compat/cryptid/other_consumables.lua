@@ -980,9 +980,11 @@ local prophecy = {
         counter = 2
     },
     use = function(self, card, area, copier)
-        G.GAME.next_inversions_prophecy = G.GAME.last_fraud.key
-        G.GAME.last_fraud = nil
-        G.GAME.inversions_prophecy_counter = card.ability.counter
+        if G.GAME.last_fraud then
+            G.GAME.next_inversions_prophecy = G.GAME.last_fraud.key
+            G.GAME.last_fraud = nil
+            G.GAME.inversions_prophecy_counter = card.ability.counter
+        end
     end,
     can_use = function(self, card)
         return G.GAME.last_fraud

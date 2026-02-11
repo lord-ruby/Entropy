@@ -112,9 +112,9 @@ function Entropy.invert(cards, flip)
             if i then
                 local ret = {}
                 if c.config.center.calculate then
-                    ret = c.config.center:calculate(c, {being_inverted = true})
+                    ret = c.config.center:calculate(c, {being_inverted = true}) or {}
                 end
-                if not ret.prevent_inversion then
+                if not ret or not ret.prevent_inversion then
                     c.ability.fromflipside = true
                     c:set_ability(G.P_CENTERS[i])
                     if c.ability.glitched_crown then
@@ -125,7 +125,7 @@ function Entropy.invert(cards, flip)
                     c.ability.fromflipside = false
                     SMODS.calculate_context({entr_consumable_inverted = true, card = c})
                 end
-                if next(ret) then
+                if next(ret or {}) then
                     SMODS.calculate_effect(ret, c)
                 end
             end
@@ -2572,7 +2572,7 @@ end
 
 function Entropy.should_skip_animations(strict)
     if Talisman and Talisman.config_file.disable_anims then return true end
-    if Handy and Handy.animation_skip.get_value() >= (strict and 4 or 3) then return true end
+    if Handy and Handy.animation_skip and Handy.animation_skip.get_value and Handy.animation_skip.get_value() >= (strict and 4 or 3) then return true end
 end
 
 function Entropy.get_random_rare(seed)
