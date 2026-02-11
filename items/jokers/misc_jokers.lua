@@ -5111,6 +5111,7 @@ local black_rose_green_sun = {
     order = 90,
     object_type = "Joker",
     key = "black_rose_green_sun",
+    pools = { ["Music"] = true },
     rarity = 1,
     cost = 5,
     eternal_compat = true,
