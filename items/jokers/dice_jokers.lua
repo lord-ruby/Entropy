@@ -395,13 +395,11 @@ local dice_shard = {
         if cards and #cards > 0 then
             if cards[1].config.center.set == "Joker" or G.GAME.modifiers.cry_beta and cards[1].consumable then
                 local first = cards[1]
-                local ind = ReductionIndex(cards[1], cards[1].config.center.set )-1
-                while G.P_CENTER_POOLS[cards[1].config.center.set ][ind].no_doe or G.P_CENTER_POOLS[cards[1].config.center.set][ind].no_collection do
-                    ind = ind - 1
+                local ind = Entropy.reduction_index(cards[1], cards[1].config.center.set )
+                if G.P_CENTER_POOLS[cards[1].config.center.set][ind] then
+                    name = localize { type = 'name_text', key = G.P_CENTER_POOLS[cards[1].config.center.set][ind].key, set = G.P_CENTER_POOLS[cards[1].config.center.set][ind].set }
+                    q[#q+1] = G.P_CENTER_POOLS[cards[1].config.center.set][ind]
                 end
-                if ind < 1 then ind = 1 end
-                name = localize { type = 'name_text', key = G.P_CENTER_POOLS[cards[1].config.center.set][ind].key, set = G.P_CENTER_POOLS[cards[1].config.center.set][ind].set }
-                q[#q+1] = G.P_CENTER_POOLS[cards[1].config.center.set][ind]
             end
         end
         return {
@@ -424,17 +422,7 @@ local dice_shard = {
     end,
     use = function(self, card)
         card.ability.left = card.ability.left - 1
-        Entropy.FlipThen(Entropy.GetHighlightedCards({G.jokers}, card, 1, 1), function(card)
-            local ind = ReductionIndex(card, card.config.center.set)-1
-            while G.P_CENTER_POOLS[card.config.center.set][ind] and G.P_CENTER_POOLS[card.config.center.set][ind].no_doe or G.P_CENTER_POOLS[card.config.center.set].no_collection do
-                ind = ind - 1
-            end
-            if ind < 1 then ind = 1 end
-            if G.P_CENTER_POOLS.Joker[ind] then
-                card:set_ability(G.P_CENTERS[G.P_CENTER_POOLS.Joker[ind].key])
-            end
-            G.jokers:remove_from_highlighted(card)
-        end)
+        Entropy.reduce_cards(Entropy.GetHighlightedCards({G.jokers}, card, 1, 1), card)
     end
 }
 
@@ -505,7 +493,7 @@ local nostalgic_d6 = {
             if G.GAME.modifiers.glitched_items then
                 local gc = {p_card.config.center.key}
                 for i = 1, G.GAME.modifiers.glitched_items - 1 do
-                gc[#gc+1] = Entropy.GetPooledCenter(p_card.config.center.set).key
+                    gc[#gc+1] = Entropy.GetPooledCenter(p_card.config.center.set).key
                 end
                 p_card.ability.glitched_crown = gc
             end

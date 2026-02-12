@@ -2973,7 +2973,7 @@ match_indent = true
 [patches.pattern]
 target = 'card.lua'
 pattern = '''
-if G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED then
+if self.ability.consumeable and self.ability.consumeable.max_highlighted then
 '''
 position = 'after'
 payload = '''

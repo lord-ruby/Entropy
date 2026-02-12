@@ -786,17 +786,7 @@ local decrement = {
     },
     pos = {x=3,y=3},
     use = function(self, card, area, copier)
-        Entropy.FlipThen(Entropy.GetHighlightedCards({G.jokers}, card, 1, card.ability.extra), function(card)
-            local ind = ReductionIndex(card, card.config.center.set)-1
-            while G.P_CENTER_POOLS[card.config.center.set][ind] and G.P_CENTER_POOLS[card.config.center.set][ind].no_doe or G.P_CENTER_POOLS[card.config.center.set].no_collection do
-                ind = ind - 1
-            end
-            if ind < 1 then ind = 1 end
-            if G.P_CENTER_POOLS.Joker[ind] then
-                card:set_ability(G.P_CENTERS[G.P_CENTER_POOLS.Joker[ind].key])
-            end
-            G.jokers:remove_from_highlighted(card)
-        end)
+        Entropy.reduce_cards(Entropy.GetHighlightedCards({G.jokers}, card, 1, card.ability.extra), card)
     end,
     can_use = function(self, card)
         local num = #Entropy.GetHighlightedCards({G.jokers}, card, 1, card.ability.extra)
@@ -808,11 +798,7 @@ local decrement = {
         if cards and #cards > 0 then
             if cards[1].config.center.set == "Joker" or G.GAME.modifiers.cry_beta and cards[1].consumable then
                 local first = cards[1]
-                local ind = ReductionIndex(cards[1], cards[1].config.center.set )-1
-                while G.P_CENTER_POOLS[cards[1].config.center.set ][ind].no_doe or G.P_CENTER_POOLS[cards[1].config.center.set ].no_collection do
-                    ind = ind - 1
-                end
-                if ind < 1 then ind = 1 end
+                local ind = Entropy.reduction_index(cards[1], cards[1].config.center.set )
                 name = G.localization.descriptions[cards[1].config.center.set ][G.P_CENTER_POOLS[cards[1].config.center.set ][ind].key].name
             end
         end
