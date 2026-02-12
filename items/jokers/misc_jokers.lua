@@ -5686,8 +5686,7 @@ local meridian = {
         }
     },
     loc_vars = function(self, q, card)
-        local index = 1
-        Entropy.get_area_index(card.area.cards, card)
+        local index = Entropy.get_area_index(card.area.cards, card)
         return {
             vars = {
                 card.ability.multiplier * index

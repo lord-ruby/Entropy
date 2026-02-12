@@ -2635,7 +2635,7 @@ end
 
 function Entropy.get_area_index(cards, card)
     for i, v in pairs(cards) do
-        if v.config.center_key == card.config.center_key and v.unique_val == card.unique_val then return i end
+        if v == card then return i end
     end
     return -1
 end
