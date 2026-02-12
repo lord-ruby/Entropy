@@ -8316,7 +8316,7 @@ local wormwood = {
     },
     config = {
         minus_mult = -0.25,
-        asc_power_chips = 0.1
+        asc_power_chips = 0.05
     },
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play then

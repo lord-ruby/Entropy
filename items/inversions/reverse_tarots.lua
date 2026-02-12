@@ -373,7 +373,7 @@ local feud = {
         for i = 2, to_number(card.ability.select) do
             local new_card = cards[i]
             if new_card then
-                chips = chips + c:get_chip_bonus()
+                chips = chips + new_card:get_chip_bonus()
                 SMODS.destroy_cards(new_card)
             end
         end
@@ -506,7 +506,7 @@ local dagger = {
 			end
 		end
         for i, card in ipairs(cards) do
-            total = total + c:get_chip_bonus()
+            total = total + card:get_chip_bonus()
         end
         SMODS.destroy_cards(cards)
         update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = G.GAME.hands[_hand].level, mult = Entropy.ascend_hand(G.GAME.hands[_hand].mult, _hand), chips = Entropy.ascend_hand(G.GAME.hands[_hand].chips, _hand), handname = localize(_hand, "poker_hands") })
