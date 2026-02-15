@@ -539,7 +539,7 @@ local caviar = {
         if context.tag_create and Entropy.AscendedTags[context.tag.key] and not context.tag.ability.no_asc then
             card.ability.tags = card.ability.tags - 1
             if to_number(card.ability.tags) <= 0.00000001 then
-				SMODS.destroy_cards(card, nil, nil, true)
+				SMODS.destroy_cards(card, true, nil, true)
                 card_eval_status_text(
                     card,
                     "extra",

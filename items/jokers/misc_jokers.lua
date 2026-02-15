@@ -404,7 +404,7 @@ local insatiable_dagger = {
                 }))
                 SMODS.scale_card(card, {ref_table = card.ability, ref_value = "perc", scalar_value = "perc_mod", operation = "-", no_message = true})
                 if card.ability.perc <= 0 then
-                    SMODS.destroy_cards(card, nil, nil, true)
+                    SMODS.destroy_cards(card, true, nil, true)
                 end
             end
         end
@@ -1099,7 +1099,7 @@ local sunny_side_up = {
                     plus_asc = asc
                 }
             else    
-				SMODS.destroy_cards(card, nil, nil, true)
+				SMODS.destroy_cards(card, true, nil, true)
             end
         end
 	end,
@@ -1155,7 +1155,7 @@ local sunflower_seeds = {
                 Entropy.FlipThen({jcard}, function(card)
                     card:set_edition("e_entr_sunny")
                 end)
-                SMODS.destroy_cards(card, nil, nil, true)
+                SMODS.destroy_cards(card, true, nil, true)
 				return {
 					message = localize("k_eaten_ex"),
 					colour = G.C.FILTER,
@@ -2869,7 +2869,7 @@ local chuckle_cola = {
             card.ability.triggers = card.ability.triggers - 1
             context.other_card.ability.bonus = (context.other_card.ability.bonus or 0) + context.other_card:get_chip_bonus() * (card.ability.xchip_mod - 1)
             if card.ability.triggers <= 0 then
-                SMODS.destroy_cards(card, nil, nil, true)
+                SMODS.destroy_cards(card, true, nil, true)
                 card.eaten = true
 				return {
 					message = localize("k_eaten_ex"),
@@ -3168,7 +3168,7 @@ local dragonfruit = {
                 Entropy.ChangeFullCSL(- card.ability.left_mod)
             end
             if card.ability.left <= 0 then
-                SMODS.destroy_cards(card, nil, nil, true)
+                SMODS.destroy_cards(card, true, nil, true)
                 return {
                     message = localize("k_eaten_ex"),
                     colour = G.C.FILTER,
@@ -3653,7 +3653,7 @@ local red_fourty = {
         if context.money_altered and context.from_shop and to_big(context.amount) < to_big(0) then
             SMODS.scale_card(card, {ref_table = card.ability, ref_value = "mult", scalar_value = "mult_mod", operation = "-", no_message = true})
             if card.ability.mult <= 0 then
-                SMODS.destroy_cards(card, nil, nil, true)
+                SMODS.destroy_cards(card, true, nil, true)
                 return {
                     message = localize("k_eaten_ex"),
                     colour = G.C.FILTER,
@@ -3911,7 +3911,7 @@ local gold_bar = {
             }
         })
         if to_big(card.ability.dollars) <= to_big(0) then
-            SMODS.destroy_cards(card, nil, nil, true)
+            SMODS.destroy_cards(card, true, nil, true)
         end
         return dollars
     end
@@ -5656,7 +5656,7 @@ local miracle_berry = {
                 operation = "-"
             })
             if card.ability.uses <= 0 then
-                SMODS.destroy_cards(card, nil, nil, true)
+                SMODS.destroy_cards(card, true, nil, true)
                 card.getting_sliced = true
             end
             return {
@@ -5752,7 +5752,7 @@ local mango = {
                 })) 
                 card.ability.hands_left = card.ability.hands_left - 1
                 if to_big(card.ability.hands_left) <= to_big(0) then
-                    SMODS.destroy_cards(card, nil, nil, true)
+                    SMODS.destroy_cards(card, true, nil, true)
                     card.getting_sliced = true
                 end
                 return {
@@ -5945,7 +5945,7 @@ local pineapple = {
             rcard.ability.perma_repetitions = rcard.ability.perma_repetitions + 1
             if not context.forcetrigger then
                 if card.ability.rounds - 1 <= 0 then
-                    SMODS.destroy_cards(card, nil, nil, true)
+                    SMODS.destroy_cards(card, true, nil, true)
                     return {
                         message = localize('k_eaten_ex'),
                         colour = G.C.FILTER
@@ -6510,7 +6510,7 @@ local blood_orange = {
                 if G.GAME.consumeable_buffer + #G.consumeables.cards < G.consumeables.config.card_limit then
                     card.ability.cards = card.ability.cards - 1
                     if card.ability.cards <= 0 then
-                        SMODS.destroy_cards(card, nil, nil, true)
+                        SMODS.destroy_cards(card, true, nil, true)
                         eated = true
                     end
                     G.E_MANAGER:add_event(Event{
@@ -6906,7 +6906,7 @@ local yogurt = {
             })
             if card.ability.chips <= card.ability.chips_mod then
                 card.ability.chips = 0
-                SMODS.destroy_cards(card, nil, nil, true)
+                SMODS.destroy_cards(card, true, nil, true)
                 return {
                     message = localize("k_spoiled_ex")
                 }
@@ -6972,7 +6972,7 @@ local box_of_chocolates = {
             if card.ability.uses <= 0 then
                 ret.message = localize("k_eaten_ex")
                 ret.colour = G.C.FILTER
-                SMODS.destroy_cards(card, nil, nil, true)
+                SMODS.destroy_cards(card, true, nil, true)
             else
                 ret.message = "-1"
                 ret.colour = G.C.RED
@@ -7024,7 +7024,7 @@ local carrot_cake = {
             if card.ability.uses <= 0 then
                 ret.message = localize("k_eaten_ex")
                 ret.colour = G.C.FILTER
-                SMODS.destroy_cards(card, nil, nil, true)
+                SMODS.destroy_cards(card, true, nil, true)
             else
                 ret.message = "-1"
                 ret.colour = G.C.RED
@@ -7387,7 +7387,7 @@ local cooking_pot = {
         if context.entr_food_added then
             card.ability.foods[#card.ability.foods+1] = context.other_card.config.center.key
             if #card.ability.foods > 3 then
-                SMODS.destroy_cards(card, nil, nil, true)
+                SMODS.destroy_cards(card, true, nil, true)
                 return {
                     message = localize("k_destroyed_ex")
                 }
@@ -7445,7 +7445,7 @@ local brownies = {
         if context.using_consumeable or context.forcetrigger then            
             card.ability.cards_left = card.ability.cards_left - 1
             if card.ability.cards_left <= 0 then
-                SMODS.destroy_cards(card, nil, nil, true)
+                SMODS.destroy_cards(card, true, nil, true)
                 return {
                     dollars = card.ability.dollars,
                     message = localize("k_eaten_ex")
@@ -7695,7 +7695,7 @@ local fthof = {
                 end
             end
             if not is_voucher then
-                SMODS.destroy_cards(card, nil, nil, true)
+                SMODS.destroy_cards(card, true, nil, true)
                 return {
                     message = localize("k_backfired_ex"),
                     colour = G.C.RED
