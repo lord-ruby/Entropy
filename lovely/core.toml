@@ -3696,3 +3696,37 @@ elseif self.config.center.rarity == "entr_reverse_legendary" and not self.config
     self.children.floating_sprite:draw_shader('entr_pulseoutline', nil, nil, nil, self.children.center, scale_mod, rotate_mod)
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+if G.GAME.round_resets.blind == G.P_BLINDS.bl_small then
+    G.GAME.round_resets.blind_states.Small = 'Current'
+    G.GAME.current_boss_streak = 0
+    blhash = 'S'
+elseif G.GAME.round_resets.blind == G.P_BLINDS.bl_big then
+    G.GAME.round_resets.blind_states.Big = 'Current'
+    G.GAME.current_boss_streak = 0
+    blhash = 'B'
+else
+    G.GAME.round_resets.blind_states.Boss = 'Current'
+    blhash = 'L'
+end
+'''
+position = "at"
+payload = '''
+if G.GAME.blind_on_deck == "Small" then
+    G.GAME.round_resets.blind_states.Small = 'Current'
+    G.GAME.current_boss_streak = 0
+    blhash = 'S'
+elseif G.GAME.blind_on_deck == "Big" then
+    G.GAME.round_resets.blind_states.Big = 'Current'
+    G.GAME.current_boss_streak = 0
+    blhash = 'B'
+else
+    G.GAME.round_resets.blind_states.Boss = 'Current'
+    blhash = 'L'
+end
+'''
+match_indent = true
