@@ -699,10 +699,10 @@ local fervour = {
     
     atlas = "consumables",
 	name = "entr-Fervour",
-    soul_rate = 0, --probably only obtainable from flipsiding a gateway
+    soul_rate = 0,
     hidden = true, 
 	pos = {x=4,y=0},
-    soul_set = "Omen",
+    soul_set = "Fraud",
     tsoul_pos = {x=5,y=0},
     --soul_pos = { x = 5, y = 0},
     use = function(self, card, area, copier)

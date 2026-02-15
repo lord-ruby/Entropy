@@ -295,7 +295,7 @@ local dekatria = {
     soul_pos = { x = 2, y = 5, extra = { x = 1, y = 5 } },
     atlas = "exotic_jokers",
     calculate = function(self, card, context)
-        if context.post_trigger and context.other_card.config.center_key ~= "j_entr_dekatria" then
+        if context.post_trigger and context.other_card.config and context.other_card.config.center_key ~= "j_entr_dekatria" then
             local star = pseudorandom("entr_dekatria") < 0.25
             local pool = star and G.P_CENTER_POOLS.Star or G.P_CENTER_POOLS.Planet
             local planet

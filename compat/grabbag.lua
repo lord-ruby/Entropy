@@ -100,11 +100,8 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         calculate = function(self, card, context)
             if context.after then
                 if SMODS.pseudorandom_probability(card, 'entr_mini', 1, self.config.extra.odds) then
-                    local index
-                    for i, v in pairs(G.play.cards) do
-                        if v == card then index = i end
-                    end
-                    if index then
+                    local index = Entropy.get_area_index(card.area.cards, card)
+                    if index > -1 then
                         local card1 = G.play.cards[index-1]
                         local card2 = G.play.cards[index+1]
                         if card1 then card1:start_dissolve(); card1.ability.temporary2 = true end

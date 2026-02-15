@@ -5111,6 +5111,7 @@ local black_rose_green_sun = {
     order = 90,
     object_type = "Joker",
     key = "black_rose_green_sun",
+    pools = { ["Music"] = true },
     rarity = 1,
     cost = 5,
     eternal_compat = true,
@@ -5685,10 +5686,7 @@ local meridian = {
         }
     },
     loc_vars = function(self, q, card)
-        local index = 1
-        for i, v in pairs(card.area and card.area.cards or {}) do
-            if v == card then index = i break end
-        end
+        local index = Entropy.get_area_index(card.area.cards, card)
         return {
             vars = {
                 card.ability.multiplier * index
@@ -5697,10 +5695,7 @@ local meridian = {
     end,
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
-            local index = 0
-            for i, v in pairs(card.area.cards) do
-                if v == card then index = i break end
-            end
+            local index = Entropy.get_area_index(card.area.cards, card)
             return {
                 mult = card.ability.multiplier * index
             }
@@ -8321,7 +8316,7 @@ local wormwood = {
     },
     config = {
         minus_mult = -0.25,
-        asc_power_chips = 0.1
+        asc_power_chips = 0.05
     },
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play then

@@ -1687,6 +1687,7 @@ local serpents = {
     immutable = true,
     no_select = true,
     hidden = true,
+    soul_set = "Pact",
     loc_vars = function(self, q, card) return {vars = {card.ability.dollars}} end,
     use = function(self, card)
         local omens = {}

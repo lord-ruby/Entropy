@@ -112,9 +112,9 @@ function Entropy.invert(cards, flip)
             if i then
                 local ret = {}
                 if c.config.center.calculate then
-                    ret = c.config.center:calculate(c, {being_inverted = true})
+                    ret = c.config.center:calculate(c, {being_inverted = true}) or {}
                 end
-                if not ret.prevent_inversion then
+                if not ret or not ret.prevent_inversion then
                     c.ability.fromflipside = true
                     c:set_ability(G.P_CENTERS[i])
                     if c.ability.glitched_crown then
@@ -125,7 +125,7 @@ function Entropy.invert(cards, flip)
                     c.ability.fromflipside = false
                     SMODS.calculate_context({entr_consumable_inverted = true, card = c})
                 end
-                if next(ret) then
+                if next(ret or {}) then
                     SMODS.calculate_effect(ret, c)
                 end
             end
@@ -556,6 +556,10 @@ function Entropy.card_eval_status_text_eq(card, eval_type, amt, percent, dir, ex
 end
 
 function Entropy.FormatArrowMult(arrows, mult)
+    if arrows == "addition" then arrows = -1 end
+    if arrows == "multiply" then arrows = 0 end
+    if arrows == "exponent" then arrows = 1 end
+    if type(arrows) == "string" then arrows = 0 end
     mult = type(mult) ~= "string" and number_format(mult) or mult
     if to_big(arrows) <= to_big(-2.01) then
         return "{"..arrows.."}"..mult
@@ -2119,14 +2123,36 @@ function Entropy.needs_use_button(card)
     return center_cant_use
 end
 
-function ReductionIndex(card, pool)
-    index = 0
-    for i, v in pairs(G.P_CENTER_POOLS[pool]) do
+function Entropy.reduction_index(card, pool, strict)
+    local i = 0
+    for _, v in pairs(G.P_CENTER_POOLS[pool]) do
         if card.config and v.key == card.config.center_key then
-            return i
+            break
         end
         i = i + 1
     end
+    if strict then
+        while G.P_CENTER_POOLS[pool] 
+            and G.P_CENTER_POOLS[pool][i] 
+            and (G.P_CENTER_POOLS[pool][i].no_doe 
+            or G.P_CENTER_POOLS[pool][i].no_collection)
+        do
+            i = i - 1
+        end
+    end
+    if i < 1 then i = 1 end
+    return i
+end
+
+function Entropy.reduce_cards(cards, card)
+    if cards.ability then cards = {cards} end
+    Entropy.FlipThen(cards, function(card)
+        local ind = Entropy.reduction_index(card, card.config.center.set, true)
+        if G.P_CENTER_POOLS.Joker[ind] then
+            card:set_ability(G.P_CENTER_POOLS.Joker[ind])
+        end
+        card.area:remove_from_highlighted(card)
+    end)
 end
 
 --these currently only return a single value, but exist in case other effects get added that would need to be returned here
@@ -2572,7 +2598,7 @@ end
 
 function Entropy.should_skip_animations(strict)
     if Talisman and Talisman.config_file.disable_anims then return true end
-    if Handy and Handy.animation_skip.get_value() >= (strict and 4 or 3) then return true end
+    if Handy and Handy.animation_skip and Handy.animation_skip.get_value and Handy.animation_skip.get_value() >= (strict and 4 or 3) then return true end
 end
 
 function Entropy.get_random_rare(seed)
@@ -2605,4 +2631,11 @@ end
 
 function Entropy.max_diagonal()
     return Entropy.pythag({0, 0}, {love.graphics.getWidth(), love.graphics.getHeight()})
+end
+
+function Entropy.get_area_index(cards, card)
+    for i, v in pairs(cards) do
+        if v == card then return i end
+    end
+    return -1
 end
