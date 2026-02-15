@@ -1691,7 +1691,7 @@ local serpents = {
     use = function(self, card)
         local omens = {}
         for i, v in pairs(G.P_CENTERS) do
-            if v.hidden and not v.no_collection and (not v.in_pool or v:in_pool({}) and v.key ~= "c_entr_serpents") then
+            if v.hidden and not v.no_collection and (not v.in_pool or v:in_pool({}) and v.key ~= "c_entr_serpents" and not v.no_doe) then
                 omens[#omens+1] = v.key
             end
         end

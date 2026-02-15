@@ -374,7 +374,7 @@ if FinisherBossBlindStringMap then
         calculate = function(self, card, context)
             if context.after then
                 Entropy.FlipThen({G.play.cards[#G.play.cards]}, function(c)
-                    card.ability.dollars_earn = card.ability.dollars_earn + (c.base.nominal + (c.ability.bonus or 0))
+                    card.ability.dollars_earn = card.ability.dollars_earn + c:get_chip_bonus()
                     SMODS.change_base(c, "entr_nilsuit", "entr_nilrank")
                 end)
             end

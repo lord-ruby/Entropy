@@ -456,10 +456,10 @@ end
 
 function Entropy.GetRandomSet(has_parakmi)
     local pool = pseudorandom_element(G.P_CENTER_POOLS, pseudoseed(has_parakmi and "parakmi" or "chaos"))
-    local set = pool and pool[1] and pool[1].set
+    local set = pool and pool[1] and G.P_CENTERS[pool[1].key] and pool[1].set
     while not set or Entropy.ParakmiBlacklist[set] or (not has_parakmi and Entropy.ChaosBlacklist[set]) do
         pool = pseudorandom_element(G.P_CENTER_POOLS, pseudoseed(has_parakmi and "parakmi" or "chaos"))
-        set = pool and pool[1] and pool[1].set
+        set = pool and pool[1] and G.P_CENTERS[pool[1].key] and pool[1].set
     end
     return set
 end
@@ -1256,8 +1256,7 @@ function Entropy.LevelSuit(suit, card, amt, chips_override)
     G.GAME.SuitBuffs[suit].level = G.GAME.SuitBuffs[suit].level + amt
     for i, v in ipairs(G.I.CARD) do
         if v.base and v.base.suit == suit then
-            v.ability.bonus = (v.ability.bonus or 0) + (chips_override or 10)*amt
-            v.ability.bonus_from_suit = (v.ability.bonus_from_suit or 0) + (chips_override or 10)*amt
+            v.ability.suit_bonus = (v.ability.suit_bonus or 0) + (chips_override or 10)*amt
         end
     end
     G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()

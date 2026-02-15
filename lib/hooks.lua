@@ -2008,6 +2008,7 @@ Entropy.ParakmiBlacklist.Seal = true
 Entropy.ParakmiBlacklist.Stake = true
 Entropy.ParakmiBlacklist.Unique = true
 Entropy.ParakmiBlacklist.sleeve_casl_none = true
+Entropy.ParakmiBlacklist["Rune Tag"] = true
 Entropy.ChaosConversions.Command = "Twisted"
 Entropy.ChaosConversions.Star = "Twisted"
 Entropy.ChaosConversions.Omen = "Twisted"
@@ -2016,7 +2017,6 @@ local ref = create_card
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append, ...)
     if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi) and not forced_key and not G.GAME.entr_parakmi_bypass then
         _type = Entropy.GetRandomSet(next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi)
-
     end
     if _type == "CBlind" then
         _type = "BlindTokens"
@@ -3604,8 +3604,7 @@ function Card:change_suit(new_suit)
     change_suitref(self, new_suit)
     if not G.GAME.SuitBuffs then G.GAME.SuitBuffs = {} end
     if G.GAME.SuitBuffs[new_suit] then
-        self.ability.bonus = (self.ability.bonus or 0) + (G.GAME.SuitBuffs[new_suit] and G.GAME.SuitBuffs[new_suit].chips or 0) - (self.ability.bonus_from_suit or 0)
-        self.ability.bonus_from_suit = G.GAME.SuitBuffs[new_suit] and G.GAME.SuitBuffs[new_suit].chips or 0
+        self.ability.suit_bonus = (G.GAME.SuitBuffs[new_suit] and G.GAME.SuitBuffs[new_suit].chips or 0) 
     end
 end
 
@@ -5036,4 +5035,9 @@ function SMODS.scale_card(card, tbl, ...)
     else    
         return scale_cardref(card, tbl, ...)
     end
+end
+
+local get_chips_ref = Card.get_chip_bonus
+function Card:get_chip_bonus(...)
+    return get_chips_ref(self, ...) + (self.ability.suit_bonus or 0)
 end

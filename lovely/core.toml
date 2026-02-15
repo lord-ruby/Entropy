@@ -3072,6 +3072,7 @@ if not G.GAME.entr_parakmi_bypass then
     local set = Entropy.GetRandomSet(next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi)
     local key = Entropy.GetPooledCenter(set).key
     G.GAME.current_round.used_packs[i] = key
+    print(set)
   end
 end
 

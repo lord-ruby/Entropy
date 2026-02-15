@@ -192,6 +192,8 @@ if card_type ~= 'Default' and card_type ~= 'Enhanced' and self.playing_card and 
 		playing_card = not not self.base.colour, value = self.base.value, suit = self.base.suit, colour = self.base.colour,
 		nominal_chips = self.base.nominal > 0 and self.base.nominal or nil,
 		bonus_chips = (self.ability.bonus + (self.ability.perma_bonus or 0)) > 0 and (self.ability.bonus + (self.ability.perma_bonus or 0)) or nil,
+        suit_bonus = G.GAME.SuitBuffs and G.GAME.SuitBuffs[self.base.suit] and G.GAME.SuitBuffs[self.base.suit].chips,
+        suit_level = G.GAME.SuitBuffs and G.GAME.SuitBuffs[self.base.suit] and G.GAME.SuitBuffs[self.base.suit].level,
 	}
 end
 '''
@@ -213,6 +215,12 @@ if specific_vars and specific_vars.ccd and not (SMODS.Mods["Cryptid"] or {}).can
 	end
 	if specific_vars.ccd.bonus_chips then
 		localize{type = 'other', key = 'card_extra_chips', nodes = full_UI_table.ccd.main, vars = {specific_vars.ccd.bonus_chips}}
+	end
+    if specific_vars.ccd.suit_bonus then
+		localize{type = 'other', key = 'entr_card_suit_level', nodes = full_UI_table.ccd.main, vars = {localize(specific_vars.ccd.suit, 'suits_plural'), specific_vars.ccd.suit_bonus, specific_vars.ccd.suit_level, colours = {
+            G.C.SUITS[specific_vars.ccd.suit],
+            to_big(specific_vars.ccd.suit_level) < to_big(2) and G.C.BLACK or G.C.HAND_LEVELS[to_number(math.min(7, specific_vars.ccd.suit_level))]
+        }}}
 	end
 end
 '''

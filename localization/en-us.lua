@@ -2455,7 +2455,7 @@ local decs = {
 						"the winning hand and loses {X:mult,C:white}X#2#{}",
 						"Mult for every {C:attention}Suit{} in",
 						"the winning hand",
-						"{C:inactive}(Currently: {X:mult,C:white}X#3#{C:inactive} Mult)"
+						"{C:inactive}(Currently {X:mult,C:white}X#3#{C:inactive} Mult)"
 					},
 					{
 						"Changes {C:entr_ascended}Effect{} based on",
@@ -6945,6 +6945,13 @@ local decs = {
 			entr_perma_h_exp_asc = {
 				text = {
 					"{X:money,C:white}^#1#{} Ascension Power while held in hand"
+				}
+			},
+			entr_card_suit_level = {
+				text = {
+					"--------------",
+					"{S:0.8,V:1}#1#{} {S:0.8}({S:0.8,V:2}lvl.#3#{})",
+					"{C:blue}+#2#{} Chips"
 				}
 			}
 		},

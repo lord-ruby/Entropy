@@ -592,7 +592,7 @@ local kaleidoscopic = {
 				eval = eval or {}
 				local effects = {eval}
 				if context.main_scoring then 
-					eval.chips = v.base.nominal + v.ability.bonus or 0
+					eval.chips = v:get_chip_bonus() or 0
 					SMODS.calculate_context({individual = true, other_card=v, cardarea = v.area})
 				end
 				for _,v in ipairs(post or {}) do effects[#effects+1] = v end

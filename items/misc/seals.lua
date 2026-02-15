@@ -34,7 +34,7 @@ local crimson = {
                     card.crimson_trigger2 = nil
                     if context.main_scoring then 
                         G.message_card = v
-                        eval.chips = v.base.nominal + v.ability.bonus or 0
+                        eval.chips = v:get_chip_bonus() or 0
                         SMODS.calculate_context({individual = true, other_card=v, cardarea = v.area, scoring_hand = context.scoring_hand})
                         G.message_card = nil
                     end
