@@ -104,7 +104,7 @@ local gamma = {
     dollars = 6,
     altpath=true,
 	boss = {
-		min = 1,
+		min = 2,
 	},
     in_pool = function()
         return G.GAME.entr_alt
