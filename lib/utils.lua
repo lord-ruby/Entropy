@@ -1570,7 +1570,7 @@ function Entropy.GetPooledCenter(_type, twisted, _rarity, _noparakmi)
     --should pool be skipped with a forced key
     if not forced_key and soulable and (not G.GAME.banned_keys['c_soul']) then
         for _, v in ipairs(SMODS.Consumable.legendaries) do
-            if (_type == v.type.key or _type == v.soul_set) and not (G.GAME.used_jokers[v.key] and not next(find_joker("Showman")) and not v.can_repeat_soul) and (not v.in_pool or (type(v.in_pool) ~= "function") or v:in_pool({})) then
+            if (_type == v.type.key or _type == v.soul_set) and not (G.GAME.used_jokers[v.key] and not next(find_joker("Showman")) and not v.can_repeat_soul) and SMODS.add_to_pool(v, {}) then
                                 if pseudorandom('soul_'..v.key.._type..G.GAME.round_resets.ante) > (1 - v.soul_rate) then
                                     if not G.GAME.banned_keys[v.key] then forced_key = v.key end
                                 end
@@ -1916,12 +1916,12 @@ function Entropy.randomize_rank_suit(card, rank, suit, seed)
     local suits = {}
     if rank then
         for i, v in pairs(SMODS.Ranks) do
-            if not v.in_pool or v:in_pool({}) then ranks[#ranks+1] = i end
+            if SMODS.add_to_pool(v, {}) then ranks[#ranks+1] = i end
         end
     end
     if suit then
         for i, v in pairs(SMODS.Suits) do
-            if not v.in_pool or v:in_pool({}) then suits[#suits+1] = i end
+            if SMODS.add_to_pool(v, {}) then suits[#suits+1] = i end
         end
     end
     SMODS.change_base(card, pseudorandom_element(suits, pseudoseed(seed)),pseudorandom_element(ranks, pseudoseed(seed)), nil)
@@ -1968,10 +1968,7 @@ function Entropy.is_in_shop(key, consumable)
 			return val > 0
 		end
 	end
-	if center.in_pool then
-		return center:in_pool({})
-	end
-	return center.unlocked or nil
+	return SMODS.add_to_pool(center, {})
 end
 
 function Entropy.misc_calculations(self, context)
@@ -2605,7 +2602,7 @@ function Entropy.get_random_rare(seed)
     seed = seed or "entr_rare"
     local cards = {}
     for i, v in pairs(G.P_CENTERS) do
-        if (not v.in_pool or v:in_pool({})) and v.hidden and not v.no_doe then
+        if SMODS.add_to_pool(v, {}) and v.hidden and not v.no_doe then
             cards[#cards+1] = v
         end
     end
