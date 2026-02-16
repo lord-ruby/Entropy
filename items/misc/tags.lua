@@ -1579,7 +1579,7 @@ return {
 		kaleidoscopic,
 		gilded,
 		rare,
-		epic,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or epic,
 		legendary,
 		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or exotic,
 		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or entropic,
