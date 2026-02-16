@@ -2009,6 +2009,7 @@ Entropy.ParakmiBlacklist.Stake = true
 Entropy.ParakmiBlacklist.Unique = true
 Entropy.ParakmiBlacklist.sleeve_casl_none = true
 Entropy.ParakmiBlacklist["Rune Tag"] = true
+Entropy.ParakmiBlacklist.DescriptionDummy = true
 Entropy.ChaosConversions.Command = "Twisted"
 Entropy.ChaosConversions.Star = "Twisted"
 Entropy.ChaosConversions.Omen = "Twisted"
