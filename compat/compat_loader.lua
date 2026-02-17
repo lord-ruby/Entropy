@@ -18,9 +18,10 @@ local i = {
 Entropy.load_files(i)
 
 if Penumbra then
-    Penumbra.loc_keys["entr_music_entropic"] = "k_joker_in_greek"
-    Penumbra.loc_keys["entr_music_red_room"] = "k_mirrored_in_crimson"
-    Penumbra.loc_keys["entr_music_freebird"] = "k_freebird"
-    Penumbra.loc_keys["entr_music_fall"] = "k_portal_reference"
-    Penumbra.loc_keys["entr_music_entropy_is_endless"] = "k_entropy_is_endless"
+    Penumbra.register_track({key = "entr_music_entropic", loc_key = "k_joker_in_greek", author = "gemstonez"})
+    Penumbra.register_track({key = "entr_music_red_room", loc_key = "k_mirrored_in_crimson", author = "lord.ruby"})
+    Penumbra.register_track({key = "entr_music_freebird", loc_key = "k_freebird", author = "Lynyrd Skynyrd"})
+    Penumbra.register_track({key = "entr_music_fall", loc_key = "k_portal_reference", author = "lord.ruby"})
+    Penumbra.register_track({key = "entr_music_entropy_is_endless", loc_key = "k_entropy_is_endless", author = "gemstonez"})
+    Penumbra.register_track({key = "entr_music_entropic_ominous", loc_key = "k_snd_ominous", author = "lord.ruby"})
 end

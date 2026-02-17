@@ -104,8 +104,7 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
                     if index > -1 then
                         local card1 = G.play.cards[index-1]
                         local card2 = G.play.cards[index+1]
-                        if card1 then card1:start_dissolve(); card1.ability.temporary2 = true end
-                        if card2 then card2:start_dissolve(); card2.ability.temporary2 = true end
+                        SMODS.destroy_cards{card1, card2}
                     end
                 end
             end

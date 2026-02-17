@@ -1587,8 +1587,7 @@ local nucleotide = {
                     new_card:set_edition(G.P_CENTER_POOLS.Edition[found_index].key)
                     G.hand:emplace(new_card)
                     table.insert(G.playing_cards, new_card)
-                    card:start_dissolve()
-                    card.ability.temporary2 = true
+                    SMODS.destroy_cards{card}
                     return true
                 end
             }))
@@ -2117,8 +2116,7 @@ local roulette = {
                     G.E_MANAGER:add_event(Event{
                         func = function()
                             card.ability.immutable.curr_card = 0
-                            v:start_dissolve()
-                            v.ability.temporary2 = true
+                            SMODS.destroy_cards{v}
                             return true
                         end
                     })
@@ -2668,7 +2666,7 @@ local sandpaper = {
                     trigger = "after",
                     blocking = false,
                     func = function()
-                        for i, v in pairs(stones) do v:start_dissolve(); v.ability.temporary2 = true end
+                        SMODS.destroy_cards(stones)
                         if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
                             SMODS.add_card{
                                 set = "Rune",
@@ -2689,7 +2687,6 @@ local sandpaper = {
                 trigger = "after",
                 blocking = false,
                 func = function()
-                    for i, v in pairs(stones) do v:start_dissolve(); v.ability.temporary2 = true end
                     SMODS.add_card{
                         set = "Rune",
                         area = G.consumeables,

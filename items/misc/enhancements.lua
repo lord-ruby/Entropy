@@ -27,10 +27,7 @@ local flesh = {
 	calculate = function(self, card, context)
         if (context.pre_discard and context.cardarea == G.hand and card.highlighted
         and pseudorandom("flesh") < (card.ability.cry_rigged and card.ability.extra.odds or G.GAME.probabilities.normal*(card.ability.extra.numerator/card.ability.extra.odds))) then 
-            card.ability.temporary2 = true
-			card:remove_from_deck()
-            card:start_dissolve()
-			SMODS.calculate_context({remove_playing_cards = true, removed={card}})
+            SMODS.destroy_cards{card}
         end
 	end,
 	entr_credits = {
@@ -212,8 +209,8 @@ local ceramic = {
 							card:flip()
 						else
 							card:shatter()
+							SMODS.destroy_cards{card, nil, nil, true}
 						end
-						card.ability.temporary2 = true
 						return true
 					end,
 				}))
@@ -228,8 +225,8 @@ local ceramic = {
 							card:flip()
 						else
 							card:shatter()
+							SMODS.destroy_cards{card, nil, nil, true}
 						end
-						card.ability.temporary2 = true
 						return true
 					end,
 				}))
@@ -251,7 +248,7 @@ local ceramic = {
 						return true
 					end
 				}))
-				card.ability.temporary2 = true
+				SMODS.destroy_cards{card}
 			end
 			card.activated = true
 		end

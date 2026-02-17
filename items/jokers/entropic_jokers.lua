@@ -953,22 +953,13 @@ local prismatikos = {
                     end
                 })
             elseif result == 7 then
-                card.ability.destroy_hand = true
-            elseif result == 8 then
                 for i, v in pairs(G.play.cards) do
                     v:set_edition(poll_edition("prismatikos_edition", nil, true, true))
                 end
-            elseif result == 9 then
+            elseif result == 8 then
                 G.GAME.blind.chips = G.GAME.blind.chips * 0.9
                 G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
                 G.HUD_blind:recalculate()
-            end
-        end
-        if context.after and card.ability.destroy_hand then
-            card.ability.destroy_hand = nil
-            for i, v in pairs(G.hand.cards) do
-                v:start_dissolve()
-                v.ability.temporary2 = true
             end
         end
         if context.retrigger_joker_check then

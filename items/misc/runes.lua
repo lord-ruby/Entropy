@@ -776,10 +776,7 @@ local haglaz_indicator = {
                 trigger = "after",
                 blocking = false,
                 func = function()
-                    for i, v in pairs(cards) do
-                        v:start_dissolve()
-                        v.ability.temporary2 = true
-                    end
+                    SMODS.destroy_cards(cards)
                     return true
                 end
             })
@@ -793,10 +790,7 @@ local haglaz_indicator = {
                 trigger = "after",
                 blocking = false,
                 func = function()
-                    for i, v in pairs(cards) do
-                        v:start_dissolve()
-                        v.ability.temporary2 = true
-                    end
+                    SMODS.destroy_cards(cards)
                     return true
                 end
             })

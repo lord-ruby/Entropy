@@ -158,21 +158,14 @@ local comet = {
 			for i, v in pairs(G.hand.cards) do
 				if v.destroy_adjacent and not v.destroyed_adjacent then
 					if G.hand.cards[i-1] and pseudorandom("citrine") < (Entropy.IsEE() and 0.2 or 0.5) and not SMODS.is_eternal(G.hand.cards[i-1]) then
-						G.hand.cards[i-1]:start_dissolve()
-						G.hand.cards[i-1].ability.temporary2 = true
-						remove[#remove+1]=G.hand.cards[i-1]
+						SMODS.destroy_cards{G.hand.cards[i-1]}
 					end
 					if G.hand.cards[i+1] and pseudorandom("citrine") < (Entropy.IsEE() and 0.2 or 0.5) and not SMODS.is_eternal(G.hand.cards[i-1]) then
-						G.hand.cards[i+1]:start_dissolve()
-						G.hand.cards[i+1].ability.temporary2 = true
-						remove[#remove+1]=G.hand.cards[i+1]
+						SMODS.destroy_cards{G.hand.cards[i-1]}
 					end
 					v.destroy_adjacent = false
 					v.destroyed_adjacent = true
 				end
-			end
-			if #remove >0 then
-				SMODS.calculate_context({remove_playing_cards = true, removed=remove})
 			end
 		end
 	end,

@@ -115,16 +115,11 @@ local destiny = {
         local highlighted = Entropy.GetHighlightedCards({G.hand}, card, 5, 5)
         for i, v in pairs(highlighted) do
             if v.config.center.key ~= "c_base" or pseudorandom("crafting") < 0.4 then
-                if not SMODS.is_eternal(v) then
-                    v:start_dissolve()
-                    v.ability.temporary2 = true
-                end
-                remove[#remove+1]=v
+                SMODS.destroy_cards{v}
             else
                 Entropy.DiscardSpecific({v})
             end
         end
-        if #remove > 0 then SMODS.calculate_context({remove_playing_cards = true, removed=remove}) end
         add_joker(Entropy.GetRecipe(highlighted))
     end,
     keep_on_use = function(self, card)

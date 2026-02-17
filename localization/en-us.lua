@@ -7316,6 +7316,7 @@ local decs = {
 			k_freebird = "Freebird",
 			k_portal_reference = "The Part Where She Kills You",
 			k_entropy_is_endless = "Entropy Is Endless",
+			k_snd_ominous = "snd_ominous",
 
 			k_plus_rune = "+1 Rune",
 			k_plus_star = "+1 Star",
