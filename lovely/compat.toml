@@ -414,3 +414,23 @@ for i = 1, #G.GAME.tags do
 end
 '''
 match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = '''game.lua'''
+pattern = '''
+if may.conf.Menu then
+    if may.mode == 1 then
+        replace_card:set_ability(G.P_CENTERS.m_mult, true, true)
+    else
+        replace_card:set_ability(G.P_CENTERS.m_may_super_mult, true, true)
+    end
+end
+'''
+position = "at"
+payload = '''
+
+'''
+match_indent = true
+times = 2

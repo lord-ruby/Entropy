@@ -248,7 +248,7 @@ local ceramic = {
 						return true
 					end
 				}))
-				SMODS.destroy_cards{card}
+				card.ability.temporary2 = true
 			end
 			card.activated = true
 		end

@@ -2643,11 +2643,9 @@ pattern = '''if center.consumeable then
 	self.ability.consumeable = center.config
 end  
 '''
-position = "at"
+position = "before"
 payload = '''
-if center.consumeable then 
-	self.ability.consumeable = center.config
-else
+if not center.consumeable then
 	self.ability.consumeable = nil
 end
 '''
