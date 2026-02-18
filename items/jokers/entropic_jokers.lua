@@ -609,7 +609,6 @@ local katarraktis = {
             local diff = ind - this_ind
             if diff >= 1 then
                 local triggers = _get_fib(diff)
-                print(triggers)
                 return {
 					message = localize("k_again_ex"),
 					repetitions = to_number(math.floor(math.min(math.min(card.ability.basetriggers,32) * triggers, 65536))),

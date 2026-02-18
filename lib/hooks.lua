@@ -2252,7 +2252,7 @@ function create_shop_card_ui(card, type, area)
 end
 
 function Cryptid.ascend(num, curr2) -- edit this function at your leisure
-    G.GAME.sunnumber = G.GAME.sunnumber or {}
+    G.GAME.sunnumber = G.GAME.sunnumber or {not_modest = 0, modest = 0}
     local snum
     if type(G.GAME.sunnumber) == "table" then snum = G.GAME.sunnumber.not_modest or 0 
     else snum = G.GAME.sunnumber end
@@ -3238,8 +3238,6 @@ function Blind:disable()
 	if not self.config.blind.no_disable then disable_ref(self) end
 end
 
---for wiki editors these arent 4 seperate blinds but 4 phases of endless entropy
-
 local ref = G.FUNCS.reroll_boss
 G.FUNCS.reroll_boss = function(e) 
 	if G.GAME.EEBuildup then return end
@@ -3409,7 +3407,7 @@ function Entropy.GetRecipeResult(val,jokerrares,seed)
         cry_exotic=(SMODS.Mods["Cryptid"] or {}).can_load and 45 or nil,
         entr_entropic = (SMODS.Mods["Cryptid"] or {}).can_load and 70 or nil,
     }) do
-        if v >= cost and val >= v then
+        if (v or -9999) >= (cost or -1) and (val or -9999) >= (v or -1) then
             rare = i;cost=v
         end
     end
@@ -3420,8 +3418,6 @@ function Entropy.ConcatStrings(tbl)
     for i, v in pairs(tbl) do result = result..v end
     return result
 end
-
-
 
 function Entropy.GetRecipe(cards)
     if #cards == 5 then

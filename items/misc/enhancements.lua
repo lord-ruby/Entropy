@@ -209,7 +209,7 @@ local ceramic = {
 							card:flip()
 						else
 							card:shatter()
-							SMODS.destroy_cards{card, nil, nil, true}
+							SMODS.destroy_cards(card, nil, nil, true)
 						end
 						return true
 					end,
@@ -225,7 +225,7 @@ local ceramic = {
 							card:flip()
 						else
 							card:shatter()
-							SMODS.destroy_cards{card, nil, nil, true}
+							SMODS.destroy_cards(card, nil, nil, true)
 						end
 						return true
 					end,

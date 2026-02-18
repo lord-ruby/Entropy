@@ -387,3 +387,10 @@ SMODS.Atlas {
     px = 122,
     py = 122,
 }
+
+SMODS.Atlas {
+    key = "curse_icons",
+    path = "curse_icons.png",
+    px = 34,
+    py = 34,
+}

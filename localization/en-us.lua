@@ -5177,6 +5177,33 @@ local decs = {
 				name = "{C:gold}Burden Tag{}",
 				text = { "After each hand,", "lose a {C:attention}third{} of held", "{C:money}money{} rounded down" },
 			},
+
+			tag_curse_entr_blind = {
+				name = "Curse of The Blind",
+				text = {
+					"Cards in the shop",
+					"may be {C:red}flipped{}"
+				}
+			},
+			tag_curse_entr_darkness = {
+				name = "Curse of Darkness",
+				text = {
+					"Booster packs have",
+					"{C:red}fewer{} choices"
+				}
+			},
+			tag_curse_entr_lost = {
+				name = "Curse of The Lost",
+				text = {
+					"No {C:red}Small Blind{}"
+				}
+			},
+			tag_curse_entr_maze = {
+				name = "Curse of The Maze",
+				text = {
+					"Blind order is {C:red}Randomized{}"
+				}
+			},
 		},
 		["Rune Tag"] = {
 			rune_entr_fehu = {

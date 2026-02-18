@@ -35,6 +35,7 @@ function Game:start_run(args)
             {card_limit = 9999, type = 'joker', highlight_limit = 0}
         )
     G.HUD_runes = {}
+    G.HUD_curses = {}
     G.runes = {}
 	gsr(self, args)
 	if G.GAME.modifiers.entr_starting_ante_mten and not args.savetext then
@@ -42,6 +43,14 @@ function Game:start_run(args)
 	end
     for i, v in pairs(G.butterfly_jokers.cards) do
         v:add_to_deck()
+    end
+    if G.GAME.curse then
+        add_curse_icon(Tag("tag_entr_curse_indicator"))
+        local atlas = Entropy.curses[G.GAME.curse].atlas or "entr_curse_icons"
+        local pos = Entropy.curses[G.GAME.curse].sprite_pos or {x = 0, y = 0}
+        local sprite = G.HUD_curses[1].actual.HUD_sprite
+        sprite.atlas = G.ASSET_ATLAS[atlas]
+        sprite:set_sprite_pos(pos)
     end
     if Entropy.DeckOrSleeve("doc") then
         -- G.HUD:remove()
