@@ -1093,7 +1093,8 @@ local regenerate = {
             if card.base.suit == "entr_nilsuit" or card.base.value == "entr_nilrank" then
                 Entropy.randomize_rank_suit(card, true, true, "regenerate")
             end
-
+            card:set_debuff()
+            card.ability.bypass_aleph = nil
         end)
     end,
     can_use = function(self, card)

@@ -1116,6 +1116,7 @@ local strength = {
                 else
                     G.deck:emplace(copy)
                 end
+                playing_card_joker_effects({ copy })
             end
         end
         local joker = pseudorandom_element(G.jokers.cards, pseudoseed("entr_strength"))
