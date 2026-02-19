@@ -716,14 +716,15 @@ SMODS.Shader{
     path = "pulseoutline.fs",
     send_vars = function()
         local t = G.TIMERS.REAL or 0
+        local grad = Entropy.current_rlegendary_gradient or Entropy.reverse_legendary_gradient
         t = t - 5000*math.floor(t/5000)
         return {
             realtime = t,
             outline_color = {
-                Entropy.reverse_legendary_gradient[1],
-                Entropy.reverse_legendary_gradient[2],
-                Entropy.reverse_legendary_gradient[3],
-                Entropy.reverse_legendary_gradient[4],
+                grad[1],
+                grad[2],
+                grad[3],
+                grad[4],
             }
         }
     end
