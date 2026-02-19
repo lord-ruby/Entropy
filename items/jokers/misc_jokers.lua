@@ -7184,7 +7184,8 @@ local fasciation = {
             local reps = 0
             for i, v in pairs(context.scoring_hand) do
                 if v == context.other_card then break end
-                if v:is_suit(context.other_card.base.suit) or context.other_card:is_suit(v.base.suit) then
+                if (v:is_suit(context.other_card.base.suit) and not SMODS.has_no_suit(context.other_card)) 
+                or (context.other_card:is_suit(v.base.suit) and not SMODS.has_no_suit(v)) then
                     reps = reps + 1
                 end
             end
