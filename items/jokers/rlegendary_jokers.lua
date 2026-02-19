@@ -717,7 +717,7 @@ SMODS.Shader{
     send_vars = function()
         local t = G.TIMERS.REAL or 0
         local grad = Entropy.current_rlegendary_gradient or Entropy.reverse_legendary_gradient
-        t = t - 5000*math.floor(t/5000)
+        t = t % math.pi
         return {
             realtime = t,
             outline_color = {
