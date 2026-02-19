@@ -515,6 +515,7 @@ local samsara = {
 			G.E_MANAGER:add_event(Event{
 				func = function()
 					SMODS.destroy_cards(card)
+					card.ability.temporary2 = true
 					return true
 				end
 			})

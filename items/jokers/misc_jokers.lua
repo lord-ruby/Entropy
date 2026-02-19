@@ -2842,7 +2842,6 @@ local chuckle_cola = {
             "set_entr_inversions"
         }
     },
-    eternal_compat = true,
     pos = { x = 4, y = 7 },
     atlas = "jokers",
     demicoloncompat = true,
@@ -3135,7 +3134,6 @@ local dragonfruit = {
             "set_entr_misc_jokers"
         }
     },    
-    eternal_compat = true,
     pos = {x = 2, y = 8},
     atlas = "jokers",
     config = {
@@ -3622,7 +3620,6 @@ local red_fourty = {
     key = "red_fourty",
     rarity = 1,
     cost = 6,   
-    eternal_compat = true,
     pos = {x = 4, y = 9},
     atlas = "jokers",
     config = {
@@ -5617,7 +5614,6 @@ local miracle_berry = {
     key = "miracle_berry",
     rarity = 2,
     cost = 7,
-    eternal_compat = true,
     pos = {x = 2, y = 13},
     atlas = "jokers",
     pools = {
@@ -5706,7 +5702,6 @@ local mango = {
     key = "mango",
     rarity = 2,
     cost = 7,
-    eternal_compat = true,
     pos = {x = 4, y = 13},
     atlas = "jokers",
     pools = {
@@ -5921,7 +5916,6 @@ local pineapple = {
     key = "pineapple",
     rarity = 2,
     cost = 7,
-    eternal_compat = true,
     pos = {x = 0, y = 15},
     atlas = "jokers",
     dependencies = {
@@ -6477,7 +6471,6 @@ local blood_orange = {
     key = "blood_orange",
     rarity = 2,
     cost = 6,
-    eternal_compat = true,
     pos = {x = 7, y = 14},
     atlas = "jokers",
     config = {
@@ -6806,7 +6799,6 @@ local milk = {
     key = "milk",
     rarity = 1,
     cost = 6,   
-    eternal_compat = true,
     pos = {x = 2, y = 17},
     atlas = "jokers",
     config = {
@@ -6864,7 +6856,6 @@ local yogurt = {
     key = "yogurt",
     rarity = 1,
     cost = 6,   
-    eternal_compat = true,
     pos = {x = 3, y = 17},
     atlas = "jokers",
     config = {
@@ -6923,7 +6914,6 @@ local box_of_chocolates = {
     key = "box_of_chocolates",
     rarity = 1,
     cost = 8,   
-    eternal_compat = true,
     pos = {x = 8, y = 15},
     atlas = "jokers",
     config = {
@@ -6990,7 +6980,6 @@ local carrot_cake = {
     key = "carrot_cake",
     rarity = 2,
     cost = 8,   
-    eternal_compat = true,
     pos = {x = 1, y = 17},
     atlas = "jokers",
     config = {
@@ -7416,7 +7405,6 @@ local brownies = {
     key = "brownies",
     rarity = 2,
     cost = 6,
-    eternal_compat = true,
     pos = {x = 0, y = 17},
     atlas = "jokers",
     dependencies = {
