@@ -1254,7 +1254,7 @@ local sticker_sheet = {
         return {
             vars = {
                 number_format(card.ability.per_sticker),
-                number_format(card.ability.per_sticker * Entropy.CountStickers())
+                number_format(card.ability.per_sticker * Entropy.CountStickers(card))
             }
         }
     end,
@@ -1280,7 +1280,7 @@ local sticker_sheet = {
             if sticker == "perishable" then card.ability.perish_tally = 5 end
             card:juice_up()
             return {
-                mult = card2.ability.per_sticker * Entropy.CountStickers()
+                mult = card2.ability.per_sticker * Entropy.CountStickers(card)
             }
         end
 	end,
@@ -3362,7 +3362,7 @@ local abacus = {
     perishable_compat = true,
     blueprint_compat = true,
     calculate = function(self, card, context)
-        if (context.individual and context.other_card.base.nominal and to_big(context.other_card.base:get_chip_bonus()) > to_big(0) and context.cardarea == G.play) or context.forcetrigger then
+        if (context.individual and context.other_card.base.nominal and to_big(context.other_card:get_chip_bonus()) > to_big(0) and context.cardarea == G.play) or context.forcetrigger then
             if not context.other_card then
                 return {
                     mult = 5

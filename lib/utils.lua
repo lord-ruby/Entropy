@@ -1612,10 +1612,19 @@ function Entropy.GetPooledCenter(_type, twisted, _rarity, _noparakmi)
     return center
 end
 
-function Entropy.CountStickers()
+function Entropy.CountStickers(card)
     local total = 0
+    local cards = {}
+    local add_self = true
+    for i, v in pairs({G.jokers, G.consumeables, G.hand, G.play, G.deck}) do
+        for i2, v2 in pairs(v.cards) do
+            cards[#cards+1] = v2
+            if v2 == card then add_self = nil end
+        end
+    end
+    if add_self then cards[#cards+1] = card end
     for i, v in pairs(SMODS.Sticker.obj_table) do
-        for i2, v2 in pairs(G.I.CARD) do
+        for i2, v2 in pairs(cards) do
             if v2.ability and v2.ability[i] then
                 total = total + 1
             end
