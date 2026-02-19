@@ -5342,7 +5342,7 @@ local spiral_of_ants = {
                 card.ability.last_card = #G.play.cards
             else
                 card.ability.last_card = 9999
-                card.ability.chips = 1
+                card.ability.chips = 0
                 card_eval_status_text(
                     card,
                     "extra",
