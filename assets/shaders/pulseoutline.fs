@@ -131,18 +131,34 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	float dist = 0.;
 	float delta2 = 0.0001;
 	for (float i = delta2; i <= delta2*outline_width; i+=3.*delta2) {
-		if (Texel(texture, texture_coords + vec2(i, 0.)).a > 0. && (texture_coords + vec2(i, 0.)).x < 1.-delta2) dist = 1.;
-		if (Texel(texture, texture_coords + vec2(-i, 0.)).a > 0. && (texture_coords + vec2(-i, 0.)).x > delta2) dist = 1.;
-		if (Texel(texture, texture_coords + vec2(0., i)).a > 0. && (texture_coords + vec2(0., i)).y < 1.-delta2) dist = 1.;
-		if (Texel(texture, texture_coords + vec2(0., -i)).a > 0. && (texture_coords + vec2(0., -i)).y > delta2) dist = 1.;
+		if (Texel(texture, texture_coords + vec2(i, 0.)).a > 0. 
+			&& ((((texture_coords+ vec2(i, 0.))*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba).x < 1.) dist = 1.;
+		if (Texel(texture, texture_coords + vec2(-i, 0.)).a > 0. 
+			&& ((((texture_coords+ vec2(-i, 0.))*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba).x > 0.) dist = 1.;
+		if (Texel(texture, texture_coords + vec2(0., i)).a > 0. 
+			&& ((((texture_coords+ vec2(0., i))*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba).y < 1.) dist = 1.;
+		if (Texel(texture, texture_coords + vec2(0., -i)).a > 0. 
+			&& ((((texture_coords+ vec2(0., -i))*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba).y > 0.) dist = 1.;
 
-		if (Texel(texture, texture_coords + vec2(i, i)).a > 0. && (texture_coords + vec2(i, i)).x < 1.-delta2) dist = 1.;
-		if (Texel(texture, texture_coords + vec2(-i, i)).a > 0. && (texture_coords + vec2(-i, i)).x > delta2) dist = 1.;
-		if (Texel(texture, texture_coords + vec2(-i, i)).a > 0. && (texture_coords + vec2(i, i)).y < 1.-delta2) dist = 1.;
-		if (Texel(texture, texture_coords + vec2(i, -i)).a > 0. && (texture_coords + vec2(-i, -i)).y > delta2) dist = 1.;
+		if (Texel(texture, texture_coords + vec2(i, i)).a > 0. 
+			&& ((((texture_coords+ vec2(i, i))*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba).x < 1. 
+			&& ((((texture_coords+ vec2(i, i))*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba).y < 1.) 
+				dist = 1.;
+		if (Texel(texture, texture_coords + vec2(-i, i)).a > 0. 
+			&&  ((((texture_coords+ vec2(-i, i))*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba).x > 0.
+			&&  ((((texture_coords+ vec2(-i, i))*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba).y < 1.) 
+				dist = 1.;
+		if (Texel(texture, texture_coords + vec2(i, -i)).a > 0. 
+			&& ((((texture_coords+ vec2(i, -i))*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba).y > 0. 
+			&& ((((texture_coords+ vec2(i, -i))*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba).x < 1.)
+				dist = 1.;
+		if (Texel(texture, texture_coords + vec2(-i, -i)).a > 0. 
+			&& ((((texture_coords+ vec2(-i, -i))*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba).y > 0. 
+			&& ((((texture_coords+ vec2(-i, -i))*(image_details)) - texture_details.xy*texture_details.ba)/texture_details.ba).x > 0.)
+				dist = 1.;
 	}
 
-	if (dist > 0.0 && tex.a <= 0. && abs(uv.x - 0.5) < 0.48 && abs(uv.y - 0.5) < 0.48) {
+	if (dist > 0.0 && tex.a <= 0. && abs(uv.x - 0.5) < 0.48 && abs(uv.y - 0.5) < 0.47) {
 		return dissolve_mask(outline_color, texture_coords, uv);
 	}
 
