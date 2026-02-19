@@ -158,7 +158,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 				dist = 1.;
 	}
 
-	if (dist > 0.0 && tex.a <= 0. && abs(uv.x - 0.5) < 0.48 && abs(uv.y - 0.5) < 0.47) {
+	if (dist > 0.0 && tex.a <= 0.) {
 		return dissolve_mask(outline_color, texture_coords, uv);
 	}
 
