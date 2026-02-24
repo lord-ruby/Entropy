@@ -131,7 +131,7 @@ function end_round()
                         Cryptid.manipulate(card, {min=0.1, max=10})
                     end
                 end
-                if card.ability.temporary or card.ability.temporary2 then
+                if card.ability.temporary or card.ability.temporary2 or card.ability.void_temporary then
                     if card.area ~= G.hand and card.area ~= G.play and card.area ~= G.jokers and card.area ~= G.consumeables then card.states.visible = false end
                     card:remove_from_deck()
                     G.entr_bypass_rebirth = true
@@ -2090,7 +2090,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
         card.ability.cry_prob = 1
         card.ability.extra.odds = 2 
 	end
-    if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi) and not forced_key and not G.GAME.entr_parakmi_bypass then 
+    if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi) and not forced_key and not _rarity and not G.GAME.entr_parakmi_bypass then 
         if not G.SETTINGS.paused and not G.GAME.akyrs_any_drag then
             card.fromdefine = true
         end

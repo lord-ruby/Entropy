@@ -3864,8 +3864,6 @@ end
 '''
 match_indent = true
 
-
-
 [[patches]]
 [patches.pattern]
 target = '''=[SMODS _ "src/utils.lua"]'''
@@ -3892,3 +3890,51 @@ end
 '''
 match_indent = true
 
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+scaling_message = scaling_message or {
+  message = localize(args.message_key and {type='variable',key=args.message_key,vars={args.message_key =='a_xmult' and args.ref_table[args.ref_value] or scalar_value}} or 'k_upgrade_ex'),
+'''
+position = "at"
+payload = '''
+local send_var = scalar_value
+local send_total = {
+  a_xmult = true,
+  a_xmult_minus = true,
+  a_xchips = true,
+  a_xchips_minus = true,
+  a_emult = true,
+  a_emult_minus = true,
+  a_echips = true,
+  a_echips_minus = true
+}
+if send_total[args.message_key] or args.send_total then send_var = args.ref_table[args.ref_value] end
+scaling_message = scaling_message or {
+  message = localize(args.message_key and {type='variable',key=args.message_key,vars={ send_var }} or 'k_upgrade_ex'),
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+if cards[i].shattered then
+  cards[i]:shatter()
+elseif cards[i].destroyed then
+  cards[i]:start_dissolve(nil, i == #cards)
+end
+'''
+position = "at"
+payload = '''
+local send_var = scalar_value
+if cards[i] then
+  if cards[i].shattered then
+    cards[i]:shatter()
+  elseif cards[i].destroyed then
+    cards[i]:start_dissolve(nil, i == #cards)
+  end
+end
+'''
+match_indent = true

@@ -831,7 +831,9 @@ local fervour = {
                 func = function()
                     local card
                     play_sound("entr_entropic_summon", nil, 2)
+                    G.GAME.entr_parakmi_bypass = true
                     card = create_card("Joker", G.jokers, nil, "entr_entropic", nil, nil, nil, "entr_fervour")
+                    G.GAME.entr_parakmi_bypass = nil
                     ease_entropy(-G.GAME.entropy)
                     card:add_to_deck()
                     G.jokers:emplace(card)
@@ -895,7 +897,9 @@ local fervour = {
                 delay = 0.4,
                 func = function()
                     play_sound("timpani")
+                    G.GAME.entr_parakmi_bypass = true
                     local card = create_card("Joker", G.jokers, nil, "entr_reverse_legendary", nil, nil, nil, "entr_fervour")
+                    G.GAME.entr_parakmi_bypass = nil
                     card:add_to_deck()
                     G.jokers:emplace(card)
                     card:juice_up(0.3, 0.5)

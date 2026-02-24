@@ -355,6 +355,124 @@ local yaldabaoth = {
     end
 }
 
+local antimatter_sheath = {
+    order = 263,
+    object_type = "Joker",
+    key = "antimatter_sheath",
+    rarity = "entr_void",
+    cost = 10,
+    eternal_compat = true,
+    pos = {x = 0, y = 0},
+    atlas = "void_jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }   
+    },
+    config = {
+        extra = {
+            cards = 2,
+            xchips = 1,
+            xmult = 1,
+            xchips_mod = 0.05,
+            xmult_mod = 0.05
+        }
+    },
+    calculate = function(self, card, context)
+        if context.setting_blind then
+            for i = 1, math.min(card.ability.extra.cards, 10) do
+                local _card = SMODS.create_card { key = "c_entr_dagger", area = G.discard }
+                _card.ability.void_temporary = true --third temporary because :3
+                G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+                _card.playing_card = G.playing_card
+                table.insert(G.playing_cards, _card)
+
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        G.hand:emplace(_card)
+                        _card:start_materialize()
+                        G.GAME.blind:debuff_card(_card)
+                        G.hand:sort()
+                        if context.blueprint_card then
+                            context.blueprint_card:juice_up()
+                        else
+                            card:juice_up()
+                        end
+                        SMODS.calculate_context({ playing_card_added = true, cards = { _card } })
+                        return true
+                    end
+                }))
+                save_run()
+            end
+        end
+        if context.individual and context.cardarea == G.play and context.other_card.config.center.key == "c_entr_dagger" then
+            local cards = {}
+            for i, v in pairs(G.hand.cards) do
+                if not SMODS.is_eternal(v) then
+                    cards[#cards+1] = v
+                end
+            end
+            for i, v in pairs(G.discard.cards) do
+                if not SMODS.is_eternal(v) then
+                    cards[#cards+1] = v
+                end
+            end
+            for i, v in pairs(G.deck.cards) do
+                if not SMODS.is_eternal(v) then
+                    cards[#cards+1] = v
+                end
+            end
+            local c = pseudorandom_element(cards, pseudoseed("entr_sheath_destroy"))
+            SMODS.destroy_cards(c)
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "xmult",
+                scalar_value = "xmult_mod",
+                message_key = "a_xmult",
+                message_colour = G.C.RED
+            })
+            SMODS.scale_card(card, {
+                ref_table = card.ability.extra,
+                ref_value = "xchips",
+                scalar_value = "xchips_mod",
+                message_key = "a_xchips",
+                message_colour = G.C.BLUE
+            })
+            return nil, true
+        end
+        if context.joker_main then
+            return {
+                xmult = card.ability.extra.xmult,
+                xmult = card.ability.extra.xchips,
+            }
+        end
+    end,
+    corruptions = {
+        "j_ceremonial_dagger",
+        "j_entr_solar_dagger",
+        "j_entr_insatiable_dagger",
+        "j_entr_antidagger"
+    },
+    add_to_deck = function(self)
+        G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
+        for i, v in pairs(self.corruptions) do
+            G.GAME.entr_perma_inversions[v] = self.key
+        end
+    end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_CENTERS.c_entr_dagger
+        return {
+            vars = {
+                card.ability.extra.cards,
+                card.ability.extra.xmult_mod,
+                card.ability.extra.xchips_mod,
+                card.ability.extra.xmult,
+                card.ability.extra.xchips,
+            }
+        }
+    end
+}
+
 local caledscratch = {
     order = 264,
     object_type = "Joker",
@@ -416,6 +534,7 @@ return {
         generator_meltdown,
         unstable_rift,
         yaldabaoth,
+        antimatter_sheath,
         caledscratch
     }
 }

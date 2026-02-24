@@ -1274,7 +1274,7 @@ function Entropy.ChangePhase()
     for i, v in pairs({G.jokers, G.hand, G.consumeables, G.discard, G.deck}) do
         for ind, card in pairs(v.cards) do
             if card.ability then
-                if card.ability.temporary or card.ability.temporary2 then
+                if card.ability.temporary or card.ability.temporary2 or card.ability.void_temporary then
                     if card.area ~= G.hand and card.area ~= G.play and card.area ~= G.jokers and card.area ~= G.consumeables then card.states.visible = false end
                     card:remove_from_deck()
                     G.entr_bypass_rebirth = true

@@ -2582,6 +2582,29 @@ local decs = {
 					}
 				}
 			},
+			j_entr_antimatter_sheath = {
+				name = "Antimatter Sheath",
+				text = {
+					{
+						"When round begins add {C:attention}#1#{}",
+						"temporary copie#<s>1# of",
+						"{C:attention}The Dagger{} to your hand"
+					},
+					{
+						"When {C:attention}The Dagger{} is",
+						"scored destroy a {C:attention}random{}",
+						"card in full deck and gain",
+						"{X:mult,C:white}X#2#{} Mult and {X:chips,C:white}X#3#{} Chips",
+						"{C:inactive}(Currently {X:mult,C:white}X#4#{C:inactive}, {X:chips,C:white}X#5#{C:inactive})"
+					},
+					{
+						"Permanently {C:entr_void}Invert{} all future",
+						"instances of {C:attention}Sacrificial Dagger{}",
+						"{C:attention}Solar Dagger{}, {C:attention}Insatiable Dagger{} and",
+						"{C:attention}Anti-Dagger{} into {C:entr_void}Antimatter Sheath{}"
+					}
+				}
+			},
 			j_entr_caledscratch = {
 				name = "Caledscratch",
 				text = {
@@ -2597,7 +2620,7 @@ local decs = {
 						"instances of {C:attention}Mime{}, {C:attention}Dusk{}, {C:attention}Seltzer",
 						"{C:attention}Sock and Buskin{}, {C:attention}Hanging Chad{}, {C:attention}Opal{}",
 						"{C:attention}Bell Curve{}, {C:attention}Pineapple{}, {C:attention}Rubber Ball{}",
-						"{C:attention}Twisted Pair{}, {C:attentio	n}Fasciation{} and {C:attention}D7{}",
+						"{C:attention}Twisted Pair{}, {C:attention}Fasciation{} and {C:attention}D7{}",
 						"into {C:entr_void}Caledscratch{}"
 					}
 				}

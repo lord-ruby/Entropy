@@ -1014,6 +1014,7 @@ local phantom_shopper = {
     end,
     calculate = function(self, card, context)
         if context.selling_self or context.forcetrigger then
+            G.GAME.entr_parakmi_bypass = true
             SMODS.add_card{
                 set="Joker",
                 area = G.jokers,
@@ -1021,6 +1022,7 @@ local phantom_shopper = {
                 legendary = card.ability.rarity == "Legendary",
                 key_append = "entr_phantom_shopper"
             }
+            G.GAME.entr_parakmi_bypass = nil
         end
         if (context.ending_shop and not context.blueprint and not context.retrigger_joker) or context.forcetrigger then
             card.ability.progress = card.ability.progress + 1
@@ -5003,8 +5005,9 @@ local deck_enlargment_pills = {
                     else
                         area = G.play
                     end
-                    
+                    G.GAME.entr_parakmi_bypass = true
                     local card = create_card("RedeemableBacks", G.play, nil, nil, nil, nil, nil, "entr_large_deck")
+                    G.GAME.entr_parakmi_bypass = nil
                     if card.config.center.key == "j_joker" then
                         card:set_ability(G.P_CENTERS.b_red)
                     end

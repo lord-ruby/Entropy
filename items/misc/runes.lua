@@ -771,12 +771,16 @@ local haglaz_indicator = {
     dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
         if context.after then
-            local cards = G.play.cards
+            local cards = {}
+            for i, v in pairs(G.play.cards) do
+                cards[#cards+1] = v
+            end
             G.E_MANAGER:add_event(Event{
-                trigger = "after",
-                blocking = false,
                 func = function()
-                    SMODS.destroy_cards(cards)
+                    SMODS.destroy_cards(cards, nil, true)
+                    for i, v in pairs(cards) do
+                        v.ability.temporary2 = true
+                    end
                     return true
                 end
             })
