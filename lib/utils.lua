@@ -66,19 +66,38 @@ end
 
 function Entropy.Inversion(card)
     if not card then return end
-    if card.config.center and card.config.center.can_be_inverted then return card.config.center.key end
-    return Entropy.FlipsideInversions[card.key or (card.config and card.config.center and card.config.center.key) or ""]
+    local card = card.config and card.config.center or card
+    local key = card.key or card.config.center and card.config.center_key or ""
+    if card.can_be_inverted or card.corruptions then return key end
+    if card.set == "Joker" then
+        for i, v in pairs(G.P_CENTER_POOLS.Joker) do
+            if v.corruptions then
+                for i, c in pairs(v.corruptions) do if c == key then return v.key end end
+            end
+        end
+    end
+    return Entropy.FlipsideInversions[card.key]
 end
 
 function Entropy.is_inverted(card)
     if not card then return end
-    return Entropy.FlipsideInversions[card.key or (card.config and card.config.center and card.config.center.key) or ""] and not Entropy.FlipsidePureInversions[card.key or (card.config and card.config.center and card.config.center.key) or ""]
+    local card = card.config and card.config.center or card
+    local key = card.key or card.config.center and card.config.center_key or ""
+    if card.set == "Joker" then
+        for i, v in pairs(G.P_CENTER_POOLS.Joker) do
+            if v.corruptions then
+                for i, c in pairs(v.corruptions) do if c == key then return true end end
+            end
+        end
+        if card.corruptions then return true end
+    end
+    return Entropy.FlipsideInversions[key] and not Entropy.FlipsidePureInversions[key]
 end
 
 function Entropy.inversion_queue(card, _c, first_pass)
     local info_queue = {}
-    if (Entropy.Inversion(card) or _c.key == "c_entr_flipside") and first_pass and Entropy.show_flipside(card, _c) and Entropy.config.inversion_queues > 1 and not c then 
-        if _c.key ~= "c_entr_flipside" and _c.key ~= Entropy.Inversion(card) then
+    if (Entropy.Inversion(card) or _c.key == "c_entr_flipside" or _c.corruptions) and first_pass and Entropy.show_flipside(card, _c) and Entropy.config.inversion_queues > 1 and not c then 
+        if _c.key ~= "c_entr_flipside" and _c.key ~= Entropy.Inversion(card) and not _c.corruptions then
           local inversion = G.P_CENTERS[Entropy.Inversion(_c)] 
           info_queue[#info_queue+1] = {key = "inversion_allowed", set = "Other", vars = {G.localization.descriptions[inversion.set][inversion.key].name}}
           if Entropy.config.inversion_queues > 2 then
@@ -108,7 +127,19 @@ function Entropy.invert(cards, flip)
              play_sound("entr_invert")
         end, delay = 1.5},
         {func = function(c)
+            local key = c.config.center_key
             local i = Entropy.Inversion(c)
+            if c.config.center.corruptions then
+                G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
+                for i, v in pairs(c.config.center.corruptions) do
+                    G.GAME.entr_perma_inversions[v] = c.config.center.key
+                end
+                if c.ability.original_corruption then 
+                    i = c.ability.original_corruption 
+                else 
+                    i = pseudorandom_element(c.config.center.corruptions, pseudoseed("entr_get_corruption"))
+                end
+            end
             if i then
                 local ret = {}
                 if c.config.center.calculate then
@@ -117,6 +148,9 @@ function Entropy.invert(cards, flip)
                 if not ret or not ret.prevent_inversion then
                     c.ability.fromflipside = true
                     c:set_ability(G.P_CENTERS[i])
+                    if G.P_CENTERS[i].corruptions then
+                        c.ability.original_corruption = key
+                    end
                     if c.ability.glitched_crown then
                         for i,v in pairs(c.ability.glitched_crown) do
                             c.ability.glitched_crown[i] = Entropy.FlipsideInversions[v]
@@ -131,25 +165,43 @@ function Entropy.invert(cards, flip)
             end
         end, delay = 2.2}})
     else    
-        local i = Entropy.Inversion(c)
-        if i then
-            local ret = {}
-            if c.config.center.calculate then
-                ret = c.config.center:calculate(c, {being_inverted = true})
-            end
-            if not ret.prevent_inversion then
-                c.ability.fromflipside = true
-                c:set_ability(G.P_CENTERS[i])
-                if c.ability.glitched_crown then
-                    for i,v in pairs(c.ability.glitched_crown) do
-                        c.ability.glitched_crown[i] = Entropy.FlipsideInversions[v]
-                    end
+        
+        for i, c in pairs(cards) do
+            local key = c.config.center_key
+            local i = Entropy.Inversion(c)
+            if c.config.center.corruptions then
+                G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
+                for i, v in pairs(c.config.center.corruptions) do
+                    G.GAME.entr_perma_inversions[v] = c.config.center.key
                 end
-                c.ability.fromflipside = false
-                SMODS.calculate_context({entr_consumable_inverted = true, card = c})
+                if c.ability.original_corruption then 
+                    i = c.ability.original_corruption 
+                else 
+                    i = pseudorandom_element(c.config.center.corruptions, pseudoseed("entr_get_corruption"))
+                end
             end
-            if next(ret) then
-                SMODS.calculate_effect(ret, c)
+            if i then
+                local ret = {}
+                if c.config.center.calculate then
+                    ret = c.config.center:calculate(c, {being_inverted = true})
+                end
+                if not ret.prevent_inversion then
+                    c.ability.fromflipside = true
+                    c:set_ability(G.P_CENTERS[i])
+                    if G.P_CENTERS[i].corruptions then
+                        c.ability.original_corruption = key
+                    end
+                    if c.ability.glitched_crown then
+                        for i,v in pairs(c.ability.glitched_crown) do
+                            c.ability.glitched_crown[i] = Entropy.FlipsideInversions[v]
+                        end
+                    end
+                    c.ability.fromflipside = false
+                    SMODS.calculate_context({entr_consumable_inverted = true, card = c})
+                end
+                if next(ret) then
+                    SMODS.calculate_effect(ret, c)
+                end
             end
         end
     end
@@ -1655,7 +1707,7 @@ end
 
 local card_eval_status_text_ref = card_eval_status_text
 function card_eval_status_text(card, ...)
-    if card.silent then return end
+    if not card or card.silent then return end
     if G.deck and card and card.area == G.butterfly_jokers and G.deck.cards[1] then
         return card_eval_status_text_ref(G.deck.cards[1], ...)
     else    
@@ -1999,14 +2051,34 @@ function Entropy.misc_calculations(self, context)
             end
         end
     end
-    if context.repetition and context.cardarea == G.play and context.other_card then 
+    if context.repetition and context.other_card then 
         local repetitions = 0
+        local c_repetitions = 0
         local chains_count = Entropy.has_rune("rune_entr_chains") and Entropy.has_rune("rune_entr_chains").ability.count or 0
-        if (SMODS.is_eternal(context.other_card) or context.other_card.ability.eternal) and chains_count > 0 then
+        if (SMODS.is_eternal(context.other_card) or context.other_card.ability.eternal) and chains_count > 0 and context.cardarea == G.play then
             repetitions = repetitions + chains_count
         end
-        if repetitions > 0 then
-            return {repetitions = repetitions, message = localize("k_again_ex"), card = context.other_card}
+        local other_card = context.other_card
+        local index
+        for i, v in pairs(other_card.area.cards) do
+            if v == other_card then index = i; break end
+        end
+        if index then
+            if other_card.area.cards[index+1] and other_card.area.cards[index+1].seal == "entr_crimson" then
+                c_repetitions = c_repetitions + 1
+            end
+            if other_card.area.cards[index-1] and other_card.area.cards[index-1].seal == "entr_crimson" then
+                c_repetitions = c_repetitions + 1
+            end
+        end
+        if repetitions > 0 or c_repetitions > 0 then
+            if repetitions > 0 then
+                return {repetitions = repetitions, message = localize("k_again_ex"), card = context.other_card, extra = {
+                    repetitions = c_repetitions, colour =  HEX("8a0050"), message = localize("k_again_ex"), message_card = context.other_card
+                }}
+            else
+                return {repetitions = c_repetitions, colour =  HEX("8a0050"), message = localize("k_again_ex"), message_card = context.other_card}
+            end
         end
     end
 end
@@ -2247,7 +2319,7 @@ function Entropy.post_create_card(card, from_booster, forced_key)
     if G.SETTINGS.paused then return end
     local set = card.config.center.set
     local key = card.config.center.key
-    if card.config and card.config.center and Entropy.FlipsideInversions and not Entropy.is_inverted(center)
+    if not Entropy.is_inverted(card.config.center) and set ~= "Joker"
         and pseudorandom("marked") < 0.10 and G.GAME.Marked and G.STATE == G.STATES.SHOP and (not card.area or not card.area.config.collection) and Entropy.Inversion(card) then
         if card.config.center_key ~= "c_entr_flipside" then
             local ret = {}
@@ -2284,7 +2356,7 @@ function Entropy.post_create_card(card, from_booster, forced_key)
         key = "p_spectral_"..type
         set = "Booster"
     end
-    if Entropy.Inversion(card) and not G.SETTINGS.paused and (G.GAME.modifiers.entr_twisted or set == "Planet" and G.GAME.entr_princess) and not card.multiuse and (not card.ability or not card.ability.fromflipside) then
+    if Entropy.Inversion(card) and not G.SETTINGS.paused and (G.GAME.modifiers.entr_twisted or set == "Planet" and G.GAME.entr_princess) and not card.multiuse and (not card.ability or not card.ability.fromflipside) and card.config.center.rarity ~= "entr_void" then
         if card.config.center_key ~= "c_entr_flipside" then
             local ret = {}
             if card.config.center.calculate then

@@ -129,3 +129,15 @@ SMODS.Sound({
 	path = "entropic_summon.ogg",
 	volume = 2
 })
+
+SMODS.Sound({
+	key = "void_generic",
+	path = "void_generic.ogg",
+	volume = 2
+})
+
+SMODS.Sound({
+	key = "void_swap",
+	path = "void_swap.ogg",
+	volume = 2
+})

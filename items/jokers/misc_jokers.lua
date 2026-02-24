@@ -5646,7 +5646,11 @@ local miracle_berry = {
                 ref_value = "uses",
                 scalar_table = {mod = 1},
                 scalar_value = "mod",
-                operation = "-"
+                operation = "-",
+                scaling_message = {
+                    message = localize("k_downgrade_ex"),
+                    colour = G.C.RED
+                }
             })
             if card.ability.uses <= 0 then
                 SMODS.destroy_cards(card, true, nil, true)
@@ -7748,7 +7752,7 @@ local searing_joke = {
 
 local function _render_sprite(canvas, x, y, pos)
         local quad = love.graphics.newQuad(43 * pos.x, 9 * pos.y, 43, 9, 142, 95)
-        canvas:renderTo(function() love.graphics.draw(G.ASSET_ATLAS["entr_searing"].image, quad, 0, 0, 0, 1, 1, -x, -y) end)
+        canvas:renderTo(function() love.graphics.draw(G.ASSET_ATLAS["entr_searing"].image, quad, x, y, 0, 1, 1, 0, 0) end)
 end
 
 SMODS.draw_ignore_keys.searing_sprite = true

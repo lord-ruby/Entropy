@@ -45,3 +45,16 @@ function ease_colour(orig, new, ...)
     if new.colours then orig = new return end
     return ease_colour_ref(orig, new, ...)
 end
+
+SMODS.Rarity {
+    key = "void",
+    badge_colour = Entropy.void_gradient,
+    default_weight = 0,
+	pools = { ["Joker"] = true },
+	get_weight = function(self, weight, object_type)
+        if G.GAME.entr_alt then
+            return 0.03
+        end
+        return 0
+	end,
+}

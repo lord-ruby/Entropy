@@ -68,3 +68,11 @@ Entropy.zenith_gradient = SMODS.Gradient{
         HEX("77003c"),
     }
 }
+
+Entropy.void_gradient = SMODS.Gradient {
+    key = "void_gradient",
+    colours = {
+        HEX("c678b4"),
+        HEX("c67886")
+    }
+}

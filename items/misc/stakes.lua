@@ -20,16 +20,6 @@ local copper = {
     colour = HEX("ff7747")
 }
 
-
-local ref = copy_card
-function copy_card(old, new, ...)
-    local ret = ref(old, new, ...)
-    if not G.SETTINGS.paused and G.deck and G.GAME.modifiers.entr_copper and pseudorandom("entr_copper_stake") < 0.33 and (ret.config.center.set == "Default" or ret.config.center.set == "Enhanced") then
-        ret:set_ability(G.P_CENTERS.m_entr_disavowed)
-    end
-    return ret
-end
-
 local platinum = {
     dependencies = {
         items = {

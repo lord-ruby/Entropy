@@ -394,3 +394,10 @@ SMODS.Atlas {
     px = 34,
     py = 34,
 }
+
+SMODS.Atlas {
+    key = "void_jokers",
+    path = "void_jokers.png",
+    px = 71,
+    py = 95,
+}

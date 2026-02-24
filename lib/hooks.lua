@@ -1559,6 +1559,20 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
     if scored_card and scored_card.ability and scored_card.ability.entr_value_fac and type(amount) == "number" then
         amount= amount * scored_card.ability.entr_value_fac
     end
+    if key == "e_chips" or key == "echips" or key == "Echip_mod" then
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center_key == "j_entr_unstable_rift" then
+                v.ability.extra.chips = v.ability.extra.chips ^ (1 + (amount - 1) * 0.2)
+            end
+        end
+    end
+    if key == "e_mult" or key == "emult" or key == "Emult_mod" then
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center_key == "j_entr_unstable_rift" then
+                v.ability.extra.mult = v.ability.extra.mult ^ (1 + (amount - 1) * 0.2)
+            end
+        end
+    end
     ret = scie(effect, scored_card, key, amount, from_edition)
     if ret then
         return ret
@@ -2098,6 +2112,12 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
                     })
                     if ret and (ret.set or ret.key) then
                         card:set_ability(ret.key and G.P_CENTERS[ret.key] or Entropy.GetPooledCenter(ret.set))
+                        SMODS.calculate_context{post_trigger = true, other_card = c, other_context = {
+                            get_consumable_type = true,
+                            set = card.config.center.set,
+                            hidden = card.config.center.hidden,
+                            other_card = card
+                        }, other_ret = ret}
                         break
                     end
                 end
@@ -2585,7 +2605,7 @@ end
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, ...)
     if type(center) == "string" then center = G.P_CENTERS[center] end
-    if center and Entropy.is_inverted(center) and G.GAME.next_inversions_prophecy and not G.SETTINGS.paused then
+    if center and Entropy.is_inverted(center) and G.GAME.next_inversions_prophecy and not G.SETTINGS.paused and center.set ~= "Joker" then
         set_abilityref(self, G.P_CENTERS[G.GAME.next_inversions_prophecy], ...)
         G.GAME.inversions_prophecy_counter = (G.GAME.inversions_prophecy_counter or 2) - 1
     else
@@ -3188,12 +3208,31 @@ end
 
 local use_cardref= G.FUNCS.use_card
 G.FUNCS.use_card = function(e, mute, nosave)
-    local val = use_cardref(e, mute, nosave)
-    if e.config.ref_table.ability.entr_pinned then
-        for i, v in pairs(G.GAME.entr_pinned_cards or {}) do
-            if v.card == e.config.ref_table.config.center.key then 
-                G.GAME.entr_pinned_cards[i] = nil
-                return val 
+    local card = e.config.ref_table
+    if card.ability.entr_death_mark and card.ability.consumeable then
+        card:start_dissolve()
+        SMODS.calculate_context({using_consumeable = true, consumeable = card, area = card.from_area})
+        if G.STATE == G.STATES.SMODS_BOOSTER_OPENED and card.area == G.pack_cards then
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                delay = 0.5,
+                func = function()
+                    G.GAME.pack_choices = G.GAME.pack_choices - 1 
+                    if G.GAME.pack_choices <= 0 then
+                        G.FUNCS.end_consumeable(nil, delay_fac)
+                    end
+                    return true
+                end 
+            })
+        end
+    else
+        local val = use_cardref(e, mute, nosave)
+        if e.config.ref_table.ability.entr_pinned then
+            for i, v in pairs(G.GAME.entr_pinned_cards or {}) do
+                if v.card == e.config.ref_table.config.center.key then 
+                    G.GAME.entr_pinned_cards[i] = nil
+                    return val 
+                end
             end
         end
     end
@@ -4528,6 +4567,13 @@ function copy_card(old, new, ...)
     end
     if old.base and old.base.nominal then copy.base.nominal = old.base.nominal end
     G.GAME.modifiers.entr_twisted = tw
+    if copy.config and copy.config.center_key == "j_entr_unstable_rift" then
+        math.randomseed(os.time())
+        copy.ability.extra.val = math.random() --gay ass woke transgender math.random because syncing is for losers
+    end
+    if not G.SETTINGS.paused and G.deck and G.GAME.modifiers.entr_copper and pseudorandom("entr_copper_stake") < 0.33 and (ret.config.center.set == "Default" or ret.config.center.set == "Enhanced") then
+        ret:set_ability(G.P_CENTERS.m_entr_disavowed)
+    end
     return copy
 end
 

@@ -2519,6 +2519,88 @@ local decs = {
 						"{C:blue}chip{} they have"
 					}
 				}
+			},
+
+			--void jokers
+			j_entr_generator_meltdown = {
+				name = "Generator Meltdown",
+				text = {
+					{
+						"When a Poker Hand is leveled Up",
+						"Swap {C:entr_void}25%{} of its {C:blue}Chips",
+						"with {C:entr_void}25%{} of its {C:red}Mult"
+					},
+					{
+						"Permanently {C:entr_void}Invert{} all future",
+						"instances of {C:attention}Supernova{}, {C:attention}Space Joker{}",
+						"{C:attention}Burnt Joker{} and {C:attention}Fused Lens{}",
+						"into {C:entr_void}Generator Meltdown{}"
+					}
+				}
+			},
+			j_entr_unstable_rift = {
+				name = "Unstable Rift",
+				text = {
+					{
+						" "
+					},
+					{
+						"When {C:red}Mult{} or {C:blue}Chips{}",
+						"are changed add {C:entr_void}20%{} of",
+						"the change to this Jokers",
+						"{C:red}Mult{} and {C:blue}Chips{}"
+					},
+					{
+						"On last hand of round",
+						"score using this Joker's",
+						"{C:mult}Mult{} and {C:blue}Chips{} instead",
+						"then {C:red}reset{}"
+					},
+					{
+						"Permanently {C:entr_void}Invert{} all future",
+						"instances of {C:attention}Mr. Bones{}",
+						"and {C:attention}Skullcry{} into {C:entr_void}Unstable Rift{}"
+					}
+				}
+			},
+			j_entr_yaldabaoth = {
+				name = "Yaldabaoth",
+				text = {
+					{
+						"Apply {C:entr_void}Marked for Death{}",
+						"to one {C:attetntion}random{} card per Booster Pack",
+					},
+					{
+						"When a card {C:entr_void}Marked for Death{}",
+						"is destroyed gain {C:gold}+#1#{} Ascension Power",
+						"{C:inactive}(Currently {C:gold}+#2# {C:inactive}Ascension Power)"
+					},
+					{
+						"Permanently {C:entr_void}Invert{} all future",
+						"instances of {C:attention}Sunny Joker{}, {C:attention}Dr. Sunshine{}",
+						"and {C:attention}Mark of The Beast{} into {C:entr_void}Yaldabaoth{}"
+					}
+				}
+			},
+			j_entr_caledscratch = {
+				name = "Caledscratch",
+				text = {
+					{
+						"Playing card retriggers are",
+						"blocked and stored. Retrigger",
+						"leftmost {C:attention}Joker{} once for",
+						"every {C:entr_void}stored{} retrigger",
+						"then reset"
+					},
+					{
+						"Permanently {C:entr_void}Invert{} all future",
+						"instances of {C:attention}Mime{}, {C:attention}Dusk{}, {C:attention}Seltzer",
+						"{C:attention}Sock and Buskin{}, {C:attention}Hanging Chad{}, {C:attention}Opal{}",
+						"{C:attention}Bell Curve{}, {C:attention}Pineapple{}, {C:attention}Rubber Ball{}",
+						"{C:attention}Twisted Pair{}, {C:attentio	n}Fasciation{} and {C:attention}D7{}",
+						"into {C:entr_void}Caledscratch{}"
+					}
+				}
 			}
 		},
 		Blind = {
@@ -6808,6 +6890,20 @@ local decs = {
 					"this round"
 				}
 			},
+			entr_death_mark = {
+				name = "Marked for Death",
+				text = {
+					"{C:red}Destroyed{} when",
+					"Triggered"
+				}
+			},
+			entr_death_mark_consumeable = {
+				name = "Marked for Death",
+				text = {
+					"{C:red}Destroyed{} instead",
+					"of being used"
+				}
+			},
 			entr_crimson_seal = {
 				name = "Crimson Seal",
 				text = {
@@ -7170,6 +7266,7 @@ local decs = {
 
 			k_entr_entropic = "Entropic",
 			k_entr_reverse_legendary = "Legendary?",
+			k_entr_void = "Void",
 			k_entr_zenith = "Zenith",
 			k_fraud = "Fraud",
 			b_fraud_cards = "Fraud Cards",
@@ -7373,6 +7470,7 @@ local decs = {
 			banana = "Banana",
 			entr_pinned = "Invariant",
 			entr_marked = "Marked",
+			entr_death_mark = "Marked for Death",
 			entr_hotfix = "Hotfixed",
 			temporary = "Temporary",
 			entr_pseudorandom = "Pseudorandom",

@@ -3747,3 +3747,148 @@ payload = '''
 if not G.GAME.won and G.GAME.round_resets.ante >= G.GAME.win_ante and G.GAME.blind_on_deck == 'Boss' then
 '''
 match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = '''functions/button_callbacks.lua'''
+pattern = '''
+if G.ARGS.score_intensity.earned_score >= G.ARGS.score_intensity.required_score and G.ARGS.score_intensity.required_score > 0 then
+  _F.intensity = ((G.pack_cards and not G.pack_cards.REMOVED) or (G.TAROT_INTERRUPT)) and 0 or math.max(0., math.log(G.ARGS.score_intensity.earned_score, 5)-2)
+else
+'''
+position = "at"
+payload = '''
+local val = e.config.id
+val = val and (val:gsub("flame_", ""):gsub("_chips", ""):gsub("_mult", "") or "") or nil
+local final_score = G.ARGS.score_intensity.earned_score
+if val and G.GAME.blind and G.GAME.blind.in_blind then
+  for i, v in pairs(G.I.CARD) do
+    if v.config and v.config.center_key == "j_entr_unstable_rift" and tostring(v.ability.extra.val) == tostring(val) then
+      final_score = v.ability.extra.mult * v.ability.extra.chips
+    end
+  end
+end
+if final_score >= G.ARGS.score_intensity.required_score and G.ARGS.score_intensity.required_score > 0 then
+  _F.intensity = ((G.pack_cards and not G.pack_cards.REMOVED) or (G.TAROT_INTERRUPT)) and 0 or math.max(0., math.log(final_score, 5)-2)
+else
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+G.E_MANAGER:add_event(Event({
+  trigger = 'ease',
+  blocking = false,
+  ref_table = G.GAME,
+  ref_value = 'chips',
+  ease_to = G.GAME.chips + math.floor( SMODS.calculate_round_score() ),
+  delay =  0.5,
+  func = (function(t) return math.floor(t) end)
+}))
+'''
+position = "after"
+payload = '''
+if G.GAME.current_round.hands_left <= 0 and next(SMODS.find_card("j_entr_unstable_rift")) then
+	play_sound("entr_void_generic", 1.25, 3)
+	G.E_MANAGER:add_event(Event{
+	trigger = "after",
+	func = function()
+		for i, v in pairs(G.jokers.cards) do
+			if v.config.center.key == "j_entr_unstable_rift" then
+				v.ability.extra.mult = 0
+				v.ability.extra.chips = 0
+			end
+		end
+		return true
+	end
+	})
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+end
+
+if not instant and not displayed then
+	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, vals_after_level or {mult = 0, chips = 0, handname = '', level = ''})
+end
+'''
+position = "before"
+payload = '''
+if next(SMODS.find_card("j_entr_generator_meltdown")) then
+	local m = G.GAME.hands[hand].mult
+	local c = G.GAME.hands[hand].chips
+	G.GAME.hands[hand].mult = m * 0.75 + c * 0.25
+	G.GAME.hands[hand].chips = c * 0.75 + m * 0.25
+	if not instant then
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			func = (function() 
+				ease_colour(G.C.UI_CHIPS, HEX("c678b4"))
+				ease_colour(G.C.UI_MULT, HEX("c678b4"))
+				return true
+			end)
+		}))
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
+							play_sound('entr_void_swap', nil, 3)
+							if args.from then args.from:juice_up(0.8, 0.5) end
+							G.TAROT_INTERRUPT_PULSE = nil
+							return true end }))
+		update_hand_text({delay = 1}, {handname = localize(hand, "poker_hands"), level = G.GAME.hands[hand].level, mult = "???", chips = "???", StatusText = true})
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay =  2,
+			func = (function() 
+					ease_colour(G.C.UI_CHIPS, G.C.BLUE, 2)
+					ease_colour(G.C.UI_MULT, G.C.RED, 2)
+				return true
+			end)
+		}))
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay =  2,
+			func = (function() 
+				G.C.UI_CHIPS[1], G.C.UI_CHIPS[2], G.C.UI_CHIPS[3], G.C.UI_CHIPS[4] = G.C.BLUE[1], G.C.BLUE[2], G.C.BLUE[3], G.C.BLUE[4]
+				G.C.UI_MULT[1], G.C.UI_MULT[2], G.C.UI_MULT[3], G.C.UI_MULT[4] = G.C.RED[1], G.C.RED[2], G.C.RED[3], G.C.RED[4]
+				return true
+			end)
+		}))
+	end
+end
+'''
+match_indent = true
+
+
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+for h=1, effect.repetitions do
+    table.insert(ret, _type == "joker_retrigger" and effect or { retriggers = effect})
+end
+'''
+position = "at"
+payload = '''
+for h=1, effect.repetitions do
+    if _type ~= "joker_retrigger" and next(SMODS.find_card("j_entr_caledscratch")) then
+      SMODS.calculate_effect({
+        message = localize("k_nope_ex"),
+        card = effect.message_card or effect_card.scored_card or effect_card,
+        message_card = effect.message_card or effect_card.scored_card or effect_card,
+        colour = Entropy.void_gradient
+      })
+      SMODS.calculate_context({entr_repetition_blocked = true, other_card = effect.message_card or effect_card.scored_card or effect_card})
+    else
+      table.insert(ret, _type == "joker_retrigger" and effect or { retriggers = effect})
+    end
+end
+'''
+match_indent = true
+

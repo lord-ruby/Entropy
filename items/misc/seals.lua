@@ -10,40 +10,6 @@ local crimson = {
     atlas = "seals",
     pos = {x=0,y=0},
     badge_colour = HEX("8a0050"),
-    calculate = function(self, card, context)
-        if (context.cardarea == G.play or context.cardarea == G.hand) and not card.crimson_trigger and not card.crimson_trigger2 then
-            for i, v in ipairs(card.area and card.area.cards or {}) do
-                if card.area.cards[i+1] == card or card.area.cards[i-1] == card then
-                    card.crimson_trigger2 = true
-                    local eval, post = eval_card(v, context)
-                    eval = eval or {}
-                    local effects = {eval}
-                    if (eval and next(eval)) or (post and next(post)) or (context.main_scoring and context.cardarea == G.play) then
-                        SMODS.calculate_effect({message = localize("k_again_ex"), colour = HEX("8a0050"), card = v})
-                        if not card.crimson_trigger then
-                            G.E_MANAGER:add_event(Event{
-                                trigger = "before",
-                                func = function()
-                                    card.crimson_trigger = nil
-                                    return true
-                                end
-                            })
-                        end
-                        card.crimson_trigger = true
-                    end
-                    card.crimson_trigger2 = nil
-                    if context.main_scoring then 
-                        G.message_card = v
-                        eval.chips = v:get_chip_bonus() or 0
-                        SMODS.calculate_context({individual = true, other_card=v, cardarea = v.area, scoring_hand = context.scoring_hand})
-                        G.message_card = nil
-                    end
-                    for _,v in ipairs(post or {}) do effects[#effects+1] = v end
-                    SMODS.trigger_effects(effects, v)
-                end
-            end
-        end
-    end,
 }
 
 local sapphire = {

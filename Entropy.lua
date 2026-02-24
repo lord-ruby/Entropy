@@ -1,7 +1,7 @@
 local mod_path = "" .. SMODS.current_mod.path
 Entropy.path = mod_path
 
-SMODS.load_file("lib/utils.lua")()
+assert(SMODS.load_file("lib/utils.lua"))()
 
 local i = {
     "lib/colours",
@@ -54,6 +54,8 @@ local i = {
 
     "items/altpath/blinds",
     "items/misc/runes",
+
+    "items/jokers/void_jokers",
 
     "compat/compat_loader"
 }
@@ -117,8 +119,10 @@ SMODS.current_mod.menu_cards = function()
                     --v:remove()
                     v:set_base()
                     v:set_ability(G.P_CENTERS.j_entr_title_card)
-                    v.children.front:remove()
-                    v.children.front = nil
+                    if v.children.front then
+                        v.children.front:remove()
+                        v.children.front = nil
+                    end
                     math.randomseed(os.time())
                     if math.random() < 0.01 then
                         v:set_edition("e_entr_freaky") 
