@@ -4489,3 +4489,8 @@ function Spectrallib.get_bg_colour(...)
     end
     return G.GAME.entr_alt and G.C.ALTBG or get_bg_ref(...)
 end
+local blind_is_ref = Spectrallib.blind_is
+function Spectrallib.blind_is(blind, ...)
+    return blind_is_ref(blind, ...)
+        or (Entropy.is_EE() and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_four" and Entropy.EEWhitelist[blind]) --TODO: change how this works
+end
