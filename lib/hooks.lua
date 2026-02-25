@@ -2083,7 +2083,11 @@ G.FUNCS.use_card = function(e, mute, nosave)
     for i, v in pairs(SMODS.find_card("j_entr_shadow_crystal")) do
         if SMODS.pseudorandom_probability(card, 'shadow_crystal', 1, v.ability.extra.odds) and Entropy.inversion(card) and not card.config.center.hidden then
             local dummy = Entropy.get_dummy(G.P_CENTERS[Entropy.inversion(card)], card.area, card)
-            Cryptid.forcetrigger(dummy, {})
+            Spectrallib.forcetrigger({
+                card = dummy,
+                context = context,
+                silent = true
+            })
             break
         end
     end
@@ -3717,7 +3721,11 @@ function Card:use_consumeable(...)
                 for i, v in pairs(G.GAME.entr_echo[self.config.center.key]) do
                     local dum = Entropy.get_dummy(G.P_CENTERS[v], self.area, self)
                     dum.bypass_echo = true
-                    Cryptid.forcetrigger(dum, {})
+                    Spectrallib.forcetrigger({
+                        card = dum,
+                        context = context,
+                        silent = true
+                    })
                     dum.bypass_echo = nil
                 end
             end
@@ -4379,8 +4387,9 @@ function hotpot_horsechicot_market_section_init_cards()
 end
 
 
-local forcetrigger_ref = Cryptid.forcetrigger
-function Cryptid.forcetrigger(card, ...)
+local forcetrigger_ref = Spectrallib.forcetrigger
+function Spectrallib.forcetrigger(args, ...)
+    local card = args.card
     if card.ability.consumeable then
         local center = card.config.center
         if center and center.calculate then

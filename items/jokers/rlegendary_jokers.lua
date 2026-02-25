@@ -539,8 +539,16 @@ local ssac = {
     calculate = function(self, card, context)
         if context.joker_main  then
             for i = 1, math.min(math.ceil(Entropy.missing_ranks() / 2), (context.blueprint or context.repetition) and 1 or 99999) do
-                local j_r = (Cryptid.forcetrigger(G.jokers.cards[#G.jokers.cards], context) or {}).jokers
-                local c_r = G.consumeables.cards[#G.consumeables.cards] and Cryptid.forcetrigger(G.consumeables.cards[#G.consumeables.cards], context) or {}
+                Spectrallib.forcetrigger({
+                    card = G.jokers.cards[#G.jokers.cards],
+                    context = context,
+                    colour = Entropy.reverse_legendary_gradient
+                })
+                Spectrallib.forcetrigger({
+                    card = G.consumeables.cards[#G.consumeables.cards],
+                    context = context,
+                    colour = Entropy.reverse_legendary_gradient
+                })
                 local v = G.play.cards[#G.play.cards]
                 if G.play.cards and v then
                     local results = eval_card(v, {cardarea=G.play,main_scoring=true, forcetrigger=true, individual=true}) or {}

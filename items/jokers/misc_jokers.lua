@@ -6275,10 +6275,10 @@ local elderberries = {
                             card.children.top_disp = nil
                         return true end }))
 
-                        if Cryptid.forcetriggerConsumableCheck(card) then
-                            Cryptid.forcetrigger(card, {no_sound = true})
-                        elseif card:can_use_consumeable() then
-                            card:use_consumeable()
+                        Spectrallib.forcetrigger({
+                            card = card, 
+                            silent = true
+                        })
                         end
                         G.E_MANAGER:add_event(Event{
                             trigger = "after",
@@ -6607,7 +6607,11 @@ local echo_chamber = {
                     trigger = "after",
                     delay = 0.1,
                     func = function()
-                        Cryptid.forcetrigger(Entropy.get_dummy(G.P_CENTERS[v], G.jokers, card), context)
+                        Spectrallib.forcetrigger({
+                            card = Entropy.get_dummy(G.P_CENTERS[v], G.jokers, card),
+                            context = context 
+                            silent = true
+                        })
                         return true
                     end
                 })
@@ -6778,8 +6782,10 @@ local box_of_chocolates = {
                         blocking = false,
                         func = function()
                             local card = pseudorandom_element(G.pack_cards.cards, pseudoseed("j_entr_chocolates"))
-                            local r = Cryptid.forcetrigger(card, context)
-                            SMODS.calculate_effect({message = localize("k_forcetrigger_ex"), colour = G.C.PURPLE}, card)
+                            Spectrallib.forcetrigger({
+                                card = card,
+                                context = context 
+                            })
                             return true
                         end
                     })
