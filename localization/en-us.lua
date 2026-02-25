@@ -2522,6 +2522,24 @@ local decs = {
 			},
 
 			--void jokers
+			j_entr_apoptosis = {
+				name = "Apoptosis",
+				text = {
+					{
+						"Held in hand cards {C:attion}score{}",
+						"as if they were {C:entr_void}played{}"
+					},
+					{
+						"Unenhanced cards held in hand",
+						"give {C:gold}+#1#{} Ascension Power"
+					},
+					{
+						"Permanently {C:entr_void}Invert{} all future",
+						"instances of {C:attention}Prismatic Shard{} and",
+						"{C:attention}Blooming Crimson{} into {C:entr_void}Apoptosis{}",
+					}
+				}
+			},
 			j_entr_generator_meltdown = {
 				name = "Generator Meltdown",
 				text = {

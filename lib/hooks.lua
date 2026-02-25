@@ -4474,3 +4474,18 @@ function SMODS.scale_card(card, tbl, ...)
         return scale_cardref(card, tbl, ...)
     end
 end
+
+local return_to_deck_ref = Spectrallib.return_to_deck
+function Spectrallib.return_to_deck(...)
+    return return_to_deck_ref(...) or Spectrallib.blind_is("bl_entr_cassandra") or Spectrallib.blind_is("bl_entr_pi")
+end
+
+local get_bg_ref = Spectrallib.get_bg_colour
+function Spectrallib.get_bg_colour(...)
+
+    if TDECKS then
+        local ret = TDECKS.get_bg_colour()
+        if ret then return ret end
+    end
+    return G.GAME.entr_alt and G.C.ALTBG or get_bg_ref(...)
+end

@@ -1,3 +1,60 @@
+local apoptosis = {
+    order = 250,
+    object_type = "Joker",
+    key = "apoptosis",
+    rarity = "entr_void",
+    cost = 10,
+    eternal_compat = true,
+    pos = {x = 0, y = 0},
+    atlas = "void_jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    corruptions = {
+        "j_entr_prismatic_shard",
+        "j_entr_blooming_crimson"
+    },
+    config = {
+        extra = {
+            asc = 0.5
+        }
+    },
+    add_to_deck = function(self)
+        G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
+        for i, v in pairs(self.corruptions) do
+            G.GAME.entr_perma_inversions[v] = self.key
+        end
+    end,
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.hand and not context.end_of_round then
+            context.cardarea = G.play
+            context.main_scoring = true
+            local eval, post = eval_card(context.other_card, context)
+            context.cardarea = G.hand
+            context.main_scoring = nil
+            eval = eval or {}
+            local effects = {eval}
+            SMODS.calculate_context({individual = true, other_card=context.other_card, cardarea = G.play, scoring_hand = context.scoring_hand})
+            for _,v in ipairs(post or {}) do effects[#effects+1] = v end
+            SMODS.trigger_effects(effects, context.other_card)
+            if context.other_card.config.center.set ~= "Enhanced" then
+                return {
+                    plus_asc = card.ability.extra.asc
+                }
+            end
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.extra.asc
+            }
+        }
+    end
+}
+
 local generator_meltdown = {
     order = 252,
     object_type = "Joker",
@@ -531,6 +588,7 @@ local caledscratch = {
 
 return {
     items = {
+        apoptosis,
         generator_meltdown,
         unstable_rift,
         yaldabaoth,
