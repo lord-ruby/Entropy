@@ -1845,7 +1845,8 @@ local desync = {
                     Spectrallib.forcetrigger({
                         card = card, 
                         context = context,
-                        colour = HEX("FF0000")
+                        colour = HEX("FF0000"),
+                        message_card = card
                     })
                 end
             else
@@ -1857,7 +1858,8 @@ local desync = {
                 Spectrallib.forcetrigger({
                     card = card, 
                     context = context,
-                    colour = HEX("FF0000")
+                    colour = HEX("FF0000"),
+                    message_card = card
                 })
             end
         end

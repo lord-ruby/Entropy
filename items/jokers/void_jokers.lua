@@ -117,14 +117,12 @@ local egocentrism = {
             end
         end
         if (context.joker_main or context.forcetrigger) and G.jokers.cards[#G.jokers.cards] ~= card then
-            if Cryptid.demicolonGetTriggerable(G.jokers.cards[#G.jokers.cards])[1] then
-                SMODS.calculate_effect{card = context.blueprint_card or card, colour = context.blueprint_card and G.C.BLUE or Entropy.void_gradient, message = localize("cry_demicolon")}
-                local results = Cryptid.forcetrigger(G.jokers.cards[#G.jokers.cards], context)
-                if results and results.jokers then
-                    results.jokers.card = G.jokers.cards[#G.jokers.cards]
-                    SMODS.calculate_effect(results.jokers)
-                end
-            end
+            Spectrallib.forcetrigger({
+                card = G.jokers.cards[#G.jokers.cards], 
+                context = context,
+                colour = Entropy.void_gradient,
+                message_card = card
+            })
         end
     end,
     loc_vars = function(self, info_queue, card)

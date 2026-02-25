@@ -6279,7 +6279,6 @@ local elderberries = {
                             card = card, 
                             silent = true
                         })
-                        end
                         G.E_MANAGER:add_event(Event{
                             trigger = "after",
                             func = function()
@@ -6609,7 +6608,7 @@ local echo_chamber = {
                     func = function()
                         Spectrallib.forcetrigger({
                             card = Entropy.get_dummy(G.P_CENTERS[v], G.jokers, card),
-                            context = context 
+                            context = context,
                             silent = true
                         })
                         return true
@@ -6781,10 +6780,11 @@ local box_of_chocolates = {
                         trigger = "after",
                         blocking = false,
                         func = function()
-                            local card = pseudorandom_element(G.pack_cards.cards, pseudoseed("j_entr_chocolates"))
+                            local card2 = pseudorandom_element(G.pack_cards.cards, pseudoseed("j_entr_chocolates"))
                             Spectrallib.forcetrigger({
-                                card = card,
-                                context = context 
+                                card = card2,
+                                context = context,
+                                message_card = card
                             })
                             return true
                         end

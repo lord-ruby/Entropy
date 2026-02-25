@@ -542,12 +542,14 @@ local ssac = {
                 Spectrallib.forcetrigger({
                     card = G.jokers.cards[#G.jokers.cards],
                     context = context,
-                    colour = Entropy.reverse_legendary_gradient
+                    colour = Entropy.reverse_legendary_gradient,
+                    message_card = card
                 })
                 Spectrallib.forcetrigger({
                     card = G.consumeables.cards[#G.consumeables.cards],
                     context = context,
-                    colour = Entropy.reverse_legendary_gradient
+                    colour = Entropy.reverse_legendary_gradient,
+                    message_card = card
                 })
                 local v = G.play.cards[#G.play.cards]
                 if G.play.cards and v then

@@ -4400,7 +4400,7 @@ function Spectrallib.forcetrigger(args, ...)
             edition:calculate(card, {pre_using_self = true, consumeable = card, area = card.from_area})
         end
     end
-    return forcetrigger_ref(card, ...)
+    return forcetrigger_ref(args, ...)
 end
 
 local gnv_ref = SMODS.get_next_vouchers
