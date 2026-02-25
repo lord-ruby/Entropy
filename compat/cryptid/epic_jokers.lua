@@ -48,7 +48,7 @@ local burnt_m = {
             local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
             G.FUNCS.get_poker_hand_info(G.play.cards)
             if next(poker_hands["Pair"]) then
-               Entropy.FlipThen(cards, function(card)
+               Entropy.flip_then(cards, function(card)
                     card:set_edition("e_entr_solar")
                end)
             end
@@ -64,7 +64,7 @@ local burnt_m = {
             for i = 1, 1+jollycount do
                 cards[#cards+1] = G.play.cards[i] or nil
             end
-            Entropy.FlipThen(cards, function(card)
+            Entropy.flip_then(cards, function(card)
                 card:set_edition("e_entr_solar")
             end)
         end
@@ -179,11 +179,11 @@ local trapezium = {
 					end,
 				}))
 			end
-            return Entropy.RandomForcetrigger(card, card and card.ability.forcetrigger or 5, context)
+            return Entropy.random_forcetrigger(card, card and card.ability.forcetrigger or 5, context)
 		end
 		if context.individual and context.cardarea == G.play then
 			if context.other_card.edition and context.other_card.edition.retrig then
-                return Entropy.RandomForcetrigger(card, card and card.ability.forcetrigger or 5, context)
+                return Entropy.random_forcetrigger(card, card and card.ability.forcetrigger or 5, context)
 			end
 		end
 		if
@@ -200,11 +200,11 @@ local trapezium = {
 					card = card,
 				}
 			else
-                return Entropy.RandomForcetrigger(card, card and card.ability.forcetrigger or 5, context)
+                return Entropy.random_forcetrigger(card, card and card.ability.forcetrigger or 5, context)
 			end
 		end
         if context.forcetrigger then
-            return Entropy.RandomForcetrigger(card, card and card.ability.forcetrigger or 5, context)
+            return Entropy.random_forcetrigger(card, card and card.ability.forcetrigger or 5, context)
         end
 	end,
     entr_credits = {
@@ -233,7 +233,7 @@ local metanoia = {
     end,
     calculate = function (self, card, context)
         if (context.pre_discard) then
-            Entropy.FlipThen(G.hand.highlighted, function(card)
+            Entropy.flip_then(G.hand.highlighted, function(card)
                 card:set_ability(G.P_CENTERS.m_entr_flesh)
             end)
         end

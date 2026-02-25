@@ -25,7 +25,7 @@ SMODS.Sound({
 	key = "music_fall",
 	path = "music_fall.ogg",
 	select_music_track = function()
-		return (((to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) and G.STATE == 1) or G.GAME.EEBuildup or (G.GAME.EE_FADE or 0) > 0) and Entropy.CanEeSpawn() and 10^302
+		return (((to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) and G.STATE == 1) or G.GAME.EEBuildup or (G.GAME.EE_FADE or 0) > 0) and Entropy.can_ee_spawn() and 10^302
 	end,
 })
 

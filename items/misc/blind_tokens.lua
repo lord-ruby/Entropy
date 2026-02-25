@@ -1,6 +1,6 @@
 Entropy.BlindC = {}
 local blinds = {}
-function Entropy.RegisterBlinds()
+function Entropy.register_blinds()
     local order = 12000
     for i, v in pairs(G.P_BLINDS) do
         order = order + 1

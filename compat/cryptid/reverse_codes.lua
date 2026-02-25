@@ -342,7 +342,7 @@ local constant = {
     atlas = "consumables",
     pos = {x=2,y=2},
     use = function(self, card, area, copier)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, 1)
+        local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, 1)
         for i, v in pairs(G.discard.cards) do
             if v.base.id == cards[1].base.id then
                 copy_card(G.hand.highlighted[1],v)
@@ -365,7 +365,7 @@ local constant = {
         end
     end,
     can_use = function(self, card)
-        return #Entropy.GetHighlightedCards({G.hand}, card, 1, 1) == 1
+        return #Entropy.get_highlighted_cards({G.hand}, card, 1, 1) == 1
 	end,
     loc_vars = function(self, q, card)
         return {
@@ -403,7 +403,7 @@ local pseudorandom = {
         }
         for i, v in pairs(allowed) do
             for ind, card in pairs(G[i] and G[i].cards or {}) do
-                Entropy.ApplySticker(card, "entr_pseudorandom")
+                Entropy.apply_sticker(card, "entr_pseudorandom")
             end
         end
     end,
@@ -539,7 +539,7 @@ local inherit = {
                     local card = Cryptid.get_highlighted_cards({ G.hand }, {}, 1, G.GAME.USING_CLASS or 1)[1]
                     if card then
                         local base_enh = card and card.config.center.key or ""
-                        Entropy.ChangeEnhancements({G.discard, G.deck, G.hand}, self.config.center.key, base_enh, true)
+                        Entropy.change_enhancements({G.discard, G.deck, G.hand}, self.config.center.key, base_enh, true)
                         G.hand:unhighlight_all()
                     end
 					ccl(self)
@@ -564,7 +564,7 @@ local inherit = {
 		end
 	end,
     can_use = function(self, card)
-        return #Entropy.GetHighlightedCards({G.hand}, card, 1, 1,{c_base=true}) == 1
+        return #Entropy.get_highlighted_cards({G.hand}, card, 1, 1,{c_base=true}) == 1
 	end,
     loc_vars = function(self, q, card)
         return {
@@ -599,7 +599,7 @@ local fork = {
         if area then
 			area:remove_from_highlighted(card)
 		end
-        local cards = Entropy.GetHighlightedCards({G.hand, G.pack_cards}, card, 1, card.ability.extra)
+        local cards = Entropy.get_highlighted_cards({G.hand, G.pack_cards}, card, 1, card.ability.extra)
         local total = #cards
         if total > 0 then
             for i, orig in pairs(cards) do
@@ -623,7 +623,7 @@ local fork = {
         end
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.pack_cards}, card, 1, card.ability.extra)
+        local cards = Entropy.get_highlighted_cards({G.hand, G.pack_cards}, card, 1, card.ability.extra)
         local num = #cards
         for i, v in pairs(cards) do
             if v.area == G.pack_cards and not v.base.suit then num = num - 1 end
@@ -664,7 +664,7 @@ local push = {
                 G.jokers.cards[i]:start_dissolve()
             end
         end
-        local rarity = Entropy.GetJokerSumRarity()
+        local rarity = Entropy.get_joker_sum_rarity()
         G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() 
             local rare = ({
                 [1] = "Common",
@@ -693,12 +693,12 @@ local push = {
         local mstart = {
             Entropy.randomchar({"(Current rarity: "})
         }
-        mstart[#mstart+1] = Entropy.randomchar({Entropy.GetJokerSumRarity(true) or "none"})
+        mstart[#mstart+1] = Entropy.randomchar({Entropy.get_joker_sum_rarity(true) or "none"})
         mstart[#mstart+1] = Entropy.randomchar({")"})
         return {
             main_end = mstart,
             vars = {
-                Entropy.GetJokerSumRarity(true),
+                Entropy.get_joker_sum_rarity(true),
                 colours = {
                     {0.6969,0.6969,0.6969,1}
                 }
@@ -786,15 +786,15 @@ local decrement = {
     },
     pos = {x=3,y=3},
     use = function(self, card, area, copier)
-        Entropy.reduce_cards(Entropy.GetHighlightedCards({G.jokers}, card, 1, card.ability.extra), card)
+        Entropy.reduce_cards(Entropy.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra), card)
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.jokers}, card, 1, card.ability.extra)
+        local num = #Entropy.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra)
         return num > 0 and num <= card.ability.extra
 	end,
     loc_vars = function(self, q, card)
         local name = "None"
-        local cards = Entropy.GetHighlightedCards({G.jokers, G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.extra)
+        local cards = Entropy.get_highlighted_cards({G.jokers, G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.extra)
         if cards and #cards > 0 then
             if cards[1].config.center.set == "Joker" or G.GAME.modifiers.cry_beta and cards[1].consumable then
                 local first = cards[1]
@@ -835,13 +835,13 @@ local invariant = {
     },
     pos = {x=4,y=3},
     use = function(self, card, area, copier)
-        Entropy.ApplySticker(Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.extra)[1], "entr_pinned")
-        local card = Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.extra)[1]
+        Entropy.apply_sticker(Entropy.get_highlighted_cards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.extra)[1], "entr_pinned")
+        local card = Entropy.get_highlighted_cards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.extra)[1]
         card:juice_up()
 
     end,
     can_use = function(self, card)
-        return #Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.extra) > 0
+        return #Entropy.get_highlighted_cards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.extra) > 0
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "entr_pinned", set="Other"}
@@ -894,9 +894,9 @@ local pinned = {
         if not G.GAME.entr_pinned_cards then G.GAME.entr_pinned_cards = {} end
         if card.area then
             G.GAME.entr_pinned_cards[#G.GAME.entr_pinned_cards+1] = {
-                area = Entropy.GetAreaName(card.area),
+                area = Entropy.get_area_name(card.area),
                 card = card.config.center.key,
-                pos = Entropy.GetIdxInArea(card)
+                pos = Entropy.get_idx_in_area(card)
             }
         end
     end,
@@ -1035,7 +1035,7 @@ local sudo = {
     end,
     can_use = function(self, card)
         local num = G.PROFILES[G.SETTINGS.profile].cry_none and -1 or 0
-        return #Entropy.GetHighlightedCards({G.hand}, card, 1, num) > num 
+        return #Entropy.get_highlighted_cards({G.hand}, card, 1, num) > num 
 	end,
     loc_vars = function(self, q, card)
     end,
@@ -1069,7 +1069,7 @@ local overflow = {
     pos = {x=2,y=4},
     use = function(self, card, area, copier)
         G.GAME.Overflow = 9999
-        Entropy.ChangeFullCSL(9999, localize("b_infinity"))
+        Entropy.change_selection_limit(9999, localize("b_infinity"))
     end,
     can_use = function(self, card)
         return true
@@ -1105,7 +1105,7 @@ local refactor = {
     },
     pos = {x=3,y=4},
     use = function(self, card, area, copier)
-        local cards = Entropy.GetHighlightedCards({G.jokers}, card, 1, 1)
+        local cards = Entropy.get_highlighted_cards({G.jokers}, card, 1, 1)
         local edition = cards[1].edition
         local card = pseudorandom_element(G.jokers.cards, pseudoseed("refactor"))
         local tries = 0
@@ -1142,7 +1142,7 @@ local refactor = {
 
     end,
     can_use = function(self, card)
-        local num = Entropy.GetHighlightedCards({G.jokers}, card, 1, 1)
+        local num = Entropy.get_highlighted_cards({G.jokers}, card, 1, 1)
         return #num == 1
 	end,
     entr_credits = {
@@ -1173,13 +1173,13 @@ local hotfix = {
     atlas = "consumables",
     pos = {x=1,y=5},
     use = function(self, card, area, copier)
-        Entropy.ApplySticker(Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, 1)[1], "entr_hotfix")
-        local card = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, 1)[1]
+        Entropy.apply_sticker(Entropy.get_highlighted_cards({G.hand, G.jokers, G.consumeables}, card, 1, 1)[1], "entr_hotfix")
+        local card = Entropy.get_highlighted_cards({G.hand, G.jokers, G.consumeables}, card, 1, 1)[1]
         card:juice_up()
 
     end,
     can_use = function(self, card)
-        return #Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, 1) == 1
+        return #Entropy.get_highlighted_cards({G.hand, G.jokers, G.consumeables}, card, 1, 1) == 1
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "entr_hotfix", set="Other"}
@@ -1261,13 +1261,13 @@ local desync_card = {
     atlas = "consumables",
     pos = {x=0,y=5},
     use = function(self, card, area, copier)
-        Entropy.ApplySticker(Entropy.GetHighlightedCards({G.jokers, G.consumeables}, card, 1, 1)[1], "desync")
-        local card = Entropy.GetHighlightedCards({G.jokers, G.consumeables}, card, 1, 1)[1]
+        Entropy.apply_sticker(Entropy.get_highlighted_cards({G.jokers, G.consumeables}, card, 1, 1)[1], "desync")
+        local card = Entropy.get_highlighted_cards({G.jokers, G.consumeables}, card, 1, 1)[1]
         card:juice_up()
 
     end,
     can_use = function(self, card)
-        return #Entropy.GetHighlightedCards({G.jokers, G.consumeables}, card, 1, 1) == 1
+        return #Entropy.get_highlighted_cards({G.jokers, G.consumeables}, card, 1, 1) == 1
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "desync", set="Other", vars = {"context.none"}}
@@ -1321,7 +1321,7 @@ local ctrl_x = {
             G.GAME.ControlXCard = nil
             G.GAME.ControlXCardArea = nil
         else
-            local card = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables, G.shop_booster, G.shop_vouchers, G.shop_jokers, G.pack_cards}, card, 1, 1)[1]
+            local card = Entropy.get_highlighted_cards({G.hand, G.jokers, G.consumeables, G.shop_booster, G.shop_vouchers, G.shop_jokers, G.pack_cards}, card, 1, 1)[1]
             G.GAME.ControlXCard = {
                 set = card.ability.set,
                 key = card.config.center.key,
@@ -1341,7 +1341,7 @@ local ctrl_x = {
         end
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables, G.shop_booster, G.shop_vouchers, G.shop_jokers, G.pack_cards}, card, 1, 1)
+        local cards = Entropy.get_highlighted_cards({G.hand, G.jokers, G.consumeables, G.shop_booster, G.shop_vouchers, G.shop_jokers, G.pack_cards}, card, 1, 1)
         return #cards == 1 or G[G.GAME.ControlXCardArea or ""]
     end,
     loc_vars = function()
@@ -1378,7 +1378,7 @@ local multithread = {
     },
     pos = {x=3,y=5},
     use = function(self, card, area, copier)
-        for i, v in pairs(Entropy.GetHighlightedCards({G.hand}, card, 1, G.hand.config.card_limit)) do
+        for i, v in pairs(Entropy.get_highlighted_cards({G.hand}, card, 1, G.hand.config.card_limit)) do
             local c = copy_card(v)
             c:set_edition({
                 negative=true,
@@ -1393,7 +1393,7 @@ local multithread = {
         end 
     end,
     can_use = function(self, card)
-        return #Entropy.GetHighlightedCards({G.hand}, card, 1, G.hand.config.card_limit) > 0
+        return #Entropy.get_highlighted_cards({G.hand}, card, 1, G.hand.config.card_limit) > 0
 	end,
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "temporary", set="Other"}
@@ -1564,14 +1564,14 @@ local local_card = {
         select = 3
     },
     use = function(self, card, area, copier)
-        for i, card in pairs(Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)) do
+        for i, card in pairs(Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)) do
             card.ability.temporary = true
             card:juice_up()
 
         end
     end,
     can_use = function(self, card)
-        return G.hand and #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select) > 0 and #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select) <= card.ability.select
+        return G.hand and #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select) > 0 and #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select) <= card.ability.select
 	end,
     loc_vars = function(self, q, card)
         q[#q+1]={set="Other",key="temporary"}
@@ -1610,13 +1610,13 @@ local interpolate = {
     },
     use = function(self, card, area, copier)
         G.GAME.interpolate_cards = G.GAME.interpolate_cards or {}
-        for i, card in pairs(Entropy.GetHighlightedCards({G.jokers, G.consumeables}, card, 1, card.ability.select)) do
+        for i, card in pairs(Entropy.get_highlighted_cards({G.jokers, G.consumeables}, card, 1, card.ability.select)) do
             G.GAME.interpolate_cards[#G.GAME.interpolate_cards+1] = card.config.center.key
             card:start_dissolve()
         end
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.jokers, G.consumeables}, card, 1, card.ability.select)
+        local cards = Entropy.get_highlighted_cards({G.jokers, G.consumeables}, card, 1, card.ability.select)
         return #cards > 0 and #cards <= card.ability.select
 	end,
     loc_vars = function(self, q, card)
@@ -1686,7 +1686,7 @@ local badarg = {
     },
     use = function(self, card, area, copier)
         local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
-        G.FUNCS.get_poker_hand_info(Entropy.GetHighlightedCards({G.hand}, card))
+        G.FUNCS.get_poker_hand_info(Entropy.get_highlighted_cards({G.hand}, card))
         if text and G.GAME.hands[text] then
             if not G.GAME.badarg then G.GAME.badarg = {} end
             G.GAME.badarg[text] = true
@@ -1698,7 +1698,7 @@ local badarg = {
     end,
     can_use = function(self, card)
         local num = G.PROFILES[G.SETTINGS.profile].cry_none and -1 or 0
-        return #Entropy.GetHighlightedCards({G.hand}, card) > num
+        return #Entropy.get_highlighted_cards({G.hand}, card) > num
 	end,
     loc_vars = function(self, q, card)
         return {
@@ -1840,8 +1840,8 @@ local desync = {
     calculate = function(self, card, context)
         if context.after then
             if card.ability.context == "after" then
-                if Entropy.ContextChecks(self, card, context, card.ability.context) then
-                    card.ability.context = Entropy.RandomContext()
+                if Entropy.context_checks(self, card, context, card.ability.context) then
+                    card.ability.context = Entropy.random_context()
                     if Cryptid.demicolonGetTriggerable(card) then
                         local results = Cryptid.forcetrigger(card, context)
                         if results and results.jokers then
@@ -1858,10 +1858,10 @@ local desync = {
                     end
                 end
             else
-                card.ability.context = Entropy.RandomContext()
+                card.ability.context = Entropy.random_context()
             end
         end
-        if Entropy.ContextChecks(self, card, context, card.ability.context) then
+        if Entropy.context_checks(self, card, context, card.ability.context) then
             if Cryptid.demicolonGetTriggerable(card) then
                 local results = Cryptid.forcetrigger(card, context)
                 if results and results.jokers then
@@ -1879,7 +1879,7 @@ local desync = {
         end
     end,
     apply = function(self,card,val)
-        card.ability.context = Entropy.RandomContext()
+        card.ability.context = Entropy.random_context()
         card.ability.desync = true
     end,
     loc_vars = function(self, q, card)

@@ -25,7 +25,7 @@ local epitachyno = {
     end,
     calculate = function (self, card, context)
         if context.setting_blind then
-            Entropy.FlipThen({card}, function(c)
+            Entropy.flip_then({card}, function(c)
                 c.ability.epitach_consumeable = Entropy.get_random_rare().key
                 local center = G.P_CENTERS[c.ability.epitach_consumeable]
                 if c.children.floating_sprite then
@@ -55,7 +55,7 @@ local epitachyno = {
         end
         if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
             local center = card.config.center
-            Entropy.FlipThen({card}, function(c)
+            Entropy.flip_then({card}, function(c)
                 if c.children.floating_sprite then
                     c.children.floating_sprite:remove()
                 end
@@ -117,12 +117,12 @@ local epitachyno = {
     end,
     can_use = function(self, card)
         if card.ability.epitach_consumeable then
-            local dummy = Entropy.GetDummy(G.P_CENTERS[card.ability.epitach_consumeable], G.consumeables, card)
+            local dummy = Entropy.get_dummy(G.P_CENTERS[card.ability.epitach_consumeable], G.consumeables, card)
             return to_big(card.ability.left) > to_big(0) and Card.can_use_consumeable(dummy)
         end
     end,
     use = function(self, card)
-        local dummy = Entropy.GetDummy(G.P_CENTERS[card.ability.epitach_consumeable], G.consumeables, card)
+        local dummy = Entropy.get_dummy(G.P_CENTERS[card.ability.epitach_consumeable], G.consumeables, card)
         Cryptid.forcetrigger(dummy, {})
         card.ability.left = card.ability.left - 1
     end,
@@ -262,7 +262,7 @@ local xekanos = {
         if (context.selling_card and not context.retrigger_joker) or context.forcetrigger then
             if not context.card then
                 card.ability.ante_mod_mod = card.ability.ante_mod_mod * 0.5
-            elseif context.card.ability.set == "Joker" and Entropy.RarityAbove("3",context.card.config.center.rarity,true) then
+            elseif context.card.ability.set == "Joker" and Entropy.rarity_above("3",context.card.config.center.rarity,true) then
                 card.ability.ante_mod_mod = card.ability.ante_mod_mod * 0.5
             end
         end
@@ -309,7 +309,7 @@ local dekatria = {
                 func = function()
                     if planet then
                         G.entr_add_to_stats = true
-                        Card.use_consumeable(Entropy.GetDummy(G.P_CENTERS[planet.key], G.consumeables, context.other_card))
+                        Card.use_consumeable(Entropy.get_dummy(G.P_CENTERS[planet.key], G.consumeables, context.other_card))
                         G.entr_add_to_stats = nil
                         update_hand_text({delay = 0}, {mult = mult, chips = hand_chips})
                     end
@@ -679,9 +679,9 @@ local exelixi = {
     atlas = "exotic_jokers",
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play then
-            Entropy.FlipThen({context.other_card}, function(card)
-                if Entropy.UpgradeEnhancement(card, true, {m_entr_disavowed=true, m_entr_flesh=true}) then
-                    card:set_ability(G.P_CENTERS[Entropy.UpgradeEnhancement(card, true, {m_entr_disavowed=true, m_entr_flesh=true})])
+            Entropy.flip_then({context.other_card}, function(card)
+                if Entropy.upgrade_enhancement(card, true, {m_entr_disavowed=true, m_entr_flesh=true}) then
+                    card:set_ability(G.P_CENTERS[Entropy.upgrade_enhancement(card, true, {m_entr_disavowed=true, m_entr_flesh=true})])
                 end
             end)
             return nil, true
@@ -693,7 +693,7 @@ local exelixi = {
                     if v == context.other_card then index = i end
                 end
                 local enh = G.P_CENTERS[G.hand.cards[index].config.center.key]
-                Entropy.FlipThen({G.hand.cards[index-1], G.hand.cards[index+1]}, function(card)
+                Entropy.flip_then({G.hand.cards[index-1], G.hand.cards[index+1]}, function(card)
                     if card and G.hand.cards[index] then card:set_ability(enh) end
                 end)
             end
@@ -815,7 +815,7 @@ local apeirostemma = {
                     for _ = 1, v do
                         G.E_MANAGER:add_event(Event{
                             func = function()
-                                Cryptid.forcetrigger(Entropy.GetDummy(G.P_CENTERS[i], G.consumeables, card))
+                                Cryptid.forcetrigger(Entropy.get_dummy(G.P_CENTERS[i], G.consumeables, card))
                                 return true
                             end
                         })
@@ -828,11 +828,11 @@ local apeirostemma = {
         end
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, 9999)
+        local num = #Entropy.get_highlighted_cards({G.hand, G.jokers, G.consumeables}, card, 1, 9999)
         return to_big(card.ability.left) > to_big(0) and num > 0
     end,
     use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, 9999)
+        local cards = Entropy.get_highlighted_cards({G.hand, G.jokers, G.consumeables}, card, 1, 9999)
         card.ability.extra = {}
         for i, v in pairs(cards) do
             if v.ability.consumeable then 
@@ -906,7 +906,7 @@ local prismatikos = {
     pos = { x = 3, y = 6 },
     atlas = "exotic_jokers",
     calculate = function(self, card, context)
-        if context.individual and Entropy.DeckOrSleeve("doc") then
+        if context.individual and Entropy.deck_or_sleeve("doc") then
             ease_entropy(2)
         end
         if context.joker_main then

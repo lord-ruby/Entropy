@@ -12,16 +12,16 @@ local flipside = {
     },
     set = "Spectral",
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({{cards = G.I.CARD}}, card, 1, card.ability.select)
-        cards = Entropy.FilterTable(cards, function(card)
-            return Entropy.Inversion(card) or card.config.center.key == "c_entr_flipside"
+        local cards = Entropy.get_highlighted_cards({{cards = G.I.CARD}}, card, 1, card.ability.select)
+        cards = Entropy.filter_table(cards, function(card)
+            return Entropy.inversion(card) or card.config.center.key == "c_entr_flipside"
         end)
         return #cards > 0 and #cards <= card.ability.select
     end,
     use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({{cards = G.I.CARD}}, card, 1, card.ability.select)
-        local actual = Entropy.FilterTable(cards, function(card)
-            return Entropy.Inversion(card)
+        local cards = Entropy.get_highlighted_cards({{cards = G.I.CARD}}, card, 1, card.ability.select)
+        local actual = Entropy.filter_table(cards, function(card)
+            return Entropy.inversion(card)
         end)
         Entropy.invert(cards, true)
     end,
@@ -30,7 +30,7 @@ local flipside = {
         if context.being_inverted then
             local cards2 = {}
             for i, card in pairs(G.I.CARD) do
-                if Entropy.Inversion(card) and card.config.center.key ~= "c_entr_flipside" then
+                if Entropy.inversion(card) and card.config.center.key ~= "c_entr_flipside" then
                     cards2[#cards2+1] = card
                 end
             end
@@ -70,13 +70,13 @@ local shatter = {
         }
     },
     use = function(self, card, area, copier)
-        Entropy.FlipThen(Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.limit), function(card)
+        Entropy.flip_then(Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.limit), function(card)
             card:set_edition("e_entr_fractured")
         end)
-        Entropy.ChangeFullCSL(-card.ability.csl)
+        Entropy.change_selection_limit(-card.ability.csl)
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.limit)
+        local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.limit)
         return num > 0 and num <= card.ability.limit
 	end,
     loc_vars = function(self, q, card)
@@ -112,26 +112,26 @@ local destiny = {
     },
     use = function(self, card, area, copier)
         local remove = {}
-        local highlighted = Entropy.GetHighlightedCards({G.hand}, card, 5, 5)
+        local highlighted = Entropy.get_highlighted_cards({G.hand}, card, 5, 5)
         for i, v in pairs(highlighted) do
             if v.config.center.key ~= "c_base" or pseudorandom("crafting") < 0.4 then
                 SMODS.destroy_cards{v}
             else
-                Entropy.DiscardSpecific({v})
+                Entropy.discard_specific({v})
             end
         end
-        add_joker(Entropy.GetRecipe(highlighted))
+        add_joker(Entropy.get_recipe(highlighted))
     end,
     keep_on_use = function(self, card)
-        return Entropy.DeckOrSleeve("crafting")
+        return Entropy.deck_or_sleeve("crafting")
     end,
     can_use = function(self, card)
-        local highlighted = Entropy.GetHighlightedCards({G.hand}, card, 5, 5)
+        local highlighted = Entropy.get_highlighted_cards({G.hand}, card, 5, 5)
         return G.hand and #highlighted == 5
 	end,
     loc_vars = function(self, q, card)
-        local jok = G.hand and Entropy.GetRecipe(G.hand.highlighted)
-        local highlighted = Entropy.GetHighlightedCards({G.hand}, card, 5, 5)
+        local jok = G.hand and Entropy.get_recipe(G.hand.highlighted)
+        local highlighted = Entropy.get_highlighted_cards({G.hand}, card, 5, 5)
         if G.hand and #highlighted == 5 then
             q[#q+1] = jok and G.P_CENTERS[jok] or nil
         end
@@ -142,7 +142,7 @@ local destiny = {
     end,
     no_doe = true,
     in_pool = function()
-        return not Entropy.DeckOrSleeve("crafting")
+        return not Entropy.deck_or_sleeve("crafting")
     end,
     weight = 0,    
 }
@@ -167,7 +167,7 @@ local lust = {
         for i, v in pairs(G.hand.cards) do if not v.edition then cards[#cards+1] = v end end
         pseudoshuffle(cards, pseudoseed("entr_lust"))
         for i = 1, math.min(#cards, card.ability.limit) do rcards[#rcards+1] = cards[i] end
-        Entropy.FlipThen(rcards, function(card)
+        Entropy.flip_then(rcards, function(card)
             card:set_edition("e_entr_freaky")
         end)
     end,
@@ -338,9 +338,9 @@ local enchant = {
         highlighted = 1
     },
     pos = {x=1,y=0},
-    use = Entropy.ModifyHandCardNF({seal="entr_ornate"}),
+    use = Entropy.modify_hand_card_NF({seal="entr_ornate"}),
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.highlighted)
+        local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.highlighted)
         return #cards > 0 and #cards <= card.ability.highlighted
     end,
     loc_vars = function(self, q, card)

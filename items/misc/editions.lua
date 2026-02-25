@@ -110,7 +110,7 @@ local fractured ={
 			context.main_scoring
 			and context.cardarea == G.play
 		) then
-			return Entropy.RandomForcetrigger(card, card and card.edition and card.edition.retrig or 3, context)
+			return Entropy.random_forcetrigger(card, card and card.edition and card.edition.retrig or 3, context)
 		end
 	end,
 	entr_credits = {
@@ -372,8 +372,8 @@ if AurinkoAddons then
 	end
 	AurinkoAddons.entr_freaky = function(card, hand, instant, amount)
 		local hand_chips = G.GAME.hands[hand].chips
-		local mult = math.max(Entropy.ApproximateLogRecursion(hand_chips, card.edition.log_base, amount), hand_chips)/hand_chips
-		hand_chips = math.max(Entropy.ApproximateLogRecursion(hand_chips, card.edition.log_base, amount), hand_chips)
+		local mult = math.max(Entropy.approximate_log_recursion(hand_chips, card.edition.log_base, amount), hand_chips)/hand_chips
+		hand_chips = math.max(Entropy.approximate_log_recursion(hand_chips, card.edition.log_base, amount), hand_chips)
 		G.GAME.hands[hand].chips = hand_chips
 		if not instant then
 			G.E_MANAGER:add_event(Event({
@@ -649,7 +649,7 @@ local gilded = {
 						trigger = "after",
 						delay = 1,
 						func = function()
-							Cryptid.forcetrigger(Entropy.GetDummy(card.config.center, G.consumeables, card), context)
+							Cryptid.forcetrigger(Entropy.get_dummy(card.config.center, G.consumeables, card), context)
 							return true
 						end
 					})

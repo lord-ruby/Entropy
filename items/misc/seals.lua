@@ -50,7 +50,7 @@ local silver = {
             return {
                 func = function()
                     for i, v in ipairs(G.hand.cards) do
-                        local res = Entropy.GetRepetitions(v)
+                        local res = Entropy.get_repetitions(v)
                         if v.debuff then res.repetitions = nil end
                         for i = 1, (res.repetitions or 0) + 1 do
                             if i > 1 then
@@ -84,7 +84,7 @@ local silver = {
             return {
                 func = function()
                     for i, v in ipairs(G.hand.cards) do
-                        local res = Entropy.GetRepetitions(v)
+                        local res = Entropy.get_repetitions(v)
                         if v.debuff then res.repetitions = nil end
                         for i = 1, (res.repetitions or 0) + 1 do
                             if v.debuff then

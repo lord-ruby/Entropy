@@ -391,7 +391,7 @@ local dice_shard = {
     pools = {["Dice"] = true},
     loc_vars = function(self, q, card)
         local name = "None"
-        local cards = Entropy.GetHighlightedCards({G.jokers, G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.extra)
+        local cards = Entropy.get_highlighted_cards({G.jokers, G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.extra)
         if cards and #cards > 0 then
             if cards[1].config.center.set == "Joker" or G.GAME.modifiers.cry_beta and cards[1].consumable then
                 local first = cards[1]
@@ -417,12 +417,12 @@ local dice_shard = {
         end
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.jokers}, card, 1, 1)
+        local num = #Entropy.get_highlighted_cards({G.jokers}, card, 1, 1)
         return num > 0 and num <= 1 and to_big(card.ability.left) > to_big(0)
     end,
     use = function(self, card)
         card.ability.left = card.ability.left - 1
-        Entropy.reduce_cards(Entropy.GetHighlightedCards({G.jokers}, card, 1, 1), card)
+        Entropy.reduce_cards(Entropy.get_highlighted_cards({G.jokers}, card, 1, 1), card)
     end
 }
 
@@ -493,7 +493,7 @@ local nostalgic_d6 = {
             if G.GAME.modifiers.glitched_items then
                 local gc = {p_card.config.center.key}
                 for i = 1, G.GAME.modifiers.glitched_items - 1 do
-                    gc[#gc+1] = Entropy.GetPooledCenter(p_card.config.center.set).key
+                    gc[#gc+1] = Entropy.get_pooled_center(p_card.config.center.set).key
                 end
                 p_card.ability.glitched_crown = gc
             end

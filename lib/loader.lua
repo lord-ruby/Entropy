@@ -1,7 +1,7 @@
 local loadmodsref = SMODS.injectItems
 function SMODS.injectItems(...)
     if Entropy.config.blind_tokens then
-        local results = Entropy.RegisterBlinds()
+        local results = Entropy.register_blinds()
         local items = {}
         if results then
             if results.init then results.init(results) end
@@ -31,7 +31,7 @@ function SMODS.injectItems(...)
         end
     end
     G.ASSET_ATLAS["cry_gameset"] = Entropy.GamesetAtlas
-    if StockingStuffer then StockingStuffer.Ruby.get_dummy = Entropy.GetDummy end
+    if StockingStuffer then StockingStuffer.Ruby.get_dummy = Entropy.get_dummy end
     if not G.entr_hooked then
 
         local oldfunc = Game.main_menu

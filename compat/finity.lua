@@ -43,7 +43,7 @@ if FinisherBossBlindStringMap then
                             for i, v in pairs(results) do
                                 for i2, result in pairs(v) do
                                     if Entropy.is_number(result) then
-                                        res[i2] = Entropy.StackEvalReturns(res[i2], result, i2)
+                                        res[i2] = Entropy.stack_eval_returns(res[i2], result, i2)
                                     else
                                         res[i2] = result
                                     end
@@ -75,7 +75,7 @@ if FinisherBossBlindStringMap then
                     for i = 1, 2 do
                         actual[i] = cards[i]
                     end
-                    Entropy.FlipThen(actual, function(card)
+                    Entropy.flip_then(actual, function(card)
                         card:set_edition(G.hand.highlighted[1] and G.hand.highlighted[1].edition and G.hand.highlighted[1].edition.key)
                     end)
                 end
@@ -195,7 +195,7 @@ if FinisherBossBlindStringMap then
                 for i, v in pairs(context.scoring_hand) do
                     if v:is_suit("Hearts") then hearts[#hearts+1] = v end
                 end
-                Entropy.FlipThen(hearts, function(c) c:set_edition("e_entr_sunny") end)
+                Entropy.flip_then(hearts, function(c) c:set_edition("e_entr_sunny") end)
             end
             if context.individual and context.cardarea == G.play then
                 return {
@@ -373,7 +373,7 @@ if FinisherBossBlindStringMap then
         end,
         calculate = function(self, card, context)
             if context.after then
-                Entropy.FlipThen({G.play.cards[#G.play.cards]}, function(c)
+                Entropy.flip_then({G.play.cards[#G.play.cards]}, function(c)
                     card.ability.dollars_earn = card.ability.dollars_earn + c:get_chip_bonus()
                     SMODS.change_base(c, "entr_nilsuit", "entr_nilrank")
                 end)

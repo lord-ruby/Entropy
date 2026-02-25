@@ -320,15 +320,15 @@ local kiln = {
     },
     pos = {x=0,y=0},
     use = function(self, card2)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select)
-        Entropy.FlipThen(cards, function(card)
+        local cards = Entropy.get_highlighted_cards({G.hand}, card2, 1, card2.ability.select)
+        Entropy.flip_then(cards, function(card)
             card:set_ability(G.P_CENTERS.m_entr_ceramic)
             G.hand:remove_from_highlighted(card)
         end)
             
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
         return num > 0 and num <= card.ability.select
     end,
     loc_vars = function(self, q, card)
@@ -365,15 +365,15 @@ local comet = {
     },
     pos = {x=0,y=3},
     use = function(self, card2)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select)
-        Entropy.FlipThen(cards, function(card)
+        local cards = Entropy.get_highlighted_cards({G.hand}, card2, 1, card2.ability.select)
+        Entropy.flip_then(cards, function(card)
             card:set_ability(G.P_CENTERS.m_entr_radiant)
             G.hand:remove_from_highlighted(card)
         end)
             
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
         return num > 0 and num <= card.ability.select
     end,
     loc_vars = function(self, q, card)

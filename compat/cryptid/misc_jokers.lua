@@ -158,7 +158,7 @@ local code_m = {
                 if not v.edition then cards[#cards+1] = v end
             end
             local jcard = pseudorandom_element(cards, pseudoseed("code_m"))
-            Entropy.FlipThen({jcard}, function(card)
+            Entropy.flip_then({jcard}, function(card)
                 card:set_edition("e_cry_m")
             end)
         end

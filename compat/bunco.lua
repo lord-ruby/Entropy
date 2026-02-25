@@ -21,7 +21,7 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
         },
         pos = {x=8,y=0},
         use = function(self, card2)
-            local cards = Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select)
+            local cards = Entropy.get_highlighted_cards({G.hand}, card2, 1, card2.ability.select)
             for i, v in pairs(cards) do
                 local card = cards[i]
                 G.E_MANAGER:add_event(Event({
@@ -34,7 +34,7 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
 
         end,
         can_use = function(self, card)
-            local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+            local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
             return num > 0 and num <= card.ability.select
         end,
         loc_vars = function(self, q, card)
@@ -245,10 +245,10 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
         },
         pos = {x=8,y=1},
         use = function(self, card2)
-            Entropy.LevelSuit("bunc_Fleurons", card2, 1, card2.ability.per_level)
+            Entropy.level_suit("bunc_Fleurons", card2, 1, card2.ability.per_level)
         end,
         bulk_use = function(self, card2, _, _, amount)
-            Entropy.LevelSuit("bunc_Fleurons", card2, amount, card2.ability.per_level)
+            Entropy.level_suit("bunc_Fleurons", card2, amount, card2.ability.per_level)
         end,
         can_use = function(self, card)
             return true
@@ -300,10 +300,10 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
         },
         pos = {x=9,y=1},
         use = function(self, card2)
-            Entropy.LevelSuit("bunc_Halberds", card2, 1, card2.ability.per_level)
+            Entropy.level_suit("bunc_Halberds", card2, 1, card2.ability.per_level)
         end,
         bulk_use = function(self, card2, _, _, amount)
-            Entropy.LevelSuit("bunc_Halberds", card2, amount, card2.ability.per_level)
+            Entropy.level_suit("bunc_Halberds", card2, amount, card2.ability.per_level)
         end,
         can_use = function(self, card)
             return true

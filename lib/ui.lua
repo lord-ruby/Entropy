@@ -342,8 +342,8 @@ end
 local ref = G.UIDEF.challenge_description
 function G.UIDEF.challenge_description(id, ...)
     if id == "daily" then 
-        Entropy.UpdateDailySeed()
-        Entropy.GetDailyChallenge() 
+        Entropy.update_daily_seed()
+        Entropy.get_daily_challenge() 
     end
     return ref(id, ...)    
 end

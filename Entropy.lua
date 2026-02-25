@@ -72,7 +72,7 @@ if not Cryptid.mod_gameset_whitelist then Cryptid.mod_gameset_whitelist = {} end
 Cryptid.mod_gameset_whitelist["entr"] = true
 Cryptid.mod_gameset_whitelist["Entropy"] = true
 
-Entropy.UpdateDailySeed()
+Entropy.update_daily_seed()
 
 if Entropy.config.family_mode then
     Cryptid_config.family_mode = true

@@ -52,7 +52,7 @@ function Game:start_run(args)
         sprite.atlas = G.ASSET_ATLAS[atlas]
         sprite:set_sprite_pos(pos)
     end
-    if Entropy.DeckOrSleeve("doc") then
+    if Entropy.deck_or_sleeve("doc") then
         -- G.HUD:remove()
         -- G.HUD = nil
         -- G.HUD = UIBox{
@@ -72,11 +72,11 @@ function Game:start_run(args)
     if G.GAME.cry_percrate and not G.GAME.cry_percrate["rune"] then G.GAME.cry_percrate["rune"] = 0 end
     G.jokers.config.highlighted_limit = 1e100
     G.consumeables.config.highlighted_limit = 1e100
-    if G.SPLASH_EE and not Entropy.IsEE() then
+    if G.SPLASH_EE and not Entropy.is_EE() then
         G.SPLASH_EE:remove()
         G.SPLASH_EE = nil
     end
-    if Entropy.IsEE() then
+    if Entropy.is_EE() then
         if not G.SPLASH_EE then
             G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
         end

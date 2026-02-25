@@ -222,7 +222,7 @@ local oinac = {
     calculate = function (self, card2, context)
         if context.destroy_card and context.cardarea == G.play and context.destroying_card then
                 local card = copy_card(context.destroying_card)
-                SMODS.change_base(card, card.base.suit, Entropy.HigherCardRank(card))
+                SMODS.change_base(card, card.base.suit, SMODS.modify_rank(card, 1))
                 card:add_to_deck()
                 table.insert(G.playing_cards, card)
                 G.hand:emplace(card)
@@ -346,11 +346,11 @@ local kciroy = {
 	},
     demicoloncompat = true,
     add_to_deck = function(self, card)
-        Entropy.ChangeFullCSL(card.ability.csl)
+        Entropy.change_selection_limit(card.ability.csl)
         G.hand:change_size(math.min(card.ability.hs, 1000))
     end,
     remove_from_deck = function(self, card)
-        Entropy.ChangeFullCSL(-card.ability.csl)
+        Entropy.change_selection_limit(-card.ability.csl)
         G.hand:change_size(-math.min(card.ability.hs, 1000))
     end,
     calculate = function (self, card, context)
@@ -508,23 +508,6 @@ local zelavi = {
     end,
     pronouns = "he_they",
 }
-
-function Entropy.missing_ranks()
-    local ranks = {}
-    for i, v in pairs(SMODS.Ranks) do
-        if not v.original_mod and not v.mod then ranks[v.id] = 0 end
-    end
-    for i, v in pairs(G.playing_cards or {}) do
-        if ranks[v.base.id] then
-            ranks[v.base.id] = ranks[v.base.id] + 1
-        end
-    end
-    local total = 0
-    for i, v in pairs(ranks) do
-        if v == 0 then total = total + 1 end
-    end
-    return total
-end
 
 local ssac = {
     order = 407,

@@ -132,8 +132,8 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
             if context.before 
             and context.cardarea == G.play then    
                 if SMODS.pseudorandom_probability(card, 'entr_sharp', 1, self.config.extra.odds) then
-                    Entropy.FlipThen({card}, function(card)
-                        local enh = Entropy.UpgradeEnhancement(card, false, {m_entr_disavowed = true})
+                    Entropy.flip_then({card}, function(card)
+                        local enh = Entropy.upgrade_enhancement(card, false, {m_entr_disavowed = true})
                         if G.P_CENTERS[enh] then
                             card:set_ability(G.P_CENTERS[enh])
                         end
@@ -159,19 +159,19 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
     function Card:highlight(is_h, ...)
         if self.seal == "entr_vantablack" then
             if is_h and not self.highlighted and not self.added then
-                Entropy.ChangeFullCSL(1)
+                Entropy.change_selection_limit(1)
                 self.added = true
             end
             if not is_h and self.highlighted and self.added then
-                Entropy.ChangeFullCSL(-1)
+                Entropy.change_selection_limit(-1)
                 self.added = nil
             end
         end
         return highlight_ref(self, is_h, ...)
     end
-    local void = Entropy.SealSpectral("void", {x=5,y=1}, "entr_mini", 2500, "c_gb_dualism", nil, "crossmod_consumables", {1, 3})
-    local sharpen = Entropy.SealSpectral("sharpen", {x=6,y=1}, "entr_sharp", 2501, "c_gb_gambit", nil, "crossmod_consumables", {1, 3})
-    local singularity = Entropy.SealSpectral("singularity", {x=7,y=1}, "entr_vantablack", 2502, "c_gb_lotus", nil, "crossmod_consumables")
+    local void = Entropy.seal_spectral("void", {x=5,y=1}, "entr_mini", 2500, "c_gb_dualism", nil, "crossmod_consumables", {1, 3})
+    local sharpen = Entropy.seal_spectral("sharpen", {x=6,y=1}, "entr_sharp", 2501, "c_gb_gambit", nil, "crossmod_consumables", {1, 3})
+    local singularity = Entropy.seal_spectral("singularity", {x=7,y=1}, "entr_vantablack", 2502, "c_gb_lotus", nil, "crossmod_consumables")
 
     -- Sculpture - Visage
     -- Hourlgass - Sundial
@@ -233,15 +233,15 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         pos = {x=5,y=3},
         --soul_pos = { x = 5, y = 0},
         use = function(self, card, area, copier)
-            local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
-            Entropy.FlipThen(cards, function(card)
+            local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
+            Entropy.flip_then(cards, function(card)
                 local suit = cards[1].base.suit
                 SMODS.change_base(card, suit)
                 card:set_edition("e_gb_temporary")
             end)
         end,
         can_use = function(self, card)
-            local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+            local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
             return num > 0 and num <= card.ability.select
         end,
         loc_vars = function(self, q, card)
@@ -268,14 +268,14 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         },
         pos = {x=11,y=2},
         use = function(self, card, area, copier)
-            local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
-            Entropy.FlipThen(cards, function(card)
+            local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
+            Entropy.flip_then(cards, function(card)
                 SMODS.change_base(card, "entr_nilsuit", "Ace")
                 card:set_edition("e_gb_temporary")
             end)
         end,
         can_use = function(self, card)
-            local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+            local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
             return num > 0 and num <= card.ability.select
         end,
         loc_vars = function(self, q, card)
@@ -338,8 +338,8 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         },
         pos = {x=11,y=3},
         use = function(self, card, area, copier)
-            local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
-            Entropy.FlipThen(cards, function(card)
+            local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
+            Entropy.flip_then(cards, function(card)
                 card:set_edition("e_gb_temporary")
                 local card_new = copy_card(card)
                 card_new:add_to_deck()
@@ -347,7 +347,7 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
             end)
         end,
         can_use = function(self, card)
-            local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+            local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
             return num > 0
         end,
         demicoloncompat = true,
@@ -371,14 +371,14 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         },
         pos = {x=7,y=2},
         use = function(self, card, area, copier)
-            local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
-            Entropy.FlipThen(cards, function(card)
+            local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
+            Entropy.flip_then(cards, function(card)
                 card:set_ability(G.P_CENTERS.m_gold)
                 card:set_edition("e_gb_temporary")
             end)
         end,
         can_use = function(self, card)
-            local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+            local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
             return num > 0 and num <= card.ability.select
         end,
         loc_vars = function(self, q, card)
@@ -406,15 +406,15 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         pos = {x=12,y=2},
         --soul_pos = { x = 5, y = 0},
         use = function(self, card, area, copier)
-            local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+            local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
             local rank = cards[1] and cards[1].base.value
-            Entropy.FlipThen(cards, function(card)
+            Entropy.flip_then(cards, function(card)
                 SMODS.change_base(card, nil, rank)
                 card:set_edition("e_gb_temporary")
             end)
         end,
         can_use = function(self, card)
-            local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+            local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
             return num > 0 and num <= card.ability.select
         end,
         loc_vars = function(self, q, card)
@@ -442,15 +442,15 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         pos = {x=7,y=4},
         --soul_pos = { x = 5, y = 0},
         use = function(self, card, area, copier)
-            local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+            local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
             local ability = pseudorandom_element(G.P_JOKER_RARITY_POOLS[3], pseudoseed("entr_trickster"))
-            Entropy.FlipThen(cards, function(card)
+            Entropy.flip_then(cards, function(card)
                 card:set_ability(ability)
                 card:set_edition("e_gb_temporary")
             end)
         end,
         can_use = function(self, card)
-            local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+            local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
             return num > 0 and num <= card.ability.select
         end,
         loc_vars = function(self, q, card)
@@ -477,14 +477,14 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         },
         pos = {x=6,y=2},
         use = function(self, card, area, copier)
-            local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
-            Entropy.FlipThen(cards, function(card)
+            local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
+            Entropy.flip_then(cards, function(card)
                 card:set_ability(G.P_CENTERS.m_glass)
                 card:set_edition("e_gb_temporary")
             end)
         end,
         can_use = function(self, card)
-            local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+            local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
             return num > 0 and num <= card.ability.select
         end,
         loc_vars = function(self, q, card)
@@ -541,14 +541,14 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         },
         pos = {x=8,y=2},
         use = function(self, card, area, copier)
-            local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
-            Entropy.FlipThen(cards, function(card)
+            local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
+            Entropy.flip_then(cards, function(card)
                 card:set_ability(G.P_CENTERS.m_lucky)
                 card:set_edition("e_gb_temporary")
             end)
         end,
         can_use = function(self, card)
-            local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+            local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
             return num > 0 and num <= card.ability.select
         end,
         loc_vars = function(self, q, card)
@@ -575,9 +575,9 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         },
         pos = {x=10,y=3},
         use = function(self, card, area, copier)
-            local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, 1)
+            local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, 1)
             local create = card.ability.create
-            Entropy.FlipThen(cards, function(card)
+            Entropy.flip_then(cards, function(card)
                 card:set_edition("e_gb_temporary")
                 for i = 1, create do
                     local card_new = copy_card(card)
@@ -587,7 +587,7 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
             end)
         end,
         can_use = function(self, card)
-            local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, 1)
+            local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, 1)
             return num > 0 and num <= 1
         end,
         loc_vars = function(self, q, card)
@@ -615,15 +615,15 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         pos = {x=8,y=4},
         --soul_pos = { x = 5, y = 0},
         use = function(self, card, area, copier)
-            local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+            local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
             local ability = pseudorandom_element(G.P_JOKER_RARITY_POOLS[1], pseudoseed("entr_trickster"))
-            Entropy.FlipThen(cards, function(card)
+            Entropy.flip_then(cards, function(card)
                 card:set_ability(ability)
                 card:set_edition("e_gb_temporary")
             end)
         end,
         can_use = function(self, card)
-            local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+            local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
             return num > 0 and num <= card.ability.select
         end,
         loc_vars = function(self, q, card)
@@ -722,14 +722,14 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         },
         pos = {x=9,y=2},
         use = function(self, card, area, copier)
-            local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
-            Entropy.FlipThen(cards, function(card)
+            local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
+            Entropy.flip_then(cards, function(card)
                 card:set_ability(G.P_CENTERS.m_steel)
                 card:set_edition("e_gb_temporary")
             end)
         end,
         can_use = function(self, card)
-            local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+            local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
             return num > 0 and num <= card.ability.select
         end,
         loc_vars = function(self, q, card)
@@ -756,14 +756,14 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         },
         pos = {x=5,y=2},
         use = function(self, card, area, copier)
-            local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
-            Entropy.FlipThen(cards, function(card)
+            local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
+            Entropy.flip_then(cards, function(card)
                 card:set_ability(G.P_CENTERS.m_stone)
                 card:set_edition("e_gb_temporary")
             end)
         end,
         can_use = function(self, card)
-            local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+            local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
             return num > 0 and num <= card.ability.select
         end,
         loc_vars = function(self, q, card)
@@ -825,15 +825,15 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         },
         pos = {x=10,y=2},
         use = function(self, card, area, copier)
-            local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
-            Entropy.FlipThen(cards, function(card)
+            local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
+            Entropy.flip_then(cards, function(card)
                 SMODS.change_base(card, nil, "King")
                 Entropy.randomize_rank_suit(card, nil, true, "entr_essence")
                 card:set_edition("e_gb_temporary")
             end)
         end,
         can_use = function(self, card)
-            local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+            local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
             return num > 0 and num <= card.ability.select
         end,
         loc_vars = function(self, q, card)
@@ -861,7 +861,7 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         pos = {x=5 ,y=4},
         use = function(self, card, area, copier)
             G.GAME.vanish_selection_limit = (G.GAME.vanish_selection_limit or 0) + card.ability.size
-            Entropy.ChangeFullCSL(card.ability.size)
+            Entropy.change_selection_limit(card.ability.size)
         end,
         can_use = function(self, card)
             return G.GAME.blind.in_blind

@@ -16,18 +16,6 @@ Entropy.FlipsideInversions = {}
 Entropy.FlipsidePureInversions = {}
 Entropy.EnhancementFuncs = {}
 Entropy.Planetarium = {}
-Entropy.RarityChecks = (Cryptid and Cryptid.memepack) and { --using legacy stuff to check for cryptid and not cryptlib
-    [0]="cry_candy",
-    1,
-    2,
-    3,
-    "cry_epic",
-    4,
-    "cry_exotic",
-    "entr_entropic"
-} or {
-  1, 2, 3, 4
-}
 Entropy.BoosterSets = {
     ["Spectral"] = "p_spectral_mega_1",
     ["Tarot"] = "p_arcana_mega_1",
@@ -54,9 +42,6 @@ Entropy.DefineBlacklist = {
     Edition = true
 }
 Entropy.SpecialDailies = {}
-Entropy.ChaosBlacklist = {}
-Entropy.ParakmiBlacklist = {}
-Entropy.ChaosConversions = {}
 Entropy.AscendedTags = {}
 Entropy.BlindTokenBlacklist = {
   bl_entr_endless_entropy_phase_one = true,
@@ -256,52 +241,6 @@ end
 '''
 match_indent = true
 
-
-
-[[patches]]
-[patches.pattern]
-target = "functions/UI_definitions.lua"
-pattern = "return create_UIBox_generic_options({contents ={create_tabs("
-position = "before"
-payload = '''
-  local tabs = {
-
-  }
-
-  local def = G.GAME.DefineKeys and {
-          label = localize('b_definitions'),
-          tab_definition_function = G.UIDEF.define_keys,
-        } or nil
-  local decks = G.GAME.entr_bought_decks and #G.GAME.entr_bought_decks > 0 and {
-          label = localize('b_decks'), 
-          tab_definition_function = G.UIDEF.bought_decks,
-        } or nil
-  local stake = G.GAME.stake > 1 and {
-          label = localize('b_stake'),
-          tab_definition_function = G.UIDEF.current_stake,
-        } or nil
-  if def then tabs[#tabs+1] = def end
-  if decks then tabs[#tabs+1] = decks end
-  if stake then tabs[#tabs+1] = stake end
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = "functions/UI_definitions.lua"
-pattern = '''
-        G.GAME.stake > 1 and {
-          label = localize('b_stake'),
-          tab_definition_function = G.UIDEF.current_stake,
-        } or nil,
-'''
-position = "at"
-payload = '''
-        tabs[1],
-        tabs[2],
-        tabs[3],'''
-match_indent = true
-
 [[patches]]
 [patches.pattern]
 target = "game.lua"
@@ -318,7 +257,7 @@ if G.GAME.modifiers.ccd2 then
             "Consumeables",
             "Consumeables",
         }, pseudoseed("redefined"))
-        local center = Entropy.GetPooledCenter(ptype)
+        local center = Entropy.get_pooled_center(ptype)
         v:set_ability(center)
         discover_card(center)
     end
@@ -598,7 +537,7 @@ target = "functions/state_events.lua"
 pattern = "if SMODS.saved then game_over = false end"
 position = "at"
 payload = '''
-if Entropy.IsEE() then
+if Entropy.is_EE() then
     G.GAME.EECardCharacter = true
     if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" then
       if to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then return end
@@ -634,7 +573,7 @@ payload = '''
           G.GAME.chips = 0
           G.GAME.round_resets.lost = false
           G.GAME.blind:set_blind(G.P_BLINDS["bl_entr_endless_entropy_phase_two"])
-          Entropy.ChangePhase()
+          Entropy.change_phase()
           G.GAME.blind:juice_up()
           G.GAME.current_round.hands_left = G.GAME.round_resets.hands
           ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
@@ -658,7 +597,7 @@ target = "functions/state_events.lua"
 pattern = "if not G.GAME.won and not G.GAME.seeded and not G.GAME.challenge then "
 position = "before"
 payload = '''
-if Entropy.IsEE() then
+if Entropy.is_EE() then
     G.GAME.EECardCharacter = true
 end
 '''
@@ -955,7 +894,7 @@ ease_hands_played(-1)
 '''
 payload = '''
 local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
-G.FUNCS.get_poker_hand_info(Entropy.GetHighlightedCards({G.hand}, card))
+G.FUNCS.get_poker_hand_info(Entropy.get_highlighted_cards({G.hand}, card))
 if not G.GAME.badarg or (G.GAME.badarg and not G.GAME.badarg[text]) then
 	ease_hands_played(-1) 
 else
@@ -1088,7 +1027,7 @@ pattern = '''
 '''
 position = "at"
 payload = '''
-                        {n=G.UIT.R,config={id = 'next_round_button', align = "cm", minw = 2.8, minh = Entropy.CanSwitchAltPath() and 1 or 1.5, r=0.15,colour = G.C.RED, one_press = true, button = 'toggle_shop', hover = true,shadow = true}, nodes = {
+                        {n=G.UIT.R,config={id = 'next_round_button', align = "cm", minw = 2.8, minh = Entropy.can_switch_alt_path() and 1 or 1.5, r=0.15,colour = G.C.RED, one_press = true, button = 'toggle_shop', hover = true,shadow = true}, nodes = {
                           {n=G.UIT.R, config={align = "cm", padding = 0.07, focus_args = {button = 'y', orientation = 'cr'}, func = 'set_button_pip'}, nodes={
                             {n=G.UIT.R, config={align = "cm", maxw = 1.3}, nodes={
                               {n=G.UIT.T, config={text = localize('b_next_round_1'), scale = 0.4, colour = G.C.WHITE, shadow = true}}
@@ -1098,7 +1037,7 @@ payload = '''
                             }}   
                           }},              
                         }},
-                        (Entropy.CanSwitchAltPath() and {n=G.UIT.R,config={id = 'change_path_button', align = "cm", minw = 2.8, minh = 1, r=0.15,colour = G.C.PURPLE, button = 'toggle_path', hover = true,shadow = true, func='can_toggle_path'}, nodes = {
+                        (Entropy.can_switch_alt_path() and {n=G.UIT.R,config={id = 'change_path_button', align = "cm", minw = 2.8, minh = 1, r=0.15,colour = G.C.PURPLE, button = 'toggle_path', hover = true,shadow = true, func='can_toggle_path'}, nodes = {
                           {n=G.UIT.R, config={align = "cm", padding = 0.07, focus_args = {button = 'y', orientation = 'cr'}, func = 'set_button_pip'}, nodes={
                             {n=G.UIT.R, config={align = "cm", maxw = 1.3}, nodes={
                               {n=G.UIT.T, config={text = localize(G.GAME.entr_alt and 'b_change_path_3' or 'b_change_path_1'), scale = 0.4, colour = G.C.WHITE, shadow = true}}
@@ -1180,7 +1119,7 @@ local challenge = G.CHALLENGES[args._id]
 '''
 position = "after"
 payload = '''
-local challenge = G.CHALLENGES[args._id] or Entropy.GetDailyChallenge()
+local challenge = G.CHALLENGES[args._id] or Entropy.get_daily_challenge()
 '''
 match_indent = true
 
@@ -1193,7 +1132,7 @@ local challenge = G.CHALLENGES[args._id]
 '''
 position = "after"
 payload = '''
-local challenge = G.CHALLENGES[args._id] or Entropy.GetDailyChallenge()
+local challenge = G.CHALLENGES[args._id] or Entropy.get_daily_challenge()
 '''
 match_indent = true
 
@@ -1209,7 +1148,7 @@ payload = '''
       info_queue[#info_queue + 1] = v
     end
   end
-  if Entropy.DeckOrSleeve("doc") then
+  if Entropy.deck_or_sleeve("doc") then
     if _c.key == "c_entr_beyond" then
       info_queue[#info_queue+1] = {set="Other", key="no_downside_cond"}
     end
@@ -1430,8 +1369,8 @@ pattern = '''
 '''
 position = "after"
 payload = '''
-    if Entropy.DeckOrSleeve("butterfly") then
-        for i = 1, Entropy.DeckOrSleeve("butterfly") do
+    if Entropy.deck_or_sleeve("butterfly") then
+        for i = 1, Entropy.deck_or_sleeve("butterfly") do
             local jok = {cards = {}}
             for i, v in pairs(G.butterfly_jokers.cards) do
               if pseudorandom("entr_butterfly") < 0.5 then jok.cards[#jok.cards+1] = v end
@@ -2101,7 +2040,7 @@ if self.draw_hand == true then G.FUNCS.draw_from_deck_to_hand() end
 '''
 position = "at"
 payload = '''
-if self.draw_hand == true or G.GAME.mannaz_draw or next(SMODS.find_card("j_entr_miracle_berry")) or G.GAME.modifiers.entr_parakmi or (next(Entropy.find_runes("rune_entr_oss")) and Entropy.DeckOrSleeve("corrupted")) then G.FUNCS.draw_from_deck_to_hand(); G.GAME.mannaz_draw = nil end
+if self.draw_hand == true or G.GAME.mannaz_draw or next(SMODS.find_card("j_entr_miracle_berry")) or G.GAME.modifiers.entr_parakmi or (next(Entropy.find_runes("rune_entr_oss")) and Entropy.deck_or_sleeve("corrupted")) then G.FUNCS.draw_from_deck_to_hand(); G.GAME.mannaz_draw = nil end
 '''
 match_indent = true 
 
@@ -2679,7 +2618,7 @@ end
 position = "at"
 payload = '''
 if self.debuff then
-    if Entropy.IsEE() then
+    if Entropy.is_EE() then
       self.children.center:draw_shader('entr_brimstone', nil, self.ARGS.send_to_shader)
       if self.children.front and (self.ability.delayed or not self:should_hide_front()) then
           self.children.front:draw_shader('entr_brimstone', nil, self.ARGS.send_to_shader)
@@ -3067,8 +3006,8 @@ position = 'before'
 payload = '''
 if not G.GAME.entr_parakmi_bypass then
   if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi) then
-    local set = Entropy.GetRandomSet(next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi)
-    local key = Entropy.GetPooledCenter(set).key
+    local set = Entropy.get_random_set(next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi)
+    local key = Entropy.get_pooled_center(set).key
     G.GAME.current_round.used_packs[i] = key
     print(set)
   end
@@ -3214,7 +3153,7 @@ position = 'before'
 payload = '''
 local _total_weight = 0
 if v.set == "Back" or v.set == "Sleeve" then
-    if Entropy.DeckOrSleeve(v.key) or G.GAME.used_jokers[v.key] then
+    if Entropy.deck_or_sleeve(v.key) or G.GAME.used_jokers[v.key] then
         add = false
     end
 end
@@ -3463,7 +3402,7 @@ info_boxes = {{n=G.UIT.R, config = {align="cm", padding = 0.05, card_pos = card.
 payload = '''
 local AUT_ENTR_EPITACHYNO
 if card.ability and card.ability.epitach_consumeable then
-    AUT_ENTR_EPITACHYNO = Card.generate_UIBox_ability_table(Entropy.GetDummy(G.P_CENTERS[card.ability.epitach_consumeable], G.consumeables, card))
+    AUT_ENTR_EPITACHYNO = Card.generate_UIBox_ability_table(Entropy.get_dummy(G.P_CENTERS[card.ability.epitach_consumeable], G.consumeables, card))
 end
 '''
 

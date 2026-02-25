@@ -1,99 +1,4 @@
-local hand_row_ref = create_UIBox_current_hand_row
-function create_UIBox_current_hand_row(handname, simple)
-    G.GAME.badarg = G.GAME.badarg or {}
-    if G.GAME.hands[handname].operator then
-      return (G.GAME.hands[handname].visible) and
-      (not simple and
-        {n=G.UIT.R, config={align = "cm", padding = 0.05, r = 0.1, colour = darken(G.C.JOKER_GREY, 0.1), emboss = 0.05, hover = true, force_focus = true, on_demand_tooltip = {text = localize(handname, 'poker_hand_descriptions'), filler = {func = create_UIBox_hand_tip, args = handname}}}, nodes={
-          {n=G.UIT.C, config={align = "cl", padding = 0, minw = 5}, nodes={
-            {n=G.UIT.C, config={align = "cm", padding = 0.01, r = 0.1, colour = G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands[handname].level))], minw = 1.5, outline = 0.8, outline_colour = G.C.WHITE}, nodes={
-              {n=G.UIT.T, config={text = localize('k_level_prefix')..number_format(G.GAME.hands[handname].level), scale = 0.5, colour = G.C.UI.TEXT_DARK}}
-            }},
-            {n=G.UIT.C, config={align = "cm", minw = 4.5, maxw = 4.5}, nodes={
-              {n=G.UIT.T, config={text = ' '..localize(handname,'poker_hands'), scale = 0.45, colour = G.C.UI.TEXT_LIGHT, shadow = true}}
-            }}
-          }},
-          {n=G.UIT.C, config={align = "cm", padding = 0.05, colour = G.C.BLACK,r = 0.1}, nodes={
-            {n=G.UIT.C, config={align = "cr", padding = 0.01, r = 0.1, colour = G.GAME.badarg[handname] and HEX("FF0000") or G.C.CHIPS, minw = 1.1}, nodes={
-              {n=G.UIT.T, config={text = G.GAME.badarg[handname] and "BAD" or number_format(G.GAME.hands[handname].chips, 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}},
-              {n=G.UIT.B, config={w = 0.08, h = 0.01}}
-            }},
-            {n=G.UIT.T, config={text = G.GAME.hands[handname].operator and Entropy.FormatArrowMult(G.GAME.hands[handname].operator, "") or "X", scale = 0.45, colour = Entropy.get_arrow_color(G.GAME.hands[handname].operator or 0)}},
-            {n=G.UIT.C, config={align = "cl", padding = 0.01, r = 0.1, colour = G.GAME.badarg[handname] and HEX("FF0000") or G.C.MULT, minw = 1.1}, nodes={
-              {n=G.UIT.B, config={w = 0.08,h = 0.01}},
-              {n=G.UIT.T, config={text = G.GAME.badarg[handname] and "ARG" or number_format(G.GAME.hands[handname].mult, 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}}
-            }}
-          }},
-          {n=G.UIT.C, config={align = "cm"}, nodes={
-              {n=G.UIT.T, config={text = '  #', scale = 0.45, colour = G.C.UI.TEXT_LIGHT, shadow = true}}
-            }},
-          {n=G.UIT.C, config={align = "cm", padding = 0.05, colour = G.C.L_BLACK,r = 0.1, minw = 0.9}, nodes={
-            {n=G.UIT.T, config={text = G.GAME.hands[handname].played, scale = 0.45, colour = G.C.FILTER, shadow = true}},
-          }}
-        }}
-      or {n=G.UIT.R, config={align = "cm", padding = 0.05, r = 0.1, colour = darken(G.C.JOKER_GREY, 0.1), force_focus = true, emboss = 0.05, hover = true, on_demand_tooltip = {text = localize(handname, 'poker_hand_descriptions'), filler = {func = create_UIBox_hand_tip, args = handname}}, focus_args = {snap_to = (simple and handname == 'Straight Flush')}}, nodes={
-        {n=G.UIT.C, config={align = "cm", padding = 0, minw = 5}, nodes={
-            {n=G.UIT.T, config={text = localize(handname,'poker_hands'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true}}
-        }}
-      }})
-      or nil
-    elseif G.GAME.hands[handname] and not G.GAME.hands[handname].AscensionPower then
-        return hand_row_ref(handname, simple)
-    else
-        if not (G.GAME.hands[handname]) then return {} end
-        if not G.GAME.badarg then G.GAME.badarg = {} end
-        local color = (G.GAME.badarg and G.GAME.badarg[handname] and HEX("FF0000")) or Entropy.get_asc_colour(G.GAME.hands[handname].AscensionPower)
-        return (G.GAME.hands[handname].visible) and
-        (not simple and
-          {n=G.UIT.R, config={align = "cm", padding = 0.05, r = 0.1, colour = darken(G.C.JOKER_GREY, 0.1), emboss = 0.05, hover = true, force_focus = true, on_demand_tooltip = {text = localize(handname, 'poker_hand_descriptions'), filler = {func = create_UIBox_hand_tip, args = handname}}}, nodes={
-            {n=G.UIT.C, config={align = "cl", padding = 0, minw = 5}, nodes={
-                {n=G.UIT.C, config={align = "cm", padding = 0.05, colour = G.C.BLACK,r = 0.1}, nodes={
-                    {n=G.UIT.C, config={align = "cm", padding = 0.01, r = 0.1, colour = to_big(G.GAME.hands[handname].level) < to_big(2) and G.C.UI.TEXT_LIGHT or G.C.HAND_LEVELS[to_number(math.min(7, G.GAME.hands[handname].level))], minw = 1.1}, nodes={
-                      {n=G.UIT.T, config={text = localize('k_level_prefix')..number_format(G.GAME.hands[handname].level, 1000000), scale = 0.45, colour = G.C.UI.TEXT_DARK}},
-                    }},
-                    {n=G.UIT.T, config={text = to_big(G.GAME.hands[handname].AscensionPower) >= to_big(0) and "+" or "-", scale = 0.45, colour = color}},
-                    {n=G.UIT.C, config={align = "cm", padding = 0.01, r = 0.1, colour = color, minw = 0.7}, nodes={
-                      {n=G.UIT.T, config={text = ""..number_format(math.abs(to_big(G.GAME.hands[handname].AscensionPower) ^ to_big(G.GAME.hands[handname].TranscensionPower or 1)), 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}}
-                    }}
-                  }},
-              {n=G.UIT.C, config={align = "cm", minw = 3.8, maxw = 3.8}, nodes={
-                {n=G.UIT.T, config={text = ' '..localize(handname,'poker_hands'), scale = 0.45, colour = G.C.UI.TEXT_LIGHT, shadow = true}}
-              }}
-            }},
-            {n=G.UIT.C, config={align = "cm", padding = 0.05, colour = G.C.BLACK,r = 0.1}, nodes={
-              {n=G.UIT.C, config={align = "cr", padding = 0.01, r = 0.1, colour = color, minw = 1.1}, nodes={
-                {n=G.UIT.T, config={text = G.GAME.badarg[handname] and "BAD" or number_format(Entropy.ascend_hand(G.GAME.hands[handname].chips,handname), 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}},
-                {n=G.UIT.B, config={w = 0.08, h = 0.01}}
-              }},
-              {n=G.UIT.T, config={text = G.GAME.hands[handname].operator and Entropy.FormatArrowMult(G.GAME.hands[handname].operator, "") or "X", scale = 0.45, colour = color}},
-              {n=G.UIT.C, config={align = "cl", padding = 0.01, r = 0.1, colour = color, minw = 1.1}, nodes={
-                {n=G.UIT.B, config={w = 0.08,h = 0.01}},
-                {n=G.UIT.T, config={text = G.GAME.badarg[handname] and "ARG" or number_format(Entropy.ascend_hand(G.GAME.hands[handname].mult,handname), 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}}
-              }}
-            }},
-            {n=G.UIT.C, config={align = "cm"}, nodes={
-                {n=G.UIT.T, config={text = '  #', scale = 0.45, colour = G.C.UI.TEXT_LIGHT, shadow = true}}
-              }},
-            {n=G.UIT.C, config={align = "cm", padding = 0.05, colour = G.C.L_BLACK,r = 0.1, minw = 0.9}, nodes={
-              {n=G.UIT.T, config={text = G.GAME.hands[handname].played, scale = 0.45, colour = G.C.FILTER, shadow = true}},
-            }}
-          }}
-        or {n=G.UIT.R, config={align = "cm", padding = 0.05, r = 0.1, colour = darken(G.C.JOKER_GREY, 0.1), force_focus = true, emboss = 0.05, hover = true, on_demand_tooltip = {text = localize(handname, 'poker_hand_descriptions'), filler = {func = create_UIBox_hand_tip, args = handname}}, focus_args = {snap_to = (simple and handname == 'Straight Flush')}}, nodes={
-          {n=G.UIT.C, config={align = "cm", padding = 0, minw = 5}, nodes={
-              {n=G.UIT.T, config={text = localize(handname,'poker_hands'), scale = 0.5, colour = G.C.UI.TEXT_LIGHT, shadow = true}}
-          }}
-        }})
-        or nil
-    end
-end
-
-
-function Entropy.ascend_hand(num, hand) -- edit this function at your leisure
-    local ret = Cryptid.ascend(num, (G.GAME.hands[hand].AscensionPower or 0))
-    return ret
-end
-
-function Entropy.ReverseSuitUse(self, card, area, copier, num)
+function Entropy.reverse_suit_use(self, card, area, copier, num)
   local handnames = card.ability.handnames
   local declare = {
     cry_Declare0 = true,
@@ -108,7 +13,7 @@ function Entropy.ReverseSuitUse(self, card, area, copier, num)
   end
   SMODS.upgrade_poker_hands({hands = handnames, from = card, ascension_power = (card.ability.level + (G.GAME.entr_black_dwarf or 0)) * (num or 1)})
 end
-function Entropy.ReverseSuitLocVars(self, q, card, instant, noengulf)
+function Entropy.reverse_suit_loc_vars(self, q, card, instant, noengulf)
   return {
     vars = {
       localize(card.ability.handnames[1], "poker_hands"),
@@ -139,7 +44,7 @@ function Entropy.ReverseSuitLocVars(self, q, card, instant, noengulf)
   }
 end
 
-function Entropy.ChunkLocVars(self, q, card, instant, noengulf)
+function Entropy.chunk_loc_vars(self, q, card, instant, noengulf)
   return {
     vars = {
       G.GAME.hands[card.ability.handnames[1]].declare_cards and localize(card.ability.handnames[1], "poker_hands") or localize("cry_code_empty"),
@@ -170,14 +75,14 @@ function Entropy.ChunkLocVars(self, q, card, instant, noengulf)
   }
 end
 
-function Entropy.ReversePlanetUse(handname, card, amt)
+function Entropy.reverse_planet_use(handname, card, amt)
     SMODS.upgrade_poker_hands({hands = handname, from = card, ascension_power = amt * (card.ability.level + (G.GAME.entr_black_dwarf or 0))})  
 end
 
 local planets = {}
 local order = 0
 
-function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,level, name,set_badges,loc_vars,config, new_key, calc, art, atlas)
+function Entropy.register_reverse_planet(key, handname, sprite_pos, func, cost,level, name,set_badges,loc_vars,config, new_key, calc, art, atlas)
   order = order + 1
   planets[#planets+1]={
     object_type="Consumable",
@@ -203,12 +108,12 @@ function Entropy.RegisterReversePlanet(key, handname, sprite_pos, func, cost,lev
     can_bulk_use = true,
     use = function(self, card, area, copier)
         if func then func(self, card,area,copier) else 
-          Entropy.ReversePlanetUse(card.ability.handname, card, 1) 
+          Entropy.reverse_planet_use(card.ability.handname, card, 1) 
         end
     end,
     bulk_use = function(self, card, area, copier, number)
       if func then func(self, card,area,copier,number) else 
-        Entropy.ReversePlanetUse(card.ability.handname, card, number) 
+        Entropy.reverse_planet_use(card.ability.handname, card, number) 
       end
     end,
     can_use = function(self, card)
@@ -343,9 +248,9 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
   end,
   func = function(self,card,area,copier,number)
     if number and number ~= 1 then
-      Entropy.StarLuaBulk(self,card,area,copier,number)
+      Entropy.star_lua_bulk(self,card,area,copier,number)
     else
-      Entropy.StarLuaSingle(self,card,area,copier)
+      Entropy.star_lua_single(self,card,area,copier)
     end
   end,
   calc = function(self, card, context)
@@ -394,7 +299,7 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
     }
   end,
   func = function(self,card,area,copier,number)
-    Entropy.StrangeSingle(self,card,area,copier,number)
+    Entropy.strange_single(self,card,area,copier,number)
   end,
   calc = function() end, art="Binary"
   }
@@ -470,12 +375,12 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
       end
     end,
   }
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Timantii", new_key = "jatka", sprite_pos={x=8,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=1,handnames = {"High Card", "Pair", "Two Pair"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Klubi", new_key = "rouva", sprite_pos={x=9,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=1,handnames = {"Three of a Kind", "Straight", "Flush"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Sydan", new_key = "paras", sprite_pos={x=10,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=1,handnames = {"Full House", "Four of a Kind", "Straight Flush"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Lapio", new_key = "assa", sprite_pos={x=11,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=1,handnames = {"Five of a Kind", "Flush House", "Flush Five"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Kaikki", new_key = "kivi", sprite_pos={x=12,y=3},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=1,handnames = {"cry_Bulwark", "cry_Clusterfuck", "cry_UltPair"}}, loc_vars = Entropy.ReverseSuitLocVars, calc=Entropy.ReverseSuitCalc}
-  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="voxel", new_key = "chunk", sprite_pos={x=1,y=7},prefix = "cry", func = Entropy.ReverseSuitUse, config = {level=1,handnames = {"cry_Declare0", "cry_Declare1", "cry_Declare2"}}, loc_vars = Entropy.ChunkLocVars, calc=Entropy.ReverseSuitCalc}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Timantii", new_key = "jatka", sprite_pos={x=8,y=3},prefix = "cry", func = Entropy.reverse_suit_use, config = {level=1,handnames = {"High Card", "Pair", "Two Pair"}}, loc_vars = Entropy.reverse_suit_loc_vars, calc=Entropy.reverse_suit_calc}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Klubi", new_key = "rouva", sprite_pos={x=9,y=3},prefix = "cry", func = Entropy.reverse_suit_use, config = {level=1,handnames = {"Three of a Kind", "Straight", "Flush"}}, loc_vars = Entropy.reverse_suit_loc_vars, calc=Entropy.reverse_suit_calc}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Sydan", new_key = "paras", sprite_pos={x=10,y=3},prefix = "cry", func = Entropy.reverse_suit_use, config = {level=1,handnames = {"Full House", "Four of a Kind", "Straight Flush"}}, loc_vars = Entropy.reverse_suit_loc_vars, calc=Entropy.reverse_suit_calc}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Lapio", new_key = "assa", sprite_pos={x=11,y=3},prefix = "cry", func = Entropy.reverse_suit_use, config = {level=1,handnames = {"Five of a Kind", "Flush House", "Flush Five"}}, loc_vars = Entropy.reverse_suit_loc_vars, calc=Entropy.reverse_suit_calc}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="Kaikki", new_key = "kivi", sprite_pos={x=12,y=3},prefix = "cry", func = Entropy.reverse_suit_use, config = {level=1,handnames = {"cry_Bulwark", "cry_Clusterfuck", "cry_UltPair"}}, loc_vars = Entropy.reverse_suit_loc_vars, calc=Entropy.reverse_suit_calc}
+  Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="voxel", new_key = "chunk", sprite_pos={x=1,y=7},prefix = "cry", func = Entropy.reverse_suit_use, config = {level=1,handnames = {"cry_Declare0", "cry_Declare1", "cry_Declare2"}}, loc_vars = Entropy.chunk_loc_vars, calc=Entropy.reverse_suit_calc}
 end
 Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="entr_derivative",key="wormhole",sprite_pos={x=4,y=0}, new_key="pocket_dimension", prefix = "entr", atlas = "consumables2", set_badges = function(self, card, badges)
   badges[1] = create_badge(localize("k_spatial_anomaly"), get_type_colour(self or card.config, card), nil, 1.2)
@@ -545,18 +450,18 @@ end, func = function(self, card, area, copier, number)
 	end
 end, config = {amt = 1, hands = 3}, loc_vars = function(self, q, card) return {vars = {card.ability.hands, card.ability.amt + (G.GAME.entr_black_dwarf or 0)}} end}
 
-function Entropy.RegisterReversePlanets()
+function Entropy.register_reverse_planets()
   Entropy.StarLocs = {}
     for i, v in pairs(Entropy.ReversePlanets) do
-		Entropy.RegisterReversePlanet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name,v.set_badges,v.loc_vars,v.config,v.new_key, v.calc, v.art, v.atlas)
+		Entropy.register_reverse_planet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name,v.set_badges,v.loc_vars,v.config,v.new_key, v.calc, v.art, v.atlas)
         planets[#planets].inversion = "c_"..((v.prefix and v.prefix.."_") or "")..v.key
 	end
 end
 
 
-Entropy.RegisterReversePlanets()
+Entropy.register_reverse_planets()
 
-function Entropy.StarLuaSingle(self,card,area,copier)
+function Entropy.star_lua_single(self,card,area,copier)
   local used_consumable = copier or card
   if
   SMODS.pseudorandom_probability(card, 'starlua', 1, card.ability.odds)
@@ -647,7 +552,7 @@ function Entropy.StarLuaSingle(self,card,area,copier)
   end
 end
 
-function Entropy.StarLuaBulk(self,card,area,copier,number)
+function Entropy.star_lua_bulk(self,card,area,copier,number)
   local used_consumable = copier or card
   if
   SMODS.pseudorandom_probability(card, 'starlua', 1 * number, card.ability.odds)
@@ -740,7 +645,7 @@ function Entropy.StarLuaBulk(self,card,area,copier,number)
   end
 end
 
-function Entropy.StrangeSingle(self, card, area, copier,num)
+function Entropy.strange_single(self, card, area, copier,num)
   local used_consumable = copier or card
   --Get amount of Neutron stars use this run or set to 0 if nil
   G.GAME.strange_star = G.GAME.strange_star or 0
@@ -786,7 +691,7 @@ function Entropy.StrangeSingle(self, card, area, copier,num)
   )
 end
 
-function Entropy.ReverseSuitCalc(self, card, context)
+function Entropy.reverse_suit_calc(self, card, context)
   for i, v in pairs(card.ability.handnames) do
     if
       G.GAME.used_vouchers.v_observatory

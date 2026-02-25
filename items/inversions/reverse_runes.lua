@@ -1024,14 +1024,13 @@ G.FUNCS.play_cards_from_highlighted = function(e)
     if text == "entr_derivative" and next(SMODS.find_card("j_entr_antiderivative")) then
         check_for_unlock({type = "anti_derivative"})
     end
-    G.GAME.asc_power_hand = 0
     for i, v in pairs(SMODS.find_card("j_entr_planetarium")) do
         if v.ability.extra.hand == "Pair" then
             local cards = {}
             for i, v in pairs(G.hand.cards) do
                 if v.highlighted then cards[#cards+1] = v end
             end
-            Entropy.FlipThen({cards[1], cards[#cards]}, function(c)
+            Entropy.flip_then({cards[1], cards[#cards]}, function(c)
                 if c == cards[1] then
                     copy_card(cards[#cards], cards[1])
                 end
@@ -1050,7 +1049,7 @@ G.FUNCS.play_cards_from_highlighted = function(e)
                     cards[#cards+1] = hcards[i]
                 end
                 pseudoshuffle(cards, pseudoseed("entr_planetarium_jupiter"))
-                Entropy.FlipThen({hcards[1], cards[1], cards[2]}, function(c)
+                Entropy.flip_then({hcards[1], cards[1], cards[2]}, function(c)
                     if c == cards[1] or c == cards[2] then
                         SMODS.change_base(c, suit)
                     end
@@ -1216,7 +1215,7 @@ local freedom = {
     },
     use = function(self, rcard)
         Entropy.handle_card_limit(G.hand, -rcard.ability.hand_size)
-        Entropy.ChangeFullCSL(rcard.ability.selection_limit)
+        Entropy.change_selection_limit(rcard.ability.selection_limit)
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
             play_sound('entr_pacts')
             if card and card.juice_up then card:juice_up(0.8, 0.5) end
@@ -1624,7 +1623,7 @@ local blood = {
         for i, v in pairs(cards) do
             if v.ability.link then linktxt = v.ability.link end
         end
-        linktxt = linktxt or Entropy.StringRandom(8)
+        linktxt = linktxt or Entropy.string_random(8)
         pseudoshuffle(cards, pseudoseed("entr_blood"))
         for i = 1, math.min(#cards, card.ability.random) do
             local v = cards[i]

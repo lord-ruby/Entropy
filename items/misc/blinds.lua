@@ -77,7 +77,7 @@ local dawn = {
 	},
 	calculate = function(self, blind, context)
 		if context.pre_discard and not G.GAME.blind.disabled then
-			Entropy.FlipThen(G.hand.highlighted, function(card, area)
+			Entropy.flip_then(G.hand.highlighted, function(card, area)
 				SMODS.change_base(card, "entr_nilsuit", "entr_nilrank")
 			end)
 		end
@@ -115,14 +115,14 @@ local orchard = {
 	},
 	calculate = function(self, blind, context)
 		if context.pre_discard and not G.GAME.blind.disabled then
-			Entropy.FlipThen(G.hand.cards, function(card, area)
+			Entropy.flip_then(G.hand.cards, function(card, area)
 				if not card.highlighted then
 					card:set_ability(G.P_CENTERS.m_entr_disavowed)
 				end
 			end)
 		end
 		if context.final_scoring_step and not G.GAME.blind.disabled then
-			Entropy.FlipThen(G.hand.cards, function(card, area)
+			Entropy.flip_then(G.hand.cards, function(card, area)
 				card:set_ability(G.P_CENTERS.m_entr_disavowed)
 			end)
 		end
@@ -157,10 +157,10 @@ local comet = {
 			local remove = {}
 			for i, v in pairs(G.hand.cards) do
 				if v.destroy_adjacent and not v.destroyed_adjacent then
-					if G.hand.cards[i-1] and pseudorandom("citrine") < (Entropy.IsEE() and 0.2 or 0.5) and not SMODS.is_eternal(G.hand.cards[i-1]) then
+					if G.hand.cards[i-1] and pseudorandom("citrine") < (Entropy.is_EE() and 0.2 or 0.5) and not SMODS.is_eternal(G.hand.cards[i-1]) then
 						SMODS.destroy_cards{G.hand.cards[i-1]}
 					end
-					if G.hand.cards[i+1] and pseudorandom("citrine") < (Entropy.IsEE() and 0.2 or 0.5) and not SMODS.is_eternal(G.hand.cards[i-1]) then
+					if G.hand.cards[i+1] and pseudorandom("citrine") < (Entropy.is_EE() and 0.2 or 0.5) and not SMODS.is_eternal(G.hand.cards[i-1]) then
 						SMODS.destroy_cards{G.hand.cards[i-1]}
 					end
 					v.destroy_adjacent = false
@@ -231,7 +231,7 @@ local phase1 = {
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
-					Entropy.ChangePhase()
+					Entropy.change_phase()
 					G.GAME.blind:juice_up()
 					ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
 					ease_discard(
@@ -359,7 +359,7 @@ local phase3 = {
 		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) then
 			G.GAME.chips = 0
 			G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
-			Entropy.ChangePhase()
+			Entropy.change_phase()
 			G.GAME.blind:juice_up()
 			ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
 			ease_discard(
@@ -476,7 +476,7 @@ local phase4 = {
 	},
 	in_pool = function() return false end,
 	calculate = function(self, blind, context)
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
+		for k, _ in pairs(Entropy.get_EE_blinds()) do
 			s = G.P_BLINDS[k]
 			if s.calculate then
 				s:calculate(blind, context)
@@ -484,7 +484,7 @@ local phase4 = {
 		end
 	end,
 	set_blind = function(self, reset, silent)
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
+		for k, _ in pairs(Entropy.get_EE_blinds()) do
 			s = G.P_BLINDS[k]
 			if s.set_blind then
 				s:set_blind(reset, silent)
@@ -601,7 +601,7 @@ local phase4 = {
 		end
 	end,
 	defeat = function(self, silent)
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
+		for k, _ in pairs(Entropy.get_EE_blinds()) do
 			if G.P_BLINDS[k].defeat then
 				G.P_BLINDS[k]:defeat(silent)
 			end
@@ -611,7 +611,7 @@ local phase4 = {
 		end
 		G.GAME.EEBeaten = true
 		if G.GAME.EEBuildup then
-			Entropy.WinEE()
+			Entropy.win_EE()
 		end
 		G.GAME.EEBuildup = false
 		check_for_unlock({ type = "beat_ee" })
@@ -631,7 +631,7 @@ local phase4 = {
 		})
 	end,
 	press_play = function(self)
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
+		for k, _ in pairs(Entropy.get_EE_blinds()) do
 			s = G.P_BLINDS[k]
 			if s.press_play then
 				s:press_play()
@@ -697,7 +697,7 @@ local phase4 = {
 		local new_mult = mult
 		local new_chips = hand_chips
 		local trigger = false
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
+		for k, _ in pairs(Entropy.get_EE_blinds()) do
 			s = G.P_BLINDS[k]
 			if s.modify_hand then
 				local this_trigger = false
@@ -715,7 +715,7 @@ local phase4 = {
 	end,
 	debuff_hand = function(self, cards, hand, handname, check)
 		G.GAME.blind.debuff_boss = nil
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
+		for k, _ in pairs(Entropy.get_EE_blinds()) do
 			s = G.P_BLINDS[k]
 			if s.debuff_hand and s:debuff_hand(cards, hand, handname, check) then
 				G.GAME.blind.debuff_boss = s
@@ -783,7 +783,7 @@ local phase4 = {
 		return false
 	end,
 	drawn_to_hand = function(self)
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
+		for k, _ in pairs(Entropy.get_EE_blinds()) do
 			s = G.P_BLINDS[k]
 			if s.drawn_to_hand then
 				s:drawn_to_hand()
@@ -822,7 +822,7 @@ local phase4 = {
 		end
 	end,
 	stay_flipped = function(self, area, card)
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
+		for k, _ in pairs(Entropy.get_EE_blinds()) do
 			s = G.P_BLINDS[k]
 			if s.stay_flipped and s:stay_flipped(area, card) then
 				return true
@@ -852,7 +852,7 @@ local phase4 = {
 	end,
 	recalc_debuff = function(self, card, from_blind)
 		if card and type(card) == "table" and card.area then
-			for k, _ in pairs(Entropy.GetEEBlinds()) do
+			for k, _ in pairs(Entropy.get_EE_blinds()) do
 				s = G.P_BLINDS[k]
 				if s.debuff_card then
 					s:debuff_card(card, from_blind)
@@ -894,7 +894,7 @@ local phase4 = {
 		end
 	end,
 	cry_before_play = function(self)
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
+		for k, _ in pairs(Entropy.get_EE_blinds()) do
 			s = G.P_BLINDS[k]
 			if s.cry_before_play then
 				s:cry_before_play()
@@ -902,7 +902,7 @@ local phase4 = {
 		end
 	end,
 	cry_after_play = function(self)
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
+		for k, _ in pairs(Entropy.get_EE_blinds()) do
 			s = G.P_BLINDS[k]
 			if s.cry_after_play then
 				s:cry_after_play()
@@ -959,7 +959,7 @@ local alabaster = {
 
 local highlight_ref = Card.highlight
 function Card:highlight(is_highlighted)
-	if Entropy.BlindIs("bl_entr_alabaster_anchor") and not G.GAME.blind.disabled and self.area == G.hand and G.hand then
+	if Entropy.blind_is("bl_entr_alabaster_anchor") and not G.GAME.blind.disabled and self.area == G.hand and G.hand then
 		for i = 1, #G.jokers.cards do
 			Cryptid.manipulate(G.jokers.cards[i], { value = 0.95 })
 			G.jokers.cards[i].config.cry_multiply = (G.jokers.cards[i].config.cry_multiply or 1) * 0.95
@@ -967,9 +967,9 @@ function Card:highlight(is_highlighted)
 	end
 	if next(SMODS.find_card("j_entr_citrine_comet")) and self.edition and self.edition.negative then
 		if is_highlighted then
-			Entropy.ChangeFullCSL(1)
+			Entropy.change_selection_limit(1)
 		else	
-			Entropy.ChangeFullCSL(-1)
+			Entropy.change_selection_limit(-1)
 		end
 	end
 	highlight_ref(self, is_highlighted)
@@ -991,7 +991,7 @@ end
 
 local ease_bg_cref = ease_background_colour_blind
 function ease_background_colour_blind(state, blind_override)
-	if G.GAME.EEBuildup and not Entropy.IsEE() then
+	if G.GAME.EEBuildup and not Entropy.is_EE() then
 		ease_background_colour{new_colour = HEX("5f5f5f"), contrast = 3}
 	else
 		return ease_bg_cref(state, blind_override)
@@ -1000,7 +1000,7 @@ end
 
 local ease_bg_c_ref = ease_background_colour
 function ease_background_colour(tbl,...)
-	if G.GAME.EEBuildup and not Entropy.IsEE() then
+	if G.GAME.EEBuildup and not Entropy.is_EE() then
 		ease_bg_c_ref{new_colour = HEX("5f5f5f"), contrast = 3}
 	else
 		return ease_bg_c_ref(tbl,...)
@@ -1063,7 +1063,7 @@ if SMODS.ScreenShader then
 			}
 		end,
 		should_apply = function()
-			return G.GAME.EEBuildup or Entropy.IsEE() or (G.GAME.EE_FADE or 0) > 0
+			return G.GAME.EEBuildup or Entropy.is_EE() or (G.GAME.EE_FADE or 0) > 0
 		end
 	})
 

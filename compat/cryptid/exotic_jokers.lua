@@ -268,9 +268,9 @@ local ridiculus_absens = {
                 end
             end
             card.ability.extra.odds = pseudorandom("tmtrainer_odds") * 2 + 1
-            Entropy.FlipThen(cards, function(card)
+            Entropy.flip_then(cards, function(card)
                 card:set_edition("e_cry_glitched")
-                Entropy.TMTTrainize(card)
+                Entropy.randomize_TMT(card)
             end)
         end
     end,
