@@ -5537,7 +5537,7 @@ local meridian = {
         }
     },
     loc_vars = function(self, q, card)
-        local index = Entropy.get_area_index(card.area.cards, card)
+        local index = Entropy.in_table(card.area.cards, card)
         return {
             vars = {
                 card.ability.multiplier * index
@@ -5546,7 +5546,7 @@ local meridian = {
     end,
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
-            local index = Entropy.get_area_index(card.area.cards, card)
+            local index = Entropy.in_table(card.area.cards, card)
             return {
                 mult = card.ability.multiplier * index
             }
