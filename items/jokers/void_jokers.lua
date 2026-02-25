@@ -5,6 +5,8 @@ local apoptosis = {
     rarity = "entr_void",
     cost = 10,
     eternal_compat = true,
+    perishable_compat = true,
+    demicoloncompat = true,
     pos = {x = 0, y = 0},
     atlas = "void_jokers",
     dependencies = {
@@ -45,6 +47,23 @@ local apoptosis = {
                 }
             end
         end
+        if context.forcetrigger then
+            for i, v in pairs(G.hand.cards) do
+                context.cardarea = G.play
+                context.main_scoring = true
+                local eval, post = eval_card(v, context)
+                context.cardarea = G.hand
+                context.main_scoring = nil
+                eval = eval or {}
+                local effects = {eval}
+                SMODS.calculate_context({individual = true, other_card=v, cardarea = G.play, scoring_hand = context.scoring_hand})
+                for _,v in ipairs(post or {}) do effects[#effects+1] = v end
+                SMODS.trigger_effects(effects, v)
+                if v.config.center.set ~= "Enhanced" then
+                    SMODS.calculate_effect{card = v, message_card = card, plus_asc = card.ability.extra.asc}
+                end
+            end
+        end
     end,
     loc_vars = function(self, q, card)
         return {
@@ -55,6 +74,120 @@ local apoptosis = {
     end
 }
 
+local egocentrism = {
+    order = 251,
+    object_type = "Joker",
+    key = "egocentrism",
+    rarity = "entr_void",
+    cost = 10,
+    eternal_compat = true,
+    perishable_compat = true,
+    demicoloncompat = true,
+    pos = {x = 0, y = 0},
+    atlas = "void_jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    corruptions = {
+        "j_blueprint",
+        "j_brainstorm",
+        "j_entr_broadcast",
+        "j_entr_polaroid"
+    },
+    config = {
+        extra = {
+            asc = 0.5
+        }
+    },
+    add_to_deck = function(self)
+        G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
+        for i, v in pairs(self.corruptions) do
+            G.GAME.entr_perma_inversions[v] = self.key
+        end
+    end,
+    calculate = function(self, card, context)
+        if context.before and G.play.cards[1] then
+            G.play.cards[1]:set_debuff(true)
+            G.play.cards[1]:juice_up()
+            if G.play.cards[1] ~= G.play.cards[#G.play.cards] then
+                G.play.cards[#G.play.cards]:set_debuff(true)
+                G.play.cards[#G.play.cards]:juice_up()
+            end
+        end
+        if (context.joker_main or context.forcetrigger) and G.jokers.cards[#G.jokers.cards] ~= card then
+            if Cryptid.demicolonGetTriggerable(G.jokers.cards[#G.jokers.cards])[1] then
+                SMODS.calculate_effect{card = context.blueprint_card or card, colour = context.blueprint_card and G.C.BLUE or Entropy.void_gradient, message = localize("cry_demicolon")}
+                local results = Cryptid.forcetrigger(G.jokers.cards[#G.jokers.cards], context)
+                if results and results.jokers then
+                    results.jokers.card = G.jokers.cards[#G.jokers.cards]
+                    SMODS.calculate_effect(results.jokers)
+                end
+            end
+        end
+    end,
+    loc_vars = function(self, info_queue, card)
+		card.ability.demicoloncompat_ui = card.ability.demicoloncompat_ui or ""
+		card.ability.demicoloncompat_ui_check = nil
+		local check = card.ability.check
+		return {
+			main_end = (card.area and card.area == G.jokers)
+					and {
+						{
+							n = G.UIT.C,
+							config = { align = "bm", minh = 0.4 },
+							nodes = {
+								{
+									n = G.UIT.C,
+									config = {
+										ref_table = card,
+										align = "m",
+										-- colour = (check and G.C.cry_epic or G.C.JOKER_GREY),
+										colour = card.ability.colour,
+										r = 0.05,
+										padding = 0.08,
+										func = "blueprint_compat",
+									},
+									nodes = {
+										{
+											n = G.UIT.T,
+											config = {
+												ref_table = card.ability,
+												ref_value = "demicoloncompat",
+												colour = G.C.UI.TEXT_LIGHT,
+												scale = 0.32 * 0.8,
+											},
+										},
+									},
+								},
+							},
+						},
+					}
+				or nil,
+		}
+	end,
+    update = function(self, card, front)
+		local other_joker = G.jokers.cards[#G.jokers.cards]
+		if G.STAGE == G.STAGES.RUN then
+			local m = Cryptid.demicolonGetTriggerable(other_joker)
+			if m[1] and not m[2] then
+				card.ability.demicoloncompat = "Compatible"
+				card.ability.check = true
+				card.ability.colour = G.C.SECONDARY_SET.Enhanced
+			elseif m[2] then
+				card.ability.demicoloncompat = "Dangerous!"
+				card.ability.check = true
+				card.ability.colour = G.C.MULT
+			else
+				card.ability.demicoloncompat = "Incompatible"
+				card.ability.check = false
+				card.ability.colour = G.C.SUITS.Spades
+			end
+		end
+	end,
+}
+
 local generator_meltdown = {
     order = 252,
     object_type = "Joker",
@@ -62,6 +195,7 @@ local generator_meltdown = {
     rarity = "entr_void",
     cost = 10,
     eternal_compat = true,
+    perishable_compat = true,
     pos = {x = 0, y = 0},
     atlas = "void_jokers",
     dependencies = {
@@ -326,6 +460,8 @@ local yaldabaoth = {
     rarity = "entr_void",
     cost = 10,
     eternal_compat = true,
+    perishable_compat = true,
+    demicoloncompat = true,
     pos = {x = 0, y = 0},
     atlas = "void_jokers",
     dependencies = {
@@ -389,7 +525,7 @@ local yaldabaoth = {
             })
             return nil, true
         end
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             return {
                 plus_asc = card.ability.extra.asc_pow
             }
@@ -419,6 +555,8 @@ local antimatter_sheath = {
     rarity = "entr_void",
     cost = 10,
     eternal_compat = true,
+    perishable_compat = true,
+    demicoloncompat = true,
     pos = {x = 0, y = 0},
     atlas = "void_jokers",
     dependencies = {
@@ -436,7 +574,7 @@ local antimatter_sheath = {
         }
     },
     calculate = function(self, card, context)
-        if context.setting_blind then
+        if context.setting_blind or context.forcetrigger then
             for i = 1, math.min(card.ability.extra.cards, 10) do
                 local _card = SMODS.create_card { key = "c_entr_dagger", area = G.discard }
                 _card.ability.void_temporary = true --third temporary because :3
@@ -461,6 +599,7 @@ local antimatter_sheath = {
                 }))
                 save_run()
             end
+            if not context.forcetrigger then return nil, true end
         end
         if context.individual and context.cardarea == G.play and context.other_card.config.center.key == "c_entr_dagger" then
             local cards = {}
@@ -497,7 +636,7 @@ local antimatter_sheath = {
             })
             return nil, true
         end
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             return {
                 xmult = card.ability.extra.xmult,
                 xmult = card.ability.extra.xchips,
@@ -589,6 +728,7 @@ local caledscratch = {
 return {
     items = {
         apoptosis,
+        egocentrism,
         generator_meltdown,
         unstable_rift,
         yaldabaoth,

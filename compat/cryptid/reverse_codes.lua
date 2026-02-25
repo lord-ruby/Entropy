@@ -894,7 +894,7 @@ local pinned = {
         if not G.GAME.entr_pinned_cards then G.GAME.entr_pinned_cards = {} end
         if card.area then
             G.GAME.entr_pinned_cards[#G.GAME.entr_pinned_cards+1] = {
-                area = Entropy.get_area_name(card.area),
+                area = Entropy.in_table(card.area),
                 card = card.config.center.key,
                 pos = Entropy.get_idx_in_area(card)
             }

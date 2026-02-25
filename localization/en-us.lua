@@ -2540,6 +2540,22 @@ local decs = {
 					}
 				}
 			},
+			j_entr_egocentrism = {
+				name = "Egocentrism",
+				text = {
+					{
+						"{C:entr_void}Forcetrigger{} the rightmost",
+						"Joker. Debuff the {C:attention}first{}",
+						"and {C:attention}last{} played cards"
+					},
+					{
+						"Permanently {C:entr_void}Invert{} all future",
+						"instances of {C:attention}Blueprint{}, {C:attention}Brainstorm{}",
+						"{C:attention}Broadcast{} and {C:attention}Polaroid{} into",
+						"{C:entr_void}Egocentrism{}"
+					}
+				}
+			},
 			j_entr_generator_meltdown = {
 				name = "Generator Meltdown",
 				text = {
