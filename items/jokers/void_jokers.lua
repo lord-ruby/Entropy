@@ -23,7 +23,9 @@ function Entropy.generate_void_invert_uibox(center, info_queue, card, desc_nodes
     -- get every joker name
     local names = {}
     for _, v in ipairs(center.corruptions) do
-        names[#names+1] = localize{ type = "name_text", set = "Joker", key = v }
+        if G.P_CENTERS[v] then
+            names[#names+1] = localize{ type = "name_text", set = "Joker", key = v }
+        end
     end
 
     local width_cap = text_width(vtext[1]) * 1.5
