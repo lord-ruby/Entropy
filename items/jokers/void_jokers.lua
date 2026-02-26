@@ -4,7 +4,7 @@ local function text_width(text)
     local calced_text_width = 0
     local offending_char_index
     -- Math reproduced from DynaText:update_text
-    for i, c in utf8.chars(text) do
+    for i, c in utf8.chars(text or "") do
         local tx = font.FONT:getWidth(c) * (0.33 * size) * G.TILESCALE * font.FONTSCALE
             + 2.7 * 1 * G.TILESCALE * font.FONTSCALE
         calced_text_width = calced_text_width + tx / (G.TILESIZE * G.TILESCALE)
@@ -17,7 +17,7 @@ function Entropy.generate_void_invert_uibox(center, info_queue, card, desc_nodes
     SMODS.Center.generate_ui(center, info_queue, card, desc_nodes, specific_vars, full_UI_table)
     if not center.discovered or center.locked then return end
 
-    local lines = SMODS.shallow_copy(G.localization.misc.v_dictionary_parsed.entr_void_desc)
+    local lines = SMODS.shallow_copy(G.localization.misc.v_dictionary_parsed.entr_void_desc or {})
     local vtext = localize{ type = "variable", key = "entr_void_desc", vars = { "a" } } -- the var doesn't matter here
 
     -- get every joker name
