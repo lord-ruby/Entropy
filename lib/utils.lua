@@ -1182,7 +1182,11 @@ end
 
 local reset_ref = Cryptid.reset_to_none
 function Cryptid.reset_to_none()
-    reset_ref()
+    if reset_ref then
+        reset_ref()
+    else
+        update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+    end
     update_hand_text({ delay = 0.1 }, {
         level = "",
     })

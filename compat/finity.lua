@@ -37,28 +37,12 @@ if FinisherBossBlindStringMap then
                     while v == card do
                         v = pseudorandom_element(G.jokers.cards, pseudoseed("ee_hand4"))
                     end
-                    if Cryptid.demicolonGetTriggerable(v)then
-                        local results = Cryptid.forcetrigger(v, context)
-                        if results then
-                            for i, v in pairs(results) do
-                                for i2, result in pairs(v) do
-                                    if Entropy.is_number(result) then
-                                        res[i2] = Entropy.stack_eval_returns(res[i2], result, i2)
-                                    else
-                                        res[i2] = result
-                                    end
-                                end
-                            end
-                        end
-                        card_eval_status_text(
-                            v,
-                            "extra",
-                            nil,
-                            nil,
-                            nil,
-                            { message = localize("cry_demicolon"), colour = G.C.GREEN }
-                        )
-                    end
+                    Spectrallib.forcetrigger({
+                        card = v, 
+                        context = context,
+                        colour = G.C.GREEN,
+                        message_card = card
+                    })
                 end
             end
         end

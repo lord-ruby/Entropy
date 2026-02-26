@@ -123,7 +123,10 @@ local epitachyno = {
     end,
     use = function(self, card)
         local dummy = Entropy.get_dummy(G.P_CENTERS[card.ability.epitach_consumeable], G.consumeables, card)
-        Cryptid.forcetrigger(dummy, {})
+        Spectrallib.forcetrigger({
+            card = dummy, 
+            silent = true
+        })
         card.ability.left = card.ability.left - 1
     end,
     entr_credits = {
@@ -815,7 +818,10 @@ local apeirostemma = {
                     for _ = 1, v do
                         G.E_MANAGER:add_event(Event{
                             func = function()
-                                Cryptid.forcetrigger(Entropy.get_dummy(G.P_CENTERS[i], G.consumeables, card))
+                                Spectrallib.forcetrigger({
+                                    card = Entropy.get_dummy(G.P_CENTERS[i], G.consumeables, card), 
+                                    silent = true
+                                })
                                 return true
                             end
                         })

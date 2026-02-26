@@ -2405,7 +2405,7 @@ local decs = {
 						"during the Boss Blind"
 					},
 					{
-						"Hands require {C:attention}1{}",
+						"Hands Entropy.require{C:attention}1{}",
 						"less card to form for every",
 						"{C:attention}3{} levels they have"
 					},
@@ -2522,6 +2522,40 @@ local decs = {
 			},
 
 			--void jokers
+			j_entr_apoptosis = {
+				name = "Apoptosis",
+				text = {
+					{
+						"Held in hand cards {C:attion}score{}",
+						"as if they were {C:entr_void}played{}"
+					},
+					{
+						"Unenhanced cards held in hand",
+						"give {C:gold}+#1#{} Ascension Power"
+					},
+					{
+						"Permanently {C:entr_void}Invert{} all future",
+						"instances of {C:attention}Prismatic Shard{} and",
+						"{C:attention}Blooming Crimson{} into {C:entr_void}Apoptosis{}",
+					}
+				}
+			},
+			j_entr_egocentrism = {
+				name = "Egocentrism",
+				text = {
+					{
+						"{C:entr_void}Forcetrigger{} the rightmost",
+						"Joker. Debuff the {C:attention}first{}",
+						"and {C:attention}last{} played cards"
+					},
+					{
+						"Permanently {C:entr_void}Invert{} all future",
+						"instances of {C:attention}Blueprint{}, {C:attention}Brainstorm{}",
+						"{C:attention}Broadcast{} and {C:attention}Polaroid{} into",
+						"{C:entr_void}Egocentrism{}"
+					}
+				}
+			},
 			j_entr_generator_meltdown = {
 				name = "Generator Meltdown",
 				text = {
@@ -2535,6 +2569,22 @@ local decs = {
 						"instances of {C:attention}Supernova{}, {C:attention}Space Joker{}",
 						"{C:attention}Burnt Joker{} and {C:attention}Fused Lens{}",
 						"into {C:entr_void}Generator Meltdown{}"
+					}
+				}
+			},
+			j_entr_voidheart = {
+				name = "Voidheart",
+				text = {
+					{
+						"Replace all blinds",
+						"in ante with a singular",
+						"{C:entr_void}Abyss{} blind"
+					},
+					{
+						"Permanently {C:entr_void}Invert{} all future",
+						"instances of {C:attention}Luchador{}",
+						"{C:attention}Blind Collectible Pack{} and",
+						"{C:attention}Red Key{} into {C:entr_void}Voidheart{}"
 					}
 				}
 			},
@@ -2631,6 +2681,16 @@ local decs = {
 				name = "Red Room",
 				text = {
 					"???"
+				}
+			},
+			bl_entr_abyss = {
+				name = "The Abyss",
+				text = {
+					"Gains effects and increases",
+					"requirement when beaten",
+					"Ante progresses upon loss",
+					"When losing twice in a row",
+					"lose the run"
 				}
 			},
 			bl_entr_void = {
@@ -7579,7 +7639,7 @@ local decs = {
             entr_lq_ee_4={
                 "And in the end,",
 				"everything succumbs",
-				"to entropy..."
+				"to Entropy.."
             },
             entr_lq_ee_5={
                 "Looks like you",

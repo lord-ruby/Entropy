@@ -649,7 +649,11 @@ local gilded = {
 						trigger = "after",
 						delay = 1,
 						func = function()
-							Cryptid.forcetrigger(Entropy.get_dummy(card.config.center, G.consumeables, card), context)
+							Spectrallib.forcetrigger({
+                                card = Entropy.get_dummy(card.config.center, G.consumeables, card),
+                                context = context,
+								silent = true
+                            })
 							return true
 						end
 					})

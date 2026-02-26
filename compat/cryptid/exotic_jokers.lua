@@ -28,7 +28,7 @@ local stillicidium = {
                 local afterS = false
                 local cards = {}
                 for i, v in pairs(G.jokers.cards) do
-                    if (v.config.center_key ~= "j_entr_stillicidium" or context.forcetrigger) and i > Entropy.get_area_index(G.jokers.cards, card) 
+                    if (v.config.center_key ~= "j_entr_stillicidium" or context.forcetrigger) and i > Entropy.in_table(G.jokers.cards, card) 
                     and not v.ability.cry_absolute then --you cannot run, you cannot hide
                        cards[#cards+1] = v
                     end

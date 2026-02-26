@@ -894,7 +894,7 @@ local pinned = {
         if not G.GAME.entr_pinned_cards then G.GAME.entr_pinned_cards = {} end
         if card.area then
             G.GAME.entr_pinned_cards[#G.GAME.entr_pinned_cards+1] = {
-                area = Entropy.get_area_name(card.area),
+                area = Entropy.in_table(card.area),
                 card = card.config.center.key,
                 pos = Entropy.get_idx_in_area(card)
             }
@@ -1842,20 +1842,12 @@ local desync = {
             if card.ability.context == "after" then
                 if Entropy.context_checks(self, card, context, card.ability.context) then
                     card.ability.context = Entropy.random_context()
-                    if Cryptid.demicolonGetTriggerable(card) then
-                        local results = Cryptid.forcetrigger(card, context)
-                        if results and results.jokers then
-                            results.jokers.message = localize("cry_demicolon")
-                            results.jokers.colour = G.C.RARITY.cry_epic
-                            results.jokers.sound = "cry_demitrigger"
-                            return results.jokers
-                        end
-                        return {
-                            message = localize("cry_demicolon"),
-                            colour = G.C.RARITY.cry_epic,
-                            sound = "cry_demitrigger",
-                        }
-                    end
+                    Spectrallib.forcetrigger({
+                        card = card, 
+                        context = context,
+                        colour = HEX("FF0000"),
+                        message_card = card
+                    })
                 end
             else
                 card.ability.context = Entropy.random_context()
@@ -1863,18 +1855,12 @@ local desync = {
         end
         if Entropy.context_checks(self, card, context, card.ability.context) then
             if Cryptid.demicolonGetTriggerable(card) then
-                local results = Cryptid.forcetrigger(card, context)
-                if results and results.jokers then
-                    results.jokers.message = localize("cry_demicolon")
-                    results.jokers.colour = G.C.RARITY.cry_epic
-                    results.jokers.sound = "cry_demitrigger"
-                    return results.jokers
-                end
-                return {
-                    message = localize("cry_demicolon"),
-                    colour = G.C.RARITY.cry_epic,
-                    sound = "cry_demitrigger",
-                }
+                Spectrallib.forcetrigger({
+                    card = card, 
+                    context = context,
+                    colour = HEX("FF0000"),
+                    message_card = card
+                })
             end
         end
     end,

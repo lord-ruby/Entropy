@@ -3212,7 +3212,9 @@ local jestradiol = {
             SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
         end
     end,
-    use_key = "b_transition",
+    use_button_config = {
+        key = "b_transition",
+    },
     can_use = function(self, card)
         local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.left)
         return to_big(card.ability.left) > to_big(0) and #cards > 0 and #cards <= card.ability.left
@@ -5537,7 +5539,7 @@ local meridian = {
         }
     },
     loc_vars = function(self, q, card)
-        local index = Entropy.get_area_index(card.area.cards, card)
+        local index = Entropy.in_table(card.area.cards, card)
         return {
             vars = {
                 card.ability.multiplier * index
@@ -5546,7 +5548,7 @@ local meridian = {
     end,
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
-            local index = Entropy.get_area_index(card.area.cards, card)
+            local index = Entropy.in_table(card.area.cards, card)
             return {
                 mult = card.ability.multiplier * index
             }
@@ -6275,11 +6277,10 @@ local elderberries = {
                             card.children.top_disp = nil
                         return true end }))
 
-                        if Cryptid.forcetriggerConsumableCheck(card) then
-                            Cryptid.forcetrigger(card, {no_sound = true})
-                        elseif card:can_use_consumeable() then
-                            card:use_consumeable()
-                        end
+                        Spectrallib.forcetrigger({
+                            card = card, 
+                            silent = true
+                        })
                         G.E_MANAGER:add_event(Event{
                             trigger = "after",
                             func = function()
@@ -6607,7 +6608,11 @@ local echo_chamber = {
                     trigger = "after",
                     delay = 0.1,
                     func = function()
-                        Cryptid.forcetrigger(Entropy.get_dummy(G.P_CENTERS[v], G.jokers, card), context)
+                        Spectrallib.forcetrigger({
+                            card = Entropy.get_dummy(G.P_CENTERS[v], G.jokers, card),
+                            context = context,
+                            silent = true
+                        })
                         return true
                     end
                 })
@@ -6777,9 +6782,12 @@ local box_of_chocolates = {
                         trigger = "after",
                         blocking = false,
                         func = function()
-                            local card = pseudorandom_element(G.pack_cards.cards, pseudoseed("j_entr_chocolates"))
-                            local r = Cryptid.forcetrigger(card, context)
-                            SMODS.calculate_effect({message = localize("k_forcetrigger_ex"), colour = G.C.PURPLE}, card)
+                            local card2 = pseudorandom_element(G.pack_cards.cards, pseudoseed("j_entr_chocolates"))
+                            Spectrallib.forcetrigger({
+                                card = card2,
+                                context = context,
+                                message_card = card
+                            })
                             return true
                         end
                     })
