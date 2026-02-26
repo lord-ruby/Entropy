@@ -2534,10 +2534,8 @@ local decs = {
 						"give {C:gold}+#1#{} Ascension Power"
 					},
 					{
-						"Permanently {C:entr_void}Invert{} all future",
-						"instances of {C:attention}Prismatic Shard{} and",
-						"{C:attention}Blooming Crimson{} into {C:entr_void}Apoptosis{}",
-					}
+						"{s:0} "
+					},
 				}
 			},
 			j_entr_egocentrism = {
@@ -2549,11 +2547,8 @@ local decs = {
 						"and {C:attention}last{} played cards"
 					},
 					{
-						"Permanently {C:entr_void}Invert{} all future",
-						"instances of {C:attention}Blueprint{}, {C:attention}Brainstorm{}",
-						"{C:attention}Broadcast{} and {C:attention}Polaroid{} into",
-						"{C:entr_void}Egocentrism{}"
-					}
+						"{s:0} "
+					},
 				}
 			},
 			j_entr_generator_meltdown = {
@@ -2565,11 +2560,8 @@ local decs = {
 						"with {C:entr_void}25%{} of its {C:red}Mult"
 					},
 					{
-						"Permanently {C:entr_void}Invert{} all future",
-						"instances of {C:attention}Supernova{}, {C:attention}Space Joker{}",
-						"{C:attention}Burnt Joker{} and {C:attention}Fused Lens{}",
-						"into {C:entr_void}Generator Meltdown{}"
-					}
+						"{s:0} "
+					},
 				}
 			},
 			j_entr_voidheart = {
@@ -2581,11 +2573,8 @@ local decs = {
 						"{C:entr_void}Abyss{} blind"
 					},
 					{
-						"Permanently {C:entr_void}Invert{} all future",
-						"instances of {C:attention}Luchador{}",
-						"{C:attention}Blind Collectible Pack{} and",
-						"{C:attention}Red Key{} into {C:entr_void}Voidheart{}"
-					}
+						"{s:0} "
+					},
 				}
 			},
 			j_entr_unstable_rift = {
@@ -2607,10 +2596,8 @@ local decs = {
 						"then {C:red}reset{}"
 					},
 					{
-						"Permanently {C:entr_void}Invert{} all future",
-						"instances of {C:attention}Mr. Bones{}",
-						"and {C:attention}Skullcry{} into {C:entr_void}Unstable Rift{}"
-					}
+						"{s:0} "
+					},
 				}
 			},
 			j_entr_yaldabaoth = {
@@ -2626,10 +2613,8 @@ local decs = {
 						"{C:inactive}(Currently {C:gold}+#2# {C:inactive}Ascension Power)"
 					},
 					{
-						"Permanently {C:entr_void}Invert{} all future",
-						"instances of {C:attention}Sunny Joker{}, {C:attention}Dr. Sunshine{}",
-						"and {C:attention}Mark of The Beast{} into {C:entr_void}Yaldabaoth{}"
-					}
+						"{s:0} "
+					},
 				}
 			},
 			j_entr_antimatter_sheath = {
@@ -2648,11 +2633,8 @@ local decs = {
 						"{C:inactive}(Currently {X:mult,C:white}X#4#{C:inactive}, {X:chips,C:white}X#5#{C:inactive})"
 					},
 					{
-						"Permanently {C:entr_void}Invert{} all future",
-						"instances of {C:attention}Sacrificial Dagger{}",
-						"{C:attention}Solar Dagger{}, {C:attention}Insatiable Dagger{} and",
-						"{C:attention}Anti-Dagger{} into {C:entr_void}Antimatter Sheath{}"
-					}
+						"{s:0} "
+					},
 				}
 			},
 			j_entr_caledscratch = {
@@ -2666,13 +2648,8 @@ local decs = {
 						"then reset"
 					},
 					{
-						"Permanently {C:entr_void}Invert{} all future",
-						"instances of {C:attention}Mime{}, {C:attention}Dusk{}, {C:attention}Seltzer",
-						"{C:attention}Sock and Buskin{}, {C:attention}Hanging Chad{}, {C:attention}Opal{}",
-						"{C:attention}Bell Curve{}, {C:attention}Pineapple{}, {C:attention}Rubber Ball{}",
-						"{C:attention}Twisted Pair{}, {C:attention}Fasciation{} and {C:attention}D7{}",
-						"into {C:entr_void}Caledscratch{}"
-					}
+						"{s:0} "
+					},
 				}
 			}
 		},

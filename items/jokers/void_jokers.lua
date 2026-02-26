@@ -1,3 +1,99 @@
+local function text_width(text)
+    local size = 0.9
+    local font = G.LANG.font
+    local calced_text_width = 0
+    local offending_char_index
+    -- Math reproduced from DynaText:update_text
+    for i, c in utf8.chars(text) do
+        local tx = font.FONT:getWidth(c) * (0.33 * size) * G.TILESCALE * font.FONTSCALE
+            + 2.7 * 1 * G.TILESCALE * font.FONTSCALE
+        calced_text_width = calced_text_width + tx / (G.TILESIZE * G.TILESCALE)
+    end
+
+    return calced_text_width
+end
+function Entropy.generate_void_invert_uibox(center, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+    -- generate normal joker ui
+    SMODS.Center.generate_ui(center, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+    if not center.discovered or center.locked then return end
+
+    local lines = SMODS.shallow_copy(G.localization.misc.v_dictionary_parsed.entr_void_desc)
+    local vtext = localize{ type = "variable", key = "entr_void_desc", vars = { "a" } } -- the var doesn't matter here
+
+    -- get every joker name
+    local names = {}
+    for _, v in ipairs(center.corruptions) do
+        names[#names+1] = localize{ type = "name_text", set = "Joker", key = v }
+    end
+
+    local width_cap = text_width(vtext[1]) * 1.5
+    local joker_lines = {{}} -- stores line info
+    local no_format_joker_lines = {""} -- keeps track of each line's length
+    local current_line = 1
+
+    local function add_name_to_desc(name, name_idx, multiline_part, multiline_last)
+        -- if a comma should be used
+        local separate = not (name_idx == #names or (multiline_part and not multiline_last))
+
+        -- check width
+        no_format_joker_lines[current_line] = no_format_joker_lines[current_line] .. name .. (separate and "," or "")
+        local too_wide = text_width(no_format_joker_lines[current_line]) > width_cap
+
+        -- add name to lines
+        joker_lines[current_line][#joker_lines[current_line]+1] = {
+            strings = { name },
+            control = { C = "attention" }
+        }
+        if separate then
+            joker_lines[current_line][#joker_lines[current_line]+1] = {
+                strings = { too_wide and "," or ", " },
+                control = {}
+            }
+        end
+
+        -- move to new line if current line has gotten too wide
+        if too_wide then
+            current_line = current_line + 1
+            joker_lines[current_line] = {}
+            no_format_joker_lines[current_line] = ""
+        end
+    end
+
+    -- go through all the names
+    for i, name in ipairs(names) do
+        add_name_to_desc(name, i)
+    end
+
+    -- add lines to desc
+    for _, line in ipairs(joker_lines) do
+        lines[#lines+1] = line
+    end
+
+    local localize_args = {
+        AUT = full_UI_table,
+        nodes = desc_nodes,
+
+        vars = {
+            localize{ type = "name_text", set = "Joker", key = center.key }
+        }
+    }
+
+    -- taken from localize; adds the multibox
+    localize_args.AUT.multi_box = localize_args.AUT.multi_box or {}
+    local i = #full_UI_table.multi_box + 1 -- fucking janky ass method
+    for j, line in ipairs(lines) do
+        local final_line = SMODS.localize_box(line, localize_args)
+        if i == 1 or next(localize_args.AUT.info) then
+            localize_args.nodes[#localize_args.nodes+1] = final_line -- Sends main box to AUT.main
+            if not next(localize_args.AUT.info) then localize_args.nodes.main_box_flag = true end
+        elseif not next(localize_args.AUT.info) then
+            localize_args.AUT.multi_box[i-1] = localize_args.AUT.multi_box[i-1] or {}
+            localize_args.AUT.multi_box[i-1][#localize_args.AUT.multi_box[i-1]+1] = final_line
+        end
+        if not next(localize_args.AUT.info) then localize_args.AUT.box_colours[i] = localize_args.vars.box_colours and localize_args.vars.box_colours[i] or G.C.UI.BACKGROUND_WHITE end
+    end
+end
+
 local apoptosis = {
     order = 250,
     object_type = "Joker",
@@ -71,7 +167,8 @@ local apoptosis = {
                 card.ability.extra.asc
             }
         }
-    end
+    end,
+    generate_ui = Entropy.generate_void_invert_uibox,
 }
 
 local egocentrism = {
@@ -184,6 +281,7 @@ local egocentrism = {
 			end
 		end
 	end,
+    generate_ui = Entropy.generate_void_invert_uibox,
 }
 
 local generator_meltdown = {
@@ -212,7 +310,8 @@ local generator_meltdown = {
         for i, v in pairs(self.corruptions) do
             G.GAME.entr_perma_inversions[v] = self.key
         end
-    end
+    end,
+    generate_ui = Entropy.generate_void_invert_uibox,
 }
 
 local voidheart = {
@@ -231,7 +330,7 @@ local voidheart = {
         }
     },
     corruptions = {
-        "j_lluchador",
+        "j_luchador",
         "j_entr_blind_collectible_pack",
         "j_entr_redkey"
     },
@@ -243,7 +342,8 @@ local voidheart = {
     end,
     loc_vars = function(self, q, card)
         q[#q+1] = G.P_BLINDS.bl_entr_abyss
-    end
+    end,
+    generate_ui = Entropy.generate_void_invert_uibox,
 }
 
 local unstable_rift = {
@@ -273,11 +373,11 @@ local unstable_rift = {
     end,
     --this is seperate from inversions even though they are obtained via inverting so it gets to be different
     corruptions = {
-        "j_bones",
+        "j_mr_bones",
         "j_entr_skullcry"
     },
     generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
-        SMODS.Center.generate_ui(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+        Entropy.generate_void_invert_uibox(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
         if G.jokers then
             G.ARGS.flame_handler[tostring(card.ability.extra.val).."_chips"] = G.ARGS.flame_handler[tostring(card.ability.extra.val).."_chips"] or copy_table(G.ARGS.flame_handler.chips)
             G.ARGS.flame_handler[tostring(card.ability.extra.val).."_chips"].id = "flame_"..tostring(card.ability.extra.val).."_chips"
@@ -573,7 +673,8 @@ local yaldabaoth = {
                 card.ability.extra.asc_pow
             }
         }
-    end
+    end,
+    generate_ui = Entropy.generate_void_invert_uibox,
 }
 
 local antimatter_sheath = {
@@ -667,12 +768,12 @@ local antimatter_sheath = {
         if context.joker_main or context.forcetrigger then
             return {
                 xmult = card.ability.extra.xmult,
-                xmult = card.ability.extra.xchips,
+                xchips = card.ability.extra.xchips,
             }
         end
     end,
     corruptions = {
-        "j_ceremonial_dagger",
+        "j_ceremonial",
         "j_entr_solar_dagger",
         "j_entr_insatiable_dagger",
         "j_entr_antidagger"
@@ -694,7 +795,8 @@ local antimatter_sheath = {
                 card.ability.extra.xchips,
             }
         }
-    end
+    end,
+    generate_ui = Entropy.generate_void_invert_uibox,
 }
 
 local caledscratch = {
@@ -750,7 +852,8 @@ local caledscratch = {
         for i, v in pairs(self.corruptions) do
             G.GAME.entr_perma_inversions[v] = self.key
         end
-    end
+    end,
+    generate_ui = Entropy.generate_void_invert_uibox,
 }
 
 return {
