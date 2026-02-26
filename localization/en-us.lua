@@ -2665,9 +2665,8 @@ local decs = {
 				text = {
 					"Gains effects and increases",
 					"requirement when beaten",
-					"Ante progresses upon loss",
-					"When losing twice in a row",
-					"lose the run"
+					"Ante increases upon loss when",
+					"losing twice in a row lose the run",
 				}
 			},
 			bl_entr_void = {
