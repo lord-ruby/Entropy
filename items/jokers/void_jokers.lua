@@ -505,10 +505,9 @@ local yaldabaoth = {
         }
     },
     corruptions = {
-        "j_ceremonial_dagger", 
-        "j_entr_solar_dagger", 
-        "j_entr_insatiable_dagger", 
-        "j_entr_antidagger"
+        "j_entr_sunny_joker",
+        "j_entr_dr_sunshine",
+        "j_entr_mark_of_the_beast",
     },
     calculate = function(self, card, context)
         if context.post_open_booster then
