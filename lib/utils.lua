@@ -1269,6 +1269,8 @@ function Entropy.rubber_ball_scoring(cards)
             end
         end
     end
+    for i, v in pairs(G.play.cards) do if v.config.center.key == "j_entr_phoenix_a" and not v.debuff then new_cards[#new_cards+1] = v end end
+    for i, v in pairs(G.jokers.cards) do if v.config.center.key == "j_entr_phoenix_a" and not v.debuff then new_cards[#new_cards+1] = v end end
     return new_cards
 end
 

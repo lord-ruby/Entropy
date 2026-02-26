@@ -141,3 +141,9 @@ SMODS.Sound({
 	path = "void_swap.ogg",
 	volume = 2
 })
+
+SMODS.Sound({
+	key = "void_suck",
+	path = "void_suck.ogg",
+	volume = 2
+})

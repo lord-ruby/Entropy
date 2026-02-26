@@ -2457,7 +2457,7 @@ payload = '''
 local area = context.scoring_hand
 if context.cardarea == G.play and G.rubber_cards then area = G.rubber_cards.cards; context.scoring_hand = G.rubber_cards.cards; scoring_hand = G.rubber_cards.cards end
 local in_scoring = scoring_hand and SMODS.in_scoring(card, area)
-if (area[1]) == card and card.config.center.key == "j_entr_false_vacuum_collapse" then
+if ((area[1]) == card and card.config.center.key == "j_entr_false_vacuum_collapse") or ((area[#area]) == card and card.config.center.key == "j_entr_phoenix_a") then
   in_scoring = true
 end
 if G.rubber_cards and scoring_hand [_] == scoring_hand [_-1] then
@@ -2695,15 +2695,14 @@ position = "at"
 payload = '''
 if next(effects) then
     if card.config.center.key == "j_entr_false_vacuum_collapse" then
-      local fvc_cards = {}
-      for i, v in pairs(G.play.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
-      for i, v in pairs(G.jokers.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
-      for i, v in pairs(fvc_cards) do
-        v.config.center:calculate(v, {individual = true, card = card})
-      end
+      card.config.center:calculate(card, {individual = true, card = card})
     end
     SMODS.calculate_card_areas('jokers', context, effects, { main_scoring = true })
     SMODS.calculate_card_areas('individual', context, effects, { main_scoring = true })
+    if card.config.center.key == "j_entr_phoenix_a" then
+      local ret = card.config.center:calculate(card, {individual = true, card = card})
+      SMODS.calculate_effect(ret, card)
+    end
 end
 '''
 match_indent = true
@@ -3913,5 +3912,28 @@ song = love.audio.newSource(SMODS.NFS.newFileData(SMODS.Mods.entr.path .. "asset
 song:setLooping(true)
 song:setVolume((G.SETTINGS.SOUND.volume/100) * (G.SETTINGS.SOUND.music_volume/100))
 song:play()	
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+if scoring_hand and not SMODS.has_no_rank(card) and in_scoring then
+    G.GAME.cards_played[card.base.value].total = G.GAME.cards_played[card.base.value].total + 1
+    if not SMODS.has_no_suit(card) then
+        G.GAME.cards_played[card.base.value].suits[card.base.suit] = true
+    end
+end
+'''
+position = "at"
+payload = '''
+if scoring_hand and not SMODS.has_no_rank(card) and in_scoring and card.base and card.base.value and G.GAME.cards_played[card.base.value] then
+    G.GAME.cards_played[card.base.value].total = (G.GAME.cards_played[card.base.value].total or 0) + 1
+    if not SMODS.has_no_suit(card) then
+        G.GAME.cards_played[card.base.value].suits[card.base.suit] = true
+    end
+end
 '''
 match_indent = true

@@ -3130,6 +3130,25 @@ G.FUNCS.evaluate_play = function(e)
             return true
         end
     })
+    -- for i, card in pairs(G.play.cards) do
+    --     G.E_MANAGER:add_event(Event{
+    --         trigger = "after",
+    --         blocking = false,
+    --         func = function()
+    --             G.E_MANAGER:add_event(Event{
+    --                 trigger = "after",
+    --                 func = function()
+    --                     if card.config.center.key == "j_entr_false_vaccum_collapse" or card.config.center.key == "j_entr_phoenix_a" then
+    --                         card.area:remove_card(card)
+    --                         G.jokers:emplace(card)
+    --                     end
+    --                     return true
+    --                 end
+    --             })
+    --             return true
+    --         end
+    --     })
+    -- end
 end
 
 local use_ref = Card.use_consumeable 
@@ -3681,6 +3700,8 @@ function SMODS.calculate_main_scoring(context, scoring_hand)
             added_cards[#added_cards+1] = card
         end
     end
+    for i, v in pairs(G.play.cards) do if v.config.center.key == "j_entr_phoenix_a" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
+    for i, v in pairs(G.jokers.cards) do if v.config.center.key == "j_entr_phoenix_a" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
     local ff_planetarium
     for i, v in pairs(SMODS.find_card("j_entr_planetarium")) do
         if v.ability.extra.hand == "Flush Five" then ff_planetarium = true break end

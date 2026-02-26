@@ -12,6 +12,23 @@ local function text_width(text)
 
     return calced_text_width
 end
+
+local function name_text_better(key)
+    local ret_strings = {}
+    if pcall(function()
+        local name_text = G.localization.descriptions[G.P_CENTERS[key].set][key].name
+        if type(name_text) == "table" then
+            for i, line in ipairs(name_text) do
+                ret_strings[#ret_strings+1] = line
+            end
+        else
+            ret_strings = {name_text}
+        end
+    end) then
+    else ret_strings = {"ERROR"} end
+    return ret_strings
+end
+
 function Entropy.generate_void_invert_uibox(center, info_queue, card, desc_nodes, specific_vars, full_UI_table)
     -- generate normal joker ui
     SMODS.Center.generate_ui(center, info_queue, card, desc_nodes, specific_vars, full_UI_table)
@@ -22,8 +39,12 @@ function Entropy.generate_void_invert_uibox(center, info_queue, card, desc_nodes
 
     -- get every joker name
     local names = {}
+    local commas = {}
     for _, v in ipairs(center.corruptions) do
-        names[#names+1] = localize{ type = "name_text", set = "Joker", key = v }
+        for i, v in pairs(name_text_better(v)) do
+            names[#names+1] = v
+        end
+        commas[#commas+1] = #names
     end
 
     local width_cap = text_width(vtext[1]) * 1.5
@@ -33,7 +54,7 @@ function Entropy.generate_void_invert_uibox(center, info_queue, card, desc_nodes
 
     local function add_name_to_desc(name, name_idx, multiline_part, multiline_last)
         -- if a comma should be used
-        local separate = not (name_idx == #names or (multiline_part and not multiline_last))
+        local separate = not (name_idx == #names or (multiline_part and not multiline_last)) and Spectrallib.in_table(commas, name_idx)
 
         -- check width
         no_format_joker_lines[current_line] = no_format_joker_lines[current_line] .. name .. (separate and "," or "")
@@ -77,7 +98,6 @@ function Entropy.generate_void_invert_uibox(center, info_queue, card, desc_nodes
             localize{ type = "name_text", set = "Joker", key = center.key }
         }
     }
-
     -- taken from localize; adds the multibox
     localize_args.AUT.multi_box = localize_args.AUT.multi_box or {}
     local i = #full_UI_table.multi_box + 1 -- fucking janky ass method
@@ -90,7 +110,7 @@ function Entropy.generate_void_invert_uibox(center, info_queue, card, desc_nodes
             localize_args.AUT.multi_box[i-1] = localize_args.AUT.multi_box[i-1] or {}
             localize_args.AUT.multi_box[i-1][#localize_args.AUT.multi_box[i-1]+1] = final_line
         end
-        if not next(localize_args.AUT.info) then localize_args.AUT.box_colours[i] = localize_args.vars.box_colours and localize_args.vars.box_colours[i] or G.C.UI.BACKGROUND_WHITE end
+        if not next(localize_args.AUT.info) and localize_args.AUT.box_colours then localize_args.AUT.box_colours[i] = localize_args.vars.box_colours and localize_args.vars.box_colours[i] or G.C.UI.BACKGROUND_WHITE end
     end
 end
 
@@ -677,6 +697,122 @@ local yaldabaoth = {
     generate_ui = Entropy.generate_void_invert_uibox,
 }
 
+local phoenix_a = {
+    order = 262,
+    object_type = "Joker",
+    key = "phoenix_a",
+    rarity = "entr_void",
+    cost = 10,
+    eternal_compat = true,
+    perishable_compat = true,
+    demicoloncompat = true,
+    pos = {x = 0, y = 0},
+    atlas = "void_jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }   
+    },
+    config = {
+        extra = {
+            xchips = 1,
+            xmult = 1,
+            xchips_mod = 0.05,
+            xmult_mod = 0.05
+        }
+    },
+    calculate = function(self, card, context)
+        if context.before then
+            card.area:remove_card(card)
+            G.play:emplace(card)
+            card:highlight(true)
+            SMODS.change_base(card, "entr_nilsuit", "entr_nilrank")
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                blocking = false,
+                func = function()
+                    G.E_MANAGER:add_event(Event{
+                        trigger = "after",
+                        func = function()
+                            if card.area then
+                                card.area:remove_card(card)
+                                G.jokers:emplace(card)
+                            end
+                            return true
+                        end
+                    })
+                    return true
+                end
+            })
+            local rank
+            for i = #G.play.cards, 1, -1 do
+                local dcard = G.play.cards[i]
+                local drank = dcard:get_id()
+                if dcard ~= card then
+                    rank = rank or drank
+                    if drank == rank then
+                        G.play.cards[i].getting_sucked = true
+                        SMODS.destroy_cards(dcard)
+                        G.E_MANAGER:add_event(Event{
+                            func = function()
+                                play_sound("entr_void_suck", nil, 3)
+                                return true
+                            end
+                        })
+                        delay(0.5)
+                        SMODS.scale_card(card, {
+                            ref_table = card.ability.extra,
+                            ref_value = "xmult",
+                            scalar_value = "xmult_mod",
+                            message_key = "a_xmult",
+                            message_colour = G.C.RED
+                        })
+                        SMODS.scale_card(card, {
+                            ref_table = card.ability.extra,
+                            ref_value = "xchips",
+                            scalar_value = "xchips_mod",
+                            message_key = "a_xchips",
+                            message_colour = G.C.BLUE
+                        })
+                        delay(0.5)
+                    else
+                        break
+                    end
+                end
+            end
+        end
+        if context.individual and context.card == card then
+            return {
+                xmult = card.ability.extra.xmult,
+                xchips = card.ability.extra.xchips,
+            }
+        end
+    end,
+    corruptions = {
+        "j_trading",
+        "j_hologram",
+        "j_entr_memento_mori",
+        "j_entr_false_vacuum_collapse"
+    },
+    add_to_deck = function(self)
+        G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
+        for i, v in pairs(self.corruptions) do
+            G.GAME.entr_perma_inversions[v] = self.key
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.extra.xmult_mod,
+                card.ability.extra.xchips_mod,
+                card.ability.extra.xmult,
+                card.ability.extra.xchips,
+            }
+        }
+    end,
+    generate_ui = Entropy.generate_void_invert_uibox,
+}
+
 local antimatter_sheath = {
     order = 263,
     object_type = "Joker",
@@ -864,6 +1000,7 @@ return {
         voidheart,
         unstable_rift,
         yaldabaoth,
+        phoenix_a,
         antimatter_sheath,
         caledscratch
     }

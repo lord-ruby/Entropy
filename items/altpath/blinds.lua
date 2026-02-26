@@ -464,7 +464,7 @@ end
 
 local always_scoresref = SMODS.always_scores
 function SMODS.always_scores(card, ...)
-	if card.config.center.key == "j_entr_false_vacuum_collapse" then return true end
+	if card.config.center.key == "j_entr_false_vacuum_collapse" or card.config.center.key == "phoenix_a" then return true end
 	return always_scoresref(card, ...)
 end
 
