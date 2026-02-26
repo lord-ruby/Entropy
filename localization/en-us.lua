@@ -2617,6 +2617,26 @@ local decs = {
 					},
 				}
 			},
+			j_entr_phoenix_a = {
+				name = "Phoenix A*",
+				text = {
+					{
+						"This Joker is played as the {C:entr_void}last{}",
+						"card of hand and destroys every",
+						"{C:entr_void}consecutive{} card with the same rank",
+						"before scoring"
+					},
+					{
+						"This Joker gains {X:mult,C:white}X#1#{} Mult",
+						"and {X:blue,C:white}X#2#{} Chips whenever",
+						"a card is destroyed by it",
+						"{C:inactive}(Currently {X:mult,C:white}X#3#{C:inactive} {X:blue,C:white}X#4#{C:inactive})"
+					},
+					{
+						"{s:0} "
+					},
+				}
+			},
 			j_entr_antimatter_sheath = {
 				name = "Antimatter Sheath",
 				text = {
