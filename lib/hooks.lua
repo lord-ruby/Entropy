@@ -3130,25 +3130,6 @@ G.FUNCS.evaluate_play = function(e)
             return true
         end
     })
-    -- for i, card in pairs(G.play.cards) do
-    --     G.E_MANAGER:add_event(Event{
-    --         trigger = "after",
-    --         blocking = false,
-    --         func = function()
-    --             G.E_MANAGER:add_event(Event{
-    --                 trigger = "after",
-    --                 func = function()
-    --                     if card.config.center.key == "j_entr_false_vaccum_collapse" or card.config.center.key == "j_entr_phoenix_a" then
-    --                         card.area:remove_card(card)
-    --                         G.jokers:emplace(card)
-    --                     end
-    --                     return true
-    --                 end
-    --             })
-    --             return true
-    --         end
-    --     })
-    -- end
 end
 
 local use_ref = Card.use_consumeable 
@@ -3328,7 +3309,7 @@ end
 
 local has_no_suitref = SMODS.has_no_suit
 function SMODS.has_no_suit(card, bypass)
-    if card.config.center.key == "j_entr_false_vacuum_collapse" then return true end
+    if card.config.center.key == "j_entr_false_vacuum_collapse" or card.config.center.key == "phoenix_a" then return true end
     if next(SMODS.find_card("j_entr_opal")) and not bypass then
         return false
     end
@@ -3338,13 +3319,13 @@ end
 
 local has_no_rankref = SMODS.has_no_rank
 function SMODS.has_no_rank(card, bypass)
-    if card.config.center.key == "j_entr_false_vacuum_collapse" then return true end
+    if card.config.center.key == "j_entr_false_vacuum_collapse" or card.config.center.key == "phoenix_a" then return true end
     return has_no_rankref(card)
 end
 
 local in_scoringref = SMODS.in_scoring
 function SMODS.in_scoring(card, ...)
-    if card.config.center.key == "j_entr_false_vacuum_collapse" then return true end
+    if card.config.center.key == "j_entr_false_vacuum_collapse" or card.config.center.key == "phoenix_a" then return true end
     return in_scoringref(card, ...)
 end
 

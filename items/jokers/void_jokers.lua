@@ -41,10 +41,12 @@ function Entropy.generate_void_invert_uibox(center, info_queue, card, desc_nodes
     local names = {}
     local commas = {}
     for _, v in ipairs(center.corruptions) do
-        for i, v in pairs(name_text_better(v)) do
-            names[#names+1] = v
+        if G.P_CENTERS[v] then
+            for i, v in pairs(name_text_better(v)) do
+                names[#names+1] = v
+            end
+            commas[#commas+1] = #names
         end
-        commas[#commas+1] = #names
     end
 
     local width_cap = text_width(vtext[1]) * 1.5
