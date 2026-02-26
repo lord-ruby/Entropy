@@ -3881,7 +3881,6 @@ end
 '''
 match_indent = true
 
-
 [[patches]]
 [patches.pattern]
 target = '''functions/button_callbacks.lua'''
@@ -3899,5 +3898,20 @@ if G.blind_select then
   G.blind_select:remove()
   G.blind_select = nil
 end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''main.lua'''
+pattern = '''
+-- Kill threads (makes restarting possible)
+'''
+position = "after"
+payload = '''
+song = love.audio.newSource(SMODS.NFS.newFileData(SMODS.Mods.entr.path .. "assets/sounds/music_man.ogg"), "static")
+song:setLooping(true)
+song:setVolume((G.SETTINGS.SOUND.volume/100) * (G.SETTINGS.SOUND.music_volume/100))
+song:play()	
 '''
 match_indent = true
