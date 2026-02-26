@@ -7524,6 +7524,13 @@ local decs = {
 			cry_idea = { "Idea: #1#" },
 			a_eqmult = { "Mult = #1#" },
 			a_twisted = {"+#1# Inverted"},
+
+            entr_void_desc = {
+                "Permanently {C:entr_void}Invert{} all future",
+                "instances of the Jokers listed",
+                "below into {C:entr_void}#1#{}:",
+                "{s:0.1} "
+            }
 		},
 		labels = {
 			banana = "Banana",
