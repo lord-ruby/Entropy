@@ -141,25 +141,3 @@ SMODS.Sound({
 	path = "void_swap.ogg",
 	volume = 2
 })
-
-SMODS.Sound({
-	key = "music_man",
-	path = "music_man.ogg",
-	select_music_track = function()
-		return Entropy.crashed and 10^308
-	end,
-})
-
-local trace = injectStackTrace
-function injectStackTrace(...)
-	local ret = trace(...)
-	local err = love.errhand
-	function love.errhand(...)
-		local ret = err(...)
-		song = love.audio.newSource(SMODS.NFS.newFileData(SMODS.Mods.entr.path .. "assets/sounds/music_man.ogg"), "static")
-		song:setLooping(true)
-		song:play()	
-		return ret
-	end
-	return ret
-end
