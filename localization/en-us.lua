@@ -2405,7 +2405,7 @@ local decs = {
 						"during the Boss Blind"
 					},
 					{
-						"Hands require {C:attention}1{}",
+						"Hands Entropy.require{C:attention}1{}",
 						"less card to form for every",
 						"{C:attention}3{} levels they have"
 					},
@@ -2572,6 +2572,22 @@ local decs = {
 					}
 				}
 			},
+			j_entr_voidheart = {
+				name = "Voidheart",
+				text = {
+					{
+						"Replace all blinds",
+						"in ante with a singular",
+						"{C:entr_void}Abyss{} blind"
+					},
+					{
+						"Permanently {C:entr_void}Invert{} all future",
+						"instances of {C:attention}Luchador{}",
+						"{C:attention}Blind Collectible Pack{} and",
+						"{C:attention}Red Key{} into {C:entr_void}Voidheart{}"
+					}
+				}
+			},
 			j_entr_unstable_rift = {
 				name = "Unstable Rift",
 				text = {
@@ -2665,6 +2681,16 @@ local decs = {
 				name = "Red Room",
 				text = {
 					"???"
+				}
+			},
+			bl_entr_abyss = {
+				name = "The Abyss",
+				text = {
+					"Gains effects and increases",
+					"requirement when beaten",
+					"Ante progresses upon loss",
+					"When losing twice in a row",
+					"lose the run"
 				}
 			},
 			bl_entr_void = {
@@ -7613,7 +7639,7 @@ local decs = {
             entr_lq_ee_4={
                 "And in the end,",
 				"everything succumbs",
-				"to entropy..."
+				"to Entropy.."
             },
             entr_lq_ee_5={
                 "Looks like you",

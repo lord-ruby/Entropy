@@ -124,7 +124,7 @@ local epitachyno = {
     use = function(self, card)
         local dummy = Entropy.get_dummy(G.P_CENTERS[card.ability.epitach_consumeable], G.consumeables, card)
         Spectrallib.forcetrigger({
-            card = card, 
+            card = dummy, 
             silent = true
         })
         card.ability.left = card.ability.left - 1

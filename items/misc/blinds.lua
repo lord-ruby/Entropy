@@ -739,6 +739,46 @@ if SMODS.ScreenShader then
 }
 end
 
+local abyss = {
+    dependencies = {
+        items = {
+          "set_entr_blinds"
+        }
+    },
+	object_type = "Blind",
+    order = 4201,
+	key = "abyss",
+	pos = { x = 0, y = 16 },
+	atlas = "redroom",
+	boss_colour = HEX("80396f"),
+    mult=1,
+    dollars = 3,
+    in_pool = function(self) return false end,
+	get_copied_blinds = function()
+		return G.GAME.abyss_blinds
+	end,
+	set_blind = function()
+		G.GAME.blind.chips = G.GAME.blind.chips * (G.GAME.abyss_size_mod or 1)
+		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+		G.HUD_blind:recalculate()
+	end
+}
+
+function Entropy.progress_abyss()
+	SMODS.ante_end = true; ease_ante(1)
+  	SMODS.ante_end = nil; delay(0.4)
+	G.GAME.abyss_size_mod = 1
+	G.GAME.abyss_blinds = {}
+	G.GAME.abyss_just_lost = true
+end
+
+function Entropy.defeat_abyss()
+	G.GAME.abyss_just_lost = nil
+	G.GAME.abyss_size_mod = (G.GAME.abyss_size_mod or 1) * 1.5
+	G.GAME.abyss_blinds = G.GAME.abyss_blinds or {}
+	G.GAME.abyss_blinds[#G.GAME.abyss_blinds+1] = get_new_boss()
+end
+
 return {
 	items = {
 		sun,
@@ -753,6 +793,7 @@ return {
 		endless_entropy,
 		alabaster,
 		void,
-		rr
+		rr,
+		abyss
 	}
 }

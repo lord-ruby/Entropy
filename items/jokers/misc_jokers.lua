@@ -3212,7 +3212,9 @@ local jestradiol = {
             SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
         end
     end,
-    use_key = "b_transition",
+    use_button_config = {
+        key = "b_transition",
+    },
     can_use = function(self, card)
         local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.left)
         return to_big(card.ability.left) > to_big(0) and #cards > 0 and #cards <= card.ability.left

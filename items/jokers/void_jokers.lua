@@ -166,8 +166,8 @@ local egocentrism = {
 		}
 	end,
     update = function(self, card, front)
-		local other_joker = G.jokers.cards[#G.jokers.cards]
-		if G.STAGE == G.STAGES.RUN then
+		local other_joker = G.jokers and G.jokers.cards[#G.jokers.cards]
+		if G.STAGE == G.STAGES.RUN and other_joker then
 			local m = Cryptid.demicolonGetTriggerable(other_joker)
 			if m[1] and not m[2] then
 				card.ability.demicoloncompat = "Compatible"
@@ -212,6 +212,37 @@ local generator_meltdown = {
         for i, v in pairs(self.corruptions) do
             G.GAME.entr_perma_inversions[v] = self.key
         end
+    end
+}
+
+local voidheart = {
+    order = 253,
+    object_type = "Joker",
+    key = "voidheart",
+    rarity = "entr_void",
+    cost = 10,
+    eternal_compat = true,
+    perishable_compat = true,
+    pos = {x = 0, y = 0},
+    atlas = "void_jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    corruptions = {
+        "j_lluchador",
+        "j_entr_blind_collectible_pack",
+        "j_entr_redkey"
+    },
+    add_to_deck = function(self)
+        G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
+        for i, v in pairs(self.corruptions) do
+            G.GAME.entr_perma_inversions[v] = self.key
+        end
+    end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = G.P_BLINDS.bl_entr_abyss
     end
 }
 
@@ -728,6 +759,7 @@ return {
         apoptosis,
         egocentrism,
         generator_meltdown,
+        voidheart,
         unstable_rift,
         yaldabaoth,
         antimatter_sheath,

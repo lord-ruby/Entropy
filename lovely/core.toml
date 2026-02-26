@@ -357,6 +357,7 @@ if blind_choice.config.exponent then
       end
       blind_amt = initial
 end
+blind_amt = blind_amt * (G.GAME.abyss_size_mod or 1)
 '''
 match_indent = true
 
@@ -537,6 +538,15 @@ target = "functions/state_events.lua"
 pattern = "if SMODS.saved then game_over = false end"
 position = "at"
 payload = '''
+if next(SMODS.find_card("j_entr_voidheart")) then
+  
+  if game_over and not G.GAME.abyss_just_lost then
+    Entropy.progress_abyss()
+    game_over = false
+  elseif not game_over then
+    Entropy.defeat_abyss()
+  end
+end
 if Entropy.is_EE() then
     G.GAME.EECardCharacter = true
     if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" then
@@ -3190,8 +3200,14 @@ target = '''functions/state_events.lua'''
 pattern = '''
 delay(0.4); SMODS.ante_end = true; ease_ante(1); SMODS.ante_end = nil; delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})
 '''
-position = 'after'
+position = 'at'
 payload = '''
+delay(0.4)
+if not next(SMODS.find_card("j_entr_voidheart")) then
+  SMODS.ante_end = true; ease_ante(1)
+  SMODS.ante_end = nil; delay(0.4)
+end
+check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})
 G.GAME.round_resets.blind_choices.Small = "bl_small"
 G.GAME.round_resets.blind_choices.Big = "bl_big"
 '''
@@ -3840,6 +3856,48 @@ if cards[i] then
   elseif cards[i].destroyed then
     cards[i]:start_dissolve(nil, i == #cards)
   end
+end
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = '''functions/button_callbacks.lua'''
+pattern = '''
+G.blind_prompt_box.alignment.offset.y = -10
+G.blind_select.alignment.offset.y = 40
+G.blind_select.alignment.offset.x = 0
+'''
+position = "at"
+payload = '''
+if G.blind_prompt_box then
+  G.blind_prompt_box.alignment.offset.y = -10
+end
+if G.blind_select then
+  G.blind_select.alignment.offset.y = 40
+  G.blind_select.alignment.offset.x = 0
+end
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = '''functions/button_callbacks.lua'''
+pattern = '''
+G.blind_select:remove()
+G.blind_prompt_box:remove()
+G.blind_select = nil
+'''
+position = "at"
+payload = '''
+if G.blind_prompt_box then
+  G.blind_prompt_box:remove()
+end
+if G.blind_select then
+  G.blind_select:remove()
+  G.blind_select = nil
 end
 '''
 match_indent = true
