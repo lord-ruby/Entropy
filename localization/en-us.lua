@@ -2624,7 +2624,7 @@ local decs = {
 						"This Joker is played as the {C:entr_void}last{}",
 						"card of hand and destroys every",
 						"{C:entr_void}consecutive{} card with the same rank",
-						"before scoring"
+						"starting from the end before scoring"
 					},
 					{
 						"This Joker gains {X:mult,C:white}X#1#{} Mult",
