@@ -2614,6 +2614,20 @@ local decs = {
 					},
 				}
 			},
+			j_entr_desiderium = {
+				name = "Desiderium",
+				text = {
+					{
+						"Gain {C:entr_void}+#1#{} Joker Slot",
+						"if all {C:blue}Hands{} and {C:red}Discards{}",
+						"are used in an ante",
+						"{C:inactive}(Currently #2#)"
+					},
+					{
+						"{s:0} "
+					}
+				}
+			},
 			j_entr_yaldabaoth = {
 				name = "Yaldabaoth",
 				text = {
@@ -7504,7 +7518,8 @@ local decs = {
 
 			cry_set_music = "Music",
 
-			k_inactive = "Inactive!",
+			k_inactive = "Inactive",
+			k_inactive_ex = "Inactive!",
 			k_randomised = "Randomized!",
 			k_saved_algiz = "Saved by Algiz",
 			k_undebuffed_ex = "Undebuffed!",

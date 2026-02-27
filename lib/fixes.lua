@@ -141,37 +141,6 @@ function localize(args, misc_cat)
   return ref(args or {}, misc_cat)
 end
 
-if PTASaka then
-  SMODS.Joker:take_ownership("payasaka_paya", {
-    calculate = function(self, card, context)
-      if not card.ability.extra.exponential_cnt then card.ability.extra.exponential_cnt = 0 end
-      if context.setting_blind and ((pseudorandom('paya_hell') < (G.GAME.probabilities.normal or 1) / card.ability.odds) or card.ability.cry_rigged) then
-        card.ability.extra.exponential_cnt = card.ability.extra.exponential_cnt + 1
-        G.E_MANAGER:add_event(Event {
-          func = function()
-            G.GAME.paya_operator = G.GAME.paya_operator + 1
-            return true
-          end
-        })
-        return {
-          message = card.ability.extra.exponential_cnt == 1 and localize('k_active_ex') or localize('k_payasaka_hyperactive_ex'),
-          colour = card.ability.extra.exponential_cnt == 1 and G.C.GOLD or G.C.DARK_EDITION,
-          card = context.blueprint_card or card
-        }
-      end
-      while context.end_of_round and card.ability.extra.exponential_cnt > 0 and not context.individual do
-        card.ability.extra.exponential_cnt = card.ability.extra.exponential_cnt - 1
-        G.E_MANAGER:add_event(Event {
-          func = function()
-            G.GAME.paya_operator = math.max(G.GAME.paya_operator - 1, 0)
-            return true
-          end
-        })
-        card_eval_status_text(card, 'extra', nil, nil, nil, { message = localize('k_payasaka_inactive_ex') })
-      end
-    end
-  }, true)
-end
 SMODS.Booster:take_ownership("p_cry_code_normal_1", {
   create_card = function()
       if G.GAME.interpolate_cards and #G.GAME.interpolate_cards > 0 then

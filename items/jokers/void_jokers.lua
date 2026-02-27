@@ -665,6 +665,81 @@ local pluripotent_larvae = {
     generate_ui = Entropy.generate_void_invert_uibox,
 }
 
+local desiderium = {
+    order = 261,
+    object_type = "Joker",
+    key = "desiderium",
+    rarity = "entr_void",
+    cost = 10,
+    eternal_compat = true,
+    perishable_compat = true,
+    demicoloncompat = true,
+    pos = {x = 0, y = 0},
+    atlas = "void_jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        extra = {
+            joker_slots_mod = 1,
+            active = true
+        }
+    },
+    corruptions = {
+        "j_entr_stand_arrow",        
+    },
+    calculate = function(self, card, context)
+        if context.end_of_round and context.main_eval then
+            if G.GAME.current_round.hands_left > 0 or G.GAME.current_round.discards_left > 0 then
+                card.ability.extra.active = nil
+                return {
+                    message = localize("k_inactive_ex"),
+                    colour = Entropy.void_gradient
+                }
+            end
+        end
+        if context.skip_blind then
+            card.ability.extra.active = nil
+            return {
+                message = localize("k_inactive_ex"),
+                colour = Entropy.void_gradient
+            }
+        end
+        if context.ante_end and context.ante_change then
+            if card.ability.extra.active then
+                G.E_MANAGER:add_event(Event{
+                    trigger = "after",
+                    func = function()
+                        card:juice_up()
+                        Entropy.handle_card_limit(G.jokers, card.ability.extra.joker_slots_mod)
+                        play_sound("entr_void_generic")
+                        return true
+                    end
+                })
+                delay(1)
+            end
+            card.ability.extra.active = true
+        end
+    end,
+    add_to_deck = function(self)
+        G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
+        for i, v in pairs(self.corruptions) do
+            G.GAME.entr_perma_inversions[v] = self.key
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.extra.joker_slots_mod,
+                card.ability.extra.active and localize("k_active_ex") or localize("k_inactive_ex")
+            }
+        }
+    end,
+    generate_ui = Entropy.generate_void_invert_uibox,
+}
+
 local yaldabaoth = {
     order = 263,
     object_type = "Joker",
@@ -1063,6 +1138,7 @@ return {
         voidheart,
         unstable_rift,
         pluripotent_larvae,
+        desiderium,
         yaldabaoth,
         phoenix_a,
         antimatter_sheath,

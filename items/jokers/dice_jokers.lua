@@ -50,7 +50,7 @@ local D1 = {
         end
         if context.pseudorandom_result and not card.ability.triggered then
             return {
-                message = localize("k_inactive")
+                message = localize("k_inactive_ex")
             }
         end
     end,

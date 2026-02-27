@@ -405,7 +405,7 @@ local ybur = {
             vars = {
                 card.ability.e_chips,
                 card.ability.e_chips_mod,
-                card.ability.active and localize("k_active") or localize("k_inactive")
+                card.ability.active and localize("k_active_ex") or localize("k_inactive_ex")
             },
         }
     end,
