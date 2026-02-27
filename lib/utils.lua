@@ -1525,7 +1525,8 @@ function SMODS.add_voucher_to_shop(key, ...)
     return card
 end
 
-function Entropy.get_asc_colour(amount, text) 
+local asc_col_ref = Spectrallib.get_asc_colour
+function Spectrallib.get_asc_colour(amount, text) 
     if(G.GAME.Overflow or (G.GAME.badarg and G.GAME.badarg[text])) then return HEX("FF0000") end
-    return to_big(amount) >= to_big(0) and G.C.GOLD or G.C.Entropy.DARK_GRAY
+    return to_big(amount) >= to_big(0) and asc_col_ref(amount,  text) or G.C.Entropy.DARK_GRAY
 end

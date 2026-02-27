@@ -3320,6 +3320,7 @@ end
 local has_no_rankref = SMODS.has_no_rank
 function SMODS.has_no_rank(card, bypass)
     if card.config.center.key == "j_entr_false_vacuum_collapse" or card.config.center.key == "phoenix_a" then return true end
+    if card.base.value == "entr_nilrank" and not next(SMODS.find_card("j_entr_opal")) then return true end
     return has_no_rankref(card)
 end
 
