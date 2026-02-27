@@ -1064,6 +1064,9 @@ end
 
 function Entropy.misc_calculations(self, context)
     if not context then return end
+    if context.ending_shop and G.GAME.dollars ~= 0 and next(SMODS.find_card("j_entr_crooked_penny")) then
+        SMODS.calculate_effect({card = SMODS.find_card("j_entr_crooked_penny")[1], dollars = -G.GAME.dollars}, SMODS.find_card("j_entr_crooked_penny")[1])
+    end
     if context.before then
         for i, v in pairs(G.I.CARD) do
             if type(v) == "table" and v.ability and v.ability.entr_marked and not v.ability.entr_marked_bypass then
@@ -1127,31 +1130,6 @@ end
 
 function Entropy.get_reroll_height()
     return Entropy.can_switch_alt_path() and 1 or 1.6
-end
-
---these currently only return a single value, but exist in case other effects get added that would need to be returned here
-function Card:get_entr_plus_asc()
-    return self.ability.entr_perma_plus_asc
-end
-
-function Card:get_entr_h_plus_asc()
-    return self.ability.entr_perma_h_plus_asc
-end
-
-function Card:get_entr_asc()
-    return self.ability.entr_perma_asc + 1
-end
-
-function Card:get_entr_h_asc()
-    return self.ability.entr_perma_h_asc + 1
-end
-
-function Card:get_entr_exp_asc()
-    return self.ability.entr_perma_exp_asc + 1
-end
-
-function Card:get_entr_h_exp_asc()
-    return self.ability.entr_perma_h_exp_asc + 1
 end
 
 function Entropy.rubber_ball_scoring(cards)
@@ -1585,4 +1563,113 @@ function love.draw(...)
         G.SETTINGS.SOUND.volume = Entropy.crash_volume
         Entropy.crash_volume = nil
     end
+end
+
+function Entropy.add_perma_bonus(card, key, amount)
+    local keys = ({
+        xlog_chips = "entr_perma_xlog_chips",
+        asc = "entr_perma_asc", 
+        asc_mod = "entr_perma_plus_asc", 
+        plus_asc = "entr_perma_plus_asc", 
+        plusasc_mod = "entr_perma_plus_asc", 
+        exp_asc = "entr_perma_exp_asc", 
+        exp_asc_mod = "entr_perma_exp_asc", 
+        x_asc = "entr_perma_asc",
+        mult = "mult", 
+        h_mult = "mult", 
+        mult_mod = "mult",
+        x_mult = "x_mult", 
+        Xmult = "x_mult", 
+        xmult = "x_mult", 
+        x_mult_mod = "x_mult", 
+        Xmult_mod = "x_mult",
+        chips = "bonus", 
+        h_chips = "bonus", 
+        chip_mod = "bonus", 
+        x_chips = "x_chips", 
+        xchips = "x_chips", 
+        Xchip_mod = "x_chips",
+    })
+    key = keys[key] or key
+    if key == "x_chips" or key == "x_mult" or key == "entr_perma_asc" then
+        amount = amount - 1
+    end
+    if card.ability["perma_"..key] or card.ability[key] then
+        local r = not card.ability["perma_"..key] and key or "perma_"..key
+        card.ability[r] = card.ability[r] + amount
+        return true
+    end
+end
+
+function Entropy.calc_perma_bonus_joker(card)
+    local ret = {}
+    local chips = card:get_chip_bonus()
+    if chips ~= 0 then
+        ret.chips = chips
+    end
+
+    local mult = card:get_chip_mult()
+    if mult ~= 0 then
+        ret.mult = mult
+    end
+
+    local x_mult = SMODS.multiplicative_stacking(card.ability.x_mult or 1, (not card.ability.extra_enhancement and card.ability.perma_x_mult) or 0)
+    if x_mult > 0 then
+        ret.x_mult = x_mult
+    end
+
+    local p_dollars = card:get_p_dollars()
+    if p_dollars ~= 0 then
+        ret.p_dollars = p_dollars
+    end
+
+    local x_chips = card:get_chip_x_bonus()
+    if x_chips > 0 then
+        ret.x_chips = x_chips
+    end
+
+    local xlog_chips = card:get_entr_xlog_chips()
+    if xlog_chips ~= 0 then
+        ret.xlog_chips = xlog_chips
+    end
+    local entr_plus_asc = card:get_entr_plus_asc()
+    if entr_plus_asc ~= 0 then
+        ret.plus_asc = entr_plus_asc
+    end
+    local entr_asc = card:get_entr_asc()
+    if entr_asc ~= 1 and entr_asc > 0 then
+        ret.asc = entr_asc
+    end
+    local entr_exp_asc = card:get_entr_exp_asc()
+    if entr_exp_asc ~= 1 then
+        ret.exp_asc = entr_exp_asc
+    end
+    return ret
+end
+
+function Entropy.get_perma_bonus_vars(self)
+    return { playing_card = not not self.base.colour, value = self.base.value, suit = self.base.suit, colour = self.base.colour,
+        nominal_chips = to_big(self.ability.perma_bonus) > to_big(0) and self.ability.perma_bonus or nil,
+        bonus_x_chips = self.ability.perma_x_chips ~= 0 and (self.ability.perma_x_chips + 1) or nil,
+        entr_perma_xlog_chips = self.ability.entr_perma_xlog_chips ~= 0 and self.ability.entr_perma_xlog_chips or nil,
+        entr_perma_h_xlog_chips = self.ability.entr_perma_h_xlog_chips ~= 0 and self.ability.entr_perma_h_xlog_chips or nil,
+        entr_perma_plus_asc = self.ability.entr_perma_plus_asc ~= 0 and self.ability.entr_perma_plus_asc or nil,
+        entr_perma_h_plus_asc = self.ability.entr_perma_h_plus_asc ~= 0 and self.ability.entr_perma_h_plus_asc or nil,
+        entr_perma_asc = self.ability.entr_perma_asc ~= 0 and (self.ability.entr_perma_asc + 1) or nil,
+        entr_perma_h_asc = self.ability.entr_perma_h_asc ~= 0 and (self.ability.entr_perma_h_asc + 1) or nil,
+        entr_perma_exp_asc = self.ability.entr_perma_exp_asc ~= 0 and (self.ability.entr_perma_exp_asc + 1) or nil,
+        entr_perma_h_exp_asc = self.ability.entr_perma_h_exp_asc ~= 0 and (self.ability.entr_perma_h_exp_asc + 1) or nil,
+        suit_level = G.GAME.SuitBuffs and G.GAME.SuitBuffs[self.base.suit] and G.GAME.SuitBuffs[self.base.suit].level or nil,
+        bonus_mult = self.ability.perma_mult ~= 0 and self.ability.perma_mult or nil,
+        bonus_x_mult = self.ability.perma_x_mult ~= 0 and (self.ability.perma_x_mult + 1) or nil,
+        bonus_h_chips = self.ability.perma_h_chips ~= 0 and self.ability.perma_h_chips or nil,
+        bonus_h_x_chips = self.ability.perma_h_x_chips ~= 0 and (self.ability.perma_h_x_chips + 1) or nil,
+        bonus_h_mult = self.ability.perma_h_mult ~= 0 and self.ability.perma_h_mult or nil,
+        bonus_h_x_mult = self.ability.perma_h_x_mult ~= 0 and (self.ability.perma_h_x_mult + 1) or nil,
+        bonus_p_dollars = self.ability.perma_p_dollars ~= 0 and self.ability.perma_p_dollars or nil,
+        bonus_h_dollars = self.ability.perma_h_dollars ~= 0 and self.ability.perma_h_dollars or nil,
+        total_h_dollars = total_h_dollars ~= 0 and total_h_dollars or nil,
+        bonus_chips = bonus_chips ~= 0 and bonus_chips or nil,
+        bonus_repetitions = self.ability.perma_repetitions ~= 0 and self.ability.perma_repetitions or nil,
+    }
 end

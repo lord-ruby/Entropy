@@ -18,8 +18,8 @@ local decs = {
 			m_entr_prismatic = {
 				name = "Prismatic Card",
 				text = {
-					"{X:dark_edition,C:white}^#1#{} Mult",
-					"increase by {X:dark_edition,C:white}^#2#{}",
+					"{X:slib_emult,C:white}^#1#{} Mult",
+					"increase by {X:slib_emult,C:white}^#2#{}",
 					"when card is scored."
 				}
 			},
@@ -389,11 +389,11 @@ local decs = {
 			j_entr_oinac = {
 				name = "Oinac",
 				text = {
-					"This Joker gains {X:dark_edition,C:white}^#1#{} Chips",
+					"This Joker gains {X:slib_echips,C:white}^#1#{} Chips",
 					"when a {C:attention}face{} card is destroyed by this Joker",
 					"{C:attention}Played{} cards are destroyed",
 					"and a card with +1 rank is drawn to the {C:attention}hand{}",
-					"{C:inactive}(Currently {}{X:dark_edition,C:white}^#2#{} {C:inactive}Chips){}"
+					"{C:inactive}(Currently {}{X:slib_echips,C:white}^#2#{} {C:inactive}Chips){}"
 				}
 			},
 			j_entr_entropy_card = {
@@ -684,15 +684,15 @@ local decs = {
 				text = {
 					"Scored {C:dark_edition}Wild{} and {C:attention}face{} cards",
 					"balance their values with {C:attention}this{} Joker",
-					"{C:inactive}(Currently {X:dark_edition,C:white}^#1#{} {C:inactive}Chips){}"
+					"{C:inactive}(Currently {X:slib_echips,C:white}^#1#{} {C:inactive}Chips){}"
 				}
 			},
 			j_entr_scorpio = {
 				name = "Scorpio",
 				text = {
 					"Scored {C:attention}8s{} temporarily boost probabilities",
-					"Grant {X:dark_edition,C:white}^Chips{} based on {C:attention}8 d8s{}",
-					"Rolling {C:attention}eight{} 8s instead grants {X:dark_edition,C:white}^#1#{} Chips"
+					"Grant {X:slib_echips,C:white}^Chips{} based on {C:attention}8 d8s{}",
+					"Rolling {C:attention}eight{} 8s instead grants {X:slib_echips,C:white}^#1#{} Chips"
 				}
 			},
 			j_entr_ridiculus_absens = {
@@ -1670,9 +1670,9 @@ local decs = {
                 text = {
 					"Prevents Death once per Ante",
 					"if no Blinds were skipped",
-					"This Joker gains {X:dark_edition,C:white}^#2#{} Chips",
+					"This Joker gains {X:slib_echips,C:white}^#2#{} Chips",
 					"when death is prevented",
-					"{C:inactive}(Currently {X:dark_edition,C:white}^#1#{C:inactive} Chips, #3#)"
+					"{C:inactive}(Currently {X:slib_echips,C:white}^#1#{C:inactive} Chips, #3#)"
                 },
             },
 			j_entr_zelavi = {
@@ -1735,9 +1735,9 @@ local decs = {
                 text = {
                     "Probabilities are {C:attention}retriggered{}",
 					"until they {C:green}succeed{}",
-					"Gain {X:dark_edition,C:white}^Chips{} equal to the {C:attention}number of rolls{}",
+					"Gain {X:slib_echips,C:white}^Chips{} equal to the {C:attention}number of rolls{}",
 					"divided by the {C:green}probability's denominator{}",
-					"{C:inactive}(Currently {X:dark_edition,C:white}^#1#{C:inactive} Chips)"
+					"{C:inactive}(Currently {X:slib_echips,C:white}^#1#{C:inactive} Chips)"
                 },
             },
 			j_entr_jack_off = {
@@ -2655,6 +2655,34 @@ local decs = {
 						"When a card {C:entr_void}Marked for Death{}",
 						"is destroyed gain {C:gold}+#1#{} Ascension Power",
 						"{C:inactive}(Currently {C:gold}+#2# {C:inactive}Ascension Power)"
+					},
+					{
+						"{s:0} "
+					},
+				}
+			},
+			j_entr_mutagenesis = {
+				name = "Mutagenesis",
+				text = {
+					{
+						"Effects from {C:attention}Enhancements{} or",
+						"{C:dark_edition}Editions{} are added to this Joker",
+					},
+					{
+						"{s:0} "
+					},
+				}
+			},
+			j_entr_crooked_penny = {
+				name = "Crooked Penny",
+				text = {
+					{
+						"Multiplies payout by {X:money,C:white}X#1#{}",
+						"for every {C:blue}Hand{} played this round"
+					},
+					{
+						"Set money to {C:entr_void}$0{}",
+						"when leaving the shop"
 					},
 					{
 						"{s:0} "
@@ -7161,6 +7189,16 @@ local decs = {
 				text = {
 					"This Joker's values",
 					"cannot change"
+				}
+			},
+			entr_perma_xlog_chips = {
+				text = {
+					"{X:entr_freaky,C:white}Xlog_#1#(Chips){} Chips"
+				}
+			},
+			entr_perma_h_xlog_chips = {
+				text = {
+					"{X:entr_freaky,C:white}Xlog_#1#(Chips){} Chips"
 				}
 			},
 			entr_perma_plus_asc = {

@@ -1,6 +1,8 @@
 local mod_path = "" .. SMODS.current_mod.path
 Entropy.path = mod_path
 
+assert(Spectrallib, "Please make sure Spectrallib is installed instead of Cryptlib\nhttps://github.com/SpectralPack/Spectrallib/")
+
 assert(SMODS.load_file("lib/utils.lua"))()
 
 local i = {

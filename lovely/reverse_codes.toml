@@ -42,6 +42,14 @@ local true_mult = 1 + (mult * #Entropy.find_runes("rune_entr_uruz"))
 if (G.GAME.round_resets.blind_states.Big == "Upcoming" or G.GAME.round_resets.blind_states.Big == "Select") and Entropy.has_rune("rune_entr_dreams") then
     true_mult = 0
 end
+for i, v in pairs(SMODS.find_card("j_entr_crooked_penny")) do
+    local lmult = 1
+    for i = 1, G.GAME.round_resets.hands - G.GAME.current_round.hands_left do
+        lmult = lmult * v.ability.extra.mult
+    end
+    true_mult = true_mult * lmult
+    add_round_eval_row({name = 'void_joker_'..i, card = v, bonus = true, void_multiplier = lmult})
+end
 local rugpull_mult = 1
 if next(SMODS.find_card("j_entr_rugpull")) then
     rugpull_mult = 0

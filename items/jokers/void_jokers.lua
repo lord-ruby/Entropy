@@ -10,7 +10,7 @@ local function text_width(text)
         calced_text_width = calced_text_width + tx / (G.TILESIZE * G.TILESCALE)
     end
 
-    return calced_text_width
+    return calced_text_width * 0.75
 end
 
 local function name_text_better(key)
@@ -32,6 +32,9 @@ end
 function Entropy.generate_void_invert_uibox(center, info_queue, card, desc_nodes, specific_vars, full_UI_table)
     -- generate normal joker ui
     SMODS.Center.generate_ui(center, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+    if center.generate_extra_ui then
+        center:generate_extra_ui(info_queue, card, desc_nodes, specific_vars, full_UI_table)
+    end
     if not center.discovered or center.locked then return end
 
     local lines = SMODS.shallow_copy(G.localization.misc.v_dictionary_parsed.entr_void_desc or {})
@@ -369,7 +372,7 @@ local voidheart = {
 }
 
 local unstable_rift = {
-    order = 255,
+    order = 254,
     object_type = "Joker",
     key = "unstable_rift",
     rarity = "entr_void",
@@ -605,7 +608,7 @@ SMODS.Sticker({
 })
 
 local pluripotent_larvae = {
-    order = 260,
+    order = 255,
     object_type = "Joker",
     key = "pluripotent_larvae",
     rarity = "entr_void",
@@ -666,7 +669,7 @@ local pluripotent_larvae = {
 }
 
 local desiderium = {
-    order = 261,
+    order = 256,
     object_type = "Joker",
     key = "desiderium",
     rarity = "entr_void",
@@ -741,7 +744,7 @@ local desiderium = {
 }
 
 local nadir = {
-    order = 262,
+    order = 257,
     object_type = "Joker",
     key = "nadir",
     rarity = "entr_void",
@@ -809,8 +812,9 @@ local nadir = {
     generate_ui = Entropy.generate_void_invert_uibox,
 }
 
+
 local yaldabaoth = {
-    order = 263,
+    order = 258,
     object_type = "Joker",
     key = "yaldabaoth",
     rarity = "entr_void",
@@ -904,8 +908,105 @@ local yaldabaoth = {
     generate_ui = Entropy.generate_void_invert_uibox,
 }
 
+local mutagenesis = {
+    order = 259,
+    object_type = "Joker",
+    key = "mutagenesis",
+    rarity = "entr_void",
+    cost = 10,
+    eternal_compat = true,
+    perishable_compat = true,
+    demicoloncompat = true,
+    pos = {x = 0, y = 0},
+    atlas = "void_jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        extra = {
+            stored_jokers = {}
+        }
+    },
+    corruptions = {
+        "j_dna",
+        "j_certificate",
+        "j_entr_jestradiol",
+        "j_entr_nucleotide"        
+    },
+    calculate = function(self, card, context)
+        if context.joker_main then
+            return Entropy.calc_perma_bonus_joker(card)
+        end
+    end,
+    add_to_deck = function(self)
+        G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
+        for i, v in pairs(self.corruptions) do
+            G.GAME.entr_perma_inversions[v] = self.key
+        end
+    end,
+    loc_vars = function(self, q, card)
+        for i, v in pairs(card.ability.extra.stored_jokers) do q[#q+1] = G.P_CENTERS[v] end
+    end,
+    generate_ui = Entropy.generate_void_invert_uibox,
+    generate_extra_ui = function(center, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+        local vars = Entropy.get_perma_bonus_vars(card)
+        if vars and vars.nominal_chips then
+            localize{type = 'other', key = 'card_chips', nodes = desc_nodes, vars = {vars.nominal_chips}}
+        end
+        SMODS.localize_perma_bonuses(vars, desc_nodes)
+    end
+}
+
+local crooked_penny = {
+    order = 260,
+    object_type = "Joker",
+    key = "crooked_penny",
+    rarity = "entr_void",
+    cost = 10,
+    eternal_compat = true,
+    perishable_compat = true,
+    demicoloncompat = true,
+    pos = {x = 0, y = 0},
+    atlas = "void_jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        extra = {
+            mult = 1.5
+        }
+    },
+    corruptions = {
+        "j_credit_card",
+        "j_egg",
+        "j_entr_tenner",        
+        "j_entr_oops_all_es",
+        "j_entr_masterful_gambit",
+        "j_entr_rugpull",
+        "j_entr_hash_miner",
+    },
+    add_to_deck = function(self)
+        G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
+        for i, v in pairs(self.corruptions) do
+            G.GAME.entr_perma_inversions[v] = self.key
+        end
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.extra.mult
+            }
+        }
+    end,
+    generate_ui = Entropy.generate_void_invert_uibox,
+}
+
 local phoenix_a = {
-    order = 262,
+    order = 261,
     object_type = "Joker",
     key = "phoenix_a",
     rarity = "entr_void",
@@ -1021,7 +1122,7 @@ local phoenix_a = {
 }
 
 local antimatter_sheath = {
-    order = 263,
+    order = 262,
     object_type = "Joker",
     key = "antimatter_sheath",
     rarity = "entr_void",
@@ -1143,7 +1244,7 @@ local antimatter_sheath = {
 }
 
 local caledscratch = {
-    order = 264,
+    order = 263,
     object_type = "Joker",
     key = "caledscratch",
     rarity = "entr_void",
@@ -1209,6 +1310,8 @@ return {
         pluripotent_larvae,
         desiderium,
         nadir,
+        mutagenesis,
+        crooked_penny,
         yaldabaoth,
         phoenix_a,
         antimatter_sheath,

@@ -776,6 +776,21 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         end
     end
     ret = scie(effect, scored_card, key, amount, from_edition, ...)
+    if scored_card and next(SMODS.find_card("j_entr_mutagenesis")) and scored_card:is_playing_card() and not effect.message_card or effect.message_card == scored_card and key ~= "message" and key ~= "colour" then
+        for i, v in pairs(SMODS.find_card("j_entr_mutagenesis")) do
+            if Entropy.add_perma_bonus(v, key, amount) then
+                G.E_MANAGER:add_event(Event{
+                    trigger = "after",
+                    func = function()
+                        play_sound("entr_void_generic")
+                        return true
+                    end
+                })
+                delay(0.5)
+                SMODS.calculate_effect({message = localize("k_upgrade_ex"), colour = Entropy.void_gradient, card = v})
+            end
+        end
+    end
     if ret then
         return ret
     end
@@ -3951,45 +3966,67 @@ function Entropy.require(key)
     return func and func()
 end
 
-local contrib = {}
-local num = 0
-for _, v in pairs(G.P_CENTERS) do
-    if v.entr_credits then
-        for i2, v2 in pairs(v.entr_credits) do
-            for i3, v3 in pairs(v2) do
-                if v3 ~= "wish" and v3 ~= "shader" and v3 ~="card_art" then
-                    if not contrib[v3] then
-                        num = num + 1
-                    end
-                    contrib[v3] = true
-                end
-            end
+local row_ref = add_round_eval_row
+function add_round_eval_row(config)
+    if string.find(config.name, "void_joker") then
+        local config = config or {}
+        local width = G.round_eval.T.w - 0.51
+        local num_dollars = config.dollars or 1
+        local scale = 0.9
+        total_cashout_rows = (total_cashout_rows or 0) + 1
+        if total_cashout_rows > 7 then
+            return
         end
+        if config.name ~= 'blind1' then
+            if not G.round_eval.divider_added then 
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'after',delay = 0.25,
+                    func = function() 
+                        local spacer = {n=G.UIT.R, config={align = "cm", minw = width}, nodes={
+                            {n=G.UIT.O, config={object = DynaText({string = {'......................................'}, colours = {G.C.WHITE},shadow = true, float = true, y_offset = -30, scale = 0.45, spacing = 13.5, font = G.LANGUAGES['en-us'].font, pop_in = 0})}}
+                        }}
+                        G.round_eval:add_child(spacer,G.round_eval:get_UIE_by_ID(config.bonus and 'bonus_round_eval' or 'base_round_eval'))
+                        return true
+                    end
+                }))
+                delay(0.6)
+                G.round_eval.divider_added = true
+            end
+        else
+            delay(0.2)
+        end
+
+        delay(0.2)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'before',delay = 0.5,
+            func = function()
+                --Add the far left text and context first:
+                local left_text = {}
+                table.insert(left_text, {n=G.UIT.O, config={object = DynaText({string = localize{type = 'name_text', set = config.card.config.center.set, key = config.card.config.center.key}, colours = {Entropy.void_gradient}, shadow = true, pop_in = 0, scale = 0.6*scale, silent = true})}})
+                full_row = {n=G.UIT.R, config={align = "cm", minw = 5}, nodes={
+                    {n=G.UIT.C, config={padding = 0.05, minw = width*0.55, minh = 0.61, align = "cl"}, nodes=left_text},
+                    {n=G.UIT.C, config={padding = 0.05,minw = width*0.45, align = "cr"}, nodes={{n=G.UIT.C, config={align = "cm", id = 'void_joker_'..config.name},nodes={}}}}
+                }}
+                G.round_eval:add_child(full_row,G.round_eval:get_UIE_by_ID(config.bonus and 'bonus_round_eval' or 'base_round_eval'))
+                play_sound('cancel', config.pitch or 1)
+                play_sound('highlight1',( 1.5*(config.pitch or 1)) or 1, 0.2)
+                if config.card then config.card:juice_up(0.7, 0.46) end
+                return true
+            end
+        }))
+        G.E_MANAGER:add_event(Event({
+            trigger = 'before',delay = 0.38,
+            func = function()
+                G.round_eval:add_child(
+                    {n=G.UIT.R, config={align = "cm", id = 'void_row'..'_'..config.name}, nodes={
+                        {n=G.UIT.O, config={object = DynaText({string = {"X"..number_format(config.void_multiplier)}, colours = {Entropy.void_gradient}, shadow = true, pop_in = 0, scale = 0.65, float = true})}}
+                    }},
+                    G.round_eval:get_UIE_by_ID('void_joker_'..config.name))
+                play_sound('entr_void_generic')
+                return true
+            end
+        }))
+    else
+        row_ref(config)
     end
 end
-code = {
-    ["lord.ruby"]=true, 
-    ["cassknows"]=true, 
-    ["SleepyG11"]=true, 
-    ["hayaunderscore"]=true, 
-    ["AnnieTheEagle"]=true, 
-    ["WhoNeedsAUsrName"]=true, 
-    ["wingedcatgirl"]=true, 
-    ["Lily Felli"]=true, 
-    ["gemstonez"]=true, 
-    ["triple6lexi"]=true,
-    ["Athebyne"] = true,
-    ["InvalidOS"] = true,
-    ["FirstTry"] = true,
-    ["Eris"] = true,
-    ["WilsontheWolf"] = true,
-    ["Soulware"] = true
-}
-for i, v in pairs(code) do
-    if not contrib[i] then
-        num = num + 1
-    end
-    contrib[i] = true
-end
-print(contrib)
-print(num)
