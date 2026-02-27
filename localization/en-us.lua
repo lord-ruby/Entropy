@@ -2600,6 +2600,20 @@ local decs = {
 					},
 				}
 			},
+			j_entr_pluripotent_larvae = {
+				name = "Pluripotent Larvae",
+				text = {
+					{
+						"Sell this Joker to {C:entr_void}Invert{}",
+						"all {C:entr_void}Invertable{} Jokers and",
+						"then fill empty Joker slots",
+						"with {C:entr_void}Inverted{} Jokers"
+					},
+					{
+						"{s:0} "
+					},
+				}
+			},
 			j_entr_yaldabaoth = {
 				name = "Yaldabaoth",
 				text = {

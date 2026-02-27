@@ -758,6 +758,7 @@ local abyss = {
 		return G.GAME.abyss_blinds
 	end,
 	set_blind = function()
+		G.GAME.abyss_blinds = G.GAME.abyss_blinds or {}
 		G.GAME.blind.chips = G.GAME.blind.chips * (G.GAME.abyss_size_mod or 1)
 		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 		G.HUD_blind:recalculate()
@@ -768,7 +769,7 @@ function Entropy.progress_abyss()
 	SMODS.ante_end = true; ease_ante(1)
   	SMODS.ante_end = nil; delay(0.4)
 	G.GAME.abyss_size_mod = 1
-	G.GAME.abyss_blinds = {}
+	G.GAME.abyss_blinds = {get_new_boss()}
 	G.GAME.abyss_just_lost = true
 end
 

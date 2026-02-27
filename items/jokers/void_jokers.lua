@@ -604,6 +604,67 @@ SMODS.Sticker({
     end
 })
 
+local pluripotent_larvae = {
+    order = 260,
+    object_type = "Joker",
+    key = "pluripotent_larvae",
+    rarity = "entr_void",
+    cost = 10,
+    eternal_compat = true,
+    perishable_compat = true,
+    demicoloncompat = true,
+    pos = {x = 0, y = 0},
+    atlas = "void_jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        extra = {
+            asc_pow = 0,
+            asc_pow_mod = 0.3
+        }
+    },
+    corruptions = {
+        "j_riff_raff",
+        "j_invisible",
+        "j_entr_phantom_shopper",
+    },
+    calculate = function(self, card, context)
+        if context.selling_self then
+            G.GAME.banned_keys.j_entr_pluripotent_larvae = true
+            local c = {}
+            for i, v in pairs(G.jokers.cards) do if v ~= card then c[#c+1] = v end end
+            Entropy.invert(c, true, true)
+            if #G.jokers.cards < G.jokers.config.card_limit then
+                for i = 1, G.jokers.config.card_limit - #G.jokers.cards + 1 do
+                    G.E_MANAGER:add_event(Event{
+                        trigger = "after",
+                        func = function()
+                            play_sound("entr_void_generic")
+                            SMODS.add_card {
+                                set = "Joker",
+                                rarity = "entr_void"
+                            }
+                            return true
+                        end
+                    })
+                    delay(1)
+                end
+            end
+            return nil, true
+        end
+    end,
+    add_to_deck = function(self)
+        G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
+        for i, v in pairs(self.corruptions) do
+            G.GAME.entr_perma_inversions[v] = self.key
+        end
+    end,
+    generate_ui = Entropy.generate_void_invert_uibox,
+}
+
 local yaldabaoth = {
     order = 263,
     object_type = "Joker",
@@ -1001,6 +1062,7 @@ return {
         generator_meltdown,
         voidheart,
         unstable_rift,
+        pluripotent_larvae,
         yaldabaoth,
         phoenix_a,
         antimatter_sheath,

@@ -44,8 +44,15 @@ function Entropy.inversion_queue(card, _c, first_pass)
     return info_queue
 end
 
-function Entropy.invert(cards, flip)
+function Entropy.invert(cards, flip, filter)
     if cards.start_dissolve then cards = {cards} end
+    local c_temp = {}
+    for i, v in pairs(cards) do
+        if Entropy.inversion(v) or v.config.center.corruptions or not filter then
+            c_temp[#c_temp+1] = v
+        end
+    end
+    cards = c_temp
     if flip and not Entropy.should_skip_animations() then
         Entropy.flip_then(cards, {
         {func = function(c)
@@ -1115,7 +1122,7 @@ function Entropy.find_runes(key)
     return runes
 end
 
-function Entropy.show_flipside()
+function Entropy.show_flipside(card)
     for i, v in pairs((G.pack_cards or {}).cards or {}) do
         if ({
             c_entr_flipside = true,
@@ -1125,6 +1132,9 @@ function Entropy.show_flipside()
         })[v.config.center_key] then
             return true
         end
+    end
+    if card.config.center.set == "Joker" and next(SMODS.find_card("j_entr_pluripotent_larvae")) then
+        return true
     end
     return next(SMODS.find_card("c_entr_flipside")) or next(SMODS.find_card("j_entr_void_cradle")) or next(SMODS.find_card("c_entr_dagaz")) or Entropy.has_rune("rune_entr_dagaz") or next(SMODS.find_card("j_entr_shadow_crystal"))
 end
