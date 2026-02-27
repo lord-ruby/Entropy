@@ -2678,7 +2678,8 @@ local decs = {
 				text = {
 					{
 						"Multiplies payout by {X:money,C:white}X#1#{}",
-						"for every {C:blue}Hand{} played this round"
+						"for every {C:blue}Hand{} played this round",
+						"{C:inactive}(Extra copies stack additively)"
 					},
 					{
 						"Set money to {C:entr_void}$0{}",
