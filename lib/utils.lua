@@ -202,90 +202,13 @@ G.FUNCS.check_for_buy_space = function(card)
 	return gfcfbs(card)
 end
 
-function Entropy.card_eval_status_text_eq(card, eval_type, amt, percent, dir, extra, pref, col, sound, vol, ta)
-    if card.area == G.butterfly_jokers and G.deck.cards[1] then 
-        Entropy.card_eval_status_text_eq(G.deck.cards[1], eval_type, amt, percent, dir, extra, pref, col, sound, vol, true)
+local orig_ref = Spectrallib.card_eval_status_text_eq
+function Spectrallib.card_eval_status_text_eq(card, eval_type, amt, percent, dir, extra, pref, col, sound, vol, ta)
+    if card.area == G.butterfly_jokers and G.deck.cards[1] then
+        Spectrallib.card_eval_status_text_eq(G.deck.cards[1], eval_type, amt, percent, dir, extra, pref, col, sound, vol, true)
         return
     end
-    percent = percent or (0.9 + 0.2*math.random())
-    if dir == 'down' then 
-        percent = 1-percent
-    end
-
-    if extra and extra.focus then card = extra.focus end
-
-    local text = ''
-    local volume = vol or 1
-    local card_aligned = 'bm'
-    local y_off = 0.15*G.CARD_H
-    if card.area == G.jokers or card.area == G.consumeables then
-        y_off = 0.05*card.T.h
-    elseif card.area == G.hand or ta then
-        y_off = -0.05*G.CARD_H
-        card_aligned = 'tm'
-    elseif card.area == G.play then
-        y_off = -0.05*G.CARD_H
-        card_aligned = 'tm'
-    elseif card.jimbo then
-        y_off = -0.05*G.CARD_H
-        card_aligned = 'tm'
-    end
-    local config = {}
-    local delay = 0.65
-    local colour = config.colour or (extra and extra.colour) or ( G.C.FILTER )
-    local extrafunc = nil
-    sound = sound or 'multhit1'--'other1'
-    amt = amt
-    text = (pref) or ("Mult = "..amt)
-    colour = col or G.C.MULT
-    config.type = 'fade'
-    config.scale = 0.7
-    delay = delay*1.25
-    if to_big(amt) > to_big(0) or to_big(amt) < to_big(0) then
-        if extra and extra.instant then
-            if extrafunc then extrafunc() end
-            attention_text({
-                text = text,
-                scale = config.scale or 1, 
-                hold = delay - 0.2,
-                backdrop_colour = colour,
-                align = card_aligned,
-                major = card,
-                offset = {x = 0, y = y_off}
-            })
-            play_sound(sound, 0.8+percent*0.2, volume)
-            if not extra or not extra.no_juice then
-                card:juice_up(0.6, 0.1)
-                G.ROOM.jiggle = G.ROOM.jiggle + 0.7
-            end
-        else
-            G.E_MANAGER:add_event(Event({ --Add bonus chips from this card
-                    trigger = 'before',
-                    delay = delay,
-                    func = function()
-                    if extrafunc then extrafunc() end
-                    attention_text({
-                        text = text,
-                        scale = config.scale or 1, 
-                        hold = delay - 0.2,
-                        backdrop_colour = colour,
-                        align = card_aligned,
-                        major = card,
-                        offset = {x = 0, y = y_off}
-                    })
-                    play_sound(sound, 0.8+percent*0.2, volume)
-                    if not extra or not extra.no_juice then
-                        card:juice_up(0.6, 0.1)
-                        G.ROOM.jiggle = G.ROOM.jiggle + 0.7
-                    end
-                    return true
-                    end
-            }))
-        end
-    end
-    if extra and extra.playing_cards_created then 
-        playing_card_joker_effects(extra.playing_cards_created)
-    end
+    orig_ref(card, eval_type, amt, percent, dir, extra, pref, col, sound, vol, ta)
 end
 
 function Entropy.rare_tag(rarity, key, ascendant, colour, pos, fac, legendary,order)
@@ -1529,4 +1452,137 @@ local asc_col_ref = Spectrallib.get_asc_colour
 function Spectrallib.get_asc_colour(amount, text) 
     if(G.GAME.Overflow or (G.GAME.badarg and G.GAME.badarg[text])) then return HEX("FF0000") end
     return to_big(amount) >= to_big(0) and asc_col_ref(amount,  text) or G.C.Entropy.DARK_GRAY
+end
+
+local STP = loadStackTracePlus()
+local utf8 = require("utf8")
+function Entropy.fake_crash(msg)
+    msg = tostring(msg)
+
+    --sendErrorMessage("Oops! The game crashed\n" .. STP.stacktrace(msg), 'StackTrace')
+
+    if not love.window or not love.graphics or not love.event then
+        return
+    end
+
+
+    Entropy.crash_volume = Entropy.crash_volume or G.SETTINGS.SOUND.volume
+    G.SETTINGS.SOUND.volume = 0
+
+    love.graphics.reset()
+    local font = love.graphics.setNewFont("resources/fonts/m6x11plus.ttf", 20)
+
+    local background = {0, 0, 1}
+    if G and G.C and G.C.BLACK then
+        background = G.C.BLACK
+    end
+    love.graphics.clear(background)
+    love.graphics.origin()
+
+    local trace = STP.stacktrace("", 3)
+
+    local sanitizedmsg = {}
+    for char in msg:gmatch(utf8.charpattern) do
+        table.insert(sanitizedmsg, char)
+    end
+    sanitizedmsg = table.concat(sanitizedmsg)
+
+    local err = {}
+
+    table.insert(err, "Oops! The game crashed:")
+    if sanitizedmsg:find("Syntax error: game.lua:4: '=' expected near 'Game'") then
+        table.insert(err,
+            'Duplicate installation of Steamodded detected! Please clean your installation: Steam Library > Balatro > Properties > Installed Files > Verify integrity of game files.')
+    elseif sanitizedmsg:find("Syntax error: game.lua:%d+: duplicate label 'continue'") then
+        table.insert(err,
+            'Duplicate installation of Steamodded detected! Please remove the duplicate steamodded/smods folder in your mods folder.')
+    else
+        table.insert(err, sanitizedmsg)
+    end
+    if #sanitizedmsg ~= #msg then
+        table.insert(err, "Invalid UTF-8 string in error message.")
+    end
+
+    if V and SMODS and SMODS.save_game and V(SMODS.save_game or '0.0.0') ~= V(SMODS.version or '0.0.0') then
+        table.insert(err, 'This crash may be caused by continuing a run that was started on a previous version of Steamodded. Try creating a new run.')
+    end
+
+    if V and V(MODDED_VERSION or '0.0.0') ~= V(RELEASE_VERSION or '0.0.0') then
+        table.insert(err, '\n\nDevelopment version of Steamodded detected! If you are not actively developing a mod, please try using the latest release instead.\n\n')
+    end
+
+    if not V then
+        table.insert(err, '\nA mod you have installed has caused a syntax error through patching. Please share this crash with the mod developer.\n')
+    end
+
+    local success, msg = pcall(getDebugInfoForCrash)
+    if success and msg then
+        table.insert(err, '\n' .. msg)
+    else
+        table.insert(err, "\n" .. "Failed to get additional context :/")
+    end
+
+    for l in trace:gmatch("(.-)\n") do
+        table.insert(err, l)
+    end
+
+    local p = table.concat(err, "\n")
+
+    p = p:gsub("\t", "")
+    p = p:gsub("%[string \"(.-)\"%]", "%1")
+
+    local scrollOffset = 0
+    local endHeight = 0
+
+    local pos = 70
+    local arrowSize = 20
+
+    local function calcEndHeight()
+        local font = love.graphics.getFont()
+        local rw, lines = font:getWrap(p, love.graphics.getWidth() - pos * 2)
+        local lineHeight = font:getHeight()
+        local atBottom = scrollOffset == endHeight and scrollOffset ~= 0
+        endHeight = #lines * lineHeight - love.graphics.getHeight() + pos * 2
+        if (endHeight < 0) then
+            endHeight = 0
+        end
+        if scrollOffset > endHeight or atBottom then
+            scrollOffset = endHeight
+        end
+    end
+
+    p = p .. "\n\nPress ESC to exit\nPress R to restart the game"
+    if love.system then
+        p = p .. "\nPress Ctrl+C or tap to copy this error"
+    end
+
+    if not love.graphics.isActive() then
+        return
+    end
+    love.graphics.clear(background)
+    calcEndHeight()
+    love.graphics.printf(p, pos, pos - scrollOffset, love.graphics.getWidth() - pos * 2)
+    if scrollOffset ~= endHeight then
+        love.graphics.polygon("fill", love.graphics.getWidth() - (pos / 2),
+            love.graphics.getHeight() - arrowSize, love.graphics.getWidth() - (pos / 2) + arrowSize,
+            love.graphics.getHeight() - (arrowSize * 2), love.graphics.getWidth() - (pos / 2) - arrowSize,
+            love.graphics.getHeight() - (arrowSize * 2))
+    end
+    if scrollOffset ~= 0 then
+        love.graphics.polygon("fill", love.graphics.getWidth() - (pos / 2), arrowSize,
+            love.graphics.getWidth() - (pos / 2) + arrowSize, arrowSize * 2,
+            love.graphics.getWidth() - (pos / 2) - arrowSize, arrowSize * 2)
+    end
+    love.graphics.present()
+end
+
+local draw_ref = love.draw
+function love.draw(...)
+    draw_ref(...)
+    if Entropy.do_fake_crash then
+        Entropy.fake_crash(Entropy.do_fake_crash)
+    elseif Entropy.crash_volume then
+        G.SETTINGS.SOUND.volume = Entropy.crash_volume
+        Entropy.crash_volume = nil
+    end
 end

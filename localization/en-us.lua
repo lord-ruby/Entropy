@@ -2628,6 +2628,22 @@ local decs = {
 					}
 				}
 			},
+			j_entr_nadir = {
+				name = "Nadir",
+				text = {
+					{
+						"Use this Joker to {C:entr_void}store{}",
+						"and destroy all other Jokers"
+					},
+					{
+						"When another Joker triggers",
+						"{C:entr_void}forcetrigger{} a random stored Joker"
+					},
+					{
+						"{s:0} "
+					}
+				}
+			},
 			j_entr_yaldabaoth = {
 				name = "Yaldabaoth",
 				text = {

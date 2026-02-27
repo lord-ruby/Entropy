@@ -740,6 +740,75 @@ local desiderium = {
     generate_ui = Entropy.generate_void_invert_uibox,
 }
 
+local nadir = {
+    order = 262,
+    object_type = "Joker",
+    key = "nadir",
+    rarity = "entr_void",
+    cost = 10,
+    eternal_compat = true,
+    perishable_compat = true,
+    demicoloncompat = true,
+    pos = {x = 0, y = 0},
+    atlas = "void_jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        extra = {
+            stored_jokers = {}
+        }
+    },
+    corruptions = {
+        "j_entr_echo_chamber",        
+    },
+    calculate = function(self, card, context)
+        if context.post_trigger and not context.other_card.debuff then
+            local key = pseudorandom_element(card.ability.extra.stored_jokers, pseudoseed("entr_nadir"))
+            local dummy
+            if key then
+                dummy = Entropy.get_dummy(G.P_CENTERS[key], card.area, card)
+                Spectrallib.forcetrigger{
+                    card = dummy,
+                    silent = true
+                }
+            end
+        end
+    end,
+    can_use = function()
+        return #G.jokers.cards > 1
+    end,
+    use = function(self, card)
+        for i, v in pairs(G.jokers.cards) do
+            if v ~= card then
+                local c = v
+                G.E_MANAGER:add_event(Event{
+                    trigger = "after",
+                    delay = 0.5,
+                    func = function()
+                        play_sound("entr_void_suck")
+                        card.ability.extra.stored_jokers[#card.ability.extra.stored_jokers+1] = c.config.center.key
+                        c:start_dissolve()
+                        return true
+                    end
+                })
+            end
+        end
+    end,
+    add_to_deck = function(self)
+        G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
+        for i, v in pairs(self.corruptions) do
+            G.GAME.entr_perma_inversions[v] = self.key
+        end
+    end,
+    loc_vars = function(self, q, card)
+        for i, v in pairs(card.ability.extra.stored_jokers) do q[#q+1] = G.P_CENTERS[v] end
+    end,
+    generate_ui = Entropy.generate_void_invert_uibox,
+}
+
 local yaldabaoth = {
     order = 263,
     object_type = "Joker",
@@ -1139,6 +1208,7 @@ return {
         unstable_rift,
         pluripotent_larvae,
         desiderium,
+        nadir,
         yaldabaoth,
         phoenix_a,
         antimatter_sheath,
