@@ -3822,13 +3822,9 @@ payload = '''
 local send_var = scalar_value
 local send_total = {
   a_xmult = true,
-  a_xmult_minus = true,
   a_xchips = true,
-  a_xchips_minus = true,
   a_emult = true,
-  a_emult_minus = true,
   a_echips = true,
-  a_echips_minus = true
 }
 if send_total[args.message_key] or args.send_total then send_var = args.ref_table[args.ref_value] end
 scaling_message = scaling_message or {
