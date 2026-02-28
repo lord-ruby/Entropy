@@ -2744,6 +2744,27 @@ local decs = {
 						"{s:0} "
 					},
 				}
+			},
+			j_entr_nyx = {
+				name = "Nyx, Lord of Void",
+				text = {
+					{
+						"When {C:attention}Blind{} is selected",
+						"create {C:attention}1{} {C:dark_edition}Negative{} {C:attention}Temporary{} ",
+						"{C:entr_void}Inverted{} Joker for every",
+						"other non-Inverted Joker"
+					},
+					{
+						"Use this Joker for {X:money,C:white}X#1#{} this",
+						"Jokers cost and the highlighted",
+						"cards cost to remove {C:entr_void}Temporary{}",
+						"from all selected cards",
+						"{C:inactive}(Currently {C:money}$#2#{C:inactive})"
+					},
+					{
+						"{s:0} "
+					}
+				}
 			}
 		},
 		Blind = {
@@ -7049,6 +7070,13 @@ local decs = {
 					"Triggered"
 				}
 			},
+			void_temporary = {
+				name = "Temporary",
+				text  = {
+					"{C:red}Destroyed{} at the",
+					"end of round"
+				}
+			},
 			entr_death_mark_consumeable = {
 				name = "Marked for Death",
 				text = {
@@ -7641,6 +7669,7 @@ local decs = {
 			entr_pinned = "Invariant",
 			entr_marked = "Marked",
 			entr_death_mark = "Marked for Death",
+			void_temporary = "Temporary",
 			entr_hotfix = "Hotfixed",
 			temporary = "Temporary",
 			entr_pseudorandom = "Pseudorandom",

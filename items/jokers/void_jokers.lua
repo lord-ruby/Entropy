@@ -129,6 +129,7 @@ local apoptosis = {
     perishable_compat = true,
     demicoloncompat = true,
     pos = {x = 0, y = 0},
+    soul_pos = {x=0,y=1},
     atlas = "void_jokers",
     dependencies = {
         items = {
@@ -205,7 +206,8 @@ local egocentrism = {
     eternal_compat = true,
     perishable_compat = true,
     demicoloncompat = true,
-    pos = {x = 0, y = 0},
+    pos = {x = 1, y = 0},
+    soul_pos = {x=1,y=1},
     atlas = "void_jokers",
     dependencies = {
         items = {
@@ -317,7 +319,8 @@ local generator_meltdown = {
     cost = 10,
     eternal_compat = true,
     perishable_compat = true,
-    pos = {x = 0, y = 0},
+    pos = {x = 2, y = 0},
+    soul_pos = {x=2,y=1},
     atlas = "void_jokers",
     dependencies = {
         items = {
@@ -347,7 +350,8 @@ local voidheart = {
     cost = 10,
     eternal_compat = true,
     perishable_compat = true,
-    pos = {x = 0, y = 0},
+    pos = {x = 3, y = 0},
+    soul_pos = {x=3,y=1},
     atlas = "void_jokers",
     dependencies = {
         items = {
@@ -378,7 +382,8 @@ local unstable_rift = {
     rarity = "entr_void",
     cost = 10,
     eternal_compat = true,
-    pos = {x = 0, y = 0},
+    pos = {x = 4, y = 0},
+    soul_pos = {x=4,y=1},
     atlas = "void_jokers",
     dependencies = {
         items = {
@@ -607,6 +612,23 @@ SMODS.Sticker({
     end
 })
 
+SMODS.Sticker({
+    badge_colour = Entropy.void_gradient,
+    prefix_config = { key = false },
+    key = "void_temporary",
+    atlas = "marked",
+    pos = { x = 2, y = 0 },
+    should_apply = false,
+    draw = function(self, card) --don't draw shine
+        local notilt = nil
+        if card.area and card.area.config.type == "deck" then
+            notilt = true
+        end
+        G.shared_stickers[self.key].role.draw_major = card
+        G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+    end,
+})
+
 local pluripotent_larvae = {
     order = 255,
     object_type = "Joker",
@@ -616,7 +638,8 @@ local pluripotent_larvae = {
     eternal_compat = true,
     perishable_compat = true,
     demicoloncompat = true,
-    pos = {x = 0, y = 0},
+    pos = {x = 0, y = 2},
+    soul_pos = {x=0,y=3},
     atlas = "void_jokers",
     dependencies = {
         items = {
@@ -677,7 +700,8 @@ local desiderium = {
     eternal_compat = true,
     perishable_compat = true,
     demicoloncompat = true,
-    pos = {x = 0, y = 0},
+    pos = {x = 1, y = 2},
+    soul_pos = {x=1,y=3},
     atlas = "void_jokers",
     dependencies = {
         items = {
@@ -752,7 +776,8 @@ local nadir = {
     eternal_compat = true,
     perishable_compat = true,
     demicoloncompat = true,
-    pos = {x = 0, y = 0},
+    pos = {x = 2, y = 2},
+    soul_pos = {x=2,y=3},
     atlas = "void_jokers",
     dependencies = {
         items = {
@@ -822,7 +847,8 @@ local yaldabaoth = {
     eternal_compat = true,
     perishable_compat = true,
     demicoloncompat = true,
-    pos = {x = 0, y = 0},
+    pos = {x = 3, y = 2},
+    soul_pos = {x=3,y=3},
     atlas = "void_jokers",
     dependencies = {
         items = {
@@ -917,7 +943,8 @@ local mutagenesis = {
     eternal_compat = true,
     perishable_compat = true,
     demicoloncompat = true,
-    pos = {x = 0, y = 0},
+    pos = {x = 4, y = 2},
+    soul_pos = {x=4,y=3},
     atlas = "void_jokers",
     dependencies = {
         items = {
@@ -968,7 +995,8 @@ local crooked_penny = {
     eternal_compat = true,
     perishable_compat = true,
     demicoloncompat = true,
-    pos = {x = 0, y = 0},
+    pos = {x = 0, y = 4},
+    soul_pos = {x=0,y=5},
     atlas = "void_jokers",
     dependencies = {
         items = {
@@ -1014,7 +1042,8 @@ local phoenix_a = {
     eternal_compat = true,
     perishable_compat = true,
     demicoloncompat = true,
-    pos = {x = 0, y = 0},
+    pos = {x = 1, y = 4},
+    soul_pos = {x=1,y=5},
     atlas = "void_jokers",
     dependencies = {
         items = {
@@ -1130,7 +1159,8 @@ local antimatter_sheath = {
     eternal_compat = true,
     perishable_compat = true,
     demicoloncompat = true,
-    pos = {x = 0, y = 0},
+    pos = {x = 2, y = 4},
+    soul_pos = {x=2,y=5},
     atlas = "void_jokers",
     dependencies = {
         items = {
@@ -1250,8 +1280,8 @@ local caledscratch = {
     rarity = "entr_void",
     cost = 10,
     eternal_compat = true,
-    pos = {x = 0, y = 0},
-    soul_pos = {x=0,y=1},
+    pos = {x = 3, y = 4},
+    soul_pos = {x=3,y=5},
     atlas = "void_jokers",
     dependencies = {
         items = {
@@ -1300,6 +1330,121 @@ local caledscratch = {
     generate_ui = Entropy.generate_void_invert_uibox,
 }
 
+local nyx = {
+    order = 264,
+    object_type = "Joker",
+    key = "nyx",
+    rarity = "entr_void",
+    cost = 10,
+    eternal_compat = true,
+    pos = {x = 4, y = 4},
+    soul_pos = {x=4,y=5},
+    atlas = "void_jokers",
+    dependencies = {
+        items = {
+            "set_entr_misc_jokers",
+        }
+    },
+    config = {
+        extra = {
+            mod = 3
+        }
+    },
+    in_pool = function() return false end,
+    calculate = function(self, card, context)
+        if context.setting_blind then
+            local num = 0
+            for i, v in pairs(G.jokers.cards) do
+                if v.config.center.rarity ~= "entr_void" then
+                    local card = SMODS.add_card{
+                        set = "Joker", rarity = "entr_void", edition = "e_negative"
+                    }
+                    card.ability.void_temporary = true
+                end
+            end
+        end
+        if context.forcetrigger then
+            local card = SMODS.add_card{
+                set = "Joker", rarity = "entr_void", edition = "e_negative"
+            }
+            card.ability.void_temporary = true
+        end
+    end,
+    can_use = function(self, card)
+        local c = Entropy.get_highlighted_cards({{cards=G.I.CARD}}, card, 1, 1)
+        local cost = 0
+        for i, v in pairs(c) do
+            cost = cost + card.ability.extra.mod * (card.sell_cost + v.sell_cost)
+        end
+        return G.GAME.dollars + (G.GAME.bankrupt_at or 0) >= cost
+    end,
+    use = function(self, card)
+        local c = Entropy.get_highlighted_cards({{cards=G.I.CARD}}, card, 1, 1)
+        local cost = 0
+        for i, v in pairs(c) do
+            cost = cost + card.ability.extra.mod * (card.sell_cost + v.sell_cost)
+            v.ability.temporary = nil
+            v.ability.void_temporary = nil
+            v.ability.temporary2 = nil
+            local c2 = v
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                func = function()
+                    c2.area:remove_from_highlighted(c2)
+                    c2:highlight()
+                    play_sound("entr_void_suck")
+                    return true
+                end
+            })
+            delay(0.5)
+        end
+        ease_dollars(-cost)
+    end,
+    loc_vars = function(self, q, card)
+        q[#q+1] = {set = "Other", key = "void_temporary"}
+        local c = Entropy.get_highlighted_cards({{cards=G.I.CARD}}, card, 1, 1)
+        local cost = 0
+        for i, v in pairs(c) do
+            cost = cost + card.ability.extra.mod * (card.sell_cost + v.sell_cost)
+        end
+        return {
+            vars = {
+                card.ability.extra.mod,
+                cost
+            }
+        }
+    end,
+    corruptions = {
+        "j_canio",
+        "j_triboulet",
+        "j_yorick",
+        "j_chicot",
+        "j_perkeo",
+        "j_entr_ruby",
+        "j_entr_slipstream",
+        "j_entr_cass",
+        "j_entr_hexa",
+        "j_entr_grahkon",
+        "j_entr_oinac",
+        "j_entr_teluobirt",
+        "j_entr_kciroy",
+        "j_entr_tocihc",
+        "j_entr_oekrep",
+        "j_entr_ybur",
+        "j_entr_zelavi",
+        "j_entr_ssac",
+        "j_entr_exah",
+        "j_entr_nokharg",
+    },
+    add_to_deck = function(self)
+        G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
+        for i, v in pairs(self.corruptions) do
+            G.GAME.entr_perma_inversions[v] = self.key
+        end
+    end,
+    generate_ui = Entropy.generate_void_invert_uibox,
+}
+
 return {
     items = {
         apoptosis,
@@ -1315,6 +1460,7 @@ return {
         yaldabaoth,
         phoenix_a,
         antimatter_sheath,
-        caledscratch
+        caledscratch,
+        nyx
     }
 }
