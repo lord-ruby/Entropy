@@ -776,17 +776,19 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         end
     end
     ret = scie(effect, scored_card, key, amount, from_edition, ...)
-    if scored_card and next(SMODS.find_card("j_entr_mutagenesis")) and scored_card:is_playing_card() and (not effect.message_card or effect.message_card == scored_card) and key ~= "message" and key ~= "colour" then
+    if scored_card and next(SMODS.find_card("j_entr_mutagenesis")) and scored_card.is_playing_card and scored_card:is_playing_card() and (not effect.message_card or effect.message_card == scored_card) and key ~= "message" and key ~= "colour" then
         for i, v in pairs(SMODS.find_card("j_entr_mutagenesis")) do
             if Entropy.add_perma_bonus(v, key, amount) then
-                G.E_MANAGER:add_event(Event{
-                    trigger = "after",
-                    func = function()
-                        play_sound("entr_void_generic")
-                        return true
-                    end
-                })
-                delay(0.5)
+                if not Entropy.should_skip_animations() then
+                    G.E_MANAGER:add_event(Event{
+                        trigger = "after",
+                        func = function()
+                            play_sound("entr_void_generic")
+                            return true
+                        end
+                    })
+                end
+                delay(0.1)
                 SMODS.calculate_effect({message = localize("k_upgrade_ex"), colour = Entropy.void_gradient, card = v})
             end
         end
@@ -824,15 +826,6 @@ function Game:update(dt)
         bdt = 0
     end
     update_ref(self, dt)
-    if G.STATE == nil and (G.pack_cards == nil or #G.pack_cards == 0) and G.GAME.DefineBoosterState then
-        G.STATE = G.GAME.DefineBoosterState
-        G.STATE_COMPLETE = false
-        G.GAME.DefineBoosterState = nil
-    end
-    if self.STATE == nil and not G.DefineBoosterState then
-        G.STATE = 1
-        G.STATE_COMPLETE = false
-    end
     entr_define_dt = entr_define_dt + dt
     entr_prismatic_dt = entr_prismatic_dt + dt
     if G.P_CENTERS and G.P_CENTERS.c_entr_define and entr_define_dt > 0.5 then
@@ -1197,58 +1190,6 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
     Entropy.post_create_card(card, area == G.pack_cards, forced_key)
     G.entr_dont_calculate = nil
     return card
-end
-
-local ref = create_shop_card_ui
-function create_shop_card_ui(card, type, area)
-    if card.config.center.set == "Back" or card.config.center.set == "Sleeve" then
-        G.E_MANAGER:add_event(Event({
-            trigger = 'after',
-            delay = 0.43,
-            blocking = false,
-            blockable = false,
-            func = (function()
-              if card.opening then return true end
-              local t1 = {
-                  n=G.UIT.ROOT, config = {minw = 0.6, align = 'tm', colour = darken(G.C.BLACK, 0.2), shadow = true, r = 0.05, padding = 0.05, minh = 1}, nodes={
-                      {n=G.UIT.R, config={align = "cm", colour = lighten(G.C.BLACK, 0.1), r = 0.1, minw = 1, minh = 0.55, emboss = 0.05, padding = 0.03}, nodes={
-                        {n=G.UIT.O, config={object = DynaText({string = {{prefix = localize('$'), ref_table = card, ref_value = 'cost'}}, colours = {G.C.MONEY},shadow = true, silent = true, bump = true, pop_in = 0, scale = 0.5})}},
-                      }}
-                  }}
-              local t2 = {
-                n=G.UIT.ROOT, config = {ref_table = card, minw = 1.1, maxw = 1.3, padding = 0.1, align = 'bm', colour = G.C.GOLD, shadow = true, r = 0.08, minh = 0.94, func = 'can_buy_deckorsleeve_from_shop', one_press = true, button = 'buy_deckorsleeve_from_shop', hover = true}, nodes={
-                    {n=G.UIT.T, config={text = localize('b_buy'),colour = G.C.WHITE, scale = 0.5}}
-                }}
-
-              card.children.price = UIBox{
-                definition = t1,
-                config = {
-                  align="tm",
-                  offset = {x=0,y=1.5},
-                  major = card,
-                  bond = 'Weak',
-                  parent = card
-                }
-              }
-    
-              card.children.buy_button = UIBox{
-                definition = t2,
-                config = {
-                  align="bm",
-                  offset = {x=0,y=-0.3},
-                  major = card,
-                  bond = 'Weak',
-                  parent = card
-                }
-              }
-              card.children.price.alignment.offset.y = card.ability.set == 'Booster' and 0.5 or 0.38
-    
-                return true
-            end)
-          }))
-    else
-        ref(card, type, area)
-    end
 end
 
 function Cryptid.ascend(num, curr2) -- edit this function at your leisure
@@ -2773,41 +2714,6 @@ function end_round()
     end
 end
 
-local generate_uiref = generate_card_ui
-function generate_card_ui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
-    if card_type == "Back" then 
-        if card.config and card.config.center and card.config.center.collection_loc_vars then
-            specific_vars = (card.config.center:collection_loc_vars({}, card) or {}).vars
-        elseif card.config and card.config.center and card.config.center.loc_vars then
-            specific_vars = (card.config.center:loc_vars({}, card) or {}).vars
-        elseif card.config and card.config.center then
-            local loc_args = {}
-            local effect_config = card.config.center.config
-            local name_to_check = card.config.center.name
-            if name_to_check == 'Blue Deck' then loc_args = {effect_config.hands}
-            elseif name_to_check == 'Red Deck' then loc_args = {effect_config.discards}
-            elseif name_to_check == 'Yellow Deck' then loc_args = {effect_config.dollars}
-            elseif name_to_check == 'Green Deck' then loc_args = {effect_config.extra_hand_bonus, effect_config.extra_discard_bonus}
-            elseif name_to_check == 'Black Deck' then loc_args = {effect_config.joker_slot, -effect_config.hands}
-            elseif name_to_check == 'Magic Deck' then loc_args = {localize{type = 'name_text', key = 'v_crystal_ball', set = 'Voucher'}, localize{type = 'name_text', key = 'c_fool', set = 'Tarot'}}
-            elseif name_to_check == 'Nebula Deck' then loc_args = {localize{type = 'name_text', key = 'v_telescope', set = 'Voucher'}, -1}
-            elseif name_to_check == 'Ghost Deck' then
-            elseif name_to_check == 'Abandoned Deck' then 
-            elseif name_to_check == 'Checkered Deck' then
-            elseif name_to_check == 'Zodiac Deck' then loc_args = {localize{type = 'name_text', key = 'v_tarot_merchant', set = 'Voucher'}, 
-                                localize{type = 'name_text', key = 'v_planet_merchant', set = 'Voucher'},
-                                localize{type = 'name_text', key = 'v_overstock_norm', set = 'Voucher'}}
-            elseif name_to_check == 'Painted Deck' then loc_args = {effect_config.hand_size,effect_config.joker_slot}
-            elseif name_to_check == 'Anaglyph Deck' then loc_args = {localize{type = 'name_text', key = 'tag_double', set = 'Tag'}}
-            elseif name_to_check == 'Plasma Deck' then loc_args = {effect_config.ante_scaling}
-            elseif name_to_check == 'Erratic Deck' then
-            end
-            specific_vars = loc_args
-        end
-    end
-    return generate_uiref(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
-end
-
 function G.UIDEF.usage_tabs()
     return create_UIBox_generic_options({back_func = 'high_scores', contents ={create_tabs(
       {tabs = {
@@ -2963,54 +2869,7 @@ function create_shop_card_ui(card, type, area)
     if (card.config.center.set == "Voucher" or card.config.center.set == "Booster" or type == "Voucher" or type == "Booster") and next(SMODS.find_card("j_entr_pound_of_flesh")) then
         card.ability.beast_mark =(card.ability.set == "Voucher" or type == "Voucher") and 3 or true
     end
-    if card.config.center.set == "Back" or card.config.center.set == "Sleeve" then
-        G.E_MANAGER:add_event(Event({
-            trigger = 'after',
-            delay = 0.43,
-            blocking = false,
-            blockable = false,
-            func = (function()
-              if card.opening then return true end
-              local t1 = {
-                  n=G.UIT.ROOT, config = {minw = 0.6, align = 'tm', colour = darken(G.C.BLACK, 0.2), shadow = true, r = 0.05, padding = 0.05, minh = 1}, nodes={
-                      {n=G.UIT.R, config={align = "cm", colour = lighten(G.C.BLACK, 0.1), r = 0.1, minw = 1, minh = 0.55, emboss = 0.05, padding = 0.03}, nodes={
-                        {n=G.UIT.O, config={object = DynaText({string = {{prefix = localize('$'), ref_table = card, ref_value = 'cost'}}, colours = {G.C.MONEY},shadow = true, silent = true, bump = true, pop_in = 0, scale = 0.5})}},
-                      }}
-                  }}
-              local t2 = {
-                n=G.UIT.ROOT, config = {ref_table = card, minw = 1.1, maxw = 1.3, padding = 0.1, align = 'bm', colour = G.C.GOLD, shadow = true, r = 0.08, minh = 0.94, func = 'can_buy_deckorsleeve_from_shop', one_press = true, button = 'buy_deckorsleeve', hover = true}, nodes={
-                    {n=G.UIT.T, config={text = localize('b_redeem'),colour = G.C.WHITE, scale = 0.5}}
-                }}
-
-              card.children.price = UIBox{
-                definition = t1,
-                config = {
-                  align="tm",
-                  offset = {x=0,y=1.5},
-                  major = card,
-                  bond = 'Weak',
-                  parent = card
-                }
-              }
-    
-              card.children.buy_button = UIBox{
-                definition = t2,
-                config = {
-                  align="bm",
-                  offset = {x=0,y=-0.3},
-                  major = card,
-                  bond = 'Weak',
-                  parent = card
-                }
-              }
-              card.children.price.alignment.offset.y = card.ability.set == 'Booster' and 0.5 or 0.38
-    
-                return true
-            end)
-          }))
-    else
-        ref(card, type, area)
-    end
+    ref(card, type, area)
 end
 
 if SMODS.Mods.Multipack and SMODS.Mods.Multipack.can_load then

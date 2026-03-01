@@ -453,10 +453,6 @@ local neon = {
 
 local set_cost_ref = Card.set_cost
 function Card:set_cost()
-	if self.config.center.set == "Back" or self.config.center.set == "Sleeve" then
-		self.config.center.cost = 15
-		self.base_cost = 15
-	end
 	set_cost_ref(self)
 	for i, v in pairs(G.I.CARD) do
 		if v.edition and v.edition.key == "e_entr_neon" and v.area and v.area.config.type ~= "shop" and not v.debuff then

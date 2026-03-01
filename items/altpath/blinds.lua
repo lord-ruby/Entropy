@@ -283,17 +283,19 @@ local eta = {
     calculate = function(self, blind, context)
         if context.after and not G.GAME.blind.disabled then
             G.GAME.blind.suit_debuffed = pseudorandom_element({"Spades", "Hearts", "Diamonds", "Clubs"}, pseudoseed("eta_suit"))
-            for i, v in ipairs(G.hand.cards) do
-                SMODS.recalc_debuff(v)
+            for i, v in ipairs(G.I.CARD) do
+				if v.is_playing_card and v:is_playing_card() then
+                	SMODS.recalc_debuff(v)
+				end
             end
-            for i, v in ipairs(G.deck.cards) do
-                SMODS.recalc_debuff(v)
-            end
-            G.GAME.blind:set_text()
+            G.GAME.blind.loc_debuff_lines = {}
+			G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
+			G.GAME.blind:set_text()
+			G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
         end
     end,
     recalc_debuff = function(self, card, from_blind)
-        if card.base.suit == G.GAME.blind.suit_debuffed then
+        if card.base.suit == G.GAME.blind.suit_debuffed and card.is_playing_card and card:is_playing_card() then
             return true
         end
         return false
@@ -304,7 +306,10 @@ local eta = {
 			trigger = "after",
 			delay = 0.2,
 			func = function()
+			G.GAME.blind.loc_debuff_lines = {}
+			G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
 			G.GAME.blind:set_text()
+			G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
 			return true
 		end}))
     end,
@@ -381,7 +386,10 @@ local iota = {
 		while not G.P_BLINDS[G.GAME.iotablind].boss or G.P_BLINDS[G.GAME.iotablind].boss.showdown do
 			G.GAME.iotablind = pseudorandom_element(G.P_BLINDS).key
 		end
+		G.GAME.blind.loc_debuff_lines = {}
+		G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
 		G.GAME.blind:set_text()
+		G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
 	end,
 	calculate = function(self, blind, context)
 		if not G.GAME.blind.disabled then
@@ -397,6 +405,7 @@ local iota = {
 						G.GAME.blind.loc_debuff_lines = {}
 						G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
 						G.GAME.blind:set_text()
+						G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
 						SMODS.juice_up_blind()
 						G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.06*G.SETTINGS.GAMESPEED, blockable = false, blocking = false, func = function()
 							play_sound('tarot2', 0.76, 0.4);return true end}))

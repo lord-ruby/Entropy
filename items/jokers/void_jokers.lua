@@ -195,6 +195,7 @@ local apoptosis = {
         }
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
+    entr_credits = {art = "pangaea47"}
 }
 
 local egocentrism = {
@@ -340,6 +341,7 @@ local generator_meltdown = {
         end
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
+    entr_credits = {art = "pangaea47"}
 }
 
 local voidheart = {
@@ -373,6 +375,7 @@ local voidheart = {
         q[#q+1] = G.P_BLINDS.bl_entr_abyss
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
+    entr_credits = {art = "pangaea47"}
 }
 
 local unstable_rift = {
@@ -452,7 +455,8 @@ local unstable_rift = {
         for i, v in pairs(self.corruptions) do
             G.GAME.entr_perma_inversions[v] = self.key
         end
-    end
+    end,
+    entr_credits = {art = "pangaea47"}
 }
 
 SMODS.Scoring_Parameter:take_ownership("mult", {
@@ -793,7 +797,7 @@ local nadir = {
         "j_entr_echo_chamber",        
     },
     calculate = function(self, card, context)
-        if context.post_trigger and not context.other_card.debuff then
+        if (context.post_trigger and not context.other_card.debuff) or context.forcetrigger then
             local key = pseudorandom_element(card.ability.extra.stored_jokers, pseudoseed("entr_nadir"))
             local dummy
             if key then
@@ -835,6 +839,7 @@ local nadir = {
         for i, v in pairs(card.ability.extra.stored_jokers) do q[#q+1] = G.P_CENTERS[v] end
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
+    entr_credits = {art = "pangaea47"}
 }
 
 
@@ -983,7 +988,8 @@ local mutagenesis = {
             localize{type = 'other', key = 'card_chips', nodes = desc_nodes, vars = {vars.nominal_chips}}
         end
         SMODS.localize_perma_bonuses(vars, desc_nodes)
-    end
+    end,
+    entr_credits = {art = "pangaea47"}
 }
 
 local crooked_penny = {
@@ -1031,6 +1037,7 @@ local crooked_penny = {
         }
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
+    entr_credits = {art = "pangaea47"}
 }
 
 local phoenix_a = {
@@ -1148,6 +1155,7 @@ local phoenix_a = {
         }
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
+    entr_credits = {art = "pangaea47"}
 }
 
 local antimatter_sheath = {
@@ -1335,8 +1343,9 @@ local nyx = {
     object_type = "Joker",
     key = "nyx",
     rarity = "entr_void",
-    cost = 10,
+    cost = 20,
     eternal_compat = true,
+    demicoloncompat = true,
     pos = {x = 4, y = 4},
     soul_pos = {x=4,y=5},
     atlas = "void_jokers",
@@ -1355,7 +1364,7 @@ local nyx = {
         if context.setting_blind then
             local num = 0
             for i, v in pairs(G.jokers.cards) do
-                if v.config.center.rarity ~= "entr_void" then
+                if v.config.center.rarity ~= "entr_void" and not v.ability.void_temporary then
                     local card = SMODS.add_card{
                         set = "Joker", rarity = "entr_void", edition = "e_negative"
                     }
@@ -1364,10 +1373,15 @@ local nyx = {
             end
         end
         if context.forcetrigger then
-            local card = SMODS.add_card{
-                set = "Joker", rarity = "entr_void", edition = "e_negative"
-            }
-            card.ability.void_temporary = true
+            G.E_MANAGER:add_event(Event{
+                func = function()
+                    local card = SMODS.add_card{
+                        set = "Joker", rarity = "entr_void", edition = "e_negative"
+                    }
+                    card.ability.void_temporary = true
+                    return true
+                end
+            })
         end
     end,
     can_use = function(self, card)
@@ -1405,7 +1419,7 @@ local nyx = {
         local c = Entropy.get_highlighted_cards({{cards=G.I.CARD}}, card, 1, 1)
         local cost = 0
         for i, v in pairs(c) do
-            cost = cost + card.ability.extra.mod * (card.sell_cost + v.sell_cost)
+            cost = cost + card.ability.extra.mod * ((card.sell_cost or 10) + (v.sell_cost or 0))
         end
         return {
             vars = {

@@ -192,16 +192,6 @@ function Entropy.seal_spectral(key, sprite_pos, seal,order, inversion, entr_cred
     }
 end
 
-local gfcfbs = G.FUNCS.check_for_buy_space
-G.FUNCS.check_for_buy_space = function(card)
-	if
-		not card or card.ability.infinitesimal or card.ability.set == "Back" or card.ability.set == "Sleeve"
-	then
-		return true
-	end
-	return gfcfbs(card)
-end
-
 local orig_ref = Spectrallib.card_eval_status_text_eq
 function Spectrallib.card_eval_status_text_eq(card, eval_type, amt, percent, dir, extra, pref, col, sound, vol, ta)
     if card.area == G.butterfly_jokers and G.deck.cards[1] then
@@ -1567,14 +1557,14 @@ end
 
 function Entropy.add_perma_bonus(card, key, amount)
     local keys = ({
-        xlog_chips = "entr_perma_xlog_chips",
-        asc = "entr_perma_asc", 
-        asc_mod = "entr_perma_plus_asc", 
-        plus_asc = "entr_perma_plus_asc", 
-        plusasc_mod = "entr_perma_plus_asc", 
-        exp_asc = "entr_perma_exp_asc", 
-        exp_asc_mod = "entr_perma_exp_asc", 
-        x_asc = "entr_perma_asc",
+        xlog_chips = "slib_perma_xlog_chips",
+        asc = "slib_perma_asc", 
+        asc_mod = "slib_perma_plus_asc", 
+        plus_asc = "slib_perma_plus_asc", 
+        plusasc_mod = "slib_perma_plus_asc", 
+        exp_asc = "slib_perma_exp_asc", 
+        exp_asc_mod = "slib_perma_exp_asc", 
+        x_asc = "slib_perma_asc",
         mult = "mult", 
         h_mult = "mult", 
         mult_mod = "mult",
@@ -1591,7 +1581,7 @@ function Entropy.add_perma_bonus(card, key, amount)
         Xchip_mod = "x_chips",
     })
     key = keys[key] or key
-    if key == "x_chips" or key == "x_mult" or key == "entr_perma_asc" then
+    if key == "x_chips" or key == "x_mult" or key == "slib_perma_asc" then
         amount = amount - 1
     end
     if card.ability["perma_"..key] or card.ability[key] then
@@ -1628,19 +1618,19 @@ function Entropy.calc_perma_bonus_joker(card)
         ret.x_chips = x_chips
     end
 
-    local xlog_chips = card:get_entr_xlog_chips()
+    local xlog_chips = card:get_slib_xlog_chips()
     if xlog_chips ~= 0 then
         ret.xlog_chips = xlog_chips
     end
-    local entr_plus_asc = card:get_entr_plus_asc()
+    local entr_plus_asc = card:get_slib_plus_asc()
     if entr_plus_asc ~= 0 then
         ret.plus_asc = entr_plus_asc
     end
-    local entr_asc = card:get_entr_asc()
+    local entr_asc = card:get_slib_asc()
     if entr_asc ~= 1 and entr_asc > 0 then
-        ret.asc = entr_asc
+        ret.x_asc = entr_asc
     end
-    local entr_exp_asc = card:get_entr_exp_asc()
+    local entr_exp_asc = card:get_slib_exp_asc()
     if entr_exp_asc ~= 1 then
         ret.exp_asc = entr_exp_asc
     end
@@ -1651,14 +1641,14 @@ function Entropy.get_perma_bonus_vars(self)
     return { playing_card = not not self.base.colour, value = self.base.value, suit = self.base.suit, colour = self.base.colour,
         nominal_chips = to_big(self.ability.perma_bonus) > to_big(0) and self.ability.perma_bonus or nil,
         bonus_x_chips = self.ability.perma_x_chips ~= 0 and (self.ability.perma_x_chips + 1) or nil,
-        entr_perma_xlog_chips = self.ability.entr_perma_xlog_chips ~= 0 and self.ability.entr_perma_xlog_chips or nil,
-        entr_perma_h_xlog_chips = self.ability.entr_perma_h_xlog_chips ~= 0 and self.ability.entr_perma_h_xlog_chips or nil,
-        entr_perma_plus_asc = self.ability.entr_perma_plus_asc ~= 0 and self.ability.entr_perma_plus_asc or nil,
-        entr_perma_h_plus_asc = self.ability.entr_perma_h_plus_asc ~= 0 and self.ability.entr_perma_h_plus_asc or nil,
-        entr_perma_asc = self.ability.entr_perma_asc ~= 0 and (self.ability.entr_perma_asc + 1) or nil,
-        entr_perma_h_asc = self.ability.entr_perma_h_asc ~= 0 and (self.ability.entr_perma_h_asc + 1) or nil,
-        entr_perma_exp_asc = self.ability.entr_perma_exp_asc ~= 0 and (self.ability.entr_perma_exp_asc + 1) or nil,
-        entr_perma_h_exp_asc = self.ability.entr_perma_h_exp_asc ~= 0 and (self.ability.entr_perma_h_exp_asc + 1) or nil,
+        slib_perma_xlog_chips = self.ability.slib_perma_xlog_chips ~= 0 and self.ability.slib_perma_xlog_chips or nil,
+        slib_perma_h_xlog_chips = self.ability.slib_perma_h_xlog_chips ~= 0 and self.ability.slib_perma_h_xlog_chips or nil,
+        slib_perma_plus_asc = self.ability.slib_perma_plus_asc ~= 0 and self.ability.slib_perma_plus_asc or nil,
+        slib_perma_h_plus_asc = self.ability.slib_perma_h_plus_asc ~= 0 and self.ability.slib_perma_h_plus_asc or nil,
+        slib_perma_asc = self.ability.slib_perma_asc ~= 0 and (self.ability.slib_perma_asc + 1) or nil,
+        slib_perma_h_asc = self.ability.slib_perma_h_asc ~= 0 and (self.ability.slib_perma_h_asc + 1) or nil,
+        slib_perma_exp_asc = self.ability.slib_perma_exp_asc ~= 0 and (self.ability.slib_perma_exp_asc + 1) or nil,
+        slib_perma_h_exp_asc = self.ability.slib_perma_h_exp_asc ~= 0 and (self.ability.slib_perma_h_exp_asc + 1) or nil,
         suit_level = G.GAME.SuitBuffs and G.GAME.SuitBuffs[self.base.suit] and G.GAME.SuitBuffs[self.base.suit].level or nil,
         bonus_mult = self.ability.perma_mult ~= 0 and self.ability.perma_mult or nil,
         bonus_x_mult = self.ability.perma_x_mult ~= 0 and (self.ability.perma_x_mult + 1) or nil,

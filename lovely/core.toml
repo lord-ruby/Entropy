@@ -2654,26 +2654,6 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
-target = '''=[SMODS Cryptid "lib/forcetrigger.lua"]'''
-pattern = "if Talisman and not Talisman.config_file.disable_anims then"
-position = "at"
-payload = '''
-if not Entropy.should_skip_animations() and (not context or not context.no_sound) then
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
-target = '''=[SMODS Cryptlib "forcetrigger.lua"]'''
-pattern = "if Talisman and not Talisman.config_file.disable_anims then"
-position = "at"
-payload = '''
-if not Entropy.should_skip_animations() and (not context or not context.no_sound) then
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
 target = '''card.lua'''
 pattern = "eligible_card:set_edition(edition, true)"
 position = "at"
@@ -2984,7 +2964,6 @@ if not G.GAME.entr_parakmi_bypass then
     local set = Entropy.get_random_set(next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi)
     local key = Entropy.get_pooled_center(set).key
     G.GAME.current_round.used_packs[i] = key
-    print(set)
   end
 end
 
@@ -3111,26 +3090,6 @@ payload = '''
 local _total_weight = 0
 for _, v in ipairs(rates) do
   _total_weight = _total_weight + v.val or 0
-end
-'''
-match_indent = true
-
-
-[[patches]]
-[patches.pattern]
-target = 'functions/common_events.lua'
-pattern = '''
-if v.name == 'Black Hole' or v.name == 'The Soul' or v.hidden then
-    add = false
-end
-'''
-position = 'before'
-payload = '''
-local _total_weight = 0
-if v.set == "Back" or v.set == "Sleeve" then
-    if Entropy.deck_or_sleeve(v.key) or G.GAME.used_jokers[v.key] then
-        add = false
-    end
 end
 '''
 match_indent = true

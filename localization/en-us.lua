@@ -7220,46 +7220,6 @@ local decs = {
 					"cannot change"
 				}
 			},
-			entr_perma_xlog_chips = {
-				text = {
-					"{X:entr_freaky,C:white}Xlog_#1#(Chips){} Chips"
-				}
-			},
-			entr_perma_h_xlog_chips = {
-				text = {
-					"{X:entr_freaky,C:white}Xlog_#1#(Chips){} Chips"
-				}
-			},
-			entr_perma_plus_asc = {
-				text = {
-					"{C:gold}#1#{} Ascension Power"
-				}
-			},
-			entr_perma_h_plus_asc = {
-				text = {
-					"{C:gold}#1#{} Ascension Power while held in hand"
-				}
-			},
-			entr_perma_asc = {
-				text = {
-					"{X:money,C:white}X#1#{} Ascension Power"
-				}
-			},
-			entr_perma_h_asc = {
-				text = {
-					"{X:money,C:white}X#1#{} Ascension Power while held in hand"
-				}
-			},
-			entr_perma_exp_asc = {
-				text = {
-					"{X:money,C:white}^#1#{} Ascension Power" --i have no idea what colour this should be, just guessing
-				}
-			},
-			entr_perma_h_exp_asc = {
-				text = {
-					"{X:money,C:white}^#1#{} Ascension Power while held in hand"
-				}
-			},
 			entr_card_suit_level = {
 				text = {
 					"--------------",

@@ -7384,7 +7384,7 @@ local void_cradle = {
                 G.GAME.entr_perma_inversions[v.config.center.key] = i
             end
         end
-        Entropy.invert(cards, true)
+        Entropy.invert(cards, true, true)
         card.ability.left = math.max(card.ability.left - 1, 0)
     end,
     entr_credits = {art = {"mailingway"}}

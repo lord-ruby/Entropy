@@ -23,7 +23,7 @@ local flipside = {
         local actual = Entropy.filter_table(cards, function(card)
             return Entropy.inversion(card)
         end)
-        Entropy.invert(cards, true)
+        Entropy.invert(cards, true, true)
     end,
     can_be_inverted = true,
     calculate = function(self, card, context)
@@ -35,7 +35,7 @@ local flipside = {
                 end
             end
             card:start_dissolve()
-            Entropy.invert(cards2, true)
+            Entropy.invert(cards2, true, true)
             return {
                 prevent_inversion = true1
             }
