@@ -1013,6 +1013,7 @@ function Entropy.load_files(files)
                             if not Entropy.contents[result.object_type] then Entropy.contents[result.object_type] = {} end
                             result.cry_order = result.order
                             result.perishable_compat = result.perishable_compat or false
+                            result.blueprint_compat = result.blueprint_compat or false
                             Entropy.contents[result.object_type][#Entropy.contents[result.object_type]+1]=result
                         end
                     end

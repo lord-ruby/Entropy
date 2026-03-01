@@ -5442,7 +5442,6 @@ local shadow_crystal = {
     pos = {x = 1, y = 13},
     atlas = "jokers",
     perishable_compat = true,
-    blueprint_compat = true,
     config = {
         extra = {
             odds = 2

@@ -1192,24 +1192,6 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
     return card
 end
 
-function Cryptid.ascend(num, curr2) -- edit this function at your leisure
-    G.GAME.sunnumber = G.GAME.sunnumber or {not_modest = 0, modest = 0}
-    local snum
-    if type(G.GAME.sunnumber) == "table" then snum = G.GAME.sunnumber.not_modest or 0 
-    else snum = G.GAME.sunnumber end
-    curr2 =
-        curr2 or
-        ((G.GAME.current_round.current_hand.cry_asc_num or 0) + (G.GAME.asc_power_hand or 0)) *
-            (1 + (G.GAME.nemesisnumber or 0))
-    local num2 = math.min(curr2 or 0, 50)
-    local diff = curr2 - num2
-    if to_big(curr2 or 0) > to_big(40) then
-        num2 = num2 + diff ^ 0.3
-    end
-    curr2 = num2
-    return num * (to_big((1.25 + snum)) ^ to_big(curr2))
-end
-
 local pokerhandinforef = G.FUNCS.get_poker_hand_info
 function G.FUNCS.get_poker_hand_info(cards,...)
     local _cards = {}
@@ -3813,6 +3795,7 @@ function Spectrallib.get_bg_colour(...)
     end
     return G.GAME.entr_alt and G.C.ALTBG or get_bg_ref(...)
 end
+
 local blind_is_ref = Spectrallib.blind_is
 function Spectrallib.blind_is(blind, ...)
     return blind_is_ref(blind, ...)
