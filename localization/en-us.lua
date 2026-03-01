@@ -246,6 +246,13 @@ local decs = {
 					"added by Entropy"
 				},
 			},
+			set_entr_void_jokers = {
+				name = "Void Jokers",
+				text = {
+					"{C:entr_void}Inverted{} {C:attention}Jokers{}",
+					"added by Entropy"
+				},
+			},
 		},
 		Joker = {
 			--Crossmod Jokers
