@@ -18,11 +18,6 @@ function Entropy.is_inverted(card)
     local card = card.config and card.config.center or card
     local key = card.key or card.config.center and card.config.center_key or ""
     if card.set == "Joker" then
-        for i, v in pairs(G.P_CENTER_POOLS.Joker) do
-            if v.corruptions then
-                for i, c in pairs(v.corruptions) do if c == key then return true end end
-            end
-        end
         if card.corruptions then return true end
     end
     return Entropy.FlipsideInversions[key] and not Entropy.FlipsidePureInversions[key]

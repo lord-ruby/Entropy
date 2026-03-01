@@ -1454,7 +1454,7 @@ G.FUNCS.use_card = function(e, mute, nosave)
         blocking = false,
         blockable = true,
         func = function()
-        if Entropy.is_inverted(card.config.center) and not card.config.center.hidden then
+        if Entropy.is_inverted(card.config.center) and not card.config.center.hidden and card.config.center.set ~= "Joker" then
                 G.GAME.last_inversion = {
                     key = card.config.center.key,
                     set = card.config.center.set
