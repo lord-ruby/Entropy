@@ -793,6 +793,38 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
             end
         end
     end
+    if (key == 'mult' or key == 'h_mult' or key == 'mult_mod') and amount then
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center_key == "j_entr_unstable_rift" then
+                v.ability.extra.mult = v.ability.extra.mult + amount * 0.2
+                SMODS.calculate_effect({card = v, message = localize("k_upgrade_ex"), colour = G.C.RED})
+            end
+        end
+    end
+    if (key == 'x_mult' or key == 'xmult' or key == 'Xmult' or key == 'x_mult_mod' or key == 'Xmult_mod') and amount ~= 1 then
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center_key == "j_entr_unstable_rift" then
+                v.ability.extra.mult = v.ability.extra.mult * (1 + (amount - 1) * 0.2)
+                SMODS.calculate_effect({card = v, message = localize("k_upgrade_ex"), colour = G.C.RED})
+            end
+        end
+    end
+    if (key == 'chips' or key == 'h_chips' or key == 'chip_mod') and amount then
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center_key == "j_entr_unstable_rift" then
+                v.ability.extra.chips = v.ability.extra.chips + amount * 0.2
+                SMODS.calculate_effect({card = v, message = localize("k_upgrade_ex"), colour = G.C.BLUE})
+            end
+        end
+    end
+    if (key == 'x_chips' or key == 'xchips' or key == 'Xchip_mod') and amount ~= 1 then
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center_key == "j_entr_unstable_rift" then
+                v.ability.extra.chips = v.ability.extra.chips * (1 + (amount - 1) * 0.2)
+                SMODS.calculate_effect({card = v, message = localize("k_upgrade_ex"), colour = G.C.BLUE})
+            end
+        end
+    end
     if ret then
         return ret
     end
