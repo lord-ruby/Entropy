@@ -50,8 +50,8 @@ for i, v in pairs(SMODS.find_card("j_entr_crooked_penny")) do
     end
     crooked = crooked + lmult
     add_round_eval_row({name = 'void_joker_'..i, card = v, bonus = true, void_multiplier = lmult})
+    true_mult = true_mult * crooked
 end
-true_mult = true_mult * crooked
 local rugpull_mult = 1
 if next(SMODS.find_card("j_entr_rugpull")) then
     rugpull_mult = 0

@@ -3741,7 +3741,7 @@ end
 '''
 position = "before"
 payload = '''
-if next(SMODS.find_card("j_entr_generator_meltdown")) then
+if next(SMODS.find_card("j_entr_generator_meltdown")) and (args.level_up or 1) > 0 then
 	local m = G.GAME.hands[hand].mult
 	local c = G.GAME.hands[hand].chips
 	G.GAME.hands[hand].mult = m * 0.75 + c * 0.25

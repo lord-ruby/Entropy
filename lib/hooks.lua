@@ -776,7 +776,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         end
     end
     ret = scie(effect, scored_card, key, amount, from_edition, ...)
-    if scored_card and next(SMODS.find_card("j_entr_mutagenesis")) and scored_card:is_playing_card() and not effect.message_card or effect.message_card == scored_card and key ~= "message" and key ~= "colour" then
+    if scored_card and next(SMODS.find_card("j_entr_mutagenesis")) and scored_card:is_playing_card() and (not effect.message_card or effect.message_card == scored_card) and key ~= "message" and key ~= "colour" then
         for i, v in pairs(SMODS.find_card("j_entr_mutagenesis")) do
             if Entropy.add_perma_bonus(v, key, amount) then
                 G.E_MANAGER:add_event(Event{
