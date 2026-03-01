@@ -120,6 +120,7 @@ SMODS.current_mod.menu_cards = function()
                     --G.title_top:remove_card(v)
                     --v:remove()
                     v:set_base()
+                    G.P_CENTERS.j_entr_title_card.discovered = true
                     v:set_ability(G.P_CENTERS.j_entr_title_card)
                     if v.children.front then
                         v.children.front:remove()
@@ -151,5 +152,7 @@ SMODS.Joker {
 	in_pool = function()
 		return false
 	end,
-    cry_order = 999999
+    cry_order = 999999,
+    discovered = true,
+    unlocked = true
 }
