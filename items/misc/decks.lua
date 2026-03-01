@@ -16,7 +16,7 @@ local twisted = {
         G.GAME.round_resets.path_toggled = true
         G.GAME.entr_alt = not G.GAME.entr_alt
         G.GAME.round_resets.blind_choices.Boss = get_new_boss()
-        ease_background_colour{new_colour = Entropy.get_bg_colour(), contrast = 1}
+        ease_background_colour{new_colour = Spectrallib.get_bg_colour(), contrast = 1}
         if G.ARGS.spin then G.ARGS.spin.real = (G.SETTINGS.reduced_motion and 0 or 1)*(G.GAME.entr_alt and 0.3 or -0.3) end
     end,
     entr_credits = {art = {"Lil. Mr. Slipstream"}}
@@ -233,7 +233,7 @@ end
 
 local get_type_colourref = get_type_colour
 function get_type_colour(_c, card)
-    if Entropy.IsEE() and card.debuff then
+    if Entropy.is_EE() and card.debuff then
       return Entropy.reverse_legendary_gradient
     end
     if card and card.ability and card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]] then
@@ -246,7 +246,7 @@ local can_use_ref = G.FUNCS.can_use_consumeable
 G.FUNCS.can_use_consumeable = function(e)
   local card = e.config.ref_table
   if card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]] then
-    if Card.can_use_consumeable(Entropy.GetDummy(G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]], card.area, card)) then
+    if Card.can_use_consumeable(Entropy.get_dummy(G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]], card.area, card)) then
       e.config.colour = G.C.RED
       e.config.button = 'use_card'
     else
@@ -262,7 +262,7 @@ local buy_and_use_ref = G.FUNCS.can_buy_and_use
 G.FUNCS.can_buy_and_use = function(e)
   local card = e.config.ref_table
   if card.ability.glitched_crown and G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]] then
-    if (((to_big(e.config.ref_table.cost) > to_big(G.GAME.dollars - G.GAME.bankrupt_at)) and (to_big(e.config.ref_table.cost) > to_big(0))) or (not Card.can_use_consumeable(Entropy.GetDummy(G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]], card.area, card)))) then
+    if (((to_big(e.config.ref_table.cost) > to_big(G.GAME.dollars - G.GAME.bankrupt_at)) and (to_big(e.config.ref_table.cost) > to_big(0))) or (not Card.can_use_consumeable(Entropy.get_dummy(G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]], card.area, card)))) then
         e.UIBox.states.visible = false
         e.config.colour = G.C.UI.BACKGROUND_INACTIVE
         e.config.button = nil
@@ -323,6 +323,76 @@ function calculate_reroll_cost(...)
     return ret
 end
 
+local containment = {
+    object_type = "Back",
+    order = 7009,
+    dependencies = {
+      items = {
+        "set_entr_decks"
+      }
+    },
+	object_type = "Back",
+	name = "Deck of Containment",
+	key = "doc",
+	pos = { x = 2, y = 0 },
+	atlas = "decks",
+	apply = function(self)
+		G.GAME.entropy = 0
+	end,
+  in_pool = function() return next(SMODS.find_card("j_entr_parakmi")) end, --redeem stuff
+	calculate = function(self,back,context)
+		if context.final_scoring_step and number_format(0.002 + (0.998^(G.GAME.entropy/2))) ~= "1" then
+			if not ({
+				["High Card"]=true,
+				["Pair"]=true,
+				["Three of a Kind"]=true,
+				["Two Pair"]=true,
+				["Four of a Kind"]=true,
+				["Flush"]=true,
+				["Straight"]=true,
+				["Straight Flush"]=true,
+				["Full House"]=true
+			})[context.scoring_name] or to_big(G.GAME.hands[context.scoring_name].AscensionPower or 0) > to_big(0) then
+				ease_entropy(G.GAME.hands[context.scoring_name].level + (G.GAME.hands[context.scoring_name].AscensionPower or 0) or 1)
+			end
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					play_sound(Talisman and "talisman_echip" or "cryl_echips", 1)
+					attention_text({
+						scale = 1.4,
+						text = "^"..tostring(number_format(0.002 + (0.998^(G.GAME.entropy/2)))).." Chips",
+						hold = 2,
+						align = "cm",
+						offset = { x = 0, y = -2.7 },
+						major = G.play,
+					})
+					return true
+				end,
+			}))
+			return {
+				Echip_mod = 0.01 + (0.998^(G.GAME.entropy/2)),
+				colour = G.C.DARK_EDITION,
+			}
+		end
+		if context.individual and context.cardarea == G.play then
+			if context.other_card and (context.other_card.edition or context.other_card.ability.set == "Enhanced") then
+				if context.other_card.edition and context.other_card.ability.set == "Enhanced" then ease_entropy(2) else ease_entropy(1) end
+			end
+		end
+		if context.after then
+			for i, v in pairs(G.jokers.cards) do
+				if v.edition and v.edition.key then ease_entropy(2) end
+				if i > G.jokers.config.card_limit then ease_entropy(1) end
+			end
+		end
+  end,
+	loc_vars = function()
+		return {
+			key = not (SMODS.Mods.Cryptid or {}).can_load and "b_entr_doc_cryptidless" or nil
+		}
+  end,
+}
+
 if CardSleeves then
     CardSleeves.Sleeve {
       key = "twisted",
@@ -333,7 +403,7 @@ if CardSleeves then
         G.GAME.round_resets.path_toggled = true
         G.GAME.entr_alt = not G.GAME.entr_alt
         G.GAME.round_resets.blind_choices.Boss = get_new_boss()
-        ease_background_colour{new_colour = Entropy.get_bg_colour(), contrast = 1}
+        ease_background_colour{new_colour = Spectrallib.get_bg_colour(), contrast = 1}
         if G.ARGS.spin then
           G.ARGS.spin.real = (G.SETTINGS.reduced_motion and 0 or 1)*(G.GAME.entr_alt and 0.3 or -0.3)
         end
@@ -450,11 +520,87 @@ if CardSleeves then
     atlas = "sleeves",
     pos = { x = 7, y = 0 },
     apply = function()
-      change_shop_size(-1)
-      G.GAME.modifiers.glitched_items = (G.GAME.modifiers.glitched_items or 0) + 2
+		change_shop_size(-1)
+		G.GAME.modifiers.glitched_items = (G.GAME.modifiers.glitched_items or 0) + 2
     end,
     entr_credits = {art = {"LFMoth"}}
   }
+
+  CardSleeves.Sleeve {
+    key = "doc",
+    atlas = "sleeves",
+    pos = { x = 2, y = 0 },
+    loc_vars = function()
+		return {
+			key = not (SMODS.Mods.Cryptid or {}).can_load and "sleeve_entr_doc_cryptidless" or nil
+		}
+    end,
+    in_pool = function() return next(SMODS.find_card("j_entr_parakmi")) end, --redeem stuff
+    apply = function()
+		if G.GAME.selected_back and G.GAME.selected_back.effect.center.original_key == "doc" then
+			G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			func = function()
+				SMODS.add_card({
+				rarity = "entr_entropic",
+				area = G.jokers,
+				set = "Joker",
+				key_append = "entr_doc_combo"
+				})
+				return true
+			end
+			}))
+		else
+			G.GAME.entropy = 0
+		end
+    end,
+    calculate = function(self,back,context)
+		if context.final_scoring_step and number_format(0.002 + (0.998^(G.GAME.entropy/2))) ~= "1" then
+			if not ({
+				["High Card"]=true,
+				["Pair"]=true,
+				["Three of a Kind"]=true,
+				["Two Pair"]=true,
+				["Four of a Kind"]=true,
+				["Flush"]=true,
+				["Straight"]=true,
+				["Straight Flush"]=true,
+				["Full House"]=true
+			})[context.scoring_name] or to_big(G.GAME.hands[context.scoring_name].AscensionPower or 0) > to_big(0) then
+				ease_entropy(G.GAME.hands[context.scoring_name].level + (G.GAME.hands[context.scoring_name].AscensionPower or 0) or 1)
+			end
+			G.E_MANAGER:add_event(Event({
+				func = function()
+					play_sound(Talisman and "talisman_echip" or "cryl_echips", 1)
+					attention_text({
+						scale = 1.4,
+						text = "^"..tostring(number_format(0.002 + (0.998^(G.GAME.entropy/2)))).." Chips",
+						hold = 2,
+						align = "cm",
+						offset = { x = 0, y = -2.7 },
+						major = G.play,
+					})
+					return true
+				end,
+			}))
+			return {
+				Echip_mod = 0.01 + (0.998^(G.GAME.entropy/2)),
+				colour = G.C.DARK_EDITION,
+			}
+		end
+		if context.individual and context.cardarea == G.play then
+			if context.other_card and (context.other_card.edition or context.other_card.ability.set == "Enhanced") then
+				if context.other_card.edition and context.other_card.ability.set == "Enhanced" then ease_entropy(2) else ease_entropy(1) end
+			end
+		end
+		if context.after then
+			for i, v in pairs(G.jokers.cards) do
+				if v.edition and v.edition.key then ease_entropy(2) end
+				if i > G.jokers.config.card_limit then ease_entropy(1) end
+			end
+		end
+    end
+    }
 end
 
 return {
@@ -467,6 +613,7 @@ return {
       butterfly,
       gemstone,
       corrupted,
-      discordant
+      discordant,
+      containment
     }
   }

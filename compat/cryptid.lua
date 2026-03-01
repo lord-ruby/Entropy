@@ -12,7 +12,6 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
     local files = {
         "compat/cryptid/cursed_jokers",
         "compat/cryptid/define",
-        "compat/cryptid/entropic_jokers",
         "compat/cryptid/epic_jokers",
         "compat/cryptid/exotic_jokers",
         "compat/cryptid/reverse_codes",
@@ -56,141 +55,6 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
     Cryptid.edeck_sprites.sticker.entr_yellow_sign = {atlas="entr_crypt_deck", pos = {x=3,y=3}}
     Cryptid.edeck_sprites.sticker.superego = {atlas="entr_crypt_deck", pos = {x=2,y=3}}
 
-
-local containment = {
-    object_type = "Back",
-    order = 7002,
-    dependencies = {
-      items = {
-        "set_entr_decks"
-      }
-    },
-      object_type = "Back",
-      name = "Deck of Containment",
-      key = "doc",
-      pos = { x = 2, y = 0 },
-      atlas = "decks",
-      apply = function(self)
-          G.GAME.entropy = 0
-      end,
-      calculate = function(self,back,context)
-          if context.final_scoring_step and number_format(0.002 + (0.998^(G.GAME.entropy/2))) ~= "1" then
-              if not ({
-                  ["High Card"]=true,
-                  ["Pair"]=true,
-                  ["Three of a Kind"]=true,
-                  ["Two Pair"]=true,
-                  ["Four of a Kind"]=true,
-                  ["Flush"]=true,
-                  ["Straight"]=true,
-                  ["Straight Flush"]=true,
-                  ["Full House"]=true
-              })[context.scoring_name] or to_big(G.GAME.hands[context.scoring_name].AscensionPower or 0) > to_big(0) then
-                  ease_entropy(G.GAME.hands[context.scoring_name].level + (G.GAME.hands[context.scoring_name].AscensionPower or 0) or 1)
-              end
-              G.E_MANAGER:add_event(Event({
-                  func = function()
-                      play_sound("talisman_echip", 1)
-                      attention_text({
-                          scale = 1.4,
-                          text = "^"..tostring(number_format(0.002 + (0.998^(G.GAME.entropy/2)))).." Chips",
-                          hold = 2,
-                          align = "cm",
-                          offset = { x = 0, y = -2.7 },
-                          major = G.play,
-                      })
-                      return true
-                  end,
-              }))
-              return {
-                  Echip_mod = 0.01 + (0.998^(G.GAME.entropy/2)),
-                  colour = G.C.DARK_EDITION,
-              }
-          end
-          if context.individual and context.cardarea == G.play then
-              if context.other_card and (context.other_card.edition or context.other_card.ability.set == "Enhanced") then
-                  if context.other_card.edition and context.other_card.ability.set == "Enhanced" then ease_entropy(2) else ease_entropy(1) end
-              end
-          end
-        if context.after then
-            for i, v in pairs(G.jokers.cards) do
-                if v.edition and v.edition.key then ease_entropy(2) end
-                if i > G.jokers.config.card_limit then ease_entropy(1) end
-            end
-        end
-    end
-  }
-  if CardSleeves then
-    CardSleeves.Sleeve {
-        key = "doc",
-        atlas = "sleeves",
-        pos = { x = 2, y = 0 },
-        apply = function()
-        if G.GAME.selected_back and G.GAME.selected_back.effect.center.original_key == "doc" then
-            G.E_MANAGER:add_event(Event({
-            trigger = 'after',
-            func = function()
-                SMODS.add_card({
-                rarity = "entr_entropic",
-                area = G.jokers,
-                set = "Joker",
-                key_append = "entr_doc_combo"
-                })
-                return true
-            end
-            }))
-                else
-                    G.GAME.entropy = 0
-        end
-        end,
-        calculate = function(self,back,context)
-        if context.final_scoring_step and number_format(0.002 + (0.998^(G.GAME.entropy/2))) ~= "1" then
-            if not ({
-                ["High Card"]=true,
-                ["Pair"]=true,
-                ["Three of a Kind"]=true,
-                ["Two Pair"]=true,
-                ["Four of a Kind"]=true,
-                ["Flush"]=true,
-                ["Straight"]=true,
-                ["Straight Flush"]=true,
-                ["Full House"]=true
-            })[context.scoring_name] or to_big(G.GAME.hands[context.scoring_name].AscensionPower or 0) > to_big(0) then
-                ease_entropy(G.GAME.hands[context.scoring_name].level + (G.GAME.hands[context.scoring_name].AscensionPower or 0) or 1)
-            end
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    play_sound("talisman_echip", 1)
-                    attention_text({
-                        scale = 1.4,
-                        text = "^"..tostring(number_format(0.002 + (0.998^(G.GAME.entropy/2)))).." Chips",
-                        hold = 2,
-                        align = "cm",
-                        offset = { x = 0, y = -2.7 },
-                        major = G.play,
-                    })
-                    return true
-                end,
-            }))
-            return {
-                Echip_mod = 0.01 + (0.998^(G.GAME.entropy/2)),
-                colour = G.C.DARK_EDITION,
-            }
-        end
-        if context.individual and context.cardarea == G.play then
-            if context.other_card and (context.other_card.edition or context.other_card.ability.set == "Enhanced") then
-                if context.other_card.edition and context.other_card.ability.set == "Enhanced" then ease_entropy(2) else ease_entropy(1) end
-            end
-        end
-        if context.after then
-            for i, v in pairs(G.jokers.cards) do
-                if v.edition and v.edition.key then ease_entropy(2) end
-                if i > G.jokers.config.card_limit then ease_entropy(1) end
-            end
-        end
-    end
-    }
-    end
 
     local supersede = {
         dependencies = {
@@ -253,7 +117,6 @@ local containment = {
             art = {"Lil. Mr. Slipstream"}
         }
     }
-    items[#items+1]=containment
     items[#items+1]=supersede
     items[#items+1]=ascension
   return {
@@ -262,13 +125,12 @@ local containment = {
 elseif (SMODS.Mods["vallkarri"] or {}).can_load then
     Entropy.ValkarriOverCryptid = true
     local files = {
-        "compat/cryptid/entropic_jokers",
         "compat/cryptid/epic_jokers",
         "compat/cryptid/exotic_jokers",
     }
     local items = Entropy.collect_files(files)
     G.FUNCS.cry_asc_UI_set = function(e)
-        e.config.object.colours = { G.C.GOLD }
+        e.config.object.colours = { Entropy.get_asc_colour(G.GAME.current_round.current_hand.cry_asc_num) }
         e.config.object:update_text()
     end    
     -- Needed because get_poker_hand_info isnt called at the end of the road
@@ -287,13 +149,12 @@ elseif (SMODS.Mods["vallkarri"] or {}).can_load then
 elseif (SMODS.Mods["MyDreamJournal"] or {}).can_load then
     Entropy.MDJOverCryptid = true
     local files = {
-        "compat/cryptid/entropic_jokers",
         "compat/cryptid/epic_jokers",
         "compat/cryptid/exotic_jokers",
     }
     local items = Entropy.collect_files(files)
     G.FUNCS.cry_asc_UI_set = function(e)
-        e.config.object.colours = { G.C.GOLD }
+        e.config.object.colours = { Entropy.get_asc_colour(G.GAME.current_round.current_hand.cry_asc_num) }
         e.config.object:update_text()
     end    
     -- Needed because get_poker_hand_info isnt called at the end of the road
@@ -311,7 +172,7 @@ elseif (SMODS.Mods["MyDreamJournal"] or {}).can_load then
     }
 else
     G.FUNCS.cry_asc_UI_set = function(e)
-        e.config.object.colours = { G.C.GOLD }
+        e.config.object.colours = { Entropy.get_asc_colour(G.GAME.current_round.current_hand.cry_asc_num) }
         e.config.object:update_text()
     end    
     -- Needed because get_poker_hand_info isnt called at the end of the road

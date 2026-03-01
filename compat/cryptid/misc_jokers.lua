@@ -87,13 +87,13 @@ local solarflare = {
 				}))
 			end
 			return {
-				asc = lenient_bignum(card.ability.asc),
+				x_asc = lenient_bignum(card.ability.asc),
 			}
 		end
 		if context.individual and context.cardarea == G.play then
 			if context.other_card.edition and context.other_card.edition.key == "e_entr_solar" then
 				return {
-					asc = lenient_bignum(card.ability.asc),
+					x_asc = lenient_bignum(card.ability.asc),
 					colour = G.C.MULT,
 					card = card,
 				}
@@ -114,14 +114,14 @@ local solarflare = {
 				}
 			else
 				return {
-					asc = lenient_bignum(card.ability.asc),
+					x_asc = lenient_bignum(card.ability.asc),
 					card = card,
 				}
 			end
 		end
         if context.forcetrigger then
             return {
-                asc = lenient_bignum(card.ability.asc),
+                x_asc = lenient_bignum(card.ability.asc),
                 card = card,
             }
         end
@@ -158,7 +158,7 @@ local code_m = {
                 if not v.edition then cards[#cards+1] = v end
             end
             local jcard = pseudorandom_element(cards, pseudoseed("code_m"))
-            Entropy.FlipThen({jcard}, function(card)
+            Entropy.flip_then({jcard}, function(card)
                 card:set_edition("e_cry_m")
             end)
         end

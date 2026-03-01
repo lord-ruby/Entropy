@@ -9,7 +9,7 @@ Entropy.SpecialDailies["06/01"] = {
           {id="entr_set_seed", value = "PRIDMNTH"}
         }
     },
-    restrictions = Entropy.DailyBanlist(),
+    restrictions = Entropy.daily_banlist(),
     key = "c_entr_daily",
     id = "c_entr_daily",
     original_key = "daily",
@@ -33,7 +33,7 @@ Entropy.SpecialDailies["06/02"] = {
           {id="entr_set_seed", value = "ASCPAIR2"}
         }
     },
-    restrictions = Entropy.DailyBanlist(),
+    restrictions = Entropy.daily_banlist(),
     key = "c_entr_daily",
     id = "c_entr_daily",
     original_key = "daily",
@@ -57,7 +57,7 @@ Entropy.SpecialDailies["06/04"] = {
           {id="entr_set_seed", value = "MEATNOIA"}
         }
     },
-    restrictions = Entropy.DailyBanlist(),
+    restrictions = Entropy.daily_banlist(),
     key = "c_entr_daily",
     id = "c_entr_daily",
     original_key = "daily",
@@ -81,7 +81,7 @@ Entropy.SpecialDailies["06/05"] = {
           {id="entr_set_seed", value = "CRACKEGG"}
         }
     },
-    restrictions = Entropy.DailyBanlist(),
+    restrictions = Entropy.daily_banlist(),
     key = "c_entr_daily",
     id = "c_entr_daily",
     original_key = "daily",
@@ -103,7 +103,7 @@ Entropy.SpecialDailies["06/06"] = {
           {id="entr_set_seed", value = "FRKYFDAY"}
         }
     },
-    restrictions = Entropy.DailyBanlist(),
+    restrictions = Entropy.daily_banlist(),
     key = "c_entr_daily",
     id = "c_entr_daily",
     original_key = "daily",
@@ -131,7 +131,7 @@ Entropy.SpecialDailies["06/08"] = {
           {id="entr_set_seed", value = "LOSEFACE"}
         }
     },
-    restrictions = Entropy.DailyBanlist(),
+    restrictions = Entropy.daily_banlist(),
     key = "c_entr_daily",
     id = "c_entr_daily",
     original_key = "daily",
@@ -169,7 +169,7 @@ Entropy.SpecialDailies["06/09"] = {
           {id="entr_set_seed", value = "5083L15K"}
         }
     },
-    restrictions = Entropy.DailyBanlist(),
+    restrictions = Entropy.daily_banlist(),
     key = "c_entr_daily",
     id = "c_entr_daily",
     original_key = "daily",
@@ -195,7 +195,7 @@ Entropy.SpecialDailies["06/10"] = {
           {id="entr_set_seed", value = "00000O00"}
         }
     },
-    restrictions = Entropy.DailyBanlist(),
+    restrictions = Entropy.daily_banlist(),
     key = "c_entr_daily",
     id = "c_entr_daily",
     original_key = "daily",
@@ -220,7 +220,7 @@ Entropy.SpecialDailies["06/11"] = {
           {id="entr_set_seed", value = "M1551NGN0"}
         }
     },
-    restrictions = Entropy.DailyBanlist(),
+    restrictions = Entropy.daily_banlist(),
     key = "c_entr_daily",
     id = "c_entr_daily",
     original_key = "daily",
@@ -258,7 +258,7 @@ Entropy.SpecialDailies["06/13"] = {
           {id="entr_set_seed", value = "1D4BL00N"}
         }
     },
-    restrictions = Entropy.DailyBanlist(),
+    restrictions = Entropy.daily_banlist(),
     key = "c_entr_daily",
     id = "c_entr_daily",
     original_key = "daily",
@@ -283,7 +283,7 @@ Entropy.SpecialDailies["06/14"] = {
           {id="entr_set_seed", value = "ST4RG4ZE"}
         }
     },
-    restrictions = Entropy.DailyBanlist(),
+    restrictions = Entropy.daily_banlist(),
     key = "c_entr_daily",
     id = "c_entr_daily",
     original_key = "daily",
@@ -305,7 +305,7 @@ Entropy.SpecialDailies["06/15"] = {
           {id="entr_set_seed", value = "DELT4T43"}
         }
     },
-    restrictions = Entropy.DailyBanlist(),
+    restrictions = Entropy.daily_banlist(),
     key = "c_entr_daily",
     id = "c_entr_daily",
     original_key = "daily",
@@ -327,7 +327,7 @@ local function check_daily_seed(code, body, headers)
         Entropy.DAILYSEED = os.date("%x")
     end
 end
-function Entropy.UpdateDailySeed()
+function Entropy.update_daily_seed()
     if Cryptid_config.HTTPS and https and https.asyncRequest then
         https.asyncRequest(
             "https://tools.aimylogic.com/api/now?tz=Europa/England&format=dd/MM/yyyy",

@@ -1,7 +1,7 @@
 local loadmodsref = SMODS.injectItems
 function SMODS.injectItems(...)
     if Entropy.config.blind_tokens then
-        local results = Entropy.RegisterBlinds()
+        local results = Entropy.register_blinds()
         local items = {}
         if results then
             if results.init then results.init(results) end
@@ -24,15 +24,84 @@ function SMODS.injectItems(...)
         Cryptid.pin_debuff["entr_entropic"] = true
         Cryptid.pin_debuff["entr_reverse_legendary"] = true
     end
-
     loadmodsref(...)
-
+    for i, v in pairs(G.P_TAGS) do
+        if v.blindside then
+            SMODS.ObjectTypes.bld_obj_blindside.cards[#SMODS.ObjectTypes.bld_obj_blindside.cards+1] = v.key
+        end
+    end
     G.ASSET_ATLAS["cry_gameset"] = Entropy.GamesetAtlas
-    if StockingStuffer then StockingStuffer.Ruby.get_dummy = Entropy.GetDummy end
+    if StockingStuffer then StockingStuffer.Ruby.get_dummy = Entropy.get_dummy end
     if not G.entr_hooked then
 
         local oldfunc = Game.main_menu
         Game.main_menu = function(change_context)
+            if not G.SAVED_GAME then 
+                G.SAVED_GAME = get_compressed(G.SETTINGS.profile..'/'..'save.jkr')
+                if G.SAVED_GAME ~= nil then G.SAVED_GAME = STR_UNPACK(G.SAVED_GAME) end
+            end
+            if G.SAVED_GAME and G.SAVED_GAME.GAME and G.SAVED_GAME.GAME.EEBuildup then
+                G.GAME.EEBuildup = true
+                G.E_MANAGER:add_event(Event{
+                    trigger = "after",
+                    blocking = false,
+                    blockable = false,
+                    delay = 0.25 * G.SETTINGS.GAMESPEED,
+                    func = function()
+                        G.GAME.EE_SCREEN = true 
+                        G.GAME.EE_R = true
+                        if not G.SPLASH_EE then
+                        G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
+                        G.GAME.EE_FADE = 0
+                        G.GAME.EE_FADE_SPEED = 10
+                        G.E_MANAGER:add_event(Event{
+                            trigger = "after",
+                            blocking = false,
+                            blockable = false,
+                            delay = 0.25 * G.SETTINGS.GAMESPEED,
+                            func = function()
+                            G.GAME.EE_FADE = 0
+                            G.SPLASH_EE:define_draw_steps({{
+                                shader = 'entr_entropic_vortex',
+                                send = {
+                                {name = 'time', ref_table = G.TIMERS, ref_value = 'REAL'},
+                                {name = 'vort_speed', val = 1},
+                                {name = 'colour_1', ref_table = G.C, ref_value = 'BLUE'},
+                                {name = 'colour_2', ref_table = G.C, ref_value = 'WHITE'},
+                                {name = 'mid_flash', val = 0},
+                                {name = 'transgender', ref_table = G.GAME, ref_value = "EE_FADE"},
+                                {name = 'vort_offset', val = (2*90.15315131*os.time())%100000},
+                                }}}
+                            )
+                            return true
+                            end
+                        })
+                        end
+                        return true
+                    end
+                })
+            else
+                G.E_MANAGER:add_event(Event{
+                    trigger = "after",
+                    blocking = false,
+                    blockable = false,
+                    delay = 0.25 * G.SETTINGS.GAMESPEED,
+                    func = function()
+                        G.E_MANAGER:add_event(Event{
+                            trigger = "after",
+                            blocking = false,
+                            blockable = false,
+                            delay = 0.25 * G.SETTINGS.GAMESPEED,
+                            func = function()
+                                G.GAME.EE_SCREEN = nil
+                                G.GAME.EE_R = true
+                                return true
+                            end
+                        })
+                        return true
+                    end
+                })
+            end
             local ret = oldfunc(change_context)
             G.SPLASH_BACK:define_draw_steps({
                 {
@@ -41,66 +110,10 @@ function SMODS.injectItems(...)
                         { name = "time", ref_table = G.TIMERS, ref_value = "REAL_SHADER" },
                         { name = "vort_speed", val = 0.4 },
                         { name = "colour_1", ref_table = Entropy, ref_value = "entropic_gradient" },
-                        { name = "colour_2", ref_table = G.C, ref_value = "PURPLE" },
+                        { name = "colour_2", ref_table = Entropy, ref_value = "reverse_legendary_gradient" },
                     },
                 },
             })
-            
-            G.E_MANAGER:add_event(Event({
-                trigger = "after",
-                delay = 0,
-                blockable = false,
-                blocking = false,
-                func = function()
-                    local ind1
-                    if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
-                        for i, v in pairs(G.title_top.cards) do
-                            if v.config.center.key == "c_cryptid" then 
-                                v:set_ability(G.P_CENTERS.c_entr_entropy)
-                                v.T.w = v.T.w * 1.1 * 1.2
-                                v.T.h = v.T.h * 1.1 * 1.2
-                            end
-                        end
-                    else    
-                        local newcard = Card(
-                            G.title_top.T.x,
-                            G.title_top.T.y,
-                            G.CARD_W,
-                            G.CARD_H,
-                            G.P_CARDS.empty,
-                            G.P_CENTERS.c_entr_entropy,
-                            { bypass_discovery_center = true }
-                        )
-                        -- recenter the title
-                        G.title_top.T.w = G.title_top.T.w * 1.7675
-                        G.title_top.T.x = G.title_top.T.x - 0.8
-                        G.title_top:emplace(newcard)
-                        -- make the card look the same way as the title screen Ace of Spades
-                        newcard.T.w = newcard.T.w * 1.1 * 1.2
-                        newcard.T.h = newcard.T.h * 1.1 * 1.2
-                        newcard.no_ui = true
-                        newcard.states.visible = false
-                        if change_context == "splash" then
-                            newcard.states.visible = true
-                            newcard:start_materialize({ G.C.WHITE, G.C.WHITE }, true, 2.5)
-                        else
-                            newcard.states.visible = true
-                            newcard:start_materialize({ G.C.WHITE, G.C.WHITE }, nil, 1.2)
-                        end
-                    end
-                    for i, v in pairs(G.title_top.cards) do
-                        if v.base and v.base.value and v.base.value == "Ace" then
-                            math.randomseed(os.time())
-                            if math.random() < 0.01 then
-                                v:set_edition("e_entr_freaky") 
-                            else
-                                v:set_edition("e_entr_solar") 
-                            end
-                        end
-                    end
-                    return true
-                end
-            }))
             return ret
         end
 

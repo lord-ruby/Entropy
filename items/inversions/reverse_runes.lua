@@ -7,7 +7,9 @@ function Entropy.pact_mark(key)
     else
         tag.ability.count = (tag.ability.count or 0) + 1
         local index = tag.ability.index
-        G.HUD_runes[index]:remove()
+        if G.HUD_runes[index] then
+            G.HUD_runes[index]:remove()
+        end
         local tag_sprite_ui, tag_sprite = tag:generate_UI_rune()
         G.HUD_runes[index] = UIBox{
             definition = {n=G.UIT.ROOT, config={align = "tm", padding = 0.05, colour = G.C.CLEAR}, nodes={
@@ -19,6 +21,11 @@ function Entropy.pact_mark(key)
             major = index > 1 and G.HUD_runes[index-1] or G.ROOM_ATTACH}
         }
     end
+    if #G.HUD_runes > 6 then
+		for i = 2, #G.HUD_runes do
+			G.HUD_runes[i].config.offset.y = -0.9 + 0.9 * (6 / #G.HUD_runes)
+		end
+	end
     return tag.ability.count
 end
 
@@ -601,7 +608,7 @@ function Card:start_dissolve(...)
                 end
             })
         end
-    elseif Entropy.has_rune("rune_entr_rebirth") and self:is_playing_card() then
+    elseif Entropy.has_rune("rune_entr_rebirth") and self:is_playing_card() and not G.entr_bypass_rebirth then
         card_eval_status_text(
             self,
             "extra",
@@ -645,7 +652,7 @@ function Card:shatter(...)
                 end
             })
         end
-    elseif Entropy.has_rune("rune_entr_rebirth") and self:is_playing_card() then
+    elseif Entropy.has_rune("rune_entr_rebirth") and self:is_playing_card() and not G.entr_bypass_rebirth then
         card_eval_status_text(
             self,
             "extra",
@@ -1010,14 +1017,47 @@ G.FUNCS.play_cards_from_highlighted = function(e)
         v.ability.entr_times_played = (v.ability.entr_times_played or 0) + 1
     end
     local text = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
-    if text == "Full House" and (next(SMODS.find_card("j_entr_ruby") or next(SMODS.find_card("j_entr_slipstream"))) or next(SMODS.find_card("j_entr_cassknows")) or next(SMODS.find_card("j_entr_crabus")) or next(SMODS.find_card("j_entr_grahkon")) or next(SMODS.find_card("j_entr_hexa"))) then
+    if text == "Full House" and (next(SMODS.find_card("j_entr_ruby") or next(SMODS.find_card("j_entr_slipstream"))) or next(SMODS.find_card("j_entr_cassknows")) or next(SMODS.find_card("j_entr_grahkon")) or next(SMODS.find_card("j_entr_hexa"))) then
         check_for_unlock({type = "suburban_jungle"})
     end
     local text = G.FUNCS.get_poker_hand_info(G.hand.highlighted)
     if text == "entr_derivative" and next(SMODS.find_card("j_entr_antiderivative")) then
         check_for_unlock({type = "anti_derivative"})
     end
-    G.GAME.asc_power_hand = 0
+    for i, v in pairs(SMODS.find_card("j_entr_planetarium")) do
+        if v.ability.extra.hand == "Pair" then
+            local cards = {}
+            for i, v in pairs(G.hand.cards) do
+                if v.highlighted then cards[#cards+1] = v end
+            end
+            Entropy.flip_then({cards[1], cards[#cards]}, function(c)
+                if c == cards[1] then
+                    copy_card(cards[#cards], cards[1])
+                end
+            end)
+            break
+        end
+        if v.ability.extra.hand == "Flush" then
+            local hcards = {}
+            for i, v in pairs(G.hand.cards) do
+                if v.highlighted then hcards[#hcards+1] = v end
+            end
+            local suit = hcards[1] and hcards[1].base.suit
+            if suit then
+                local cards = {}
+                for i = 2, #hcards do
+                    cards[#cards+1] = hcards[i]
+                end
+                pseudoshuffle(cards, pseudoseed("entr_planetarium_jupiter"))
+                Entropy.flip_then({hcards[1], cards[1], cards[2]}, function(c)
+                    if c == cards[1] or c == cards[2] then
+                        SMODS.change_base(c, suit)
+                    end
+                end)
+            end
+            break
+        end
+    end
     play_ref(e)
 end
 
@@ -1075,6 +1115,7 @@ local strength = {
                 else
                     G.deck:emplace(copy)
                 end
+                playing_card_joker_effects({ copy })
             end
         end
         local joker = pseudorandom_element(G.jokers.cards, pseudoseed("entr_strength"))
@@ -1174,7 +1215,7 @@ local freedom = {
     },
     use = function(self, rcard)
         Entropy.handle_card_limit(G.hand, -rcard.ability.hand_size)
-        Entropy.ChangeFullCSL(rcard.ability.selection_limit)
+        Entropy.change_selection_limit(rcard.ability.selection_limit)
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
             play_sound('entr_pacts')
             if card and card.juice_up then card:juice_up(0.8, 0.5) end
@@ -1582,7 +1623,7 @@ local blood = {
         for i, v in pairs(cards) do
             if v.ability.link then linktxt = v.ability.link end
         end
-        linktxt = linktxt or Entropy.StringRandom(8)
+        linktxt = linktxt or Entropy.string_random(8)
         pseudoshuffle(cards, pseudoseed("entr_blood"))
         for i = 1, math.min(#cards, card.ability.random) do
             local v = cards[i]
@@ -1637,7 +1678,7 @@ local serpents = {
     set = "Omen",
     atlas = "rune_atlas",
     pos = {x=3,y=11},
-    soul_pos = {x=999, y=999, extra = {x=4, y=11}},
+    soul_pos = {x=4, y=11},
     order = 7625,
     key = "serpents",
     entr_redraw_soul = true,
@@ -1646,11 +1687,12 @@ local serpents = {
     immutable = true,
     no_select = true,
     hidden = true,
+    soul_set = "Pact",
     loc_vars = function(self, q, card) return {vars = {card.ability.dollars}} end,
     use = function(self, card)
         local omens = {}
         for i, v in pairs(G.P_CENTERS) do
-            if v.hidden and not v.no_collection and (not v.in_pool or v:in_pool({}) and v.key ~= "c_entr_serpents") then
+            if v.hidden and not v.no_collection and SMODS.add_to_pool(v, {}) and v.key ~= "c_entr_serpents" and not v.no_doe then
                 omens[#omens+1] = v.key
             end
         end

@@ -13,7 +13,7 @@ local define = {
     hidden=true,
     soul_rate = 0,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand, G.consumeables, G.jokers, G.shop_booster, G.pack_cards, G.shop_jokers, G.shop_vouchers}, card, 1, 1)
+        local num = #Entropy.get_highlighted_cards({G.hand, G.consumeables, G.jokers, G.shop_booster, G.pack_cards, G.shop_jokers, G.shop_vouchers}, card, 1, 1)
         return num > 0 and num <= 1
     end,
 
@@ -64,7 +64,7 @@ local define = {
 						elseif G.GAME.POINTER_SUBMENU == "Seal" then
 							G.GAME.POINTER_PLAYING.seal = self.seal
                             if G.GAME.POINTER_PLAYING then
-                                local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables, G.jokers, G.shop_booster, G.pack_cards, G.shop_jokers, G.shop_vouchers}, {}, 1, 1)
+                                local cards = Entropy.get_highlighted_cards({G.hand, G.consumeables, G.jokers, G.shop_booster, G.pack_cards, G.shop_jokers, G.shop_vouchers}, {}, 1, 1)
                                 for i, card in pairs(cards) do
                                     if card.config.center.set == "Default" or card.config.center.set == "Enhanced" then
                                         G.GAME.DefineKeys = G.GAME.DefineKeys or {}
@@ -102,7 +102,7 @@ local define = {
                             G.GAME.CODE_DESTROY_CARD:start_dissolve()
                             G.GAME.CODE_DESTROY_CARD = nil
                         end
-                        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables, G.jokers, G.shop_booster, G.pack_cards, G.shop_jokers, G.shop_vouchers}, {}, 1, 1)
+                        local cards = Entropy.get_highlighted_cards({G.hand, G.consumeables, G.jokers, G.shop_booster, G.pack_cards, G.shop_jokers, G.shop_vouchers}, {}, 1, 1)
                         if not G.GAME.DefineKeys then G.GAME.DefineKeys = {} end
                         for i, card in pairs(cards) do
                             if card.config.center.set == "Default" or card.config.center.set == "Enhanced" then

@@ -77,7 +77,7 @@ local dawn = {
 	},
 	calculate = function(self, blind, context)
 		if context.pre_discard and not G.GAME.blind.disabled then
-			Entropy.FlipThen(G.hand.highlighted, function(card, area)
+			Entropy.flip_then(G.hand.highlighted, function(card, area)
 				SMODS.change_base(card, "entr_nilsuit", "entr_nilrank")
 			end)
 		end
@@ -115,14 +115,14 @@ local orchard = {
 	},
 	calculate = function(self, blind, context)
 		if context.pre_discard and not G.GAME.blind.disabled then
-			Entropy.FlipThen(G.hand.cards, function(card, area)
+			Entropy.flip_then(G.hand.cards, function(card, area)
 				if not card.highlighted then
 					card:set_ability(G.P_CENTERS.m_entr_disavowed)
 				end
 			end)
 		end
 		if context.final_scoring_step and not G.GAME.blind.disabled then
-			Entropy.FlipThen(G.hand.cards, function(card, area)
+			Entropy.flip_then(G.hand.cards, function(card, area)
 				card:set_ability(G.P_CENTERS.m_entr_disavowed)
 			end)
 		end
@@ -157,22 +157,15 @@ local comet = {
 			local remove = {}
 			for i, v in pairs(G.hand.cards) do
 				if v.destroy_adjacent and not v.destroyed_adjacent then
-					if G.hand.cards[i-1] and pseudorandom("citrine") < (Entropy.IsEE() and 0.2 or 0.5) and not SMODS.is_eternal(G.hand.cards[i-1]) then
-						G.hand.cards[i-1]:start_dissolve()
-						G.hand.cards[i-1].ability.temporary2 = true
-						remove[#remove+1]=G.hand.cards[i-1]
+					if G.hand.cards[i-1] and pseudorandom("citrine") < (Entropy.is_EE() and 0.2 or 0.5) and not SMODS.is_eternal(G.hand.cards[i-1]) then
+						SMODS.destroy_cards{G.hand.cards[i-1]}
 					end
-					if G.hand.cards[i+1] and pseudorandom("citrine") < (Entropy.IsEE() and 0.2 or 0.5) and not SMODS.is_eternal(G.hand.cards[i-1]) then
-						G.hand.cards[i+1]:start_dissolve()
-						G.hand.cards[i+1].ability.temporary2 = true
-						remove[#remove+1]=G.hand.cards[i+1]
+					if G.hand.cards[i+1] and pseudorandom("citrine") < (Entropy.is_EE() and 0.2 or 0.5) and not SMODS.is_eternal(G.hand.cards[i-1]) then
+						SMODS.destroy_cards{G.hand.cards[i-1]}
 					end
 					v.destroy_adjacent = false
 					v.destroyed_adjacent = true
 				end
-			end
-			if #remove >0 then
-				SMODS.calculate_context({remove_playing_cards = true, removed=remove})
 			end
 		end
 	end,
@@ -238,7 +231,7 @@ local phase1 = {
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
-					Entropy.ChangePhase()
+					Entropy.change_phase()
 					G.GAME.blind:juice_up()
 					ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
 					ease_discard(
@@ -251,6 +244,7 @@ local phase1 = {
 		end
 	end,
 	set_blind = function()
+		G.GAME.EE_FADE_SPEED = nil
 		G.GAME.EE_R = nil
 		if not G.SPLASH_EE then
 			G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
@@ -261,7 +255,6 @@ local phase1 = {
 				blockable = false,
 				delay = 1 * G.SETTINGS.GAMESPEED,
 				func = function()
-					G.GAME.EE_FADE = 0
 					G.SPLASH_EE:define_draw_steps({{
 						shader = 'entr_entropic_vortex',
 						send = {
@@ -311,6 +304,7 @@ local phase2 = {
 	end,
 	set_blind = function()
 		G.GAME.EE_R = nil
+		G.GAME.EE_FADE_SPEED = nil
 		if not G.SPLASH_EE then
 			G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
 			G.GAME.EE_FADE = 0
@@ -320,7 +314,6 @@ local phase2 = {
 				blockable = false,
 				delay = 1 * G.SETTINGS.GAMESPEED,
 				func = function()
-					G.GAME.EE_FADE = 0
 					G.SPLASH_EE:define_draw_steps({{
 						shader = 'entr_entropic_vortex',
 						send = {
@@ -366,7 +359,7 @@ local phase3 = {
 		if to_big(G.GAME.chips) > to_big(G.GAME.blind.chips) then
 			G.GAME.chips = 0
 			G.GAME.blind:set_blind(G.P_BLINDS[self.next_phase])
-			Entropy.ChangePhase()
+			Entropy.change_phase()
 			G.GAME.blind:juice_up()
 			ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
 			ease_discard(
@@ -429,6 +422,7 @@ local phase3 = {
 		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
 		G.HUD_blind:recalculate()
 		G.GAME.EE_R = nil
+		G.GAME.EE_FADE_SPEED = nil
 		if not G.SPLASH_EE then
 			G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
 			G.GAME.EE_FADE = 0
@@ -438,7 +432,6 @@ local phase3 = {
 				blockable = false,
 				delay = 1 * G.SETTINGS.GAMESPEED,
 				func = function()
-					G.GAME.EE_FADE = 0
 					G.SPLASH_EE:define_draw_steps({{
 						shader = 'entr_entropic_vortex',
 						send = {
@@ -482,104 +475,9 @@ local phase4 = {
 		1, 1.5
 	},
 	in_pool = function() return false end,
-	calculate = function(self, blind, context)
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
-			s = G.P_BLINDS[k]
-			if s.calculate then
-				s:calculate(blind, context)
-			end
-		end
-	end,
 	set_blind = function(self, reset, silent)
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
-			s = G.P_BLINDS[k]
-			if s.set_blind then
-				s:set_blind(reset, silent)
-			end
-			if s.name == "The Eye" and not reset then
-				G.GAME.blind.hands = {
-					["Flush Five"] = false,
-					["Flush House"] = false,
-					["Five of a Kind"] = false,
-					["Straight Flush"] = false,
-					["Four of a Kind"] = false,
-					["Full House"] = false,
-					["Flush"] = false,
-					["Straight"] = false,
-					["Three of a Kind"] = false,
-					["Two Pair"] = false,
-					["Pair"] = false,
-					["High Card"] = false,
-				}
-			end
-			if s.name == "The Mouth" and not reset then
-				G.GAME.blind.only_hand = false
-			end
-			if s.name == "The Fish" and not reset then
-				G.GAME.blind.prepped = nil
-			end
-			if s.name == "The Water" and not reset then
-				G.GAME.blind.discards_sub = G.GAME.current_round.discards_left
-				ease_discard(-G.GAME.blind.discards_sub)
-			end
-			if s.name == "The Needle" and not reset then
-				G.GAME.blind.hands_sub = G.GAME.round_resets.hands - 1
-				ease_hands_played(-G.GAME.blind.hands_sub)
-			end
-			if s.name == "The Manacle" and not reset then
-				G.hand:change_size(-1)
-			end
-			if s.name == "Amber Acorn" and not reset and #G.jokers.cards > 0 then
-				G.jokers:unhighlight_all()
-				for k, v in ipairs(G.jokers.cards) do
-					v:flip()
-				end
-				if #G.jokers.cards > 1 then
-					G.E_MANAGER:add_event(Event({
-						trigger = "after",
-						delay = 0.2,
-						func = function()
-							G.E_MANAGER:add_event(Event({
-								func = function()
-									G.jokers:shuffle("aajk")
-									play_sound("cardSlide1", 0.85)
-									return true
-								end,
-							}))
-							delay(0.15)
-							G.E_MANAGER:add_event(Event({
-								func = function()
-									G.jokers:shuffle("aajk")
-									play_sound("cardSlide1", 1.15)
-									return true
-								end,
-							}))
-							delay(0.15)
-							G.E_MANAGER:add_event(Event({
-								func = function()
-									G.jokers:shuffle("aajk")
-									play_sound("cardSlide1", 1)
-									return true
-								end,
-							}))
-							delay(0.5)
-							return true
-						end,
-					}))
-				end
-			end
-
-			--add new debuffs
-			for _, v in ipairs(G.playing_cards) do
-				if self:recalc_debuff(v, true) then v:set_debuff(true) end
-			end
-			for _, v in ipairs(G.jokers.cards) do
-				if not reset then
-					if self:recalc_debuff(v, true) then v:set_debuff(true) end
-				end
-			end
-		end
 		G.GAME.EE_R = nil
+		G.GAME.EE_FADE_SPEED = nil
 		if not G.SPLASH_EE then
 			G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
 			G.GAME.EE_FADE = 0
@@ -589,7 +487,6 @@ local phase4 = {
 				blockable = false,
 				delay = 1 * G.SETTINGS.GAMESPEED,
 				func = function()
-					G.GAME.EE_FADE = 0
 					G.SPLASH_EE:define_draw_steps({{
 						shader = 'entr_entropic_vortex',
 						send = {
@@ -608,17 +505,9 @@ local phase4 = {
 		end
 	end,
 	defeat = function(self, silent)
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
-			if G.P_BLINDS[k].defeat then
-				G.P_BLINDS[k]:defeat(silent)
-			end
-			if G.P_BLINDS[k].name == "The Manacle" and not self.disabled then
-				G.hand:change_size(1)
-			end
-		end
 		G.GAME.EEBeaten = true
 		if G.GAME.EEBuildup then
-			Entropy.WinEE()
+			Entropy.win_EE()
 		end
 		G.GAME.EEBuildup = false
 		check_for_unlock({ type = "beat_ee" })
@@ -637,285 +526,11 @@ local phase4 = {
 			end
 		})
 	end,
-	press_play = function(self)
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
-			s = G.P_BLINDS[k]
-			if s.press_play then
-				s:press_play()
-			end
-			if s.name == "The Hook" then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						local any_selected = nil
-						local _cards = {}
-						for k, v in ipairs(G.hand.cards) do
-							_cards[#_cards + 1] = v
-						end
-						for i = 1, 2 do
-							if G.hand.cards[i] then
-								local selected_card, card_key = pseudorandom_element(_cards, pseudoseed("ObsidianOrb"))
-								G.hand:add_to_highlighted(selected_card, true)
-								table.remove(_cards, card_key)
-								any_selected = true
-								play_sound("card1", 1)
-							end
-						end
-						if any_selected then
-							G.FUNCS.discard_cards_from_highlighted(nil, true)
-						end
-						return true
-					end,
-				}))
-				G.GAME.blind.triggered = true
-				delay(0.7)
-			end
-			if s.name == "Crimson Heart" then
-				if G.jokers.cards[1] then
-					G.GAME.blind.triggered = true
-					G.GAME.blind.prepped = true
-				end
-			end
-			if s.name == "The Fish" then
-				G.GAME.blind.prepped = true
-			end
-			if s.name == "The Tooth" then
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					delay = 0.2,
-					func = function()
-						for i = 1, #G.play.cards do
-							G.E_MANAGER:add_event(Event({
-								func = function()
-									G.play.cards[i]:juice_up()
-									return true
-								end,
-							}))
-							ease_dollars(-1)
-							delay(0.23)
-						end
-						return true
-					end,
-				}))
-				G.GAME.blind.triggered = true
-			end
-		end
-	end,
-	modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
-		local new_mult = mult
-		local new_chips = hand_chips
-		local trigger = false
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
-			s = G.P_BLINDS[k]
-			if s.modify_hand then
-				local this_trigger = false
-				new_mult, new_chips, this_trigger = s:modify_hand(cards, poker_hands, text, new_mult, new_chips)
-				trigger = trigger or this_trigger
-			end
-			if s.name == "The Flint" then
-				G.GAME.blind.triggered = true
-				new_mult = math.max(math.floor(new_mult * 0.5 + 0.5), 1)
-				new_chips = math.max(math.floor(new_chips * 0.5 + 0.5), 0)
-				trigger = true
-			end
-		end
-		return new_mult or mult, new_chips or hand_chips, trigger
-	end,
-	debuff_hand = function(self, cards, hand, handname, check)
-		G.GAME.blind.debuff_boss = nil
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
-			s = G.P_BLINDS[k]
-			if s.debuff_hand and s:debuff_hand(cards, hand, handname, check) then
-				G.GAME.blind.debuff_boss = s
-				return true
-			end
-			if s.debuff then
-				G.GAME.blind.triggered = false
-				if s.debuff.hand and next(hand[s.debuff.hand]) then
-					G.GAME.blind.triggered = true
-					G.GAME.blind.debuff_boss = s
-					return true
-				end
-				if s.debuff.h_size_ge and #cards < s.debuff.h_size_ge then
-					G.GAME.blind.triggered = true
-					G.GAME.blind.debuff_boss = s
-					return true
-				end
-				if s.debuff.h_size_le and #cards > s.debuff.h_size_le then
-					G.GAME.blind.triggered = true
-					G.GAME.blind.debuff_boss = s
-					return true
-				end
-				if s.name == "The Eye" then
-					if G.GAME.blind.hands[handname] then
-						G.GAME.blind.triggered = true
-						G.GAME.blind.debuff_boss = s
-						return true
-					end
-					if not check then
-						G.GAME.blind.hands[handname] = true
-					end
-				end
-				if s.name == "The Mouth" then
-					if s.only_hand and s.only_hand ~= handname then
-						G.GAME.blind.triggered = true
-						G.GAME.blind.debuff_boss = s
-						return true
-					end
-					if not check then
-						s.only_hand = handname
-					end
-				end
-			end
-			if s.name == "The Arm" then
-				G.GAME.blind.triggered = false
-				if to_big(G.GAME.hands[handname].level) > to_big(1) then
-					G.GAME.blind.triggered = true
-					if not check then
-						SMODS.upgrade_poker_hands{hands = handname, from = G.GAME.blind.children.animatedSprite, level_up = -1}
-						G.GAME.blind:wiggle()
-					end
-				end
-			end
-			if s.name == "The Ox" then
-				G.GAME.blind.triggered = false
-				if handname == G.GAME.current_round.most_played_poker_hand then
-					G.GAME.blind.triggered = true
-					if not check then
-						ease_dollars(-G.GAME.dollars, true)
-						G.GAME.blind:wiggle()
-					end
-				end
-			end
-		end
-		return false
-	end,
-	drawn_to_hand = function(self)
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
-			s = G.P_BLINDS[k]
-			if s.drawn_to_hand then
-				s:drawn_to_hand()
-			end
-			if s.name == "Cerulean Bell" then
-				local any_forced = nil
-				for k, v in ipairs(G.hand.cards) do
-					if v.ability.forced_selection then
-						any_forced = true
-					end
-				end
-				if not any_forced then
-					G.hand:unhighlight_all()
-					local forced_card = pseudorandom_element(G.hand.cards, pseudoseed("ObsidianOrb"))
-					if focred_card then
-						forced_card.ability.forced_selection = true
-						G.hand:add_to_highlighted(forced_card)
-					end
-				end
-			end
-			if s.name == "Crimson Heart" and G.GAME.blind.prepped and G.jokers.cards[1] then
-				local jokers = {}
-				for i = 1, #G.jokers.cards do
-					if not G.jokers.cards[i].debuff or #G.jokers.cards < 2 then
-						jokers[#jokers + 1] = G.jokers.cards[i]
-					end
-					G.jokers.cards[i]:set_debuff(false)
-				end
-				local _card = pseudorandom_element(jokers, pseudoseed("ObsidianOrb"))
-				if _card then
-					_card:set_debuff(true)
-					_card:juice_up()
-					G.GAME.blind:wiggle()
-				end
-			end
-		end
-	end,
-	stay_flipped = function(self, area, card)
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
-			s = G.P_BLINDS[k]
-			if s.stay_flipped and s:stay_flipped(area, card) then
-				return true
-			end
-			if area == G.hand then
-				if
-					s.name == "The Wheel"
-					and pseudorandom(pseudoseed("ObsidianOrb")) < G.GAME.probabilities.normal / 7
-				then
-					return true
-				end
-				if
-					s.name == "The House"
-					and G.GAME.current_round.hands_played == 0
-					and G.GAME.current_round.discards_used == 0
-				then
-					return true
-				end
-				if s.name == "The Mark" and card:is_face(true) then
-					return true
-				end
-				if s.name == "The Fish" and G.GAME.blind.prepped then
-					return true
-				end
-			end
-		end
-	end,
-	recalc_debuff = function(self, card, from_blind)
-		if card and type(card) == "table" and card.area then
-			for k, _ in pairs(Entropy.GetEEBlinds()) do
-				s = G.P_BLINDS[k]
-				if s.debuff_card then
-					s:debuff_card(card, from_blind)
-				end
-				if s.recalc_debuff then
-					s:recalc_debuff(card, from_blind)
-				end
-				if s.debuff and not G.GAME.blind.disabled and card.area ~= G.jokers then
-					--this part is buggy for some reason
-					if s.debuff.suit and Card.is_suit(card, s.debuff.suit, true) then
-						card:set_debuff(true)
-						return
-					end
-					if s.debuff.is_face == "face" and Card.is_face(card, true) then
-						card:set_debuff(true)
-						return
-					end
-					if s.name == "The Pillar" and card.ability.played_this_ante then
-						card:set_debuff(true)
-						return
-					end
-					if s.debuff.value and s.debuff.value == card.base.value then
-						card:set_debuff(true)
-						return
-					end
-					if s.debuff.nominal and s.debuff.nominal == card.base.nominal then
-						card:set_debuff(true)
-						return
-					end
-				end
-				if s.name == "Crimson Heart" and not G.GAME.blind.disabled and card.area == G.jokers then
-					return
-				end
-				if s.name == "Verdant Leaf" and not G.GAME.blind.disabled and card.area ~= G.jokers then
-					card:set_debuff(true)
-					return
-				end
-			end
-		end
-	end,
-	cry_before_play = function(self)
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
-			s = G.P_BLINDS[k]
-			if s.cry_before_play then
-				s:cry_before_play()
-			end
-		end
-	end,
-	cry_after_play = function(self)
-		for k, _ in pairs(Entropy.GetEEBlinds()) do
-			s = G.P_BLINDS[k]
-			if s.cry_after_play then
-				s:cry_after_play()
-			end
-		end
-	end,
+	get_copied_blinds = function()
+		local b = {}
+		for i, v in pairs(Entropy.get_EE_blinds()) do b[#b+1] = i end
+		return b
+	end
 }
 
 local endless_entropy = {
@@ -966,10 +581,17 @@ local alabaster = {
 
 local highlight_ref = Card.highlight
 function Card:highlight(is_highlighted)
-	if Entropy.BlindIs("bl_entr_alabaster_anchor") and self.area == G.hand and G.hand then
+	if Entropy.blind_is("bl_entr_alabaster_anchor") and not G.GAME.blind.disabled and self.area == G.hand and G.hand then
 		for i = 1, #G.jokers.cards do
 			Cryptid.manipulate(G.jokers.cards[i], { value = 0.95 })
 			G.jokers.cards[i].config.cry_multiply = (G.jokers.cards[i].config.cry_multiply or 1) * 0.95
+		end
+	end
+	if next(SMODS.find_card("j_entr_citrine_comet")) and self.edition and self.edition.negative then
+		if is_highlighted then
+			Entropy.change_selection_limit(1)
+		else	
+			Entropy.change_selection_limit(-1)
 		end
 	end
 	highlight_ref(self, is_highlighted)
@@ -991,7 +613,7 @@ end
 
 local ease_bg_cref = ease_background_colour_blind
 function ease_background_colour_blind(state, blind_override)
-	if G.GAME.EEBuildup and not Entropy.IsEE() then
+	if G.GAME.EEBuildup and not Entropy.is_EE() then
 		ease_background_colour{new_colour = HEX("5f5f5f"), contrast = 3}
 	else
 		return ease_bg_cref(state, blind_override)
@@ -1000,7 +622,7 @@ end
 
 local ease_bg_c_ref = ease_background_colour
 function ease_background_colour(tbl,...)
-	if G.GAME.EEBuildup and not Entropy.IsEE() then
+	if G.GAME.EEBuildup and not Entropy.is_EE() then
 		ease_bg_c_ref{new_colour = HEX("5f5f5f"), contrast = 3}
 	else
 		return ease_bg_c_ref(tbl,...)
@@ -1020,7 +642,7 @@ SMODS.Shader({
 local void = {
     dependencies = {
         items = {
-          "set_entr_inversions"
+          "set_entr_blinds"
         }
     },
 	object_type = "Blind",
@@ -1038,7 +660,7 @@ local void = {
 local rr = {
     dependencies = {
         items = {
-          "set_entr_inversions"
+          "set_entr_blinds"
         }
     },
 	object_type = "Blind",
@@ -1051,6 +673,112 @@ local rr = {
     dollars = 3,
     in_pool = function(self) return false end
 }
+if SMODS.ScreenShader then
+	SMODS.ScreenShader({
+		key="eeshader",
+		path="eeshader.fs",
+		send_vars = function (sprite, card)
+			local t = G.TIMERS.REAL or 0
+			t = t - 5000*math.floor(t/5000)
+			return {
+				realtime = t
+			}
+		end,
+		should_apply = function()
+			return G.GAME.EEBuildup or Entropy.is_EE() or (G.GAME.EE_FADE or 0) > 0
+		end
+	})
+
+	SMODS.ScreenShader({
+		key="vignette",
+		path="vignette.fs",
+		send_vars = function (sprite, card)
+			return {
+				power = G.GAME.entr_vignette_power or 2
+			}
+		end,
+		should_apply = function()
+			return G.GAME.entr_vignette_power or G.entr_invert_enabled
+		end
+	})
+	--TODO: special thanks in credits to lily for these two shaders
+	SMODS.ScreenShader {
+    key = "flashlight",
+    path = "flashlight.fs",
+    send_vars = function(self)
+		local t = G.TIMERS.REAL or 0
+		t = t - 5000*math.floor(t/5000)
+        return {
+            center_pos = G.entr_flashlight_center or { love.graphics.getWidth() / 2, love.graphics.getHeight() / 2 },
+            dist = G.entr_flashlight_distance or 500,
+			time = t or 0
+        }
+    end,
+    should_apply = function(self)
+        return G.entr_flashlight_enabled
+    end,
+    order = 5,
+
+	SMODS.ScreenShader {
+		key = "invert",
+		path = "invertradius.fs",
+		send_vars = function(self)
+			local t = G.TIMERS.REAL or 0
+			t = t - 5000*math.floor(t/5000)
+			return {
+				center_pos = G.entr_invert_center or { love.graphics.getWidth() / 2, love.graphics.getHeight() / 2 },
+				dist = G.entr_invert_distance or 500,
+				time = t or 0
+			}
+		end,
+		should_apply = function(self)
+			return G.entr_invert_enabled
+		end,
+		order = 7
+	}
+}
+end
+
+local abyss = {
+    dependencies = {
+        items = {
+          "set_entr_blinds"
+        }
+    },
+	object_type = "Blind",
+    order = 4201,
+	key = "abyss",
+	pos = { x = 0, y = 16 },
+	atlas = "redroom",
+	boss_colour = HEX("80396f"),
+    mult=1,
+    dollars = 3,
+    in_pool = function(self) return false end,
+	get_copied_blinds = function()
+		return G.GAME.abyss_blinds
+	end,
+	set_blind = function()
+		G.GAME.abyss_blinds = G.GAME.abyss_blinds or {}
+		G.GAME.blind.chips = G.GAME.blind.chips * (G.GAME.abyss_size_mod or 1)
+		G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+		G.HUD_blind:recalculate()
+	end
+}
+
+function Entropy.progress_abyss()
+	SMODS.ante_end = true; ease_ante(1)
+  	SMODS.ante_end = nil; delay(0.4)
+	G.GAME.abyss_size_mod = 1
+	G.GAME.abyss_blinds = {get_new_boss()}
+	G.GAME.abyss_just_lost = true
+end
+
+function Entropy.defeat_abyss()
+	G.GAME.abyss_just_lost = nil
+	G.GAME.abyss_size_mod = (G.GAME.abyss_size_mod or 1) * 1.5
+	G.GAME.abyss_blinds = G.GAME.abyss_blinds or {}
+	G.GAME.abyss_blinds[#G.GAME.abyss_blinds+1] = get_new_boss()
+end
 
 return {
 	items = {
@@ -1066,6 +794,7 @@ return {
 		endless_entropy,
 		alabaster,
 		void,
-		rr
+		rr,
+		abyss
 	}
 }

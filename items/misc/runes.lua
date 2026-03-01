@@ -531,7 +531,7 @@ local fehu_indicator = {
                     if G.GAME.providence then
                         mult = 1
                     end
-                    Entropy.FlipThen(G.jokers.cards, function(card)
+                    Entropy.flip_then(G.jokers.cards, function(card)
                         card.ability.extra_value = (card.ability.extra_value or 0) + context.card.sell_cost * mult
                         card:set_cost()
                     end)
@@ -771,13 +771,14 @@ local haglaz_indicator = {
     dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
         if context.after then
-            local cards = G.play.cards
+            local cards = {}
+            for i, v in pairs(G.play.cards) do
+                cards[#cards+1] = v
+            end
             G.E_MANAGER:add_event(Event{
-                trigger = "after",
-                blocking = false,
                 func = function()
+                    SMODS.destroy_cards(cards, nil, true)
                     for i, v in pairs(cards) do
-                        v:start_dissolve()
                         v.ability.temporary2 = true
                     end
                     return true
@@ -793,10 +794,7 @@ local haglaz_indicator = {
                 trigger = "after",
                 blocking = false,
                 func = function()
-                    for i, v in pairs(cards) do
-                        v:start_dissolve()
-                        v.ability.temporary2 = true
-                    end
+                    SMODS.destroy_cards(cards)
                     return true
                 end
             })
@@ -1299,13 +1297,13 @@ local dagaz_indicator = {
     dependencies = {items = {"set_entr_runes"}},
     calculate = function(self, rune, context)
         if context.consumable_emplaced and not rune.triggered then
-            if Entropy.Inversion(context.consumeable) then
+            if Entropy.inversion(context.consumeable) then
                 rune.triggered = true
                 return {
                     --remove = true,
                     func = function()
                         context.consumeable:flip()
-                        context.consumeable:set_ability(Entropy.Inversion(context.consumeable))
+                        context.consumeable:set_ability(Entropy.inversion(context.consumeable))
                         context.consumeable:flip()
                         SMODS.calculate_context({entr_consumable_inverted = true, card = card})
                         if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit and G.GAME.providence then

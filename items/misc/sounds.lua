@@ -11,7 +11,7 @@ SMODS.Sound({
 	key = "music_red_room",
 	path = "music_red_room.ogg",
 	select_music_track = function()
-		return G.GAME.blind and G.GAME.blind.name == "bl_entr_red" and 10^5
+		return (G.GAME.blind and G.GAME.blind.name == "bl_entr_red") and 10^5
 	end,
 })
 SMODS.Sound({
@@ -25,7 +25,7 @@ SMODS.Sound({
 	key = "music_fall",
 	path = "music_fall.ogg",
 	select_music_track = function()
-		return (((to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) and G.STATE == 1) or G.GAME.EEBuildup) and Entropy.CanEeSpawn() and 10^302
+		return (((to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) and G.STATE == 1) or G.GAME.EEBuildup or (G.GAME.EE_FADE or 0) > 0) and Entropy.can_ee_spawn() and 10^302
 	end,
 })
 
@@ -39,7 +39,19 @@ SMODS.Sound({
             bl_entr_endless_entropy_phase_three=true,
             bl_entr_endless_entropy_phase_four=true
         }
-		return (G.GAME.blind and blinds[G.GAME.blind.config.blind.key]) and 10^306
+		return ((G.GAME.blind and blinds[G.GAME.blind.config.blind.key])) and 10^306
+	end,
+})
+
+SMODS.Sound({
+	key = "music_entropic_ominous",
+	path = "music_entropic_ominous.ogg",
+	select_music_track = function()
+		local ferv = G.entr_invert_enabled
+		for i, v in pairs((G.pack_cards or {cards = {}}).cards or {}) do
+			if v.config.center.key == "c_entr_fervour" then ferv = true; break end
+		end
+		return (ferv and G.GAME.entropy and G.GAME.entropy > 100) and 10^300
 	end,
 })
 
@@ -104,4 +116,34 @@ SMODS.Sound({
 SMODS.Sound({
 	key = "runes",
 	path = "runes.ogg",
+})
+
+SMODS.Sound({
+	key = "invert",
+	path = "sfx_invert.ogg",
+	volume = 1.3
+})
+
+SMODS.Sound({
+	key = "entropic_summon",
+	path = "entropic_summon.ogg",
+	volume = 2
+})
+
+SMODS.Sound({
+	key = "void_generic",
+	path = "void_generic.ogg",
+	volume = 2
+})
+
+SMODS.Sound({
+	key = "void_swap",
+	path = "void_swap.ogg",
+	volume = 2
+})
+
+SMODS.Sound({
+	key = "void_suck",
+	path = "void_suck.ogg",
+	volume = 2
 })

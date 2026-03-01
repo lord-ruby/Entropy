@@ -104,7 +104,7 @@ local gamma = {
     dollars = 6,
     altpath=true,
 	boss = {
-		min = 1,
+		min = 2,
 	},
     in_pool = function()
         return G.GAME.entr_alt
@@ -161,7 +161,7 @@ local delta = {
 function Entropy.evaluate_play_misc(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
 	local mult = SMODS.Scoring_Parameters["mult"].current
 	local hand_chips = SMODS.Scoring_Parameters["chips"].current
-    if Entropy.BlindIs("bl_entr_delta") and to_big(G.GAME.round_resets.hands) > to_big(G.GAME.current_round.hands_left) and not G.GAME.blind.disabled then
+    if Entropy.blind_is("bl_entr_delta") and to_big(G.GAME.round_resets.hands) > to_big(G.GAME.current_round.hands_left) and not G.GAME.blind.disabled then
         local used = G.GAME.round_resets.hands - G.GAME.current_round.hands_left
         used = math.max(used,2)
         mult = mult / used
@@ -169,7 +169,7 @@ function Entropy.evaluate_play_misc(text, disp_text, poker_hands, scoring_hand, 
         update_hand_text({delay=0}, {mult=mult})
         delay(0.4)
     end
-    if Entropy.BlindIs("bl_entr_epsilon") and #G.play.cards > 1 and not G.GAME.blind.disabled then
+    if Entropy.blind_is("bl_entr_epsilon") and #G.play.cards > 1 and not G.GAME.blind.disabled then
         local used = #G.play.cards
         used = math.max(used,1)
         mult = mult / used
@@ -177,7 +177,7 @@ function Entropy.evaluate_play_misc(text, disp_text, poker_hands, scoring_hand, 
         update_hand_text({delay=0}, {mult=mult})
         delay(0.4)
     end
-	if Entropy.BlindIs("bl_entr_rho") and #G.play.cards > 1 and not G.GAME.blind.disabled then
+	if Entropy.blind_is("bl_entr_rho") and #G.play.cards > 1 and not G.GAME.blind.disabled then
         local used = 1
         local ranks = {}
 		for i, v in ipairs(G.play.cards) do
@@ -191,26 +191,18 @@ function Entropy.evaluate_play_misc(text, disp_text, poker_hands, scoring_hand, 
         update_hand_text({delay=0}, {mult=mult})
         delay(0.4)
     end
-	if Entropy.BlindIs("bl_entr_omicron") and to_big(G.GAME.round_resets.hands) <= to_big(G.GAME.current_round.hands_left) and not G.GAME.blind.disabled then
+	if Entropy.blind_is("bl_entr_omicron") and to_big(G.GAME.round_resets.hands) <= to_big(G.GAME.current_round.hands_left) and not G.GAME.blind.disabled then
 		mult = 0
 		hand_chips = 0
 	end
 	SMODS.Scoring_Parameters["mult"]:modify(mult - SMODS.Scoring_Parameters["mult"].current)
 	SMODS.Scoring_Parameters["chips"]:modify(hand_chips - SMODS.Scoring_Parameters["chips"].current)
-	G.E_MANAGER:add_event(Event{
-		trigger = "after",
-		blocking = false,
-		func = function()
-			G.GAME.asc_power_hand = nil
-			return true
-		end
-	})
     return text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta
 end
 
 local calc_scoreref = SMODS.calculate_round_score
 function SMODS.calculate_round_score(...)
-	if G.GAME.blind and Entropy.BlindIs("bl_entr_omicron") and not G.GAME.blind.config.done and not G.GAME.blind.disabled then return 0 end
+	if G.GAME.blind and Entropy.blind_is("bl_entr_omicron") and not G.GAME.blind.config.done and not G.GAME.blind.disabled then return 0 end
 	return calc_scoreref(...)
 end
 
@@ -291,17 +283,19 @@ local eta = {
     calculate = function(self, blind, context)
         if context.after and not G.GAME.blind.disabled then
             G.GAME.blind.suit_debuffed = pseudorandom_element({"Spades", "Hearts", "Diamonds", "Clubs"}, pseudoseed("eta_suit"))
-            for i, v in ipairs(G.hand.cards) do
-                SMODS.recalc_debuff(v)
+            for i, v in ipairs(G.I.CARD) do
+				if v.is_playing_card and v:is_playing_card() then
+                	SMODS.recalc_debuff(v)
+				end
             end
-            for i, v in ipairs(G.deck.cards) do
-                SMODS.recalc_debuff(v)
-            end
-            G.GAME.blind:set_text()
+            G.GAME.blind.loc_debuff_lines = {}
+			G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
+			G.GAME.blind:set_text()
+			G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
         end
     end,
     recalc_debuff = function(self, card, from_blind)
-        if card.base.suit == G.GAME.blind.suit_debuffed then
+        if card.base.suit == G.GAME.blind.suit_debuffed and card.is_playing_card and card:is_playing_card() then
             return true
         end
         return false
@@ -312,7 +306,10 @@ local eta = {
 			trigger = "after",
 			delay = 0.2,
 			func = function()
+			G.GAME.blind.loc_debuff_lines = {}
+			G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
 			G.GAME.blind:set_text()
+			G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
 			return true
 		end}))
     end,
@@ -375,7 +372,7 @@ local iota = {
     loc_vars = function()
         if not G.GAME.blind.suit_debuffed then G.GAME.blind.suit_debuffed = pseudorandom_element({"Spades", "Hearts", "Diamonds", "Clubs"}, pseudoseed("eta_suit")) end
         return {
-            vars = {G.GAME.iotablind and G.localization.descriptions["Blind"][G.GAME.iotablind.key].name or "[random blind]"}
+            vars = {G.GAME.iotablind and G.localization.descriptions["Blind"][G.GAME.iotablind].name or "[random blind]"}
         }
     end,
     collection_loc_vars = function()
@@ -384,407 +381,49 @@ local iota = {
         }
     end,
 	in_pool = function() return G.GAME.entr_alt end,
+	set_blind = function()
+		G.GAME.iotablind = pseudorandom_element(G.P_BLINDS).key
+		while not G.P_BLINDS[G.GAME.iotablind].boss or G.P_BLINDS[G.GAME.iotablind].boss.showdown do
+			G.GAME.iotablind = pseudorandom_element(G.P_BLINDS).key
+		end
+		G.GAME.blind.loc_debuff_lines = {}
+		G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
+		G.GAME.blind:set_text()
+		G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
+	end,
 	calculate = function(self, blind, context)
 		if not G.GAME.blind.disabled then
-			for k, _ in pairs(Entropy.GetIota()) do
-				s = G.P_BLINDS[k]
-				if s.calculate then
-					s:calculate(blind, context)
-				end
-			end
 			if context.after then
-				G.GAME.iotablind = pseudorandom_element(G.P_BLINDS) 
-				while not G.GAME.iotablind.boss or G.GAME.iotablind.boss.showdown do
-					G.GAME.iotablind = pseudorandom_element(G.P_BLINDS) 
-				end
-				G.GAME.blind:set_text()
-			end
-		end
-	end,
-	set_blind = function(self, reset, silent)
-        G.GAME.iotablind = pseudorandom_element(G.P_BLINDS) 
-        while not G.GAME.iotablind.boss or G.GAME.iotablind.boss.showdown do
-            G.GAME.iotablind = pseudorandom_element(G.P_BLINDS) 
-        end
-        G.GAME.blind:set_text()
-		for k, _ in pairs(Entropy.GetIota()) do
-			s = G.P_BLINDS[k]
-			if s.set_blind then
-				s:set_blind(reset, silent)
-			end
-			if s.name == "The Eye" and not reset then
-				G.GAME.blind.hands = {
-					["Flush Five"] = false,
-					["Flush House"] = false,
-					["Five of a Kind"] = false,
-					["Straight Flush"] = false,
-					["Four of a Kind"] = false,
-					["Full House"] = false,
-					["Flush"] = false,
-					["Straight"] = false,
-					["Three of a Kind"] = false,
-					["Two Pair"] = false,
-					["Pair"] = false,
-					["High Card"] = false,
-				}
-			end
-			if s.name == "The Mouth" and not reset then
-				G.GAME.blind.only_hand = false
-			end
-			if s.name == "The Fish" and not reset then
-				G.GAME.blind.prepped = nil
-			end
-			if s.name == "The Water" and not reset then
-				G.GAME.blind.discards_sub = G.GAME.current_round.discards_left
-				ease_discard(-G.GAME.blind.discards_sub)
-			end
-			if s.name == "The Needle" and not reset then
-				G.GAME.blind.hands_sub = G.GAME.round_resets.hands - 1
-				ease_hands_played(-G.GAME.blind.hands_sub)
-			end
-			if s.name == "The Manacle" and not reset then
-				G.hand:change_size(-1)
-			end
-			if s.name == "Amber Acorn" and not reset and #G.jokers.cards > 0 then
-				G.jokers:unhighlight_all()
-				for k, v in ipairs(G.jokers.cards) do
-					v:flip()
-				end
-				if #G.jokers.cards > 1 then
-					G.E_MANAGER:add_event(Event({
-						trigger = "after",
-						delay = 0.2,
-						func = function()
-							G.E_MANAGER:add_event(Event({
-								func = function()
-									G.jokers:shuffle("aajk")
-									play_sound("cardSlide1", 0.85)
-									return true
-								end,
-							}))
-							delay(0.15)
-							G.E_MANAGER:add_event(Event({
-								func = function()
-									G.jokers:shuffle("aajk")
-									play_sound("cardSlide1", 1.15)
-									return true
-								end,
-							}))
-							delay(0.15)
-							G.E_MANAGER:add_event(Event({
-								func = function()
-									G.jokers:shuffle("aajk")
-									play_sound("cardSlide1", 1)
-									return true
-								end,
-							}))
-							delay(0.5)
-							return true
-						end,
-					}))
-				end
-			end
-
-			--add new debuffs
-			for _, v in ipairs(G.playing_cards) do
-				if self:recalc_debuff(v, true) then v:set_debuff(true) end
-			end
-			for _, v in ipairs(G.jokers.cards) do
-				if not reset then
-					if self:recalc_debuff(v, true) then v:set_debuff(true) end
-				end
-			end
-		end
-	end,
-	defeat = function(self, silent)
-		for k, _ in pairs(Entropy.GetIota()) do
-			if G.P_BLINDS[k].defeat then
-				G.P_BLINDS[k]:defeat(silent)
-			end
-			if G.P_BLINDS[k].name == "The Manacle" and not self.disabled then
-				G.hand:change_size(1)
-			end
-		end
-	end,
-	press_play = function(self)
-		for k, _ in pairs(Entropy.GetIota()) do
-			s = G.P_BLINDS[k]
-			if s.press_play then
-				s:press_play()
-			end
-			if s.name == "The Hook" then
-				G.E_MANAGER:add_event(Event({
+				G.E_MANAGER:add_event(Event{
 					func = function()
-						local any_selected = nil
-						local _cards = {}
-						for k, v in ipairs(G.hand.cards) do
-							_cards[#_cards + 1] = v
+						Spectrallib.defeat_copied_blinds(Spectrallib.get_copied_blinds(blind), self, silent)
+						G.GAME.iotablind = pseudorandom_element(G.P_BLINDS).key
+						while not G.P_BLINDS[G.GAME.iotablind].boss or G.P_BLINDS[G.GAME.iotablind].boss.showdown do
+						G.GAME.iotablind = pseudorandom_element(G.P_BLINDS).key
 						end
-						for i = 1, 2 do
-							if G.hand.cards[i] then
-								local selected_card, card_key = pseudorandom_element(_cards, pseudoseed("ObsidianOrb"))
-								G.hand:add_to_highlighted(selected_card, true)
-								table.remove(_cards, card_key)
-								any_selected = true
-								play_sound("card1", 1)
+						Spectrallib.set_copied_blinds(Spectrallib.get_copied_blinds(blind), self, silent, reset)
+						G.GAME.blind.loc_debuff_lines = {}
+						G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
+						G.GAME.blind:set_text()
+						G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
+						SMODS.juice_up_blind()
+						G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.06*G.SETTINGS.GAMESPEED, blockable = false, blocking = false, func = function()
+							play_sound('tarot2', 0.76, 0.4);return true end}))
+						play_sound('tarot2', 1, 0.4)
+						for i, v in pairs(G.I.CARD) do
+							if v.set_debuff then
+								SMODS.recalc_debuff(v)
 							end
 						end
-						if any_selected then
-							G.FUNCS.discard_cards_from_highlighted(nil, true)
-						end
-						return true
-					end,
-				}))
-				G.GAME.blind.triggered = true
-				delay(0.7)
-			end
-			if s.name == "Crimson Heart" then
-				if G.jokers.cards[1] then
-					G.GAME.blind.triggered = true
-					G.GAME.blind.prepped = true
-				end
-			end
-			if s.name == "The Fish" then
-				G.GAME.blind.prepped = true
-			end
-			if s.name == "The Tooth" then
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					delay = 0.2,
-					func = function()
-						for i = 1, #G.play.cards do
-							G.E_MANAGER:add_event(Event({
-								func = function()
-									G.play.cards[i]:juice_up()
-									return true
-								end,
-							}))
-							ease_dollars(-1)
-							delay(0.23)
-						end
-						return true
-					end,
-				}))
-				G.GAME.blind.triggered = true
-			end
-		end
-	end,
-	modify_hand = function(self, cards, poker_hands, text, mult, hand_chips)
-		local new_mult = mult
-		local new_chips = hand_chips
-		local trigger = false
-		for k, _ in pairs(Entropy.GetIota()) do
-			s = G.P_BLINDS[k]
-			if s.modify_hand then
-				local this_trigger = false
-				new_mult, new_chips, this_trigger = s:modify_hand(cards, poker_hands, text, new_mult, new_chips)
-				trigger = trigger or this_trigger
-			end
-			if s.name == "The Flint" then
-				G.GAME.blind.triggered = true
-				new_mult = math.max(math.floor(new_mult * 0.5 + 0.5), 1)
-				new_chips = math.max(math.floor(new_chips * 0.5 + 0.5), 0)
-				trigger = true
-			end
-		end
-		return new_mult or mult, new_chips or hand_chips, trigger
-	end,
-	debuff_hand = function(self, cards, hand, handname, check)
-		G.GAME.blind.debuff_boss = nil
-		for k, _ in pairs(Entropy.GetIota()) do
-			s = G.P_BLINDS[k]
-			if s.debuff_hand and s:debuff_hand(cards, hand, handname, check) then
-				G.GAME.blind.debuff_boss = s
-				return true
-			end
-			if s.debuff then
-				G.GAME.blind.triggered = false
-				if s.debuff.hand and next(hand[s.debuff.hand]) then
-					G.GAME.blind.triggered = true
-					G.GAME.blind.debuff_boss = s
-					return true
-				end
-				if s.debuff.h_size_ge and #cards < s.debuff.h_size_ge then
-					G.GAME.blind.triggered = true
-					G.GAME.blind.debuff_boss = s
-					return true
-				end
-				if s.debuff.h_size_le and #cards > s.debuff.h_size_le then
-					G.GAME.blind.triggered = true
-					G.GAME.blind.debuff_boss = s
-					return true
-				end
-				if s.name == "The Eye" then
-					if G.GAME.blind.hands[handname] then
-						G.GAME.blind.triggered = true
-						G.GAME.blind.debuff_boss = s
 						return true
 					end
-					if not check then
-						G.GAME.blind.hands[handname] = true
-					end
-				end
-				if s.name == "The Mouth" then
-					if s.only_hand and s.only_hand ~= handname then
-						G.GAME.blind.triggered = true
-						G.GAME.blind.debuff_boss = s
-						return true
-					end
-					if not check then
-						s.only_hand = handname
-					end
-				end
-			end
-			if s.name == "The Arm" then
-				G.GAME.blind.triggered = false
-				if to_big(G.GAME.hands[handname].level) > to_big(1) then
-					G.GAME.blind.triggered = true
-					if not check then
-						SMODS.upgrade_poker_hands{hands = handname, from = G.GAME.blind.children.animatedSprite, level_up = -1}
-						G.GAME.blind:wiggle()
-					end
-				end
-			end
-			if s.name == "The Ox" then
-				G.GAME.blind.triggered = false
-				if handname == G.GAME.current_round.most_played_poker_hand then
-					G.GAME.blind.triggered = true
-					if not check then
-						ease_dollars(-G.GAME.dollars, true)
-						G.GAME.blind:wiggle()
-					end
-				end
-			end
-		end
-		return false
-	end,
-	drawn_to_hand = function(self)
-		for k, _ in pairs(Entropy.GetIota()) do
-			s = G.P_BLINDS[k]
-			if s.drawn_to_hand then
-				s:drawn_to_hand()
-			end
-			if s.name == "Cerulean Bell" then
-				local any_forced = nil
-				for k, v in ipairs(G.hand.cards) do
-					if v.ability.forced_selection then
-						any_forced = true
-					end
-				end
-				if not any_forced then
-					G.hand:unhighlight_all()
-					local forced_card = pseudorandom_element(G.hand.cards, pseudoseed("ObsidianOrb"))
-					if focred_card then
-						forced_card.ability.forced_selection = true
-						G.hand:add_to_highlighted(forced_card)
-					end
-				end
-			end
-			if s.name == "Crimson Heart" and G.GAME.blind.prepped and G.jokers.cards[1] then
-				local jokers = {}
-				for i = 1, #G.jokers.cards do
-					if not G.jokers.cards[i].debuff or #G.jokers.cards < 2 then
-						jokers[#jokers + 1] = G.jokers.cards[i]
-					end
-					G.jokers.cards[i]:set_debuff(false)
-				end
-				local _card = pseudorandom_element(jokers, pseudoseed("ObsidianOrb"))
-				if _card then
-					_card:set_debuff(true)
-					_card:juice_up()
-					G.GAME.blind:wiggle()
-				end
+				})
 			end
 		end
 	end,
-	stay_flipped = function(self, area, card)
-		for k, _ in pairs(Entropy.GetIota()) do
-			s = G.P_BLINDS[k]
-			if s.stay_flipped and s:stay_flipped(area, card) then
-				return true
-			end
-			if area == G.hand then
-				if
-					s.name == "The Wheel"
-					and pseudorandom(pseudoseed("ObsidianOrb")) < G.GAME.probabilities.normal / 7
-				then
-					return true
-				end
-				if
-					s.name == "The House"
-					and G.GAME.current_round.hands_played == 0
-					and G.GAME.current_round.discards_used == 0
-				then
-					return true
-				end
-				if s.name == "The Mark" and card:is_face(true) then
-					return true
-				end
-				if s.name == "The Fish" and G.GAME.blind.prepped then
-					return true
-				end
-			end
-		end
-	end,
-	recalc_debuff = function(self, card, from_blind)
-		if card and type(card) == "table" and card.area then
-			for k, _ in pairs(Entropy.GetIota()) do
-				s = G.P_BLINDS[k]
-				if s.debuff_card then
-					s:debuff_card(card, from_blind)
-				end
-				if s.recalc_debuff then
-					s:recalc_debuff(card, from_blind)
-				end
-				if s.debuff and not G.GAME.blind.disabled and card.area ~= G.jokers then
-					--this part is buggy for some reason
-					if s.debuff.suit and Card.is_suit(card, s.debuff.suit, true) then
-						card:set_debuff(true)
-						return
-					end
-					if s.debuff.is_face == "face" and Card.is_face(card, true) then
-						card:set_debuff(true)
-						return
-					end
-					if s.name == "The Pillar" and card.ability.played_this_ante then
-						card:set_debuff(true)
-						return
-					end
-					if s.debuff.value and s.debuff.value == card.base.value then
-						card:set_debuff(true)
-						return
-					end
-					if s.debuff.nominal and s.debuff.nominal == card.base.nominal then
-						card:set_debuff(true)
-						return
-					end
-				end
-				if s.name == "Crimson Heart" and not G.GAME.blind.disabled and card.area == G.jokers then
-					return
-				end
-				if s.name == "Verdant Leaf" and not G.GAME.blind.disabled and card.area ~= G.jokers then
-					card:set_debuff(true)
-					return
-				end
-			end
-		end
-	end,
-	cry_before_play = function(self)
-		for k, _ in pairs(Entropy.GetIota()) do
-			s = G.P_BLINDS[k]
-			if s.cry_before_play then
-				s:cry_before_play()
-			end
-		end
-	end,
-	cry_after_play = function(self)
-		for k, _ in pairs(Entropy.GetIota()) do
-			s = G.P_BLINDS[k]
-			if s.cry_after_play then
-				s:cry_after_play()
-			end
-		end
-	end,
+	get_copied_blinds = function()
+		return G.GAME.iotablind
+	end
 }
 
 local kappa = {
@@ -814,7 +453,7 @@ local kappa = {
 local hand_info = G.FUNCS.get_poker_hand_info
 G.FUNCS.get_poker_hand_info = function(_cards)
 	local text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta = hand_info(_cards)
-	if Entropy.BlindIs("bl_entr_kappa") and not G.GAME.blind.disabled then 
+	if Entropy.blind_is("bl_entr_kappa") and not G.GAME.blind.disabled then 
 		scoring_hand2 = {}
 		for i, v in ipairs(_cards) do
 			if not SMODS.in_scoring(v, scoring_hand or {}) then
@@ -828,13 +467,13 @@ end
 
 local never_scoresref = SMODS.never_scores
 function SMODS.never_scores(card, ...)
-	if (next(SMODS.find_card("j_splash")) or SMODS.always_scores(card, ...)) and Entropy.BlindIs("bl_entr_kappa") then return true end
+	if (next(SMODS.find_card("j_splash")) or SMODS.always_scores(card, ...)) and Entropy.blind_is("bl_entr_kappa") then return true end
 	return never_scoresref(card, ...)
 end
 
 local always_scoresref = SMODS.always_scores
 function SMODS.always_scores(card, ...)
-	if card.config.center.key == "j_entr_false_vacuum_collapse" then return true end
+	if card.config.center.key == "j_entr_false_vacuum_collapse" or card.config.center.key == "phoenix_a" then return true end
 	return always_scoresref(card, ...)
 end
 
@@ -863,7 +502,7 @@ local lambda = {
 	calculate = function(self, blind, context)
 		if context.after and not G.GAME.blind.disabled then
 			local _, _, _, hand = G.FUNCS.get_poker_hand_info(G.play.cards)
-			Entropy.FlipThen(hand, function(card)
+			Entropy.flip_then(hand, function(card)
 				card.ability.debuff_timer = 5
 				card.ability.debuff_timer_max = 5
 			end)
@@ -956,7 +595,7 @@ local xi = {
     end,
 	calculate = function(self, blind, context)
 		if context.pre_discard and not G.GAME.blind.discarded and not G.GAME.blind.disabled then
-			Entropy.FlipThen(G.hand.highlighted, function(card)
+			Entropy.flip_then(G.hand.highlighted, function(card)
 				card.ability.eternal = true
 			end)
 			G.GAME.blind.discarded = true
@@ -1117,23 +756,23 @@ local tau = {
 	calculate = function(self, blind, context)
 		if context.pre_discard and not G.GAME.blind.disabled then
 			G.GAME.tau = G.GAME.tau - 1
-			Entropy.ChangeFullCSL(-1)
+			Entropy.change_selection_limit(-1)
 		end
 	end,
 	disable = function()
-		Entropy.ChangeFullCSL(-G.GAME.tau)
+		Entropy.change_selection_limit(-G.GAME.tau)
 		G.GAME.tau = nil
 	end,
 	defeat = function()
 		if not G.GAME.blind.disabled then
-			Entropy.ChangeFullCSL(-G.GAME.tau)
+			Entropy.change_selection_limit(-G.GAME.tau)
 			G.GAME.tau = nil
 		end
 	end,
 	set_blind = function()
 		G.GAME.tau = G.GAME.tau or 0
 		G.GAME.tau = G.GAME.tau + 1
-		Entropy.ChangeFullCSL(1)
+		Entropy.change_selection_limit(1)
 	end
 }
 
@@ -1264,7 +903,7 @@ local psi = {
     calculate = function(self, blind, context)
 		if context.individual and context.cardarea == G.play and context.other_card and not G.GAME.blind.disabled then
 			if pseudorandom("psi_blind") < G.GAME.probabilities.normal / 2 then
-				Entropy.FlipThen({context.other_card}, function(card)
+				Entropy.flip_then({context.other_card}, function(card)
 					card:set_ability(G.P_CENTERS.m_entr_disavowed)
 				end)
 			end
@@ -1516,19 +1155,19 @@ local labyrinth = {
     end,
 	set_blind = function()
 		Entropy.handle_card_limit(G.hand, 3)
-		Entropy.ChangeFullCSL(1)
+		Entropy.change_selection_limit(1)
 		G.GAME.blind.cards = {}
 	end,
 	defeat = function()
 		if not G.GAME.blind.disabled then
 			Entropy.handle_card_limit(G.hand, -3)
-			Entropy.ChangeFullCSL(-1)
+			Entropy.change_selection_limit(-1)
 			for i, v in ipairs(G.GAME.blind.cards) do v.ability.forced_selection = nil end
 		end
 	end,
 	disable = function()
 		Entropy.handle_card_limit(G.hand, -3)
-		Entropy.ChangeFullCSL(-1)
+		Entropy.change_selection_limit(-1)
 		for i, v in ipairs(G.GAME.blind.cards) do v.ability.forced_selection = nil end
 	end
 }
@@ -1536,7 +1175,7 @@ local labyrinth = {
 local highlighted_ref = Card.highlight
 function Card:highlight(is_highlighted)
 	highlighted_ref(self, is_highlighted)
-	if Entropy.BlindIs("bl_entr_labyrinth") then
+	if Entropy.blind_is("bl_entr_labyrinth") then
 		if is_highlighted and self.area == G.hand then
 			if not self.ability.forced_selection then
 				local cards = {}

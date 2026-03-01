@@ -27,10 +27,7 @@ local flesh = {
 	calculate = function(self, card, context)
         if (context.pre_discard and context.cardarea == G.hand and card.highlighted
         and pseudorandom("flesh") < (card.ability.cry_rigged and card.ability.extra.odds or G.GAME.probabilities.normal*(card.ability.extra.numerator/card.ability.extra.odds))) then 
-            card.ability.temporary2 = true
-			card:remove_from_deck()
-            card:start_dissolve()
-			SMODS.calculate_context({remove_playing_cards = true, removed={card}})
+            SMODS.destroy_cards{card}
         end
 	end,
 	entr_credits = {
@@ -64,7 +61,7 @@ local prismatic = {
           "set_entr_entropics"
         }
     },
-	order = 10000+4,
+	order = math.huge,
 	object_type = "Enhancement",
 	key = "prismatic",
 	atlas = "enhancements",
@@ -212,8 +209,8 @@ local ceramic = {
 							card:flip()
 						else
 							card:shatter()
+							SMODS.destroy_cards(card, nil, nil, true)
 						end
-						card.ability.temporary2 = true
 						return true
 					end,
 				}))
@@ -228,8 +225,8 @@ local ceramic = {
 							card:flip()
 						else
 							card:shatter()
+							SMODS.destroy_cards(card, nil, nil, true)
 						end
-						card.ability.temporary2 = true
 						return true
 					end,
 				}))
@@ -323,15 +320,15 @@ local kiln = {
     },
     pos = {x=0,y=0},
     use = function(self, card2)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select)
-        Entropy.FlipThen(cards, function(card)
+        local cards = Entropy.get_highlighted_cards({G.hand}, card2, 1, card2.ability.select)
+        Entropy.flip_then(cards, function(card)
             card:set_ability(G.P_CENTERS.m_entr_ceramic)
             G.hand:remove_from_highlighted(card)
         end)
             
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
         return num > 0 and num <= card.ability.select
     end,
     loc_vars = function(self, q, card)
@@ -368,15 +365,15 @@ local comet = {
     },
     pos = {x=0,y=3},
     use = function(self, card2)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select)
-        Entropy.FlipThen(cards, function(card)
+        local cards = Entropy.get_highlighted_cards({G.hand}, card2, 1, card2.ability.select)
+        Entropy.flip_then(cards, function(card)
             card:set_ability(G.P_CENTERS.m_entr_radiant)
             G.hand:remove_from_highlighted(card)
         end)
             
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
         return num > 0 and num <= card.ability.select
     end,
     loc_vars = function(self, q, card)
@@ -518,6 +515,7 @@ local samsara = {
 			G.E_MANAGER:add_event(Event{
 				func = function()
 					SMODS.destroy_cards(card)
+					card.ability.temporary2 = true
 					return true
 				end
 			})

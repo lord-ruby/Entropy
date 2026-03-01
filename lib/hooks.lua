@@ -4,7 +4,10 @@ local card_drawref = Card.draw
 function Card:draw(layer)
     local ref = card_drawref(self, layer)
     if self.config and self.config.center then
-        if self.config.center.set == "Rune" and  Entropy.providence_ui_active(self) then
+        if self.config.center.key == "c_entr_fervour" and G.GAME.entropy and G.GAME.entropy > 100 then
+            self.children.center:draw_shader('entr_rainbow', nil, self.ARGS.send_to_shader)
+        end
+        if self.config.center.set == "Rune" and Entropy.providence_ui_active(self) then
             self.children.center:draw_shader('entr_providence', nil, self.ARGS.send_to_shader)
             if self.children.floating_sprite then
                 local scale_mod = 0.07 + 0.02*math.sin(1.8*G.TIMERS.REAL) + 0.00*math.sin((G.TIMERS.REAL - math.floor(G.TIMERS.REAL))*math.pi*14)*(1 - (G.TIMERS.REAL - math.floor(G.TIMERS.REAL)))^3
@@ -119,6 +122,7 @@ function end_round()
     for i, v in pairs({G.jokers, G.hand, G.consumeables, G.discard, G.deck}) do
         for ind, card in pairs(v.cards) do
             if card.ability then
+                if card.ability.entr_marked then card.ability.entr_marked = nil end
                 if card.ability.entr_hotfix then
                     card.ability.entr_hotfix_rounds = (card.ability.entr_hotfix_rounds or 5) - 1
                     if to_big(card.ability.entr_hotfix_rounds) <= to_big(0) then
@@ -127,10 +131,12 @@ function end_round()
                         Cryptid.manipulate(card, {min=0.1, max=10})
                     end
                 end
-                if card.ability.temporary or card.ability.temporary2 then
+                if card.ability.temporary or card.ability.temporary2 or card.ability.void_temporary then
                     if card.area ~= G.hand and card.area ~= G.play and card.area ~= G.jokers and card.area ~= G.consumeables then card.states.visible = false end
                     card:remove_from_deck()
+                    G.entr_bypass_rebirth = true
                     card:start_dissolve()
+                    G.entr_bypass_rebirth = nil
                     if card.ability.temporary then remove_temp[#remove_temp+1]=card end
                 end
                 if card.ability.entr_yellow_sign then card.ability.entr_yellow_sign = nil end
@@ -176,10 +182,6 @@ function end_round()
     if G.GAME.blind_on_deck == "Boss" then
         G.GAME.entr_princess = nil
     end
-    G.E_MANAGER:add_event(Event({
-        trigger = 'immediate',
-        func = (function() G.GAME.asc_power_hand = 0; G.GAME.current_round.current_hand.cry_asc_num = 0;G.GAME.current_round.current_hand.cry_asc_num_text = '';return true end)
-      }))
     G.GAME.entr_antithesis_active = nil
     G.GAME.antithesis_index = nil
 end
@@ -480,13 +482,6 @@ function SMODS.create_mod_badges(obj, badges)
 	end
 end
 
-function Entropy.shares_aspect(card1, card2)
-    if card1:get_id() == card2:get_id() then return true end
-    if card1.config.center.set ~= "Default" and card1.config.center.key == card2.config.center.key then return true end
-    if card1.edition and card2.edition and card1.edition.key == card2.edition.key then return true end
-    if card1.seal and card1.seal == card2.seal then return true end
-end
-
 local is_suitref = Card.is_suit
 function Card:is_suit(suit, bypass_debuff, flush_calc)
     if self.base.suit == "entr_nilsuit" and not next(SMODS.find_card("j_entr_opal")) then
@@ -509,469 +504,6 @@ function Card:get_id()
         return -math.random(100, 1000000)
     end
     return ref(self)
-end
-
-
-G.FUNCS.can_reserve_joker = function(e)
-    local c1 = e.config.ref_table
-    if
-        #G.jokers.cards
-        < G.jokers.config.card_limit + (Cryptid.safe_get(c1, "edition", "negative") and 1 or 0)
-    then
-        e.config.colour = G.C.GREEN
-        e.config.button = "reserve_joker"
-    else
-        e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-        e.config.button = nil
-    end
-end
-G.FUNCS.reserve_joker = function(e)
-    local c1 = e.config.ref_table
-    G.E_MANAGER:add_event(Event({
-        trigger = "after",
-        delay = 0.1,
-        func = function()
-            local c2 = copy_card(c1, nil, nil, true, false)
-            c1:remove()
-            c2:add_to_deck()
-            G.jokers:emplace(c2)
-            SMODS.calculate_context({ pull_card = true, card = c1 })
-            return true
-        end,
-    }))
-end
-
-G.FUNCS.can_open_booster = function(e)
-    if
-        G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.SHOP
-    then
-        e.config.colour = G.C.GREEN
-        e.config.button = "open_booster"
-    else
-        e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-        e.config.button = nil
-    end
-end
-G.FUNCS.open_booster = function(e)
-    local c1 = e.config.ref_table
-    G.GAME.DefineBoosterState = G.STATE
-    delay(0.1)
-    local area = c1.area
-    if area == G.shop_vouchers then
-        G.GAME.current_round.voucher.spawn[c1.config.center_key] = nil
-    end
-    if c1.ability.booster_pos then G.GAME.current_round.used_packs[c1.ability.booster_pos] = 'USED' end
-    --draw_card(G.hand, G.play, 1, 'up', true, card, nil, true) 
-    if not c1.from_tag then 
-      G.GAME.round_scores.cards_purchased.amt = G.GAME.round_scores.cards_purchased.amt + 1
-    end
-    if c1.RPerkeoPack then
-        G.RPerkeoPack = true
-    end
-    if G.blind_select then
-        G.blind_select:remove()
-        G.blind_prompt_box:remove()
-    end
-    e.config.ref_table.cost = 0
-    e.config.ref_table:open()
-    if c1.ability.cry_multiuse and to_big(c1.ability.cry_multiuse) > to_big(1) then
-        local card = c1
-        card.ability.cry_multiuse = card.ability.cry_multiuse - 1
-        card.ability.extra_value = -1 * math.max(1, math.floor(card.cost/2))
-        card:set_cost()
-        delay(0.4)
-    
-        -- i make my own card eval status text :D
-    
-        card:juice_up()
-        play_sound('generic1')
-        attention_text({
-            text = format_ui_value(card.ability.cry_multiuse),
-            scale = 1.1,
-            hold = 0.6,
-            major = card,
-            backdrop_colour = G.C.SET[card.config.center.set],
-            align = 'bm',
-            offset = {x = 0, y = 0.2}
-        })
-        local c2 = copy_card(c1)
-        c2:add_to_deck()
-        area:emplace(c2)
-
-    end
-    --c1:remove()
-end
-
-G.FUNCS.can_open_voucher = function(e)
-    local c1 = e.config.ref_table
-    e.config.colour = G.C.GREEN
-    e.config.button = "open_voucher"
-end
-G.FUNCS.open_voucher = function(e)
-    local state = G.STATE
-    local c1 = e.config.ref_table
-    c1.cost = 0
-    local area = c1.area
-    c1:redeem()
-    c1:start_dissolve()
-    c1:remove()
-    if c1.ability.cry_multiuse and to_big(c1.ability.cry_multiuse) > to_big(1) then
-        local card = c1
-        card.ability.cry_multiuse = card.ability.cry_multiuse - 1
-        card.ability.extra_value = -1 * math.max(1, math.floor(card.cost/2))
-        card:set_cost()
-        delay(0.4)
-    
-        -- i make my own card eval status text :D
-    
-        card:juice_up()
-        play_sound('generic1')
-        attention_text({
-            text = format_ui_value(card.ability.cry_multiuse),
-            scale = 1.1,
-            hold = 0.6,
-            major = card,
-            backdrop_colour = G.C.SET[card.config.center.set],
-            align = 'bm',
-            offset = {x = 0, y = 0.2}
-        })
-        local c2 = copy_card(c1)
-        c2:add_to_deck()
-        area:emplace(c2)
-
-    end
-    G.STATE = state
-end
-
-G.FUNCS.can_reserve_booster = function(e)
-    local c1 = e.config.ref_table
-    if
-        G.consumeables.config.card_count
-        < G.consumeables.config.card_limit + (Cryptid.safe_get(c1, "edition", "negative") and 1 or 0)
-    then
-        e.config.colour = G.C.GREEN
-        e.config.button = "reserve_booster"
-    else
-        e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-        e.config.button = nil
-    end
-end
-G.FUNCS.reserve_booster = function(e)
-    local c1 = e.config.ref_table
-    --G.GAME.DefineBoosterState = G.STATE
-    --c1:open()
-    G.pack_cards:remove_card(c1)
-    G.consumeables.cards[#G.consumeables.cards + 1] = c1
-    c1.area = G.consumeables
-    c1.parent = G.consumeables
-    c1.layered_parallax = G.consumeables.layered_parallax
-    G.consumeables:set_ranks()
-    G.consumeables:align_cards()
-
-    SMODS.calculate_context({ pull_card = true, card = c1 })
-    G.GAME.pack_choices = G.GAME.pack_choices - 1
-    if G.GAME.pack_choices <= 0 then
-        G.FUNCS.end_consumeable(nil, delay_fac)
-    end
-    if c1.ability.glitched_crown then
-        local center = G.P_CENTERS[c1.ability.glitched_crown[c1.glitched_index]]
-        c1:set_ability(center)
-        c1.ability.glitched_crown = nil
-    end
-    --c1:remove()
-end
-
-G.FUNCS.can_buy_deckorsleeve = function(e)
-    local c1 = e.config.ref_table
-    e.config.colour = G.C.GREEN
-    e.config.button = "buy_deckorsleeve_2"
-end
-G.FUNCS.can_buy_deckorsleeve_from_shop = function(e)
-    local c1 = e.config.ref_table
-    if to_big(G.GAME.dollars+G.GAME.bankrupt_at) > to_big(c1.cost) or Entropy.has_rune("rune_entr_naudiz") then
-        e.config.colour = G.C.GREEN
-        e.config.button = "buy_deckorsleeve_from_shop"
-    else
-        e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-        e.config.button = nil
-    end
-end
-G.FUNCS.buy_deckorsleeve_from_shop = function(e)
-    local c1 = e.config.ref_table
-    --G.GAME.DefineBoosterState = G.STATE
-    --c1:open()
-    ease_dollars(-c1.cost)
-    G.FUNCS.redeem_deckorsleeve(e)
-end
-
-G.FUNCS.buy_deckorsleeve_2 = function(e)
-    local c1 = e.config.ref_table
-    --G.GAME.DefineBoosterState = G.STATE
-    --c1:open()
-    G.FUNCS.redeem_deckorsleeve(e)
-end
-
-G.FUNCS.redeem_deckorsleeve = function(e)
-    G.E_MANAGER:add_event(Event{
-        trigger = "after",
-        func = function()
-    
-            local area
-            if G.STATE == G.STATES.HAND_PLAYED then
-                if not G.redeemed_vouchers_during_hand then
-                    G.redeemed_vouchers_during_hand =
-                        CardArea(G.play.T.x, G.play.T.y, G.play.T.w, G.play.T.h, { type = "play", card_limit = 5 })
-                end
-                area = G.redeemed_vouchers_during_hand
-            else
-                area = G.play
-            end
-            
-            local card = e.config.ref_table
-            if card.config.center.key == "j_joker" then
-                card:set_ability(G.P_CENTERS.b_red)
-            end
-            card.area:remove_card(card)
-            card:add_to_deck()
-            area:emplace(card)
-            card.cost = 0
-            card:redeem_deck()
-            return true
-        end
-    })
-end
-
-G.FUNCS.buy_deckorsleeve = function(e)
-    local c1 = e.config.ref_table
-    --G.GAME.DefineBoosterState = G.STATE
-    --c1:open()
-    if not c1.config then
-        c1.config = {}
-    end
-    if not c1.config.center then
-        c1.config.center = G.P_CENTERS[c1.center_key]
-    end
-    if c1.area then c1.area:remove_card(c1) end
-    if c1.config and c1.config.center and c1.config.center.apply then
-        local orig = G.GAME.starting_params.joker_slots
-        if c1.config.center.set == "Sleeve" then
-            c1.config.center:apply(c1.config.center)
-        else    
-            c1.config.center:apply(false)
-        end
-        local diff = G.GAME.starting_params.joker_slots - orig
-        if to_big(diff) > to_big(0) then
-            Entropy.handle_card_limit(G.jokers, diff)
-        end
-    end
-    for i, v in pairs(c1.config and c1.config.center and c1.config.center.config or {}) do
-        if i == "hands" then 
-            G.GAME.round_resets.hands = G.GAME.round_resets.hands + v 
-            ease_hands_played(v)
-        end
-        if i == "discards" then 
-            G.GAME.round_resets.discards = G.GAME.round_resets.discards + v 
-            ease_discard(v)
-        end
-        if i == "joker_slot" then Entropy.handle_card_limit(G.jokers, v) end
-        if i == "hand_size" then Entropy.handle_card_limit(G.hand, v) end
-        if i == "dollars" then ease_dollars(v) end
-        if i == "spectral_rate" then G.GAME.spectral_rate = v end
-        if i == "plincoins" then ease_plincoins(v) end
-        if i == "jokers" then
-            delay(0.4)
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    for k, v in ipairs(c1.config.center.jokers) do
-                        local card = create_card('Joker', G.jokers, nil, nil, nil, nil, v, 'deck')
-                        card:add_to_deck()
-                        G.jokers:emplace(card)
-    					card:start_materialize()
-                    end
-                return true
-                end
-            }))
-        end
-        if i == "voucher" then
-            G.GAME.used_vouchers[c1.config.center.config.voucher] = true
-            G.GAME.starting_voucher_count = (G.GAME.starting_voucher_count or 0) + 1
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    Card.apply_to_run(nil, G.P_CENTERS[c1.config.center.config.voucher])
-                    return true
-                end
-            }))
-        end
-        if i == "consumables" then
-            delay(0.4)
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    for k, v in ipairs(c1.config.center.config.consumables) do
-                        local card = create_card('Tarot', G.consumeables, nil, nil, nil, nil, v, 'deck')
-                        card:add_to_deck()
-                        G.consumeables:emplace(card)
-                    end
-                return true
-                end
-            }))
-        end
-        if i == "vouchers" then
-            for k, v in pairs(c1.config.center.config.vouchers) do
-                G.GAME.used_vouchers[v] = true
-                G.GAME.starting_voucher_count = (G.GAME.starting_voucher_count or 0) + 1
-                G.E_MANAGER:add_event(Event({
-                    func = function()
-                        Card.apply_to_run(nil, G.P_CENTERS[v])
-                        return true
-                    end
-                }))
-            end
-        end
-        if i == "consumable_slot" then
-            G.GAME.starting_params.consumable_slots = G.GAME.starting_params.consumable_slots + v
-        end
-        if i == "ante_scaling" then
-            G.GAME.starting_params.ante_scaling = v
-        end
-        if i == "boosters_in_shop" then
-            G.GAME.starting_params.boosters_in_shop = v
-        end
-        if i == "no_interest" then
-            G.GAME.modifiers.no_interest = true
-        end
-        if i == "extra_hand_bonus" then 
-            G.GAME.modifiers.money_per_hand = v
-        end
-        if i == "extra_discard_bonus" then 
-            G.GAME.modifiers.money_per_discard = v
-        end
-        if i == "no_faces" then
-            for i, v in pairs(G.playing_cards) do
-                if v:is_face() then
-                    SMODS.change_base(v, nil, pseudorandom_element({"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10"}, pseudoseed("abandoned_redeem")))
-                end
-            end
-        end
-        if i == "randomize_rank_suit" then
-            for i, v in pairs(G.playing_cards) do
-                Entropy.randomize_rank_suit(v, true, true, "erratic_midgame")
-            end
-        end
-    end
-    if c1.config and c1.config.center and c1.config.center.config and c1.config.center.config then
-        if c1.config.center.key == "b_checkered" or c1.config.center.key == "sleeve_casl_checkered" then
-            for i, v in pairs(G.playing_cards) do
-                if v:is_suit("Diamonds") then
-                    SMODS.change_base(v, "Hearts")
-                elseif v:is_suit("Clubs") then
-                    SMODS.change_base(v, "Spades")
-                elseif not v:is_suit("Hearts") and not  v:is_suit("Spades") then
-                    SMODS.change_base(v, pseudorandom_element({"Spades", "Hearts"}, pseudoseed("checkered_redeem")), nil)
-                end
-            end
-        elseif c1.config.center.key == "b_entr_doc" or c1.config.center.key == "sleeve_entr_doc" then
-            -- G.E_MANAGER:add_event(Event({
-            --     trigger = "after",
-            --     delay = 0.1,
-            --     func = function()
-            --         G.HUD:remove()
-            --         G.HUD = nil
-            --         G.HUD = UIBox{
-            --             definition = create_UIBox_HUD(),
-            --             config = {align=('cli'), offset = {x=-1.3,y=0},major = G.ROOM_ATTACH}
-            --         }
-            --         for i, v in pairs(G.hand_text_area) do
-            --             G.hand_text_area[i] = G.HUD:get_UIE_by_ID(v.config.id)
-            --         end
-            --         G.HUD_blind:remove()
-            --         G.HUD_blind = UIBox{
-            --              definition = create_UIBox_HUD_blind_doc(),
-            --              config = {major = G.HUD:get_UIE_by_ID('row_blind'), align = 'cm', offset = {x=0,y=-10}, bond = 'Weak'}
-            --         }
-            --         G.HUD:recalculate()
-            --         G.HUD_blind:recalculate()
-            --         return true
-            --     end
-            -- }))
-        end
-    end
-    if c1.config and c1.config.center and c1.config.center.config and c1.config.center.config and c1.config.center.config.cry_beta then
-        local count = G.consumeables.config.card_limit
-        local cards = {}
-        for i, v in pairs(G.jokers.cards) do
-            cards[#cards+1]=v
-        end
-        for i, v in pairs(G.consumeables.cards) do
-            cards[#cards+1]=v
-        end
-        for i, v in pairs(cards) do
-            v.area:remove_card(v)
-            v:remove_from_deck()
-        end
-        G.consumeables:remove()
-        count = count + G.jokers.config.card_limit
-        G.jokers:remove()
-        G.consumeables = nil
-        local CAI = {
-            discard_W = G.CARD_W,
-            discard_H = G.CARD_H,
-            deck_W = G.CARD_W*1.1,
-            deck_H = 0.95*G.CARD_H,
-            hand_W = 6*G.CARD_W,
-            hand_H = 0.95*G.CARD_H,
-            play_W = 5.3*G.CARD_W,
-            play_H = 0.95*G.CARD_H,
-            joker_W = 4.9*G.CARD_W,
-            joker_H = 0.95*G.CARD_H,
-            consumeable_W = 2.3*G.CARD_W,
-            consumeable_H = 0.95*G.CARD_H
-        }
-        G.jokers = CardArea(
-            CAI.consumeable_W, 0,
-            CAI.joker_W+CAI.consumeable_W,
-            CAI.joker_H,
-            {card_limit = count, type = 'joker', highlight_limit = 1e100}
-        )
-        G.consumeables = G.jokers
-        for i, v in pairs(cards) do
-            v:add_to_deck()
-            G.jokers:emplace(v)
-        end
-    end
-    G.GAME.entr_bought_decks = G.GAME.entr_bought_decks or {}
-    G.GAME.entr_bought_decks[#G.GAME.entr_bought_decks+1] = c1.config.center.key
-    c1:start_dissolve()
-    if c1.children.price then c1.children.price:remove() end
-    c1.children.price = nil
-    if c1.children.buy_button then c1.children.buy_button:remove() end
-    c1.children.buy_button = nil
-    remove_nils(c1.children)
-
-    SMODS.calculate_context({ pull_card = true, card = c1 })
-    --c1:remove()
-end
-
-G.FUNCS.can_reserve_card_to_deck = function(e)
-    local c1 = e.config.ref_table
-    e.config.colour = G.C.GREEN
-    e.config.button = "reserve_card_to_deck"
-end
-G.FUNCS.reserve_card_to_deck = function(e)
-    local c1 = e.config.ref_table
-    G.E_MANAGER:add_event(Event({
-        trigger = "after",
-        delay = 0.1,
-        func = function()
-            local c2 = copy_card(c1, nil, nil, true, false)
-            c1:remove()
-            c2:add_to_deck()
-			table.insert(G.playing_cards, c2)
-			G.deck:emplace(c2)
-			playing_card_joker_effects({ c2 })
-            SMODS.calculate_context({ pull_card = true, card = c1 })
-            return true
-        end,
-    }))
 end
 
 G.FUNCS.can_toggle_xekanos = function(e)
@@ -1044,221 +576,10 @@ G.FUNCS.sell_slot = function(e)
     Entropy.handle_card_limit(G.jokers, -1)
 end
 
-G.FUNCS.can_use_joker = function(e)
-    local center = e.config.ref_table.config.center
-    if
-        center.can_use and center:can_use(e.config.ref_table) and not G.CONTROLLER.locked and not e.config.ref_table.debuff
-    then
-        e.config.colour = G.C.RED
-        e.config.button = "use_joker"
-    else
-        e.config.colour = G.C.UI.BACKGROUND_INACTIVE
-        e.config.button = nil
-    end
-end
-G.FUNCS.use_joker = function(e)
-    local int = G.TAROT_INTERRUPT
-    G.TAROT_INTERRUPT = true
-    local center = e.config.ref_table.config.center
-    if center.use then
-        center:use(e.config.ref_table)
-    end
-    e.config.ref_table:juice_up()
-    G.TAROT_INTERRUPT = int
-end
-
 --som
 local G_UIDEF_use_and_sell_buttons_ref = G.UIDEF.use_and_sell_buttons
 function G.UIDEF.use_and_sell_buttons(card)
 	local abc = G_UIDEF_use_and_sell_buttons_ref(card)
-	-- Allow code cards to be reserved
-    if (card.area == G.consumeables or card.area == G.jokers) and (card.config.center.set == "Voucher" or card.ability.set == "Voucher") then
-        sell = {n=G.UIT.C, config={align = "cr"}, nodes={
-            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = 'sell'}, nodes={
-              {n=G.UIT.B, config = {w=0.1,h=0.6}},
-              {n=G.UIT.C, config={align = "tm"}, nodes={
-                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
-                  {n=G.UIT.T, config={text = localize('b_sell'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
-                }},
-                {n=G.UIT.R, config={align = "cm"}, nodes={
-                  {n=G.UIT.T, config={text = localize('$'),colour = G.C.WHITE, scale = 0.4, shadow = true}},
-                  {n=G.UIT.T, config={ref_table = card, ref_value = 'sell_cost_label',colour = G.C.WHITE, scale = 0.55, shadow = true}}
-                }}
-              }}
-            }},
-          }}
-        use = 
-        {n=G.UIT.C, config={align = "cr"}, nodes={
-          
-          {n=G.UIT.C, config={ref_table = card, align = "cr",maxw = 1.25, padding = 0.1, r=0.08, minw = 1.25, minh = (card.area and card.area.config.type == 'joker') and 0 or 1, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_voucher', func = 'can_open_voucher', handy_insta_action = 'use'}, nodes={
-            {n=G.UIT.B, config = {w=0.1,h=0.6}},
-            {n=G.UIT.T, config={text = localize('b_redeem'),colour = G.C.UI.TEXT_LIGHT, scale = 0.55, shadow = true}}
-          }}
-        }}
-        return {
-            n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
-              {n=G.UIT.C, config={padding = 0.15, align = 'cl'}, nodes={
-                {n=G.UIT.R, config={align = 'cl'}, nodes={
-                  sell
-                }},
-                {n=G.UIT.R, config={align = 'cl'}, nodes={
-                  use
-                }},
-              }},
-          }}
-    end
-    if (card.ability.set == "Back" or card.ability.set == "Sleeve" or card.config.center.set == "Back" or card.config.center.set == "Sleeve") then
-        if card.area == G.hand or card.area == G.pack_cards then
-        return  {
-            n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
-              {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'buy_deckorsleeve', func = 'can_buy_deckorsleeve', handy_insta_action = 'buy_or_sell'}, nodes={
-                {n=G.UIT.T, config={text = localize('b_redeem'),colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true}}
-              }},
-          }}
-        end
-        if card.area == G.consumeables or card.area == G.jokers then
-            sell = {n=G.UIT.C, config={align = "cr"}, nodes={
-                {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = "sell"}, nodes={
-                  {n=G.UIT.B, config = {w=0.1,h=0.6}},
-                  {n=G.UIT.C, config={align = "tm"}, nodes={
-                    {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
-                      {n=G.UIT.T, config={text = localize('b_sell'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
-                    }},
-                    {n=G.UIT.R, config={align = "cm"}, nodes={
-                      {n=G.UIT.T, config={text = localize('$'),colour = G.C.WHITE, scale = 0.4, shadow = true}},
-                      {n=G.UIT.T, config={ref_table = card, ref_value = 'sell_cost_label',colour = G.C.WHITE, scale = 0.55, shadow = true}}
-                    }}
-                  }}
-                }},
-              }}
-            use = 
-            {n=G.UIT.C, config={align = "cr"}, nodes={
-              
-              {n=G.UIT.C, config={ref_table = card, align = "cr",maxw = 1.25, padding = 0.1, r=0.08, minw = 1.25, minh = (card.area and card.area.config.type == 'joker') and 0 or 1, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'buy_deckorsleeve', func = 'can_buy_deckorsleeve', handy_insta_action = 'use'}, nodes={
-                {n=G.UIT.B, config = {w=0.1,h=0.6}},
-                {n=G.UIT.T, config={text = localize('b_redeem'),colour = G.C.UI.TEXT_LIGHT, scale = 0.55, shadow = true}}
-              }}
-            }}
-            return {
-                n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
-                  {n=G.UIT.C, config={padding = 0.15, align = 'cl'}, nodes={
-                    {n=G.UIT.R, config={align = 'cl'}, nodes={
-                      sell
-                    }},
-                    {n=G.UIT.R, config={align = 'cl'}, nodes={
-                      use
-                    }},
-                  }},
-              }}
-        end
-    end
-    if ((card.area == G.consumeables or card.area == G.jokers) and G.consumeables and card.config.center.set == "Booster") then
-        sell = {n=G.UIT.C, config={align = "cr"}, nodes={
-            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = 'sell'}, nodes={
-              {n=G.UIT.B, config = {w=0.1,h=0.6}},
-              {n=G.UIT.C, config={align = "tm"}, nodes={
-                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
-                  {n=G.UIT.T, config={text = localize('b_sell'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
-                }},
-                {n=G.UIT.R, config={align = "cm"}, nodes={
-                  {n=G.UIT.T, config={text = localize('$'),colour = G.C.WHITE, scale = 0.4, shadow = true}},
-                  {n=G.UIT.T, config={ref_table = card, ref_value = 'sell_cost_label',colour = G.C.WHITE, scale = 0.55, shadow = true}}
-                }}
-              }}
-            }},
-          }}
-        use = 
-        {n=G.UIT.C, config={align = "cr"}, nodes={
-          
-          {n=G.UIT.C, config={ref_table = card, align = "cr",maxw = 1.25, padding = 0.1, r=0.08, minw = 1.25, minh = (card.area and card.area.config.type == 'joker') and 0 or 1, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_booster', func = 'can_open_booster', handy_insta_action = 'use'}, nodes={
-            {n=G.UIT.B, config = {w=0.1,h=0.6}},
-            {n=G.UIT.T, config={text = localize('b_open'),colour = G.C.UI.TEXT_LIGHT, scale = 0.55, shadow = true}}
-          }}
-        }}
-        return {
-            n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
-              {n=G.UIT.C, config={padding = 0.15, align = 'cl'}, nodes={
-                {n=G.UIT.R, config={align = 'cl'}, nodes={
-                  sell
-                }},
-                {n=G.UIT.R, config={align = 'cl'}, nodes={
-                  use
-                }},
-              }},
-          }}
-    end
-    if (card.area == G.hand and G.hand) then --Add a use button
-		if card.config.center.set == "Joker" then
-			return  {
-                n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
-                  {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'reserve_joker', func = 'can_reserve_joker', handy_insta_action = 'buy_or_sell'}, nodes={
-                    {n=G.UIT.T, config={text = localize('b_select'),colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true}}
-                  }},
-              }}
-		end
-        if card.config.center.set == "Booster" then
-			return  {
-                n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
-                  {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_booster', func = 'can_open_booster', handy_insta_action = 'buy_or_sell'}, nodes={
-                    {n=G.UIT.T, config={text = localize('b_open'),colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true}}
-                  }},
-              }}
-		end
-        if card.config.center.set == "Voucher" then
-			return  {
-                n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
-                  {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'open_voucher', func = 'can_open_voucher', handy_insta_action = 'buy_or_sell'}, nodes={
-                    {n=G.UIT.T, config={text = localize('b_redeem'),colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true}}
-                  }},
-              }}
-		end
-	end
-    --let boosters not be recursive
-    if (card.area == G.pack_cards and G.pack_cards) and card.config.center.set == "Booster" and not Entropy.ConsumablePackBlacklist[SMODS.OPENED_BOOSTER.config.center.key] then
-        return  {
-            n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
-              {n=G.UIT.R, config={ref_table = card, r = 0.08, padding = 0.1, align = "bm", minw = 0.5*card.T.w - 0.15, maxw = 0.9*card.T.w - 0.15, minh = 0.3*card.T.h, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'reserve_booster', func = 'can_reserve_booster', handy_insta_action = 'buy_or_sell'}, nodes={
-                {n=G.UIT.T, config={text = localize('b_select'),colour = G.C.UI.TEXT_LIGHT, scale = 0.45, shadow = true}}
-              }},
-          }}
-    end
-    if (card.area == G.jokers and G.jokers and card.config.center.use) and not card.debuff and card.config.center.set == "Joker" then
-        sell = {n=G.UIT.C, config={align = "cr"}, nodes={
-            {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = 'sell'}, nodes={
-              {n=G.UIT.B, config = {w=0.1,h=0.6}},
-              {n=G.UIT.C, config={align = "tm"}, nodes={
-                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
-                  {n=G.UIT.T, config={text = localize('b_sell'),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
-                }},
-                {n=G.UIT.R, config={align = "cm"}, nodes={
-                  {n=G.UIT.T, config={text = localize('$'),colour = G.C.WHITE, scale = 0.4, shadow = true}},
-                  {n=G.UIT.T, config={ref_table = card, ref_value = 'sell_cost_label',colour = G.C.WHITE, scale = 0.55, shadow = true}}
-                }}
-              }}
-            }},
-        }}
-        transition = {n=G.UIT.C, config={align = "cr"}, nodes={
-            {n=G.UIT.C, config={ref_table = card, align = "cm",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, button = 'use_joker', func = 'can_use_joker', handy_insta_action = 'use'}, nodes={
-              {n=G.UIT.B, config = {w=0.1,h=0.3}},
-              {n=G.UIT.C, config={align = "tm"}, nodes={
-                {n=G.UIT.R, config={align = "cm", maxw = 1.25}, nodes={
-                  {n=G.UIT.T, config={text = localize(card.config.center.use_key or "b_use"),colour = G.C.UI.TEXT_LIGHT, scale = 0.4, shadow = true}}
-                }},
-              }}
-            }},
-        }}
-        return {
-            n=G.UIT.ROOT, config = {padding = 0, colour = G.C.CLEAR}, nodes={
-              {n=G.UIT.C, config={padding = 0, align = 'cl'}, nodes={
-                {n=G.UIT.R, config={align = 'cl'}, nodes={
-                  sell
-                }},
-                {n=G.UIT.R, config={align = 'cl'}, nodes={
-                  transition
-                }},
-            }},
-        }}
-    end
     if (card.area == G.jokers and G.jokers and card.config.center.key == "j_entr_akyros") and not card.debuff then
         sell = {n=G.UIT.C, config={align = "cr"}, nodes={
             {n=G.UIT.C, config={ref_table = card, align = "cr",padding = 0.1, r=0.08, minw = 1.25, hover = true, shadow = true, colour = G.C.UI.BACKGROUND_INACTIVE, one_press = true, button = 'sell_card', func = 'can_sell_card', handy_insta_action = 'sell'}, nodes={
@@ -1391,117 +712,6 @@ function G.UIDEF.use_and_sell_buttons(card)
               }},
           }}
     end
-    if Entropy.needs_use_button(card) and card.area == G.pack_cards and G.pack_cards and (Entropy.needs_pull_button(card) or (not SMODS.OPENED_BOOSTER or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front and (card.ability.consumeable))) then
-        return {
-            n = G.UIT.ROOT,
-            config = { padding = -0.1, colour = G.C.CLEAR },
-            nodes = {
-                {
-                    n = G.UIT.R,
-                    config = {
-                        ref_table = card,
-                        r = 0.08,
-                        padding = 0.1,
-                        align = "bm",
-                        minw = 0.5 * card.T.w - 0.15,
-                        minh = 0.1 * card.T.h or 0.7 * card.T.h,
-                        maxw = 0.7 * card.T.w - 0.15,
-                        hover = true,
-                        shadow = true,
-                        colour = G.C.UI.BACKGROUND_INACTIVE,
-                        one_press = true,
-                        button = "use_card",
-                        func = card:is_playing_card() and "can_reserve_card_to_deck" or "can_reserve_card",
-                        handy_insta_action = 'use'
-                    },
-                    nodes = {
-                        {
-                            n = G.UIT.T,
-                            config = {
-                                text = Entropy.needs_pull_button(card),
-                                colour = G.C.UI.TEXT_LIGHT,
-                                scale = 0.55,
-                                shadow = true,
-                            },
-                        },
-                    },
-                },
-                {
-                    n = G.UIT.R,
-                    config = {
-                        ref_table = card,
-                        r = 0.08,
-                        padding = 0.1,
-                        align = "bm",
-                        minw = 0.5 * card.T.w - 0.15,
-                        maxw = 0.9 * card.T.w - 0.15,
-                        minh = 0.1 * card.T.h,
-                        hover = true,
-                        shadow = true,
-                        colour = G.C.UI.BACKGROUND_INACTIVE,
-                        one_press = true,
-                        button = "Do you know that this parameter does nothing?",
-                        func = "can_use_consumeable",
-                        handy_insta_action = 'use'
-                    },
-                    nodes = {
-                        {
-                            n = G.UIT.T,
-                            config = {
-                                text = localize("b_use"),
-                                colour = G.C.UI.TEXT_LIGHT,
-                                scale = 0.45,
-                                shadow = true,
-                            },
-                        },
-                    },
-                },
-                { n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
-                { n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
-                { n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
-                { n = G.UIT.R, config = { align = "bm", w = 7.7 * card.T.w } },
-                -- Betmma can't explain it, neither can I
-            },
-        }
-    elseif card.area == G.pack_cards and G.pack_cards and (Entropy.needs_pull_button(card) or (not SMODS.OPENED_BOOSTER or not SMODS.OPENED_BOOSTER.draw_hand and card.children.front and (card.ability.consumeable))) then
-        return {
-            n = G.UIT.ROOT,
-                config = { padding = -0.1, colour = G.C.CLEAR },
-                nodes = {
-                    {
-                    n = G.UIT.R,
-                    config = {
-                        ref_table = card,
-                        r = 0.08,
-                        padding = 0.1,
-                        align = "bm",
-                        minw = 0.5 * card.T.w - 0.15,
-                        minh = 0.7 * card.T.h,
-                        maxw = 0.7 * card.T.w - 0.15,
-                        hover = true,
-                        shadow = true,
-                        colour = G.C.UI.BACKGROUND_INACTIVE,
-                        one_press = true,
-                        button = "Do you know that this parameter does nothing?",
-                        func = card:is_playing_card() and "can_reserve_card_to_deck" or "can_reserve_card",
-                        handy_insta_action = 'use'
-                    },
-                    nodes = {
-                        {
-                            n = G.UIT.T,
-                            config = {
-                                text = Entropy.needs_pull_button(card),
-                                colour = G.C.UI.TEXT_LIGHT,
-                                scale = 0.55,
-                                shadow = true,
-                            },
-                        },
-                    },
-                },
-                -- Betmma can't explain it, neither can I
-            },
-        }
-    end
 	return abc
 end
 
@@ -1522,8 +732,8 @@ G.FUNCS.sell_card = function(e)
 end
 
 local scie = SMODS.calculate_individual_effect
-function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
-    if Entropy.BlindIs("bl_entr_theta") and not G.GAME.blind.disabled then
+function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition, ...)
+    if Entropy.blind_is("bl_entr_theta") and not G.GAME.blind.disabled then
         --hacky solution
         --probably want a whitelist of effects in the future
         --but should work fine if everyone uses standard capitalisation
@@ -1546,167 +756,78 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         scored_card = G.message_card
     end
     if string.find(key, "chip") and next(SMODS.find_card("j_entr_yogurt")) then
-        SMODS.calculate_context({entr_chips_calculated = true, other_card = scored_card or effect.card})    
+        SMODS.calculate_context({entr_chips_calculated = true, other_card = scored_card or effect.card})
     end
     if scored_card and scored_card.ability and scored_card.ability.entr_value_fac and type(amount) == "number" then
         amount= amount * scored_card.ability.entr_value_fac
     end
-    ret = scie(effect, scored_card, key, amount, from_edition)
+    if key == "e_chips" or key == "echips" or key == "Echip_mod" then
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center_key == "j_entr_unstable_rift" then
+                v.ability.extra.chips = v.ability.extra.chips ^ (1 + (amount - 1) * 0.2)
+            end
+        end
+    end
+    if key == "e_mult" or key == "emult" or key == "Emult_mod" then
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center_key == "j_entr_unstable_rift" then
+                v.ability.extra.mult = v.ability.extra.mult ^ (1 + (amount - 1) * 0.2)
+            end
+        end
+    end
+    ret = scie(effect, scored_card, key, amount, from_edition, ...)
+    if scored_card and next(SMODS.find_card("j_entr_mutagenesis")) and scored_card.is_playing_card and scored_card:is_playing_card() and (not effect.message_card or effect.message_card == scored_card) and key ~= "message" and key ~= "colour" then
+        for i, v in pairs(SMODS.find_card("j_entr_mutagenesis")) do
+            if Entropy.add_perma_bonus(v, key, amount) then
+                if not Entropy.should_skip_animations() then
+                    G.E_MANAGER:add_event(Event{
+                        trigger = "after",
+                        func = function()
+                            play_sound("entr_void_generic")
+                            return true
+                        end
+                    })
+                end
+                delay(0.1)
+                SMODS.calculate_effect({message = localize("k_upgrade_ex"), colour = Entropy.void_gradient, card = v})
+            end
+        end
+    end
+    if (key == 'mult' or key == 'h_mult' or key == 'mult_mod') and amount then
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center_key == "j_entr_unstable_rift" then
+                v.ability.extra.mult = v.ability.extra.mult + amount * 0.2
+                SMODS.calculate_effect({card = v, message = localize("k_upgrade_ex"), colour = G.C.RED})
+            end
+        end
+    end
+    if (key == 'x_mult' or key == 'xmult' or key == 'Xmult' or key == 'x_mult_mod' or key == 'Xmult_mod') and amount ~= 1 then
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center_key == "j_entr_unstable_rift" then
+                v.ability.extra.mult = v.ability.extra.mult * (1 + (amount - 1) * 0.2)
+                SMODS.calculate_effect({card = v, message = localize("k_upgrade_ex"), colour = G.C.RED})
+            end
+        end
+    end
+    if (key == 'chips' or key == 'h_chips' or key == 'chip_mod') and amount then
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center_key == "j_entr_unstable_rift" then
+                v.ability.extra.chips = v.ability.extra.chips + amount * 0.2
+                SMODS.calculate_effect({card = v, message = localize("k_upgrade_ex"), colour = G.C.BLUE})
+            end
+        end
+    end
+    if (key == 'x_chips' or key == 'xchips' or key == 'Xchip_mod') and amount ~= 1 then
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center_key == "j_entr_unstable_rift" then
+                v.ability.extra.chips = v.ability.extra.chips * (1 + (amount - 1) * 0.2)
+                SMODS.calculate_effect({card = v, message = localize("k_upgrade_ex"), colour = G.C.BLUE})
+            end
+        end
+    end
     if ret then
         return ret
     end
-    if (key == 'eq_mult' or key == 'Eqmult_mod') then 
-        mult = mod_mult(amount)
-        if not Entropy.should_skip_animations() then
-            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent)
-        end
-        return true
-    end
-    if (key == 'eq_chips' or key == 'Eqchips_mod') then 
-        local chips = hand_chips
-        hand_chips = mod_chips(amount)
-        if not Entropy.should_skip_animations() then
-            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'chips', amount, percent, nil, nil, "="..amount.. " Chips", G.C.BLUE)
-        end
-        return true
-    end
-    if (key == 'asc') or (key == 'asc_mod') or key == "x_asc" then
-        local e = card_eval_status_text
-        for i, v in pairs(SMODS.find_card("j_entr_axeh")) do
-            amount = amount * v.ability.asc_mod
-        end
-        local hand
-        if G.GAME.asc_power_hand and G.GAME.asc_power_hand ~= 0 then hand = G.GAME.asc_power_hand end
-        local orig = to_big((hand or G.GAME.current_round.current_hand.cry_asc_num))
-        if not G.GAME.asc_power_hand or G.GAME.asc_power_hand == 0 then G.GAME.asc_power_hand = G.GAME.current_round.current_hand.cry_asc_num end
-        G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand) * to_big(amount)        
-        local text = number_format(to_big(G.GAME.asc_power_hand))
-                if not Entropy.should_skip_animations() then
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
-                    return true
-                end
-            }))
-        else    
-            G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
-        end
-        card_eval_status_text = function() end
-        scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
-        scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
-        card_eval_status_text = e
-        if not Entropy.should_skip_animations() then
-            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "X"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
-        end
-        return true
-    end
-    if (key == 'plus_asc') or (key == 'plusasc_mod') then
-        local e = card_eval_status_text
-        for i, v in pairs(SMODS.find_card("j_entr_axeh")) do
-            amount = amount * v.ability.asc_mod
-        end
-        local hand
-        if G.GAME.asc_power_hand and G.GAME.asc_power_hand ~= 0 then hand = G.GAME.asc_power_hand end
-        local orig = to_big((hand or G.GAME.current_round.current_hand.cry_asc_num))
-        if not G.GAME.asc_power_hand or G.GAME.asc_power_hand == 0 then G.GAME.asc_power_hand = G.GAME.current_round.current_hand.cry_asc_num or 0 end
-        G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand) + to_big(amount)
-        local text = number_format(to_big(G.GAME.asc_power_hand))
-        if not Entropy.should_skip_animations() then
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
-                    return true
-                end
-            }))
-        else    
-            G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
-        end
-        card_eval_status_text = function() end
-        scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
-        scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
-        card_eval_status_text = e
-        if not Entropy.should_skip_animations() then
-            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, (to_big(amount) < to_big(0) and "" or "+")..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
-        end
-        return true
-    end
-    if (key == 'exp_asc') or (key == 'exp_asc_mod') then
-        local e = card_eval_status_text
-        for i, v in pairs(SMODS.find_card("j_entr_axeh")) do
-            amount = amount * v.ability.asc_mod
-        end
-        local hand
-        if G.GAME.asc_power_hand and G.GAME.asc_power_hand ~= 0 then hand = G.GAME.asc_power_hand end
-        local orig = to_big((hand or G.GAME.current_round.current_hand.cry_asc_num))
-        if not G.GAME.asc_power_hand or G.GAME.asc_power_hand == 0 then G.GAME.asc_power_hand = G.GAME.current_round.current_hand.cry_asc_num or 0 end
-        G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand) ^ to_big(amount)
-        local text = number_format(to_big(G.GAME.asc_power_hand))
-        if not Entropy.should_skip_animations() then
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
-                    return true
-                end
-            }))
-        else    
-            G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
-        end
-        card_eval_status_text = function() end
-        scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
-        scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
-        card_eval_status_text = e
-        if not Entropy.should_skip_animations() then
-            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, "^"..amount.." Asc", G.C.GOLD, "entr_e_solar", 0.6)
-        end
-        return true
-    end
-    if (key == 'hyper_asc') or (key == 'hyper_asc_mod') or key == "hyperasc" or key == "hyperasc_mod" then
-        for i, v in pairs(SMODS.find_card("j_entr_axeh")) do
-            amount = amount * v.ability.asc_mod
-        end
-        local e = card_eval_status_text
-        local hand
-        if G.GAME.asc_power_hand and G.GAME.asc_power_hand ~= 0 then hand = G.GAME.asc_power_hand end
-        local orig = to_big((hand or G.GAME.current_round.current_hand.cry_asc_num))
-        if not G.GAME.asc_power_hand or G.GAME.asc_power_hand == 0 then G.GAME.asc_power_hand = G.GAME.current_round.current_hand.cry_asc_num or 1 end
-        G.GAME.asc_power_hand = to_big(G.GAME.asc_power_hand):arrow(amount[1], amount[2])
-        local text = number_format(to_big(G.GAME.asc_power_hand))
-        if not Entropy.should_skip_animations() then
-            G.E_MANAGER:add_event(Event({
-                func = function()
-                    G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
-                    return true
-                end
-            }))
-        else    
-            G.GAME.current_round.current_hand.cry_asc_num_text = (to_big(G.GAME.asc_power_hand) < to_big(0) and " (" or " (+") .. (text) .. ")" 
-        end
-        card_eval_status_text = function() end
-        scie(effect, scored_card, "Xmult_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
-        scie(effect, scored_card, "Xchip_mod", Cryptid.ascend(1, G.GAME.asc_power_hand - orig), false)
-        card_eval_status_text = e
-        if not Entropy.should_skip_animations() then
-            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'mult', amount, percent, nil, nil, Entropy.FormatArrowMult(amount[1], amount[2]).." Asc", G.C.GOLD, "entr_e_solar", 0.6)
-        end 
-        return true
-    end
-    if key == 'xlog_chips' then
-        local chips = hand_chips
-        local gt = to_big(chips) < to_big(0) and 1 or chips
-        local log = Talisman and Big and to_big(gt):log(to_big(amount)) or math.log(gt, amount)
-        hand_chips = mod_chips(to_big(chips) * math.max(log, 1))
-        if not Entropy.should_skip_animations() then
-            Entropy.card_eval_status_text_eq(scored_card or effect.card or effect.focus, 'chips', 1, percent, nil, nil, "Chips Xlog(Chips)", G.C.BLUE, "entr_e_rizz", 0.6)
-        end
-        return true
-    end
-end
-for _, v in ipairs({'eq_mult', 'Eqmult_mod', 'eq_chips', 'Eqchips_mod', 'xlog_chips'}) do
-    table.insert(SMODS.scoring_parameter_keys or SMODS.calculation_keys or {}, v)
-end
-for _, v in ipairs({'asc', 'asc_mod', 'plus_asc', 'plusasc_mod', 'exp_asc', 'exp_asc_mod', 'x_asc',
-                    'hyper_asc', 'hyper_asc_mod', 'hyperasc', 'hyperasc_mod'}) do
-    table.insert(SMODS.other_calculation_keys or SMODS.calculation_keys or {}, v)
 end
 
 local entr_define_dt = 0
@@ -1737,15 +858,6 @@ function Game:update(dt)
         bdt = 0
     end
     update_ref(self, dt)
-    if G.STATE == nil and (G.pack_cards == nil or #G.pack_cards == 0) and G.GAME.DefineBoosterState then
-        G.STATE = G.GAME.DefineBoosterState
-        G.STATE_COMPLETE = false
-        G.GAME.DefineBoosterState = nil
-    end
-    if self.STATE == nil and not G.DefineBoosterState then
-        G.STATE = 1
-        G.STATE_COMPLETE = false
-    end
     entr_define_dt = entr_define_dt + dt
     entr_prismatic_dt = entr_prismatic_dt + dt
     if G.P_CENTERS and G.P_CENTERS.c_entr_define and entr_define_dt > 0.5 then
@@ -1818,7 +930,7 @@ function Game:update(dt)
     entr_grahkon_dt = entr_grahkon_dt + dt
     bdt = bdt + dt
     cdt = cdt + dt
-    if Entropy.DeckOrSleeve("ambisinister") and cdt > 0.05 and G.jokers then
+    if Entropy.deck_or_sleeve("ambisinister") and cdt > 0.05 and G.jokers then
         if not Entropy.last_csl then Entropy.last_csl = G.hand.config.highlighted_limit end
         if not Entropy.last_slots then Entropy.last_slots = (G.jokers.config.card_limit - #G.jokers.cards) end
         local slots_diff = (G.jokers.config.card_limit - #G.jokers.cards) - Entropy.last_slots
@@ -1839,21 +951,22 @@ function Game:update(dt)
         SMODS.hand_limit_strings.play = G.GAME.starting_params.play_limit ~= 5 and localize('b_limit') .. G.GAME.starting_params.play_limit or ''
         Entropy.last_csl = G.hand.config.highlighted_limit
     end
-    if not Entropy.DeckOrSleeve("ambisinister") and cdt > 0.05 then
+    if not Entropy.deck_or_sleeve("ambisinister") and cdt > 0.05 then
         Entropy.last_csl = nil
         Entropy.last_slots = nil
         cdt = 0
     end
 
-    if G.GAME.blind and (Entropy.BlindIs("bl_entr_endless_entropy_phase_one") 
-    or Entropy.BlindIs("bl_entr_endless_entropy_phase_two") 
-    or Entropy.BlindIs("bl_entr_endless_entropy_phase_three") 
-    or Entropy.BlindIs("bl_entr_endless_entropy_phase_four"))
+    if G.GAME.blind and (Entropy.blind_is("bl_entr_endless_entropy_phase_one") 
+    or Entropy.blind_is("bl_entr_endless_entropy_phase_two") 
+    or Entropy.blind_is("bl_entr_endless_entropy_phase_three") 
+    or Entropy.blind_is("bl_entr_endless_entropy_phase_four"))
+    or G.GAME.EE_SCREEN
     then
         G.GAME.EE_FADE = G.GAME.EE_FADE or 0
-        G.GAME.EE_FADE = G.GAME.EE_FADE + dt * 0.5
+        G.GAME.EE_FADE = G.GAME.EE_FADE + dt * 0.5 * (G.GAME.EE_FADE_SPEED or 4)
         eedt = eedt - dt
-        if eedt <= 0 then
+        if eedt <= 0 and G.GAME.blind then
             p_s = not p_s
             if p_s then
                 local atlas = "entr_blinds"
@@ -1871,11 +984,18 @@ function Game:update(dt)
             end
         end
     end
-    if G.GAME.EE_R then
+    if G.GAME.EE_FADE then
+        G.entr_rand_text = Entropy.string_random(6)
+        G.entr_rand_text2 = Entropy.string_random(6)
+    end
+    if G.GAME.EE_R and G.GAME.EE_FADE then
         if G.GAME.EE_FADE > 10 then
             G.GAME.EE_FADE = 10
         end
-        G.GAME.EE_FADE = G.GAME.EE_FADE - dt * 3
+        G.GAME.EE_FADE = G.GAME.EE_FADE - dt * 3 * (G.GAME.EE_FADE_SPEED or 1)
+        if G.GAME.EE_FADE <= 0 then
+            G.GAME.EE_R = nil
+        end
     end
 end
 
@@ -1991,6 +1111,8 @@ Entropy.ParakmiBlacklist.Seal = true
 Entropy.ParakmiBlacklist.Stake = true
 Entropy.ParakmiBlacklist.Unique = true
 Entropy.ParakmiBlacklist.sleeve_casl_none = true
+Entropy.ParakmiBlacklist["Rune Tag"] = true
+Entropy.ParakmiBlacklist.DescriptionDummy = true
 Entropy.ChaosConversions.Command = "Twisted"
 Entropy.ChaosConversions.Star = "Twisted"
 Entropy.ChaosConversions.Omen = "Twisted"
@@ -1998,8 +1120,7 @@ Entropy.ChaosConversions.Pact = "Twisted"
 local ref = create_card
 function create_card(_type, area, legendary, _rarity, skip_materialize, soulable, forced_key, key_append, ...)
     if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi) and not forced_key and not G.GAME.entr_parakmi_bypass then
-        _type = Entropy.GetRandomSet(next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi)
-
+        _type = Entropy.get_random_set(next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi)
     end
     if _type == "CBlind" then
         _type = "BlindTokens"
@@ -2012,7 +1133,7 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
         if soulable and not forced_key and Entropy.has_rune("rune_entr_oss") then
             local valid = {}
             for _, v in ipairs(SMODS.Consumable.legendaries) do
-                if (_type == v.type.key or _type == v.soul_set) and not (G.GAME.used_jokers[v.key] and not SMODS.showman(v.key) and not v.can_repeat_soul) and (not v.in_pool or (type(v.in_pool) ~= "function") or v:in_pool({})) then
+                if (_type == v.type.key or _type == v.soul_set) and not (G.GAME.used_jokers[v.key] and not SMODS.showman(v.key) and not v.can_repeat_soul) and SMODS.add_to_pool(v, {}) then
                     valid[#valid+1] = v
                 end
             end
@@ -2058,12 +1179,12 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
         card.ability.cry_prob = 1
         card.ability.extra.odds = 2 
 	end
-    if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi) and not forced_key and not G.GAME.entr_parakmi_bypass then 
+    if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi) and not forced_key and not _rarity and not G.GAME.entr_parakmi_bypass then 
         if not G.SETTINGS.paused and not G.GAME.akyrs_any_drag then
             card.fromdefine = true
         end
     end
-    if card and card.config and card.config.center and card.config.center.key == "c_base" and Entropy.DeckOrSleeve("crafting") then
+    if card and card.config and card.config.center and card.config.center.key == "c_base" and Entropy.deck_or_sleeve("crafting") then
         if pseudorandom("crafting") < 0.5 then
             card:set_ability(SMODS.poll_enhancement({guaranteed = true, key = "entr_crafting"}))
         end
@@ -2079,7 +1200,13 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
                         other_card = card
                     })
                     if ret and (ret.set or ret.key) then
-                        card:set_ability(ret.key and G.P_CENTERS[ret.key] or Entropy.GetPooledCenter(ret.set))
+                        card:set_ability(ret.key and G.P_CENTERS[ret.key] or Entropy.get_pooled_center(ret.set))
+                        SMODS.calculate_context{post_trigger = true, other_card = c, other_context = {
+                            get_consumable_type = true,
+                            set = card.config.center.set,
+                            hidden = card.config.center.hidden,
+                            other_card = card
+                        }, other_ret = ret}
                         break
                     end
                 end
@@ -2097,186 +1224,21 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
     return card
 end
 
-local ref = SMODS.calculate_context
-function SMODS.calculate_context(context, return_table)
-    local tbl = ref(context,return_table)
-    if G.GAME.entr_bought_decks then
-        for i, v in pairs(G.GAME.entr_bought_decks or {}) do
-            if G.P_CENTERS[v].calculate then
-                local ret = G.P_CENTERS[v].calculate(G.P_CENTERS[v], nil, context or {})
-                for k,v in pairs(ret or {}) do 
-                    tbl[k] = v 
-                end
-            end
-        end
-    end
-    if not return_table then
-        return tbl
-    end
-end
-
-local trigger_effectref = Back.trigger_effect
-function Back:trigger_effect(args, ...)
-    local chips, mult = trigger_effectref(self, args, ...)
-    if G.GAME.entr_bought_decks then
-        for i, v in pairs(G.GAME.entr_bought_decks or {}) do
-            if v == 'b_anaglyph' and args.context == 'eval' and G.GAME.last_blind and G.GAME.last_blind.boss then
-                G.E_MANAGER:add_event(Event({
-                    func = (function()
-                        add_tag(Tag('tag_double'))
-                        play_sound('generic1', 0.9 + math.random()*0.1, 0.8)
-                        play_sound('holo1', 1.2 + math.random()*0.1, 0.4)
-                        return true
-                    end)
-                }))
-            end
-            if v == "b_plasma" and args.context == 'final_scoring_step' then
-                chips = chips or args.chips
-                mult = mult or args.mult
-                local tot = chips + mult
-                chips = math.floor(tot/2)
-                mult = math.floor(tot/2)
-                update_hand_text({delay = 0}, {mult = mult, chips = chips})
-
-                G.E_MANAGER:add_event(Event({
-                    func = (function()
-                        local text = localize('k_balanced')
-                        play_sound('gong', 0.94, 0.3)
-                        play_sound('gong', 0.94*1.5, 0.2)
-                        play_sound('tarot1', 1.5)
-                        ease_colour(G.C.UI_CHIPS, {0.8, 0.45, 0.85, 1})
-                        ease_colour(G.C.UI_MULT, {0.8, 0.45, 0.85, 1})
-                        attention_text({
-                            scale = 1.4, text = text, hold = 2, align = 'cm', offset = {x = 0,y = -2.7},major = G.play
-                        })
-                        G.E_MANAGER:add_event(Event({
-                            trigger = 'after',
-                            blockable = false,
-                            blocking = false,
-                            delay =  4.3,
-                            func = (function() 
-                                    ease_colour(G.C.UI_CHIPS, G.C.BLUE, 2)
-                                    ease_colour(G.C.UI_MULT, G.C.RED, 2)
-                                return true
-                            end)
-                        }))
-                        G.E_MANAGER:add_event(Event({
-                            trigger = 'after',
-                            blockable = false,
-                            blocking = false,
-                            no_delete = true,
-                            delay =  6.3,
-                            func = (function() 
-                                G.C.UI_CHIPS[1], G.C.UI_CHIPS[2], G.C.UI_CHIPS[3], G.C.UI_CHIPS[4] = G.C.BLUE[1], G.C.BLUE[2], G.C.BLUE[3], G.C.BLUE[4]
-                                G.C.UI_MULT[1], G.C.UI_MULT[2], G.C.UI_MULT[3], G.C.UI_MULT[4] = G.C.RED[1], G.C.RED[2], G.C.RED[3], G.C.RED[4]
-                                return true
-                            end)
-                        }))
-                        return true
-                    end)
-                }))
-            end
-        end
-    end
-    return chips, mult
-end
-
-local ref = create_shop_card_ui
-function create_shop_card_ui(card, type, area)
-    if card.config.center.set == "Back" or card.config.center.set == "Sleeve" then
-        G.E_MANAGER:add_event(Event({
-            trigger = 'after',
-            delay = 0.43,
-            blocking = false,
-            blockable = false,
-            func = (function()
-              if card.opening then return true end
-              local t1 = {
-                  n=G.UIT.ROOT, config = {minw = 0.6, align = 'tm', colour = darken(G.C.BLACK, 0.2), shadow = true, r = 0.05, padding = 0.05, minh = 1}, nodes={
-                      {n=G.UIT.R, config={align = "cm", colour = lighten(G.C.BLACK, 0.1), r = 0.1, minw = 1, minh = 0.55, emboss = 0.05, padding = 0.03}, nodes={
-                        {n=G.UIT.O, config={object = DynaText({string = {{prefix = localize('$'), ref_table = card, ref_value = 'cost'}}, colours = {G.C.MONEY},shadow = true, silent = true, bump = true, pop_in = 0, scale = 0.5})}},
-                      }}
-                  }}
-              local t2 = {
-                n=G.UIT.ROOT, config = {ref_table = card, minw = 1.1, maxw = 1.3, padding = 0.1, align = 'bm', colour = G.C.GOLD, shadow = true, r = 0.08, minh = 0.94, func = 'can_buy_deckorsleeve_from_shop', one_press = true, button = 'buy_deckorsleeve_from_shop', hover = true}, nodes={
-                    {n=G.UIT.T, config={text = localize('b_buy'),colour = G.C.WHITE, scale = 0.5}}
-                }}
-
-              card.children.price = UIBox{
-                definition = t1,
-                config = {
-                  align="tm",
-                  offset = {x=0,y=1.5},
-                  major = card,
-                  bond = 'Weak',
-                  parent = card
-                }
-              }
-    
-              card.children.buy_button = UIBox{
-                definition = t2,
-                config = {
-                  align="bm",
-                  offset = {x=0,y=-0.3},
-                  major = card,
-                  bond = 'Weak',
-                  parent = card
-                }
-              }
-              card.children.price.alignment.offset.y = card.ability.set == 'Booster' and 0.5 or 0.38
-    
-                return true
-            end)
-          }))
-    else
-        ref(card, type, area)
-    end
-end
-
-function Cryptid.ascend(num, curr2) -- edit this function at your leisure
-    G.GAME.sunnumber = G.GAME.sunnumber or {}
-    local snum
-    if type(G.GAME.sunnumber) == "table" then snum = G.GAME.sunnumber.not_modest or 0 
-    else snum = G.GAME.sunnumber end
-    curr2 =
-        curr2 or
-        ((G.GAME.current_round.current_hand.cry_asc_num or 0) + (G.GAME.asc_power_hand or 0)) *
-            (1 + (G.GAME.nemesisnumber or 0))
-    local num2 = math.min(curr2 or 0, 50)
-    local diff = curr2 - num2
-    if to_big(curr2 or 0) > to_big(40) then
-        num2 = num2 + diff ^ 0.3
-    end
-    curr2 = num2
-    if next(SMODS.find_card("j_entr_helios")) then
-        local curr = 1
-        for i, v in pairs(G.jokers.cards) do
-            if not v.debuff and v.config.center.key == "j_entr_helios" and to_big(v.ability.extra):gt(curr) then
-                curr = v.ability.extra + 0.4
-            end
-        end
-        return num ^ (to_big((1.75 + snum)) * (to_big((curr2) * curr)))
-    else
-        return num * (to_big((1.25 + snum)) ^ to_big(curr2))
-    end
-end
-
 local pokerhandinforef = G.FUNCS.get_poker_hand_info
-function G.FUNCS.get_poker_hand_info(cards)
+function G.FUNCS.get_poker_hand_info(cards,...)
     local _cards = {}
     for _, card in pairs(cards) do
         _cards[#_cards+1] = card
     end
     for _, card in pairs(G.I.CARD) do
-        if card.ability and card.ability.entr_marked then
-            if not card.highlighted and not Entropy.InTable(cards, card) then
+        if card.ability and card.ability.entr_marked and not card.ability.entr_marked_bypass then
+            if not card.highlighted and not Entropy.in_table(cards, card) then
                 _cards[#_cards+1] = card
             end
         end
     end
     G.GAME.current_round.current_hand.cry_asc_num = 0
-    if next(SMODS.find_card("j_entr_helios")) or (Entropy.BlindIs("bl_entr_scarlet_sun") and not G.GAME.blind.disabled) then G.GAME.used_vouchers.v_cry_hyperspacetether = true end
-    local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards)
+    local text, loc_disp_text, poker_hands, scoring_hand, disp_text = pokerhandinforef(_cards,...)
     if text and G.GAME.badarg and G.GAME.badarg[text] and text ~= "NULL" then
         G.boss_throw_hand = true
         G.bad_arg = true
@@ -2290,7 +1252,7 @@ function G.FUNCS.get_poker_hand_info(cards)
     end
     local all_flesh = true
     for i, v in pairs(scoring_hand) do
-        if v.config.center.key ~= "m_entr_flesh" then all_flesh = false end
+        if type(v) == "table" and v.config and v.config.center and v.config.center.key ~= "m_entr_flesh" then all_flesh = false end
     end
     if all_flesh then
         if text == "Flush" then 
@@ -2352,7 +1314,7 @@ end
 local is_jollyref = Card.is_jolly
 function Card:is_jolly()
 	if next(SMODS.find_card("j_entr_dekatria")) then return true end
-    return is_jollyref(self)
+    return is_jollyref and is_jollyref(self) or nil
 end
 
 local AscendantTags = {
@@ -2512,9 +1474,13 @@ G.FUNCS.use_card = function(e, mute, nosave)
         end
     })
     for i, v in pairs(SMODS.find_card("j_entr_shadow_crystal")) do
-        if SMODS.pseudorandom_probability(card, 'shadow_crystal', 1, v.ability.extra.odds) and Entropy.Inversion(card) and not card.config.center.hidden then
-            local dummy = Entropy.GetDummy(G.P_CENTERS[Entropy.Inversion(card)], card.area, card)
-            Cryptid.forcetrigger(dummy, {})
+        if SMODS.pseudorandom_probability(card, 'shadow_crystal', 1, v.ability.extra.odds) and Entropy.inversion(card) and not card.config.center.hidden then
+            local dummy = Entropy.get_dummy(G.P_CENTERS[Entropy.inversion(card)], card.area, card)
+            Spectrallib.forcetrigger({
+                card = dummy,
+                context = context,
+                silent = true
+            })
             break
         end
     end
@@ -2578,7 +1544,7 @@ end
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, ...)
     if type(center) == "string" then center = G.P_CENTERS[center] end
-    if center and Entropy.is_inverted(center) and G.GAME.next_inversions_prophecy and not G.SETTINGS.paused then
+    if center and Entropy.is_inverted(center) and G.GAME.next_inversions_prophecy and not G.SETTINGS.paused and center.set ~= "Joker" then
         set_abilityref(self, G.P_CENTERS[G.GAME.next_inversions_prophecy], ...)
         G.GAME.inversions_prophecy_counter = (G.GAME.inversions_prophecy_counter or 2) - 1
     else
@@ -2597,13 +1563,13 @@ G.FUNCS.use_card = function(e, mute, nosave)
         card:set_ability(G.P_CENTERS[card.ability.glitched_crown[card.glitched_index]])
         card.ability.glitched_crown = nil
     end
-	if card.config.center.set ~= "Booster" and Entropy.DeckOrSleeve("doc") then
+	if card.config.center.set ~= "Booster" and Entropy.deck_or_sleeve("doc") then
     local num = 1
     for i, v in pairs(G.GAME.entr_bought_decks or {}) do if v == "b_entr_doc" or v == "sleeve_entr_doc" then num = num + 1 end end
 		if Entropy.is_inverted(card.config.center) then
-			ease_entropy(2*num*Entropy.DeckOrSleeve("doc"))
+			ease_entropy(2*num*Entropy.deck_or_sleeve("doc"))
 		else
-			ease_entropy(1*num*Entropy.DeckOrSleeve("doc"))
+			ease_entropy(1*num*Entropy.deck_or_sleeve("doc"))
 		end
 	end
 	use_cardref(e, mute, nosave)
@@ -2611,17 +1577,25 @@ end
 SMODS.Booster:take_ownership_by_kind('Spectral', {
 	create_card = function(self, card, i)
 		G.GAME.entropy = G.GAME.entropy or 0
-		if to_big(pseudorandom("doc")) < to_big(1 - 0.997^(G.GAME.entropy/2)) and Entropy.DeckOrSleeve("doc") and Cryptid.enabled("c_entr_beyond") == true then
-			return create_card("Omen", G.pack_cards, nil, nil, true, true, "c_entr_beyond")
-		elseif to_big(pseudorandom("doc")) < to_big(1 - 0.996^(G.GAME.entropy/2)) and Entropy.DeckOrSleeve("doc") and Cryptid.enabled("c_cry_gateway") == true then
-			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
+		if to_big(pseudorandom("doc")) < to_big(1 - 0.997^(G.GAME.entropy/2)) and Entropy.deck_or_sleeve("doc") then
+            if Cryptid.enabled("c_entr_beyond") == true then
+			    return create_card("Omen", G.pack_cards, nil, nil, true, true, "c_entr_beyond")
+            elseif Cryptid.enabled("c_entr_fervour") then
+                return create_card("Omen", G.pack_cards, nil, nil, true, true, "c_entr_fervour")
+            end
+		elseif to_big(pseudorandom("doc")) < to_big(1 - 0.996^(G.GAME.entropy/2)) and Entropy.deck_or_sleeve("doc") then
+            if Cryptid.enabled("c_cry_gateway") == true then
+			    return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
+            else
+                return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_soul")
+            end
 		end
 		return create_card("Spectral", G.pack_cards, nil, nil, true, true, nil, "spe")
 	end
 },true)
 SMODS.Consumable:take_ownership("cry_gateway",{
 	use = function(self, card, area, copier)
-		if not Entropy.DeckOrSleeve("doc") and (#SMODS.find_card("j_jen_saint") + #SMODS.find_card("j_jen_saint_attuned")) <= 0 then
+		if not Entropy.deck_or_sleeve("doc") and (#SMODS.find_card("j_jen_saint") + #SMODS.find_card("j_jen_saint_attuned")) <= 0 then
 			local deletable_jokers = {}
 			for k, v in pairs(G.jokers.cards) do
 				if not SMODS.is_eternal(v) then
@@ -2657,7 +1631,7 @@ SMODS.Consumable:take_ownership("cry_gateway",{
 			end,
 		}))
 		delay(0.6)
-    if Entropy.DeckOrSleeve("doc") then
+    if Entropy.deck_or_sleeve("doc") then
       ease_entropy(-math.min(G.GAME.entropy, 5))
     end
 	end
@@ -2665,7 +1639,7 @@ SMODS.Consumable:take_ownership("cry_gateway",{
 local uibox_ref = create_UIBox_HUD
 function create_UIBox_HUD()
   local orig = uibox_ref()
-	if not Entropy.DeckOrSleeve("doc") then return orig end
+	if not Entropy.deck_or_sleeve("doc") then return orig end
     local scale = 0.4
     local stake_sprite = get_stake_sprite(G.GAME.stake or 1, 0.5)
 
@@ -2791,6 +1765,64 @@ function Cryptid.antimatter_apply(skip)
   end
 end
 
+function G.FUNCS.can_enter_ee(e)
+    e.config.colour = G.C.CLEAR
+    e.config.button = 'enter_ee'
+end
+function G.FUNCS.enter_ee(e)
+    stop_use()
+    if G.blind_select then 
+        G.GAME.facing_blind = true
+        G.E_MANAGER:add_event(Event({
+          trigger = 'before', delay = 0.2,
+          func = function()
+            G.blind_select.alignment.offset.y = 40
+            G.blind_select.alignment.offset.x = 0
+            return true
+        end}))
+        G.E_MANAGER:add_event(Event({
+          trigger = 'immediate',
+          func = function()
+            ease_round(1)
+            inc_career_stat('c_rounds', 1)
+            if _DEMO then
+              G.SETTINGS.DEMO_ROUNDS = (G.SETTINGS.DEMO_ROUNDS or 0) + 1
+              inc_steam_stat('demo_rounds')
+              G:save_settings()
+            end
+            G.GAME.blind_on_deck = "Boss"
+            local _tag = e.UIBox:get_UIE_by_ID('tag_container')
+            G.GAME.round_resets.blind_tag = _tag and _tag.config and _tag.config.ref_table or nil
+            G.GAME.round_resets.blind = e.config.ref_table
+            G.GAME.round_resets.blind_states["Boss"] = 'Current'
+            G.blind_select:remove()
+            G.blind_select = nil
+            delay(0.2)
+            return true
+        end}))
+        G.E_MANAGER:add_event(Event({
+          trigger = 'immediate',
+          func = function()
+            new_round()
+            return true
+          end
+        }))
+        G.E_MANAGER:add_event(Event({
+          trigger = 'after',
+          func = function()
+            G.E_MANAGER:add_event(Event({
+                trigger = 'after',
+                func = function()
+                    G.GAME.blind:set_blind(G.P_BLINDS.bl_entr_endless_entropy_phase_one)
+                    return true
+                end
+            }))
+            return true
+          end
+        }))
+    end
+end
+
 local uibox_ref = create_UIBox_blind_select
 function create_UIBox_blind_select()
     if G.GAME.USING_BREAK then
@@ -2828,14 +1860,91 @@ function create_UIBox_blind_select()
         G.GAME.round_resets.red_room = nil
         return t 
     else
-        if Entropy.CanEeSpawn() then
-            if to_big(G.GAME.round_resets.ante) < to_big(32) then G.GAME.EEBeaten = false end
-            if G.GAME.EEBuildup or (to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) then
-                G.GAME.round_resets.blind_choices.Boss = "bl_entr_endless_entropy_phase_one"
-                G.GAME.round_resets.blind_choices.Small = "bl_entr_void"
-                G.GAME.round_resets.blind_choices.Big = "bl_entr_void"
-                G.GAME.EEBuildup = true
-                ease_background_colour{new_colour = HEX("5f5f5f"), contrast = 3}
+        if to_big(G.GAME.round_resets.ante) < to_big(32) then G.GAME.EEBeaten = false end
+        if Entropy.can_ee_spawn() and G.GAME.EEBuildup or (to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) then
+            G.GAME.round_resets.blind_choices.Boss = "bl_entr_endless_entropy_phase_one"
+            G.GAME.round_resets.blind_choices.Small = "bl_entr_void"
+            G.GAME.round_resets.blind_choices.Big = "bl_entr_void"
+            G.GAME.EEBuildup = true
+            ease_background_colour{new_colour = HEX("5f5f5f"), contrast = 3}
+            if not G.SPLASH_EE then
+                G.GAME.EE_SCREEN = true
+                G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
+                G.GAME.EE_FADE = 0
+                G.E_MANAGER:add_event(Event{
+                    trigger = "after",
+                    blocking = false,
+                    blockable = false,
+                    delay = 1 * G.SETTINGS.GAMESPEED,
+                    func = function()
+                        G.SPLASH_EE:define_draw_steps({{
+                            shader = 'entr_entropic_vortex',
+                            send = {
+                                {name = 'time', ref_table = G.TIMERS, ref_value = 'REAL'},
+                                {name = 'vort_speed', val = 1},
+                                {name = 'colour_1', ref_table = G.C, ref_value = 'BLUE'},
+                                {name = 'colour_2', ref_table = G.C, ref_value = 'WHITE'},
+                                {name = 'mid_flash', val = 0},
+                                {name = 'transgender', ref_table = G.GAME, ref_value = "EE_FADE"},
+                                {name = 'vort_offset', val = (2*90.15315131*os.time())%100000},
+                            }}}
+                        )
+                        return true
+                    end
+                })
+            end
+            attention_text({
+                text = "CHALLENGE",
+                scale = 1.1,
+                hold = 60000,
+                major = G.play,
+                backdrop_colour = HEX("ff0000"),
+                align = 'cm',
+                offset = {x = 0, y = -3},
+            })
+            attention_text({
+                text = "v",
+                scale = 0.8,
+                hold = 60000,
+                major = G.play,
+                align = 'cm',
+                offset = {x = 0, y = -2.35},
+            })
+            local index = #G.I.UIBOX
+            local index2 = #G.I.UIBOX - 1
+            G.E_MANAGER:add_event(Event{
+                blocking = false,
+                blockable = false,
+                func = function()
+                    if G.GAME.blind.in_blind then
+                        G.I.UIBOX[index]:remove()
+                        G.I.UIBOX[index2]:remove()
+                        table.remove(G.I.UIBOX, index)
+                        table.remove(G.I.UIBOX, index2)
+                        return true
+                    end
+                end
+            })
+            --
+            return {n=G.UIT.ROOT, config = {align = 'tm',minw = 100, minh = 100, r = 0.15, colour = G.C.CLEAR,
+                func = 'can_enter_ee', one_press = true, button = 'enter_ee'
+            }, nodes={}}
+        else
+            if next(SMODS.find_card("j_entr_voidheart")) and not G.GAME.round_resets.red_room then
+                G.GAME.round_resets.blind_choices["Boss"] = "bl_entr_abyss"
+                G.GAME.blind_on_deck = "Boss"
+                G.GAME.round_resets.blind_states.Small = "Defeated"
+                G.GAME.round_resets.blind_states.Big = "Defeated"
+                G.GAME.round_resets.blind_states.Boss = "Select"
+                G.blind_select_opts = {}
+                G.blind_select_opts.boss = UIBox{definition = {n=G.UIT.ROOT, config={align = "cm", colour = G.C.CLEAR}, nodes={UIBox_dyn_container({create_UIBox_blind_choice('Boss')},false,get_blind_main_colour('Boss'), mix_colours(G.C.BLACK, get_blind_main_colour('Boss'), 0.8))}}, config = {align="bmi", offset = {x=0,y=0}}} or nil
+                
+                local t = {n=G.UIT.ROOT, config = {align = 'tm',minw = width, r = 0.15, colour = G.C.CLEAR}, nodes={
+                    {n=G.UIT.R, config={align = "cm", padding = 0.5}, nodes={
+                        {n=G.UIT.O, config={align = "cm", object = G.blind_select_opts.boss}},
+                    }}
+                }}
+                return t
             end
         end
         if G.GAME.modifiers.zenith then
@@ -2921,12 +2030,56 @@ end
 
 local evaluate_poker_hand_ref = evaluate_poker_hand
 function evaluate_poker_hand(hand)
-    local results = evaluate_poker_hand_ref(hand)
+    local newhand = {}
+    for i, v in pairs(hand) do
+        newhand[#newhand+1] = v
+    end
+    for i, v in pairs(SMODS.find_card("j_entr_planetarium")) do
+        if v.ability.extra.hand == "Two Pair" then
+            local c1 = newhand[1]
+            local c2 = newhand[2]
+            newhand[#newhand+1] = c1 
+            newhand[#newhand+1] = c2
+        end
+    end
+    local results = evaluate_poker_hand_ref(newhand)
     for i, v in ipairs(G.handlist) do
         if G.GAME.Interfered then
             results[v] = results[pseudorandom_element(G.handlist, pseudoseed("interfered"))]
         end
     end
+    for i, v in pairs(results) do
+        if G.GAME.atomikos_deleted and G.GAME.atomikos_deleted[i] then results[i] = {} end
+        if G.GAME.SudoHand and G.GAME.SudoHand[i] and #results[i] > 0 and Entropy.no_recurse_scoring(results) == i then results[G.GAME.SudoHand[i]] = results[i] end
+    end
+    local top
+    if results.bld_blind_high and next(results.bld_blind_high) then
+        results["High Card"] = {}
+    end
+    if G.GAME.overload then
+        for i, v in pairs(G.handlist) do
+            if not top and results[v] and results[v][1] then
+                top = {results[v][1]}
+                top.text = v
+                break
+            end
+        end
+        for i, v in pairs(G.handlist) do
+            if top then
+                results[v][1] = top[1]
+            end
+        end
+    end
+    if G.GAME.randomised_hand_map then
+        local results_copy = {}
+        for i, v in pairs(results) do
+            results_copy[i] = v
+        end
+        for i, v in pairs(G.GAME.randomised_hand_map) do
+            results[i] = results_copy[v]
+        end
+    end
+    results.top = top
     return results
 end
 
@@ -2934,7 +2087,7 @@ local update_round_evalref = Game.update_round_eval
 function Game:update_round_eval(dt)
     update_round_evalref(self, dt)
     if G.GAME.Overflow then
-        Entropy.ChangeFullCSL(-G.GAME.Overflow)
+        Entropy.change_selection_limit(-G.GAME.Overflow)
         G.GAME.Overflow = nil
     end
     if G.GAME.Interfered then
@@ -2962,7 +2115,7 @@ function Game:update_round_eval(dt)
         end
     end
     if dt > 60 * 30 then
-        Entropy.UpdateDailySeed()
+        Entropy.update_daily_seed()
     end
 end
 
@@ -2972,14 +2125,12 @@ function create_card_for_shop(area)
     if card and card.ability.set == "Joker" and next(SMODS.find_card("j_entr_ieros")) then
         for i, v2 in pairs(G.jokers.cards) do
             if v2.config.center.key == "j_entr_ieros" then
-                while pseudorandom("ieros") < 0.33 do
-                    local rare = nil
-                    if card.config.center.rarity ~= "j_entr_entropic" then
-                        rare = Entropy.GetNextRarity(card.config.center.rarity or 1) or card.config.center.rarity
-                    end
-                    local new_card = Entropy.GetRandomRarityCard(rare)
-                    card:set_ability(G.P_CENTERS[new_card])
+                local rare = nil
+                if card.config.center.rarity ~= "j_entr_entropic" then
+                    rare = Entropy.get_next_rarity(card.config.center.rarity or 1) or card.config.center.rarity
                 end
+                local new_card = Entropy.get_random_rarity_card(rare)
+                card:set_ability(G.P_CENTERS[new_card])
             end
         end
     end 
@@ -3011,12 +2162,31 @@ end
 
 local use_cardref= G.FUNCS.use_card
 G.FUNCS.use_card = function(e, mute, nosave)
-    local val = use_cardref(e, mute, nosave)
-    if e.config.ref_table.ability.entr_pinned then
-        for i, v in pairs(G.GAME.entr_pinned_cards or {}) do
-            if v.card == e.config.ref_table.config.center.key then 
-                G.GAME.entr_pinned_cards[i] = nil
-                return val 
+    local card = e.config.ref_table
+    if card.ability.entr_death_mark and card.ability.consumeable then
+        card:start_dissolve()
+        SMODS.calculate_context({using_consumeable = true, consumeable = card, area = card.from_area})
+        if G.STATE == G.STATES.SMODS_BOOSTER_OPENED and card.area == G.pack_cards then
+            G.E_MANAGER:add_event(Event{
+                trigger = "after",
+                delay = 0.5,
+                func = function()
+                    G.GAME.pack_choices = G.GAME.pack_choices - 1 
+                    if G.GAME.pack_choices <= 0 then
+                        G.FUNCS.end_consumeable(nil, delay_fac)
+                    end
+                    return true
+                end 
+            })
+        end
+    else
+        local val = use_cardref(e, mute, nosave)
+        if e.config.ref_table.ability.entr_pinned then
+            for i, v in pairs(G.GAME.entr_pinned_cards or {}) do
+                if v.card == e.config.ref_table.config.center.key then 
+                    G.GAME.entr_pinned_cards[i] = nil
+                    return val 
+                end
             end
         end
     end
@@ -3061,8 +2231,6 @@ function Blind:disable()
 	if not self.config.blind.no_disable then disable_ref(self) end
 end
 
---for wiki editors these arent 4 seperate blinds but 4 phases of endless entropy
-
 local ref = G.FUNCS.reroll_boss
 G.FUNCS.reroll_boss = function(e) 
 	if G.GAME.EEBuildup then return end
@@ -3092,6 +2260,17 @@ function Game:update(dt)
         end
 		cdt = 0
 	end
+    local ferv 
+    for i, v in pairs((G.pack_cards or {cards = {}}).cards or {}) do
+        if v.config.center.key == "c_entr_fervour" then ferv = true; break end
+    end
+    if ferv and G.GAME.entropy and G.GAME.entropy > 100 and 10^300 then
+        if not G.GAME.entr_vignette_power then G.GAME.entr_vignette_power = 100 end
+        G.GAME.entr_vignette_power = G.GAME.entr_vignette_power * 0.9 + 0.2 * 0.1
+    elseif G.GAME.entr_vignette_power then
+        G.GAME.entr_vignette_power = G.GAME.entr_vignette_power * 0.999 + 100 * 0.001
+        if G.GAME.entr_vignette_power > 75 then G.GAME.entr_vignette_power = nil end
+    end
 end
 
 local orig = create_UIBox_blind_popup
@@ -3192,7 +2371,7 @@ function update_hand_text(config, vals)
         end
         total_angle = (total_angle/360)*2*3.141592
         local base = {r=math.cos(total_angle),c=math.sin(total_angle)}
-        local str = Entropy.WhatTheFuck(base, vals.mult)
+        local str = Entropy.what_the_fuck(base, vals.mult)
         vals.mult = str
     end
     if (type(vals.chips) == "number" or type(vals.chips) == "table") and next(SMODS.find_card("j_entr_tesseract")) and math.abs(to_big(vals.chips)) > to_big(0.001) then
@@ -3204,12 +2383,12 @@ function update_hand_text(config, vals)
         end
         total_angle = -(total_angle/360)*2*3.14159265
         local base = {r=math.cos(total_angle),c=math.sin(total_angle)}
-        local str = Entropy.WhatTheFuck(base, vals.chips)
+        local str = Entropy.what_the_fuck(base, vals.chips)
         vals.chips = str
     end
     ref(config, vals)
 end
-function Entropy.GetRecipeResult(val,jokerrares,seed)
+function Entropy.get_recipe_result(val,jokerrares,seed)
     local rare = 1
     local cost=0
     for i, v in pairs({
@@ -3221,21 +2400,14 @@ function Entropy.GetRecipeResult(val,jokerrares,seed)
         cry_exotic=(SMODS.Mods["Cryptid"] or {}).can_load and 45 or nil,
         entr_entropic = (SMODS.Mods["Cryptid"] or {}).can_load and 70 or nil,
     }) do
-        if v >= cost and val >= v then
+        if (v or -9999) >= (cost or -1) and (val or -9999) >= (v or -1) then
             rare = i;cost=v
         end
     end
     return pseudorandom_element(jokerrares[rare] or {}, pseudoseed(seed)) or "j_joker"
 end
-function Entropy.ConcatStrings(tbl)
-    local result = ""
-    for i, v in pairs(tbl) do result = result..v end
-    return result
-end
 
-
-
-function Entropy.GetRecipe(cards)
+function Entropy.get_recipe(cards)
     if #cards == 5 then
         local enhancements = Entropy.EnhancementPoints
         local rares = {}
@@ -3259,15 +2431,15 @@ function Entropy.GetRecipe(cards)
         end
         table.sort(enh, function(a,b)return (enhancements[a])>(enhancements[b]) end)
         G.GAME.JokerRecipes = G.GAME.JokerRecipes or {}
-        if not G.GAME.JokerRecipes[Entropy.ConcatStrings(enh)] then
-            G.GAME.JokerRecipes[Entropy.ConcatStrings(enh)]=Entropy.GetRecipeResult(sum, rares,Entropy.ConcatStrings(enh))
+        if not G.GAME.JokerRecipes[Entropy.concat_strings(enh)] then
+            G.GAME.JokerRecipes[Entropy.concat_strings(enh)]=Entropy.get_recipe_result(sum, rares,Entropy.concat_strings(enh))
         end
-        return Entropy.FixedRecipes[Entropy.ConcatStrings(enh)] or G.GAME.JokerRecipes[Entropy.ConcatStrings(enh)]
+        return Entropy.FixedRecipes[Entropy.concat_strings(enh)] or G.GAME.JokerRecipes[Entropy.concat_strings(enh)]
     end
     return "j_joker"
 end
 
-Entropy.DiscardSpecific = function(cards)
+Entropy.discard_specific = function(cards)
     for i, v in pairs(cards) do
         draw_card(G.hand, G.discard, i*100/#cards, 'down', false, v)
     end
@@ -3344,7 +2516,7 @@ end
 
 local get_bossref = get_new_boss
 function get_new_boss()
-    if (G.GAME.EEBuildup or (to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) or G.GAME.modifiers.zenith) and Entropy.CanEeSpawn() then
+    if (G.GAME.EEBuildup or (to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) or G.GAME.modifiers.zenith) and Entropy.can_ee_spawn() then
         return "bl_entr_endless_entropy_phase_one"
     end
     if G.GAME.entr_alt then
@@ -3361,7 +2533,6 @@ function get_new_boss()
         local eligible_bosses = {}
         for k, v in pairs(Entropy.AltBlinds) do
             if not v.boss then
-    
             elseif v.in_pool and type(v.in_pool) == 'function' then
                 local res, options = v:in_pool({})
                 if
@@ -3417,8 +2588,7 @@ function Card:change_suit(new_suit)
     change_suitref(self, new_suit)
     if not G.GAME.SuitBuffs then G.GAME.SuitBuffs = {} end
     if G.GAME.SuitBuffs[new_suit] then
-        self.ability.bonus = (self.ability.bonus or 0) + (G.GAME.SuitBuffs[new_suit] and G.GAME.SuitBuffs[new_suit].chips or 0) - (self.ability.bonus_from_suit or 0)
-        self.ability.bonus_from_suit = G.GAME.SuitBuffs[new_suit] and G.GAME.SuitBuffs[new_suit].chips or 0
+        self.ability.suit_bonus = (G.GAME.SuitBuffs[new_suit] and G.GAME.SuitBuffs[new_suit].chips or 0) 
     end
 end
 
@@ -3525,14 +2695,14 @@ function end_round()
     if G.GAME.blind_on_deck == "Boss" then
         G.GAME.entr_vouchers_set = nil
     end
-    if Entropy.IsEE() and not (G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_four") then
+    if Entropy.is_EE() and not (G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_four") then
 		if (G.GAME.blind and G.GAME.blind.config and ((G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips)) or (G.GAME.blind.config.blind.key ~= "bl_entr_endless_entropy_phase_three" and to_big(G.GAME.chips) >= to_big(G.GAME.blind.chips)))) then
 			G.GAME.chips = 0
 			G.GAME.round_resets.lost = true
 			G.E_MANAGER:add_event(Event({
 				func = function()
 					G.GAME.blind:set_blind(G.P_BLINDS[G.GAME.blind.config.blind.next_phase])
-					Entropy.ChangePhase()
+					Entropy.change_phase()
 					G.GAME.blind:juice_up()
 					ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
 					ease_discard(
@@ -3553,44 +2723,9 @@ function end_round()
         G.GAME.candle_hand_size = nil
     end
     if G.GAME.vanish_selection_limit then
-        Entropy.ChangeFullCSL(-G.GAME.vanish_selection_limit)
+        Entropy.change_selection_limit(-G.GAME.vanish_selection_limit)
         G.GAME.vanish_selection_limit = nil
     end
-end
-
-local generate_uiref = generate_card_ui
-function generate_card_ui(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
-    if card_type == "Back" then 
-        if card.config and card.config.center and card.config.center.collection_loc_vars then
-            specific_vars = (card.config.center:collection_loc_vars({}, card) or {}).vars
-        elseif card.config and card.config.center and card.config.center.loc_vars then
-            specific_vars = (card.config.center:loc_vars({}, card) or {}).vars
-        elseif card.config and card.config.center then
-            local loc_args = {}
-            local effect_config = card.config.center.config
-            local name_to_check = card.config.center.name
-            if name_to_check == 'Blue Deck' then loc_args = {effect_config.hands}
-            elseif name_to_check == 'Red Deck' then loc_args = {effect_config.discards}
-            elseif name_to_check == 'Yellow Deck' then loc_args = {effect_config.dollars}
-            elseif name_to_check == 'Green Deck' then loc_args = {effect_config.extra_hand_bonus, effect_config.extra_discard_bonus}
-            elseif name_to_check == 'Black Deck' then loc_args = {effect_config.joker_slot, -effect_config.hands}
-            elseif name_to_check == 'Magic Deck' then loc_args = {localize{type = 'name_text', key = 'v_crystal_ball', set = 'Voucher'}, localize{type = 'name_text', key = 'c_fool', set = 'Tarot'}}
-            elseif name_to_check == 'Nebula Deck' then loc_args = {localize{type = 'name_text', key = 'v_telescope', set = 'Voucher'}, -1}
-            elseif name_to_check == 'Ghost Deck' then
-            elseif name_to_check == 'Abandoned Deck' then 
-            elseif name_to_check == 'Checkered Deck' then
-            elseif name_to_check == 'Zodiac Deck' then loc_args = {localize{type = 'name_text', key = 'v_tarot_merchant', set = 'Voucher'}, 
-                                localize{type = 'name_text', key = 'v_planet_merchant', set = 'Voucher'},
-                                localize{type = 'name_text', key = 'v_overstock_norm', set = 'Voucher'}}
-            elseif name_to_check == 'Painted Deck' then loc_args = {effect_config.hand_size,effect_config.joker_slot}
-            elseif name_to_check == 'Anaglyph Deck' then loc_args = {localize{type = 'name_text', key = 'tag_double', set = 'Tag'}}
-            elseif name_to_check == 'Plasma Deck' then loc_args = {effect_config.ante_scaling}
-            elseif name_to_check == 'Erratic Deck' then
-            end
-            specific_vars = loc_args
-        end
-    end
-    return generate_uiref(_c, full_UI_table, specific_vars, card_type, badges, hide_desc, main_start, main_end, card)
 end
 
 function G.UIDEF.usage_tabs()
@@ -3710,14 +2845,14 @@ end
 
 local ref = G.UIDEF.run_setup
 function G.UIDEF.run_setup(from_game_over)
-    Entropy.UpdateDailySeed()
+    Entropy.update_daily_seed()
     return ref(from_game_over)
 end
 
 local draw_ref = G.FUNCS.draw_from_deck_to_hand
 G.FUNCS.draw_from_deck_to_hand = function(e)
     e = e or G.hand.config.card_limit - #G.hand.cards
-    if Entropy.BlindIs("bl_entr_pandora") then
+    if Entropy.blind_is("bl_entr_pandora") then
         local am = 0
         for i = 1, e do
             if pseudorandom("bl_entr_pandora") < 0.33 then
@@ -3742,69 +2877,13 @@ G.FUNCS.draw_from_deck_to_hand = function(e)
     draw_ref(e)
 end
 
-local evaluate_ref = evaluate_poker_hand
-function evaluate_poker_hand(hand)
-    local results = evaluate_ref(hand)
-    for i, v in pairs(results) do
-        if G.GAME.atomikos_deleted and G.GAME.atomikos_deleted[i] then results[i] = {} end
-        if G.GAME.SudoHand and G.GAME.SudoHand[i] and #results[i] > 0 and Entropy.no_recurse_scoring(results) == i then results[G.GAME.SudoHand[i]] = results[i] end
-    end
-    return results
-end
 
 local ref = create_shop_card_ui
 function create_shop_card_ui(card, type, area)
     if (card.config.center.set == "Voucher" or card.config.center.set == "Booster" or type == "Voucher" or type == "Booster") and next(SMODS.find_card("j_entr_pound_of_flesh")) then
         card.ability.beast_mark =(card.ability.set == "Voucher" or type == "Voucher") and 3 or true
     end
-    if card.config.center.set == "Back" or card.config.center.set == "Sleeve" then
-        G.E_MANAGER:add_event(Event({
-            trigger = 'after',
-            delay = 0.43,
-            blocking = false,
-            blockable = false,
-            func = (function()
-              if card.opening then return true end
-              local t1 = {
-                  n=G.UIT.ROOT, config = {minw = 0.6, align = 'tm', colour = darken(G.C.BLACK, 0.2), shadow = true, r = 0.05, padding = 0.05, minh = 1}, nodes={
-                      {n=G.UIT.R, config={align = "cm", colour = lighten(G.C.BLACK, 0.1), r = 0.1, minw = 1, minh = 0.55, emboss = 0.05, padding = 0.03}, nodes={
-                        {n=G.UIT.O, config={object = DynaText({string = {{prefix = localize('$'), ref_table = card, ref_value = 'cost'}}, colours = {G.C.MONEY},shadow = true, silent = true, bump = true, pop_in = 0, scale = 0.5})}},
-                      }}
-                  }}
-              local t2 = {
-                n=G.UIT.ROOT, config = {ref_table = card, minw = 1.1, maxw = 1.3, padding = 0.1, align = 'bm', colour = G.C.GOLD, shadow = true, r = 0.08, minh = 0.94, func = 'can_buy_deckorsleeve_from_shop', one_press = true, button = 'buy_deckorsleeve', hover = true}, nodes={
-                    {n=G.UIT.T, config={text = localize('b_redeem'),colour = G.C.WHITE, scale = 0.5}}
-                }}
-
-              card.children.price = UIBox{
-                definition = t1,
-                config = {
-                  align="tm",
-                  offset = {x=0,y=1.5},
-                  major = card,
-                  bond = 'Weak',
-                  parent = card
-                }
-              }
-    
-              card.children.buy_button = UIBox{
-                definition = t2,
-                config = {
-                  align="bm",
-                  offset = {x=0,y=-0.3},
-                  major = card,
-                  bond = 'Weak',
-                  parent = card
-                }
-              }
-              card.children.price.alignment.offset.y = card.ability.set == 'Booster' and 0.5 or 0.38
-    
-                return true
-            end)
-          }))
-    else
-        ref(card, type, area)
-    end
+    ref(card, type, area)
 end
 
 if SMODS.Mods.Multipack and SMODS.Mods.Multipack.can_load then
@@ -3884,44 +2963,13 @@ function SMODS.is_poker_hand_visible(handname)
     return visible_ref(handname)
 end
 
-local evaluate_poker_hand_ref = evaluate_poker_hand
-function evaluate_poker_hand(cards)
-    local results = evaluate_poker_hand_ref(cards)
-    local top
-    if G.GAME.overload then
-        for i, v in pairs(G.handlist) do
-            if not top and results[v] and results[v][1] then
-                top = {results[v][1]}
-                top.text = v
-                break
-            end
-        end
-        for i, v in pairs(G.handlist) do
-            if top then
-                results[v][1] = top[1]
-            end
-        end
-    end
-    if G.GAME.randomised_hand_map then
-        local results_copy = {}
-        for i, v in pairs(results) do
-            results_copy[i] = v
-        end
-        for i, v in pairs(G.GAME.randomised_hand_map) do
-            results[i] = results_copy[v]
-        end
-    end
-    results.top = top
-    return results
-end
-
 local parse_ref = CardArea.parse_highlighted
 function CardArea:parse_highlighted()
     G.GAME.asc_power_hand = 0
     parse_ref(self)
     local text,disp_text,poker_hands = G.FUNCS.get_poker_hand_info(self.highlighted)
+    if not G.GAME.old_operator then G.GAME.old_operator = G.GAME.current_scoring_calculation_key or "multiply" end
     if G.GAME.hands[text] and G.GAME.hands[text].operator then
-        if not G.GAME.old_operator then G.GAME.old_operator = G.GAME.current_scoring_calculation_key or "multiply" end
         SMODS.set_scoring_calculation(G.GAME.hands[text].operator)
     elseif G.GAME.old_operator then
         SMODS.set_scoring_calculation(G.GAME.old_operator)
@@ -3963,10 +3011,8 @@ G.FUNCS.evaluate_play = function(e)
     G.E_MANAGER:add_event(Event{
         trigger = "after",
         func = function()
-            if G.C.UI_CHIPS[1] == G.C.GOLD[1] then
-                ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
-                ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
-            end
+            ease_colour(G.C.UI_CHIPS, G.C.BLUE, 0.3)
+            ease_colour(G.C.UI_MULT, G.C.RED, 0.3)
             G.GAME.current_round.current_hand.cry_asc_num = 0
             G.GAME.current_round.current_hand.cry_asc_num_text = ""
             return true
@@ -3974,107 +3020,9 @@ G.FUNCS.evaluate_play = function(e)
     })
 end
 
-function Entropy.GetDummy(center, area, self, silent)
-    local abil = copy_table(center.config) or {}
-    abil.consumeable = copy_table(abil)
-    abil.name = center.name or center.key
-    abil.set = center.set
-    abil.t_mult = abil.t_mult or 0
-    abil.t_chips = abil.t_chips or 0
-    abil.x_mult = abil.x_mult or abil.Xmult or 1
-    abil.extra_value = abil.extra_value or 0
-    abil.d_size = abil.d_size or 0
-    abil.mult = abil.mult or 0
-    abil.effect = center.effect
-    abil.h_size = abil.h_size or 0
-    abil.card_limit = abil.card_limit or 1
-    abil.extra_slots_used = abil.extra_slots_used or 0
-    local eligible_editionless_jokers = {}
-    for i, v in pairs(G.jokers and G.jokers.cards or {}) do
-        if not v.edition then
-            eligible_editionless_jokers[#eligible_editionless_jokers + 1] = v
-        end
-    end
-    local tbl = {
-        ability = abil,
-        config = {
-            center = center,
-            center_key = center.key
-        },
-        juice_up = function(_, ...)
-            return self:juice_up(...)
-        end,
-        start_dissolve = function(_, ...)
-            if not _.silent then
-                return self:start_dissolve(...)
-            end
-        end,
-        remove = function(_, ...)
-            return self:remove(...)
-        end,
-        flip = function(_, ...)
-            return self:flip(...)
-        end,
-        can_use_consumeable = function(self, ...)
-            return Card.can_use_consumeable(self, ...)
-        end,
-        calculate_joker = function(self, ...)
-            return Card.calculate_joker(self, ...)
-        end,
-        can_calculate = function(self, ...)
-            return Card.can_calculate(self, ...)
-        end,
-        set_cost = function(self, ...)
-            Card.set_cost(self, ...)
-        end,
-        calculate_sticker = function(self, ...)
-            Card.calculate_sticker(self, ...)
-        end,
-        base_cost = 1,
-        extra_cost = 0,
-        original_card = self,
-        area = area,
-        added_to_deck = added_to_deck,
-        cost = self.cost,
-        sell_cost = self.sell_cost,
-        eligible_strength_jokers = eligible_editionless_jokers,
-        eligible_editionless_jokers = eligible_editionless_jokers,
-        T = self.T,
-        VT = self.VT,
-        CT = self.CT,
-        silent = silent
-    }
-    for i, v in pairs(Card) do
-        if type(v) == "function" and i ~= "flip_side" then
-            tbl[i] = function(_, ...)
-                return v(self, ...)
-            end
-        end
-    end
-    tbl.set_edition = function(s, ed, ...)
-        Card.set_edition(s, ed, ...)
-    end
-    tbl.get_chip_h_x_mult = function(s, ...)
-        local ret = SMODS.multiplicative_stacking(s.ability.h_x_mult or 1,
-            (not s.ability.extra_enhancement and s.ability.perma_h_x_mult) or 0)
-        return ret
-    end
-    tbl.get_chip_x_mult = function(s, ...)
-        local ret = SMODS.multiplicative_stacking(s.ability.x_mult or 1,
-            (not s.ability.extra_enhancement and s.ability.perma_x_mult) or 0)
-        return ret
-    end
-    tbl.use_consumeable = function(self, ...)
-        self.bypass_echo = true
-        local ret = Card.use_consumeable(self, ...)
-        self.bypass_echo = nil
-    end
-    return tbl
-end
-
 local use_ref = Card.use_consumeable 
 function Card:use_consumeable(...)
-    if Entropy.DeckOrSleeve("gemstone") and SMODS.pseudorandom_probability(nil, "entr_gemstone_deck", 1, 3) and self.config.center.set ~= "Rune" then
+    if Entropy.deck_or_sleeve("gemstone") and SMODS.pseudorandom_probability(nil, "entr_gemstone_deck", 1, 3) and self.config.center.set ~= "Rune" then
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.4, func = function()
             attention_text({
                 text = localize('k_nope_ex'),
@@ -4097,9 +3045,13 @@ function Card:use_consumeable(...)
         if not self.bypass_echo then
             if G.GAME.entr_echo and G.GAME.entr_echo[self.config.center.key] and #G.GAME.entr_echo[self.config.center.key] > 0 then
                 for i, v in pairs(G.GAME.entr_echo[self.config.center.key]) do
-                    local dum = Entropy.GetDummy(G.P_CENTERS[v], self.area, self)
+                    local dum = Entropy.get_dummy(G.P_CENTERS[v], self.area, self)
                     dum.bypass_echo = true
-                    Cryptid.forcetrigger(dum, {})
+                    Spectrallib.forcetrigger({
+                        card = dum,
+                        context = context,
+                        silent = true
+                    })
                     dum.bypass_echo = nil
                 end
             end
@@ -4245,7 +3197,7 @@ end
 
 local has_no_suitref = SMODS.has_no_suit
 function SMODS.has_no_suit(card, bypass)
-    if card.config.center.key == "j_entr_false_vacuum_collapse" then return true end
+    if card.config.center.key == "j_entr_false_vacuum_collapse" or card.config.center.key == "phoenix_a" then return true end
     if next(SMODS.find_card("j_entr_opal")) and not bypass then
         return false
     end
@@ -4255,13 +3207,14 @@ end
 
 local has_no_rankref = SMODS.has_no_rank
 function SMODS.has_no_rank(card, bypass)
-    if card.config.center.key == "j_entr_false_vacuum_collapse" then return true end
+    if card.config.center.key == "j_entr_false_vacuum_collapse" or card.config.center.key == "phoenix_a" then return true end
+    if card.base.value == "entr_nilrank" and not next(SMODS.find_card("j_entr_opal")) then return true end
     return has_no_rankref(card)
 end
 
 local in_scoringref = SMODS.in_scoring
 function SMODS.in_scoring(card, ...)
-    if card.config.center.key == "j_entr_false_vacuum_collapse" then return true end
+    if card.config.center.key == "j_entr_false_vacuum_collapse" or card.config.center.key == "phoenix_a" then return true end
     return in_scoringref(card, ...)
 end
 
@@ -4362,7 +3315,7 @@ function Card:open(...)
             return true
         end
     })
-    if Entropy.DeckOrSleeve("crafting") then
+    if Entropy.deck_or_sleeve("crafting") then
         G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit, 5)
     end
 end
@@ -4370,7 +3323,7 @@ end
 local new_round_ref = new_round
 function new_round(...)
     new_round_ref(...)
-    if Entropy.DeckOrSleeve("crafting") then
+    if Entropy.deck_or_sleeve("crafting") then
         G.hand.config.highlighted_limit = math.max(G.hand.config.highlighted_limit, 5)
     end
 end
@@ -4388,51 +3341,15 @@ function copy_card(old, new, ...)
     end
     if old.base and old.base.nominal then copy.base.nominal = old.base.nominal end
     G.GAME.modifiers.entr_twisted = tw
+    if copy.config and copy.config.center_key == "j_entr_unstable_rift" then
+        math.randomseed(os.time())
+        copy.ability.extra.val = math.random() --gay ass woke transgender math.random because syncing is for losers
+    end
+    if not G.SETTINGS.paused and G.deck and G.GAME.modifiers.entr_copper and pseudorandom("entr_copper_stake") < 0.33 and (ret.config.center.set == "Default" or ret.config.center.set == "Enhanced") then
+        ret:set_ability(G.P_CENTERS.m_entr_disavowed)
+    end
     return copy
 end
-
-local toggle_shopref = G.FUNCS.toggle_shop
-G.FUNCS.toggle_shop = function(e)
-    stop_use()
-    G.CONTROLLER.locks.toggle_shop = true
-    local check
-    for i, v in pairs(G.shop_jokers.cards) do
-        if v.facing == "back" then
-            G.E_MANAGER:add_event(Event{
-                func = function()
-                    v:flip()
-                    return true
-                end
-            })
-            check = true
-            delay(2)
-            card_eval_status_text(
-                v,
-                "extra",
-                nil,
-                nil,
-                nil,
-                { message = localize("k_nope_ex"), colour = G.C.RED }
-            )
-        end
-    end
-
-    
-    if check then
-        delay(2)
-        G.E_MANAGER:add_event(Event{
-            trigger = "after", 
-            blocking = false,
-            func = function()
-                toggle_shopref(e)
-                return true
-            end
-        })
-    else
-        toggle_shopref(e)
-    end
-end
-
 
 local defeat_ref = Blind.defeat
 function Blind:defeat(silent, ...)
@@ -4560,7 +3477,7 @@ if HotPotato then
         {n=G.UIT.C, nodes = {
             {n=G.UIT.R, config={align = "cm", padding = 0.05}, nodes={
                 {n=G.UIT.C, config={align = "cm", padding = 0.1}, nodes={
-                    {n=G.UIT.R,config={id = 'next_round_button', align = "cm", minw = 1.8, minh = Entropy.CanSwitchAltPath() and 1 or 1.3, r=0.15,colour = G.C.RED, one_press = true, button = 'toggle_shop', hover = true,shadow = true}, nodes = {
+                    {n=G.UIT.R,config={id = 'next_round_button', align = "cm", minw = 1.8, minh = Entropy.can_switch_alt_path() and 1 or 1.3, r=0.15,colour = G.C.RED, one_press = true, button = 'toggle_shop', hover = true,shadow = true}, nodes = {
                         {n=G.UIT.R, config={align = "cm", padding = 0.07, focus_args = {button = 'y', orientation = 'cr'}, func = 'set_button_pip'}, nodes={
                             {n=G.UIT.R, config={align = "cm", maxw = 1.3}, nodes={
                                 {n=G.UIT.T, config={text = localize('b_next_round_1'), scale = 0.4, colour = G.C.WHITE, shadow = true}}
@@ -4570,7 +3487,7 @@ if HotPotato then
                             }}
                         }},
                     }},
-                    (Entropy.CanSwitchAltPath() and {n=G.UIT.R,config={id = 'change_path_button', align = "cm", minw = 1.8, minh = 1, r=0.15,colour = G.C.PURPLE, button = 'toggle_path', hover = true,shadow = true, func='can_toggle_path'}, nodes = {
+                    (Entropy.can_switch_alt_path() and {n=G.UIT.R,config={id = 'change_path_button', align = "cm", minw = 1.8, minh = 1, r=0.15,colour = G.C.PURPLE, button = 'toggle_path', hover = true,shadow = true, func='can_toggle_path'}, nodes = {
                         {n=G.UIT.R, config={align = "cm", padding = 0.07, focus_args = {button = 'leftshoulder', orientation = 'cr'}, func = 'set_button_pip'}, nodes={
                             {n=G.UIT.R, config={align = "cm", maxw = 1.3}, nodes={
                             {n=G.UIT.T, config={text = localize(G.GAME.entr_alt and 'b_change_path_3' or 'b_change_path_1'), scale = 0.4, colour = G.C.WHITE, shadow = true}}
@@ -4580,7 +3497,7 @@ if HotPotato then
                             }}
                         }},              
                     }} or nil),
-                    {n=G.UIT.R, config={id = 'shop_reroll', align = "cm", minw = 1.8, minh = Entropy.CanSwitchAltPath() and 1 or 1.3, r=0.15,colour = G.C.GREEN, button = 'reroll_shop', func = 'can_reroll', hover = true,shadow = true}, nodes = {
+                    {n=G.UIT.R, config={id = 'shop_reroll', align = "cm", minw = 1.8, minh = Entropy.can_switch_alt_path() and 1 or 1.3, r=0.15,colour = G.C.GREEN, button = 'reroll_shop', func = 'can_reroll', hover = true,shadow = true}, nodes = {
                         {n=G.UIT.R, config={align = "cm", padding = 0.07, focus_args = {button = 'x', orientation = 'cr'}, func = 'set_button_pip'}, nodes={
                             {n=G.UIT.R, config={align = "cm", maxw = 1.3}, nodes={
                                 {n=G.UIT.T, config={text = localize('k_reroll'), scale = 0.4, colour = G.C.WHITE, shadow = true}},
@@ -4648,23 +3565,54 @@ function SMODS.calculate_main_scoring(context, scoring_hand)
     for i, v in pairs(G.play.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
     for i, v in pairs(G.jokers.cards) do if v.config.center.key == "j_entr_false_vacuum_collapse" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
     for _, card in pairs(G.I.CARD) do
-        if card.ability and card.ability.entr_marked and not card.highlighted and not Entropy.InTable(scoring_hand or context.scoring_hand, card) then
+        if card.ability and card.ability.entr_marked and not card.ability.entr_marked_bypass and not card.highlighted and not Entropy.in_table(scoring_hand or context.scoring_hand, card) then
             fvc_cards[#fvc_cards+1] = card
             added_cards[#added_cards+1] = card
         end
     end
-    if context.cardarea ~= G.play or (not next(SMODS.find_card('j_entr_rubber_ball')) and not next(fvc_cards)) then
+    for i, v in pairs(G.play.cards) do if v.config.center.key == "j_entr_phoenix_a" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
+    for i, v in pairs(G.jokers.cards) do if v.config.center.key == "j_entr_phoenix_a" and not v.debuff then fvc_cards[#fvc_cards+1] = v end end
+    local ff_planetarium
+    for i, v in pairs(SMODS.find_card("j_entr_planetarium")) do
+        if v.ability.extra.hand == "Flush Five" then ff_planetarium = true break end
+    end
+    if context.cardarea ~= G.play or (not next(SMODS.find_card('j_entr_rubber_ball')) and not next(fvc_cards) and not ff_planetarium) then
 	    calc_main_scoring(context, scoring_hand)
     end
-	if context.cardarea == G.play and (next(SMODS.find_card('j_entr_rubber_ball')) or next(fvc_cards)) then
+	if context.cardarea == G.play and (next(SMODS.find_card('j_entr_rubber_ball')) or next(fvc_cards) or ff_planetarium) then
         if not G.rubber_cards or #G.rubber_cards.cards == 0 then
             G.rubber_cards = {cards = Entropy.rubber_ball_scoring(scoring_hand)}
         end
         for i, v in pairs(added_cards) do G.rubber_cards.cards[#G.rubber_cards.cards+1] = v end
 		context.cardarea = G.rubber_cards
         context.scoring_hand = G.rubber_cards.cards
+        for i, v in pairs(G.rubber_cards.cards) do
+            if not SMODS.in_scoring(v, scoring_hand) then
+                local c = v
+                G.E_MANAGER:add_event(Event{
+                    func = function()
+                        c:highlight(true)
+                        return true
+                    end
+                })
+            end
+        end
 		calc_main_scoring(context, G.rubber_cards.cards)
 		context.cardarea = G.play
+        for i, v in pairs(G.rubber_cards.cards) do
+            if not SMODS.in_scoring(v, scoring_hand) then
+                local c = v
+                G.E_MANAGER:add_event(Event{
+                    trigger = "after",
+                    blocking = false,
+                    delay = 3,
+                    func = function()
+                        c:highlight()
+                        return true
+                    end
+                })
+            end
+        end
         G.rubber_cards = nil
 	end
 	return
@@ -4672,7 +3620,7 @@ end
 
 local base_shader_ref = Card.should_draw_base_shader
 function Card:should_draw_base_shader(...)
-    return base_shader_ref(self, ...) and not (self.debuff and Entropy.IsEE())
+    return base_shader_ref(self, ...) and not (self.debuff and Entropy.is_EE())
 end
 
 function Entropy.ee_taunt(taunt)
@@ -4729,7 +3677,7 @@ function hotpot_horsechicot_market_section_init_cards()
             if G.GAME.modifiers.glitched_items then
                 local gc = {new_shop_card.config.center.key}
                 for i = 1, G.GAME.modifiers.glitched_items - 1 do
-                gc[#gc+1] = Entropy.GetPooledCenter("BlackMarketJokerless").key
+                gc[#gc+1] = Entropy.get_pooled_center("BlackMarketJokerless").key
                 end
                 new_shop_card.ability.glitched_crown = gc
             end
@@ -4738,7 +3686,7 @@ function hotpot_horsechicot_market_section_init_cards()
             if G.GAME.modifiers.glitched_items then
                 local gc = {new_shop_card.config.center.key}
                 for i = 1, G.GAME.modifiers.glitched_items - 1 do
-                gc[#gc+1] = Entropy.GetPooledCenter("BlackMarket").key
+                gc[#gc+1] = Entropy.get_pooled_center("BlackMarket").key
                 end
                 new_shop_card.ability.glitched_crown = gc
             end
@@ -4768,8 +3716,9 @@ function hotpot_horsechicot_market_section_init_cards()
 end
 
 
-local forcetrigger_ref = Cryptid.forcetrigger
-function Cryptid.forcetrigger(card, ...)
+local forcetrigger_ref = Spectrallib.forcetrigger
+function Spectrallib.forcetrigger(args, ...)
+    local card = args.card
     if card.ability.consumeable then
         local center = card.config.center
         if center and center.calculate then
@@ -4780,14 +3729,14 @@ function Cryptid.forcetrigger(card, ...)
             edition:calculate(card, {pre_using_self = true, consumeable = card, area = card.from_area})
         end
     end
-    return forcetrigger_ref(card, ...)
+    return forcetrigger_ref(args, ...)
 end
 
 local gnv_ref = SMODS.get_next_vouchers
 function SMODS.get_next_vouchers(vouchers)
     local ret = gnv_ref(vouchers)
     if G.GAME.deck_voucher_rate and (G.GAME.deck_voucher_round or 0) % G.GAME.deck_voucher_rate == 0 then
-        local center = Entropy.GetPooledCenter("Back").key
+        local center = Entropy.get_pooled_center("Back").key
         ret[#ret+1] = center
         ret.spawn[center] = true
     end
@@ -4806,7 +3755,7 @@ end
 
 local unblind_void_ref = UnBlind_create_UIBox_blind
 function UnBlind_create_UIBox_blind(type)
-    if Entropy.CanEeSpawn() then
+    if Entropy.can_ee_spawn() then
         if to_big(G.GAME.round_resets.ante) < to_big(32) then G.GAME.EEBeaten = false end
         if G.GAME.EEBuildup or (to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) then
             G.GAME.round_resets.blind_choices.Boss = "bl_entr_endless_entropy_phase_one"
@@ -4824,5 +3773,134 @@ function Blind:calculate(context, ...)
     local obj = self.config.blind
     if obj then
         return blind_calc_ref(self, context, ...)
+    end
+end
+
+local four_fingers_ref = SMODS.four_fingers
+function SMODS.four_fingers(type, ...)
+    local ret = four_fingers_ref(type, ...) or 5
+    for i, v in pairs(SMODS.find_card("j_entr_planetarium")) do
+        if v.ability.extra.hand == "Straight Flush" then
+            local level = (G.GAME.hands[G.calced_hand or ""] or {}).level 
+            if level then
+                ret = ret - math.floor(level/ 3)
+            end
+        end
+    end
+    return ret
+end
+
+local get_x_sameref = get_X_same
+function get_X_same(x, hand,...)
+    for i, v in pairs(SMODS.find_card("j_entr_planetarium")) do
+        if v.ability.extra.hand == "Straight Flush" then
+            local level = (G.GAME.hands[G.calced_hand or ""] or {}).level 
+            if level then
+                x = x - math.floor(level/ 3)
+            end
+        end
+    end
+    if x < 1 then x = 1 end
+    return get_x_sameref(x, hand,...)
+end
+
+local scale_cardref = SMODS.scale_card
+function SMODS.scale_card(card, tbl, ...)
+    if card.ability.entr_pure then
+        SMODS.calculate_effect({card = card, message = localize("k_nope_ex"), colour = G.C.RED})
+    else    
+        return scale_cardref(card, tbl, ...)
+    end
+end
+
+local return_to_deck_ref = Spectrallib.return_to_deck
+function Spectrallib.return_to_deck(...)
+    return return_to_deck_ref(...) or Spectrallib.blind_is("bl_entr_cassandra") or Spectrallib.blind_is("bl_entr_pi")
+end
+
+local get_bg_ref = Spectrallib.get_bg_colour
+function Spectrallib.get_bg_colour(...)
+
+    if TDECKS then
+        local ret = TDECKS.get_bg_colour()
+        if ret then return ret end
+    end
+    return G.GAME.entr_alt and G.C.ALTBG or get_bg_ref(...)
+end
+
+local blind_is_ref = Spectrallib.blind_is
+function Spectrallib.blind_is(blind, ...)
+    return blind_is_ref(blind, ...)
+        or (Entropy.is_EE() and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_four" and Entropy.EEWhitelist[blind]) --TODO: change how this works
+end
+
+function Entropy.require(key)
+    key = string.gsub(key, "%.", "/")
+    local func = SMODS.load_file("lib/" ..key..".lua", "entr") or SMODS.load_file("lib/" ..key.."/init.lua", "entr")
+    return func and func()
+end
+
+local row_ref = add_round_eval_row
+function add_round_eval_row(config)
+    if string.find(config.name, "void_joker") then
+        local config = config or {}
+        local width = G.round_eval.T.w - 0.51
+        local num_dollars = config.dollars or 1
+        local scale = 0.9
+        total_cashout_rows = (total_cashout_rows or 0) + 1
+        if total_cashout_rows > 7 then
+            return
+        end
+        if config.name ~= 'blind1' then
+            if not G.round_eval.divider_added then 
+                G.E_MANAGER:add_event(Event({
+                    trigger = 'after',delay = 0.25,
+                    func = function() 
+                        local spacer = {n=G.UIT.R, config={align = "cm", minw = width}, nodes={
+                            {n=G.UIT.O, config={object = DynaText({string = {'......................................'}, colours = {G.C.WHITE},shadow = true, float = true, y_offset = -30, scale = 0.45, spacing = 13.5, font = G.LANGUAGES['en-us'].font, pop_in = 0})}}
+                        }}
+                        G.round_eval:add_child(spacer,G.round_eval:get_UIE_by_ID(config.bonus and 'bonus_round_eval' or 'base_round_eval'))
+                        return true
+                    end
+                }))
+                delay(0.6)
+                G.round_eval.divider_added = true
+            end
+        else
+            delay(0.2)
+        end
+
+        delay(0.2)
+        G.E_MANAGER:add_event(Event({
+            trigger = 'before',delay = 0.5,
+            func = function()
+                --Add the far left text and context first:
+                local left_text = {}
+                table.insert(left_text, {n=G.UIT.O, config={object = DynaText({string = localize{type = 'name_text', set = config.card.config.center.set, key = config.card.config.center.key}, colours = {Entropy.void_gradient}, shadow = true, pop_in = 0, scale = 0.6*scale, silent = true})}})
+                full_row = {n=G.UIT.R, config={align = "cm", minw = 5}, nodes={
+                    {n=G.UIT.C, config={padding = 0.05, minw = width*0.55, minh = 0.61, align = "cl"}, nodes=left_text},
+                    {n=G.UIT.C, config={padding = 0.05,minw = width*0.45, align = "cr"}, nodes={{n=G.UIT.C, config={align = "cm", id = 'void_joker_'..config.name},nodes={}}}}
+                }}
+                G.round_eval:add_child(full_row,G.round_eval:get_UIE_by_ID(config.bonus and 'bonus_round_eval' or 'base_round_eval'))
+                play_sound('cancel', config.pitch or 1)
+                play_sound('highlight1',( 1.5*(config.pitch or 1)) or 1, 0.2)
+                if config.card then config.card:juice_up(0.7, 0.46) end
+                return true
+            end
+        }))
+        G.E_MANAGER:add_event(Event({
+            trigger = 'before',delay = 0.38,
+            func = function()
+                G.round_eval:add_child(
+                    {n=G.UIT.R, config={align = "cm", id = 'void_row'..'_'..config.name}, nodes={
+                        {n=G.UIT.O, config={object = DynaText({string = {"X"..number_format(config.void_multiplier)}, colours = {Entropy.void_gradient}, shadow = true, pop_in = 0, scale = 0.65, float = true})}}
+                    }},
+                    G.round_eval:get_UIE_by_ID('void_joker_'..config.name))
+                play_sound('entr_void_generic')
+                return true
+            end
+        }))
+    else
+        row_ref(config)
     end
 end

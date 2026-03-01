@@ -92,18 +92,8 @@ local tocihc = {
 
             if type == "Boss" then
                 tag = Tag(get_next_tag_key())
-                if context.forcetrigger then
-                    G.GAME.blind.chips = G.GAME.blind.chips * 0.2
-                    G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-                    G.HUD_blind:recalculate()
-                end
             else
-                tag = Tag(G.GAME.round_resets.blind_tags[type])
-                if not context.blueprint then
-                    G.GAME.blind.chips = G.GAME.blind.chips * 0.2
-                end
-                G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-                G.HUD_blind:recalculate()
+                tag = Tag(G.GAME.round_resets.blind_tags[type])     
                 --card:juice_up()
             end
             if Cryptid.is_shiny then
@@ -232,7 +222,7 @@ local oinac = {
     calculate = function (self, card2, context)
         if context.destroy_card and context.cardarea == G.play and context.destroying_card then
                 local card = copy_card(context.destroying_card)
-                SMODS.change_base(card, card.base.suit, Entropy.HigherCardRank(card))
+                SMODS.change_base(card, card.base.suit, SMODS.modify_rank(card, 1))
                 card:add_to_deck()
                 table.insert(G.playing_cards, card)
                 G.hand:emplace(card)
@@ -303,7 +293,7 @@ local entropy_card = {
     calculate = function (self, card, context)
        if context.joker_main or context.forcetrigger then
             return {
-                asc = 1+card.ability.num*card.ability.x_asc_mod
+                x_asc = 1+card.ability.num*card.ability.x_asc_mod
             }
        end
     end
@@ -356,11 +346,11 @@ local kciroy = {
 	},
     demicoloncompat = true,
     add_to_deck = function(self, card)
-        Entropy.ChangeFullCSL(card.ability.csl)
+        Entropy.change_selection_limit(card.ability.csl)
         G.hand:change_size(math.min(card.ability.hs, 1000))
     end,
     remove_from_deck = function(self, card)
-        Entropy.ChangeFullCSL(-card.ability.csl)
+        Entropy.change_selection_limit(-card.ability.csl)
         G.hand:change_size(-math.min(card.ability.hs, 1000))
     end,
     calculate = function (self, card, context)
@@ -406,8 +396,8 @@ local ybur = {
     cost = 20,
     blueprint_compat = true,
     eternal_compat = true,
-    pos = {x=2, y=0},
-    soul_pos = {x = 1, y = 0},
+    pos = {x=4, y=0},
+    soul_pos = {x = 0, y = 0}, 
     atlas = "ruby_atlas",
     demicoloncompat=true,
     loc_vars = function(self, info_queue, card)
@@ -415,7 +405,7 @@ local ybur = {
             vars = {
                 card.ability.e_chips,
                 card.ability.e_chips_mod,
-                card.ability.active and localize("k_active") or localize("k_inactive")
+                card.ability.active and localize("k_active_ex") or localize("k_inactive_ex")
             },
         }
     end,
@@ -427,14 +417,8 @@ local ybur = {
                     ref_table = card.ability,
                     ref_value = "e_chips",
                     scalar_value = "e_chips_mod",
-                    scaling_message = {
-                        message = localize({
-                            type = "variable",
-                            key = "a_powchips",
-                            vars = { card.ability.e_chips },
-                        }),
-                        colour = { 0.8, 0.45, 0.85, 1 }
-                    }
+                    message_key = "a_powchips",
+                    message_colour = { 0.8, 0.45, 0.85, 1 }
                 })
             end
             return {
@@ -461,6 +445,7 @@ local ybur = {
                     message = localize("k_reset")
                 }
             end
+        
         end
     end,
     pronouns = "she_her",
@@ -524,23 +509,6 @@ local zelavi = {
     pronouns = "he_they",
 }
 
-function Entropy.missing_ranks()
-    local ranks = {}
-    for i, v in pairs(SMODS.Ranks) do
-        if not v.original_mod and not v.mod then ranks[v.id] = 0 end
-    end
-    for i, v in pairs(G.playing_cards or {}) do
-        if ranks[v.base.id] then
-            ranks[v.base.id] = ranks[v.base.id] + 1
-        end
-    end
-    local total = 0
-    for i, v in pairs(ranks) do
-        if v == 0 then total = total + 1 end
-    end
-    return total
-end
-
 local ssac = {
     order = 407,
     object_type = "Joker",
@@ -571,8 +539,18 @@ local ssac = {
     calculate = function(self, card, context)
         if context.joker_main  then
             for i = 1, math.min(math.ceil(Entropy.missing_ranks() / 2), (context.blueprint or context.repetition) and 1 or 99999) do
-                local j_r = (Cryptid.forcetrigger(G.jokers.cards[#G.jokers.cards], context) or {}).jokers
-                local c_r = G.consumeables.cards[#G.consumeables.cards] and Cryptid.forcetrigger(G.consumeables.cards[#G.consumeables.cards], context) or {}
+                Spectrallib.forcetrigger({
+                    card = G.jokers.cards[#G.jokers.cards],
+                    context = context,
+                    colour = Entropy.reverse_legendary_gradient,
+                    message_card = card
+                })
+                Spectrallib.forcetrigger({
+                    card = G.consumeables.cards[#G.consumeables.cards],
+                    context = context,
+                    colour = Entropy.reverse_legendary_gradient,
+                    message_card = card
+                })
                 local v = G.play.cards[#G.play.cards]
                 if G.play.cards and v then
                     local results = eval_card(v, {cardarea=G.play,main_scoring=true, forcetrigger=true, individual=true}) or {}
@@ -602,82 +580,6 @@ local ssac = {
         end
     end,
     pronouns = "she_her",
-}
-
-local subarc = {
-    order = 408,
-    object_type = "Joker",
-    key = "subarc",
-    dependencies = {
-        items = {
-          "set_entr_inversions",
-        }
-    },
-    rarity = "entr_reverse_legendary",
-    cost = 20,
-    blueprint_compat = true,
-    eternal_compat = true,
-    pos = {x=2, y=3},
-    soul_pos = {x = 3, y = 3},
-    atlas = "ruby_atlas",
-    demicoloncompat=true,
-    config = {
-        mod = 0.05
-    },
-    entr_credits = {
-        art = {"Lil. Mr. Slipstream"},
-        idea = {"crabus"},
-    },
-    loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue+1] = G.P_CENTERS.e_entr_sunny
-        info_queue[#info_queue+1] = G.P_CENTERS.e_entr_solar
-        return {
-            vars = {
-                card.ability.mod
-            }
-        }
-    end,
-    calculate = function(self, card2, context)
-        if context.before then
-            for i, v in pairs(G.I.CARD) do
-                v.repetitions_triggered = 0
-            end
-        end
-        if context.individual and context.cardarea == G.play then
-            context.other_card.repetitions_triggered = (context.other_card.repetitions_triggered or 0) + 1
-            if context.other_card.repetitions_triggered > 1 then
-                local card = context.other_card
-                if not card.edition and not card.solar and not card.sunny then
-                    card.sunny = true
-                    G.E_MANAGER:add_event(Event{
-                        func = function()
-                            card:set_edition("e_entr_sunny")
-                            card:juice_up()
-                            return true
-                        end
-                    })
-                elseif (card.edition and card.edition.entr_sunny) or (card.sunny and not card.solar) then
-                    card.solar = true
-                    G.E_MANAGER:add_event(Event{
-                        func = function()
-                            card:set_edition("e_entr_solar")
-                            card:juice_up()
-                            return true
-                        end
-                    })
-                elseif (card.edition and card.edition.entr_solar) or card.solar then
-                    card.edition.sol = card.edition.sol + card2.ability.mod
-                    G.E_MANAGER:add_event(Event{
-                        func = function()
-                            card:juice_up()
-                            return true
-                        end
-                    })
-                end
-            end
-        end
-    end,
-    pronouns = "he_him",
 }
 
 local axeh = {
@@ -802,6 +704,25 @@ local nokharg  = {
     pronouns = "he_him",
 }
 
+SMODS.Shader{
+    key = "pulseoutline",
+    path = "pulseoutline.fs",
+    send_vars = function()
+        local t = G.TIMERS.REAL or 0
+        local grad = Entropy.current_rlegendary_gradient or Entropy.reverse_legendary_gradient
+        t = t % math.pi
+        return {
+            realtime = t,
+            outline_color = {
+                grad[1],
+                grad[2],
+                grad[3],
+                grad[4],
+            }
+        }
+    end
+}
+
 return {
     items = {
         oekrep,
@@ -812,7 +733,6 @@ return {
         ybur,
         ssac,
         zelavi,
-        subarc,
         axeh,
         nokharg,
         SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load and entropy_card or nil, --lazy so this goes here

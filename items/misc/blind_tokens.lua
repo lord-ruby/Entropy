@@ -1,6 +1,6 @@
 Entropy.BlindC = {}
 local blinds = {}
-function Entropy.RegisterBlinds()
+function Entropy.register_blinds()
     local order = 12000
     for i, v in pairs(G.P_BLINDS) do
         order = order + 1
@@ -70,7 +70,7 @@ function Entropy.RegisterBlinds()
                 if not self.discovered then
                     pos = {x = 9999, y = 9999}
                 end
-                card.children.center.atlas = G.ANIMATION_ATLAS[not self.discovered and "entr_blank" or "blind_chips"]
+                card.children.center.atlas = G.ANIMATION_ATLAS["blind_chips"]
                 card.children.center:set_sprite_pos({x=pos.x or 0, y=pos.y or 0})
                 if gc then card.children.center.T.h = 2 end
             end,
@@ -156,11 +156,11 @@ function Entropy.RegisterBlinds()
                     end
                     if atlas and G.ANIMATION_ATLAS[atlas] and atlas ~= "blind_chips" then
                         card.children.center.sprite_pos = {x=pos.x or 0, y=pos.y or 0}
-                        card.children.center.atlas = G.ANIMATION_ATLAS[not self.discovered and "entr_blank" or atlas]
+                        card.children.center.atlas = G.ANIMATION_ATLAS[atlas]
                         card.children.center:reset()
-                        card.children.center.atlas = G.ANIMATION_ATLAS[not self.discovered and "entr_blank" or atlas]
+                        card.children.center.atlas = G.ANIMATION_ATLAS[atlas]
                     else
-                        card.children.center.atlas = G.ANIMATION_ATLAS[not self.discovered and "entr_blank" or "blind_chips"]
+                        card.children.center.atlas = G.ANIMATION_ATLAS["blind_chips"]
                         card.children.center:set_sprite_pos({x=pos.x or 0, y=pos.y or 0})
                     end
                     if gc then card.children.center.T.h = 2 end

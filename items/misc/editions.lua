@@ -41,7 +41,7 @@ local solar = {
 				and context.cardarea == G.play
 			)
 		then
-			return { asc = card and card.edition and card.edition.sol or 1.4 }
+			return { x_asc = card and card.edition and card.edition.sol or 1.4 }
 		end
 		if context.joker_main then
 			card.config.trigger = true
@@ -110,7 +110,7 @@ local fractured ={
 			context.main_scoring
 			and context.cardarea == G.play
 		) then
-			return Entropy.RandomForcetrigger(card, card and card.edition and card.edition.retrig or 3, context)
+			return Entropy.random_forcetrigger(card, card and card.edition and card.edition.retrig or 3, context)
 		end
 	end,
 	entr_credits = {
@@ -237,18 +237,143 @@ local freaky = {
 if AurinkoAddons then
 	AurinkoAddons.entr_solar = function(card, hand, instant, amount)
 		if to_big(G.GAME.hands[hand].AscensionPower or 0) > to_big(0) then
-			local num = G.GAME.hands[hand].AscensionPower * ((card.edition.sol-1) ^ (amount or 1))
-			SMODS.upgrade_poker_hands({hands = hand, from = card, ascension_power = num})
+            local handname = hand
+            local used_consumable = card
+            local c
+            local m
+            local chips = Entropy.ascend_hand(G.GAME.hands[handname].chips, handname)
+            local mult = Entropy.ascend_hand(G.GAME.hands[handname].mult, handname)
+            if not instant then
+                c = copy_table(G.C.UI_CHIPS)
+                m = copy_table(G.C.UI_MULT)
+                delay(0.4)
+                update_hand_text(
+                    { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
+                    { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = "..." }
+                )
+            end
+            local amt = G.GAME.hands[handname].AscensionPower
+            G.GAME.hands[handname].AscensionPower = to_big((G.GAME.hands[handname].AscensionPower or 0)) * (to_big(card.edition.sol) ^ (amount or 1))
+			amt = G.GAME.hands[handname].AscensionPower - amt
+            chips = Entropy.ascend_hand(G.GAME.hands[handname].chips, handname) - chips
+            mult = Entropy.ascend_hand(G.GAME.hands[handname].mult, handname) - mult
+            if G.entr_add_to_stats then
+                SMODS.Scoring_Parameters.chips.current = SMODS.Scoring_Parameters.chips.current + chips
+                SMODS.Scoring_Parameters.mult.current = SMODS.Scoring_Parameters.mult.current + mult
+            end
+            if not instant then
+                delay(1.0)
+                G.E_MANAGER:add_event(Event({
+                    trigger = "after",
+                    delay = 0.2,
+                    func = function()
+                    play_sound("tarot1")
+                    ease_colour(G.C.UI_CHIPS, HEX("ffb400"), 0.1)
+                    ease_colour(G.C.UI_MULT, HEX("ffb400"), 0.1)
+                    Cryptid.pulse_flame(0.01, sunlevel)
+                    if used_consumable and used_consumable.juice_up then used_consumable:juice_up(0.8, 0.5) end
+                    G.E_MANAGER:add_event(Event({
+                        trigger = "after",
+                        blockable = false,
+                        blocking = false,
+                        delay = 1.2,
+                        func = function()
+                        ease_colour(G.C.UI_CHIPS, c, 1)
+                        ease_colour(G.C.UI_MULT, m, 1)
+                        return true
+                        end,
+                    }))
+                    return true
+                    end,
+                }))
+            end
+            if not instant then
+                update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level ="X"..number_format((to_big(card.edition.sol) ^ (amount or 1))) })
+                delay(1.6)
+            end
+            if not instant then
+                delay(1.6)
+                update_hand_text(
+                    { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+                    { mult = 0, chips = 0, handname = "", level = "" }
+                )
+                delay(1)
+            end
+            G.hand:parse_highlighted()
+            G.GAME.current_round.current_hand.cry_asc_num = 0
+            G.GAME.current_round.current_hand.cry_asc_num_text = ""
 		end
 	end
 	AurinkoAddons.entr_sunny = function(card, hand, instant, amount)
-		local num = 4*(amount or 1)
-		SMODS.upgrade_poker_hands({hands = hand, from = card, ascension_power = num})
+		local amt = 2*(amount or 1)
+            local handname = hand
+            local used_consumable = card
+            local c
+            local m
+            local chips = Entropy.ascend_hand(G.GAME.hands[handname].chips, handname)
+            local mult = Entropy.ascend_hand(G.GAME.hands[handname].mult, handname)
+            if not instant then
+                c = copy_table(G.C.UI_CHIPS)
+                m = copy_table(G.C.UI_MULT)
+                delay(0.4)
+                update_hand_text(
+                    { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
+                    { handname = localize(handname,'poker_hands'), chips = "...", mult = "...", level = "..." }
+                )
+            end
+            G.GAME.hands[handname].AscensionPower = to_big((G.GAME.hands[handname].AscensionPower or 0)) + to_big(amt)
+            chips = Entropy.ascend_hand(G.GAME.hands[handname].chips, handname) - chips
+            mult = Entropy.ascend_hand(G.GAME.hands[handname].mult, handname) - mult
+            if G.entr_add_to_stats then
+                SMODS.Scoring_Parameters.chips.current = SMODS.Scoring_Parameters.chips.current + chips
+                SMODS.Scoring_Parameters.mult.current = SMODS.Scoring_Parameters.mult.current + mult
+            end
+            if not instant then
+                delay(1.0)
+                G.E_MANAGER:add_event(Event({
+                    trigger = "after",
+                    delay = 0.2,
+                    func = function()
+                    play_sound("tarot1")
+                    ease_colour(G.C.UI_CHIPS, HEX("ffb400"), 0.1)
+                    ease_colour(G.C.UI_MULT, HEX("ffb400"), 0.1)
+                    Cryptid.pulse_flame(0.01, sunlevel)
+                    if used_consumable and used_consumable.juice_up then used_consumable:juice_up(0.8, 0.5) end
+                    G.E_MANAGER:add_event(Event({
+                        trigger = "after",
+                        blockable = false,
+                        blocking = false,
+                        delay = 1.2,
+                        func = function()
+                        ease_colour(G.C.UI_CHIPS, c, 1)
+                        ease_colour(G.C.UI_MULT, m, 1)
+                        return true
+                        end,
+                    }))
+                    return true
+                    end,
+                }))
+            end
+            if not instant then
+                update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = (to_big(amt) > to_big(0) and "+" or "")..number_format(to_big(amt) ) })
+                delay(1.6)
+            end
+            if not instant then
+                delay(1.6)
+                update_hand_text(
+                    { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
+                    { mult = 0, chips = 0, handname = "", level = "" }
+                )
+                delay(1)
+            end
+            G.hand:parse_highlighted()
+            G.GAME.current_round.current_hand.cry_asc_num = 0
+            G.GAME.current_round.current_hand.cry_asc_num_text = ""
 	end
 	AurinkoAddons.entr_freaky = function(card, hand, instant, amount)
 		local hand_chips = G.GAME.hands[hand].chips
-		local mult = math.max(Entropy.ApproximateLogRecursion(hand_chips, card.edition.log_base, amount), hand_chips)/hand_chips
-		hand_chips = math.max(Entropy.ApproximateLogRecursion(hand_chips, card.edition.log_base, amount), hand_chips)
+		local mult = math.max(Entropy.approximate_log_recursion(hand_chips, card.edition.log_base, amount), hand_chips)/hand_chips
+		hand_chips = math.max(Entropy.approximate_log_recursion(hand_chips, card.edition.log_base, amount), hand_chips)
 		G.GAME.hands[hand].chips = hand_chips
 		if not instant then
 			G.E_MANAGER:add_event(Event({
@@ -328,10 +453,6 @@ local neon = {
 
 local set_cost_ref = Card.set_cost
 function Card:set_cost()
-	if self.config.center.set == "Back" or self.config.center.set == "Sleeve" then
-		self.config.center.cost = 15
-		self.base_cost = 15
-	end
 	set_cost_ref(self)
 	for i, v in pairs(G.I.CARD) do
 		if v.edition and v.edition.key == "e_entr_neon" and v.area and v.area.config.type ~= "shop" and not v.debuff then
@@ -467,7 +588,7 @@ local kaleidoscopic = {
 				eval = eval or {}
 				local effects = {eval}
 				if context.main_scoring then 
-					eval.chips = v.base.nominal + v.ability.bonus or 0
+					eval.chips = v:get_chip_bonus() or 0
 					SMODS.calculate_context({individual = true, other_card=v, cardarea = v.area})
 				end
 				for _,v in ipairs(post or {}) do effects[#effects+1] = v end
@@ -524,7 +645,11 @@ local gilded = {
 						trigger = "after",
 						delay = 1,
 						func = function()
-							Cryptid.forcetrigger(Entropy.GetDummy(card.config.center, G.consumeables, card), context)
+							Spectrallib.forcetrigger({
+                                card = Entropy.get_dummy(card.config.center, G.consumeables, card),
+                                context = context,
+								silent = true
+                            })
 							return true
 						end
 					})
@@ -539,6 +664,11 @@ local card_click = Card.click
 function Card:click(...)
 	if G.SETTINGS.paused and self.edition and G.P_CENTERS[self.edition.key] and G.P_CENTERS[self.edition.key].sound then
 		play_sound(G.P_CENTERS[self.edition.key].sound.sound, G.P_CENTERS[self.edition.key].sound.volume)
+	end
+	if self.config.center.key == "j_entr_title_card" then
+		G.back_to_main = true
+		G.FUNCS["openModUI_entr"]()
+		G.back_to_main = nil
 	end
 	if G.SETTINGS.paused and self.config and self.config.center_key == "j_entr_amaryllis" then
 		self.ability.colour = ({

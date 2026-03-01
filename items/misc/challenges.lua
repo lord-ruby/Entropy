@@ -27,6 +27,7 @@ local hyperbolic_chamber = {
 
 local gsr = Game.start_run
 function Game:start_run(args)
+    G.GAME.EE_SCREEN = nil
         G.butterfly_jokers = CardArea(
             9999, 9999,
             0,
@@ -34,6 +35,7 @@ function Game:start_run(args)
             {card_limit = 9999, type = 'joker', highlight_limit = 0}
         )
     G.HUD_runes = {}
+    G.HUD_curses = {}
     G.runes = {}
 	gsr(self, args)
 	if G.GAME.modifiers.entr_starting_ante_mten and not args.savetext then
@@ -42,7 +44,15 @@ function Game:start_run(args)
     for i, v in pairs(G.butterfly_jokers.cards) do
         v:add_to_deck()
     end
-    if Entropy.DeckOrSleeve("doc") then
+    if G.GAME.curse then
+        add_curse_icon(Tag("tag_entr_curse_indicator"))
+        local atlas = Entropy.curses[G.GAME.curse].atlas or "entr_curse_icons"
+        local pos = Entropy.curses[G.GAME.curse].sprite_pos or {x = 0, y = 0}
+        local sprite = G.HUD_curses[1].actual.HUD_sprite
+        sprite.atlas = G.ASSET_ATLAS[atlas]
+        sprite:set_sprite_pos(pos)
+    end
+    if Entropy.deck_or_sleeve("doc") then
         -- G.HUD:remove()
         -- G.HUD = nil
         -- G.HUD = UIBox{
@@ -62,11 +72,11 @@ function Game:start_run(args)
     if G.GAME.cry_percrate and not G.GAME.cry_percrate["rune"] then G.GAME.cry_percrate["rune"] = 0 end
     G.jokers.config.highlighted_limit = 1e100
     G.consumeables.config.highlighted_limit = 1e100
-    if G.SPLASH_EE and not Entropy.IsEE() then
+    if G.SPLASH_EE and not Entropy.is_EE() then
         G.SPLASH_EE:remove()
         G.SPLASH_EE = nil
     end
-    if Entropy.IsEE() then
+    if Entropy.is_EE() then
         if not G.SPLASH_EE then
             G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
         end

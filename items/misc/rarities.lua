@@ -1,50 +1,3 @@
-Entropy.entropic_gradient = SMODS.Gradient {
-    key = "entropic_gradient",
-    colours = {
-        G.C.RED,
-        G.C.GOLD,
-        G.C.GREEN,
-        G.C.BLUE,
-        G.C.PURPLE
-    }
-}
-
-Entropy.transgender_gradient = SMODS.Gradient {
-    key = "transgender_gradient",
-    colours = {
-        HEX("5bcefa"),
-        HEX("f5a9b8"),
-    }
-}
-
-Entropy.reverse_legendary_gradient = SMODS.Gradient {
-    key = "reverse_legendary_gradient",
-    colours = {
-        HEX("ff00c4"),
-        HEX("FF00FF"),
-        HEX("FF0000"),
-    }
-}
-
-Entropy.zenith_gradient = SMODS.Gradient{
-    key = "zenith_gradient",
-    colours = {
-        HEX("a20000"),
-        HEX("a15000"),
-        HEX("a3a101"),
-        HEX("626262"),
-        HEX("416600"),
-        HEX("028041"),
-        HEX("008284"),
-        HEX("005683"),
-        HEX("000056"),
-        HEX("2b0157"),
-        HEX("6a016a"),
-        HEX("77003c"),
-    }
-}
-
-
 SMODS.Rarity {
     key = "entropic",
     badge_colour = Entropy.entropic_gradient
@@ -76,7 +29,7 @@ function loc_colour(_c, default)
             entr_eqchips = HEX("5b89a6"),
             entr_freaky = HEX("ff00ea"),
             entr_transparent = {0,0,0,0},
-            entr_trans = Entropy.transgender_gradient
+            entr_trans = Entropy.transgender_gradient,
         }
 
         for k, v in pairs(new_colors) do
@@ -86,3 +39,22 @@ function loc_colour(_c, default)
 
     return loc_colour_ref(_c, default)
 end
+
+local ease_colour_ref = ease_colour
+function ease_colour(orig, new, ...)
+    if new.colours then orig = new return end
+    return ease_colour_ref(orig, new, ...)
+end
+
+SMODS.Rarity {
+    key = "void",
+    badge_colour = Entropy.void_gradient,
+    default_weight = 0,
+	pools = { ["Joker"] = true },
+	get_weight = function(self, weight, object_type)
+        if G.GAME.entr_alt then
+            return 0.03
+        end
+        return 0
+	end,
+}

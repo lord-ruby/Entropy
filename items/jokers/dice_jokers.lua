@@ -50,7 +50,7 @@ local D1 = {
         end
         if context.pseudorandom_result and not card.ability.triggered then
             return {
-                message = localize("k_inactive")
+                message = localize("k_inactive_ex")
             }
         end
     end,
@@ -286,115 +286,6 @@ local D7 = {
     end,
 }
 
-local D8 = {
-    order = 205,
-    object_type = "Joker",
-    key = "d8",
-    rarity = 2,
-    cost = 5,
-    dependencies = {
-        items = {
-            "set_entr_dice_jokers",
-        }
-    },
-    eternal_compat = true,
-    pos = { x = 6, y = 5 },
-    atlas = "jokers",
-    config = {
-        denominator = 1
-    },
-    pools = {["Dice"] = true},
-    loc_vars = function(self, q, card)
-        return {vars = {
-            number_format(card.ability.denominator)
-        }} 
-    end,
-    calculate = function(self, card, context)
-        if context.mod_probability and not context.blueprint and not context.repetition then
-            return {
-                denominator = context.denominator - card.ability.denominator
-            }
-        end
-    end,
-}
-
-local D10 = {
-    order = 206,
-    object_type = "Joker",
-    key = "d10",
-    rarity = 2,
-    cost = 5,
-    dependencies = {
-        items = {
-            "set_entr_dice_jokers",
-        }
-    },
-    eternal_compat = true,
-    pos = { x = 7, y = 5 },
-    atlas = "jokers",
-    config = {
-        min_d = -3,
-        max_d = 3,
-        min_n = -5,
-        max_n = 5
-    },
-    pools = {["Dice"] = true},
-    calculate = function(self, card, context)
-        if context.mod_probability and not context.blueprint then
-            local n_mod = pseudorandom("d10_n", card.ability.min_n*100, card.ability.max_n*100)/100
-            local d_mod = pseudorandom("d10_d", card.ability.min_d*100, card.ability.max_d*100)/100
-            local num = context.numerator + n_mod
-            if num < 1 then
-                num = 1
-            end
-            local den = context.denominator + d_mod
-            if den < 2 then
-                den = 2
-            end
-            return {
-                numerator = num,
-                denominator = den
-            }
-        end
-    end,
-}
-
-local D12 = {
-    order = 207,
-    object_type = "Joker",
-    key = "d12",
-    rarity = 2,
-    cost = 5,
-    dependencies = {
-        items = {
-            "set_entr_dice_jokers",
-        }
-    },
-    eternal_compat = true,
-    pos = { x = 8, y = 5 },
-    atlas = "jokers",
-    config = {
-        num_per = 1
-    },
-    loc_vars = function(self, queue, card)
-        return {
-            vars = {
-                number_format(card.ability.num_per)
-            }
-        }
-    end,
-    pools = {["Dice"] = true},
-    calculate = function(self, card, context)
-        if context.mod_probability and not context.blueprint and not context.repetition then
-            local count = Overflow and G.consumeables:get_total_count() or #G.consumeables.cards
-            local num = context.numerator + count * card.ability.num_per
-            return {
-                numerator = num,
-            }
-        end
-    end,
-}
-
 local D100 = {
     order = 208,
     object_type = "Joker",
@@ -500,17 +391,15 @@ local dice_shard = {
     pools = {["Dice"] = true},
     loc_vars = function(self, q, card)
         local name = "None"
-        local cards = Entropy.GetHighlightedCards({G.jokers, G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.extra)
+        local cards = Entropy.get_highlighted_cards({G.jokers, G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.extra)
         if cards and #cards > 0 then
             if cards[1].config.center.set == "Joker" or G.GAME.modifiers.cry_beta and cards[1].consumable then
                 local first = cards[1]
-                local ind = ReductionIndex(cards[1], cards[1].config.center.set )-1
-                while G.P_CENTER_POOLS[cards[1].config.center.set ][ind].no_doe or G.P_CENTER_POOLS[cards[1].config.center.set][ind].no_collection do
-                    ind = ind - 1
+                local ind = Entropy.reduction_index(cards[1], cards[1].config.center.set )
+                if G.P_CENTER_POOLS[cards[1].config.center.set][ind] then
+                    name = localize { type = 'name_text', key = G.P_CENTER_POOLS[cards[1].config.center.set][ind].key, set = G.P_CENTER_POOLS[cards[1].config.center.set][ind].set }
+                    q[#q+1] = G.P_CENTER_POOLS[cards[1].config.center.set][ind]
                 end
-                if ind < 1 then ind = 1 end
-                name = localize { type = 'name_text', key = G.P_CENTER_POOLS[cards[1].config.center.set][ind].key, set = G.P_CENTER_POOLS[cards[1].config.center.set][ind].set }
-                q[#q+1] = G.P_CENTER_POOLS[cards[1].config.center.set][ind]
             end
         end
         return {
@@ -528,22 +417,12 @@ local dice_shard = {
         end
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.jokers}, card, 1, 1)
+        local num = #Entropy.get_highlighted_cards({G.jokers}, card, 1, 1)
         return num > 0 and num <= 1 and to_big(card.ability.left) > to_big(0)
     end,
     use = function(self, card)
         card.ability.left = card.ability.left - 1
-        Entropy.FlipThen(Entropy.GetHighlightedCards({G.jokers}, card, 1, 1), function(card)
-            local ind = ReductionIndex(card, card.config.center.set)-1
-            while G.P_CENTER_POOLS[card.config.center.set][ind] and G.P_CENTER_POOLS[card.config.center.set][ind].no_doe or G.P_CENTER_POOLS[card.config.center.set].no_collection do
-                ind = ind - 1
-            end
-            if ind < 1 then ind = 1 end
-            if G.P_CENTER_POOLS.Joker[ind] then
-                card:set_ability(G.P_CENTERS[G.P_CENTER_POOLS.Joker[ind].key])
-            end
-            G.jokers:remove_from_highlighted(card)
-        end)
+        Entropy.reduce_cards(Entropy.get_highlighted_cards({G.jokers}, card, 1, 1), card)
     end
 }
 
@@ -614,7 +493,7 @@ local nostalgic_d6 = {
             if G.GAME.modifiers.glitched_items then
                 local gc = {p_card.config.center.key}
                 for i = 1, G.GAME.modifiers.glitched_items - 1 do
-                gc[#gc+1] = Entropy.GetPooledCenter(p_card.config.center.set).key
+                    gc[#gc+1] = Entropy.get_pooled_center(p_card.config.center.set).key
                 end
                 p_card.ability.glitched_crown = gc
             end

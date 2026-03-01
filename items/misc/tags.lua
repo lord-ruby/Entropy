@@ -424,11 +424,11 @@ SMODS.Atlas {
   }
 
 
-  local rare = Entropy.RareTag(3, "rare", true, "Rare", {x=0,y=0}, 0, nil,3)
-  local epic = Entropy.RareTag("cry_epic", "epic", true, "cry_epic", {x=1,y=0}, 0, nil,4)
-  local legendary = Entropy.RareTag(4, "legendary", true, "Legendary", {x=2,y=0}, 0, true,5)
-  local exotic = Entropy.RareTag("cry_exotic", "exotic", true, "cry_exotic", {x=3,y=0}, 0, nil,6)
-  local entropic = Entropy.RareTag("entr_entropic", "entropic", true, "cry_exotic", {x=4,y=0}, 0, nil,7)
+  local rare = Entropy.rare_tag(3, "rare", true, "Rare", {x=0,y=0}, 0, nil,3)
+  local epic = Entropy.rare_tag("cry_epic", "epic", true, "cry_epic", {x=1,y=0}, 0, nil,4)
+  local legendary = Entropy.rare_tag(4, "legendary", true, "Legendary", {x=2,y=0}, 0, true,5)
+  local exotic = Entropy.rare_tag("cry_exotic", "exotic", true, "cry_exotic", {x=3,y=0}, 0, nil,6)
+  local entropic = Entropy.rare_tag("entr_entropic", "entropic", true, "cry_exotic", {x=4,y=0}, 0, nil,7)
 
   exotic.no_pointer = true
   entropic.no_pointer = true
@@ -581,11 +581,11 @@ local saint =  {
 	end,
 	shiny_atlas = "entr_shiny_asc_tags",
 }
-local negative = Entropy.EditionTag("e_negative", "negative", true, {x=1,y=1}, 10.1)
-local foil =Entropy.EditionTag("e_foil", "foil", true, {x=2,y=1},10.2)
-local holo = Entropy.EditionTag("e_holo", "holo", true, {x=3,y=1},10.3)
-local poly = Entropy.EditionTag("e_polychrome", "poly", true, {x=4,y=1},10.4)
-local glass = Entropy.EditionTag("e_cry_glass", "glass", true, {x=5,y=1},10.5)
+local negative = Entropy.edition_tag("e_negative", "negative", true, {x=1,y=1}, 10.1)
+local foil =Entropy.edition_tag("e_foil", "foil", true, {x=2,y=1},10.2)
+local holo = Entropy.edition_tag("e_holo", "holo", true, {x=3,y=1},10.3)
+local poly = Entropy.edition_tag("e_polychrome", "poly", true, {x=4,y=1},10.4)
+local glass = Entropy.edition_tag("e_cry_glass", "glass", true, {x=5,y=1},10.5)
 
 local better_voucher = {
 	object_type = "Tag",
@@ -618,12 +618,12 @@ local better_voucher = {
 }
 
 
-local glitched = Entropy.EditionTag("e_cry_glitched", "glitched", true, {x=0,y=2},12)
-local gold = Entropy.EditionTag("e_cry_gold", "gold", true, {x=1,y=2},13)
-local blur = Entropy.EditionTag("e_cry_blur", "blurry", true, {x=2,y=2},14)
-local m = Entropy.EditionTag("e_cry_m", "m", true, {x=3,y=2},15)
-local mosaic = Entropy.EditionTag("e_cry_mosaic", "mosaic", true, {x=4,y=2},16)
-local astral = Entropy.EditionTag("e_cry_astral", "astral", true, {x=5,y=2},17)
+local glitched = Entropy.edition_tag("e_cry_glitched", "glitched", true, {x=0,y=2},12)
+local gold = Entropy.edition_tag("e_cry_gold", "gold", true, {x=1,y=2},13)
+local blur = Entropy.edition_tag("e_cry_blur", "blurry", true, {x=2,y=2},14)
+local m = Entropy.edition_tag("e_cry_m", "m", true, {x=3,y=2},15)
+local mosaic = Entropy.edition_tag("e_cry_mosaic", "mosaic", true, {x=4,y=2},16)
+local astral = Entropy.edition_tag("e_cry_astral", "astral", true, {x=5,y=2},17)
 
 local infdiscard = {
 	object_type = "Tag",
@@ -655,18 +655,18 @@ local infdiscard = {
 	shiny_atlas = "entr_shiny_asc_tags",
 }
 
-local oversat = Entropy.EditionTag("e_cry_oversat", "oversat", true, {x=0,y=3},18)
-local neon_asc = Entropy.EditionTag("e_entr_neon", "neon", true, {x=7,y=4},18.33)
-local lowres_asc = Entropy.EditionTag("e_entr_lowres", "lowres", true, {x=7,y=3},18.66)
-local sunny_asc = Entropy.EditionTag("e_entr_sunny", "sunny", true, {x=6,y=4},19)
-local solar_asc = Entropy.EditionTag("e_entr_solar", "solar", true, {x=1,y=3},20, {
+local oversat = Entropy.edition_tag("e_cry_oversat", "oversat", true, {x=0,y=3},18)
+local neon_asc = Entropy.edition_tag("e_entr_neon", "neon", true, {x=7,y=4},18.33)
+local lowres_asc = Entropy.edition_tag("e_entr_lowres", "lowres", true, {x=7,y=3},18.66)
+local sunny_asc = Entropy.edition_tag("e_entr_sunny", "sunny", true, {x=6,y=4},19)
+local solar_asc = Entropy.edition_tag("e_entr_solar", "solar", true, {x=1,y=3},20, {
 	art = {"Grahkon"}
 })
-local fractured_asc = Entropy.EditionTag("e_entr_fractured", "fractured", true, {x=6,y=5},20.5)
-local freaky_asc = Entropy.EditionTag("e_entr_freaky", "freaky", true, {x=7,y=5},20.75)
+local fractured_asc = Entropy.edition_tag("e_entr_fractured", "fractured", true, {x=6,y=5},20.5)
+local freaky_asc = Entropy.edition_tag("e_entr_freaky", "freaky", true, {x=7,y=5},20.75)
 
-local kaleidoscopic_asc = Entropy.EditionTag("e_entr_kaleidoscopic", "kaleidoscopic", true, {x=7,y=2},20.9)
-local gilded_asc = Entropy.EditionTag("e_entr_gilded", "gilded", true, {x=7,y=0},20.95)
+local kaleidoscopic_asc = Entropy.edition_tag("e_entr_kaleidoscopic", "kaleidoscopic", true, {x=7,y=2},20.9)
+local gilded_asc = Entropy.edition_tag("e_entr_gilded", "gilded", true, {x=7,y=0},20.95)
 
 local cat_asc = {
 	object_type = "Tag",
@@ -1579,7 +1579,7 @@ return {
 		kaleidoscopic,
 		gilded,
 		rare,
-		epic,
+		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or epic,
 		legendary,
 		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or exotic,
 		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or entropic,

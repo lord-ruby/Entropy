@@ -8,44 +8,126 @@ local epitachyno = {
     pos = {x=0,y=1},
     soul_pos = { x = 2, y = 1, extra = { x = 1, y = 1 } },
     config = {
-        extra = 1.1,
-        exp_mod = 0.05
+        left = 1,
+        left_mod = 1,
     },
     dependencies = {
-        items={"set_entr_entropics"}
+        items={"set_entr_entropics", "set_entr_actives"}
     },
     demicoloncompat = true,
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                card.ability.extra,
-                card.ability.exp_mod
+                card.ability.left,
+                card.ability.left_mod
             },
         }
     end,
     calculate = function (self, card, context)
-        if (context.ending_shop and not context.blueprint and not context.retrigger_joker) or context.forcetrigger then
-            for i, v in pairs(G.jokers.cards) do
-                local check = false
-                local exp = card.ability.extra
-			    --local card = G.jokers.cards[i]
-                if not Card.no(G.jokers.cards[i], "immutable", true) and (G.jokers.cards[i].config.center.key ~= "j_entr_epitachyno") then
-                    Cryptid.manipulate(G.jokers.cards[i], { value = exp, type = "^" })
-                    check = true
+        if context.setting_blind then
+            Entropy.flip_then({card}, function(c)
+                c.ability.epitach_consumeable = Entropy.get_random_rare().key
+                local center = G.P_CENTERS[c.ability.epitach_consumeable]
+                if c.children.floating_sprite then
+                    c.children.floating_sprite:remove()
                 end
-			    if check then
-				    card_eval_status_text(
-					context.blueprint_card or G.jokers.cards[i],
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("k_upgrade_ex"), colour = G.C.GREEN }
-				    )
+                if c.children.floating_sprite2 then
+                    c.children.floating_sprite2:remove()
                 end
-            end
-            card.ability.extra = card.ability.extra + card.ability.exp_mod
+                if c.children.center then
+                    c.children.center:remove()
+                end
+                c.children.center = nil
+                c.children.floating_sprite = nil
+                c.children.floating_sprite2 = nil
+                c:set_sprites(G.P_CENTERS[c.ability.epitach_consumeable])
+                if c.ability.epitach_consumeable == "c_soul" then
+                    --c.children.floating_sprite = G.shared_soul
+                end
+                if c.children.floating_sprite2 then
+                    c.children.floating_sprite2:set_sprite_pos(center.tsoul_pos and center.tsoul_pos.extra or center.soul_pos and center.soul_pos.extra or {x=999,y=999})
+                end
+                if c.children.floating_sprite then
+                    c.children.floating_sprite:set_sprite_pos(center.tsoul_pos or center.soul_pos or {x=999,y=999})
+                end
+            end)
+            delay(0.5)
         end
+        if context.end_of_round and not context.individual and not context.repetition and not context.blueprint then
+            local center = card.config.center
+            Entropy.flip_then({card}, function(c)
+                if c.children.floating_sprite then
+                    c.children.floating_sprite:remove()
+                end
+                if c.children.floating_sprite2 then
+                    c.children.floating_sprite2:remove()
+                end
+                if c.children.center then
+                    c.children.center:remove()
+                end
+                c.children.center = nil
+                c.children.floating_sprite = nil
+                c.children.floating_sprite2 = nil
+                c.ability.epitach_consumeable = nil
+                c:set_sprites(c.config.center)
+                if c.children.floating_sprite2 then
+                    c.children.floating_sprite2:set_sprite_pos(center.tsoul_pos and center.tsoul_pos.extra or center.soul_pos and center.soul_pos.extra or {x=999,y=999})
+                end
+                if c.children.floating_sprite then
+                    c.children.floating_sprite:set_sprite_pos(center.tsoul_pos or center.soul_pos or {x=999,y=999})
+                end
+            end)
+            delay(0.5)
+        end
+        if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition) or context.forcetrigger then
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
+        end
+    end,
+    set_sprites = function(self, card)
+        if card.ability and card.ability.epitach_consumeable then
+            G.E_MANAGER:add_event(Event{
+                func = function()
+                    if card.children.floating_sprite then
+                        card.children.floating_sprite:remove()
+                    end
+                    if card.children.floating_sprite2 then
+                        card.children.floating_sprite2:remove()
+                    end
+                    if card.children.center then
+                        card.children.center:remove()
+                    end
+                    local center = G.P_CENTERS[card.ability.epitach_consumeable]
+                    card.children.center = nil
+                    card.children.floating_sprite = nil
+                    card.children.floating_sprite2 = nil
+                    card:set_sprites(center)
+                    if card.children.floating_sprite2 then
+                        card.children.floating_sprite2:set_sprite_pos(center.tsoul_pos and center.tsoul_pos.extra or center.soul_pos and center.soul_pos.extra or {x=999,y=999})
+                    end
+                    if card.children.floating_sprite then
+                        card.children.floating_sprite:set_sprite_pos(center.tsoul_pos or center.soul_pos or {x=999,y=999})
+                    end
+                    if card.ability.epitach_consumeable == "c_soul" then
+                        --card.children.floating_sprite = G.shared_soul
+                    end
+                    return true
+                end
+            })
+        end
+    end,
+    can_use = function(self, card)
+        if card.ability.epitach_consumeable then
+            local dummy = Entropy.get_dummy(G.P_CENTERS[card.ability.epitach_consumeable], G.consumeables, card)
+            return to_big(card.ability.left) > to_big(0) and Card.can_use_consumeable(dummy)
+        end
+    end,
+    use = function(self, card)
+        local dummy = Entropy.get_dummy(G.P_CENTERS[card.ability.epitach_consumeable], G.consumeables, card)
+        Spectrallib.forcetrigger({
+            card = dummy, 
+            silent = true
+        })
+        card.ability.left = card.ability.left - 1
     end,
     entr_credits = {
         art = {"Grahkon"}
@@ -64,7 +146,7 @@ local helios = {
     eternal_compat = true,
     pos = { x = 0, y = 2 },
     config = {
-        extra = 1.1
+        extra = 3
     },
     dependencies = {
         items = {
@@ -74,25 +156,77 @@ local helios = {
     soul_pos = { x = 2, y = 2, extra = { x = 1, y = 2 } },
     atlas = "exotic_jokers",
     loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue+1] = {set = "Other", key = "entr_marked"}
         return {
             vars = {
-                1.75 + ((G.GAME.sunnumber and G.GAME.sunnumber.not_modest or 0)),
-                (card.ability.extra or 1.1) + 0.4
+                card.ability.extra
             },
         }
     end,
-    add_to_deck = function()
-        Entropy.ChangeFullCSL(10000, localize("b_infinity"))
-        G.GAME.HyperspaceActuallyUsed = G.GAME.used_vouchers.v_cry_hyperspacetether
-        G.GAME.used_vouchers.v_cry_hyperspacetether = true
-    end,
-    remove_from_deck = function()
-        Entropy.ChangeFullCSL(-10000)
-        G.GAME.used_vouchers.v_cry_hyperspacetether = G.GAME.HyperspaceActuallyUsed
+    calculate = function(self, card, context)
+        if context.individual and context.cardarea == G.play then
+            for i, v in pairs(G.hand.cards) do
+                if v:get_id() == context.other_card:get_id() and not v.ability.entr_marked then
+                    local c = v
+                    G.E_MANAGER:add_event(Event{
+                        func = function()
+                            c:juice_up()
+                            c.ability.entr_marked = true
+                            return true
+                        end
+                    })
+                    delay(0.25)
+                end
+            end
+        end
+        if context.before then
+            for i, v in pairs(G.I.CARD) do
+                if type(v) == "table" and v.ability and v.ability.entr_marked then
+                    if v.area then
+                        v.area:remove_card(v)
+                    end
+                    local h = v
+                    G.E_MANAGER:add_event(Event{
+                        func = function()
+                            h:highlight(true)
+                            return true
+                        end
+                    })
+                    G.play:emplace(v)
+                end
+            end
+        end
     end,
     entr_credits = {
         art = {"Lil. Mr. Slipstream"}
-    }
+    },
+    generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+        SMODS.Center.generate_ui(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+        
+        local cards = {}
+        for i, v in pairs(G.I.CARD) do
+            if v.ability and v.ability.entr_marked and not v.ability.entr_marked_bypass then
+                local s = v:save()
+                local c = Card(0,0, G.CARD_W, G.CARD_H, pseudorandom_element(G.P_CARDS,pseudoseed("")), G.P_CENTERS.c_base)
+                c:load(s)
+                c.ability = SMODS.shallow_copy(c.ability)
+                c.ability.entr_marked_bypass = true
+                v.ability.entr_marked_bypass = nil                
+                table.insert(cards, c)
+            end
+        end
+        if #cards > 0 then
+            Entropy.card_area_preview(G.entrCardsPrev, desc_nodes, {
+                cards = cards,
+                override = true,
+                w = 2.2,
+                h = 0.6,
+                ml = 0,
+                scale = 0.5,
+                func_delay = 1.0,
+            })
+        end
+    end,
 }
 
 if Cryptid.big_num_blacklist then Cryptid.big_num_blacklist["j_entr_xekanos"] = true end
@@ -131,7 +265,7 @@ local xekanos = {
         if (context.selling_card and not context.retrigger_joker) or context.forcetrigger then
             if not context.card then
                 card.ability.ante_mod_mod = card.ability.ante_mod_mod * 0.5
-            elseif context.card.ability.set == "Joker" and Entropy.RarityAbove("3",context.card.config.center.rarity,true) then
+            elseif context.card.ability.set == "Joker" and Entropy.rarity_above("3",context.card.config.center.rarity,true) then
                 card.ability.ante_mod_mod = card.ability.ante_mod_mod * 0.5
             end
         end
@@ -163,30 +297,26 @@ local dekatria = {
     demicoloncompat = true,
     soul_pos = { x = 2, y = 5, extra = { x = 1, y = 5 } },
     atlas = "exotic_jokers",
-    loc_vars = function(self, q, card)
-        if not card.edition or card.edition.key ~= "e_cry_m" then q[#q+1]=G.P_CENTERS.e_cry_m end
-        return {
-            vars = {
-                card.ability.e_mult_mod,
-            },
-        }
-    end,
     calculate = function(self, card, context)
-        if context.joker_main or context.forcetrigger then
-            local pairs = 0
-            for i = 1, #G.play.cards - 1 do
-                for j = i + 1, #G.play.cards do
-                    local m, n = G.play.cards[i], G.play.cards[j]
-                    if m:get_id() == n:get_id() then
-                        pairs = pairs + 1
-                    end
+        if context.post_trigger and context.other_card.config and context.other_card.config.center_key ~= "j_entr_dekatria" then
+            local star = pseudorandom("entr_dekatria") < 0.25
+            local pool = star and G.P_CENTER_POOLS.Star or G.P_CENTER_POOLS.Planet
+            local planet
+            local hand = context.other_context.scoring_name
+            for i, v in pairs(pool) do
+                if v.config and hand and (v.config.hand_type == hand or v.config.handname == hand) then
+                    planet = v
                 end
             end
-            local emult = pairs * card.ability.e_mult_mod
             return {
-                Emult_mod=emult,
-                message = "^" ..number_format(emult).. ' Mult',
-                colour = G.C.RED,
+                func = function()
+                    if planet then
+                        G.entr_add_to_stats = true
+                        Card.use_consumeable(Entropy.get_dummy(G.P_CENTERS[planet.key], G.consumeables, context.other_card))
+                        G.entr_add_to_stats = nil
+                        update_hand_text({delay = 0}, {mult = mult, chips = hand_chips})
+                    end
+                end
             }
         end
     end,
@@ -205,9 +335,8 @@ local anaptyxi = {
     pos = { x = 0, y = 6 },
     config = {
         extra = {
-            scale_base = 2,
-            scale=2,
-            scale_mod=1
+            scale=0.5,
+            scale_mod=0.25
         }
     },
     dependencies = {
@@ -249,28 +378,7 @@ local anaptyxi = {
 
         -- joker scaling stuff
 		local original_scalar = other.ability.cry_scaling_info[args.scalar_value]
-        local new_scale = lenient_bignum(
-            to_big(original_scalar)
-                * (
-                    (
-                        1
-                        + (
-                            (to_big(current_scaling) / to_big(original_scalar))
-                            ^ (to_big(1) / to_big(card.ability.extra.scale_base))
-                        )
-                    ) ^ to_big(card.ability.extra.scale_base)
-                )
-        )
-        if not Cryptid.is_card_big(other) and to_big(new_scale) >= to_big(1e300) then
-            new_scale = 1e300
-        end
-        if number_format(to_big(new_scale)) == "Infinity" then 
-            if  not Cryptid.is_card_big(other) then
-                new_scale = 1e300 
-            else
-                new_scale = to_big(1e300)
-            end
-        end
+        local new_scale = current_scalar
         for i, v in pairs(G.jokers.cards) do
             if not Card.no(v, "immutable", true) and v ~= card and v ~= other then
                 Cryptid.manipulate(v, { value = to_big(card.ability.extra.scale)*to_big(new_scale), type="+"})
@@ -287,7 +395,6 @@ local anaptyxi = {
                 v.ability.extra.odds = to_number(v.ability.extra.odds)
             end
         end
-        args.scalar_table[args.scalar_value] = new_scale
 		return {
             message = localize("k_upgrade_ex"),
         }
@@ -460,6 +567,12 @@ local akyros = {
 
 if Cryptid.big_num_blacklist then Cryptid.big_num_blacklist["j_entr_katarraktis"] = true end
 
+local function _get_fib(n)
+    local phi = (1 + math.sqrt(5))/2
+    local res = math.floor((phi ^ (n + 1) - (1 - phi)^(n+1))/(math.sqrt(5)))
+    return res
+end
+
 local katarraktis = {
     order = 609,
     object_type = "Joker",
@@ -498,8 +611,7 @@ local katarraktis = {
             end
             local diff = ind - this_ind
             if diff >= 1 then
-                if diff > 17 then diff = 17 end
-                local triggers = 2 ^ (diff - 1)
+                local triggers = _get_fib(diff)
                 return {
 					message = localize("k_again_ex"),
 					repetitions = to_number(math.floor(math.min(math.min(card.ability.basetriggers,32) * triggers, 65536))),
@@ -512,6 +624,11 @@ local katarraktis = {
         idea = {"cassknows"},
         art = {"cassknows"}
     }
+}
+
+SMODS.Font {
+  key = "phi",
+  path = "m6x11plusphi.ttf"
 }
 
 local ieros = {
@@ -536,40 +653,6 @@ local ieros = {
     demicoloncompat = true,
     soul_pos = { x = 2, y = 4, extra = { x = 1, y = 4 } },
     atlas = "exotic_jokers",
-    loc_vars = function(self, info_queue, card)
-        return {
-            vars = {
-                card.ability.e_chips
-            },
-        }
-    end,
-    calculate = function(self, card, context)
-        if context.buying_card and not context.retrigger_joker then
-			if context.card.ability.set == "Joker" then
-                SMODS.scale_card(card, {
-                    ref_table = card.ability,
-                    ref_value = "e_chips",
-                    scalar_table = {increase = (Entropy.ReverseRarityChecks[1] or 0)/20.0},
-                    scalar_value = "increase"
-                })
-            end
-        end
-        if context.forcetrigger then
-            SMODS.scale_card(card, {
-                ref_table = card.ability,
-                ref_value = "e_chips",
-                scalar_table = {increase = (Entropy.ReverseRarityChecks[1] or 0)/20.0},
-                scalar_value = "increase"
-            })
-        end
-        if context.joker_main or context.forcetrigger then
-            return {
-				Echip_mod = card.ability.e_chips,
-				message =  '^' .. number_format(card.ability.e_chips) .. ' Chips',
-				colour = { 0.8, 0.45, 0.85, 1 },
-			}
-        end
-    end,
     entr_credits = {
         art = {"Lil. Mr. Slipstream"}
     }
@@ -599,9 +682,9 @@ local exelixi = {
     atlas = "exotic_jokers",
     calculate = function(self, card, context)
         if context.individual and context.cardarea == G.play then
-            Entropy.FlipThen({context.other_card}, function(card)
-                if Entropy.UpgradeEnhancement(card, true, {m_entr_disavowed=true, m_entr_flesh=true}) then
-                    card:set_ability(G.P_CENTERS[Entropy.UpgradeEnhancement(card, true, {m_entr_disavowed=true, m_entr_flesh=true})])
+            Entropy.flip_then({context.other_card}, function(card)
+                if Entropy.upgrade_enhancement(card, true, {m_entr_disavowed=true, m_entr_flesh=true}) then
+                    card:set_ability(G.P_CENTERS[Entropy.upgrade_enhancement(card, true, {m_entr_disavowed=true, m_entr_flesh=true})])
                 end
             end)
             return nil, true
@@ -613,7 +696,7 @@ local exelixi = {
                     if v == context.other_card then index = i end
                 end
                 local enh = G.P_CENTERS[G.hand.cards[index].config.center.key]
-                Entropy.FlipThen({G.hand.cards[index-1], G.hand.cards[index+1]}, function(card)
+                Entropy.flip_then({G.hand.cards[index-1], G.hand.cards[index+1]}, function(card)
                     if card and G.hand.cards[index] then card:set_ability(enh) end
                 end)
             end
@@ -695,175 +778,122 @@ local apeirostemma = {
     rarity = "entr_entropic",
     cost = 150,
     config = {
-        immutable = {
-            dice_effect = 1,
-        },
-        extra = {
-            --d2
-            odds = 2,
-            --d3
-            ee_chips = 1,
-            ee_chips_mod = 0.1,
-            --d5
-            reroll_minus = 1,
-            --d6
-            retriggers = 6
-
-        }
+        left = 1,
+        left_mod = 1,
+        sprite = math.floor(math.random() * 5) + 1
     },
     eternal_compat = true,
     dependencies = {
         items = {
-            "set_entr_entropics"
+            "set_entr_entropics",
+            "set_entr_actives"
         }
     },
     blueprint_compat = true,
     demicoloncompat = true,
-    pos = { x = 3, y = 4 },
-    soul_pos = { x = 5, y = 4, extra = { x = 4, y = 4 } },
-    atlas = "exotic_jokers",
+    pos = { x = 0, y = 0 },
+    soul_pos = { x = 0, y = 1, extra = { x = 1, y = 0 } },
+    atlas = "apeirostemma",
+    set_ability = function(self, card)
+        card.ability.sprite = math.floor(pseudorandom("apeirostemma_sprite") * 5) + 1
+    end,
     calculate = function(self, card, context)
-        local e = card.ability.immutable.dice_effect
-        if e == 1 then
-            if context.ending_shop or context.forcetrigger then
-                local jokers = {}
-                local consumables = {}
-                for i, v in pairs(G.jokers.cards) do
-                    if v ~= card then jokers[#jokers+1] = v end
-                end
-                for i, v in pairs(G.consumeables.cards) do
-                    if v ~= card then consumables[#consumables+1] = v end
-                end
-                local joker = pseudorandom_element(jokers, pseudoseed("apeiro_dice_1_joker"))
-                local cons = pseudorandom_element(consumables, pseudoseed("apeiro_dice_1_consumable"))
-                if joker then
-                    local jc = copy_card(joker)
-                    jc:add_to_deck()
-                    G.jokers:emplace(jc)
-                    jc:set_edition("e_negative")
-                end
-                if cons then
-                    local cc = copy_card(cons)
-                    cc:add_to_deck()
-                    G.consumeables:emplace(cc)
-                    cc:set_edition("e_negative")
-                end
-            end
+        if context.end_of_round then
+            card.ability.extra = nil
         end
-        if e == 2 then
-            if context.joker_main then
-                for i, v in pairs(G.jokers.cards) do
-                    if SMODS.pseudorandom_probability(card, 'apeiro_dice_2', 1, card.ability.extra.odds) and v ~= card then
-                        local results = Cryptid.forcetrigger(v, context)
-                        if results then Entropy.EvaluateEffects(results, card) end
+        if context.repetition or context.retrigger_joker_check then
+            if card.ability.extra then
+                for i, v in pairs(card.ability.extra) do
+                    if i == context.other_card.unique_val then
+                        return {
+                            repetitions = v
+                        }
                     end
                 end
             end
         end
-        if e == 3 then
-            if context.joker_main or context.forcetrigger then
-                if #G.play.cards == 3 or context.forcetrigger then
-                    card.ability.extra.ee_chips = card.ability.extra.ee_chips + card.ability.extra.ee_chips_mod
-                    local msg = SMODS.scale_card(card, {
-                        ref_table = card.ability,
-                        ref_value = "ee_chips",
-                        scalar_value = "ee_chips_mod"
-                    })
-                    if not msg or type(msg) == "string" then
-                        card_eval_status_text(
-                            card,
-                            "extra",
-                            nil,
-                            nil,
-                            nil,
-                            { message = localize("k_upgrade_ex") }
-                        )
+        if context.after then
+            for i, v in pairs(card.ability.extra or {}) do
+                if G.P_CENTERS[i] then
+                    for _ = 1, v do
+                        G.E_MANAGER:add_event(Event{
+                            func = function()
+                                Spectrallib.forcetrigger({
+                                    card = Entropy.get_dummy(G.P_CENTERS[i], G.consumeables, card), 
+                                    silent = true
+                                })
+                                return true
+                            end
+                        })
                     end
                 end
-                return {
-                    e_chips = card.ability.extra.ee_chips
-                }
             end
         end
-        if e == 4 then
-            if context.setting_blind or context.forcetrigger then
-                local c
-                for i, v in pairs(G.jokers.cards) do
-                    if c then
-                        Entropy.RerollJoker(card, v)
-                    end
-                    if v == card then c = true end
-                end
-            end
-        end
-        if e == 5 then
-            if context.buying_card or context.forcetrigger then
-                Cryptid.manipulate(card, {min = 1, max = 1.1, type="X"})
-                card_eval_status_text(
-					card,
-					"extra",
-					nil,
-					nil,
-					nil,
-					{ message = localize("k_upgrade_ex"), colour = G.C.GREEN }
-				)
-            end
-        end
-        if e == 6 then
-            if context.retrigger_joker_check
-			and not context.retrigger_joker then
-                return {
-                    message = localize("k_again_ex"),
-                    card = card,
-                    repetitions = pseudorandom("apeirostemma_dice_6", 3, 9)
-                }
-            end
-            if context.repetition
-			and context.cardarea == G.play then
-                return {
-                    message = localize("k_again_ex"),
-                    card = card,
-                    repetitions = pseudorandom("apeirostemma_dice_6", 3, 9)
-                }
-            end
+        if (context.end_of_round and not context.blueprint and not context.individual and not context.repetition) or context.forcetrigger then
+            SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
         end
     end,
+    can_use = function(self, card)
+        local num = #Entropy.get_highlighted_cards({G.hand, G.jokers, G.consumeables}, card, 1, 9999)
+        return to_big(card.ability.left) > to_big(0) and num > 0
+    end,
+    use = function(self, card)
+        local cards = Entropy.get_highlighted_cards({G.hand, G.jokers, G.consumeables}, card, 1, 9999)
+        card.ability.extra = {}
+        for i, v in pairs(cards) do
+            if v.ability.consumeable then 
+                card.ability.extra[v.config.center_key] = (card.ability.extra[v.config.center_key] or 0) + 1
+            else
+                card.ability.extra[v.unique_val] = (card.ability.extra[v.unique_val] or 0) + 1
+            end
+            local c = v
+            G.E_MANAGER:add_event(Event{
+                func = function()
+                    c.area:remove_from_highlighted(v)
+                    c:highlight(false)
+                    c:juice_up()
+                    return true
+                end
+            })
+            delay(0.5)
+        end
+        card.ability.sprite = math.floor(pseudorandom("apeirostemma_sprite") * 5) + 1
+        card.ability.left = card.ability.left - 1
+    end,
     loc_vars = function(self, q, card)
-        if G.SETTINGS.paused then
-            return {}
-        end
-        local e = card.ability.immutable.dice_effect
-        local vars = nil
-        if e == 2 then
-            local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
-            vars =  {
-                numerator,
-                denominator
-            }
-        end
-        if e == 3 then
-            vars = {
-                number_format(card.ability.extra.ee_chips),
-                number_format(card.ability.extra.ee_chips_mod)
-            }
-        end
-        if e == 5 then
-            vars = {
-                number_format(card.ability.extra.reroll_minus)
-            }
-        end
-        if e == 6 then
-            vars = {
-                number_format(math.floor(math.min(card.ability.extra.retriggers, 100)))
-            }
-        end
         return {
-            key = "j_entr_apeirostemma_"..(card.ability.immutable.dice_effect or 1),
-            vars = vars
+            vars = {
+                card.ability.left,
+                card.ability.left_mod
+            }
         }
-    end
+    end,
+    entr_credits = {art = {"Lil. Mr. Slipstream"}}
 }
 
+SMODS.DrawStep({
+	key = "apeirostemma",
+	order = 25,
+	func = function(self)
+        if self.config.center.key ~= "j_entr_apeirostemma" or not self.config.center.discovered or not self.config.center.unlocked then return end
+        local pos_map = {
+            {x = 0, y = 1},
+            {x = 1, y = 1},
+            {x = 2, y = 1},
+            
+            {x = 0, y = 2},
+            {x = 1, y = 2},
+            {x = 2, y = 2},
+        }
+        local pos = pos_map[self.ability.sprite] or {x = 0, y = 1}
+        if self.ability.pos ~= pos and pos and self.children.floating_sprite then
+            self.ability.pos = pos
+            self.children.floating_sprite:set_sprite_pos(pos)
+            self.children.floating_sprite:reset()
+        end
+	end,
+	conditions = { vortex = false, facing = "front" },
+})
 
 local prismatikos = {
     order = 613,
@@ -882,7 +912,7 @@ local prismatikos = {
     pos = { x = 3, y = 6 },
     atlas = "exotic_jokers",
     calculate = function(self, card, context)
-        if context.individual and Entropy.DeckOrSleeve("doc") then
+        if context.individual and Entropy.deck_or_sleeve("doc") then
             ease_entropy(2)
         end
         if context.joker_main then
@@ -928,22 +958,13 @@ local prismatikos = {
                     end
                 })
             elseif result == 7 then
-                card.ability.destroy_hand = true
-            elseif result == 8 then
                 for i, v in pairs(G.play.cards) do
                     v:set_edition(poll_edition("prismatikos_edition", nil, true, true))
                 end
-            elseif result == 9 then
+            elseif result == 8 then
                 G.GAME.blind.chips = G.GAME.blind.chips * 0.9
                 G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
                 G.HUD_blind:recalculate()
-            end
-        end
-        if context.after and card.ability.destroy_hand then
-            card.ability.destroy_hand = nil
-            for i, v in pairs(G.hand.cards) do
-                v:start_dissolve()
-                v.ability.temporary2 = true
             end
         end
         if context.retrigger_joker_check then
@@ -995,15 +1016,15 @@ local heimartai = {
             }
         end
     end,
-    entr_credits = {art = {"crabus"}}
+    entr_credits = {art = {"Lil. Mr. Slipstream"}}
 }
 
 return {
     items = {
         epitachyno,
-        ( not Entropy.ValkarriOverCryptid or not Entropy.MDJOverCryptid ) and helios or nil,
+        helios,
         xekanos,
-        ( not Entropy.ValkarriOverCryptid or not Entropy.MDJOverCryptid ) and dekatria or nil,
+        dekatria,
         anaptyxi,
         parakmi,
         exousia,

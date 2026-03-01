@@ -151,7 +151,7 @@ local oracle = {
         for i = 1, card.ability.change do
             actual[i] = cards[i]
         end
-        Entropy.FlipThen(actual, function(card)
+        Entropy.flip_then(actual, function(card)
             card:set_ability(Entropy.pseudorandom_element(G.P_CENTER_POOLS.Star, pseudoseed("oracle_ccd"),function(e)
                 return G.GAME.banned_keys[e.key] or e.no_doe
             end))
@@ -201,8 +201,8 @@ local princess = {
     use = function(self, card, area, copier)
         G.GAME.entr_princess = true
         for i, v in ipairs(G.I.CARD) do
-            if v.config and v.config.center and v.config.center.set == "Planet" and Entropy.Inversion(v.config.center) then
-                v:set_ability(G.P_CENTERS[Entropy.Inversion(v.config.center)])
+            if v.config and v.config.center and v.config.center.set == "Planet" then
+                Entropy.invert(v)
             end
         end
     end,
@@ -217,7 +217,7 @@ local princess = {
     end,
 	
     entr_credits = {
-        idea = {"crabus"},
+        idea = {"user324897"},
         art = {"Lyman"}
     }
 }
@@ -240,31 +240,35 @@ local servant = {
     inversion = "c_emperor",
     pos = {x=4, y = 0},
     use = function(self, card, area, copier)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card, 1, card.ability.select)
+        local cards = Entropy.get_highlighted_cards({{cards = G.I.CARD}}, card, 1, card.ability.select)
         for i, v in pairs(cards) do
-            if Entropy.Inversion(v.config.center) then
-                local set = G.P_CENTERS[Entropy.Inversion(v.config.center)].set
+            if v.config and v.config.center and Entropy.inversion(v.config.center) and v.ability and v.ability.consumeable then
+                local set = G.P_CENTERS[Entropy.inversion(v.config.center)].set
                 for i = 1, card.ability.create do
-                    G.E_MANAGER:add_event(Event({
-                        func = function()
-                            if G.consumeables.config.card_count < G.consumeables.config.card_limit then
+                    if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit then
+                        G.GAME.consumeable_buffer = G.GAME.consumeable_buffer + 1
+                        G.E_MANAGER:add_event(Event({
+                            func = function()
                                 local c = create_card(set, G.consumeables, nil, nil, nil, nil, nil)
                                 G.GAME.last_inversion = nil
                                 c:add_to_deck()
                                 G.consumeables:emplace(c)
+                                G.GAME.consumeable_buffer = 0
+                                return true
                             end
-                            return true
-                        end
-                    }))
+                        }))
+                    end
                 end
             end
 
         end
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.consumeables}, card, 1, card.ability.select)
+        local cards = Entropy.get_highlighted_cards({{cards = G.I.CARD}}, card, 1, card.ability.select)
         local num = #cards
-        return num > 0 and num <= card.ability.select and Entropy.TableAny(cards, function(value) return Entropy.Inversion(value.config.center) end)
+        local offset = 0
+        if card.area == G.consumeables.cards then offset = -1 end
+        return num > 0 and num <= card.ability.select and Entropy.in_table(cards, function(value) return Entropy.inversion(value.config.center) end) and #G.consumeables.cards + offset < G.consumeables.config.card_limit
 	end,
     loc_vars = function(self, q, card)
         return {
@@ -301,8 +305,8 @@ local heretic = {
     inversion = "c_heirophant",
     pos = {x=5, y = 0},
     use = function(self, card, area, copier)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
-        Entropy.FlipThen(cards, function(card)
+        local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
+        Entropy.flip_then(cards, function(card)
             local modification = pseudorandom_element({"Seal", "Enhancement", "Edition", "Suit", "Rank"}, pseudoseed("heretic_modification"))
             if modification == "Seal" then
                 local seal = pseudorandom_element(SMODS.Seal.obj_table, pseudoseed("heretic_seal")).key
@@ -323,7 +327,7 @@ local heretic = {
         end)
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
         local num = #cards
         return num > 0 and num <= card.ability.select
 	end,
@@ -364,28 +368,25 @@ local feud = {
     inversion = "c_lovers",
     pos = {x=6, y = 0},
     use = function(self, card, area, copier)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
         local chips = 0
-        local bonus_chips = 0
         for i = 2, to_number(card.ability.select) do
             local new_card = cards[i]
             if new_card then
-                chips = chips + new_card.base.nominal
-                bonus_chips = bonus_chips + (new_card.ability and new_card.ability.bonus or 0)
+                chips = chips + new_card:get_chip_bonus()
                 SMODS.destroy_cards(new_card)
             end
         end
         local mult = card.ability.chip_mult
-        Entropy.FlipThen(cards, function(card)
-            card.base.nominal = card.base.nominal + chips * mult
-            if to_big(bonus_chips) > to_big(0) then
-                card.ability.bonus = card.ability.bonus + bonus_chips * mult
+        Entropy.flip_then(cards, function(card)
+            if to_big(chips) > to_big(0) then
+                card.ability.bonus = card.ability.bonus + chips * mult
             end
 
         end)
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
         local num = #cards
         return num >= 2 and num <= card.ability.select
 	end,
@@ -422,15 +423,15 @@ local scar = {
     inversion = "c_chariot",
     pos = {x=7, y = 0},
     use = function(self, card, area, copier)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
         for i, v in pairs(cards) do
-            Entropy.ApplySticker(v, "scarred")
+            Entropy.apply_sticker(v, "scarred")
             v:juice_up()
         end
 
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
         local num = #cards
         return num > 0 and num <= card.ability.select
 	end,
@@ -495,7 +496,7 @@ local dagger = {
     inversion = "c_justice",
     pos = {x=8, y = 0},
     use = function(self, card2, area, copier)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select)
+        local cards = Entropy.get_highlighted_cards({G.hand}, card2, 1, card2.ability.select)
         local total = 0
         local _hand, _tally = nil, -1
 		for k, v in ipairs(G.handlist) do
@@ -505,7 +506,7 @@ local dagger = {
 			end
 		end
         for i, card in ipairs(cards) do
-            total = total + card.base.nominal + (card.ability.bonus or 0)
+            total = total + card:get_chip_bonus()
         end
         SMODS.destroy_cards(cards)
         update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = G.GAME.hands[_hand].level, mult = Entropy.ascend_hand(G.GAME.hands[_hand].mult, _hand), chips = Entropy.ascend_hand(G.GAME.hands[_hand].chips, _hand), handname = localize(_hand, "poker_hands") })
@@ -519,7 +520,7 @@ local dagger = {
         G.GAME.hands[_hand].chips = G.GAME.hands[_hand].chips + total
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
         local num = #cards
         return num > 0 and num <= card.ability.select
 	end,
@@ -608,13 +609,13 @@ local whetstone = {
     pos = {x=0,y=1},
     use = function(self, card2)
         if SMODS.pseudorandom_probability(card2, 'whetstone', 1, card2.ability.extra.odds) or G.cry_force_use then
-            local cards = Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select)
-            Entropy.FlipThen(cards, function(card)
-                local enh = Entropy.UpgradeEnhancement(card, false, {m_entr_disavowed = true})
+            local cards = Entropy.get_highlighted_cards({G.hand}, card2, 1, card2.ability.select)
+            Entropy.flip_then(cards, function(card)
+                local enh = Entropy.upgrade_enhancement(card, false, {m_entr_disavowed = true})
                 if G.P_CENTERS[enh] then
                     card:set_ability(G.P_CENTERS[enh])
                     for i = 1, math.floor(pseudorandom("whetstone")*3+0.5) do
-                        enh = Entropy.UpgradeEnhancement(card, false, {m_entr_disavowed = true})
+                        enh = Entropy.upgrade_enhancement(card, false, {m_entr_disavowed = true})
                         card:set_ability(G.P_CENTERS[enh])
                     end
                     if enh ~= card.config.center.key then
@@ -644,7 +645,7 @@ local whetstone = {
         end
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
         return num > 0 and num <= card.ability.select
     end,
     loc_vars = function(self, q, card)
@@ -686,7 +687,7 @@ local endurance = {
     pos = {x=1,y=1},
     inversion = "c_strength",
     use = function(self, card2)
-        local cards = Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card2, 1, card2.ability.select)
+        local cards = Entropy.get_highlighted_cards({G.hand, G.jokers, G.consumeables}, card2, 1, card2.ability.select)
         G.GAME.endurance_rounds = (G.GAME.endurance_rounds or 3)
         for i, card in pairs(cards) do
             card.ability.debuff_timer = (card.ability.debuff_timer or 0) + G.GAME.endurance_rounds
@@ -700,7 +701,7 @@ local endurance = {
         G.GAME.endurance_rounds = G.GAME.endurance_rounds + 1
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand, G.jokers, G.consumeables}, card, 1, card.ability.select)
+        local num = #Entropy.get_highlighted_cards({G.hand, G.jokers, G.consumeables}, card, 1, card.ability.select)
         return num > 0 and num <= card.ability.select
     end,
     loc_vars = function(self, q, card)
@@ -792,14 +793,14 @@ local statue = {
     inversion = "c_death",
     pos = {x=3,y=1},
     use = function(self, card2)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select)
+        local cards = Entropy.get_highlighted_cards({G.hand}, card2, 1, card2.ability.select)
         G.E_MANAGER:add_event(Event({
 			func = function()
                 for i = 1, card2.ability.convert_per do
                     local card3 = pseudorandom_element(G.deck.cards, pseudoseed("statue"))
                     copy_card(#cards == 1 and cards[1] or pseudorandom_element(cards, pseudoseed("statue")), card3)
                 end
-                Entropy.FlipThen(cards, function(card)
+                Entropy.flip_then(cards, function(card)
                     card:set_ability(G.P_CENTERS.m_stone)
                     card:set_edition()
                     card.seal = nil
@@ -810,7 +811,7 @@ local statue = {
         }))
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        local num = #Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
         return num > 0 and num <= card.ability.select and #G.hand.cards > 0
     end,
     loc_vars = function(self, q, card)
@@ -849,7 +850,7 @@ local feast = {
     pos = {x=4,y=1},
     inversion = "c_temperance",
     use = function(self, card2)
-        local cards = Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card2, 1, card2.ability.select)
+        local cards = Entropy.get_highlighted_cards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card2, 1, card2.ability.select)
         for i, v in pairs(cards) do
             local card = cards[i]
             G.E_MANAGER:add_event(Event({
@@ -863,7 +864,7 @@ local feast = {
             
     end,
     can_use = function(self, card)
-        local num = #Entropy.GetHighlightedCards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.select)
+        local num = #Entropy.get_highlighted_cards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.select)
         return num > 0 and num <= card.ability.select
     end,
     loc_vars = function(self, q, card)
@@ -944,12 +945,12 @@ local village = {
     pos = {x=6,y=1},
     inversion = "c_tower",
     use = function(self, card2)
-        Entropy.FlipThen(G.hand.cards, function(card)
+        Entropy.flip_then(G.hand.cards, function(card)
             card.ability.bonus = (card.ability.bonus or 0) + card2.ability.chips
         end)
     end,
     bulk_use = function(self, card2, _, _, amount)
-        Entropy.FlipThen(G.hand.cards, function(card)
+        Entropy.flip_then(G.hand.cards, function(card)
             card.ability.bonus = (card.ability.bonus or 0) + card2.ability.chips * amount
         end)
     end,
@@ -989,10 +990,10 @@ local ocean = {
     pos = {x=7,y=1},
     inversion = "c_star",
     use = function(self, card2)
-        Entropy.LevelSuit("Diamonds", card2, 1, card2.ability.per_level)
+        Entropy.level_suit("Diamonds", card2, 1, card2.ability.per_level)
     end,
     bulk_use = function(self, card2, _, _, amount)
-        Entropy.LevelSuit("Diamonds", card2, amount, card2.ability.per_level)
+        Entropy.level_suit("Diamonds", card2, amount, card2.ability.per_level)
     end,
     can_use = function(self, card)
         return true
@@ -1038,10 +1039,10 @@ local forest = {
     pos = {x=8,y=1},
     inversion = "c_moon",
     use = function(self, card2)
-        Entropy.LevelSuit("Clubs", card2, 1, card2.ability.per_level)
+        Entropy.level_suit("Clubs", card2, 1, card2.ability.per_level)
     end,
     bulk_use = function(self, card2, _, _, amount)
-        Entropy.LevelSuit("Clubs", card2, amount, card2.ability.per_level)
+        Entropy.level_suit("Clubs", card2, amount, card2.ability.per_level)
     end,
     can_use = function(self, card)
         return true
@@ -1087,10 +1088,10 @@ local mountain = {
     pos = {x=9,y=1},
     inversion = "c_sun",
     use = function(self, card2)
-        Entropy.LevelSuit("Hearts", card2, 1, card2.ability.per_level)
+        Entropy.level_suit("Hearts", card2, 1, card2.ability.per_level)
     end,
     bulk_use = function(self, card2, _, _, amount)
-        Entropy.LevelSuit("Hearts", card2, amount, card2.ability.per_level)
+        Entropy.level_suit("Hearts", card2, amount, card2.ability.per_level)
     end,
     can_use = function(self, card)
         return true
@@ -1177,10 +1178,10 @@ local tent = {
     pos = {x=1,y=2},
     inversion = "c_world",
     use = function(self, card2)
-        Entropy.LevelSuit("Spades", card2, 1, card2.ability.per_level)
+        Entropy.level_suit("Spades", card2, 1, card2.ability.per_level)
     end,
     bulk_use = function(self, card2, _, _, amount)
-        Entropy.LevelSuit("Spades", card2, amount, card2.ability.per_level)
+        Entropy.level_suit("Spades", card2, amount, card2.ability.per_level)
     end,
     can_use = function(self, card)
         return true
@@ -1230,7 +1231,7 @@ local frail = {
         }
     end,
     use = function(self, card2)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card2, 1, card2.ability.select)
+        local cards = Entropy.get_highlighted_cards({G.hand}, card2, 1, card2.ability.select)
         local modifications = {}
         for i, v in pairs(cards) do
             if v.config.center.set == "Enhanced" then
@@ -1260,7 +1261,7 @@ local frail = {
         end
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
         return #cards > 0 and #cards <= card.ability.select
     end,
     demicoloncompat = true,
@@ -1293,7 +1294,8 @@ local inferno = {
         }
     end,
     use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
+        SMODS.calculate_context({remove_playing_cards = true, removed=cards})
         for i, v in pairs(cards) do
             v:start_dissolve()
         end
@@ -1302,7 +1304,7 @@ local inferno = {
         end
     end,
     can_use = function(self, card)
-        local cards = Entropy.GetHighlightedCards({G.hand}, card, 1, card.ability.select)
+        local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
         return #cards > 0
     end,
     demicoloncompat = true,

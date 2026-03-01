@@ -18,7 +18,7 @@ if (SMODS.Mods["Multiplayer"] or {}).can_load then
                     }
                 },
                 loc_vars = function(self, info_queue, card)
-                    add_nemesis_info(info_queue)
+                    MP.UTILS.add_nemesis_info(info_queue)
                     return { vars = { 2 } }
                 end,
                 in_pool = function(self)

@@ -167,7 +167,7 @@ function Entropy.get_rare_inversion(seed)
     local pool = {}
     for i, k in pairs(Entropy.RareInversions) do
         local v = G.P_CENTERS[k]
-        if not (G.GAME.used_jokers[v.key] and not SMODS.showman(v.key) and not v.can_repeat_soul) and (not v.in_pool or (type(v.in_pool) ~= "function") or v:in_pool({})) then
+        if not (G.GAME.used_jokers[v.key] and not SMODS.showman(v.key) and not v.can_repeat_soul) and SMODS.add_to_pool(v, {}) then
             pool[#pool+1] = k
         end
     end
@@ -187,11 +187,25 @@ function create_inverted_card(area, seed)
             end
         end
     end
-    if Entropy.has_rune("rune_entr_oss") and not Entropy.has_rune("rune_entr_oss").triggered then
-        local c = Entropy.get_rare_inversion("rune_entr_oss")
+    if pseudorandom("entr_twisted_corrupted") < 0.01 then -- 1% chance
+        if num - 0.003 <= 0 or (Entropy.has_rune("rune_entr_oss") and not Entropy.has_rune("rune_entr_oss").triggered) then
+            if c then
+                if not (num - 0.003 <= 0) then
+                    calculate_runes({generate_rare_consumable = true})
+                    Entropy.has_rune("rune_entr_oss").triggered = true
+                end
+                return SMODS.create_card{key = "j_entr_nyx"}
+            end
+        end
+        return SMODS.create_card{set = "Joker", rarity = "entr_void"}
+    end
+    if num - 0.003 <= 0 or (Entropy.has_rune("rune_entr_oss") and not Entropy.has_rune("rune_entr_oss").triggered) then
+        local c = Entropy.get_rare_inversion(not (num - 0.003 <= 0) and "rune_entr_oss" or nil)
         if c then
-            calculate_runes({generate_rare_consumable = true})
-            Entropy.has_rune("rune_entr_oss").triggered = true
+            if not (num - 0.003 <= 0) then
+                calculate_runes({generate_rare_consumable = true})
+                Entropy.has_rune("rune_entr_oss").triggered = true
+            end
             return create_card(G.P_CENTERS[c].set, area or G.pack_cards, nil, nil, true, true, c)
         end
     else
@@ -203,12 +217,6 @@ function create_inverted_card(area, seed)
             end
             G.entr_dont_calculate = true
             return create_card("Spectral", area or G.pack_cards, nil, nil, true, true, nil, "rune_entr_mannaz")
-        end
-    end
-    if num - 0.003 <= 0 then
-        local c = Entropy.get_rare_inversion()
-        if c then
-            return create_card(G.P_CENTERS[c].set, area or G.pack_cards, nil, nil, true, true, c)
         end
     end
     local rune

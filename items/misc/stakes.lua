@@ -20,16 +20,6 @@ local copper = {
     colour = HEX("ff7747")
 }
 
-
-local ref = copy_card
-function copy_card(old, new, ...)
-    local ret = ref(old, new, ...)
-    if not G.SETTINGS.paused and G.deck and G.GAME.modifiers.entr_copper and pseudorandom("entr_copper_stake") < 0.33 and (ret.config.center.set == "Default" or ret.config.center.set == "Enhanced") then
-        ret:set_ability(G.P_CENTERS.m_entr_disavowed)
-    end
-    return ret
-end
-
 local platinum = {
     dependencies = {
         items = {
@@ -117,22 +107,66 @@ local obsidian = {
 Entropy.curses = {
     ["entr_blind"] = {
         key = "k_curse_blind",
-        desc_key = "k_curse_blind_desc"
+        desc_key = "k_curse_blind_desc",
+        sprite_pos = {x = 0, y = 0},
     },
     ["entr_darkness"] = {
         key = "k_curse_darkness",
-        desc_key = "k_curse_darkness_desc"
+        desc_key = "k_curse_darkness_desc",
+        sprite_pos = {x = 1, y = 0},
     },
     ["entr_lost"] = {
         key = "k_curse_lost",
         desc_key = "k_curse_lost_desc",
-        sprite_pos = {x = 0, y = 0},
+        sprite_pos = {x = 2, y = 0},
     },
     ["entr_maze"] = {
         key = "k_curse_maze",
-        desc_key = "k_curse_maze_desc"
+        desc_key = "k_curse_maze_desc",
+        in_pool = function()
+            return G.GAME.ante ~= G.GAME.win_ante
+        end,
+        sprite_pos = {x = 3, y = 0},
     }
 }
+
+SMODS.Tag {
+    key = "curse_indicator",
+    atlas = "curse_icons",
+    no_collection = true,
+    in_pool = function() return false end,
+    loc_vars = function()
+        return {
+            key = G.GAME.curse and "tag_curse_"..G.GAME.curse
+        }
+    end
+}
+
+function _G.add_curse_icon(_tag, no_copy)
+    G.HUD_curses = G.HUD_curses or {}
+    local tag_sprite_ui, tag_sprite = _tag:generate_UI()
+    G.HUD_curses[#G.HUD_curses+1] = UIBox{
+        definition = {n=G.UIT.ROOT, config={align = "tm", padding = 0.05, colour = G.C.CLEAR}, nodes={
+          tag_sprite_ui
+        }},
+        config = {
+          align = G.HUD_curses[1] and 'bm' or 'br',
+          offset = G.HUD_curses[1] and {x=0,y=0} or {x=-0.8,y=0.4},
+          major = G.HUD_curses[1] and G.HUD_curses[#G.HUD_curses] or G.consumeables}
+    }
+    discover_card(G.P_TAGS[_tag.key])
+    unlock_card(G.P_TAGS[_tag.key])
+
+    _tag.HUD_tag = G.HUD_curses[#G.HUD_curses]
+    _tag.HUD_tag.actual = _tag
+    _tag.HUD_sprite = tag_sprite
+    _tag.ability.index = #G.HUD_curses
+    if #G.HUD_curses > 6 then
+		for i = 2, #G.HUD_curses do
+			G.HUD_curses[i].config.offset.y = -0.9 + 0.9 * (6 / #G.HUD_curses)
+		end
+	end
+end
 
 function Entropy.get_curse_rate()
     if not Entropy.config.curses_enabled then return 0 end
@@ -229,11 +263,13 @@ function Entropy.create_curse(key)
     G.GAME.entr_maze_applied = nil
     local curses = {}
     for i, v in pairs(Entropy.curses) do
-        curses[#curses+1] = i
+        if not v.in_pool or v:in_pool() then
+            curses[#curses+1] = i
+        end
     end
     G.GAME.curse = key or pseudorandom_element(curses, pseudoseed("entr_curse"))
-    local atlas = Entropy.curses[G.GAME.curse].atlas or "entr_curses_big"
-    local pos = Entropy.curses[G.GAME.curse].pos or {x = 0, y = 0}
+    local atlas = Entropy.curses[G.GAME.curse].atlas or "entr_curse_icons"
+    local pos = Entropy.curses[G.GAME.curse].sprite_pos or {x = 0, y = 0}
     attention_text({
         scale = 1,
         text = localize(Entropy.curses[G.GAME.curse].key),
@@ -241,9 +277,6 @@ function Entropy.create_curse(key)
         align = "cm",
         offset = { x = 0, y = -2.7 },
         major = G.play,
-        atlas = atlas,
-        X = 0, Y = 0, W = 6, H = 6,
-        spos = pos
     })
     attention_text({
         scale = 0.7,
@@ -260,6 +293,14 @@ function Entropy.create_curse(key)
         G.GAME.modifiers.cry_no_small_blind = G.GAME.modifiers.cry_no_small_blind_last
         G.GAME.modifiers.cry_no_small_blind_last = nil
     end
+    if not G.HUD_curses or #G.HUD_curses < 1 then
+        add_curse_icon(Tag("tag_entr_curse_indicator"))
+    elseif G.HUD_curses then
+        G.HUD_curses[1].actual:juice_up()
+    end
+    local sprite = G.HUD_curses[1].actual.HUD_sprite
+    sprite.atlas = G.ASSET_ATLAS[atlas]
+    sprite:set_sprite_pos(pos)
 end
 
 local dft = Blind.defeat
@@ -272,6 +313,11 @@ function Blind:defeat(s)
             if pseudorandom("entr_curse") < G.GAME.curse_rate then
                 Entropy.create_curse()
             else
+                if G.HUD_curses and G.HUD_curses[1] then
+                    G.HUD_curses[1].actual:yep('+', G.C.PURPLE, function() 
+                        return true end)
+                    G.HUD_curses = nil
+                end
                 G.GAME.entr_maze_applied = nil
                 G.GAME.curse = nil
             end

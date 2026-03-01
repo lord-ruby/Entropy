@@ -321,3 +321,83 @@ SMODS.Atlas {
         px = 71,
         py = 95,
     }
+
+if (SMODS.Mods.Blindside or {}).can_load then
+    SMODS.Atlas {
+        key = 'blindside_tags',
+        path = 'crossmod/blindside_tags.png',
+        px = 34,
+        py = 34
+    }
+    SMODS.Atlas {
+        key = 'blindside_blinds',
+        path = 'crossmod/blindside_blinds.png',
+        px = 71,
+        py = 95
+    }
+end
+
+if FinisherBossBlindStringMap then
+    SMODS.Atlas {
+        key = 'finity_jokers',
+        path = 'crossmod/finity_jokers.png',
+        px = 71,
+        py = 95
+    }
+end
+
+SMODS.Atlas {
+    key = "searing",
+    path = "searingjokesheet.png",
+    px = 43,
+    py = 9,
+}
+
+SMODS.Atlas {
+    key = "planetarium",
+    path = "planetarium.png",
+    px = 71,
+    py = 95,
+}
+
+SMODS.Atlas {
+    key = "modlogo",
+    path = "logo.png",
+    px = 583,
+    py = 280,
+}
+
+SMODS.Atlas {
+    key = "apeirostemma",
+    path = "apeirostemma.png",
+    px = 71,
+    py = 95,
+}
+
+SMODS.Atlas {
+    key = "rubysoul_big",
+    path = "ruby.png",
+    px = 71*3,
+    py = 95,
+}
+
+SMODS.Atlas {
+    key = "titlecard",
+    path = "titlecard.png",
+    px = 122,
+    py = 122,
+}
+
+SMODS.Atlas {
+    key = "curse_icons",
+    path = "curse_icons.png",
+    px = 34,
+    py = 34,
+}
+
+SMODS.Atlas {
+    key = "void_jokers",
+    path = "void_jokers.png",
+    px = 71,
+    py = 95,
+}
