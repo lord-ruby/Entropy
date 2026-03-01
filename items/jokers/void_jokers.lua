@@ -133,7 +133,7 @@ local apoptosis = {
     atlas = "void_jokers",
     dependencies = {
         items = {
-            "set_entr_misc_jokers",
+            "set_entr_void_jokers",
         }
     },
     corruptions = {
@@ -212,7 +212,7 @@ local egocentrism = {
     atlas = "void_jokers",
     dependencies = {
         items = {
-            "set_entr_misc_jokers",
+            "set_entr_void_jokers",
         }
     },
     corruptions = {
@@ -325,7 +325,7 @@ local generator_meltdown = {
     atlas = "void_jokers",
     dependencies = {
         items = {
-            "set_entr_misc_jokers",
+            "set_entr_void_jokers",
         }
     },
     corruptions = {
@@ -357,7 +357,7 @@ local voidheart = {
     atlas = "void_jokers",
     dependencies = {
         items = {
-            "set_entr_misc_jokers",
+            "set_entr_void_jokers",
         }
     },
     corruptions = {
@@ -390,7 +390,7 @@ local unstable_rift = {
     atlas = "void_jokers",
     dependencies = {
         items = {
-            "set_entr_misc_jokers",
+            "set_entr_void_jokers",
         }
     },
     config = {
@@ -523,7 +523,7 @@ local pluripotent_larvae = {
     atlas = "void_jokers",
     dependencies = {
         items = {
-            "set_entr_misc_jokers",
+            "set_entr_void_jokers",
         }
     },
     config = {
@@ -585,7 +585,7 @@ local desiderium = {
     atlas = "void_jokers",
     dependencies = {
         items = {
-            "set_entr_misc_jokers",
+            "set_entr_void_jokers",
         }
     },
     config = {
@@ -661,7 +661,7 @@ local nadir = {
     atlas = "void_jokers",
     dependencies = {
         items = {
-            "set_entr_misc_jokers",
+            "set_entr_void_jokers",
         }
     },
     config = {
@@ -733,7 +733,7 @@ local yaldabaoth = {
     atlas = "void_jokers",
     dependencies = {
         items = {
-            "set_entr_misc_jokers",
+            "set_entr_void_jokers",
         }
     },
     config = {
@@ -829,7 +829,7 @@ local mutagenesis = {
     atlas = "void_jokers",
     dependencies = {
         items = {
-            "set_entr_misc_jokers",
+            "set_entr_void_jokers",
         }
     },
     config = {
@@ -882,7 +882,7 @@ local crooked_penny = {
     atlas = "void_jokers",
     dependencies = {
         items = {
-            "set_entr_misc_jokers",
+            "set_entr_void_jokers",
         }
     },
     config = {
@@ -930,7 +930,7 @@ local phoenix_a = {
     atlas = "void_jokers",
     dependencies = {
         items = {
-            "set_entr_misc_jokers",
+            "set_entr_void_jokers",
         }   
     },
     config = {
@@ -1048,7 +1048,7 @@ local antimatter_sheath = {
     atlas = "void_jokers",
     dependencies = {
         items = {
-            "set_entr_misc_jokers",
+            "set_entr_void_jokers",
         }   
     },
     config = {
@@ -1169,7 +1169,7 @@ local caledscratch = {
     atlas = "void_jokers",
     dependencies = {
         items = {
-            "set_entr_misc_jokers",
+            "set_entr_void_jokers",
         }
     },
     config = {
@@ -1227,7 +1227,7 @@ local nyx = {
     atlas = "void_jokers",
     dependencies = {
         items = {
-            "set_entr_misc_jokers",
+            "set_entr_void_jokers",
         }
     },
     config = {

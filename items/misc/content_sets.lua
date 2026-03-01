@@ -93,3 +93,11 @@ SMODS.ContentSet({
 	pos = { x = 3, y = 11 },
 	cry_order = 10,
 })
+
+SMODS.ContentSet({
+	key = "void_jokers",
+	atlas = "void_jokers",
+	pos = { x = 0, y = 0 },
+	soul_pos = {x=0,y=1},
+	cry_order = 11,
+})
