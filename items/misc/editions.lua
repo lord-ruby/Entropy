@@ -41,7 +41,7 @@ local solar = {
 				and context.cardarea == G.play
 			)
 		then
-			return { asc = card and card.edition and card.edition.sol or 1.4 }
+			return { x_asc = card and card.edition and card.edition.sol or 1.4 }
 		end
 		if context.joker_main then
 			card.config.trigger = true

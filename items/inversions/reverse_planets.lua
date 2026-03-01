@@ -149,7 +149,7 @@ function Entropy.register_reverse_planet(key, handname, sprite_pos, func, cost,l
       then
         local value = G.P_CENTERS.v_observatory.config.extra
         return {
-          asc = to_big(value) ^ (card.ability.overflow_amount or 1),
+          x_asc = to_big(value) ^ (card.ability.overflow_amount or 1),
         }
       end
     end,
@@ -264,7 +264,7 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
     then
       local value = G.P_CENTERS.v_observatory.config.extra
       return {
-        asc = to_big(value) ^ (card.ability.overflow_amount or 1),
+        x_asc = to_big(value) ^ (card.ability.overflow_amount or 1),
       }
     end
   end
@@ -702,7 +702,7 @@ function Entropy.reverse_suit_calc(self, card, context)
     then
       local value = G.P_CENTERS.v_observatory.config.extra
       return {
-        asc = to_big(value) ^ (card.ability.overflow_amount or 1),
+        x_asc = to_big(value) ^ (card.ability.overflow_amount or 1),
       }
     end
   end

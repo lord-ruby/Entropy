@@ -293,7 +293,7 @@ local entropy_card = {
     calculate = function (self, card, context)
        if context.joker_main or context.forcetrigger then
             return {
-                asc = 1+card.ability.num*card.ability.x_asc_mod
+                x_asc = 1+card.ability.num*card.ability.x_asc_mod
             }
        end
     end

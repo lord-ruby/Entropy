@@ -1559,13 +1559,13 @@ end
 function Entropy.add_perma_bonus(card, key, amount)
     local keys = ({
         xlog_chips = "slib_perma_xlog_chips",
-        asc = "slib_perma_asc", 
+        asc = "slib_perma_plus_asc", 
         asc_mod = "slib_perma_plus_asc", 
         plus_asc = "slib_perma_plus_asc", 
         plusasc_mod = "slib_perma_plus_asc", 
         exp_asc = "slib_perma_exp_asc", 
         exp_asc_mod = "slib_perma_exp_asc", 
-        x_asc = "slib_perma_asc",
+        x_asc = "slib_perma_x_asc",
         mult = "mult", 
         h_mult = "mult", 
         mult_mod = "mult",
@@ -1582,7 +1582,7 @@ function Entropy.add_perma_bonus(card, key, amount)
         Xchip_mod = "x_chips",
     })
     key = keys[key] or key
-    if key == "x_chips" or key == "x_mult" or key == "slib_perma_asc" then
+    if key == "x_chips" or key == "x_mult" or key == "slib_perma_x_asc" then
         amount = amount - 1
     end
     if card.ability["perma_"..key] or card.ability[key] then
@@ -1627,7 +1627,7 @@ function Entropy.calc_perma_bonus_joker(card)
     if entr_plus_asc ~= 0 then
         ret.plus_asc = entr_plus_asc
     end
-    local entr_asc = card:get_slib_asc()
+    local entr_asc = card:get_slib_x_asc()
     if entr_asc ~= 1 and entr_asc > 0 then
         ret.x_asc = entr_asc
     end
@@ -1646,8 +1646,8 @@ function Entropy.get_perma_bonus_vars(self)
         slib_perma_h_xlog_chips = self.ability.slib_perma_h_xlog_chips ~= 0 and self.ability.slib_perma_h_xlog_chips or nil,
         slib_perma_plus_asc = self.ability.slib_perma_plus_asc ~= 0 and self.ability.slib_perma_plus_asc or nil,
         slib_perma_h_plus_asc = self.ability.slib_perma_h_plus_asc ~= 0 and self.ability.slib_perma_h_plus_asc or nil,
-        slib_perma_asc = self.ability.slib_perma_asc ~= 0 and (self.ability.slib_perma_asc + 1) or nil,
-        slib_perma_h_asc = self.ability.slib_perma_h_asc ~= 0 and (self.ability.slib_perma_h_asc + 1) or nil,
+        slib_perma_x_asc = self.ability.slib_perma_x_asc ~= 0 and (self.ability.slib_perma_x_asc + 1) or nil,
+        slib_perma_h_x_asc = self.ability.slib_perma_h_x_asc ~= 0 and (self.ability.slib_perma_h_x_asc + 1) or nil,
         slib_perma_exp_asc = self.ability.slib_perma_exp_asc ~= 0 and (self.ability.slib_perma_exp_asc + 1) or nil,
         slib_perma_h_exp_asc = self.ability.slib_perma_h_exp_asc ~= 0 and (self.ability.slib_perma_h_exp_asc + 1) or nil,
         suit_level = G.GAME.SuitBuffs and G.GAME.SuitBuffs[self.base.suit] and G.GAME.SuitBuffs[self.base.suit].level or nil,

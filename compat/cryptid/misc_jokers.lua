@@ -87,13 +87,13 @@ local solarflare = {
 				}))
 			end
 			return {
-				asc = lenient_bignum(card.ability.asc),
+				x_asc = lenient_bignum(card.ability.asc),
 			}
 		end
 		if context.individual and context.cardarea == G.play then
 			if context.other_card.edition and context.other_card.edition.key == "e_entr_solar" then
 				return {
-					asc = lenient_bignum(card.ability.asc),
+					x_asc = lenient_bignum(card.ability.asc),
 					colour = G.C.MULT,
 					card = card,
 				}
@@ -114,14 +114,14 @@ local solarflare = {
 				}
 			else
 				return {
-					asc = lenient_bignum(card.ability.asc),
+					x_asc = lenient_bignum(card.ability.asc),
 					card = card,
 				}
 			end
 		end
         if context.forcetrigger then
             return {
-                asc = lenient_bignum(card.ability.asc),
+                x_asc = lenient_bignum(card.ability.asc),
                 card = card,
             }
         end
