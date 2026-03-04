@@ -1,3 +1,5 @@
+Entropy.srandom = Spectrallib.string_random
+
 function Entropy.inversion(card)
     if not card then return end
     local card = card.config and card.config.center or card
