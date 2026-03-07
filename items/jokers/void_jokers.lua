@@ -195,7 +195,7 @@ local apoptosis = {
         }
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
-    entr_credits = {art = "pangaea47"}
+    entr_credits = {{art = "pangaea47"}}
 }
 
 local egocentrism = {
@@ -341,7 +341,7 @@ local generator_meltdown = {
         end
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
-    entr_credits = {art = "pangaea47"}
+    entr_credits = {{art = "pangaea47"}}
 }
 
 local voidheart = {
@@ -375,7 +375,7 @@ local voidheart = {
         q[#q+1] = G.P_BLINDS.bl_entr_abyss
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
-    entr_credits = {art = "pangaea47"}
+    entr_credits = {{art = "pangaea47"}}
 }
 
 local unstable_rift = {
@@ -456,7 +456,7 @@ local unstable_rift = {
             G.GAME.entr_perma_inversions[v] = self.key
         end
     end,
-    entr_credits = {art = "pangaea47"}
+    entr_credits = {{art = "pangaea47"}}
 }
 
 local calc_score = SMODS.calculate_round_score
@@ -715,7 +715,7 @@ local nadir = {
         for i, v in pairs(card.ability.extra.stored_jokers) do q[#q+1] = G.P_CENTERS[v] end
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
-    entr_credits = {art = "pangaea47"}
+    entr_credits = {{art = "pangaea47"}}
 }
 
 
@@ -865,7 +865,7 @@ local mutagenesis = {
         end
         SMODS.localize_perma_bonuses(vars, desc_nodes)
     end,
-    entr_credits = {art = "pangaea47"}
+    entr_credits = {{art = "pangaea47"}}
 }
 
 local crooked_penny = {
@@ -913,7 +913,7 @@ local crooked_penny = {
         }
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
-    entr_credits = {art = "pangaea47"}
+    entr_credits = {{art = "pangaea47"}}
 }
 
 local phoenix_a = {
@@ -1031,7 +1031,7 @@ local phoenix_a = {
         }
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
-    entr_credits = {art = "pangaea47"}
+    entr_credits = {{art = "pangaea47"}}
 }
 
 local antimatter_sheath = {
