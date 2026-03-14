@@ -1058,8 +1058,10 @@ local sunny_side_up = {
     object_type = "Joker",
     key = "sunny_side_up",
     config = {
-        asc = 12,
-        asc_mod = 2
+        extra = {
+            asc = 12,
+            asc_mod = 2
+        }
     },
     rarity = 2,
     cost = 6,
@@ -1070,7 +1072,7 @@ local sunny_side_up = {
     },
     perishable_compat = true,
     blueprint_compat = true,
-    eternal_compat = true,
+    eternal_compat = false,
     pos = { x = 5, y = 3 },
     atlas = "jokers",
     demicoloncompat = true,
@@ -1082,32 +1084,33 @@ local sunny_side_up = {
         if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
         return {
             vars = {
-                number_format(center.ability.asc),
-                number_format(center.ability.asc_mod),
+                number_format(center.ability.extra.asc),
+                number_format(center.ability.extra.asc_mod),
             },
         }
     end,
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
-            local asc = card.ability.asc
-            if not context.blueprint then SMODS.scale_card(card, {ref_table = card.ability, ref_value = "asc", scalar_value = "asc_mod", operation = "-",
+            return {
+                plus_asc = card.ability.extra.asc
+            }
+        end
+        if context.after and not context.blueprint then
+            SMODS.scale_card(card, {ref_table = card.ability.extra, ref_value = "asc", scalar_value = "asc_mod", operation = "-",
                 scaling_message = {
                     message = localize("k_downgrade_ex"),
                     colour = G.C.RED
                 }
-            }) end
-            if to_big(card.ability.asc) > to_big(0) then
-                return {
-                    plus_asc = asc
-                }
-            else    
+            })
+            if to_big(card.ability.extra.asc) <= to_big(0) then
 				SMODS.destroy_cards(card, true, nil, true)
             end
         end
 	end,
     entr_credits = {
         idea = {"footlongdingledong"},
-        art = {"footlongdingledong"}
+        art = {"footlongdingledong"},
+        code = {"InvalidOS"},
     }
 }
 
