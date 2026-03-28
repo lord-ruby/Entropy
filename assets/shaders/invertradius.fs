@@ -114,6 +114,7 @@ vec4 effect(vec4 colour, Image texture, vec2 tc, vec2 screen_coords)
             iterated++;
         }
     }
+    
     t /= iterated;
 
     vec4 inverted = tex;
