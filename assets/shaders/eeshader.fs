@@ -75,7 +75,7 @@ float noise(vec2 p, float freq ){
 	vec2 ij = floor(p/unit);
 	vec2 xy = mod(p,unit)/unit;
 	//xy = 3.*xy*xy-2.*xy*xy*xy;
-	xy = .5*(1.-cos(PI*xy));
+	xy = .5*(1.0 - cos(PI*xy));
 	float a = rand((ij+vec2(0.,0.)));
 	float b = rand((ij+vec2(1.,0.)));
 	float c = rand((ij+vec2(0.,1.)));
@@ -112,9 +112,9 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     vec2 real_uv = screen_coords;
 	vec2 uv = screen_coords;
 
-    float dummy = 2;
-    if(shadow) {dummy = 3;}
-    if(uv.x > uv.x * 2) {uv = eeshader*dissolve*burn_colour_1.x*burn_colour_2.x*time*dummy;}
+    float dummy = 2.;
+    if(shadow) {dummy = 3.;}
+    if(uv.x > uv.x * 2.) {uv = eeshader*dissolve*burn_colour_1.x*burn_colour_2.x*time*dummy;}
 
     float sprite_width = texture_details.z / image_details.x; // Normalized width
     float min_x = texture_details.x * sprite_width; // min X
@@ -134,7 +134,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
     a=sqrt(a);
     uv += uv.y*0.15;
 	vec2 q = uv.xy;
-    vec2 p = -1.0+2.0*q;
+    vec2 p = vec2(-1.0) + 2.0*q;
 	//p.x *= image_details.x/image_details.y;
 	// Rain
     vec4 col2 = vec4(0,0,0,1);
@@ -145,7 +145,7 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 	col2 += f*8.;
     col2.g = 0.0;
     col2.b = 0.0;
-    col2.a = 1;
+    col2.a = 1.;
     
 	return tex*0.65 + col2;
 }
@@ -204,9 +204,9 @@ vec4 position( mat4 transform_projection, vec4 vertex_position )
     }
     float mid_dist = length(vertex_position.xy - 0.5*love_ScreenSize.xy)/length(love_ScreenSize.xy);
     vec2 mouse_offset = (vertex_position.xy - mouse_screen_pos.xy)/screen_scale;
-    float scale = 0.2*(-0.03 - 0.3*max(0., 0.3-mid_dist))
-                *hovering*(length(mouse_offset)*length(mouse_offset))/(2. -mid_dist);
+    float scale = 0.2*(-0.03 - 0.3*max(0., 0.3 - mid_dist))
+                *hovering*(length(mouse_offset)*length(mouse_offset))/(2. - mid_dist);
 
-    return transform_projection * vertex_position + vec4(0,0,0,scale);
+    return transform_projection * vertex_position + vec4(0.,0.,0.,scale);
 }
 #endif
