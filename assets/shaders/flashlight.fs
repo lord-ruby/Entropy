@@ -9,7 +9,7 @@ float rand(vec2 c){
 }
 
 float psin(float x) {
-    return (1+sin(x))/2;
+    return (1.0 + sin(x)) / 2.0;
 }
 
 float hash(vec2 p) {
@@ -17,12 +17,12 @@ float hash(vec2 p) {
 }
 
 float noise(vec2 p) {
-    vec2 i = floor(p);
+    vec2 ip = floor(p);
     vec2 f = fract(p);
     vec2 u = f * f * (3.0 - 2.0 * f);
     return mix(
-        mix(hash(i + vec2(0.0, 0.0)), hash(i + vec2(1.0, 0.0)), u.x),
-        mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x),
+        mix(hash(ip + vec2(0.0, 0.0)), hash(ip + vec2(1.0, 0.0)), u.x),
+        mix(hash(ip + vec2(0.0, 1.0)), hash(ip + vec2(1.0, 1.0)), u.x),
         u.y
     );
 }
@@ -30,7 +30,7 @@ float noise(vec2 p) {
 float fbm(vec2 p) {
     float val = 0.0;
     float amp = 0.5;
-    for (int i = 0; i < 5; i++) {
+    for (int j = 0; j < 5; j++) {
         val += amp * noise(p);
         p *= 2.0;
         amp *= 0.5;
@@ -75,7 +75,7 @@ vec4 effect( vec4 colour, Image texture, vec2 tc, vec2 screen_coords )
     vec3 baseColor = mix(vec3(skyBase), orangeSky, 0.6);
     vec3 finalColor = baseColor + warmFlash + lightningAura;
 
-    tex.rgb = tex.rgb * ((dist - distance(center_pos, screen_coords))/dist) + finalColor * (1 - ((dist - distance(center_pos, screen_coords))/dist)) * 0.25;
+    tex.rgb = tex.rgb * ((dist - distance(center_pos, screen_coords)) / dist) + finalColor * (1.0 - ((dist - distance(center_pos, screen_coords)) / dist)) * 0.25;
 
     return tex;
 }
