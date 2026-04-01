@@ -8,7 +8,6 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
                 "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = -900 + 34,
         key = "disturbance",
         set = "Fraud",
@@ -64,7 +63,6 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
                 "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = -900 + 35,
         key = "avarice",
         set = "Fraud",
@@ -117,13 +115,12 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
     }
     ]]--
 
-    local muse = {
+    Entropy.Consumable{
         dependencies = {
             items = {
                 "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = -900 + 36,
         key = "muse",
         set = "Fraud",
@@ -170,13 +167,12 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
         end
     }
 
-    local garden = {
+    Entropy.Consumable{
         dependencies = {
             items = {
                 "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = -900 + 37,
         key = "garden",
         set = "Fraud",
@@ -225,13 +221,12 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
         end
     }
 
-    local desert = {
+    Entropy.Consumable{
         dependencies = {
             items = {
                 "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = -900 + 38,
         key = "desert",
         set = "Fraud",
@@ -280,13 +275,12 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
         end
     }
 
-    local wastes = {
+    Entropy.Consumable{
         dependencies = {
             items = {
                 "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = -900 + 39,
         key = "wastes",
         set = "Fraud",
@@ -333,16 +327,5 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
         force_use = function(self, card)
             self:use(card)
         end
-    }
-
-    return {
-        items = {
-            --disturbance,
-            --avarice,
-            muse,
-            garden,
-            desert,
-            wastes
-        }
     }
 end

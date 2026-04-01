@@ -1,7 +1,6 @@
 if RevosVault then
-    local compositor = {
+    Entropy.Joker{
         order = -100,
-        object_type = "Joker",
         key = "compositor",
         rarity = "crv_p",
         cost = 10,
@@ -25,10 +24,5 @@ if RevosVault then
                 }
             end
         end
-    }
-    return {
-        items = {
-            compositor
-        }
     }
 end

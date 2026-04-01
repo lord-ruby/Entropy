@@ -1,6 +1,5 @@
-local D0 = {
+Entropy.Joker{
     order = 199,
-    object_type = "Joker",
     key = "d0",
     rarity = 1,
     cost = 6,
@@ -23,9 +22,8 @@ local D0 = {
     end,
 }
 
-local D1 = {
+Entropy.Joker{
     order = 200,
-    object_type = "Joker",
     key = "d1",
     rarity = 2,
     cost = 5,
@@ -56,9 +54,8 @@ local D1 = {
     end,
 }
 
-local D4 = {
+Entropy.Joker{
     order = 201,
-    object_type = "Joker",
     key = "d4",
     rarity = 2,
     cost = 5,
@@ -74,9 +71,8 @@ local D4 = {
     demicoloncompat = true,
 }
 
-local D6 = {
+Entropy.Joker{
     order = 202,
-    object_type = "Joker",
     key = "d6",
     rarity = 3,
     cost = 8,
@@ -128,9 +124,8 @@ local D6 = {
     end,
 }
 
-local eternal_D6 = {
+Entropy.Joker{
     order = 203,
-    object_type = "Joker",
     key = "eternal_d6",
     rarity = 2,
     cost = 5,
@@ -207,9 +202,8 @@ local eternal_D6 = {
     end,
 }
 
-local D7 = {
+Entropy.Joker{
     order = 204,
-    object_type = "Joker",
     key = "d7",
     rarity = 3,
     cost = 8,
@@ -286,9 +280,8 @@ local D7 = {
     end,
 }
 
-local D100 = {
+Entropy.Joker{
     order = 208,
-    object_type = "Joker",
     key = "d100",
     rarity = 3,
     cost = 8,
@@ -331,9 +324,8 @@ local D100 = {
     end,
 }
 
-local capsule_machine = {
+Entropy.Joker{
     order = 211,
-    object_type = "Joker",
     key = "capsule_machine",
     rarity = 2,
     cost = 5,
@@ -368,9 +360,8 @@ local capsule_machine = {
     end,
 }
 
-local dice_shard = {
+Entropy.Joker{
     order = 209,
-    object_type = "Joker",
     key = "dice_shard",
     rarity = 3,
     cost = 10,
@@ -426,9 +417,8 @@ local dice_shard = {
     end
 }
 
-local nostalgic_d6 = {
+Entropy.Joker{
     order = 210,
-    object_type = "Joker",
     key = "nostalgic_d6",
     rarity = 3,
     cost = 8,
@@ -500,22 +490,4 @@ local nostalgic_d6 = {
         end
     end,
     entr_credits = {idea = {"Grahkon"}}
-}
-
-return {
-    items = {
-        D0,
-        D1,
-        D4,
-        D6,
-        eternal_D6,
-        D7,
-        D8,
-        D10,
-        D12,
-        D100,
-        dice_shard,
-        nostalgic_d6,
-        capsule_machine
-    }
 }

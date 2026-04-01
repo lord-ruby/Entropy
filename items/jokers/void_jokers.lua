@@ -119,9 +119,9 @@ function Entropy.generate_void_invert_uibox(center, info_queue, card, desc_nodes
     end
 end
 
-local apoptosis = {
+Entropy.Joker{
     order = 250,
-    object_type = "Joker",
+    
     key = "apoptosis",
     rarity = "entr_void",
     cost = 10,
@@ -198,9 +198,9 @@ local apoptosis = {
     entr_credits = {{art = "pangaea47"}}
 }
 
-local egocentrism = {
+Entropy.Joker{
     order = 251,
-    object_type = "Joker",
+    
     key = "egocentrism",
     rarity = "entr_void",
     cost = 10,
@@ -312,9 +312,9 @@ local egocentrism = {
     generate_ui = Entropy.generate_void_invert_uibox,
 }
 
-local generator_meltdown = {
+Entropy.Joker{
     order = 252,
-    object_type = "Joker",
+    
     key = "generator_meltdown",
     rarity = "entr_void",
     cost = 10,
@@ -344,9 +344,9 @@ local generator_meltdown = {
     entr_credits = {{art = "pangaea47"}}
 }
 
-local voidheart = {
+Entropy.Joker{
     order = 253,
-    object_type = "Joker",
+    
     key = "voidheart",
     rarity = "entr_void",
     cost = 10,
@@ -378,9 +378,9 @@ local voidheart = {
     entr_credits = {{art = "pangaea47"}}
 }
 
-local unstable_rift = {
+Entropy.Joker{
     order = 254,
-    object_type = "Joker",
+    
     key = "unstable_rift",
     rarity = "entr_void",
     cost = 10,
@@ -509,9 +509,9 @@ SMODS.Sticker({
     end,
 })
 
-local pluripotent_larvae = {
+Entropy.Joker{
     order = 255,
-    object_type = "Joker",
+    
     key = "pluripotent_larvae",
     rarity = "entr_void",
     cost = 10,
@@ -571,9 +571,9 @@ local pluripotent_larvae = {
     generate_ui = Entropy.generate_void_invert_uibox,
 }
 
-local desiderium = {
+Entropy.Joker{
     order = 256,
-    object_type = "Joker",
+    
     key = "desiderium",
     rarity = "entr_void",
     cost = 10,
@@ -647,9 +647,9 @@ local desiderium = {
     generate_ui = Entropy.generate_void_invert_uibox,
 }
 
-local nadir = {
+Entropy.Joker{
     order = 257,
-    object_type = "Joker",
+    
     key = "nadir",
     rarity = "entr_void",
     cost = 10,
@@ -719,9 +719,9 @@ local nadir = {
 }
 
 
-local yaldabaoth = {
+Entropy.Joker{
     order = 258,
-    object_type = "Joker",
+    
     key = "yaldabaoth",
     rarity = "entr_void",
     cost = 10,
@@ -815,9 +815,9 @@ local yaldabaoth = {
     generate_ui = Entropy.generate_void_invert_uibox,
 }
 
-local mutagenesis = {
+Entropy.Joker{
     order = 259,
-    object_type = "Joker",
+    
     key = "mutagenesis",
     rarity = "entr_void",
     cost = 10,
@@ -868,9 +868,9 @@ local mutagenesis = {
     entr_credits = {{art = "pangaea47"}}
 }
 
-local crooked_penny = {
+Entropy.Joker{
     order = 260,
-    object_type = "Joker",
+    
     key = "crooked_penny",
     rarity = "entr_void",
     cost = 10,
@@ -916,9 +916,9 @@ local crooked_penny = {
     entr_credits = {{art = "pangaea47"}}
 }
 
-local phoenix_a = {
+Entropy.Joker{
     order = 261,
-    object_type = "Joker",
+    
     key = "phoenix_a",
     rarity = "entr_void",
     cost = 10,
@@ -1034,9 +1034,9 @@ local phoenix_a = {
     entr_credits = {{art = "pangaea47"}}
 }
 
-local antimatter_sheath = {
+Entropy.Joker{
     order = 262,
-    object_type = "Joker",
+    
     key = "antimatter_sheath",
     rarity = "entr_void",
     cost = 10,
@@ -1157,9 +1157,9 @@ local antimatter_sheath = {
     generate_ui = Entropy.generate_void_invert_uibox,
 }
 
-local caledscratch = {
+Entropy.Joker{
     order = 263,
-    object_type = "Joker",
+    
     key = "caledscratch",
     rarity = "entr_void",
     cost = 10,
@@ -1214,9 +1214,9 @@ local caledscratch = {
     generate_ui = Entropy.generate_void_invert_uibox,
 }
 
-local nyx = {
+Entropy.Joker{
     order = 264,
-    object_type = "Joker",
+    
     key = "nyx",
     rarity = "entr_void",
     cost = 20,
@@ -1333,24 +1333,4 @@ local nyx = {
         end
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
-}
-
-return {
-    items = {
-        apoptosis,
-        egocentrism,
-        generator_meltdown,
-        voidheart,
-        unstable_rift,
-        pluripotent_larvae,
-        desiderium,
-        nadir,
-        mutagenesis,
-        crooked_penny,
-        yaldabaoth,
-        phoenix_a,
-        antimatter_sheath,
-        caledscratch,
-        nyx
-    }
 }

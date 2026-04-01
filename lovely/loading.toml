@@ -1,0 +1,217 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = "main.lua"
+pattern = '''function love.load()'''
+position = "before"
+payload = '''
+Entropy = {}
+Entropy.ee_faces = {}
+Entropy.AltBlinds = {}
+Entropy.FlipsideInversions = {}
+Entropy.FlipsidePureInversions = {}
+Entropy.EnhancementFuncs = {}
+Entropy.Planetarium = {}
+Entropy.BoosterSets = {
+    ["Spectral"] = "p_spectral_mega_1",
+    ["Tarot"] = "p_arcana_mega_1",
+    ["Planet"] = "p_celestial_mega_1",
+    ["Spectral"] = "p_spectral_mega_1",
+    ["Code"] = "p_cry_code_mega_1",
+    ["Command"] = "p_entr_twisted_pack_mega",
+    ["Star"] = "p_entr_twisted_pack_mega",
+    ["Omen"] = "p_entr_twisted_pack_mega",
+    ["Fraud"] = "p_entr_twisted_pack_mega",
+    ["Voucher"] = "p_entr_voucher_pack",
+    ["Joker"] = "p_entr_buffoon_mega_1"
+}
+Entropy.DefineBlacklist = {
+    c_black_hole = true,
+    c_soul = true,
+    c_cry_gateway = true,
+    c_cry_white_hole = true,
+    c_cry_pointer = true,
+    c_entr_fervour = true,
+    c_entr_define = true,
+    Back = true,
+    Sleeve = true,
+    Edition = true
+}
+Entropy.SpecialDailies = {}
+Entropy.AscendedTags = {}
+Entropy.BlindTokenBlacklist = {
+  bl_entr_void = true,
+  modifies_draw = true
+}
+Entropy.References = {}
+Entropy.RarityPoints = {
+    [1] = 1, --common
+    [2] = 3, --uncommon
+    [3] = 8, --rare
+    ["cry_epic"] = 24,
+    [4] = 62, --legendary
+    ["entr_reverse_legendary"] = 130,
+    ["cry_exotic"] = 400,
+    ["entr_entropic"] = 1000,
+}
+--higher rarities give less points from editions so the diminisher is used in division
+Entropy.RarityDiminishers = {
+    [1] = 1,
+    [2] = 1.25,
+    [3] = 1.5,
+    [4] = 2,
+    ["cry_epic"] = 2.5,
+    ["entr_reverse_legendary"] = 2.75,
+    ["cry_exotic"] = 3,
+    ["entr_entropic"] = 4
+}
+Entropy.EditionFactors = {
+    ["e_foil"] = 1.25,
+    ["e_holo"] = 1.45,
+    ["e_polychrome"] = 2,
+    ["e_negative"] = 2.1,
+    ["e_cry_glitched"] = 1.4,
+    ["e_cry_mosaic"] = 2.2,
+    ["e_cry_oversaturated"] = 1.5,
+    ["e_cry_fragile"] = 1.8,
+    ["e_cry_gold"] = 1.7,
+    ["e_cry_blurred"] = 1.5,
+    ["e_cry_noisy"] = 1.7,
+    ["e_cry_astral"] = 2.2,
+    ["e_cry_m"] = 1.45,
+    ["e_entr_solar"] = 2.4,
+    ["e_entr_sunny"] = 1.45,
+    ["e_entr_fractured"] = 3,
+    ["e_entr_freaky"] = 2.5,
+    ["e_entr_neon"] = 1.5,
+    ["e_entr_lowres"] = 2,
+    ["e_entr_kaleidoscopic"] = 2.5,
+    ["e_hpot_phantasmic"] = 2.25,
+    ["e_hpot_psychedelic"] = 2
+}
+Entropy.SegFaultBlacklist = {
+  entr_entropic = true,
+  cry_exotic = true,
+  [4] = true
+}
+Entropy.ConsumablePackBlacklist = {
+  p_mupack_multipack1=true,
+  p_mupack_multipack2=true,
+  p_mupack_multipack3=true,
+  p_mupack_multipack4=true,
+  p_mupack_multipack5=true,
+}
+Entropy.RareInversions = {
+  "c_entr_fervour",
+  "c_entr_quasar",
+  "c_entr_weld",
+  "c_entr_serpents"
+}
+Entropy.FixedRecipes = {
+    c_basec_basec_basec_basec_base = "j_joker",
+    m_cry_echom_cry_echom_cry_echom_cry_echom_cry_abstract = "j_cry_spectrogram",
+    m_cry_lightm_cry_lightm_cry_lightm_cry_lightm_cry_light = "j_entr_sunny_joker",
+    m_cry_lightm_cry_lightm_cry_lightm_entr_fleshm_entr_flesh = "j_entr_dr_sunshine",
+    m_cry_lightm_cry_lightm_cry_lightm_cry_lightm_gold = "j_entr_devilled_suns",
+    c_basec_basec_basem_multm_mult = "j_jolly",
+    m_bonusm_bonusm_bonusm_bonusm_bonus = "j_banner",
+    m_multm_multm_multm_multm_mult = "j_misprint",
+    m_wildm_wildm_wildm_wildm_wild = "j_ancient",
+    m_glassm_glassm_glassm_glassm_glass = "j_glass",
+    m_steelm_steelm_steelm_steelm_steel = "j_steel",
+    m_stonem_stonem_stonem_stonem_stone = Cryptid and "j_cry_paved" or "j_marble",
+    m_goldm_goldm_goldm_goldm_gold = "j_ticket",
+    m_luckym_luckym_luckym_luckym_lucky = "j_lucky_cat",
+    m_entr_fleshm_entr_fleshm_entr_fleshm_entr_fleshm_entr_flesh = "j_entr_grotesque_joker",
+    m_entr_disavowedm_entr_disavowedm_entr_disavowedm_entr_disavowedm_entr_disavowed = "j_entr_tesseract",
+    m_entr_ceramicm_entr_ceramicm_entr_ceramicm_entr_ceramicm_entr_ceramic = "j_entr_memento_mori",
+    c_basec_basec_basec_basem_entr_disavowed = "j_entr_surreal_joker",
+    c_basem_multm_multm_multm_mult = "j_entr_red_fourty",
+    c_basem_bonusm_bonusm_multm_mult = "j_entr_purple_joker",
+    m_entr_radiantm_entr_radiantm_entr_radiantm_entr_radiantm_entr_radiant = "j_entr_sunny_joker"
+}
+Entropy.EnhancementPoints ={
+    m_entr_disavowed=0,
+    c_base=1,
+    m_bonus=3.1,
+    m_mult=3.2,
+    m_wild=4.1,
+    m_lucky=4.2,
+    m_stone=4.1,
+    m_entr_flesh=4.2,
+    m_steel=5.1,
+    m_gold=5.2,
+    m_cry_echo=5.3,
+    m_glass=5.5,
+    m_cry_light=6.2,
+    m_entr_dark = 6.1,
+    m_cry_abstract=7.1,
+    m_entr_prismatic = 15,
+    m_entr_ceramic = 5.5,
+    m_entr_radiant = 5.7,
+    m_hpot_lead = 5.15,
+    m_entr_ethereal = 8.5,
+    m_entr_samsara = 9
+}
+Entropy.TMTrainerEffects = {}
+Entropy.TMTrainerScoring = {}
+Entropy.EEWhitelist = {}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = 'Cryptid.profile_prefix = "M"'
+position = "after"
+payload = 'Cryptid.profile_prefix = Cryptid.profile_prefix == "M" and "E" or Cryptid.profile_prefix.."E"'
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = 'Cryptid.profile_prefix = Jen and "J" or "M"'
+position = "after"
+payload = 'local pref = Entropy_config.profile_prefix and "E" or "M"; Cryptid.profile_prefix = Cryptid.profile_prefix == "M" and pref or Cryptid.profile_prefix..pref'
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = 'self:load_profile(G.SETTINGS.profile or 1)'
+position = "before"
+payload = '''
+if not Cryptid then Cryptid = {profile_prefix = Entropy_config.profile_prefix and "E" or ""} end;
+Cryptid.profile_prefix = Entropy_config.profile_prefix and "E" or ""
+if type(G.SETTINGS.profile) ~= "string" or G.SETTINGS.profile:sub(1, #Cryptid.profile_prefix) ~= Cryptid.profile_prefix then
+    G.SETTINGS.profile = Cryptid.profile_prefix .. "1"
+end
+for i = 1, 3 do
+    G.PROFILES[Cryptid.profile_prefix .. i] = {}
+end'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = 'for i = 1, 3 do'
+position = "after"
+payload = 'if not Cryptid then Cryptid = {profile_prefix = (Entropy.config or Entropy_config).profile_prefix and "E" or ""} end; i = Cryptid.profile_prefix .. i'
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "local settings = get_compressed('settings.jkr')"
+position = "after"
+payload = '''Entropy_config = {profile_prefix = true}
+local entr_conf = get_compressed("config/entr.jkr")
+if entr_conf then
+  Entropy_config = STR_UNPACK(entr_conf)
+end
+'''
+match_indent = true

@@ -1,5 +1,5 @@
-local here_comes_the_sun = {
-	object_type = "Achievement",
+SMODS.Achievement{
+	
 	key = "here_comes_the_sun",
 	order = 1,
 	bypass_all_unlocked = true,
@@ -12,8 +12,8 @@ local here_comes_the_sun = {
 }
 
 
-local rift = {
-	object_type = "Achievement",
+SMODS.Achievement{
+	
 	key = "rift",
 	order = 2,
 	bypass_all_unlocked = true,
@@ -25,8 +25,8 @@ local rift = {
 	end,
 }
 
-local joy_to_the_world = {
-	object_type = "Achievement",
+SMODS.Achievement{
+	
 	key = "joy_to_the_world",
 	order = 3,
 	bypass_all_unlocked = true,
@@ -38,8 +38,8 @@ local joy_to_the_world = {
 	end,
 }
 
-local suburban_jungle = {
-	object_type = "Achievement",
+SMODS.Achievement{
+	
 	key = "suburban_jungle",
 	order = 4,
 	bypass_all_unlocked = true,
@@ -51,8 +51,8 @@ local suburban_jungle = {
 	end,
 }
 
-local f_x = {
-	object_type = "Achievement",
+SMODS.Achievement{
+	
 	key = "f_x",
 	order = 5,
 	bypass_all_unlocked = true,
@@ -64,8 +64,8 @@ local f_x = {
 	end,
 }
 
-local c_sharp = {
-	object_type = "Achievement",
+SMODS.Achievement{
+	
 	key = "c_sharp",
 	order = 1000,
 	bypass_all_unlocked = true,
@@ -113,8 +113,8 @@ end
 
 
 if (SMODS.Mods["Cryptid"] or {}).can_load then
-	local event_horizon = {
-		object_type = "Achievement",
+	SMODS.Achievement{
+		
 		key = "event_horizon",
 		order = 500,
 		bypass_all_unlocked = true,
@@ -126,8 +126,8 @@ if (SMODS.Mods["Cryptid"] or {}).can_load then
 		end,
 	}
 
-	local katevaino = {
-		object_type = "Achievement",
+	SMODS.Achievement{
+		
 		key = "katevaino",
 		order = 600,
 		bypass_all_unlocked = true,
@@ -142,8 +142,8 @@ if (SMODS.Mods["Cryptid"] or {}).can_load then
 	}
 end
 
-local acheros = {
-	object_type = "Achievement",
+SMODS.Achievement{
+	
 	key = "acheros",
 	order = 999,
 	bypass_all_unlocked = true,
@@ -155,18 +155,4 @@ local acheros = {
 			return true
 		end
 	end,
-}
-
-return {
-    items = {
-        here_comes_the_sun,
-        event_horizon,
-        acheros,
-		rift,
-		katevaino,
-		joy_to_the_world,
-		suburban_jungle,
-		f_x,
-		c_sharp
-    }
 }

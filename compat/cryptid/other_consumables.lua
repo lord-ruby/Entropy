@@ -1,10 +1,10 @@
-local downpour = Entropy.seal_spectral("downpour", {x=12,y=7}, "entr_cerulean",2000+24, "c_cry_typhoon", {art = {"Lil. Mr. Slipstream"}})
+Entropy.seal_spectral("downpour", {x=12,y=7}, "entr_cerulean",2000+24, "c_cry_typhoon", {art = {"Lil. Mr. Slipstream"}})
 
 local rift = {
     key = "rift",
     set = "Omen",
     atlas = "consumables",
-    object_type = "Consumable",
+    
     order = 2000+24.5,
     dependencies = {
         items = {
@@ -43,15 +43,15 @@ local rift = {
     end
 }
 
-local script = Entropy.seal_spectral("script", {x=6,y=8}, "entr_verdant",2000+25, "c_cry_source", {art = {"Lil. Mr. Slipstream"}})
+Entropy.seal_spectral("script", {x=6,y=8}, "entr_verdant",2000+25, "c_cry_source", {art = {"Lil. Mr. Slipstream"}})
 
-local dispel = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 17,
     key = "dispel",
     set = "Omen",
@@ -92,13 +92,13 @@ local dispel = {
     end
 }
 
-local cleanse = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 18,
     key = "cleanse",
     set = "Omen",
@@ -145,13 +145,13 @@ local cleanse = {
     end
 }
 
-local fusion = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 19,
     key = "fusion",
     set = "Omen",
@@ -206,13 +206,13 @@ local fusion = {
     end
 }
 
-local substitute = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 20,
     key = "substitute",
     set = "Omen",
@@ -341,13 +341,13 @@ local substitute = {
     end
 }
 
-local evocation = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 21,
     key = "evocation",
     set = "Omen",
@@ -406,13 +406,13 @@ local evocation = {
     },
 }
 
-local mimic = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 22,
     key = "mimic",
     set = "Omen",
@@ -473,13 +473,13 @@ local mimic = {
     end
 }
 
-local superego = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 23,
     key = "superego",
     set = "Omen",
@@ -524,13 +524,12 @@ local superego = {
     end
 }
 
-local superego_sticker = {
+Entropy.Sticker{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Sticker",
     order = 2500 + 2,
     atlas = "entr_stickers",
     pos = { x = 4, y = 1 },
@@ -546,14 +545,14 @@ local superego_sticker = {
     loc_vars = function(self, q, card) return {vars={card.ability and math.floor(card.ability.superego_copies or 0) or 0}} end
 }
 
-local engulf = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
           "e_entr_solar"
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 26,
     key = "engulf",
     set = "Omen",
@@ -591,13 +590,13 @@ local engulf = {
     end
 }
 
-local offering = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 27,
     key = "offering",
     set = "Omen",
@@ -646,13 +645,13 @@ local offering = {
     end
 }
 
-local entomb = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 28,
     key = "entomb",
     set = "Omen",
@@ -699,13 +698,13 @@ local entomb = {
     end
 }
 
-local conduct = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 29,
     key = "conduct",
     set = "Omen",
@@ -753,13 +752,13 @@ local conduct = {
     end
 }
 
-local pulsar = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 30,
     key = "pulsar",
     set = "Omen",
@@ -848,8 +847,8 @@ local pulsar = {
 }
 
 
-local beyond = {
-    object_type = "Consumable",
+Entropy.Consumable{
+    
     order = 2000 + 31,
     key = "beyond",
     inversion = "c_cry_gateway",
@@ -912,11 +911,11 @@ local beyond = {
 }
 
 
-local penumbra = {
+Entropy.Consumable{
     key = "penumbra",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901+22,
     dependencies = {
         items = {
@@ -963,11 +962,11 @@ local penumbra = {
     end
 }
 
-local prophecy = {
+Entropy.Consumable{
     key = "prophecy",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -900+23,
     dependencies = {
         items = {
@@ -1037,11 +1036,11 @@ local prophecy = {
     end
 }
 
-local imp = {
+Entropy.Consumable{
     key = "imp",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901+24,
     dependencies = {
         items = {
@@ -1084,11 +1083,11 @@ local imp = {
     end
 }
 
-local integrity = {
+Entropy.Consumable{
     key = "integrity",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901+25,
     dependencies = {
         items = {
@@ -1133,11 +1132,11 @@ local integrity = {
     }
 }
 
-local mallet = {
+Entropy.Consumable{
     key = "mallet",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901+32,
     dependencies = {
         items = {
@@ -1191,35 +1190,4 @@ local mallet = {
         idea = {"cassknows"},
         art = {"LFMoth"}
     },
-}
-
-return {
-    items = {
-        --Omen
-        dispel,
-        cleanse,
-        fusion,
-        substitute,
-        evocation,
-        mimic,
-        project,
-        downpour,
-        rift,
-        script,
-        engulf,
-        offering,
-        entomb,
-        conduct,
-        pulsar,
-        beyond,
-        superego,
-        superego_sticker,
-
-        --Fraud
-        penumbra,
-        prophecy,
-        imp,
-        integrity,
-        mallet
-    }
 }

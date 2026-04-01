@@ -1,0 +1,48 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+-- TARGET: add your own CardAreas for joker evaluation
+'''
+position = "after"
+payload = '''
+    if Entropy.deck_or_sleeve("butterfly") then
+        for i = 1, Entropy.deck_or_sleeve("butterfly") do
+            local jok = {cards = {}}
+            for i, v in pairs(G.butterfly_jokers.cards) do
+              if pseudorandom("entr_butterfly") < 0.5 then jok.cards[#jok.cards+1] = v end
+            end
+            t[#t+1] = jok
+        end
+    end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "self.GAME.starting_deck_size = #G.playing_cards"
+position = "before"
+payload = '''
+if G.GAME.modifiers.ccd2 then
+    for k, v in pairs(G.playing_cards) do
+        local key = ""
+        local ptype = pseudorandom_element({
+            "Booster",
+            "Voucher",
+            "Joker",
+            "Consumeables",
+            "Consumeables",
+        }, pseudoseed("redefined"))
+        local center = Entropy.get_pooled_center(ptype)
+        v:set_ability(center)
+        discover_card(center)
+    end
+end
+'''
+match_indent = true

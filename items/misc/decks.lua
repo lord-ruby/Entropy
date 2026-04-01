@@ -1,5 +1,4 @@
-local twisted = {
-    object_type = "Back",
+Entropy.Back{
     order = 7000,
     dependencies = {
       items = {
@@ -16,14 +15,15 @@ local twisted = {
         G.GAME.round_resets.path_toggled = true
         G.GAME.entr_alt = not G.GAME.entr_alt
         G.GAME.round_resets.blind_choices.Boss = get_new_boss()
+        G.GAME.round_resets.blind_choices.Small = get_new_small()
+        G.GAME.round_resets.blind_choices.Big = get_new_big()
         ease_background_colour{new_colour = Spectrallib.get_bg_colour(), contrast = 1}
         if G.ARGS.spin then G.ARGS.spin.real = (G.SETTINGS.reduced_motion and 0 or 1)*(G.GAME.entr_alt and 0.3 or -0.3) end
     end,
     entr_credits = {art = {"Lil. Mr. Slipstream"}}
 }
 
-local redefined = {
-    object_type = "Back",
+Entropy.Back{
     order = 7001,
     dependencies = {
       items = {
@@ -41,14 +41,13 @@ local redefined = {
 }
 
 
-local destiny = {
+Entropy.Back{
   order = 7003,
   dependencies = {
     items = {
       "set_entr_decks"
     }
   },
-  object_type = "Back",
   name = "Deck of Destiny",
   key = "crafting",
   pos = { x = 3, y = 0 },
@@ -83,8 +82,7 @@ local destiny = {
 }
 
 
-local ambisinister = {
-  object_type = "Back",
+Entropy.Back{
   order = 7004,
   dependencies = {
     items = {
@@ -105,8 +103,7 @@ local ambisinister = {
   },
 }
 
-local butterfly = {
-  object_type = "Back",
+Entropy.Back{
   order = 7005,
   dependencies = {
     items = {
@@ -123,8 +120,7 @@ local butterfly = {
   end
 }
 
-local gemstone = {
-  object_type = "Back",
+Entropy.Back{
   order = 7006,
   dependencies = {
     items = {
@@ -278,8 +274,7 @@ G.FUNCS.can_buy_and_use = function(e)
   end
 end
 
-local corrupted = {
-  object_type = "Back",
+Entropy.Back{
   order = 7007,
   dependencies = {
     items = {
@@ -298,8 +293,7 @@ local corrupted = {
   }
 }
 
-local discordant = {
-  object_type = "Back",
+Entropy.Back{
   order = 7008,
   dependencies = {
     items = {
@@ -323,15 +317,13 @@ function calculate_reroll_cost(...)
     return ret
 end
 
-local containment = {
-    object_type = "Back",
+Entropy.Back{
     order = 7009,
     dependencies = {
       items = {
         "set_entr_decks"
       }
     },
-	object_type = "Back",
 	name = "Deck of Containment",
 	key = "doc",
 	pos = { x = 2, y = 0 },
@@ -357,7 +349,7 @@ local containment = {
 			end
 			G.E_MANAGER:add_event(Event({
 				func = function()
-					play_sound(Talisman and "talisman_echip" or "cryl_echips", 1)
+					play_sound(Talisman and "talisman_echip" or "slib_echips", 1)
 					attention_text({
 						scale = 1.4,
 						text = "^"..tostring(number_format(0.002 + (0.998^(G.GAME.entropy/2)))).." Chips",
@@ -403,6 +395,8 @@ if CardSleeves then
         G.GAME.round_resets.path_toggled = true
         G.GAME.entr_alt = not G.GAME.entr_alt
         G.GAME.round_resets.blind_choices.Boss = get_new_boss()
+        G.GAME.round_resets.blind_choices.Small = get_new_small()
+        G.GAME.round_resets.blind_choices.Big = get_new_big()
         ease_background_colour{new_colour = Spectrallib.get_bg_colour(), contrast = 1}
         if G.ARGS.spin then
           G.ARGS.spin.real = (G.SETTINGS.reduced_motion and 0 or 1)*(G.GAME.entr_alt and 0.3 or -0.3)
@@ -571,7 +565,7 @@ if CardSleeves then
 			end
 			G.E_MANAGER:add_event(Event({
 				func = function()
-					play_sound(Talisman and "talisman_echip" or "cryl_echips", 1)
+					play_sound(Talisman and "talisman_echip" or "slib_echips", 1)
 					attention_text({
 						scale = 1.4,
 						text = "^"..tostring(number_format(0.002 + (0.998^(G.GAME.entropy/2)))).." Chips",
@@ -602,18 +596,3 @@ if CardSleeves then
     end
     }
 end
-
-return {
-    items = {
-      twisted,
-      redefined,
-      containment,
-      destiny,
-      ambisinister,
-      butterfly,
-      gemstone,
-      corrupted,
-      discordant,
-      containment
-    }
-  }

@@ -1,16 +1,16 @@
-local alpha = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+1,
 	name = "entr-alpha",
 	key = "alpha",
 	pos = { x = 0, y = 0 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = HEX("882b2b"),
     mult=2,
     dollars = 6,
     altpath=true,
@@ -39,19 +39,19 @@ local alpha = {
     end
 }
 
-local beta = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+2,
 	name = "entr-beta",
 	key = "beta",
 	pos = { x = 0, y = 1 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = HEX("cb8dd7"),
     mult=2,
     dollars = 6,
     altpath=true,
@@ -87,19 +87,19 @@ local beta = {
     end
 }
 
-local gamma = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+3,
 	name = "entr-gamma",
 	key = "gamma",
 	pos = { x = 0, y = 2 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = HEX("55d6ed"),
     mult=2,
     dollars = 6,
     altpath=true,
@@ -133,19 +133,19 @@ local gamma = {
 	end
 }
 
-local delta = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+4,
 	name = "entr-delta",
 	key = "delta",
 	pos = { x = 0, y = 3 },
-	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	atlas = "altblinds",	
+	boss_colour = HEX("e56a2f"),
     mult=2,
     dollars = 6,
     altpath=true,
@@ -206,19 +206,19 @@ function SMODS.calculate_round_score(...)
 	return calc_scoreref(...)
 end
 
-local epsilon = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+5,
 	name = "entr-epsilon",
 	key = "epsilon",
 	pos = { x = 0, y = 4 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = HEX("cf4082"),
     mult=2,
     dollars = 6,
     altpath=true,
@@ -230,19 +230,19 @@ local epsilon = {
     end,
 }
 
-local zeta = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+6,
 	name = "entr-zeta",
 	key = "zeta",
 	pos = { x = 0, y = 5 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = HEX("d76b0e"),
     mult=2,
     dollars = 6,
     altpath=true,
@@ -258,19 +258,19 @@ local zeta = {
     end
 }
 
-local eta = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+7,
 	name = "entr-eta",
 	key = "eta",
 	pos = { x = 0, y = 6 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = Entropy.eta_gradient,
     mult=2,
     dollars = 6,
     altpath=true,
@@ -301,12 +301,12 @@ local eta = {
         return false
     end,
     set_blind = function()
-        G.GAME.blind.suit_debuffed = pseudorandom_element({"Spades", "Hearts", "Diamonds", "Clubs"}, pseudoseed("eta_suit"))
+        G.GAME.blind.effect.suit_debuffed = pseudorandom_element({"Spades", "Hearts", "Diamonds", "Clubs"}, pseudoseed("eta_suit"))
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			delay = 0.2,
 			func = function()
-			G.GAME.blind.loc_debuff_lines = {}
+			G.GAME.blind.effect.loc_debuff_lines = {}
 			G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
 			G.GAME.blind:set_text()
 			G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
@@ -328,19 +328,19 @@ local eta = {
     end
 }
 
-local theta = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+8,
 	name = "entr-theta",
 	key = "theta",
 	pos = { x = 0, y = 7 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = Entropy.cmult_gradient,
     mult=1,
     dollars = 6,
     altpath=true,
@@ -352,25 +352,42 @@ local theta = {
     end,
 }
 
-local iota = {
+local function _set_iota()
+	G.GAME.iotablind = pseudorandom_element(G.P_BLINDS).key
+	while not G.P_BLINDS[G.GAME.iotablind].boss 
+		or G.P_BLINDS[G.GAME.iotablind].boss.showdown 
+		or G.P_BLINDS[G.GAME.iotablind].altpath 
+		or not SMODS.add_to_pool(G.P_BLINDS[G.GAME.iotablind])
+	do
+		G.GAME.iotablind = pseudorandom_element(G.P_BLINDS).key
+	end
+end
+
+function Entropy.get_iota()
+    return {[G.GAME.iotablind.key] = G.GAME.iotablind}
+end
+
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+9,
 	key = "iota",
 	pos = { x = 0, y = 8 },
 	atlas = "altblinds",
-    boss_colour = HEX("907c7c"),
+    boss_colour = Entropy.entropic_gradient,
     mult=2,
     dollars = 6,
     boss = {
         min = 1
     },
+	altpath=true,
     loc_vars = function()
-        if not G.GAME.blind.suit_debuffed then G.GAME.blind.suit_debuffed = pseudorandom_element({"Spades", "Hearts", "Diamonds", "Clubs"}, pseudoseed("eta_suit")) end
+        if not G.GAME.blind.effect.suit_debuffed then G.GAME.blind.effect.suit_debuffed = pseudorandom_element({"Spades", "Hearts", "Diamonds", "Clubs"}, pseudoseed("eta_suit")) end
+		_set_iota()
         return {
             vars = {G.GAME.iotablind and G.localization.descriptions["Blind"][G.GAME.iotablind].name or "[random blind]"}
         }
@@ -382,14 +399,16 @@ local iota = {
     end,
 	in_pool = function() return G.GAME.entr_alt end,
 	set_blind = function()
-		G.GAME.iotablind = pseudorandom_element(G.P_BLINDS).key
-		while not G.P_BLINDS[G.GAME.iotablind].boss or G.P_BLINDS[G.GAME.iotablind].boss.showdown do
-			G.GAME.iotablind = pseudorandom_element(G.P_BLINDS).key
+		if not G.GAME.iotablind then
+			_set_iota()
 		end
 		G.GAME.blind.loc_debuff_lines = {}
 		G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
 		G.GAME.blind:set_text()
 		G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
+	end,
+	defeat = function()
+		G.GAME.iotablind = nil
 	end,
 	calculate = function(self, blind, context)
 		if not G.GAME.blind.disabled then
@@ -397,10 +416,7 @@ local iota = {
 				G.E_MANAGER:add_event(Event{
 					func = function()
 						Spectrallib.defeat_copied_blinds(Spectrallib.get_copied_blinds(blind), self, silent)
-						G.GAME.iotablind = pseudorandom_element(G.P_BLINDS).key
-						while not G.P_BLINDS[G.GAME.iotablind].boss or G.P_BLINDS[G.GAME.iotablind].boss.showdown do
-						G.GAME.iotablind = pseudorandom_element(G.P_BLINDS).key
-						end
+						_set_iota()
 						Spectrallib.set_copied_blinds(Spectrallib.get_copied_blinds(blind), self, silent, reset)
 						G.GAME.blind.loc_debuff_lines = {}
 						G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
@@ -426,19 +442,19 @@ local iota = {
 	end
 }
 
-local kappa = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+10,
 	name = "entr-kappa",
 	key = "kappa",
 	pos = { x = 0, y = 9 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = HEX("544f61"),
     mult=2,
     dollars = 6,
     altpath=true,
@@ -477,19 +493,19 @@ function SMODS.always_scores(card, ...)
 	return always_scoresref(card, ...)
 end
 
-local lambda = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+11,
 	name = "entr-lambda",
 	key = "lambda",
 	pos = { x = 0, y = 10 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = HEX("59dca7"),
     mult=2,
     dollars = 6,
     altpath=true,
@@ -511,19 +527,19 @@ local lambda = {
 	end
 }
 
-local mu = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+12,
 	name = "entr-mu",
 	key = "mu",
 	pos = { x = 0, y = 11 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = HEX("a730b9"),
     mult=2,
     dollars = 6,
     altpath=true,
@@ -542,19 +558,19 @@ local mu = {
 	end
 }
 
-local nu = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+13,
 	name = "entr-nu",
 	key = "nu",
 	pos = { x = 0, y = 12 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = HEX("eeba64"),
     mult=2,
     dollars = 6,
     altpath=true,
@@ -571,19 +587,19 @@ local nu = {
 	end
 }
 
-local xi = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+14,
 	name = "entr-xi",
 	key = "xi",
 	pos = { x = 0, y = 13 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = HEX("dc568b"),
     mult=2,
     dollars = 6,
     altpath=true,
@@ -594,28 +610,38 @@ local xi = {
         return G.GAME.entr_alt
     end,
 	calculate = function(self, blind, context)
-		if context.pre_discard and not G.GAME.blind.discarded and not G.GAME.blind.disabled then
-			Entropy.flip_then(G.hand.highlighted, function(card)
-				card.ability.eternal = true
-			end)
-			G.GAME.blind.discarded = true
+		if context.pre_discard and not G.GAME.blind.effect.discarded and not G.GAME.blind.disabled then
+			for i, v in pairs(G.hand.highlighted) do
+				local c = v
+				G.E_MANAGER:add_event(Event{
+					trigger = "after",
+					func = function()
+						c.ability.eternal = true
+						c:juice_up()
+						return true
+					end
+				})
+				delay(0.3)
+			end
+			delay(0.3)
+			G.GAME.blind.effect.discarded = true
 		end
 	end
 }
 
-local omicron = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+15,
 	name = "entr-omicron",
 	key = "omicron",
 	pos = { x = 0, y = 14 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = HEX("7d7aff"),
     mult=2,
     dollars = 6,
     altpath=true,
@@ -638,19 +664,19 @@ local omicron = {
 	end
 }
 
-local pi = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+16,
 	name = "entr-pi",
 	key = "pi",
 	pos = { x = 0, y = 15 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = HEX("687ee7"),
     mult=2,
     dollars = 6,
     altpath=true,
@@ -662,19 +688,19 @@ local pi = {
     end,
 }
 
-local rho = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+17,
 	name = "entr-rho",
 	key = "rho",
 	pos = { x = 0, y = 16 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = HEX("f03464"),
     mult=2,
     dollars = 6,
     altpath=true,
@@ -686,19 +712,19 @@ local rho = {
     end,
 }
 
-local sigma = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+18,
 	name = "entr-sigma",
 	key = "sigma",
 	pos = { x = 0, y = 17 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = Entropy.cmult_gradient,
     mult=2,
     dollars = 6,
     altpath=true,
@@ -708,42 +734,73 @@ local sigma = {
     in_pool = function()
         return G.GAME.entr_alt
     end,
-	calculate = function(self, blind, context)
-		if not G.GAME.blind.disabled then
-			if context.before then
-				ease_discard(-1)
-				G.GAME.blind.triggered = true
-			end
-			if context.pre_discard then
-				ease_hands_played(-1)
-				if to_big(G.GAME.current_round.hands_left) <= to_big(0) then
-					end_round()
-				end
-				G.GAME.blind.triggered = true
-			end
-		end
-	end,
-	setting_blind = function()
-		local avg = math.ceil((G.GAME.round_resets.hands+G.GAME.round_resets.discards)/2)
-		ease_hands_played(avg-G.GAME.round_resets.hands)
-		ease_discard(avg-G.GAME.round_resets.discards)
+	set_blind = function()
+		G._sigma_bypass = true
+		local avg = math.ceil((G.GAME.current_round.hands_left+G.GAME.current_round.discards_left)/2)
+		if avg-G.GAME.current_round.hands_left > 0 then ease_hands_played(avg-G.GAME.current_round.hands_left) end
+		if avg-G.GAME.current_round.discards_left > 0 then ease_discard(avg-G.GAME.current_round.discards_left) end
+		G._sigma_bypass = nil
 		G.GAME.blind.triggered = true
+		ease_colour(G.C.UI.HANDS, {0.8, 0.45, 0.85, 1})
+        ease_colour(G.C.UI.DISCARDS, {0.8, 0.45, 0.85, 1})
+		play_sound('gong', 0.94, 0.3)
+		play_sound('gong', 0.94*1.5, 0.2)
+		play_sound('tarot1', 1.5)
+	end,
+	defeat = function()
+		ease_colour(G.C.UI.HANDS, copy_table(G.C.BLUE))
+        ease_colour(G.C.UI.DISCARDS, copy_table(G.C.RED))
+	end,
+	disable = function()
+		ease_colour(G.C.UI.HANDS, copy_table(G.C.BLUE))
+        ease_colour(G.C.UI.DISCARDS, copy_table(G.C.RED))
 	end
 }
 
-local tau = {
+
+
+
+local ease_discard_ref = ease_discard
+function ease_discard(amt, ...)
+	ease_discard_ref(amt, ...)
+	if Spectrallib.blind_is("bl_entr_sigma") and not G._sigma_bypass and not G.GAME.blind.disabled then
+		G._sigma_bypass = true
+		ease_hands_played(amt, ...)
+		G.E_MANAGER:add_event(Event{
+			func = function()
+				if G.GAME.current_round.hands_left <= 0 then
+					end_round()
+				end
+				return true
+			end
+		})
+		G._sigma_bypass = nil
+	end
+end
+
+local ease_hands_ref = ease_hands_played
+function ease_hands_played(amt, ...)
+	ease_hands_ref(amt, ...)
+	if Spectrallib.blind_is("bl_entr_sigma") and not G._sigma_bypass and not G.GAME.blind.disabled then
+		G._sigma_bypass = true
+		ease_discard(amt, ...)
+		G._sigma_bypass = nil
+	end
+end
+
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+19,
 	name = "entr-tau",
 	key = "tau",
 	pos = { x = 0, y = 18 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = HEX("87c5b6"),
     mult=2,
     dollars = 6,
     altpath=true,
@@ -776,19 +833,19 @@ local tau = {
 	end
 }
 
-local upsilon = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+20,
 	name = "entr-upsilon",
 	key = "upsilon",
 	pos = { x = 0, y = 19 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = HEX("f3851b"),
     mult=2,
     dollars = 6,
     altpath=true,
@@ -805,19 +862,19 @@ local upsilon = {
 	end,
 }
 
-local phi = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+21,
 	name = "entr-phi",
 	key = "phi",
 	pos = { x = 0, y = 20 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = Entropy.cmult_gradient,
     mult=2,
     dollars = 6,
     altpath=true,
@@ -843,19 +900,19 @@ local phi = {
     end,
 }
 
-local chi = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+22,
 	name = "entr-chi",
 	key = "chi",
 	pos = { x = 0, y = 21 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = HEX("655eb0"),
     mult=2,
     dollars = 6,
     altpath=true,
@@ -878,19 +935,19 @@ local chi = {
 	end
 }
 
-local psi = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+23,
 	name = "entr-psi",
 	key = "psi",
 	pos = { x = 0, y = 22 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = HEX("c3ba93"),
     mult=2,
     dollars = 6,
     altpath=true,
@@ -913,19 +970,19 @@ local psi = {
 	collection_loc_vars = function() return {vars = {1}} end
 }
 
-local omega = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1000+24,
 	name = "entr-omega",
 	key = "omega",
 	pos = { x = 0, y = 23 },
 	atlas = "altblinds",
-	boss_colour = HEX("907c7c"),
+	boss_colour = Entropy.pearl_gradient,
     mult=2,
     dollars = 6,
     altpath=true,
@@ -941,17 +998,7 @@ local omega = {
             G.FUNCS.get_poker_hand_info(G.play.cards)
 			if text == G.GAME.current_round.most_played_poker_hand then
 				G.GAME.blind.triggered = true
-				G.E_MANAGER:add_event(Event({
-					trigger = "after",
-					delay = 0.2,
-					func = function()
-						G.GAME.blind.chips = G.GAME.blind.chips * 2
-						G.GAME.blind:juice_up()
-						G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
-						G.HUD_blind:recalculate()
-						return true
-					end
-				}))
+				ease_blind_chips(G.GAME.blind.chips, {{"xchips", nil, 3}, {"chips1", nil, 4}})
 			end
 		end
 	end,
@@ -959,13 +1006,13 @@ local omega = {
 	collection_loc_vars = function() return {vars = {"[most played hand]"}} end
 }
 
-local styx = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1025+0,
 	name = "entr-styx",
 	key = "styx",
@@ -1025,13 +1072,13 @@ local styx = {
 	end
 }
 
-local choir = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1025+1,
 	name = "entr-choir",
 	key = "choir",
@@ -1057,13 +1104,13 @@ local choir = {
 	end
 }
 
-local pandora = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1025+2,
 	name = "entr-pandora",
 	key = "pandora",
@@ -1088,13 +1135,13 @@ local pandora = {
 	end
 }
 
-local cassandra = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1025+3,
 	name = "entr-cassandra",
 	key = "cassandra",
@@ -1130,13 +1177,13 @@ local cassandra = {
 	end
 }
 
-local labyrinth = {
+Entropy.Blind{
 	dependencies = {
         items = {
           "set_entr_altpath"
         }
     },
-	object_type = "Blind",
+	
     order = 1025+4,
 	name = "entr-labyrinth",
 	key = "labyrinth",
@@ -1171,7 +1218,6 @@ local labyrinth = {
 		for i, v in ipairs(G.GAME.blind.cards) do v.ability.forced_selection = nil end
 	end
 }
-
 local highlighted_ref = Card.highlight
 function Card:highlight(is_highlighted)
 	highlighted_ref(self, is_highlighted)
@@ -1197,37 +1243,46 @@ function Card:highlight(is_highlighted)
 	end
 end
 
-return {
-    items = {
-        alpha,
-        beta,
-        gamma,
-        delta,
-        epsilon,
-        zeta,
-        eta,
-        theta,
-        iota,
-		kappa,
-		lambda,
-		mu,
-		nu,
-		xi,
-		omicron,
-		pi,
-		rho,
-		sigma,
-		tau,
-		upsilon,
-		phi,
-		chi,
-		psi,
-		omega,
-		--showdowns
-		styx,
-		choir,
-		pandora,
-		cassandra,
-		labyrinth
-    }
+Entropy.Blind{
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	
+    order = 998,
+	key = "small",
+	pos = { x = 0, y = 24 },
+	atlas = "altblinds",
+	boss_colour = HEX("3a55ab"),
+    mult=1,
+    dollars = 3,
+    altpath=true,
+	small = {min = 1,},
+	name = "entr-Small Blind",
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
+}
+
+Entropy.Blind{
+	dependencies = {
+        items = {
+          "set_entr_altpath"
+        }
+    },
+	
+    order = 999,
+	key = "big",
+	pos = { x = 0, y = 25 },
+	atlas = "altblinds",
+	boss_colour = HEX("e0a23a"),
+    mult=1.5,
+    dollars = 4,
+    altpath=true,
+	name = "entr-Big Blind",
+	small = {min = 1,},
+    in_pool = function()
+        return G.GAME.entr_alt
+    end,
 }

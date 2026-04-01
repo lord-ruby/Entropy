@@ -16,6 +16,8 @@ extern bool shadow;
 extern PRECISION vec4 burn_colour_1;
 extern PRECISION vec4 burn_colour_2;
 extern Image second_image;
+extern PRECISION number distort_mod;
+extern PRECISION number redshift;
 
 
 
@@ -92,6 +94,8 @@ float pNoise(vec2 p, int res){
 	float f = 4.;
 	float amp = 1.;
 	int iCount = 0;
+	p.x = mod(p.x+2000, 4000);
+	p.y = mod(p.y+2000, 4000);
 	for (int i = 0; i<50; i++){
 		n+=amp*noise(p, f);
 		f*=2.;
@@ -104,17 +108,26 @@ float pNoise(vec2 p, int res){
 	return nf*nf*nf*nf;
 }
 
+float cf(float x) {
+	if(x > .5) return 1.;
+	return 0.;
+}
+
+vec2 cfv2(vec2 x) {
+	return vec2(cf(x.x), cf(x.y));
+}
+
 vec4 dissolve_mask(vec4 final_pixel, vec2 texture_coords, vec2 uv);
 // texture_coords = coolds of a original_pixel within the atlas texture
 vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords )
 {
     vec4 tex = Texel( texture, texture_coords);
     vec2 real_uv = screen_coords;
-	vec2 uv = screen_coords;
+	vec2 uv = screen_coords/love_ScreenSize.xy;
 
     float dummy = 2;
     if(shadow) {dummy = 3;}
-    if(uv.x > uv.x * 2) {uv = eeshader*dissolve*burn_colour_1.x*burn_colour_2.x*time*dummy;}
+    if(uv.x > uv.x * 2) {uv = eeshader*dissolve*burn_colour_1.x*burn_colour_2.x*time*dummy*texture_details.x*image_details.x;}
 
     float sprite_width = texture_details.z / image_details.x; // Normalized width
     float min_x = texture_details.x * sprite_width; // min X
@@ -127,27 +140,32 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 
     float newX = min(max_x, max(min_x, texture_coords.x + shiftX));
     
-    uv /= 20.;
-    float x = screen_coords.x-.5;
-    float y = screen_coords.y-.5;
-    float a = 1.-sqrt(x*x + y*y);
-    a=sqrt(a);
-    uv += uv.y*0.15;
-	vec2 q = uv.xy;
-    vec2 p = -1.0+2.0*q;
-	//p.x *= image_details.x/image_details.y;
-	// Rain
-    vec4 col2 = vec4(0,0,0,1);
-	vec2 st =  p * vec2(.5, .01)+vec2(-(realtime)*6.-q.y*.6*-0.0, -(realtime)*6.);
-    float f = floor(mod((realtime)/9., 2.0));
-	f = (pNoise(st, 10)+1.) * (pNoise(st*.733, 10) + 1.) * 1.55 / 4.;
-	f = clamp(pow(abs(f), 12.0) * 13.0, 0.0, q.y*.14);    
-	col2 += f*8.;
-    col2.g = 0.0;
-    col2.b = 0.0;
-    col2.a = 1;
-    
-	return tex*0.65 + col2;
+	float horizontDistance = abs(uv.y);
+	float smallWaves = sin((uv.y+realtime*.01)*45.)*.06;
+	float horizontalRipples = smallWaves / (horizontDistance*horizontDistance*1000. + 1.)*distort_mod;
+
+	
+	float squiglyVerticalPoints = uv.x + smallWaves*.08;
+	float verticalRipples = sin((squiglyVerticalPoints+realtime*.01)*60.) * .005*distort_mod;
+	
+	vec4 img = Texel(texture, vec2(texture_coords.x + verticalRipples*uv.y*uv.y*0.66, texture_coords.y - horizontalRipples*uv.y*uv.y*0.66));
+
+	vec2 distort1 = vec2(cos(realtime + uv.y * .1) * 0.05 - cos(realtime) * 0.1, realtime*0.3);
+    vec2 distort2 = vec2(sin(realtime + uv.y * .05) * 0.025 - cos(realtime) * 0.1, realtime*0.5);
+	float spark1 = cf(pNoise((uv + distort1)*25., 10));
+    float spark2 = cf(pNoise((uv + distort2)*25., 10));
+    float brightness = 8.;
+    float spark = (spark1 + spark2) * exp(-dot(uv-0.5, uv-0.5) * 2.);
+    vec3 col = vec3(1.0, 0.2, 0.3) * spark * vec3(1.0, spark, spark);
+
+	vec2 _distort1 = vec2(cos(realtime + uv.y * .01) * 0.05 - cos(realtime) * 0.1, realtime*0.1);
+    vec2 _distort2 = vec2(sin(realtime + uv.y * .005) * 0.025 - cos(realtime) * 0.1, realtime*0.15);
+	float _spark1 = 1.-pNoise(uv + _distort1, 10);
+    float _spark2 = 1.-pNoise(uv + _distort2, 10);
+    float _brightness = 8.;
+    float _spark = (_spark1 + _spark2) * exp(-dot(uv-0.5, uv-0.5) * 2.);
+    vec3 _col = vec3(1.0, 0.3, 0.3) * _spark * vec3(1.0, _spark, _spark);
+	return img + vec4(col, 1)*0.7 + vec4(_col,1)*0.15 + vec4(redshift,0,0,1)*0.01;
 }
 
 

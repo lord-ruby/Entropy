@@ -1,7 +1,6 @@
 if (SMODS.Mods["vallkarri"] or {}).can_load then
 
-    local asc_kitty = {
-        object_type = "Tag",
+    Entropy.Tag{
         dependencies = {
             items = {
                 "set_entr_tags",
@@ -29,8 +28,7 @@ if (SMODS.Mods["vallkarri"] or {}).can_load then
         end
     }
 
-    local eternal_negative = {
-        object_type = "Tag",
+    Entropy.Tag{
         dependencies = {
             items = {
                 "set_entr_tags",
@@ -70,8 +68,7 @@ if (SMODS.Mods["vallkarri"] or {}).can_load then
         end,
     }
 
-    local highway = {
-        object_type = "Consumable",
+    Entropy.Tag{
         order = 9000 + 10,
         key = "highway",
         inversion = "c_valk_freeway",
@@ -144,8 +141,7 @@ if (SMODS.Mods["vallkarri"] or {}).can_load then
     }
     local order = 10000
     for i, v in pairs(aesthetics) do
-        items[#items+1] =  {
-            object_type = "Consumable",
+        Entropy.Consumable{
             set = "Aesthetic",
             key = v.key,
             cost = 7,
@@ -184,7 +180,4 @@ if (SMODS.Mods["vallkarri"] or {}).can_load then
         }
         order = order + 1
     end
-    return {
-        items = items
-    }
 end

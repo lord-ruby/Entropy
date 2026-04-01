@@ -1,10 +1,9 @@
-local aleph = {
+Entropy.Sticker{
     dependencies = {
         items = {
           "set_entr_misc"
         }
     },
-    object_type = "Sticker",
     order = 3200,
     atlas = "entr_stickers",
     pos = { x = 8, y = 0 },
@@ -146,13 +145,12 @@ SMODS.PokerHand{
 	}
 }
 
-local wormhole = {
+Entropy.Consumable {
 	dependencies = {
 		items = {
 			"set_entr_misc"
 		},
 	},
-	object_type = "Consumable",
 	set = "Planet",
 	key = "wormhole",
 	config = { hand_type = "entr_derivative", softlock = true },
@@ -185,13 +183,12 @@ local wormhole = {
 	end,
 }
 
-local tyche = {
+Entropy.Consumable {
 	dependencies = {
 		items = {
 			"set_entr_misc"
 		},
 	},
-	object_type = "Consumable",
 	set = "Planet",
 	key = "tyche",
 	pos = { x = 0, y = 1 },
@@ -230,13 +227,12 @@ local tyche = {
 	can_use = function() return true end
 }
 
-local theia = {
+Entropy.Consumable {
 	dependencies = {
 		items = {
 			"set_entr_misc"
 		},
 	},
-	object_type = "Consumable",
 	set = "Planet",
 	key = "theia",
 	pos = { x = 1, y = 1 },
@@ -274,13 +270,12 @@ local theia = {
 	can_use = function() return true end
 }
 
-local chiron = {
+Entropy.Consumable {
 	dependencies = {
 		items = {
 			"set_entr_misc"
 		},
 	},
-	object_type = "Consumable",
 	set = "Planet",
 	key = "chiron",
 	pos = { x = 2, y = 1 },
@@ -317,13 +312,12 @@ local chiron = {
 	can_use = function() return true end
 }
 
-local neith = {
+Entropy.Consumable {
 	dependencies = {
 		items = {
 			"set_entr_misc"
 		},
 	},
-	object_type = "Consumable",
 	set = "Planet",
 	key = "neith",
 	pos = { x = 3, y = 1 },
@@ -360,13 +354,12 @@ local neith = {
 	can_use = function() return true end
 }
 
-local sputnik = {
+Entropy.Consumable {
 	dependencies = {
 		items = {
 			"set_entr_misc"
 		},
 	},
-	object_type = "Consumable",
 	set = "Planet",
 	key = "sputnik",
 	pos = { x = 4, y = 1 },
@@ -429,16 +422,4 @@ SMODS.DeckSkin{
 	loc_txt = {
         ['en-us'] = "Ruby"
     },
-}
-
-return {
-    items = {
-        aleph,
-		wormhole,
-		tyche,
-		theia,
-		chiron,
-		neith,
-		sputnik
-    }
 }

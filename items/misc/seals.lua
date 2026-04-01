@@ -1,10 +1,10 @@
-local crimson = {
+Entropy.Seal{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-	object_type = "Seal",
+	
     order = 3001,
     key="entr_crimson",
     atlas = "seals",
@@ -12,13 +12,13 @@ local crimson = {
     badge_colour = HEX("8a0050"),
 }
 
-local sapphire = {
+Entropy.Seal{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-	object_type = "Seal",
+	
     order = 3002,
     key="entr_sapphire",
     atlas = "seals",
@@ -33,13 +33,13 @@ local sapphire = {
     end,
 }
 
-local silver = {
+Entropy.Seal{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-	object_type = "Seal",
+	
     order = 3003,
     key="entr_silver",
     atlas = "seals",
@@ -122,13 +122,13 @@ local silver = {
     end,
 }
 
-local pink = {
+Entropy.Seal{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-	object_type = "Seal",
+	
     order = 3004,
     key="entr_pink",
     atlas = "seals",
@@ -184,102 +184,13 @@ local pink = {
     end,
 }
 
-local verdant = {
-    dependencies = {
-        items = {
-          "set_entr_inversions"
-        }
-    },
-	object_type = "Seal",
-    order = 3005,
-    key="entr_verdant",
-    atlas = "seals",
-    pos = {x=4,y=0},
-    badge_colour = HEX("75bb62"),
-    calculate = function(self, card, context)
-        if context.main_scoring and context.cardarea == G.play then
-            local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
-            G.FUNCS.get_poker_hand_info(G.play.cards)
-            if #scoring_hand == 1 then
-                G.E_MANAGER:add_event(Event({
-					func = function()
-                        if G.consumeables.config.card_count < G.consumeables.config.card_limit then
-                            local c = create_card("Command", G.consumeables, nil, nil, nil, nil, nil) 
-                            c:add_to_deck()
-                            G.consumeables:emplace(c)
-                        end
-                        return true
-                    end
-                }))
-            end
-        end
-        if context.forcetrigger then
-            local key = pseudorandom_element(Entropy.FlipsideInversions, pseudoseed("verdant"))
-            while G.P_CENTERS[key].set ~= "Command" do key = pseudorandom_element(Entropy.FlipsideInversions, pseudoseed("verdant")) end
-            local c = create_card("Consumables", G.consumeables, nil, nil, nil, nil, key) 
-            c:add_to_deck()
-            G.consumeables:emplace(c)
-        end
-    end,
-}
-
-local cerulean = {
-    dependencies = {
-        items = {
-          "set_entr_inversions"
-        }
-    },
-	object_type = "Seal",
-    order = 3006,
-    key="entr_cerulean",
-    atlas = "seals",
-    pos = {x=5,y=0},
-    badge_colour = HEX("4078e6"),
-    calculate = function(self, card, context)
-        if context.main_scoring and context.cardarea == G.play then
-            local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
-            G.FUNCS.get_poker_hand_info(G.play.cards)
-            local pkey = "regulus"
-            for i, v in pairs(Entropy.ReversePlanets) do
-                if v.name == text then pkey = v.new_key end
-            end
-            local key = "c_entr_"..pkey
-            for i = 1, 3 do
-                    local c = create_card("Consumables", G.consumeables, nil, nil, nil, nil, key) 
-                    c:add_to_deck()
-                    G.consumeables:emplace(c)
-                    c:set_edition("e_negative")
-                end
-            for i, v in pairs(scoring_hand) do
-                v.ability.temporary2 = true
-            end
-            SMODS.calculate_context({remove_playing_cards = true, removed=scoring_hand})
-        end
-        if context.forcetrigger then
-            local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
-            G.FUNCS.get_poker_hand_info(G.play.cards)
-            local pkey = "pluto"
-            for i, v in pairs(Entropy.ReversePlanets) do
-                if v.name == text then pkey = v.key end
-            end
-            local key = "c_entr_"..pkey
-            for i = 1, 3 do
-                local c = create_card("Consumables", G.consumeables, nil, nil, nil, nil, key) 
-                c:add_to_deck()
-                G.consumeables:emplace(c)
-                c:set_edition("e_negative")
-            end
-        end
-    end,
-}
-
-local ornate = {
+Entropy.Seal{
     dependencies = {
         items = {
           "set_entr_runes"
         }
     },
-	object_type = "Seal",
+	
     order = 3007,
     key="entr_ornate",
     atlas = "seals",
@@ -354,14 +265,14 @@ local ornate = {
     end,
 }
 
-local amber = {
+Entropy.Seal{
     dependencies = {
         items = {
             "set_entr_runes",
             "set_entr_inversions"
         }
     },
-	object_type = "Seal",
+	
     order = 3009,
     key="entr_amber",
     atlas = "seals",
@@ -405,17 +316,4 @@ local amber = {
         G.shared_seals["entr_amber"]:draw_shader('dissolve', nil, nil, nil, card.children.center)
 		G.shared_seals["entr_amber"]:draw_shader('voucher', nil, card.ARGS.send_to_shader, nil, card.children.center)
     end,
-}
-
-return {
-    items = {
-        crimson,
-        sapphire,
-        silver,
-        pink,
-        not (SMODS.Mods["Cryptid"] or {}).can_load and {} or verdant,
-        not (SMODS.Mods["Cryptid"] or {}).can_load and {} or cerulean,
-        ornate,
-        amber
-    }
 }

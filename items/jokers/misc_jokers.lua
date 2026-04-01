@@ -1,6 +1,6 @@
-local surreal = {
+Entropy.Joker{
     order = 1,
-    object_type = "Joker",
+    
     key = "surreal_joker",
     config = {
         qmult = 8
@@ -39,9 +39,9 @@ local surreal = {
     end
 }
 
-local tesseract = {
+Entropy.Joker{
     order = 2,
-    object_type = "Joker",
+    
     key = "tesseract",
     config = {
         degrees = 90
@@ -58,15 +58,30 @@ local tesseract = {
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-                number_format(card.ability.degrees)
+                number_format(card.ability.degrees),
+                G.GAME.modifiers.entr_gfb and number_format(card.ability.degrees_mod) or nil
             },
+            key = G.GAME.modifiers.entr_gfb and "j_entr_tesseract_gfb" or nil
         }
     end,
+    calculate = function(self, card, context)
+        if G.GAME.modifiers.entr_gfb then
+             if context.before and not context.blueprint and #context.full_hand == 4 then
+                SMODS.scale_card(card, {
+                    ref_table = card.ability,
+                    ref_value = "degrees",
+                    scalar_value = "degrees_mod",
+                    message_colour = G.C.CHIPS
+                })
+                return nil, true
+            end
+        end
+    end
 }
 
-local strawberry_pie = {
+Entropy.Joker{
     order = 4,
-    object_type = "Joker",
+    
     key = "strawberry_pie",
     rarity = 3,
     cost = 10,
@@ -89,9 +104,9 @@ local strawberry_pie = {
     pools = { ["Food"] = true },
 }
 
-local recursive_joker = {
+Entropy.Joker{
     order = 5,
-    object_type = "Joker",
+    
     key = "recursive_joker",
     config = {
         used_this_round = false
@@ -115,6 +130,7 @@ local recursive_joker = {
             vars = {
                 card.ability.used_this_round and "Inactive" or "Active"
             },
+            key = G.GAME.modifiers.entr_gfb and "j_entr_recursive_joker_gfb" or nil
         }
     end,
     calculate = function(self, card, context)
@@ -133,9 +149,9 @@ local recursive_joker = {
         end
     end
 }
-local dr_sunshine = {
+Entropy.Joker{
     order = 6,
-    object_type = "Joker",
+    
     key = "dr_sunshine",
     config = {
         plus_asc = 0,
@@ -156,7 +172,7 @@ local dr_sunshine = {
     pools = { ["Sunny"] = true, ["Music"] = true },
     demicoloncompat = true,
     loc_vars = function(self, q, card)
-        if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
+        Entropy.ensure_ascpow_tutorial(q)
         return {
             vars = {
                 number_format(card.ability.plus_asc_mod),
@@ -180,9 +196,9 @@ local dr_sunshine = {
     end
 }
 
-local sunny_joker = {
+Entropy.Joker{
     order = 7,
-    object_type = "Joker",
+    
     key = "sunny_joker",
     config = {
         plus_asc = 2
@@ -204,7 +220,7 @@ local sunny_joker = {
     demicoloncompat = true,
     pools = { ["Meme"] = true, ["Sunny"] = true, },
     loc_vars = function(self, q, card)
-        if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
+        Entropy.ensure_ascpow_tutorial(q)
         return {
             vars = {
                 number_format(card.ability.plus_asc),
@@ -223,9 +239,9 @@ local sunny_joker = {
     }
 }
 
-local antidagger = {
+Entropy.Joker{
     order = 8,
-    object_type = "Joker",
+    
     key = "antidagger",
     rarity = 3,
     cost = 8,
@@ -286,9 +302,9 @@ local antidagger = {
     }
 }
 
-local solar_dagger = {
+Entropy.Joker{
     order = 9,
-    object_type = "Joker",
+    
     key = "solar_dagger",
     rarity = 3,
     cost = 8,
@@ -306,7 +322,7 @@ local solar_dagger = {
     config = { x_asc = 0 },
     pools = { ["Sunny"] = true, },
     loc_vars = function(self, q, card)
-        if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
+        Entropy.ensure_ascpow_tutorial(q)
         return {
             vars = {
                 number_format(card.ability.x_asc)
@@ -345,9 +361,9 @@ local solar_dagger = {
     }
 }
 
-local insatiable_dagger = {
+Entropy.Joker{
     order = 10,
-    object_type = "Joker",
+    
     key = "insatiable_dagger",
     rarity = 3,
     cost = 8,
@@ -369,42 +385,59 @@ local insatiable_dagger = {
     atlas = "jokers",
     demicoloncompat = true,
     calculate = function(self, card, context)
-        if (context.setting_blind and not (context.blueprint_card or self).getting_sliced) or context.forcetrigger then
-            local check
-            for i, v in pairs(G.jokers.cards) do
-                if v == card and G.jokers.cards[i-1] then check = i-1 end
+        if G.GAME.modifiers.entr_gfb then
+            if context.ending_shop then
+                local check
+                for i, v in pairs(G.jokers.cards) do
+                    if v == card and G.jokers.cards[i+1] then check = i+1 end
+                end
+                if check then
+                    Spectrallib.manipulate(G.jokers.cards[check], {
+                        value = card.ability.perc
+                    })
+                end
+                return {
+                    message = localize("k_upgrade_ex")
+                }
             end
-            if check and not SMODS.is_eternal(G.jokers.cards[#G.jokers.cards]) then
-                G.E_MANAGER:add_event(Event({
-                    func = function()
-                        local sliced_card = G.jokers.cards[#G.jokers.cards]
-                        sliced_card.getting_sliced = true
-                        card:juice_up(0.8, 0.8)
-                        sliced_card:start_dissolve({ HEX("a800ff") }, nil, 1.6)
-                        G.GAME.banned_keys[sliced_card.config.center.key] = true
-                        eval_card(sliced_card, {banishing_card = true, banisher = card, card = sliced_card, cardarea = sliced_card.area})
-                        play_sound("slice1", 0.96 + math.random() * 0.08)
-                        local check2
-                        if not Card.no(G.jokers.cards[check], "immutable", true) then
-                            Cryptid.manipulate(G.jokers.cards[check], { value = sliced_card.sell_cost * (card.ability.perc / 100) + 1 })
-                            check2 = true
-                        end
-                        if check2 then
-                            card_eval_status_text(
-                                G.jokers.cards[check],
-                                "extra",
-                                nil,
-                                nil,
-                                nil,
-                                { message = localize("k_upgrade_ex"), colour = G.C.GREEN }
-                            )
-                        end
-                        return true
-                    end,
-                }))
-                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "perc", scalar_value = "perc_mod", operation = "-", no_message = true})
-                if card.ability.perc <= 0 then
-                    SMODS.destroy_cards(card, true, nil, true)
+        else
+            if (context.setting_blind and not (context.blueprint_card or self).getting_sliced) or context.forcetrigger then
+                local check
+                for i, v in pairs(G.jokers.cards) do
+                    if v == card and G.jokers.cards[i-1] then check = i-1 end
+                end
+                if check and not SMODS.is_eternal(G.jokers.cards[#G.jokers.cards]) then
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            local sliced_card = G.jokers.cards[#G.jokers.cards]
+                            sliced_card.getting_sliced = true
+                            card:juice_up(0.8, 0.8)
+                            sliced_card:start_dissolve({ HEX("a800ff") }, nil, 1.6)
+                            G.GAME.banned_keys[sliced_card.config.center.key] = true
+                            eval_card(sliced_card, {banishing_card = true, banisher = card, card = sliced_card, cardarea = sliced_card.area})
+                            play_sound("slice1", 0.96 + math.random() * 0.08)
+                            local check2
+                            if not Card.no(G.jokers.cards[check], "immutable", true) then
+                                Cryptid.manipulate(G.jokers.cards[check], { value = sliced_card.sell_cost * (card.ability.perc / 100) + 1 })
+                                check2 = true
+                            end
+                            if check2 then
+                                card_eval_status_text(
+                                    G.jokers.cards[check],
+                                    "extra",
+                                    nil,
+                                    nil,
+                                    nil,
+                                    { message = localize("k_upgrade_ex"), colour = G.C.GREEN }
+                                )
+                            end
+                            return true
+                        end,
+                    }))
+                    SMODS.scale_card(card, {ref_table = card.ability, ref_value = "perc", scalar_value = "perc_mod", operation = "-", no_message = true})
+                    if card.ability.perc <= 0 then
+                        SMODS.destroy_cards(card, true, nil, true)
+                    end
                 end
             end
         end
@@ -414,7 +447,8 @@ local insatiable_dagger = {
             vars = {
                 card.ability.perc,
                 card.ability.perc_mod
-            }
+            },
+            key = G.GAME.modifiers.entr_gfb and "j_entr_insatiable_dagger_gfb" or nil
         }
     end,
     entr_credits = {
@@ -423,9 +457,9 @@ local insatiable_dagger = {
     }
 }
 
-local rusty_shredder = {
+Entropy.Joker{
     order = 11,
-    object_type = "Joker",
+    
     key = "rusty_shredder",
     rarity = 2,
     cost = 5,
@@ -472,9 +506,9 @@ local rusty_shredder = {
     }
 }
 
-local chocolate_egg = {
+Entropy.Joker{
     order = 12,
-    object_type = "Joker",
+    
     key = "chocolate_egg",
     rarity = 2,
     cost = 5,
@@ -534,9 +568,9 @@ local chocolate_egg = {
     end
 }
 
-local lotteryticket = {
+Entropy.Joker{
     order = 13,
-    object_type = "Joker",
+    
     key = "lotteryticket",
     rarity = 2,
     cost = 3,
@@ -589,9 +623,9 @@ local lotteryticket = {
     end
 }
 
-local devilled_suns = {
+Entropy.Joker{
     order = 14,
-    object_type = "Joker",
+    
     key = "devilled_suns",
     rarity = 2,
     cost = 3,
@@ -635,9 +669,9 @@ local devilled_suns = {
     }
 }
 
-local eden = {
+Entropy.Joker{
     order = 15,
-    object_type = "Joker",
+    
     key = "eden",
     name="entr-eden",
     config = {
@@ -728,9 +762,9 @@ local eden = {
     },
 }
 
-local seventyseven = {
+Entropy.Joker{
     order = 16,
-    object_type = "Joker",
+    
     key = "seventyseven",
     config = {
         chips=100
@@ -766,9 +800,9 @@ local seventyseven = {
 	end
 }
 
-local skullcry = {
+Entropy.Joker{
     order = 17,
-    object_type = "Joker",
+    
     key = "skullcry",
     config = {
         base=10,
@@ -820,9 +854,9 @@ local skullcry = {
         custom = {key="wish", text="denserver10"}
     }
 }
-local dating_simbo = {
+Entropy.Joker{
     order = 18,
-    object_type = "Joker",
+    
     key = "dating_simbo",
     config = {
         chips = 0
@@ -879,9 +913,9 @@ local dating_simbo = {
     }
 }
 
-local sweet_tooth = {
+Entropy.Joker{
     order = 19,
-    object_type = "Joker",
+    
     key = "sweet_tooth",
     config = {
         chips = 20,
@@ -936,9 +970,9 @@ local sweet_tooth = {
 }
 
 
-local bossfight = {
+Entropy.Joker{
     order = 20,
-    object_type = "Joker",
+    
     key = "bossfight",
     config = {
         chips = 20,
@@ -982,9 +1016,9 @@ local bossfight = {
     }
 }
 
-local phantom_shopper = {
+Entropy.Joker{
     order = 21,
-    object_type = "Joker",
+    
     key = "phantom_shopper",
     config = {
         rarity = "Common",
@@ -1053,9 +1087,9 @@ local phantom_shopper = {
     }
 }
 
-local sunny_side_up = {
+Entropy.Joker{
     order = 21.5,
-    object_type = "Joker",
+    
     key = "sunny_side_up",
     config = {
         extra = {
@@ -1081,7 +1115,7 @@ local sunny_side_up = {
         ["Food"] = true
     },
     loc_vars = function(self, q, center)
-        if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
+        Entropy.ensure_ascpow_tutorial(q)
         return {
             vars = {
                 number_format(center.ability.extra.asc),
@@ -1114,9 +1148,9 @@ local sunny_side_up = {
     }
 }
 
-local sunflower_seeds = {
+Entropy.Joker{
     order = 23,
-    object_type = "Joker",
+    
     key = "sunflower_seeds",
     rarity = 2,
     cost = 6,
@@ -1183,9 +1217,9 @@ local sunflower_seeds = {
     }
 }
 
-local tenner = {
+Entropy.Joker{
     order = 23.5,
-    object_type = "Joker",
+    
     key = "tenner",
     rarity = 1,
     cost = 4,
@@ -1235,9 +1269,9 @@ local tenner = {
 }
 
 
-local sticker_sheet = {
+Entropy.Joker{
     order = 24,
-    object_type = "Joker",
+    
     key = "sticker_sheet",
     rarity = 2,
     cost = 5,
@@ -1292,9 +1326,9 @@ local sticker_sheet = {
 }
 
 
-local fourbit = {
+Entropy.Joker{
     order = 25,
-    object_type = "Joker",
+    
     key = "fourbit",
     rarity = 2,
     cost = 5,
@@ -1358,9 +1392,9 @@ local fourbit = {
     },
 }
 
-local crimson_flask = {
+Entropy.Joker{
     order = 26,
-    object_type = "Joker",
+    
     key = "crimson_flask",
     rarity = 2,
     cost = 5,
@@ -1435,9 +1469,9 @@ function CardArea:emplace(card, ...)
     return cardarea_emplaceref(self, card, ...)
 end
 
-local grotesque_joker = {
+Entropy.Joker{
     order = 27,
-    object_type = "Joker",
+    
     key = "grotesque_joker",
     rarity = 3,
     cost = 10,
@@ -1497,9 +1531,9 @@ local grotesque_joker = {
     }
 }
 
-local dog_chocolate = {
+Entropy.Joker{
     order = 28,
-    object_type = "Joker",
+    
     key = "dog_chocolate",
     rarity = SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load and "cry_candy" or 2,
     cost = 6,
@@ -1540,9 +1574,9 @@ local dog_chocolate = {
     end,
 }
 
-local nucleotide = {
+Entropy.Joker{
     order = 29,
-    object_type = "Joker",
+    
     key = "nucleotide",
     rarity = 3,
     cost = 10,
@@ -1601,9 +1635,9 @@ local nucleotide = {
     end,
 }
 
-local afterimage = {
+Entropy.Joker{
     order = 30,
-    object_type = "Joker",
+    
     key = "afterimage",
     rarity = 2,
     cost = 5,
@@ -1661,9 +1695,9 @@ local afterimage = {
     }
 }
 
-local qu = {
+Entropy.Joker{
     order = 31,
-    object_type = "Joker",
+    
     key = "qu",
     rarity = 3,
     cost = 8,
@@ -1700,9 +1734,9 @@ local qu = {
     end,
 }
 
-local memento_mori = {
+Entropy.Joker{
     order = 32,
-    object_type = "Joker",
+    
     key = "memento_mori",
     pools = {Music = true},
     rarity = 2,
@@ -1740,9 +1774,9 @@ local memento_mori = {
 }
 
 
-local broadcast = {
+Entropy.Joker{
     order = 33,
-    object_type = "Joker",
+    
     key = "broadcast",
     rarity = 3,
     cost = 10,
@@ -1820,9 +1854,9 @@ local broadcast = {
     end,
 }
 
-local milk_chocolate = {
+Entropy.Joker{
     order = 34,
-    object_type = "Joker",
+    
     key = "milk_chocolate",
     rarity = 2,
     cost = 5,
@@ -1856,9 +1890,9 @@ local milk_chocolate = {
     end,
 }
 
-local insurance_fraud = {
+Entropy.Joker{
     order = 35,
-    object_type = "Joker",
+    
     key = "insurance_fraud",
     rarity = 2,
     cost = 5,
@@ -1893,9 +1927,9 @@ local insurance_fraud = {
     end,
 }
 
-local free_samples = {
+Entropy.Joker{
     order = 36,
-    object_type = "Joker",
+    
     key = "free_samples",
     rarity = 2,
     cost = 5,
@@ -1946,9 +1980,9 @@ local free_samples = {
     end,
 }
 
-local fused_lens = {
+Entropy.Joker{
     order = 37,
-    object_type = "Joker",
+    
     key = "fused_lens",
     rarity = 2,
     cost = 5,
@@ -2009,9 +2043,9 @@ local fused_lens = {
     end,
 }
 
-local opal = {
+Entropy.Joker{
     order = 38,
-    object_type = "Joker",
+    
     key = "opal",
     rarity = 2,
     cost = 7,
@@ -2027,7 +2061,7 @@ local opal = {
     atlas = "jokers",
     calculate = function(self, card, context)
         if context.repetition
-        and SMODS.has_no_suit(context.other_card, true)
+        and Spectrallib.true_suitless(context.other_card)
         then
             return {
                 message = localize("k_again_ex"),
@@ -2041,9 +2075,9 @@ local opal = {
     }
 }
 
-local inkbleed = {
+Entropy.Joker{
     order = 39,
-    object_type = "Joker",
+    
     key = "inkbleed",
     rarity = 2,
     cost = 4,
@@ -2061,9 +2095,9 @@ local inkbleed = {
     }
 }
 
-local roulette = {
+Entropy.Joker{
     order = 40,
-    object_type = "Joker",
+    
     key = "roulette",
     rarity = 3,
     cost = 9,
@@ -2138,9 +2172,9 @@ local roulette = {
     end
 }
 
-local debit_card = {
+Entropy.Joker{
     order = 41,
-    object_type = "Joker",
+    
     key = "debit_card",
     rarity = 2,
     cost = 7,
@@ -2198,9 +2232,9 @@ local debit_card = {
     }
 }
 
-local birthday_card = {
+Entropy.Joker{
     order = 42,
-    object_type = "Joker",
+    
     key = "birthday_card",
     rarity = 2,
     cost = 6,
@@ -2250,8 +2284,8 @@ local birthday_card = {
     end,
 }
 
-local ruby = {
-    object_type = "Joker",
+Entropy.Joker{
+    
     key = "ruby",
     order = 300,
     rarity = 4,
@@ -2324,8 +2358,8 @@ local ruby = {
     },
 }
 
-local slipstream = {
-    object_type = "Joker",
+Entropy.Joker{
+    
     key = "slipstream",
     order = 301,
     rarity = 4,
@@ -2393,8 +2427,8 @@ local slipstream = {
     },
 }
 
-local cass = {
-    object_type = "Joker",
+Entropy.Joker{
+    
     key = "cass",
     order = 302,
     rarity = 4,
@@ -2521,8 +2555,8 @@ local cass = {
     },
 }
 
-local hexa = {
-    object_type = "Joker",
+Entropy.Joker{
+    
     key = "hexa",
     order = 304,
     rarity = 4,
@@ -2559,8 +2593,8 @@ local hexa = {
     pronouns = "she_her",
 }
 
-local grahkon = {
-    object_type = "Joker",
+Entropy.Joker{
+    
     key = "grahkon",
     order = 305,
     rarity = 4,
@@ -2638,9 +2672,9 @@ local grahkon = {
     end,
 }
 
-local sandpaper = {
+Entropy.Joker{
     order = 43,
-    object_type = "Joker",
+    
     key = "sandpaper",
     rarity = 2,
     cost = 6,
@@ -2704,9 +2738,9 @@ local sandpaper = {
     end,
 }
 
-local purple_joker = {
+Entropy.Joker{
     order = 44,
-    object_type = "Joker",
+    
     key = "purple_joker",
     rarity = 2,
     cost = 6,
@@ -2755,9 +2789,9 @@ function Entropy.sum_pacts()
     return total
 end
 
-local chalice_of_blood = {
+Entropy.Joker{
     order = 45,
-    object_type = "Joker",
+    
     key = "chalice_of_blood",
     rarity = 3,
     cost = 8,
@@ -2781,7 +2815,8 @@ local chalice_of_blood = {
             vars = {
                 number_format(card.ability.xmult_mod),
                 number_format(1 + card.ability.xmult_mod * Entropy.sum_pacts())
-            }
+            },
+            key = G.GAME.modifiers.entr_gfb and "j_entr_chalice_of_blood_gfb" or nil
         }
     end,
     demicoloncompat = true,
@@ -2794,9 +2829,9 @@ local chalice_of_blood = {
     end,
 }
 
-local torn_photograph = {
+Entropy.Joker{
     order = 46,
-    object_type = "Joker",
+    
     key = "torn_photograph",
     rarity = 2,
     cost = 8,
@@ -2836,9 +2871,9 @@ local torn_photograph = {
     end,
 }
 
-local chuckle_cola = {
+Entropy.Joker{
     order = 47,
-    object_type = "Joker",
+    
     key = "chuckle_cola",
     rarity = 3,
     cost = 8,
@@ -2891,9 +2926,9 @@ local chuckle_cola = {
     }
 }
 
-local antiderivative = {
+Entropy.Joker{
     order = 48,
-    object_type = "Joker",
+    
     key = "antiderivative",
     rarity = 3,
     cost = 10,
@@ -3027,9 +3062,9 @@ function get_flush(hand)
     return get_flushref(hand)
 end
 
-local alles = {
+Entropy.Joker{
     order = 49,
-    object_type = "Joker",
+    
     key = "alles",
     rarity = 2,
     cost = 6,
@@ -3068,9 +3103,9 @@ local alles = {
     end
 }
 
-local neuroplasticity = {
+Entropy.Joker{
     order = 51,
-    object_type = "Joker",
+    
     key = "neuroplasticity",
     rarity = 2,
     cost = 8,
@@ -3128,9 +3163,9 @@ local neuroplasticity = {
     }
 }
 
-local dragonfruit = {
+Entropy.Joker{
     order = 52,
-    object_type = "Joker",
+    
     key = "dragonfruit",
     rarity = 2,
     cost = 6,
@@ -3183,9 +3218,9 @@ local dragonfruit = {
 }
 
 
-local jestradiol = {
+Entropy.Joker{
     order = 53,
-    object_type = "Joker",
+    
     key = "jestradiol",
     rarity = 2,
     cost = 6,   
@@ -3237,9 +3272,9 @@ local jestradiol = {
     end
 }
 
-local penny = {
+Entropy.Joker{
     order = 54,
-    object_type = "Joker",
+    
     key = "penny",
     rarity = 3,
     cost = 10,   
@@ -3282,9 +3317,9 @@ local penny = {
     end,
 }
 
-local slothful_joker = {
+Entropy.Joker{
     order = 55,
-    object_type = "Joker",
+    
     key = "slothful_joker",
     rarity = 1,
     cost = 5,   
@@ -3318,9 +3353,9 @@ local slothful_joker = {
     end,
 }
 
-local radar = {
+Entropy.Joker{
     order = 56,
-    object_type = "Joker",
+    
     key = "radar",
     rarity = 2,
     cost = 6,   
@@ -3348,9 +3383,9 @@ local radar = {
     }
 }
 
-local abacus = {
+Entropy.Joker{
     order = 57,
-    object_type = "Joker",
+    
     key = "abacus",
     rarity = 1,
     cost = 5,   
@@ -3385,9 +3420,9 @@ local abacus = {
     end
 }
 
-local matryoshka_dolls = {
+Entropy.Joker{
     order = 58,
-    object_type = "Joker",
+    
     key = "matryoshka_dolls",
     rarity = 1,
     cost = 6,   
@@ -3409,13 +3444,15 @@ local matryoshka_dolls = {
         return {
             vars = {
                 card.ability.mult
-            }
+            },
+            key = G.GAME.modifiers.entr_gfb and "j_entr_matryoshka_dolls_gfb"
         }
     end,
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
             return {
-                mult = card.ability.mult
+                mult = not G.GAME.modifiers.entr_gfb and card.ability.mult or nil,
+                xchips = G.GAME.modifiers.entr_gfb and card.ability.mult or nil
             }
         end
         if context.setting_blind then
@@ -3426,7 +3463,7 @@ local matryoshka_dolls = {
                             key = "j_entr_matryoshka_dolls",
                             area = G.jokers
                         }
-                        ncard.ability.mult = card.ability.mult - 1
+                        ncard.ability.mult = card.ability.mult - (G.GAME.modifiers.entr_gfb and 0.5 or 1)
                         G.GAME.joker_buffer = 0
                         return true
                     end
@@ -3441,9 +3478,9 @@ local matryoshka_dolls = {
     }
 }
 
-local menger_sponge = {
+Entropy.Joker{
     order = 59,
-    object_type = "Joker",
+    
     key = "menger_sponge",
     rarity = 1,
     cost = 6,   
@@ -3468,7 +3505,8 @@ local menger_sponge = {
             vars = {
                 card.ability.chips,
                 card.ability.chips_mod
-            }
+            },
+            key = G.GAME.modifiers.entr_gfb and "j_entr_menger_sponge_gfb" or nil
         }
     end,
     calculate = function(self, card, context)
@@ -3479,26 +3517,33 @@ local menger_sponge = {
             }
         end
         if (context.end_of_round and not context.individual and not context.repetition) then
-            if G.GAME.blind_on_deck == "Boss" then
-                card.ability.chips = card.ability.base_chips
+            if G.GAME.modifiers.entr_gfb then
+                card.ability.chips = card.ability.chips * (math.sin(card.ability.chips) + 1)*card.ability.chips_mod
                 return {
-                    message = localize("k_reset")
+                    message = localize("k_upgrade_ex")
                 }
-            else    
-                SMODS.scale_card(card, {
-                    ref_table = card.ability,
-                    ref_value = "chips",
-                    scalar_value = "chips_mod",
-                    operation = "X"
-                })
+            else
+                if G.GAME.blind_on_deck == "Boss" then
+                    card.ability.chips = card.ability.base_chips
+                    return {
+                        message = localize("k_reset")
+                    }
+                else    
+                    SMODS.scale_card(card, {
+                        ref_table = card.ability,
+                        ref_value = "chips",
+                        scalar_value = "chips_mod",
+                        operation = "X"
+                    })
+                end
             end
         end
     end,
 }
 
-local arbitration = {
+Entropy.Joker{
     order = 60,
-    object_type = "Joker",
+    
     key = "arbitration",
     rarity = 1,
     cost = 5,   
@@ -3547,9 +3592,9 @@ local arbitration = {
     end,
 }
 
-local masterful_gambit = {
+Entropy.Joker{
     order = 60.5,
-    object_type = "Joker",
+    
     key = "masterful_gambit",
     rarity = 1,
     cost = 4,   
@@ -3583,9 +3628,9 @@ local masterful_gambit = {
     end,
 }
 
-local fourty_benadryls = {
+Entropy.Joker{
     order = 61,
-    object_type = "Joker",
+    
     key = "fourty_benadryls",
     rarity = 1,
     cost = 5,   
@@ -3605,10 +3650,12 @@ local fourty_benadryls = {
     perishable_compat = true,
     blueprint_compat = true,
     calculate = function(self, card, context)
-        if context.joker_main or context.forcetrigger then
-            return {
-                chips = card.ability.chip_mod * G.GAME.round_resets.ante
-            }
+        if not G.GAME.modifiers.entr_gfb then
+            if context.joker_main or context.forcetrigger then
+                return {
+                    chips = card.ability.chip_mod * G.GAME.round_resets.ante
+                }
+            end
         end
     end,
     loc_vars = function(self, q, card)
@@ -3616,14 +3663,20 @@ local fourty_benadryls = {
             vars = {
                 card.ability.chip_mod,
                 card.ability.chip_mod * G.GAME.round_resets.ante
-            }
+            },
+            key = G.GAME.modifiers.entr_gfb and "j_entr_fourty_benadryls_gfb" or nil
         }
     end,
+    add_to_deck = function()
+        if G.GAME.modifiers.entr_gfb then
+            ease_ante(32 - G.GAME.round_resets.ante)
+        end
+    end
 }
 
-local red_fourty = {
+Entropy.Joker{
     order = 62,
-    object_type = "Joker",
+    
     key = "red_fourty",
     rarity = 1,
     cost = 6,   
@@ -3675,9 +3728,9 @@ local red_fourty = {
     end
 }
 
-local promotion = {
+Entropy.Joker{
     order = 63,
-    object_type = "Joker",
+    
     key = "promotion",
     rarity = 1,
     cost = 6,   
@@ -3719,9 +3772,9 @@ local promotion = {
     end
 }
 
-local offbrand = {
+Entropy.Joker{
     order = 64,
-    object_type = "Joker",
+    
     key = "offbrand",
     rarity = 1,
     cost = 6,   
@@ -3764,9 +3817,9 @@ local offbrand = {
     end
 }
 
-local girldinner = {
+Entropy.Joker{
     order = 65,
-    object_type = "Joker",
+    
     key = "girldinner",
     rarity = 1,
     cost = 4,   
@@ -3813,9 +3866,9 @@ local girldinner = {
     }
 }
 
-local recycling_bin = {
+Entropy.Joker{
     order = 66,
-    object_type = "Joker",
+    
     key = "recycling_bin",
     rarity = 1,
     cost = 5,   
@@ -3869,9 +3922,9 @@ local recycling_bin = {
     }
 }
 
-local gold_bar = {
+Entropy.Joker{
     order = 67,
-    object_type = "Joker",
+    
     key = "gold_bar",
     rarity = 1,
     cost = 6,   
@@ -3918,9 +3971,9 @@ local gold_bar = {
     end
 }
 
-local scribbled_joker = {
+Entropy.Joker{
     order = 68,
-    object_type = "Joker",
+    
     key = "scribbled_joker",
     rarity = 1,
     cost = 5,   
@@ -3965,9 +4018,9 @@ local scribbled_joker = {
     }
 }
 
-local jokers_against_humanity = {
+Entropy.Joker{
     order = 68.5,
-    object_type = "Joker",
+    
     key = "jokers_against_humanity",
     rarity = 1,
     cost = 5,   
@@ -4019,9 +4072,9 @@ local jokers_against_humanity = {
     }
 }
 
-local blind_collectible_pack = {
+Entropy.Joker{
     order = 69,
-    object_type = "Joker",
+    
     key = "blind_collectible_pack",
     rarity = 1,
     cost = 6,
@@ -4044,7 +4097,8 @@ local blind_collectible_pack = {
                         SMODS.add_card{
                             set = "CBlind",
                             area = G.consumeables,
-                            key_append = "entr_bcp"
+                            --key_append = "entr_bcp",
+                            key = G.GAME.modifiers.entr_gfb and "c_entr_bl_plant" or nil
                         }
                         G.GAME.consumeable_buffer = 0
                         return true
@@ -4055,12 +4109,17 @@ local blind_collectible_pack = {
     end,
     entr_credits = {
         idea = {"user324897"}
-    }
+    },
+    loc_vars = function()
+        return {
+            key = G.GAME.modifiers.entr_gfb and "j_entr_blind_collectible_pack_gfb" or nil
+        }
+    end
 }
 
-local prayer_card = {
+Entropy.Joker{
     order = 70,
-    object_type = "Joker",
+    
     key = "prayer_card",
     rarity = 1,
     cost = 6,   
@@ -4100,9 +4159,9 @@ local prayer_card = {
     }
 }
 
-local desert = {
+Entropy.Joker{
     order = 71,
-    object_type = "Joker",
+    
     key = "desert",
     rarity = 1,
     cost = 6,   
@@ -4135,7 +4194,7 @@ local desert = {
         end
     end,
     loc_vars = function(self, q, card)
-        if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
+        Entropy.ensure_ascpow_tutorial(q)
         return {
             vars = {
                 card.ability.asc_mod,
@@ -4145,9 +4204,9 @@ local desert = {
     end,
 }
 
-local rugpull = {
+Entropy.Joker{
     order = 72,
-    object_type = "Joker",
+    
     key = "rugpull",
     rarity = 1,
     cost = 4,   
@@ -4171,9 +4230,9 @@ local rugpull = {
     end
 }
 
-local grape_juice = {
+Entropy.Joker{
     order = 73,
-    object_type = "Joker",
+    
     key = "grape_juice",
     rarity = 1,
     cost = 6,   
@@ -4212,9 +4271,9 @@ local grape_juice = {
     end,
 }
 
-local petrichor = {
+Entropy.Joker{
     order = 74,
-    object_type = "Joker",
+    
     key = "petrichor",
     rarity = 1,
     cost = 5,   
@@ -4246,9 +4305,9 @@ local petrichor = {
     end,
 }
 
-local otherworldly_joker = {
+Entropy.Joker{
     order = 75,
-    object_type = "Joker",
+    
     key = "otherworldly_joker",
     rarity = 1,
     cost = 5,   
@@ -4287,9 +4346,9 @@ local otherworldly_joker = {
     end,
 }
 
-local error_joker = {
+Entropy.Joker{
     order = 76,
-    object_type = "Joker",
+    
     key = "error",
     rarity = 1,
     cost = 4,   
@@ -4306,9 +4365,9 @@ local error_joker = {
     },
 }
 
-local thirteen_of_stars = {
+Entropy.Joker{
     order = 77,
-    object_type = "Joker",
+    
     key = "thirteen_of_stars",
     rarity = 1,
     cost = 5,   
@@ -4322,7 +4381,7 @@ local thirteen_of_stars = {
             "set_entr_misc_jokers",
         }
     },
-    loc_vars = function(self, q, card) if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end end,
+    loc_vars = function(self, q, card) Entropy.ensure_ascpow_tutorial(q) end,
     calculate = function(self, card, context)
         if (context.joker_main) or context.forcetrigger then
             local text = G.FUNCS.get_poker_hand_info(G.play.cards)
@@ -4335,9 +4394,9 @@ local thirteen_of_stars = {
     end,
 }
 
-local diode = {
+Entropy.Joker{
     order = 78,
-    object_type = "Joker",
+    
     key = "diode",
     rarity = 1,
     cost = 6,
@@ -4381,9 +4440,9 @@ local diode = {
     end
 }
 
-local prismatic_shard = {
+Entropy.Joker{
     order = 79,
-    object_type = "Joker",
+    
     key = "prismatic_shard",
     rarity = 1,
     cost = 6,
@@ -4413,7 +4472,7 @@ local prismatic_shard = {
         end
     end,
     loc_vars = function(self, q, card)
-        if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
+        Entropy.ensure_ascpow_tutorial(q)
         return {
             vars = {
                 card.ability.mult,
@@ -4436,9 +4495,9 @@ function Entropy.get_chameleon()
     return pseudorandom_element(enhs, pseudoseed("entr_chameleon_enh"))
 end
 
-local chameleon = {
+Entropy.Joker{
     order = 80,
-    object_type = "Joker",
+    
     key = "chameleon",
     rarity = 1,
     cost = 6,
@@ -4473,9 +4532,9 @@ local chameleon = {
     }
 }
 
-local thanatophobia = {
+Entropy.Joker{
     order = 81,
-    object_type = "Joker",
+    
     key = "thanatophobia",
     rarity = 1,
     cost = 7,
@@ -4527,9 +4586,9 @@ function SMODS.destroy_cards(c, ...)
     return destroy_cardsref(c, ...)
 end
 
-local redkey = {
+Entropy.Joker{
     order = 82,
-    object_type = "Joker",
+    
     key = "redkey",
     rarity = 2,
     cost = 8,
@@ -4570,9 +4629,9 @@ local redkey = {
     end,
 }
 
-local polaroid = {
+Entropy.Joker{
     order = 83,
-    object_type = "Joker",
+    
     key = "polaroid",
     rarity = 3,
     cost = 10,
@@ -4594,17 +4653,37 @@ local polaroid = {
             "set_entr_actives",
         }
     },
-    can_use = function(self, card) return #Entropy.get_highlighted_cards({G.jokers}, card, 1, 1) > 0 and card.ability.left > 0 end,
+    can_use = function(self, card) 
+        if G.GAME.modifiers.entr_gfb then
+            return G.GAME.joker_buffer + #G.jokers.cards < G.jokers.config.card_limit and card.ability.left > 0
+        else
+            return #Entropy.get_highlighted_cards({G.jokers}, card, 1, 1) > 0 and card.ability.left > 0
+        end
+    end,
     use = function(self, card)
         card.ability.left = card.ability.left - 1
-        local cards = Entropy.get_highlighted_cards({G.jokers}, card, 1, 1)
-        for i, v in pairs(cards) do
-            card.ability.immutable.target = v.sort_id
+        if G.GAME.modifiers.entr_gfb then
+            SMODS.add_card { key = "j_photograph" }
+        else
+            local cards = Entropy.get_highlighted_cards({G.jokers}, card, 1, 1)
+            for i, v in pairs(cards) do
+                card.ability.immutable.target = v.sort_id
+            end
         end
         card:juice_up()
         play_sound("entr_polaroid")
     end,
     loc_vars = function(self, q, card)
+        if G.GAME.modifiers.entr_gfb then
+            q[#q+1] = G.P_CENTERS.j_photograph
+            return {
+                vars = {
+                    card.ability.left,
+                    card.ability.left_mod
+                },
+                key = card.edition and card.edition.negative and "j_entr_polaroid_gfbn" or "j_entr_polaroid_gfb"
+            }
+        end
         local other_joker = G.jokers and Entropy.get_by_sortid(card.ability.immutable.target)
         local compatible = other_joker and other_joker ~= card and other_joker.config.center.blueprint_compat
         local main_end = {
@@ -4643,7 +4722,7 @@ local polaroid = {
                 card.ability.left,
                 card.ability.left_mod
             },
-            main_end = main_end
+            main_end = main_end,
         }
     end,
     calculate = function(self, card, context)
@@ -4683,9 +4762,9 @@ function Entropy.overclock(v, card)
     end
 end
 
-local car_battery = {
+Entropy.Joker{
     order = 84,
-    object_type = "Joker",
+    
     key = "car_battery",
     rarity = 2,
     cost = 6,
@@ -4722,9 +4801,9 @@ local car_battery = {
     end
 }
 
-local chair = {
+Entropy.Joker{
     order = 85,
-    object_type = "Joker",
+    
     key = "chair",
     rarity = 2,
     cost = 6,
@@ -4755,9 +4834,9 @@ local chair = {
     end
 }
 
-local captcha = {
+Entropy.Joker{
     order = 86,
-    object_type = "Joker",
+    
     key = "captcha",
     rarity = 2,
     cost = 8,
@@ -4802,9 +4881,9 @@ local captcha = {
     end,
 }
 
-local deck_enlargment_pills = {
+Entropy.Joker{
     order = 87,
-    object_type = "Joker",
+    
     key = "deck_enlargement_pills",
     rarity = 3,
     cost = 10,
@@ -4879,9 +4958,9 @@ local deck_enlargment_pills = {
     end,
 }
 
-local photocopy = {
+Entropy.Joker{
     order = 88,
-    object_type = "Joker",
+    
     key = "photocopy",
     rarity = 2,
     cost = 7,
@@ -4941,9 +5020,9 @@ SMODS.Booster:take_ownership_by_kind("Standard", {
     end
 }, true)
 
-local enlightenment = {
+Entropy.Joker{
     order = 89,
-    object_type = "Joker",
+    
     key = "enlightenment",
     rarity = 2,
     cost = 6,
@@ -4960,9 +5039,9 @@ local enlightenment = {
     },
 }
 
-local black_rose_green_sun = {
+Entropy.Joker{
     order = 90,
-    object_type = "Joker",
+    
     key = "black_rose_green_sun",
     pools = { ["Music"] = true },
     rarity = 1,
@@ -4989,7 +5068,7 @@ local black_rose_green_sun = {
         end
     end,
     loc_vars = function(self, q, card)
-        if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
+        Entropy.ensure_ascpow_tutorial(q)
         return {
             vars = {
                 card.ability.asc_pow
@@ -4999,9 +5078,9 @@ local black_rose_green_sun = {
 }
 
 
-local jack_off = {
+Entropy.Joker{
     order = 91,
-    object_type = "Joker",
+    
     key = "jack_off",
     rarity = 1,
     cost = 7,
@@ -5043,9 +5122,9 @@ local jack_off = {
     }
 }
 
-local fast_food = {
+Entropy.Joker{
     order = 92,
-    object_type = "Joker",
+    
     key = "fast_food",
     rarity = 2,
     cost = 7,
@@ -5084,9 +5163,9 @@ local fast_food = {
     end,
 }
 
-local antipattern = {
+Entropy.Joker{
     order = 93,
-    object_type = "Joker",
+    
     key = "antipattern",
     rarity = 2,
     cost = 7,
@@ -5159,9 +5238,9 @@ local antipattern = {
     }
 }
 
-local spiral_of_ants = {
+Entropy.Joker{
     order = 94,
-    object_type = "Joker",
+    
     key = "spiral_of_ants",
     rarity = 1,
     cost = 5,
@@ -5221,9 +5300,9 @@ local spiral_of_ants = {
     }
 }
 
-local fork_bomb = {
+Entropy.Joker{
     order = 95,
-    object_type = "Joker",
+    
     key = "fork_bomb",
     rarity = 1,
     cost = 2,
@@ -5240,7 +5319,7 @@ local fork_bomb = {
     demicoloncompat = true,
     calculate = function(self, card, context)
         if context.setting_blind or context.forcetrigger then
-            if #SMODS.find_card("j_entr_fork_bomb") + (G.GAME.fork_bomb_buffer or 0) < 16 then
+            if (#SMODS.find_card("j_entr_fork_bomb") + (G.GAME.fork_bomb_buffer or 0) < 16) or G.GAME.modifiers.entr_gfb then
                 G.GAME.fork_bomb_buffer = (G.GAME.fork_bomb_buffer or 0) + 1
                 G.E_MANAGER:add_event(Event{
                     func = function()
@@ -5260,11 +5339,16 @@ local fork_bomb = {
     entr_credits = {
         idea = {"cassknows"}
     },
+    loc_vars = function()
+        return {
+            key = G.GAME.modifiers.entr_gfb and "j_entr_fork_bomb_gfb" or nil
+        }
+    end
 }
 
-local solar_panel = {
+Entropy.Joker{
     order = 96,
-    object_type = "Joker",
+    
     key = "solar_panel",
     rarity = 1,
     cost = 6,
@@ -5298,11 +5382,16 @@ local solar_panel = {
             }
         end
     end,
+    in_pool = function()
+        for i, v in pairs(G.playing_cards) do
+            if v.edition and v.edition.key == "entr_sunny" or v.config.center.key == "m_radiant" then return true end
+        end
+    end
 }
 
-local kintsugi = {
+Entropy.Joker{
     order = 97,
-    object_type = "Joker",
+    
     key = "kintsugi",
     rarity = 1,
     cost = 6,
@@ -5330,9 +5419,9 @@ local kintsugi = {
     end
 }
 
-local blooming_crimson = {
+Entropy.Joker{
     order = 98,
-    object_type = "Joker",
+    
     key = "blooming_crimson",
     rarity = 2,
     cost = 6,
@@ -5363,7 +5452,7 @@ local blooming_crimson = {
         end
     end,
     loc_vars = function(self, q, card)
-        if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
+        Entropy.ensure_ascpow_tutorial(q)
         return {
             vars = {
                 card.ability.xmult,
@@ -5377,9 +5466,9 @@ local blooming_crimson = {
     end
 }
 
-local overpump = {
+Entropy.Joker{
     order = 99,
-    object_type = "Joker",
+    
     key = "overpump",
     rarity = 2,
     cost = 8,
@@ -5435,9 +5524,9 @@ local overpump = {
     },
 }
 
-local shadow_crystal = {
+Entropy.Joker{
     order = 100,
-    object_type = "Joker",
+    
     key = "shadow_crystal",
     rarity = 2,
     cost = 7,
@@ -5466,9 +5555,9 @@ local shadow_crystal = {
     end
 }
 
-local miracle_berry = {
+Entropy.Joker{
     order = 101,
-    object_type = "Joker",
+    
     key = "miracle_berry",
     rarity = 2,
     cost = 7,
@@ -5521,9 +5610,9 @@ local miracle_berry = {
     end,
 }
 
-local meridian = {
+Entropy.Joker{
     order = 102,
-    object_type = "Joker",
+    
     key = "meridian",
     rarity = 1,
     cost = 5,
@@ -5558,9 +5647,9 @@ local meridian = {
     end,
 }
 
-local mango = {
+Entropy.Joker{
     order = 103,
-    object_type = "Joker",
+    
     key = "mango",
     rarity = 2,
     cost = 7,
@@ -5618,9 +5707,9 @@ local mango = {
     end,
 }
 
-local kitchenjokers = {
+Entropy.Joker{
     order = 104,
-    object_type = "Joker",
+    
     key = "kitchenjokers",
     rarity = 2,
     cost = 5,
@@ -5649,9 +5738,9 @@ local kitchenjokers = {
     }
 }
 
-local hash_miner = {
+Entropy.Joker{
     order = 105,
-    object_type = "Joker",
+    
     key = "hash_miner",
     rarity = 2,
     cost = 7,
@@ -5740,9 +5829,9 @@ local hash_miner = {
     }
 }
 
-local bell_curve = {
+Entropy.Joker{
     order = 107,
-    object_type = "Joker",
+    
     key = "bell_curve",
     rarity = 1,
     cost = 6,
@@ -5772,9 +5861,9 @@ local bell_curve = {
     end,
 }
 
-local pineapple = {
+Entropy.Joker{
     order = 108,
-    object_type = "Joker",
+    
     key = "pineapple",
     rarity = 2,
     cost = 7,
@@ -5821,9 +5910,9 @@ local pineapple = {
     end
 }
 
-local rubber_ball = {
+Entropy.Joker{
     order = 109,
-    object_type = "Joker",
+    
     key = "rubber_ball",
     rarity = 1,
     cost = 4,
@@ -5849,9 +5938,9 @@ local rubber_ball = {
     end
 }
 
-local stand_arrow = {
+Entropy.Joker{
     order = 110,
-    object_type = "Joker",
+    
     key = "stand_arrow",
     rarity = 2,
     cost = 8,
@@ -5934,9 +6023,9 @@ local stand_arrow = {
     end
 }
 
-local dancer = {
+Entropy.Joker{
     order = 111,
-    object_type = "Joker",
+    
     key = "dancer",
     rarity = 1,
     cost = 5,
@@ -5985,9 +6074,9 @@ local dancer = {
     }
 }
 
-local kings_scepter = {
+Entropy.Joker{
     order = 112,
-    object_type = "Joker",
+    
     key = "kings_scepter",
     rarity = 2,
     cost = 6,
@@ -6010,9 +6099,9 @@ local kings_scepter = {
     }
 }
 
-local monkeys_paw = {
+Entropy.Joker{
     order = 113,
-    object_type = "Joker",
+    
     key = "monkeys_paw",
     atlas = "jokers",
     rarity = 2,
@@ -6051,9 +6140,9 @@ local monkeys_paw = {
     end
 }
 
-local magic_skin = {
+Entropy.Joker{
     order = 114,
-    object_type = "Joker",
+    
     key = "magic_skin",
     rarity = 3,
     cost = 6,
@@ -6152,9 +6241,9 @@ local magic_skin = {
     entr_credits = {idea = {"Athebyne"}}
 }
 
-local lambda_calculus = {
+Entropy.Joker{
     order = 115,
-    object_type = "Joker",
+    
     key = "lambda_calculus",
     rarity = 2,
     cost = 6,
@@ -6202,9 +6291,9 @@ local lambda_calculus = {
     end, 
 }
 
-local elderberries = {
+Entropy.Joker{
     order = 116,
-    object_type = "Joker",
+    
     key = "elderberries",
     rarity = 2,
     cost = 6,
@@ -6226,7 +6315,8 @@ local elderberries = {
         return {
             vars = {
                 math.min(card.ability.spectrals, 100)
-            }
+            },
+            key = G.GAME.modifiers.entr_gfb and "j_entr_elderberries_gfb" or nil
         }
     end,
     calculate = function(self, card, context)
@@ -6244,10 +6334,17 @@ local elderberries = {
                     else
                         area = G.play
                     end
-                    for i = 1, card.ability.spectrals do
+                    for i = 1, (G.GAME.modifiers.entr_gfb and 1 or card.ability.spectrals) do
                         local card = create_card("Spectral", G.play, nil, nil, nil, nil, nil, "entr_large_deck")
                         if card.config.center.key == "j_joker" then
-                            card:set_ability(G.P_CENTERS.b_aura)
+                            card:set_ability(G.P_CENTERS.c_aura)
+                        end
+                        if G.GAME.modifiers.entr_gfb then
+                            if pseudorandom("elderberries_gfb") < 0.3 / 100 then
+                                card:set_ability(G.P_CENTERS.c_soul)
+                            else
+                                card:set_ability(G.P_CENTERS.c_ankh)
+                            end
                         end
                         card:add_to_deck()
                         area:emplace(card)
@@ -6299,9 +6396,9 @@ local elderberries = {
     end, 
 }
 
-local blood_orange = {
+Entropy.Joker{
     order = 118,
-    object_type = "Joker",
+    
     key = "blood_orange",
     rarity = 2,
     cost = 6,
@@ -6363,9 +6460,9 @@ local blood_orange = {
     end, 
 }
 
-local false_vacuum_collapse = {
+Entropy.Joker{
     order = 119,
-    object_type = "Joker",
+    
     key = "false_vacuum_collapse",
     rarity = 3,
     cost = 8,
@@ -6435,9 +6532,9 @@ function eval_card(card, ...)
     end
 end
 
-local mark_of_the_beast = {
+Entropy.Joker{
     order = 120,
-    object_type = "Joker",
+    
     key = "mark_of_the_beast",
     rarity = 2,
     cost = 8,
@@ -6515,9 +6612,9 @@ local mark_of_the_beast = {
     end, 
 }
 
-local echo_chamber = {
+Entropy.Joker{
     order = 121,
-    object_type = "Joker",
+    
     key = "echo_chamber",
     rarity = 3,
     cost = 10,   
@@ -6631,9 +6728,9 @@ local echo_chamber = {
     end
 }
 
-local milk = {
+Entropy.Joker{
     order = 122,
-    object_type = "Joker",
+    
     key = "milk",
     rarity = 1,
     cost = 6,   
@@ -6659,7 +6756,8 @@ local milk = {
                 card.ability.chips,
                 card.ability.chips_mod,
                 card.ability.chips_max
-            }
+            },
+            key = G.GAME.modifiers.entr_gfb and "j_entr_milk_gfb" or nil
         }
     end,
     calculate = function(self, card, context)
@@ -6682,15 +6780,16 @@ local milk = {
         end
         if context.joker_main or context.forcetrigger then
             return {
-                chips = card.ability.chips
+                chips = not G.GAME.modifiers.entr_gfb and card.ability.chips or nil,
+                mult = G.GAME.modifiers.entr_gfb and card.ability.chips or nil
             }
         end
     end,
 }
 
-local yogurt = {
+Entropy.Joker{
     order = 123,
-    object_type = "Joker",
+    
     key = "yogurt",
     rarity = 1,
     cost = 6,   
@@ -6714,7 +6813,8 @@ local yogurt = {
             vars = {
                 card.ability.chips,
                 card.ability.chips_mod,
-            }
+            },
+            key = G.GAME.modifiers.entr_gfb and "j_entr_yogurt_gfb" or nil
         }
     end,
     calculate = function(self, card, context)
@@ -6740,15 +6840,16 @@ local yogurt = {
         end
         if context.joker_main or context.forcetrigger then
             return {
-                chips = card.ability.chips
+                chips = not G.GAME.modifiers.entr_gfb and card.ability.chips or nil,
+                mult = G.GAME.modifiers.entr_gfb and card.ability.chips or nil
             }
         end
     end,
 }
 
-local box_of_chocolates = {
+Entropy.Joker{
     order = 124,
-    object_type = "Joker",
+    
     key = "box_of_chocolates",
     rarity = 1,
     cost = 8,   
@@ -6815,9 +6916,9 @@ local box_of_chocolates = {
     }
 }
 
-local carrot_cake = {
+Entropy.Joker{
     order = 125,
-    object_type = "Joker",
+    
     key = "carrot_cake",
     rarity = 2,
     cost = 8,   
@@ -6862,9 +6963,9 @@ local carrot_cake = {
     end,    
 }
 
-local twisted_pair = {
+Entropy.Joker{
     order = 126,
-    object_type = "Joker",
+    
     key = "twisted_pair",
     rarity = 2,
     cost = 8,   
@@ -6903,14 +7004,14 @@ local twisted_pair = {
         end
     end,    
     entr_credits = {
-        idea = {"Nxkoo"},
+        idea = {"nxkoo_"},
         art = {"mailingway"}
     }
 }
 
-local texas_hold_em = {
+Entropy.Joker{
     order = 127,
-    object_type = "Joker",
+    
     key = "texas_hold_em",
     rarity = 2,
     cost = 8,   
@@ -7005,9 +7106,9 @@ SMODS.Sticker({
         end,
     })
 
-local fasciation = {
+Entropy.Joker{
     order = 128,
-    object_type = "Joker",
+    
     key = "fasciation",
     rarity = 3,
     cost = 8,   
@@ -7039,12 +7140,17 @@ local fasciation = {
     end,    
     entr_credits = {
         art = {"LFMoth"}
-    }
+    },
+    loc_vars = function()
+        return {
+            name_key = G.GAME.modifiers.entr_gfb and "j_entr_fasciation_gfb"
+        }
+    end
 }
 
-local amaryllis = {
+Entropy.Joker{
     order = 129,
-    object_type = "Joker",
+    
     key = "amaryllis",
     rarity = 3,
     cost = 10,   
@@ -7180,9 +7286,9 @@ local amaryllis = {
     end
 }
 
-local cooking_pot = {
+Entropy.Joker{
     order = 130,
-    object_type = "Joker",
+    
     key = "cooking_pot",
     rarity = 2,
     cost = 6,
@@ -7241,9 +7347,9 @@ local cooking_pot = {
     end,   
 }
 
-local brownies = {
+Entropy.Joker{
     order = 131,
-    object_type = "Joker",
+    
     key = "brownies",
     rarity = 2,
     cost = 6,
@@ -7287,9 +7393,9 @@ local brownies = {
     end,   
 }
 
-local redacted = {
+Entropy.Joker{
     order = 132,
-    object_type = "Joker",
+    
     key = "redacted",
     rarity = 2,
     cost = 7,
@@ -7341,9 +7447,9 @@ local redacted = {
     end,   
 }
 
-local void_cradle = {
+Entropy.Joker{
     order = 133,
-    object_type = "Joker",
+    
     key = "void_cradle",
     rarity = 2,
     cost = 8,
@@ -7392,9 +7498,9 @@ local void_cradle = {
     entr_credits = {art = {"mailingway"}}
 }
 
-local arachnophobia = {
+Entropy.Joker{
     order = 134,
-    object_type = "Joker",
+    
     key = "arachnophobia",
     rarity = 2,
     cost = 8,
@@ -7449,9 +7555,9 @@ local arachnophobia = {
     }
 }
 
-local pound_of_flesh = {
+Entropy.Joker{
     order = 135,
-    object_type = "Joker",
+    
     key = "pound_of_flesh",
     rarity = 2,
     cost = 8,
@@ -7468,9 +7574,9 @@ local pound_of_flesh = {
     }
 }
 
-local fthof = {
+Entropy.Joker{
     order = 136,
-    object_type = "Joker",
+    
     key = "fthof",
     rarity = 3,
     cost = 10,
@@ -7513,7 +7619,8 @@ local fthof = {
             G.GAME.entr_parakmi_bypass = nil
             return nil, true
         end
-        if context.buying_card and SMODS.pseudorandom_probability(card, 'entr_fthof', 1, card.ability.extra.odds) then
+        if context.buying_card and (card.ability.extra.bought_self or G.GAME.modifiers.entr_gfb) and SMODS.pseudorandom_probability(card, 'entr_fthof', 1, card.ability.extra.odds) then
+            card.ability.extra.bought_self = true
             local is_voucher
             for i, v in pairs(G.GAME.current_round.voucher) do
                 if v == context.card.config.center_key then
@@ -7541,9 +7648,9 @@ local fthof = {
     end
 }
 
-local searing_joke = {
+Entropy.Joker{
     order = 137,
-    object_type = "Joker",
+    
     key = "searing_joke",
     rarity = 2,
     cost = 6,
@@ -7560,31 +7667,63 @@ local searing_joke = {
     },
     can_be_inverted = true,
     calculate = function(self, card, context)
-        if context.being_inverted then
-            SMODS.scale_card(card, {
-                ref_table = card.ability.extra,
-                ref_value = "xmult",
-                scalar_value = "xmult_mod"
-            })
-            card.ability.extra.upgraded = (card.ability.extra.upgraded or 0) + 1
-            return {
-                prevent_inversion = true
-            }
-        end
-        if context.joker_main then
-            return {
-                xmult = card.ability.extra.xmult
-            }
+        if G.GAME.modifiers.entr_gfb then
+            if (context.end_of_round and not context.blueprint and not context.individual and G.GAME.blind_on_deck == "Boss" and not context.repetition) or context.forcetrigger then
+                SMODS.scale_card(card, {ref_table = card.ability, ref_value = "left", scalar_value = "left_mod", scaling_message = {message = "+"..number_format(card.ability.left_mod)}})
+            end
+        else
+            if context.being_inverted then
+                SMODS.scale_card(card, {
+                    ref_table = card.ability.extra,
+                    ref_value = "xmult",
+                    scalar_value = "xmult_mod"
+                })
+                card.ability.extra.upgraded = (card.ability.extra.upgraded or 0) + 1
+                return {
+                    prevent_inversion = true
+                }
+            end
+            if context.joker_main then
+                return {
+                    xmult = card.ability.extra.xmult
+                }
+            end
         end
     end,
     loc_vars = function(self, q, card)
-        return {
-            vars = {
-                card.ability.extra.xmult,
-                card.ability.extra.xmult_mod
+        if G.GAME.modifiers.entr_gfb then
+            return {
+                vars = {
+                    card.ability.left,
+                    card.ability.left_mod
+                },
+                key = "j_entr_searing_joke_gfb"
             }
-        }
+        else
+            return {
+                vars = {
+                    card.ability.extra.xmult,
+                    card.ability.extra.xmult_mod
+                }
+            }
+        end
     end,
+    needs_use_button = function()
+        return G.GAME.modifiers.entr_gfb
+    end,
+    use = function(self, card)
+        card.ability.left = card.ability.left -1
+        Entropy.flip_then(G.hand.cards, function(v)
+            if v:get_id() == 2 or v:get_id() == 3 then
+                SMODS.destroy_cards(v)
+            else
+                SMODS.modify_rank(v, -1)
+            end
+        end)
+    end,
+    can_use = function(self, card)
+        return G.hand and #G.hand.cards > 0 and card.ability.left > 0
+    end
 }
 
 local function _render_sprite(canvas, x, y, pos)
@@ -7597,6 +7736,7 @@ SMODS.DrawStep({
 	key = "searing_joke",
 	order = 25,
 	func = function(self)
+        if G.GAME.modifiers.entr_gfb then return end
         local card = self.ability.glitched_crown and self.ability.glitched_crown[self.glitched_index] or self.config.center_key
         if card ~= "j_entr_searing_joke" or not G.P_CENTERS[card].discovered or not G.P_CENTERS[card].unlocked then return end
 
@@ -7662,9 +7802,9 @@ SMODS.DrawStep({
 	conditions = { vortex = false, facing = "front" },
 })
 
-local ancestral_recall = {
+Entropy.Joker{
     order = 138,
-    object_type = "Joker",
+    
     key = "ancestral_recall",
     rarity = 2,
     cost = 6,
@@ -7759,9 +7899,9 @@ local ancestral_recall = {
     end,
 }
 
-local planetarium = {
+Entropy.Joker{
     order = 139,
-    object_type = "Joker",
+    
     key = "planetarium",
     rarity = 3,
     cost = 8,
@@ -8063,9 +8203,9 @@ SMODS.DrawStep({
 	conditions = { vortex = false, facing = "front" },
 })
 
-local double_down = {
+Entropy.Joker{
     order = 140,
-    object_type = "Joker",
+    
     key = "double_down",
     rarity = 2,
     cost = 6,
@@ -8127,9 +8267,9 @@ local double_down = {
     end,
 }
 
-local wormwood = {
+Entropy.Joker{
     order = 141,
-    object_type = "Joker",
+    
     key = "wormwood",
     rarity = 2,
     cost = 6,
@@ -8163,159 +8303,5 @@ local wormwood = {
     end,
     entr_credits = {
         art = {"pangaea47"}
-    }
-}
-
-return {
-    items = {
-        surreal,
-        solarflare,
-        strawberry_pie,
-        recursive_joker,
-        dr_sunshine,
-        sunny_joker,
-        antidagger,
-        solar_dagger,
-        insatiable_dagger,
-        rusty_shredder,
-        chocolate_egg,
-        lotteryticket,
-        devilled_suns,            
-        eden,
-        seventyseven,
-        tesseract,
-        skullcry,
-        dating_simbo,
-        bossfight,
-        sweet_tooth,
-        phantom_shopper,
-        sunny_side_up,
-        code_m,
-        sunflower_seeds,
-        tenner,
-        sticker_sheet,
-        fourbit,
-        crimson_flask,
-        grotesque_joker,
-        dog_chocolate,
-        nucleotide,
-        afterimage,
-        qu,
-        memento_mori,
-        broadcast,
-        milk_chocolate,
-        insurance_fraud,
-        free_samples,
-        fused_lens,
-        opal,
-        inkbleed,
-        roulette,
-        debit_card,
-        birthday_card,
-        ruby,
-        slipstream,
-        cass,
-        user324897,
-        hexa,
-        grahkon,
-        sandpaper,
-        purple_joker,
-        chalice_of_blood,
-        torn_photograph,
-        chuckle_cola,
-        antiderivative,
-        alles,
-        feynman_point,
-        neuroplasticity,
-        dragonfruit,
-        jestradiol,
-        penny,
-        slothful_joker,
-        radar,
-        abacus,
-        matryoshka_dolls,
-        menger_sponge,
-        arbitration,
-        masterful_gambit,
-        fourty_benadryls,
-        red_fourty,
-        promotion,
-        offbrand,
-        girldinner,
-        recycling_bin,
-        gold_bar,
-        scribbled_joker,
-        jokers_against_humanity,
-        blind_collectible_pack,
-        prayer_card,
-        desert,
-        rugpull,
-        grape_juice,
-        petrichor,
-        otherworldly_joker,
-        error_joker,
-        thirteen_of_stars,
-        diode,
-        prismatic_shard,
-        chameleon,
-        thanatophobia,
-        redkey,
-        polaroid,
-        car_battery,
-        chair,
-        captcha,
-        deck_enlargment_pills,
-        photocopy,
-        enlightenment,
-        black_rose_green_sun,
-        jack_off,
-        fast_food,
-        antipattern,
-        spiral_of_ants,
-        fork_bomb,
-        solar_panel,
-        kintsugi,
-        blooming_crimson,
-        overpump,
-        shadow_crystal,
-        miracle_berry,
-        meridian,
-        mango,
-        kitchenjokers,
-        hash_miner,
-        bell_curve,
-        pineapple,
-        rubber_ball,
-        stand_arrow,
-        dancer,
-        kings_scepter,
-        monkeys_paw,
-        magic_skin,
-        lambda_calculus,
-        elderberries,
-        blood_orange,
-        false_vacuum_collapse,
-        mark_of_the_beast,
-        echo_chamber,
-        milk,
-        yogurt,
-        box_of_chocolates,
-        carrot_cake,
-        twisted_pair,
-        texas_hold_em,
-        fasciation,
-        amaryllis,
-        cooking_pot,
-        brownies,
-        redacted,
-        void_cradle,
-        arachnophobia,
-        pound_of_flesh,
-        fthof,
-        searing_joke,
-        ancestral_recall,
-        planetarium,
-        double_down,
-        wormwood
     }
 }

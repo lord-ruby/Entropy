@@ -1,6 +1,5 @@
-local scenic_route = {
+Entropy.Joker{
     order = 25,
-    object_type = "Joker",
     key = "scenic_route",
     rarity = 2,
     cost = 5,
@@ -40,9 +39,8 @@ local scenic_route = {
     }
 }
 
-local solarflare = {
+Entropy.Joker{
     order = 3,
-    object_type = "Joker",
     key = "solarflare",
     name="entr-solarflare",
     config = {
@@ -128,9 +126,8 @@ local solarflare = {
 	end
 }
 
-local code_m = {
+Entropy.Joker{
     order = 22,
-    object_type = "Joker",
     key = "code_m",
     rarity = 3,
     cost = 10,
@@ -163,12 +160,4 @@ local code_m = {
             end)
         end
 	end,
-}
-
-return {
-    items = {
-        scenic_route,
-        solarflare,
-        code_m
-    }
 }

@@ -1,5 +1,6 @@
-local hyperbolic_chamber = {
-	object_type = "Challenge",
+if (SMODS.Mods["Cryptid"] or {}).can_load then
+SMODS.Challenge{
+	
 	key = "hyperbolic_chamber",
 	order = 1,
 	rules = {
@@ -24,9 +25,12 @@ local hyperbolic_chamber = {
 		type = "Challenge Deck",
 	},
 }
+end
 
 local gsr = Game.start_run
 function Game:start_run(args)
+    G.C.UI.HANDS = copy_table(G.C.BLUE)
+    G.C.UI.DISCARDS = copy_table(G.C.RED)
     G.GAME.EE_SCREEN = nil
         G.butterfly_jokers = CardArea(
             9999, 9999,
@@ -38,6 +42,10 @@ function Game:start_run(args)
     G.HUD_curses = {}
     G.runes = {}
 	gsr(self, args)
+    if not args.savetext then
+        G.GAME.round_resets.blind_choices.Small = get_new_small() or G.GAME.round_resets.blind_choices.Small
+        G.GAME.round_resets.blind_choices.Big = get_new_big() or G.GAME.round_resets.blind_choices.Big
+    end
 	if G.GAME.modifiers.entr_starting_ante_mten and not args.savetext then
         ease_ante(-11, nil, true)
 	end
@@ -77,31 +85,16 @@ function Game:start_run(args)
         G.SPLASH_EE = nil
     end
     if Entropy.is_EE() then
-        if not G.SPLASH_EE then
-            G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
-        end
-        G.E_MANAGER:add_event(Event{
-            trigger = "after",
-            blocking = false,
-            blockable = false,
-            delay = 1 * G.SETTINGS.GAMESPEED,
-            func = function()
-                G.GAME.EE_FADE = 0
-                G.SPLASH_EE:define_draw_steps({{
-                    shader = 'entr_entropic_vortex',
-                    send = {
-                        {name = 'time', ref_table = G.TIMERS, ref_value = 'REAL'},
-                        {name = 'vort_speed', val = 1},
-                        {name = 'colour_1', ref_table = G.C, ref_value = 'BLUE'},
-                        {name = 'colour_2', ref_table = G.C, ref_value = 'WHITE'},
-                        {name = 'mid_flash', val = 0},
-                        {name = 'transgender', ref_table = G.GAME, ref_value = "EE_FADE"},
-                        {name = 'vort_offset', val = (2*90.15315131*os.time())%100000},
-                    }}}
-                )
-                return true
-            end
-        })
+       Entropy.create_ee_splash()
+    end
+    if not G.GAME.blind.disabled and Spectrallib.blind_is("bl_entr_sigma") then
+        ease_colour(G.C.UI.HANDS, {0.8, 0.45, 0.85, 1})
+        ease_colour(G.C.UI.DISCARDS, {0.8, 0.45, 0.85, 1})
+    end
+    if G.GAME.entr_dating_start then
+        local key = G.GAME.entr_current_dialog
+        Entropy.clean_up_dating_sim()
+        Entropy.setup_dating_sim(key)
     end
 end
 
@@ -189,8 +182,8 @@ if not (SMODS.Mods["Cryptid"] or {}).can_load then
     })
 end
 
-local lifelight = {
-    object_type = "Challenge",
+SMODS.Challenge{
+    
 	key = "lifelight",
 	order = 2,
 	restrictions = {
@@ -207,8 +200,8 @@ local lifelight = {
 	},
 }
 
-local vesuvius = {
-    object_type = "Challenge",
+SMODS.Challenge{
+    
 	key = "vesuvius",
 	order = 3,
     jokers = {
@@ -239,8 +232,8 @@ local vesuvius = {
     end
 }
 
-local hyperaccelerated_bongcloud_opening = {
-    object_type = "Challenge",
+SMODS.Challenge{
+    
 	key = "hyperaccelerated_bongcloud_opening",
 	order = 3,
     jokers = {
@@ -254,8 +247,8 @@ local hyperaccelerated_bongcloud_opening = {
 	},
 }
 
-local paycheck_to_paycheck = {
-    object_type = "Challenge",
+SMODS.Challenge{
+    
 	key = "paycheck_to_paycheck",
 	order = 4,
     custom = {
@@ -277,8 +270,8 @@ local paycheck_to_paycheck = {
 }
 
 
-local variety_content = {
-    object_type = "Challenge",
+SMODS.Challenge{
+    
 	key = "variety_content",
 	order = 5,
     jokers = {
@@ -299,8 +292,8 @@ local variety_content = {
 }
 
 
-local riffle_shuffle = {
-    object_type = "Challenge",
+SMODS.Challenge{
+    
 	key = "riffle_shuffle",
 	order = 5,
     jokers = {
@@ -318,8 +311,8 @@ local riffle_shuffle = {
 	},
 }
 
-local phantom_hand_syndrome = {
-    object_type = "Challenge",
+SMODS.Challenge{
+    
 	key = "phantom_hand_syndrome",
 	order = 6,
     rules = {
@@ -342,8 +335,8 @@ local phantom_hand_syndrome = {
 	},
 }
 
-local eco_friendly = {
-    object_type = "Challenge",
+SMODS.Challenge{
+    
 	key = "eco_friendly",
 	order = 7,
     rules = {
@@ -372,18 +365,4 @@ local eco_friendly = {
 	deck = {
 		type = "Challenge Deck",
 	},
-}
-
-return {
-    items = {
-        lifelight,
-        vesuvius,
-        hyperaccelerated_bongcloud_opening,
-        paycheck_to_paycheck,
-        variety_content,
-        riffle_shuffle,
-        phantom_hand_syndrome,
-        eco_friendly,
-        (SMODS.Mods["Cryptid"] or {}).can_load and hyperbolic_chamber or nil
-    }
 }

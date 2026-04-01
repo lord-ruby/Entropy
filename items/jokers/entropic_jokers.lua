@@ -1,5 +1,5 @@
-local epitachyno = {
-    object_type = "Joker",
+Entropy.Joker{
+    
     order = 600,
     key = "epitachyno",
     atlas = "exotic_jokers",
@@ -134,9 +134,9 @@ local epitachyno = {
     }
 }
 
-local helios = {
+Entropy.Joker{
     order = 601,
-    object_type = "Joker",
+    
     key = "helios",
     rarity = "entr_entropic",
     cost = 150,
@@ -230,9 +230,9 @@ local helios = {
 }
 
 if Cryptid.big_num_blacklist then Cryptid.big_num_blacklist["j_entr_xekanos"] = true end
-local xekanos = {
+Entropy.Joker{
     order = 602,
-    object_type = "Joker",
+    
     key = "xekanos",
     rarity = "entr_entropic",
     cost = 150,
@@ -275,9 +275,9 @@ local xekanos = {
     }
 }
 
-local dekatria = {
+Entropy.Joker{
     order = 604,
-    object_type = "Joker",
+    
     key = "dekatria",
     rarity = "entr_entropic",
     cost = 150,
@@ -322,9 +322,9 @@ local dekatria = {
     end,
 }
 
-local anaptyxi = {
+Entropy.Joker{
     order = 605,
-    object_type = "Joker",
+    
     key = "anaptyxi",
     rarity = "entr_entropic",
     cost = 150,
@@ -404,9 +404,9 @@ local anaptyxi = {
     }
 }
 
-local parakmi = {
+Entropy.Joker{
     order = 606,
-    object_type = "Joker",
+    
     key = "parakmi",
     rarity = "entr_entropic",
     cost = 150,
@@ -456,9 +456,9 @@ local parakmi = {
     end
 }
 
-local exousia = {
+Entropy.Joker{
     order = 607,
-    object_type = "Joker",
+    
     key = "exousia",
     rarity = "entr_entropic",
     cost = 150,
@@ -506,9 +506,9 @@ local exousia = {
     end
 }
 
-local akyros = {
+Entropy.Joker{
     order = 608,
-    object_type = "Joker",
+    
     key = "akyros",
     rarity = "entr_entropic",
     cost = 150,
@@ -573,9 +573,9 @@ local function _get_fib(n)
     return res
 end
 
-local katarraktis = {
+Entropy.Joker{
     order = 609,
-    object_type = "Joker",
+    
     key = "katarraktis",
     rarity = "entr_entropic",
     cost = 150,
@@ -631,9 +631,9 @@ SMODS.Font {
   path = "m6x11plusphi.ttf"
 }
 
-local ieros = {
+Entropy.Joker{
     order = 603,
-    object_type = "Joker",
+    
     key = "ieros",
     rarity = "entr_entropic",
     cost = 150,
@@ -658,9 +658,9 @@ local ieros = {
     }
 }
 
-local exelixi = {
+Entropy.Joker{
     order = 610,
-    object_type = "Joker",
+    
     key = "exelixi",
     rarity = "entr_entropic",
     cost = 150,
@@ -708,9 +708,9 @@ local exelixi = {
 }
 
 
-local atomikos = {
+Entropy.Joker{
     order = 611,
-    object_type = "Joker",
+    
     key = "atomikos",
     rarity = "entr_entropic",
     cost = 150,
@@ -771,9 +771,9 @@ local atomikos = {
     end
 }
 
-local apeirostemma = {
+Entropy.Joker{
     order = 612,
-    object_type = "Joker",
+    
     key = "apeirostemma",
     rarity = "entr_entropic",
     cost = 150,
@@ -895,9 +895,9 @@ SMODS.DrawStep({
 	conditions = { vortex = false, facing = "front" },
 })
 
-local prismatikos = {
+Entropy.Joker{
     order = 613,
-    object_type = "Joker",
+    
     key = "prismatikos",
     rarity = "entr_entropic",
     cost = 150,
@@ -983,9 +983,9 @@ local prismatikos = {
     end,
 }
 
-local heimartai = {
+Entropy.Joker{
     order = 614,
-    object_type = "Joker",
+    
     key = "heimartai",
     rarity = "entr_entropic",
     cost = 150,
@@ -1017,24 +1017,4 @@ local heimartai = {
         end
     end,
     entr_credits = {art = {"Lil. Mr. Slipstream"}}
-}
-
-return {
-    items = {
-        epitachyno,
-        helios,
-        xekanos,
-        dekatria,
-        anaptyxi,
-        parakmi,
-        exousia,
-        akyros,
-        katarraktis,
-        ieros,
-        exelixi,
-        atomikos,
-        apeirostemma,
-        prismatikos,
-        heimartai
-    }
 }

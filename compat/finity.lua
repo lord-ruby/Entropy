@@ -93,8 +93,7 @@ if FinisherBossBlindStringMap then
         end,
     }
 
-    local endless_entropy = {
-        object_type = "Joker",
+    Entropy.Joker{
         key = "endlessentropy",
         order = 10^300,
         rarity = "finity_showdown",
@@ -150,8 +149,7 @@ if FinisherBossBlindStringMap then
     }
 
 
-    local scarlet_sun = {
-        object_type = "Joker",
+    Entropy.Joker{
         key = "scarlet_sun",
         order = 10^10 + 1,
         rarity = "finity_showdown",
@@ -192,8 +190,7 @@ if FinisherBossBlindStringMap then
         end,
     }
 
-    local olive_orchard = {
-        object_type = "Joker",
+    Entropy.Joker{
         key = "olive_orchard",
         order = 10^10 + 2,
         rarity = "finity_showdown",
@@ -255,8 +252,7 @@ if FinisherBossBlindStringMap then
         end,
     }
 
-    local burgundy_baracuda = {
-        object_type = "Joker",
+    Entropy.Joker{
         key = "burgundy_baracuda",
         order = 10^10 + 3,
         rarity = "finity_showdown",
@@ -302,8 +298,7 @@ if FinisherBossBlindStringMap then
         end,
     }
 
-    local citrine_comet = {
-        object_type = "Joker",
+    Entropy.Joker{
         key = "citrine_comet",
         order = 10^10 + 4,
         rarity = "finity_showdown",
@@ -333,8 +328,7 @@ if FinisherBossBlindStringMap then
         end,
     }
 
-    local diamond_dawn = {
-        object_type = "Joker",
+    Entropy.Joker{
         key = "diamond_dawn",
         order = 10^10 + 4,
         rarity = "finity_showdown",
@@ -381,8 +375,7 @@ if FinisherBossBlindStringMap then
         end,
     }
 
-    local alabaster_anchor = {
-        object_type = "Joker",
+    Entropy.Joker{
         key = "alabaster_anchor",
         order = 10^10 + 5,
         rarity = "finity_showdown",
@@ -431,20 +424,4 @@ if FinisherBossBlindStringMap then
     FinisherBossBlindStringMap["bl_entr_citrine_comet"] = {"j_entr_citrine_comet", "Citrine Comet"}
     FinisherBossBlindStringMap["bl_entr_diamond_dawn"] = {"j_entr_diamond_dawn", "Diamond Dawn"}
     FinisherBossBlindStringMap["bl_entr_alabaster_anchor"] = {"j_entr_alabaster_anchor", "Alabaster Anchor"}
-    return {
-        items = {
-            scarlet_sun,
-            olive_orchard,
-            burgundy_baracuda,
-            citrine_comet,
-            diamond_dawn,
-            alabaster_anchor,
-            sorrowful_styx,
-            callous_choir,
-            pristine_pandora,
-            condemned_cassandra,
-            limitless_labyrinth,
-            endless_entropy
-        }
-    }
 end

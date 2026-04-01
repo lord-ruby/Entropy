@@ -1,0 +1,113 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = 'functions/misc_functions.lua'
+pattern = '''
+  G.culled_table =  recursive_table_cull{
+    cardAreas = cardAreas,
+    tags = tags,
+    GAME = G.GAME,
+    STATE = G.STATE,
+    ACTION = G.action or nil,
+    BLIND = G.GAME.blind:save(),
+    SCORING_CALC = G.GAME.current_scoring_calculation:save(),
+    BACK = G.GAME.selected_back:save(),
+    VERSION = G.VERSION
+  }
+'''
+position = "at"
+payload = '''
+  local runes = {}
+  for k, v in ipairs(G.runes) do
+    if (type(v) == "table") and v.is and v:is(Tag) then 
+      local tagSer = v:save()
+      if tagSer then runes[k] = tagSer end
+    end
+  end
+  G.culled_table =  recursive_table_cull{
+    cardAreas = cardAreas,
+    tags = tags,
+    runes = runes,
+    GAME = G.GAME,
+    STATE = G.STATE,
+    ACTION = G.action or nil,
+    BLIND = G.GAME.blind:save(),
+    SCORING_CALC = G.GAME.current_scoring_calculation:save(),
+    BACK = G.GAME.selected_back:save(),
+    VERSION = G.VERSION
+  }
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'game.lua'
+pattern = '''check_and_set_high_score('most_money', G.GAME.dollars)'''
+position = 'before'
+match_indent = true
+payload = '''
+if saveTable then 
+    self.runes = {}
+    local runes = {}
+    self.HUD_runes = {}
+    local runes = saveTable.runes or {}
+    for k, v in pairs(runes) do
+        local _tag = Tag("rune_entr_fehu")
+        _tag:load(v)
+        add_rune(_tag, nil, true)
+    end
+end
+'''
+
+[[patches]]
+[patches.pattern]
+target = 'tag.lua'
+pattern = '''
+G.GAME.tag_tally = math.max(self.tally, G.GAME.tag_tally) + 1
+'''
+position = "at"
+payload = '''
+G.GAME.tag_tally = math.max(self.tally or 0, G.GAME.tag_tally or 0) + 1
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/game_object.lua"]'''
+pattern = '''
+if self.draw_hand == true then G.FUNCS.draw_from_deck_to_hand() end
+'''
+position = "at"
+payload = '''
+if self.draw_hand == true or G.GAME.mannaz_draw or next(SMODS.find_card("j_entr_miracle_berry")) or G.GAME.modifiers.entr_parakmi or (next(Entropy.find_runes("rune_entr_oss")) and Entropy.deck_or_sleeve("corrupted")) then G.FUNCS.draw_from_deck_to_hand(); G.GAME.mannaz_draw = nil end
+'''
+match_indent = true 
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''
+ease_dollars(self.sell_cost)
+'''
+position = 'at'
+payload = '''
+local cost = self.sell_cost
+if Entropy.has_rune("rune_entr_othila") then
+    for i, v in pairs(Entropy.find_runes("rune_entr_othila")) do
+        SMODS.calculate_context({rune_triggered = true, rune = v})
+        local ret = v.key and G.P_RUNES[v.key] and G.P_RUNES[v.key]:calculate(v, {selling_card_cost = true, cost = cost, original_cost = self.sell_cost})
+        if ret and ret.cost then
+            cost = ret.cost
+        end
+        v:yep("+", G.C.PURPLE, function()
+            return true
+        end)
+    end
+end
+ease_dollars(cost)
+'''
+match_indent = true

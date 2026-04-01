@@ -1,24 +1,7 @@
 local loadmodsref = SMODS.injectItems
 function SMODS.injectItems(...)
     if Entropy.config.blind_tokens then
-        local results = Entropy.register_blinds()
-        local items = {}
-        if results then
-            if results.init then results.init(results) end
-            if results.items then
-                for i, result in pairs(results.items) do
-                    if not items[result.object_type] then items[result.object_type] = {} end
-                    result.cry_order = result.order
-                    items[result.object_type][#items[result.object_type]+1]=result
-                end
-            end
-        end
-        for i, category in pairs(items) do
-            table.sort(category, function(a, b) return a.order < b.order end)
-            for i2, item in pairs(category) do
-                SMODS[item.object_type](item)
-            end
-        end
+        Entropy.register_blinds()
     end    
     if Cryptid.pin_debuff then
         Cryptid.pin_debuff["entr_entropic"] = true
@@ -35,11 +18,12 @@ function SMODS.injectItems(...)
     if not G.entr_hooked then
 
         local oldfunc = Game.main_menu
-        Game.main_menu = function(change_context)
+        Game.main_menu = function(self, change_context)
             if not G.SAVED_GAME then 
                 G.SAVED_GAME = get_compressed(G.SETTINGS.profile..'/'..'save.jkr')
                 if G.SAVED_GAME ~= nil then G.SAVED_GAME = STR_UNPACK(G.SAVED_GAME) end
             end
+            --EE visual stuff
             if G.SAVED_GAME and G.SAVED_GAME.GAME and G.SAVED_GAME.GAME.EEBuildup then
                 G.GAME.EEBuildup = true
                 G.E_MANAGER:add_event(Event{
@@ -48,35 +32,7 @@ function SMODS.injectItems(...)
                     blockable = false,
                     delay = 0.25 * G.SETTINGS.GAMESPEED,
                     func = function()
-                        G.GAME.EE_SCREEN = true 
-                        G.GAME.EE_R = true
-                        if not G.SPLASH_EE then
-                        G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
-                        G.GAME.EE_FADE = 0
-                        G.GAME.EE_FADE_SPEED = 10
-                        G.E_MANAGER:add_event(Event{
-                            trigger = "after",
-                            blocking = false,
-                            blockable = false,
-                            delay = 0.25 * G.SETTINGS.GAMESPEED,
-                            func = function()
-                            G.GAME.EE_FADE = 0
-                            G.SPLASH_EE:define_draw_steps({{
-                                shader = 'entr_entropic_vortex',
-                                send = {
-                                {name = 'time', ref_table = G.TIMERS, ref_value = 'REAL'},
-                                {name = 'vort_speed', val = 1},
-                                {name = 'colour_1', ref_table = G.C, ref_value = 'BLUE'},
-                                {name = 'colour_2', ref_table = G.C, ref_value = 'WHITE'},
-                                {name = 'mid_flash', val = 0},
-                                {name = 'transgender', ref_table = G.GAME, ref_value = "EE_FADE"},
-                                {name = 'vort_offset', val = (2*90.15315131*os.time())%100000},
-                                }}}
-                            )
-                            return true
-                            end
-                        })
-                        end
+                        Entropy.create_ee_splash()
                         return true
                     end
                 })
@@ -102,7 +58,7 @@ function SMODS.injectItems(...)
                     end
                 })
             end
-            local ret = oldfunc(change_context)
+            local ret = oldfunc(self, change_context)
             G.SPLASH_BACK:define_draw_steps({
                 {
                     shader = "splash",
@@ -285,30 +241,34 @@ function SMODS.injectItems(...)
         })
         SMODS.ObjectTypes.Reference:inject()
 
+        local c = {}
+
+        for i, v in pairs(G.P_CENTERS) do
+            if v.set == "CBlind" then c[#c+1]=v end
+        end
+
         SMODS.ObjectType({
             key = "BlindTokens",
             default = "c_entr_bl_small",
-            cards = {},
+            cards = c,
             inject = function(self)
                 SMODS.ObjectType.inject(self)
-                for i, v in pairs(Entropy.BlindC) do
-                    if G.P_CENTERS[v] then self:inject_card(G.P_CENTERS[v]) end
-                end
+                
             end,
         })
         SMODS.ObjectTypes.BlindTokens:inject()
 
-        G.P_CENTERS.c_entr_bl_entr_alabaster_anchor.entr_credits = {idea = {"cassknows"}}
-        G.P_CENTERS.c_entr_bl_entr_burgundy_baracuda.entr_credits = {idea = {"cassknows"}}
-        G.P_CENTERS.c_entr_bl_entr_citrine_comet.entr_credits = {idea = {"cassknows"}}
-        G.P_CENTERS.c_entr_bl_entr_diamond_dawn.entr_credits = {idea = {"cassknows"}}
-        G.P_CENTERS.c_entr_bl_entr_olive_orchard.entr_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_alabaster_anchor.entr_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_burgundy_baracuda.entr_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_citrine_comet.entr_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_diamond_dawn.entr_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_olive_orchard.entr_credits = {idea = {"cassknows"}}
 
-        G.P_CENTERS.c_entr_bl_entr_styx.entr_credits = {idea = {"cassknows"}}
-        G.P_CENTERS.c_entr_bl_entr_choir.entr_credits = {idea = {"cassknows"}}
-        G.P_CENTERS.c_entr_bl_entr_pandora.entr_credits = {idea = {"cassknows"}}
-        G.P_CENTERS.c_entr_bl_entr_cassandra.entr_credits = {idea = {"cassknows"}}
-        G.P_CENTERS.c_entr_bl_entr_labyrinth.entr_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_styx.entr_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_choir.entr_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_pandora.entr_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_cassandra.entr_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_labyrinth.entr_credits = {idea = {"cassknows"}}
 
         if MP then
             function MP.DECK.ban_card(card_id)
@@ -415,6 +375,7 @@ function SMODS.injectItems(...)
         Cryptid.add_circus_rarity({rarity = "entr_entropic", base_mult = 50, order = 5, colour = Entropy.entropic_gradient}, true) 
         Cryptid.add_circus_rarity({rarity = "entr_reverse_legendary", base_mult = 4, order = 9999, colour = G.C.RARITY.Legendary, hidden=true})
     end
+    Entropy.inject_gfb()
 end
 
 if SMODS.Mods.DereJkr and SMODS.Mods.DereJkr.can_load then
@@ -446,5 +407,157 @@ if SMODS.Mods.DereJkr and SMODS.Mods.DereJkr.can_load then
             self.children.floating_sprite.states.hover.can = false
             self.children.floating_sprite.states.click.can = false
         end
+    end
+end
+
+Entropy.contents = {}
+
+Entropy.REGEX = SMODS.load_file("lib/regex/re.lua", "entr")()
+function Entropy.traverse(tbl, path)
+    path = path or ""
+    local paths = {}
+    local vals = {}
+    local order = {}
+    for i, v in pairs(tbl.order or {}) do
+        if type(i) == "number" then order[v] = i else order[i] = v end
+    end
+    for i, v in pairs(tbl) do
+        local ord = i
+        ord = (order)[i] or (order)[v] or ord
+        vals[#vals+1] = {v, ord, i}
+    end
+    table.sort(vals, function(a, b) return (type(a[2]) == "number" and a[2] or 0) < (type(b[2]) == "number" and b[2] or 0) end)
+    for i, v in pairs(vals) do
+        if type(v[1]) == "string" then 
+            paths[#paths+1] = path.."/"..v[1]
+        elseif type(v[1]) == "table" and v[2] ~= "order" then
+            for i, v in pairs(Entropy.traverse(v[1], path == "" and v[3] or path.."/"..(v[3]))) do
+                paths[#paths+1] = v
+            end
+        end
+    end
+    return paths
+end
+
+function Entropy.load_table(table, path)
+    for i, v in pairs(Entropy.traverse(table, path)) do 
+        if not Entropy.load_directory(v) then
+            assert(SMODS.load_file(v..".lua"))()
+        end
+    end
+end
+
+local blacklist = {
+    assets = true,
+    lovely = true,
+    [".github"] = true,
+    [".git"] = true,
+    ["localization"] = true
+}
+
+local path_len = string.len(Entropy.path) + 1
+function Entropy.nfs_load_file(path)
+	if not path or path == "" then
+		error("No path was provided to load.")
+	end
+	local file_path = path
+	local file_content, err = SMODS.NFS.read(file_path)
+	if not file_content then
+		return nil,
+			"Error reading file '" .. path .. "' for mod with ID '" .. "entr" .. "': " .. err
+	end
+	local short_path = string.sub(path, path_len, path:len())
+	local chunk, err = load(file_content, "=[SMODS " .. "entr" .. ' "' .. short_path .. '"]')
+	if not chunk then
+		return nil,
+			"Error processing file '" .. path .. "' for mod with ID '" .. "entr" .. "': " .. err
+	end
+	return chunk
+end
+
+function Entropy.load_directory(path)
+    local loaded = false
+    local p, reg = Entropy.string_cut(path, "/")
+    local info = SMODS.NFS.getDirectoryItemsInfo(Entropy.path..p.."/")
+    table.sort(info, function(a, b)
+        return a.name < b.name
+    end)
+    local regex = Entropy.REGEX.compile(reg)
+    for _, v in ipairs(info) do
+        if regex:execute(v.name) and v.type ~= "directory" then
+            assert(Entropy.nfs_load_file(Entropy.path..p .. "/" .. v.name))()
+            loaded = true
+        elseif v.type == "directory" then
+            local l = Entropy.load_directory(p.."/"..v.name.."/"..reg)
+            loaded = loaded or l
+        end
+    end
+    return loaded
+end
+
+function Entropy.string_cut(inputstr, sep)
+    if sep == nil then
+        sep = "%s"
+    end
+    local t = {}
+    for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
+        table.insert(t, str)
+    end
+    local str = ""
+    for i, v in pairs(t) do
+        if i ~= #t then str = str..v..(i ~= #t-1 and sep or "") end
+    end
+    return str, t[#t]
+end
+
+SMODS.RuneTag = SMODS.Tag:extend{
+    set = "Rune Tag",
+	pos = { x = 0, y = 0 },
+	config = {},
+	class_prefix = "rune",
+	required_params = {
+		"key",
+	},
+    stack_size = 1,
+	inject = function(self)
+        if not G.P_RUNES then 
+            G.P_RUNES = {}
+        end
+        if not G.P_CENTER_POOLS[self.set] then
+            G.P_CENTER_POOLS[self.set] = {}
+        end
+        G.P_RUNES[self.key] = self
+        G.P_TAGS[self.key] = self -- ew
+        SMODS.insert_pool(G.P_CENTER_POOLS[self.set], self)
+	end,
+    in_pool = function()
+        return false
+    end,
+    loc_vars = function(self, q, card)
+        return {
+            key = Entropy.providence_ui_active(card) and card.key.."_providence" or card.key
+        }
+    end,
+    no_tags = true
+}
+
+local _loading_funcs = {
+    "Joker",
+    "Consumable",
+    "Tag",
+    "Edition",
+    "Back",
+    "Blind",
+    "Voucher",
+    "Enhancement",
+    "Sticker",
+    "Seal",
+    "RuneTag"
+}
+local hooks = {}
+for i, v in pairs(_loading_funcs) do
+    Entropy[v] = function(tbl, ...)
+        Entropy.contents[v] = Entropy.contents[v] or {}
+        Entropy.contents[v][#Entropy.contents[v]+1] = tbl
     end
 end

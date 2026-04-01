@@ -1,0 +1,202 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "self.cost = math.max(1, math.floor((self.base_cost + self.extra_cost + 0.5)*(100-G.GAME.discount_percent)/100))"
+position = "after"
+payload = '''
+    if G.GAME.entr_shop_price_modifier then
+        self.cost = cry_format(self.cost * G.GAME.entr_shop_price_modifier,'%.2f') end
+    if not G.GAME.modifiers.cry_misprint_min and not G.GAME.entr_shop_price_modifier then self.cost = math.floor(self.cost) end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = 'G.hand.highlighted[i].ability.discarded = true'
+position = "at"
+payload = '''
+if not G.hand.highlighted[i].ability.scarred then 
+  G.hand.highlighted[i].ability.discarded = true 
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "draw_card(G.hand, G.discard, i*100/highlighted_count, 'down', false, G.hand.highlighted[i])"
+position = "at"
+payload = '''
+if not G.hand.highlighted[i].ability.scarred then 
+  draw_card(G.hand, G.discard, i*100/highlighted_count, 'down', false, G.hand.highlighted[i]) 
+  num = (num or 0) + 1
+elseif #G.hand.cards >= G.hand.config.card_limit then
+  o_num = (o_num or 0) + 1
+  overdraw = true
+else
+  num = (num or 0) + 1
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "SMODS.calculate_context({pre_discard = true, full_hand = G.hand.highlighted, hook = hook})"
+position = "before"
+payload = '''
+local num
+local overdraw
+local o_num
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.GAME.round_scores.cards_discarded.amt = G.GAME.round_scores.cards_discarded.amt + #cards"
+position = "before"
+payload = '''
+if overdraw and o_num and o_num > 0 then 
+  SMODS.overdraw_cards = o_num
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''
+if G.GAME.blind.name == 'The Serpent' and
+        G.STATE == G.STATES.DRAW_TO_HAND and
+        not G.GAME.blind.disabled and
+        (G.GAME.current_round.hands_played > 0 or
+        G.GAME.current_round.discards_used > 0) then
+            G.hand.config.card_limits.blind_restriction = hand_space - math.min(#G.deck.cards, 3)
+            hand_space = math.min(#G.deck.cards, 3)
+    end
+'''
+position = "before"
+payload = '''
+if SMODS.overdraw_cards then
+  hand_space = hand_space + SMODS.overdraw_cards
+  SMODS.overdraw_cards = nil
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = '''
+if G.GAME.dollars >= 5 and not G.GAME.modifiers.no_interest then
+	add_round_eval_row({bonus = true, name='interest', pitch = pitch, dollars = G.GAME.interest_amount*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5)})
+	pitch = pitch + 0.06
+	if (not G.GAME.seeded and not G.GAME.challenge) or SMODS.config.seeded_unlocks then
+		if G.GAME.interest_amount*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5) == G.GAME.interest_amount*G.GAME.interest_cap/5 then 
+			G.PROFILES[G.SETTINGS.profile].career_stats.c_round_interest_cap_streak = G.PROFILES[G.SETTINGS.profile].career_stats.c_round_interest_cap_streak + 1
+		else
+			G.PROFILES[G.SETTINGS.profile].career_stats.c_round_interest_cap_streak = 0
+		end
+	end
+	check_for_unlock({type = 'interest_streak'})
+	dollars = dollars + G.GAME.interest_amount*math.min(math.floor(G.GAME.dollars/5), G.GAME.interest_cap/5)
+end
+'''
+position = "at"
+payload = '''
+if G.GAME.dollars >= 5 and not G.GAME.modifiers.no_interest then
+	local interest = Cryptid.get_interest(true)
+    if G.GAME.cry_payload then add_round_eval_row({bonus = true, payload = G.GAME.cry_payload, name='interest_payload', pitch = pitch, dollars = interest}) else
+	add_round_eval_row({bonus = true, name='interest', pitch = pitch, dollars = interest}) end
+    pitch = pitch + 0.06
+    if not G.GAME.seeded and not G.GAME.challenge then
+        if to_big(G.GAME.interest_amount*math.min(math.floor(G.GAME.dollars/Cryptid.interest_rate()), G.GAME.interest_cap/Cryptid.interest_rate())) >= to_big(G.GAME.interest_amount*G.GAME.interest_cap/Cryptid.interest_rate()) then
+            G.PROFILES[G.SETTINGS.profile].career_stats.c_round_interest_cap_streak = G.PROFILES[G.SETTINGS.profile].career_stats.c_round_interest_cap_streak + 1
+        else
+            G.PROFILES[G.SETTINGS.profile].career_stats.c_round_interest_cap_streak = 0
+        end
+    end
+    check_for_unlock({type = 'interest_streak'})
+    dollars = dollars + interest
+    G.GAME.cry_payload = nil
+end'''
+match_indent = true
+
+# interest rate display
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''table.insert(left_text,{n=G.UIT.O, config={object = DynaText({string = {" "..localize{type = 'variable', key = 'interest', vars = {G.GAME.interest_amount, 5, G.GAME.interest_amount*G.GAME.interest_cap/5}}}, colours = {G.C.UI.TEXT_LIGHT}, shadow = true, pop_in = 0, scale = 0.4*scale, silent = true})}})'''
+position = "at"
+payload = '''table.insert(left_text,{n=G.UIT.O, config={object = DynaText({string = {" "..localize{type = 'variable', key = 'interest', vars = {G.GAME.interest_amount, Cryptid.interest_rate(), G.GAME.interest_amount*G.GAME.interest_cap/5}}}, colours = {G.C.UI.TEXT_LIGHT}, shadow = true, pop_in = 0, scale = 0.4*scale, silent = true})}})'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/ui.lua"]'''
+pattern = '''create_option_cycle({options = options, w = 4.5, cycle_shoulders = true, opt_callback = 'SMODS_card_collection_page', current_option = 1, colour = G.ACTIVE_MOD_UI and (G.ACTIVE_MOD_UI.ui_config or {}).collection_option_cycle_colour or G.C.RED, no_pips = true, focus_args = {snap_to = true, nav = 'wide'}})'''
+position = "at"
+payload = '''
+            (_pool and _pool[1] and _pool[1].set == "Rune" and create_toggle{ -- tally function runs way too often but whatever
+                label = localize{ type = "name_text", set = "Voucher", key = "v_entr_providence" }, 
+                w = 0,
+                ref_table = G, 
+                ref_value = "providence_temp" 
+            } or nil),
+            create_option_cycle({options = options, w = 4.5, cycle_shoulders = true, opt_callback = 'SMODS_card_collection_page', current_option = 1, colour = G.ACTIVE_MOD_UI and (G.ACTIVE_MOD_UI.ui_config or {}).collection_option_cycle_colour or G.C.RED, no_pips = true, focus_args = {snap_to = true, nav = 'wide'}})
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+for i=1, highlighted_count do
+'''
+position = "at"
+payload = '''
+G.E_MANAGER:add_event(Event{
+  trigger = "after",
+  blocking = false,
+  func = function()
+      for i, v in pairs(G.discard.cards) do
+          v.already_discarded = nil
+      end
+      for i, v in pairs(G.hand.cards) do
+          v.already_discarded = nil
+      end
+      return true
+  end
+})
+for i=1, highlighted_count do
+  if not G.hand.highlighted[i] or G.hand.highlighted[i].already_discarded then break end
+  G.hand.highlighted[i].already_discarded = true
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/card_draw.lua"]'''
+pattern = '''
+if self.ability.name == 'Invisible Joker' and (self.config.center.discovered or self.bypass_discovery_center) then
+    if self:should_draw_base_shader() then
+        self.children.center:draw_shader('voucher', nil, self.ARGS.send_to_shader)
+    end
+end
+'''
+position = "before"
+payload = '''
+if self.config.center.set == "Omen" and self.sprite_facing == "front" then
+    if self:should_draw_base_shader() then
+      self.children.center:draw_shader('booster', nil, self.ARGS.send_to_shader)
+    end
+end
+'''
+match_indent = true

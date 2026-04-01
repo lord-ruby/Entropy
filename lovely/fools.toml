@@ -1,0 +1,251 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+### Rarity API
+
+# get_badge_colour
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/game_object.lua"]'''
+pattern = '''
+get_rarity_badge = function(self, rarity)
+    local vanilla_rarity_keys = {localize('k_common'), localize('k_uncommon'), localize('k_rare'), localize('k_legendary')}
+    if (vanilla_rarity_keys)[rarity] then
+        return vanilla_rarity_keys[rarity] --compat layer in case function gets the int of the rarity
+    else
+        return localize("k_"..rarity:lower())
+    end
+end,
+'''
+position = 'at'
+match_indent = true
+payload = '''
+get_rarity_badge = function(self, rarity, center)
+    return  Entropy.localize_rarity(center, rarity)
+end,
+'''
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = SMODS.Rarity:get_rarity_badge(card.config.center.rarity) end"
+position = "at"
+payload = "if AUT.card_type == 'Joker' or (AUT.badges and AUT.badges.force_rarity) then card_type = SMODS.Rarity:get_rarity_badge(card.config.center.rarity, card.config.center) end"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "(_c.set == 'Joker' and G.C.RARITY[_c.rarity]) or"
+position = "at"
+payload = "(_c.set == 'Joker' and Entropy.get_rarity_colour(_c.rarity, card, _c)) or"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "if eligible_bosses[k] > min_use then "
+position = "at"
+payload = 'if (type(eligible_bosses[k]) == "number" and eligible_bosses[k] or (eligible_bosses[k] and 1 or 0)) > min_use then '
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = "elseif part.control.E then"
+position = "before"
+payload = '''
+elseif part.control.CANVAS then
+    if not G.CANVASES then G.CANVASES = {} end
+    local cw = part.control.cw or 1920
+    local ch = part.control.ch or 1080
+    local s = part.control.s or 1
+    cw = (cw*desc_scale)
+    ch = (ch*desc_scale)
+    local is = 1/desc_scale
+    if G.CANVASES[part.control.CANVAS] then G.CANVASES[part.control.CANVAS]:remove() end
+    G.CANVASES[part.control.CANVAS] = SMODS.CanvasSprite(
+        {X=0, Y=0, W=(G.CANVAS_DESC_SCALE*s), H=(G.CANVAS_DESC_SCALE*s)*ch/cw, canvasW=cw, canvasH=ch, canvasScale=is}
+    )
+    final_line[#final_line + 1] = {
+        n = G.UIT.O,
+        config = {
+            align = "cm",
+            object = G.CANVASES[part.control.CANVAS]
+        }
+    }
+'''
+match_indent = true
+
+# Sprite in description box
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/utils.lua"]'
+pattern = "elseif part.control.X or part.control.B then"
+position = "before"
+payload = '''
+elseif part.control.CANVAS then
+    if not G.CANVASES then G.CANVASES = {} end
+    local cw = part.control.cw or 1920
+    local ch = part.control.ch or 1080
+    local s = part.control.s or 1
+    cw = (cw*desc_scale)
+    ch = (ch*desc_scale)
+    local is = 1/desc_scale
+    if G.CANVASES[part.control.CANVAS] then G.CANVASES[part.control.CANVAS]:remove() end
+    G.CANVASES[part.control.CANVAS] = SMODS.CanvasSprite(
+        {X=0, Y=0, W=(G.CANVAS_DESC_SCALE*s), H=(G.CANVAS_DESC_SCALE*s)*ch/cw, canvasW=cw, canvasH=ch, canvasScale=is}
+    )
+    final_line[#final_line + 1] = {
+        n = G.UIT.O,
+        config = {
+            align = "cm",
+            object = G.CANVASES[part.control.CANVAS]
+        }
+    }
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''if type == 'Small' then
+    extras = create_UIBox_blind_tag(type, run_info)'''
+position = "at"
+payload = '''
+if type == "Small" and not G.GAME.modifiers.entr_gfb then
+    extras = create_UIBox_blind_tag(type, run_info)
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+elseif not run_info then
+    local dt1 = DynaText({string = {{string = localize('ph_up_ante_1'), colour = G.C.FILTER}}, colours = {G.C.BLACK}, scale = 0.55, silent = true, pop_delay = 4.5, shadow = true, bump = true, maxw = 3})
+'''
+position = "at"
+payload = '''
+elseif not run_info and type ~= "Small" then
+    local dt1 = DynaText({string = {{string = localize('ph_up_ante_1'), colour = G.C.FILTER}}, colours = {G.C.BLACK}, scale = 0.55, silent = true, pop_delay = 4.5, shadow = true, bump = true, maxw = 3})
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''
+if o or t then return o, t end
+'''
+position = "after"
+payload = '''
+return
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "self.GAME.current_round.voucher = forced_voucher and {forced_voucher, spawn = {[forced_voucher] = true }} or SMODS.get_next_vouchers()"
+position = "after"
+payload = '''
+if self.GAME.modifiers.entr_gfb then
+    self.GAME.gfb_quip = pseudorandom_element(G.localization.misc.gfb_quips, pseudoseed("gfb"))
+end
+'''
+match_indent = true
+
+
+# Remove voucher when defeating boss (also for Crimson Stake)
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "G.GAME.current_round.voucher = SMODS.get_next_vouchers()"
+position = "after"
+payload = '''
+if G.GAME.modifiers.entr_gfb then
+    G.GAME.gfb_quip = pseudorandom_element(G.localization.misc.gfb_quips, pseudoseed("gfb"))
+end
+'''
+match_indent = true
+
+# Change empty voucher text on GFB
+# This ain't localized, but that's a vanilla issue anyway
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "{n=G.UIT.T, config={text = 'DEFEAT', scale = 0.6, colour = G.C.WHITE}}"
+position = "at"
+payload = "{n=G.UIT.T, config={text = G.GAME.modifiers.entr_gfb and (G.GAME.gfb_quip[1] or '') or 'DEFEAT', scale = 0.6, colour = G.C.WHITE}}"
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "{n=G.UIT.T, config={text = 'BOSS BLIND', scale = 0.4, colour = G.C.WHITE}}"
+position = "at"
+payload = "{n=G.UIT.T, config={text = G.GAME.modifiers.entr_gfb and (G.GAME.gfb_quip[2] or '') or G.GAME.modifiers.cry_voucher_restock_antes and G.GAME.round_resets.ante % G.GAME.modifiers.cry_voucher_restock_antes == 0 and 'TWO BOSS BLINDS' or 'BOSS BLIND', scale = 0.4, colour = G.C.WHITE}}"
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "{n=G.UIT.T, config={text = 'TO RESTOCK', scale = 0.4, colour = G.C.WHITE}}"
+position = "at"
+payload = "{n=G.UIT.T, config={text = G.GAME.modifiers.entr_gfb and (G.GAME.gfb_quip[3] or '') or 'TO RESTOCK', scale = 0.4, colour = G.C.WHITE}}"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if G.jokers.cards[i] == self then other_joker = G.jokers.cards[i+1] end"
+position = "at"
+payload = "if G.jokers.cards[i] == self then other_joker = G.jokers.cards[i+(G.GAME.modifiers.entr_gfb and -1 or 1)] end"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "other_joker = G.jokers.cards[1]"
+position = "at"
+payload = "other_joker = G.jokers.cards[G.GAME.modifiers.entr_gfb and #G.jokers.cards or 1]"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = "love.graphics.draw(self.CANVAS, 0, 0)"
+position = "at"
+payload = '''
+if G.GAME.modifiers.entr_gfb and next(SMODS.find_card("j_stencil")) then
+    G.STENCIL_CANVAS = G.STENCIL_CANVAS or SMODS.create_canvas()
+    G.STENCIL_CANVAS:renderTo(function()
+        love.graphics.clear({0,0,0,1})
+        love.graphics.draw(self.CANVAS, 0, 0)
+    end)
+    love.graphics.setCanvas()
+    love.graphics.clear({0,0,0,1})
+    love.graphics.stencil(Entropy.stencil_stencil, "increment", 1)
+    love.graphics.setStencilTest("greater", 0)
+    love.graphics.draw(G.STENCIL_CANVAS, 0, 0)
+else
+    love.graphics.draw(self.CANVAS, 0, 0)
+end
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = "engine/controller.lua"
+pattern = "if G.GAME.seeded then G.forced_seed = G.GAME.pseudorandom.seed end"
+position = "at"
+payload = '''
+if G.GAME.seeded and not G.GAME.modifiers.entr_gfb then G.forced_seed = G.GAME.pseudorandom.seed end
+'''
+match_indent = true

@@ -1,11 +1,10 @@
-local flesh = {
+Entropy.Enhancement{
 	dependencies = {
         items = {
           "set_entr_misc"
         }
     },
 	order = 10000+1,
-	object_type = "Enhancement",
 	key = "flesh",
 	atlas = "enhancements",
 	pos = { x = 0, y = 0 },
@@ -34,14 +33,13 @@ local flesh = {
 		art = {"Lil. Mr. Slipstream"}
 	},
 }
-local disavowed = {
+Entropy.Enhancement{
 	dependencies = {
         items = {
           "set_entr_misc"
         }
     },
 	order = 10000+2,
-	object_type = "Enhancement",
 	key = "disavowed",
 	atlas = "enhancements",
 	pos = { x = 1, y = 0 },
@@ -55,14 +53,13 @@ local disavowed = {
 	end
 }
 
-local prismatic = {
+Entropy.Enhancement{
 	dependencies = {
         items = {
           "set_entr_entropics"
         }
     },
 	order = math.huge,
-	object_type = "Enhancement",
 	key = "prismatic",
 	atlas = "enhancements",
 	pos = { x = 0, y = 1 },
@@ -99,14 +96,13 @@ local prismatic = {
 	}
 }
 
-local dark = {
+Entropy.Enhancement{
 	dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
 	order = 10000+3,
-	object_type = "Enhancement",
 	key = "dark",
 	atlas = "enhancements",
 	pos = { x = 1, y = 1 },
@@ -164,14 +160,13 @@ local dark = {
 	demicoloncompat = true
 }
 
-local ceramic = {
+Entropy.Enhancement{
 	dependencies = {
         items = {
           "set_entr_misc"
         }
     },
 	order = 10000+5,
-	object_type = "Enhancement",
 	key = "ceramic",
 	atlas = "enhancements",
 	pos = { x = 2, y = 0 },
@@ -303,11 +298,10 @@ function Card:is_suit(...)
 	return is_suitref(self, ...)
 end
 
-local kiln = {
+Entropy.Consumable{
     key = "kiln",
     set = "Tarot",
     atlas = "consumables2",
-    object_type = "Consumable",
     order = -1000,
     dependencies = {
         items = {
@@ -348,11 +342,10 @@ local kiln = {
     end
 }
 
-local comet = {
+Entropy.Consumable{
     key = "comet",
     set = "Tarot",
     atlas = "consumables2",
-    object_type = "Consumable",
     order = -999,
     dependencies = {
         items = {
@@ -390,14 +383,13 @@ local comet = {
     end
 }
 
-local radiant = {
+Entropy.Enhancement{
 	dependencies = {
         items = {
           "set_entr_misc"
         }
     },
 	order = 10000+6,
-	object_type = "Enhancement",
 	key = "radiant",
 	atlas = "enhancements",
 	pos = { x = 2, y = 1 },
@@ -410,7 +402,7 @@ local radiant = {
 		return true
 	end,
 	loc_vars = function(self, q, card)
-		if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
+		Entropy.ensure_ascpow_tutorial(q)
 		return {
             vars = {
                 card.ability.extra.asc_pow
@@ -429,14 +421,13 @@ local radiant = {
 	}
 }
 
-local ethereal = {
+Entropy.Enhancement{
 	dependencies = {
         items = {
           "set_entr_misc"
         }
     },
 	order = 10000+7,
-	object_type = "Enhancement",
 	key = "ethereal",
 	atlas = "enhancements",
 	pos = { x = 0, y = 2 },
@@ -473,7 +464,7 @@ local ethereal = {
 	}
 }
 
-local samsara = {
+Entropy.Enhancement{
 	dependencies = {
         items = {
           "set_entr_inversions",
@@ -481,7 +472,6 @@ local samsara = {
         }
     },
 	order = 10000+8,
-	object_type = "Enhancement",
 	key = "samsara",
 	atlas = "enhancements",
 	pos = { x = 1, y = 2 },
@@ -573,20 +563,4 @@ local samsara = {
 	entr_credits = {
 		art = {"Lil. Mr. Slipstream"}
 	}
-}
-
-return {
-    items = {
-        flesh,
-        disavowed,
-		prismatic,
-		dark,
-		ceramic,
-		kiln,
-		radiant,
-		comet,
-
-		ethereal,
-		samsara
-    }
 }

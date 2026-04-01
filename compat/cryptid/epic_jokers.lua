@@ -1,79 +1,80 @@
 local rarity = Entropy.ValkarriOverCryptid and "valk_renowned" or Entropy.MDJOverCryptid and "MDJ_veryrare" or "cry_epic"
 local set = ( Entropy.ValkarriOverCryptid or Entropy.MDJOverCryptid ) and "set_entr_misc_jokers" or "set_cry_epic"
 
-local burnt_m = {
-    order = 250,
-    object_type = "Joker",
-    key = "burnt_m",
-    config = {
-        per_jolly=1
-    },
-    rarity = rarity,
-    cost = 10,
-    
-    dependencies = {
-        items = {
-            set
-        }
-    },
-    blueprint_compat = true,
-    eternal_compat = true,
-    pos = { x = 3, y = 0 },
-    atlas = "jokers",
-    pools = { ["M"] = true },
-    demicoloncompat = true,
-    loc_vars = function(self, info_queue, center)
-        if not center.edition or (center.edition and not center.edition.sol) then
-			info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_solar
-		end
-        info_queue[#info_queue+1] = G.P_CENTERS.e_cry_m
-        return {
-            vars = {
-                center.config.per_jolly
+if not Entropy.ValkarriOverCryptid or not Entropy.MDJOverCryptid then
+    Entropy.Joker{
+        order = 250,
+        
+        key = "burnt_m",
+        config = {
+            per_jolly=1
+        },
+        rarity = rarity,
+        cost = 10,
+        
+        dependencies = {
+            items = {
+                set
             }
-        }
-    end,
-    calculate = function(self, card, context)
-        if context.joker_main then
-            local cards = {}
-            local jollycount = 0
-            for i = 1, #G.jokers.cards do
-                if G.jokers.cards[i]:is_jolly() then
-                    jollycount = jollycount + 1
+        },
+        blueprint_compat = true,
+        eternal_compat = true,
+        pos = { x = 3, y = 0 },
+        atlas = "jokers",
+        pools = { ["M"] = true },
+        demicoloncompat = true,
+        loc_vars = function(self, info_queue, center)
+            if not center.edition or (center.edition and not center.edition.sol) then
+                info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_solar
+            end
+            info_queue[#info_queue+1] = G.P_CENTERS.e_cry_m
+            return {
+                vars = {
+                    center.config.per_jolly
+                }
+            }
+        end,
+        calculate = function(self, card, context)
+            if context.joker_main then
+                local cards = {}
+                local jollycount = 0
+                for i = 1, #G.jokers.cards do
+                    if G.jokers.cards[i]:is_jolly() then
+                        jollycount = jollycount + 1
+                    end
+                end
+                for i = 1, 1+jollycount do
+                    cards[#cards+1] = G.play.cards[i] or nil
+                end
+                local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
+                G.FUNCS.get_poker_hand_info(G.play.cards)
+                if next(poker_hands["Pair"]) then
+                Entropy.flip_then(cards, function(card)
+                        card:set_edition("e_entr_solar")
+                end)
                 end
             end
-            for i = 1, 1+jollycount do
-                cards[#cards+1] = G.play.cards[i] or nil
-            end
-            local text, loc_disp_text, poker_hands, scoring_hand, disp_text =
-            G.FUNCS.get_poker_hand_info(G.play.cards)
-            if next(poker_hands["Pair"]) then
-               Entropy.flip_then(cards, function(card)
+            if context.forcetrigger then
+                local cards = {}
+                local jollycount = 0
+                for i = 1, #G.jokers.cards do
+                    if G.jokers.cards[i]:is_jolly() then
+                        jollycount = jollycount + 1
+                    end
+                end
+                for i = 1, 1+jollycount do
+                    cards[#cards+1] = G.play.cards[i] or nil
+                end
+                Entropy.flip_then(cards, function(card)
                     card:set_edition("e_entr_solar")
-               end)
+                end)
             end
         end
-        if context.forcetrigger then
-            local cards = {}
-            local jollycount = 0
-            for i = 1, #G.jokers.cards do
-                if G.jokers.cards[i]:is_jolly() then
-                    jollycount = jollycount + 1
-                end
-            end
-            for i = 1, 1+jollycount do
-                cards[#cards+1] = G.play.cards[i] or nil
-            end
-            Entropy.flip_then(cards, function(card)
-                card:set_edition("e_entr_solar")
-            end)
-        end
-	end
-}
-
-local chaos= {
+    }
+end
+Entropy.Joker{
     order = 251,
-    object_type = "Joker",
+    
     key = "chaos",
     rarity = rarity,
     cost = 15,
@@ -86,9 +87,9 @@ local chaos= {
     end,
 }
 
-local dni = {
+Entropy.Joker{
     order = 252,
-    object_type = "Joker",
+    
     key = "dni",
     config = {
         suit = "Spades"
@@ -131,90 +132,90 @@ local dni = {
         art = {"cassknows"}
     }
 }
-
-local trapezium = {
-    order = 253,
-    object_type = "Joker",
-    key = "trapezium_cluster",
-    name="entr-trapezium_cluster",
-    config = {
-        forcetrigger=5
-    },
-    rarity = rarity,
-    cost = 10,
-    
-    dependencies = {
-        items = {
-            set
-        }
-    },
-    blueprint_compat = true,
-    eternal_compat = true,
-    pos = { x = 4, y = 0 },
-    atlas = "jokers",
-    demicoloncompat = true,
-    loc_vars = function(self, info_queue, center)
-        if not center.edition or (center.edition and not center.edition.retrig) then
-			info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_fractured
-		end
-        return {
-            vars = {
-                number_format(center.ability.forcetrigger)
-            },
-        }
-    end,
-    calculate = function(self, card, context)
-        --if forcetrigger > 30 then forcetrigger = 30 end
-		if
-			(context.other_joker
-			and context.other_joker.edition
-			and context.other_joker.edition.retrig
-			and card ~= context.other_joker)
-		then
-			if not Entropy.should_skip_animations() then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						context.other_joker:juice_up(0.5, 0.5)
-						return true
-					end,
-				}))
-			end
-            return Entropy.random_forcetrigger(card, card and card.ability.forcetrigger or 5, context)
-		end
-		if context.individual and context.cardarea == G.play then
-			if context.other_card.edition and context.other_card.edition.retrig then
+if not Entropy.ValkarriOverCryptid or not Entropy.MDJOverCryptid then
+    Entropy.Joker{
+        order = 253,
+        
+        key = "trapezium_cluster",
+        name="entr-trapezium_cluster",
+        config = {
+            forcetrigger=5
+        },
+        rarity = rarity,
+        cost = 10,
+        
+        dependencies = {
+            items = {
+                set
+            }
+        },
+        blueprint_compat = true,
+        eternal_compat = true,
+        pos = { x = 4, y = 0 },
+        atlas = "jokers",
+        demicoloncompat = true,
+        loc_vars = function(self, info_queue, center)
+            if not center.edition or (center.edition and not center.edition.retrig) then
+                info_queue[#info_queue + 1] = G.P_CENTERS.e_entr_fractured
+            end
+            return {
+                vars = {
+                    number_format(center.ability.forcetrigger)
+                },
+            }
+        end,
+        calculate = function(self, card, context)
+            --if forcetrigger > 30 then forcetrigger = 30 end
+            if
+                (context.other_joker
+                and context.other_joker.edition
+                and context.other_joker.edition.retrig
+                and card ~= context.other_joker)
+            then
+                if not Entropy.should_skip_animations() then
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            context.other_joker:juice_up(0.5, 0.5)
+                            return true
+                        end,
+                    }))
+                end
                 return Entropy.random_forcetrigger(card, card and card.ability.forcetrigger or 5, context)
-			end
-		end
-		if
-			(context.individual
-			and context.cardarea == G.hand
-			and context.other_card.edition
-			and context.other_card.edition.retrig
-			and not context.end_of_round and not context.repetition)
-		then
-			if context.other_card.debuff then
-				return {
-					message = localize("k_debuffed"),
-					colour = G.C.RED,
-					card = card,
-				}
-			else
+            end
+            if context.individual and context.cardarea == G.play then
+                if context.other_card.edition and context.other_card.edition.retrig then
+                    return Entropy.random_forcetrigger(card, card and card.ability.forcetrigger or 5, context)
+                end
+            end
+            if
+                (context.individual
+                and context.cardarea == G.hand
+                and context.other_card.edition
+                and context.other_card.edition.retrig
+                and not context.end_of_round and not context.repetition)
+            then
+                if context.other_card.debuff then
+                    return {
+                        message = localize("k_debuffed"),
+                        colour = G.C.RED,
+                        card = card,
+                    }
+                else
+                    return Entropy.random_forcetrigger(card, card and card.ability.forcetrigger or 5, context)
+                end
+            end
+            if context.forcetrigger then
                 return Entropy.random_forcetrigger(card, card and card.ability.forcetrigger or 5, context)
-			end
-		end
-        if context.forcetrigger then
-            return Entropy.random_forcetrigger(card, card and card.ability.forcetrigger or 5, context)
-        end
-	end,
-    entr_credits = {
-        idea = {"cassknows"}
-    },
-}
-
-local metanoia = {
+            end
+        end,
+        entr_credits = {
+            idea = {"cassknows"}
+        },
+    }
+end
+Entropy.Joker{
     order = 254,
-    object_type = "Joker",
+    
     key = "metanoia",
     rarity = rarity,
     cost = 10,
@@ -240,9 +241,9 @@ local metanoia = {
     end,
 }
 
-local antireal = {
+Entropy.Joker{
     order = 255,
-    object_type = "Joker",
+    
     key = "antireal",
     rarity = rarity,
     cost = 15,
@@ -289,9 +290,9 @@ local antireal = {
     }
 }
 
-local jokezmann_brain = {
+Entropy.Joker{
     order = 256,
-    object_type = "Joker",
+    
     key = "jokezmann_brain",
     rarity = rarity,
     cost = 15,
@@ -346,9 +347,9 @@ local jokezmann_brain = {
     }
 }
 
-local metamorphosis = {
+Entropy.Joker{
     order = 257,
-    object_type = "Joker",
+    
     key = "metamorphosis",
     rarity = rarity,
     cost = 15,
@@ -443,9 +444,9 @@ local metamorphosis = {
     }
 }
 
-local nyctophobia = {
+Entropy.Joker{
     order = 258,
-    object_type = "Joker",
+    
     key = "nyctophobia",
     rarity = rarity,
     cost = 15,
@@ -510,9 +511,9 @@ local nyctophobia = {
     }
 }
 
-local caviar = {
+Entropy.Joker{
     order = 258,
-    object_type = "Joker",
+    
     key = "caviar",
     rarity = rarity,
     cost = 15,
@@ -563,19 +564,4 @@ local caviar = {
             }
         end
     end,
-}
-
-return {
-    items = {
-        ( not Entropy.ValkarriOverCryptid or not Entropy.MDJOverCryptid ) and burnt_m or nil,
-        chaos,
-        dni,
-        ( not Entropy.ValkarriOverCryptid or not Entropy.MDJOverCryptid ) and trapezium or nil,
-        antireal,
-        jokezmann_brain,
-        metanoia,
-        metamorphosis,
-        nyctophobia,
-        caviar
-    }
 }

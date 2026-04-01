@@ -14,34 +14,37 @@ SMODS.Sound({
 		return (G.GAME.blind and G.GAME.blind.name == "bl_entr_red") and 10^5
 	end,
 })
-SMODS.Sound({
-	key = "music_freebird",
-	path = "music_freebird.ogg",
-	select_music_track = function()
-		return next(SMODS.find_card("j_entr_antireal")) and Entropy.config.freebird and 10^200
-	end,
-})
+if next(SMODS.find_mod("Cryptid")) then
+	SMODS.Sound({
+		key = "music_freebird",
+		path = "music_freebird.ogg",
+		select_music_track = function()
+			return next(SMODS.find_card("j_entr_antireal")) and Entropy.config.freebird and 10^200
+		end,
+	})
+end
+
 SMODS.Sound({
 	key = "music_fall",
 	path = "music_fall.ogg",
 	select_music_track = function()
-		return (((to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) and G.STATE == 1) or G.GAME.EEBuildup or (G.GAME.EE_FADE or 0) > 0) and Entropy.can_ee_spawn() and 10^302
+		return (Entropy.is_ee_or_buildup() or (G.GAME.EE_FADE or 0) > 0) and Entropy.can_ee_spawn() and 10^302
 	end,
 })
 
-SMODS.Sound({
-	key = "music_entropy_is_endless",
-	path = "music_entropy_is_endless.ogg",
-	select_music_track = function()
-        local blinds = {
-            bl_entr_endless_entropy_phase_one=true,
-            bl_entr_endless_entropy_phase_two=true,
-            bl_entr_endless_entropy_phase_three=true,
-            bl_entr_endless_entropy_phase_four=true
-        }
-		return ((G.GAME.blind and blinds[G.GAME.blind.config.blind.key])) and 10^306
-	end,
-})
+-- SMODS.Sound({
+-- 	key = "music_entropy_is_endless",
+-- 	path = "music_entropy_is_endless.ogg",
+-- 	select_music_track = function()
+--         local blinds = {
+--             bl_entr_endless_entropy_phase_one=true,
+--             bl_entr_endless_entropy_phase_two=true,
+--             bl_entr_endless_entropy_phase_three=true,
+--             bl_entr_endless_entropy_phase_four=true
+--         }
+-- 		return ((G.GAME.blind and blinds[G.GAME.blind.config.blind.key])) and 10^306
+-- 	end,
+-- })
 
 SMODS.Sound({
 	key = "music_entropic_ominous",
@@ -145,5 +148,17 @@ SMODS.Sound({
 SMODS.Sound({
 	key = "void_suck",
 	path = "void_suck.ogg",
+	volume = 2
+})
+
+SMODS.Sound({
+	key = "void_suck",
+	path = "void_suck.ogg",
+	volume = 2
+})
+
+SMODS.Sound({
+	key = "snd_ominous",
+	path = "snd_ominous.ogg",
 	volume = 2
 })

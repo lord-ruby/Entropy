@@ -4,7 +4,6 @@ local pack = {
           "set_entr_inversions",
         }
     },
-	object_type = "Booster",
     order = -1006,
     key = "twisted_pack_normal",
     set = "Booster",
@@ -29,6 +28,9 @@ local pack = {
     end,
     kind = "Inverted",
     create_card = function (self, card, i) 
+        if G.GAME.round_resets.ante == 2 and G.GAME.round_resets.blind_states["Small"] == "Defeated" and not G.SETTINGS.entropy_tutorial_complete and i == 1 then
+            return SMODS.create_card{key = "c_entr_charm", skip_materialize = true}
+        end
         return create_inverted_card()
     end,
     ease_background_colour = function(self)
@@ -47,20 +49,19 @@ local pack = {
 	},
     entr_credits = {art = {"LFMoth"}}
 }
-
-local pack2 = copy_table(pack)
+local pack2 = SMODS.shallow_copy(pack)
+SMODS.Booster(pack)
 pack2.pos.y = 1
 pack2.entr_credits = {art = {"Lil. Mr. Slipstream"}}
 pack2.key = "twisted_pack_normal_2"
 pack2.order = -1005
-
+SMODS.Booster(pack2)
 local jumbo = {
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-	object_type = "Booster",
     order = -1004,
     key = "twisted_pack_jumbo",
     set = "Booster",
@@ -103,11 +104,13 @@ local jumbo = {
 	},
     entr_credits = {art = {"Lil. Mr. Slipstream"}}
 }
-local jumbo2 = copy_table(jumbo)
+local jumbo2 = SMODS.shallow_copy(jumbo)
+SMODS.Booster(jumbo)
 jumbo2.pos.y = 1
 jumbo2.entr_credits = {art = {"Binary"}}
 jumbo2.key = "twisted_pack_jumbo_2"
 jumbo2.order = -1003
+SMODS.Booster(jumbo2)
 
 local mega = {
     dependencies = {
@@ -115,7 +118,6 @@ local mega = {
           "set_entr_inversions",
         }
     },
-	object_type = "Booster",
     order = -1002,
     key = "twisted_pack_mega",
     set = "Booster",
@@ -158,10 +160,12 @@ local mega = {
 	},
     entr_credits = {art = {"Lil. Mr. Slipstream"}}
 }
-local mega2 = copy_table(mega)
+local mega2 = SMODS.shallow_copy(mega)
+SMODS.Booster(mega)
 mega2.pos.y = 1
 mega2.key = "twisted_pack_mega_2"
 mega2.order = -1001
+SMODS.Booster(mega2)
 
 function Entropy.get_rare_inversion(seed)
     local pool = {}
@@ -230,13 +234,12 @@ function create_inverted_card(area, seed)
     return create_card("Twisted", area or G.pack_cards, nil, nil, true, true, nil, "twisted_card")
 end
 
-local voucher = {
+SMODS.Booster{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-	object_type = "Booster",
     order = -990.1,
     key = "voucher_pack",
     set = "Booster",
@@ -276,16 +279,4 @@ local voucher = {
 			G.consumeables:emplace(ccard)
 		end,
 	},
-}
-
-return {
-    items = {
-        pack,
-        pack2,
-        jumbo,
-        jumbo2,
-        mega,
-        mega2,
-        voucher
-    }
 }

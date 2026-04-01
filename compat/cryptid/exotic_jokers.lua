@@ -1,9 +1,8 @@
 local rarity = Entropy.ValkarriOverCryptid and "valk_exquisite" or Entropy.MDJOverCryptid and "MDJ_unlegendary" or "cry_exotic"
 local set = ( Entropy.ValkarriOverCryptid or Entropy.MDJOverCryptid ) and "set_entr_misc_jokers" or "set_cry_exotic"
 
-local stillicidium = {
+Entropy.Joker{
     order = 500,
-    object_type = "Joker",
     key = "stillicidium",
     rarity = rarity,
     cost = 50,
@@ -54,9 +53,8 @@ local stillicidium = {
     end
 }
 
-local libra = {
+Entropy.Joker{
     order = 500 + 1,
-    object_type = "Joker",
     key = "libra",
     rarity = rarity,
     cost = 50,
@@ -146,9 +144,8 @@ local libra = {
     }
 }
 
-local scorpio = {
+Entropy.Joker{
     order = 500 + 2,
-    object_type = "Joker",
     key = "scorpio",
     rarity = rarity,
     cost = 50,
@@ -223,67 +220,59 @@ local scorpio = {
     },
 }
 
-local ridiculus_absens = {
-    order = 500 + 3,
-    object_type = "Joker",
-    key = "ridiculus_absens",
-    rarity = rarity,
-    cost = 50,
-    atlas = "exotic_jokers",
-    name = "entr-ridiculus_absens",
-    pos = { x = 6, y = 2 },
-    soul_pos = { x = 8, y = 2, extra = { x = 7, y = 2 } },
-    
-    dependencies = {
-        items = {
-            set
-        }
-    },
-    config = {
-        extra = {
-            odds = 2
-        }
-    },
-    blueprint_compat = true,
-    eternal_compat = true,
-    demicoloncompat = true,
-    loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue+1] = G.P_CENTERS.e_cry_glitched
-        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
-        return {
-            vars = {
-                numerator,
-                denominator
+if (SMODS.Mods.Cryptid or {}).can_load then
+    Entropy.Joker{
+        order = 500 + 3,
+        key = "ridiculus_absens",
+        rarity = rarity,
+        cost = 50,
+        atlas = "exotic_jokers",
+        name = "entr-ridiculus_absens",
+        pos = { x = 6, y = 2 },
+        soul_pos = { x = 8, y = 2, extra = { x = 7, y = 2 } },
+        
+        dependencies = {
+            items = {
+                set
             }
-        }
-    end,
-    calculate = function (self, card, context)
-        if context.joker_main then
-            local cards = {}
-            for i, v in ipairs(G.play.cards) do
-                if SMODS.pseudorandom_probability(card, 'tmtrainer', 1, card.ability.extra.odds) then
-                    if not v.edition or v.edition and v.edition.key ~= "e_cry_glitched" then
-                        cards[#cards+1]=v
+        },
+        config = {
+            extra = {
+                odds = 2
+            }
+        },
+        blueprint_compat = true,
+        eternal_compat = true,
+        demicoloncompat = true,
+        loc_vars = function(self, info_queue, card)
+            info_queue[#info_queue+1] = G.P_CENTERS.e_cry_glitched
+            local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds)
+            return {
+                vars = {
+                    numerator,
+                    denominator
+                }
+            }
+        end,
+        calculate = function (self, card, context)
+            if context.joker_main then
+                local cards = {}
+                for i, v in ipairs(G.play.cards) do
+                    if SMODS.pseudorandom_probability(card, 'tmtrainer', 1, card.ability.extra.odds) then
+                        if not v.edition or v.edition and v.edition.key ~= "e_cry_glitched" then
+                            cards[#cards+1]=v
+                        end
                     end
                 end
+                card.ability.extra.odds = pseudorandom("tmtrainer_odds") * 2 + 1
+                Entropy.flip_then(cards, function(card)
+                    card:set_edition("e_cry_glitched")
+                    Entropy.randomize_TMT(card)
+                end)
             end
-            card.ability.extra.odds = pseudorandom("tmtrainer_odds") * 2 + 1
-            Entropy.flip_then(cards, function(card)
-                card:set_edition("e_cry_glitched")
-                Entropy.randomize_TMT(card)
-            end)
-        end
-    end,
-	entr_credits = {
-        art = {"Lil. Mr. Slipstream"}
-    },
-}
-
-return {
-    items = {
-        stillicidium,
-        libra,
-        scorpio,
-        not Entropy.ValkarriOverCryptid and ridiculus_absens or nil
+        end,
+        entr_credits = {
+            art = {"Lil. Mr. Slipstream"}
+        },
     }
-}
+end

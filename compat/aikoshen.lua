@@ -1,7 +1,6 @@
 if (SMODS.Mods["aikoyorisshenanigans"] or {}).can_load then
-    local verbophobia = {
+    Entropy.Joker{
         order = -99,
-        object_type = "Joker",
         key = "verbophobia",
         rarity = 2,
         cost = 6,
@@ -45,9 +44,4 @@ if (SMODS.Mods["aikoyorisshenanigans"] or {}).can_load then
             G.entr_akyrs_loaded = true
         end
     end
-    return {
-        items = {
-            verbophobia
-        }
-    }
 end

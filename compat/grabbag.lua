@@ -6,13 +6,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         end
         return pseudorandom_element(shatters, pseudoseed("random_shatter"))
     end
-    local splinter = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 2500+3,
         key = "splinter",
         set = "Omen",
@@ -35,13 +34,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
             self:use(card)
         end
     }
-    local dream = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 2500 + 4,
         key = "dream",
         set = "Omen",
@@ -80,13 +78,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         end
     }
 
-    local mini = {
+    Entropy.Seal{
         dependencies = {
             items = {
                 "set_entr_inversions"
             }
         },
-        object_type = "Seal",
         order = 3010,
         key="entr_mini",
         atlas = "seals",
@@ -111,13 +108,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         end,
     }
 
-    local sharp = {
+    Entropy.Seal{
         dependencies = {
             items = {
                 "set_entr_inversions"
             }
         },
-        object_type = "Seal",
         order = 3011,
         key="entr_sharp",
         atlas = "seals",
@@ -142,13 +138,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
             end
         end,
     }
-    local vantablack = {
+    Entropy.Seal{
         dependencies = {
             items = {
                 "set_entr_inversions"
             }
         },
-        object_type = "Seal",
         order = 3012,
         key="entr_vantablack",
         atlas = "seals",
@@ -169,9 +164,9 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         end
         return highlight_ref(self, is_h, ...)
     end
-    local void = Entropy.seal_spectral("void", {x=5,y=1}, "entr_mini", 2500, "c_gb_dualism", nil, "crossmod_consumables", {1, 3})
-    local sharpen = Entropy.seal_spectral("sharpen", {x=6,y=1}, "entr_sharp", 2501, "c_gb_gambit", nil, "crossmod_consumables", {1, 3})
-    local singularity = Entropy.seal_spectral("singularity", {x=7,y=1}, "entr_vantablack", 2502, "c_gb_lotus", nil, "crossmod_consumables")
+    Entropy.seal_spectral("void", {x=5,y=1}, "entr_mini", 2500, "c_gb_dualism", nil, "crossmod_consumables", {1, 3})
+    Entropy.seal_spectral("sharpen", {x=6,y=1}, "entr_sharp", 2501, "c_gb_gambit", nil, "crossmod_consumables", {1, 3})
+    Entropy.seal_spectral("singularity", {x=7,y=1}, "entr_vantablack", 2502, "c_gb_lotus", nil, "crossmod_consumables")
 
     -- Sculpture - Visage
     -- Hourlgass - Sundial
@@ -195,7 +190,6 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
     -- Motley - Ragtag
 
     SMODS.ConsumableType({
-        object_type = "ConsumableType",
         key = "Transient",
         primary_colour = G.C.Entropy.Transient,
         secondary_colour = G.C.Entropy.Transient,
@@ -215,13 +209,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         py = 95,
     })
 
-    local cage = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3000,
         key = "cage",
         set = "Transient",
@@ -251,13 +244,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         force_use = function(self, card) self:use(card) end
     }
 
-    local implode = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3001,
         key = "implode",
         set = "Transient",
@@ -285,13 +277,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         force_use = function(self, card) self:use(card) end
     }
 
-    local meteor = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3002,
         key = "meteor",
         set = "Transient",
@@ -321,13 +312,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         force_use = function(self, card) self:use(card) end
     }
 
-    local concentrate = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3003,
         key = "concentrate",
         set = "Transient",
@@ -354,13 +344,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         force_use = function(self, card) self:use(card) end
     }
 
-    local pyrite = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3004,
         key = "pyrite",
         set = "Transient",
@@ -388,13 +377,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         force_use = function(self, card) self:use(card) end
     }
 
-    local set = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3005,
         key = "set",
         set = "Transient",
@@ -424,13 +412,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         force_use = function(self, card) self:use(card) end
     }
 
-    local trickster = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3006,
         key = "trickster",
         set = "Transient",
@@ -460,13 +447,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         force_use = function(self, card) self:use(card) end
     }
 
-    local sundial = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3007,
         key = "sundial",
         set = "Transient",
@@ -494,13 +480,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         force_use = function(self, card) self:use(card) end
     }
 
-    local candle = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3008,
         key = "candle",
         set = "Transient",
@@ -524,13 +509,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         force_use = function(self, card) self:use(card) end
     }
 
-    local faith = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3009,
         key = "faith",
         set = "Transient",
@@ -558,13 +542,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         force_use = function(self, card) self:use(card) end
     }
 
-    local oasis = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3010,
         key = "oasis",
         set = "Transient",
@@ -597,13 +580,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         force_use = function(self, card) self:use(card) end
     }
 
-    local ragtag = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3011,
         key = "ragtag",
         set = "Transient",
@@ -633,13 +615,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         force_use = function(self, card) self:use(card) end
     }
 
-    local burn = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3012,
         key = "burn",
         set = "Transient",
@@ -669,13 +650,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         force_use = function(self, card) self:use(card) end
     }
 
-    local escape = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3013,
         key = "escape",
         set = "Transient",
@@ -705,13 +685,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         force_use = function(self, card) self:use(card) end
     }
 
-    local decay = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3014,
         key = "gbdecay",
         set = "Transient",
@@ -739,13 +718,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         force_use = function(self, card) self:use(card) end
     }
 
-    local visage = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3015,
         key = "visage",
         set = "Transient",
@@ -773,13 +751,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         force_use = function(self, card) self:use(card) end
     }
 
-    local nebula = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3016,
         key = "nebula",
         set = "Transient",
@@ -808,13 +785,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         force_use = function(self, card) self:use(card) end
     }
 
-    local essence = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3017,
         key = "essence",
         set = "Transient",
@@ -843,13 +819,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         force_use = function(self, card) self:use(card) end
     }
 
-    local manifest = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3018,
         key = "manifest",
         set = "Transient",
@@ -873,13 +848,12 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         force_use = function(self, card) self:use(card) end
     }
 
-    local hope = {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
             }
         },
-        object_type = "Consumable",
         order = 3019,
         key = "hope",
         set = "Transient",
@@ -907,39 +881,5 @@ if (SMODS.Mods["GrabBag"] or {}).can_load then
         end,
         demicoloncompat = true,
         force_use = function(self, card) self:use(card) end
-    }
-
-    return {
-        items = {
-            splinter,
-            dream,
-            mini,
-            sharp,
-            vantablack,
-            void,
-            sharpen,
-            singularity,
-
-            cage,
-            implode,
-            meteor,
-            concentrate,
-            pyrite,
-            set,
-            trickster,
-            sundial,
-            candle,
-            faith,
-            oasis,
-            ragtag,
-            burn,
-            escape,
-            decay,
-            visage,
-            nebula,
-            essence,
-            manifest,
-            hope
-        }
     }
 end

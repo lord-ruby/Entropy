@@ -1,5 +1,4 @@
-local define = {
-    object_type = "Consumable",
+Entropy.Consumable{
     order = 2000 + 32,
     key = "define",
     inversion = "c_cry_pointer",
@@ -198,8 +197,3 @@ function CardArea:emplace(card, location, stay_flipped)
         add_ref(self, card, location, stay_flipped)
     end
 end
-return {
-    items = {
-        define
-    }
-}

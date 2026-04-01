@@ -472,7 +472,8 @@ function SMODS.create_mod_badges(obj, badges)
 				},
 			}
 			for i = 1, #badges do	
-				if badges[i].nodes[1].nodes[2].config.object.string == Entropy.display_name then --this was meant to be a hex code but it just doesnt work for like no reason so its hardcoded
+				if badges[i].nodes[1].nodes[2].config.object.string == Entropy.display_name
+                or (badges[i].nodes[1].nodes[2].config.object.content and badges[i].nodes[1].nodes[2].config.object.content.string == Entropy.display_name) then --this was meant to be a hex code but it just doesnt work for like no reason so its hardcoded
 					badges[i].nodes[1].nodes[2].config.object:remove()
 					badges[i] = entr_badge
 					break
@@ -755,7 +756,7 @@ function SMODS.calculate_individual_effect(effect, scored_card, key, amount, fro
         effect.message_card = G.message_card
         scored_card = G.message_card
     end
-    if string.find(key, "chip") and next(SMODS.find_card("j_entr_yogurt")) then
+    if (G.GAME.modifiers.entr_gfb and string.find(key, "mult") or string.find(key, "chip")) and next(SMODS.find_card("j_entr_yogurt")) then
         SMODS.calculate_context({entr_chips_calculated = true, other_card = scored_card or effect.card})
     end
     if scored_card and scored_card.ability and scored_card.ability.entr_value_fac and type(amount) == "number" then
@@ -840,12 +841,6 @@ local update_ref = Game.update
 Entropy.last_csl = nil
 Entropy.last_slots = nil
 local cdt = 0
-local eedt = 0
-local p_s = false
-
-Entropy.ee_faces[#Entropy.ee_faces+1] = {pos = {y = 11, x = 0}}
-Entropy.ee_faces[#Entropy.ee_faces+1] = {pos = {y = 12, x = 0}}
-Entropy.ee_faces[#Entropy.ee_faces+1] = {pos = {y = 13, x = 0}}
 
 function Game:update(dt)
     if entr_xekanos_dt > 0.05 then
@@ -965,24 +960,6 @@ function Game:update(dt)
     then
         G.GAME.EE_FADE = G.GAME.EE_FADE or 0
         G.GAME.EE_FADE = G.GAME.EE_FADE + dt * 0.5 * (G.GAME.EE_FADE_SPEED or 4)
-        eedt = eedt - dt
-        if eedt <= 0 and G.GAME.blind then
-            p_s = not p_s
-            if p_s then
-                local atlas = "entr_blinds"
-                G.GAME.blind.children.animatedSprite:set_sprite_pos(G.GAME.blind.config.blind.pos)
-                G.GAME.blind.children.animatedSprite.atlas = G.ANIMATION_ATLAS[atlas]
-                G.GAME.blind.children.animatedSprite:reset()
-                eedt = 0.8 + math.random() * 0.7
-            else
-                local elem = pseudorandom_element(Entropy.ee_faces, pseudoseed("asdkljasdkjlasdk;j"))
-                atlas = elem.atlas or "entr_blinds"
-                G.GAME.blind.children.animatedSprite:set_sprite_pos(elem.pos)
-                G.GAME.blind.children.animatedSprite.atlas = G.ANIMATION_ATLAS[atlas]
-                G.GAME.blind.children.animatedSprite:reset()
-                eedt = math.random() * 0.4 + 0.1
-            end
-        end
     end
     if G.GAME.EE_FADE then
         G.entr_rand_text = Entropy.string_random(6)
@@ -1122,12 +1099,8 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
     if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi) and not forced_key and not G.GAME.entr_parakmi_bypass then
         _type = Entropy.get_random_set(next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi)
     end
-    if _type == "CBlind" then
-        _type = "BlindTokens"
-    end
     if _type == "BlindTokens" then
-        local element = "c_"..pseudorandom_element(Entropy.BlindC, pseudoseed(key_append or "parakmi"))
-        forced_key = forced_key or element
+        _type = "CBlind"
     end
     if area == G.pack_cards and not G.entr_dont_calculate then
         if soulable and not forced_key and Entropy.has_rune("rune_entr_oss") then
@@ -1541,6 +1514,15 @@ function Card:set_ability(center, f, s)
     end
 end
 
+local function hash(str)
+    local h = 5381
+
+    for i = 1, #str do
+       h = h*32 + h + str:byte(i)
+    end
+    return h
+end
+
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, ...)
     if type(center) == "string" then center = G.P_CENTERS[center] end
@@ -1553,6 +1535,40 @@ function Card:set_ability(center, ...)
     if G.GAME.inversions_prophecy_counter and to_big(G.GAME.inversions_prophecy_counter) <= to_big(0) then
         G.GAME.next_inversions_prophecy = nil
         G.GAME.inversions_prophecy_counter = nil
+    end
+    if G.GAME.modifiers.entr_gfb then
+        local fixed_sizes = {
+            j_brainstorm = {
+                x = 0.909, y = 0.909,
+            },
+            j_blueprint = {
+                x = 1.1, y = 1.1
+            },
+            j_wee = {
+                x = 0.75, y = 0.75
+            },
+            j_gluttenous_joker = {
+                x = 1.25, y = 1
+            },
+            j_half = {
+                x = 1, y = 0.5
+            },
+            j_entr_chair = {
+                x = 0.909, y = 0.909
+            },
+            j_gros_michel = {
+                x = 0.8, y = 0.8
+            },
+            j_cavendish = {
+                x = 1.2, y = 1.2
+            }
+            --TARGET: fixed sizes for gfb
+        }
+        math.randomseed(hash(self.config.center.key))
+        local min = 0.875
+        local max = 1.125
+        self.T.h = self.T.h * ((fixed_sizes[self.config.center.key] or {}).y or (min + math.random() * (max-min)))
+        self.T.w = self.T.w * ((fixed_sizes[self.config.center.key] or {}).x or (min + math.random() * (max-min)))
     end
 end
 
@@ -1861,74 +1877,8 @@ function create_UIBox_blind_select()
         return t 
     else
         if to_big(G.GAME.round_resets.ante) < to_big(32) then G.GAME.EEBeaten = false end
-        if Entropy.can_ee_spawn() and G.GAME.EEBuildup or (to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) then
-            G.GAME.round_resets.blind_choices.Boss = "bl_entr_endless_entropy_phase_one"
-            G.GAME.round_resets.blind_choices.Small = "bl_entr_void"
-            G.GAME.round_resets.blind_choices.Big = "bl_entr_void"
-            G.GAME.EEBuildup = true
-            ease_background_colour{new_colour = HEX("5f5f5f"), contrast = 3}
-            if not G.SPLASH_EE then
-                G.GAME.EE_SCREEN = true
-                G.SPLASH_EE = Sprite(-30, -13, G.ROOM.T.w+60, G.ROOM.T.h+22, G.ASSET_ATLAS["ui_1"], {x = 9999, y = 0})
-                G.GAME.EE_FADE = 0
-                G.E_MANAGER:add_event(Event{
-                    trigger = "after",
-                    blocking = false,
-                    blockable = false,
-                    delay = 1 * G.SETTINGS.GAMESPEED,
-                    func = function()
-                        G.SPLASH_EE:define_draw_steps({{
-                            shader = 'entr_entropic_vortex',
-                            send = {
-                                {name = 'time', ref_table = G.TIMERS, ref_value = 'REAL'},
-                                {name = 'vort_speed', val = 1},
-                                {name = 'colour_1', ref_table = G.C, ref_value = 'BLUE'},
-                                {name = 'colour_2', ref_table = G.C, ref_value = 'WHITE'},
-                                {name = 'mid_flash', val = 0},
-                                {name = 'transgender', ref_table = G.GAME, ref_value = "EE_FADE"},
-                                {name = 'vort_offset', val = (2*90.15315131*os.time())%100000},
-                            }}}
-                        )
-                        return true
-                    end
-                })
-            end
-            attention_text({
-                text = "CHALLENGE",
-                scale = 1.1,
-                hold = 60000,
-                major = G.play,
-                backdrop_colour = HEX("ff0000"),
-                align = 'cm',
-                offset = {x = 0, y = -3},
-            })
-            attention_text({
-                text = "v",
-                scale = 0.8,
-                hold = 60000,
-                major = G.play,
-                align = 'cm',
-                offset = {x = 0, y = -2.35},
-            })
-            local index = #G.I.UIBOX
-            local index2 = #G.I.UIBOX - 1
-            G.E_MANAGER:add_event(Event{
-                blocking = false,
-                blockable = false,
-                func = function()
-                    if G.GAME.blind.in_blind then
-                        G.I.UIBOX[index]:remove()
-                        G.I.UIBOX[index2]:remove()
-                        table.remove(G.I.UIBOX, index)
-                        table.remove(G.I.UIBOX, index2)
-                        return true
-                    end
-                end
-            })
-            --
-            return {n=G.UIT.ROOT, config = {align = 'tm',minw = 100, minh = 100, r = 0.15, colour = G.C.CLEAR,
-                func = 'can_enter_ee', one_press = true, button = 'enter_ee'
-            }, nodes={}}
+        if Entropy.can_ee_spawn() and Entropy.is_ee_or_buildup() then
+            return Entropy.spawn_ee_ui()
         else
             if next(SMODS.find_card("j_entr_voidheart")) and not G.GAME.round_resets.red_room then
                 G.GAME.round_resets.blind_choices["Boss"] = "bl_entr_abyss"
@@ -1992,6 +1942,8 @@ function Game:update(dt)
         G.GAME.InterferedText = Entropy.srandom(math.random(3,5))
         hand_dt = 0
     end
+    hand_dt2 = hand_dt2 + dt
+    G.EE_HEALTH = 100*(math.sin(hand_dt2)+1)/2
 end
 
 function update_hand_text_random(config, vals)
@@ -2150,9 +2102,6 @@ function get_blind_amount(ante)
     if to_big(ante) < to_big(0) then
         return 100 * (0.95^(-ante))
     end
-    if (Entropy.config.ante_scaling and to_big(ante) > to_big(8) and #Cryptid.advanced_find_joker(nil, "entr_entropic", nil, nil, true) ~= 0) or G.GAME.modifiers.entropic then
-        return to_big(gba(to_number(actual))):tetrate(1 + ante/32)
-    end
     return gba(to_number(actual)) or 100
 end
 function lerp(f1,f2,p)
@@ -2224,17 +2173,6 @@ function add_tag(_tag, ...)
         add_tagref(_tag, ...)
     end
     G.GAME.last_tag = _tag.key
-end
-
-local disable_ref = Blind.disable
-function Blind:disable()
-	if not self.config.blind.no_disable then disable_ref(self) end
-end
-
-local ref = G.FUNCS.reroll_boss
-G.FUNCS.reroll_boss = function(e) 
-	if G.GAME.EEBuildup then return end
-	ref(e)
 end
 
 local upd = Game.update
@@ -2512,84 +2450,6 @@ function Card:calculate_banana()
 		end
 	end
 	return false
-end
-
-local get_bossref = get_new_boss
-function get_new_boss()
-    if (G.GAME.EEBuildup or (to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) or G.GAME.modifiers.zenith) and Entropy.can_ee_spawn() then
-        return "bl_entr_endless_entropy_phase_one"
-    end
-    if G.GAME.entr_alt then
-        G.GAME.perscribed_bosses = G.GAME.perscribed_bosses or {
-        }
-        if G.GAME.perscribed_bosses and G.GAME.perscribed_bosses[G.GAME.round_resets.ante] then 
-            local ret_boss = G.GAME.perscribed_bosses[G.GAME.round_resets.ante] 
-            G.GAME.perscribed_bosses[G.GAME.round_resets.ante] = nil
-            G.GAME.bosses_used[ret_boss] = G.GAME.bosses_used[ret_boss] + 1
-            return ret_boss
-        end
-        if G.FORCE_BOSS then return G.FORCE_BOSS end
-        
-        local eligible_bosses = {}
-        for k, v in pairs(Entropy.AltBlinds) do
-            if not v.boss then
-            elseif v.in_pool and type(v.in_pool) == 'function' then
-                local res, options = v:in_pool({})
-                if
-                    (
-                        ((G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2) ==
-                        (v.boss.showdown or false)
-                    ) or
-                    (options or {}).ignore_showdown_check
-                then
-                    eligible_bosses[v.key] = res and true or nil
-                end
-            elseif not v.boss.showdown and (v.boss.min <= math.max(1, G.GAME.round_resets.ante) and ((math.max(1, G.GAME.round_resets.ante))%G.GAME.win_ante ~= 0 or G.GAME.round_resets.ante < 2)) then
-                eligible_bosses[v.key] = true
-            elseif v.boss.showdown and (((G.GAME.round_resets.ante)%G.GAME.win_ante == 0 and G.GAME.round_resets.ante >= 2) or G.GAME.modifiers.cry_big_showdown ) then
-                eligible_bosses[v.key] = true
-            end
-        end
-        for k, v in pairs(G.GAME.banned_keys) do
-            if eligible_bosses[k] then eligible_bosses[k] = nil end
-        end
-    
-        -- local min_use = 100
-        -- for k, v in pairs(G.GAME.bosses_used) do
-        --     if eligible_bosses[k] then
-        --         eligible_bosses[k] = v
-        --         if eligible_bosses[k] <= min_use then 
-        --             --min_use = eligible_bosses[k]
-        --         end
-        --     end
-        -- end
-        -- for k, v in pairs(eligible_bosses) do
-        --     if eligible_bosses[k] then
-        --         if eligible_bosses[k] > min_use then 
-        --             eligible_bosses[k] = nil
-        --         end
-        --     end
-        -- end
-        local boss = nil
-        if MP and MP.INTEGRATIONS and MP.INTEGRATIONS.TheOrder then
-            _, boss = pseudorandom_element(eligible_bosses, pseudoseed('boss'..G.GAME.round_resets.ante))
-        else
-            _, boss = pseudorandom_element(eligible_bosses, pseudoseed('boss'))
-        end
-        if not boss or Cryptid.enabled("set_entr_altpath") ~= true then return get_bossref() end
-        G.GAME.bosses_used[boss] = (G.GAME.bosses_used[boss] or 0) + 1
-        return boss
-    end
-    return get_bossref()
-end
-
-local change_suitref = Card.change_suit 
-function Card:change_suit(new_suit)
-    change_suitref(self, new_suit)
-    if not G.GAME.SuitBuffs then G.GAME.SuitBuffs = {} end
-    if G.GAME.SuitBuffs[new_suit] then
-        self.ability.suit_bonus = (G.GAME.SuitBuffs[new_suit] and G.GAME.SuitBuffs[new_suit].chips or 0) 
-    end
 end
 
 local debuff_handref = Blind.debuff_hand
@@ -3075,6 +2935,9 @@ SMODS.Booster:take_ownership_by_kind('Arcana', {
 		if G.GAME.entr_diviner then
             if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
         end
+        if not G.SETTINGS.entropy_tutorial_complete then
+            rune = nil
+        end
         if rune then
             return create_card("Rune", G.pack_cards, nil, nil, true, true, nil, "spe")
         end
@@ -3096,6 +2959,16 @@ SMODS.Booster:take_ownership_by_kind('Celestial', {
         if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
 		if G.GAME.entr_diviner then
             if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
+        end
+        if G.GAME.round_resets.ante == 2 and G.GAME.round_resets.blind_states["Small"] == "Defeated" and not G.SETTINGS.entropy_tutorial_complete then 
+            if i == 1 then
+                return create_card("Rune", G.pack_cards, nil, nil, true, true, "c_entr_jera", "spe")
+            else
+                rune = nil
+            end
+        end
+        if not G.SETTINGS.entropy_tutorial_complete then
+            rune = nil
         end
         if rune and (i ~= 1 or not G.GAME.used_vouchers.v_telescope) then
             return create_card("Rune", G.pack_cards, nil, nil, true, true, nil, "spe")
@@ -3753,21 +3626,6 @@ function G.FUNCS.buy_from_shop(e)
     return buy_ref(e)
 end
 
-local unblind_void_ref = UnBlind_create_UIBox_blind
-function UnBlind_create_UIBox_blind(type)
-    if Entropy.can_ee_spawn() then
-        if to_big(G.GAME.round_resets.ante) < to_big(32) then G.GAME.EEBeaten = false end
-        if G.GAME.EEBuildup or (to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) then
-            G.GAME.round_resets.blind_choices.Boss = "bl_entr_endless_entropy_phase_one"
-            G.GAME.round_resets.blind_choices.Small = "bl_entr_void"
-            G.GAME.round_resets.blind_choices.Big = "bl_entr_void"
-            G.GAME.EEBuildup = true
-            ease_background_colour{new_colour = HEX("5f5f5f"), contrast = 3}
-        end
-    end
-    return unblind_void_ref(type)
-end
-
 local blind_calc_ref = Blind.calculate
 function Blind:calculate(context, ...)
     local obj = self.config.blind
@@ -3903,4 +3761,144 @@ function add_round_eval_row(config)
     else
         row_ref(config)
     end
+end
+
+
+local gns = get_new_small
+function get_new_small()
+    if G.GAME.modifiers.entr_gfb and not G.gfb_bypass then
+        G.gfb_bypass = true
+        local r = get_new_boss()
+        G.gfb_bypass = nil
+        return r
+    end
+    if G.GAME.entr_alt then
+        return "bl_entr_small"
+    end
+    return gns and gns() or "bl_small"
+end
+
+local gnbss = get_new_boss
+function get_new_boss()
+    if G.GAME.modifiers.entr_gfb and not G.gfb_bypass then
+        G.gfb_bypass = true
+        local r = get_new_small()
+        G.gfb_bypass= nil
+        return r
+    end
+    return gnbss()
+end
+
+local gnb = get_new_big
+function get_new_big()
+    if G.GAME.entr_alt then
+        return "bl_entr_big"
+    end
+    return gnb and gnb() or "bl_big"
+end
+
+local blind_get_type = Blind.get_type
+function Blind:get_type()
+    if self.small then return 'Small'
+    elseif self.big then return 'Big'
+    else return blind_get_type(self) end
+end
+
+local draw_ref = love.draw
+function love.draw(...)
+    draw_ref(...)
+    if Entropy.do_fake_crash then
+        Entropy.fake_crash(Entropy.do_fake_crash)
+    elseif Entropy.crash_volume then
+        G.SETTINGS.SOUND.volume = Entropy.crash_volume
+        Entropy.crash_volume = nil
+    end
+end
+
+local add_v_ref = SMODS.add_voucher_to_shop
+function SMODS.add_voucher_to_shop(key, ...)
+    local card = add_v_ref(key, ...)
+    if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi) then
+        G.E_MANAGER:add_event(Event{
+            trigger = "before",
+            func = function()
+                SMODS.calculate_context({modify_shop_voucher = true, card = card, first_of_ante = not G.GAME.entr_vouchers_set})
+                G.GAME.entr_vouchers_set = true
+                return true
+            end
+        })
+    else    
+        SMODS.calculate_context({modify_shop_voucher = true, card = card, first_of_ante = not G.GAME.entr_vouchers_set})
+        G.GAME.entr_vouchers_set = true
+    end
+    return card
+end
+
+local asc_col_ref = Spectrallib.get_asc_colour
+function Spectrallib.get_asc_colour(amount, text) 
+    if(G.GAME.Overflow or (G.GAME.badarg and G.GAME.badarg[text])) then return HEX("FF0000") end
+    return to_big(amount) >= to_big(0) and asc_col_ref(amount,  text) or G.C.Entropy.DARK_GRAY
+end
+
+local reset_ref = Cryptid.reset_to_none
+function Cryptid.reset_to_none()
+    if reset_ref then
+        reset_ref()
+    else
+        update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
+    end
+    update_hand_text({ delay = 0.1 }, {
+        level = "",
+    })
+end
+
+local card_eval_status_text_ref = card_eval_status_text
+function card_eval_status_text(card, ...)
+    if not card or card.silent then return end
+    if G.deck and card and card.area == G.butterfly_jokers and G.deck.cards[1] then
+        return card_eval_status_text_ref(G.deck.cards[1], ...)
+    else    
+        return card_eval_status_text_ref(card, ...)
+    end
+end
+
+local sell_cardref = Card.sell_card
+function Card:sell_card()
+    if self.ability.set == "Joker" then
+        if Entropy.deck_or_sleeve("butterfly") then
+            local bcard = copy_card(self)
+            bcard.states.visible = false
+            G.jokers:remove_card(bcard)
+            bcard:remove_from_deck()
+            G.butterfly_jokers:emplace(bcard)
+            bcard:add_to_deck()
+        end
+    end
+    sell_cardref(self)
+end
+
+local get_next_tagref = Cryptid.get_next_tag
+function Cryptid.get_next_tag(override)
+    local ref = get_next_tagref and get_next_tagref(override)
+    if next(SMODS.find_card('j_entr_dog_chocolate')) then 
+        if not G.GAME.dog_tags then G.GAME.dog_tags = {} end
+        if G.GAME.dog_tags[(override or G.GAME.blind_on_deck)..G.GAME.round_resets.ante] == nil then
+            for i = 1, #SMODS.find_card('j_entr_dog_chocolate') do
+                if G.GAME.dog_tags[(override or G.GAME.blind_on_deck)..G.GAME.round_resets.ante] ~= true then
+                    G.GAME.dog_tags[(override or G.GAME.blind_on_deck)..G.GAME.round_resets.ante] = pseudorandom_element({true, false, false, false, false}, pseudoseed("dog_chocolate"))
+                end
+            end
+        end
+        if G.GAME.dog_tags[(override or G.GAME.blind_on_deck)..G.GAME.round_resets.ante] then return 'tag_entr_dog' end
+    end
+    if ref then return ref end
+end
+
+local orig_ref = Spectrallib.card_eval_status_text_eq
+function Spectrallib.card_eval_status_text_eq(card, eval_type, amt, percent, dir, extra, pref, col, sound, vol, ta)
+    if card.area == G.butterfly_jokers and G.deck.cards[1] then
+        Spectrallib.card_eval_status_text_eq(G.deck.cards[1], eval_type, amt, percent, dir, extra, pref, col, sound, vol, true)
+        return
+    end
+    orig_ref(card, eval_type, amt, percent, dir, extra, pref, col, sound, vol, ta)
 end

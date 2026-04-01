@@ -5,8 +5,9 @@
 #endif
 
 extern MY_HIGHP_OR_MEDIUMP vec2 brimstone_badge;
-extern MY_HIGHP_OR_MEDIUMP vec2 uibox_pos;
-extern MY_HIGHP_OR_MEDIUMP vec2 uibox_size;
+extern MY_HIGHP_OR_MEDIUMP vec4 uie_details;
+extern MY_HIGHP_OR_MEDIUMP float uie_scale;
+extern MY_HIGHP_OR_MEDIUMP float uie_rot;
 
 number hue(number s, number t, number h)
 {
@@ -90,7 +91,14 @@ vec4 effect( vec4 colour, Image texture, vec2 texture_coords, vec2 screen_coords
 {
     vec4 tex = colour;
 
+    vec2 uibox_pos = vec2(uie_details.x, uie_details.y);
+    vec2 uibox_size = vec2(uie_details.z, uie_details.w) * uie_scale;
+    
     vec2 uv = (screen_coords - uibox_pos) / uibox_size.xy;
+
+    if(uv.x > uv.x * 2) {
+        uv.x = uie_rot;
+    }
 
     //if (uv.x < 0.00001) {
     //    uv = (screen_coords - (uibox_pos / screen_scale)) / (uibox_size.xy * screen_scale);
