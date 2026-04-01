@@ -462,7 +462,7 @@ G.FUNCS.skip_entr_tutorial_section = function(e)
     if G.OVERLAY_TUTORIAL.content then G.OVERLAY_TUTORIAL.content:remove() end
     G.OVERLAY_TUTORIAL:remove()
     G.OVERLAY_TUTORIAL = nil
-	G.F_SKIP_TUTORIA = true
+	G.F_SKIP_TUTORIAL = true
     G.E_MANAGER:clear_queue('tutorial')   
 end
 
