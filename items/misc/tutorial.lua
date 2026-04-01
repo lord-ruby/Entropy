@@ -337,7 +337,9 @@ G.FUNCS.entropy_tutorial_part = function(_part)
         })
         step = entropy_tutorial_info({
             text_key = 'entr_packs_14',
-            highlight = {},
+            highlight = function()
+                G.SETTINGS.entropy_tutorial_complete = true
+            end,
             attach = {major = G.ROOM_ATTACH, type = 'cm', offset = {x = 0, y = 0}},
             step = step,
         })
