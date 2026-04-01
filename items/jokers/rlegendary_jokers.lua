@@ -264,7 +264,7 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
         key = "entropy_card",
         config = {
             x_asc_mod = 1,
-            num = 1091 --sun
+            num = 1318 --sun
         },
         dependencies = {
             items = {

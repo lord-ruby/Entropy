@@ -387,9 +387,9 @@ local decs = {
 				name = "Kciroy",
 				text = {
 					"{C:dark_edition}+#1#{} hand size, {C:dark_edition}+#2#{} card selection limit",
-					"This Joker gains {X:dark_edition,C:white}^#3#{} Chips every",
+					"This Joker gains {X:slib_echips,C:white}^#3#{} Chips every",
 					"{C:attention}#4#{} {C:inactive}[#5#]{} cards discarded",
-					"{C:inactive}(Currently{} {X:dark_edition,C:white}^#6#{} {C:inactive}Chips){}"
+					"{C:inactive}(Currently{} {X:slib_echips,C:white}^#6#{} {C:inactive}Chips){}"
 				}
 			},
 			j_entr_tocihc = {
