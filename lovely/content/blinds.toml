@@ -1,0 +1,639 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = "G.GAME.round_resets.ante = Big and (to_number(math.floor(to_big(G.GAME.round_resets.ante)))) or math.floor(G.GAME.round_resets.ante)"
+position = "at"
+payload = '''
+
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = '''self.chips = get_blind_amount(G.GAME.round_resets.ante)*self.mult*G.GAME.starting_params.ante_scaling'''
+position = "before"
+payload = '''
+if (not self.exponent) or self.exponent[2] <= 0 then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = '''self.mult = blind and blind.mult or 0'''
+position = "after"
+payload = '''
+self.exponent = blind and blind.exponent or {1,0}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "blind.lua"
+pattern = '''self.chips = get_blind_amount(G.GAME.round_resets.ante)*self.mult*G.GAME.starting_params.ante_scaling'''
+position = "after"
+payload = '''
+elseif self.exponent[2] > 0 then
+    local initial = to_big(get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling)
+    if Big then
+      initial = Big:create(initial)
+      initial = initial:arrow(self.exponent[1], self.exponent[2])
+      self.chips = initial
+    else
+      initial = initial ^ self.exponent[2]
+      self.chips = initial
+    end
+end
+'''
+match_indent = true
+
+### display exponential blind 2
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''        ability_text[1] and {n=G.UIT.R, config={align = "cm", padding = 0.08, colour = mix_colours(blind.boss_colour, G.C.GREY, 0.4), r = 0.1, emboss = 0.05, minw = 2.5, minh = 0.9}, nodes=ability_text} or nil
+      }}'''
+position = "after"
+payload = '''
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''
+end
+
+function UnBlind_create_UIBox_blind_tag(blind_choice)      
+'''
+position = "before"
+payload = '''
+end
+'''
+match_indent = true
+
+### display exponential blind 3
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''local blind_amt = get_blind_amount(G.GAME.round_resets.blind_ante)*blind_choice.config.mult*G.GAME.starting_params.ante_scaling'''
+position = "after"
+payload = '''
+if blind_choice.config.exponent then
+      local initial = get_blind_amount(G.GAME.round_resets.ante)*G.GAME.starting_params.ante_scaling
+      if Big then
+        initial = initial:arrow(blind_choice.config.exponent[1], blind_choice.config.exponent[2])
+      else
+        initial = initial ^ blind_choice.config.exponent[2]
+      end
+      blind_amt = initial
+end
+blind_amt = blind_amt * (G.GAME.abyss_size_mod or 1)
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''local stake_sprite = get_stake_sprite(G.GAME.stake or 1, 0.4)'''
+position = "after"
+payload = '''
+if blind.exponent then
+    local exponents = ""
+    local exponents2 = ""
+    for i = 1, blind.exponent[1] do
+      exponents = exponents .. "^"
+    end
+    if blind.exponent[1] > 5 then
+      exponents = ""
+      exponents2 = "{" .. blind.exponent[1] .. "}"
+    end
+    blind_text[#blind_text + 1] =
+      {n=G.UIT.R, config={align = "cm", emboss = 0.05, r = 0.1, minw = 2.5, padding = 0.07, colour = G.C.WHITE}, nodes={
+        {n=G.UIT.R, config={align = "cm", maxw = 2.4}, nodes={
+          {n=G.UIT.T, config={text = localize('ph_blind_score_at_least'), scale = 0.35, colour = G.C.UI.TEXT_DARK}},
+        }},
+        {n=G.UIT.R, config={align = "cm"}, nodes={
+          {n=G.UIT.O, config={object = stake_sprite}},
+          {n=G.UIT.T, config={text = exponents .. blind.exponent[2].. exponents2 .." "..localize('k_entr_base'), scale = 0.4, colour = G.C.RED}},
+        }},
+        {n=G.UIT.R, config={align = "cm"}, nodes={
+          {n=G.UIT.T, config={text = localize('ph_blind_reward'), scale = 0.35, colour = G.C.UI.TEXT_DARK}},
+          {n=G.UIT.O, config={object = DynaText({string = {_dollars and string.rep(localize('$'),_dollars) or '-'}, colours = {G.C.MONEY}, rotate = true, bump = true, silent = true, scale = 0.45})}},
+        }},
+        ability_text[1] and {n=G.UIT.R, config={align = "cm", padding = 0.08, colour = mix_colours(blind.boss_colour, G.C.GREY, 0.4), r = 0.1, emboss = 0.05, minw = 2.5, minh = 0.9}, nodes=ability_text} or nil
+      }}
+else
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = "{n=G.UIT.T, config={text = localize('ph_blind_score_at_least'), scale = 0.3, colour = G.C.WHITE, shadow = true}}"
+position = "at"
+payload = "{n=G.UIT.T, config={text = localize('ph_blind_score_at_least'), scale = 0.3, colour = G.C.WHITE, shadow = true, id='score_at_least'}}"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if SMODS.saved then game_over = false end"
+position = "at"
+payload = '''
+if next(SMODS.find_card("j_entr_voidheart")) then
+  
+  if game_over and not G.GAME.abyss_just_lost then
+    Entropy.progress_abyss()
+    game_over = false
+  elseif not game_over then
+    Entropy.defeat_abyss()
+  end
+end
+if Entropy.is_EE() then
+    G.GAME.EECardCharacter = true
+    if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" then
+      if to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then return end
+      game_over = true
+    end
+    if SMODS.saved then
+      G.GAME.EERevived = true
+      G.STATE = G.STATES.GAME_OVER
+      if not G.GAME.won and not G.GAME.seeded and not G.GAME.challenge then 
+          G.PROFILES[G.SETTINGS.profile].high_scores.current_streak.amt = 0
+      end
+      G:save_settings()
+      G.FILE_HANDLER.force = true
+      G.STATE_COMPLETE = false
+    end
+elseif SMODS.saved then game_over = false end
+'''
+match_indent = true   
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''
+    if not G.STATE_COMPLETE then
+        G.STATE_COMPLETE = true
+        end_round()
+    end
+'''
+position = "at"
+payload = '''
+    if not G.STATE_COMPLETE then
+        if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then
+          G.GAME.chips = 0
+          G.GAME.round_resets.lost = false
+          G.GAME.blind:set_blind(G.P_BLINDS["bl_entr_endless_entropy_phase_two"])
+          Entropy.change_phase()
+          G.GAME.blind:juice_up()
+          G.GAME.current_round.hands_left = G.GAME.round_resets.hands
+          ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
+          ease_discard(
+            math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
+          )
+          G.FUNCS.draw_from_discard_to_deck()
+          G.STATE = 1
+          G.STATE_COMPLETE = false
+        else
+            G.STATE_COMPLETE = true
+            end_round()
+        end
+    end
+'''
+match_indent = true  
+
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = "if not G.GAME.won and not G.GAME.seeded and not G.GAME.challenge then "
+position = "before"
+payload = '''
+if Entropy.is_EE() then
+    G.GAME.EECardCharacter = true
+end
+'''
+match_indent = true       
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''local quip, extra = SMODS.quip("loss")'''
+position = "at"
+payload = '''
+local text = "loss"
+if G.GAME.EECardCharacter then text = "ee_loss" end
+if G.GAME.EERevived then text = "ee_revived" end
+local quip, extra = SMODS.quip(text)
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "game.lua"
+pattern = '''if G.GAME.round_resets.ante <= G.GAME.win_ante then --Only add Jimbo to say a quip if the game over happens when the run is lost'''
+position = "at"
+payload = '''
+if G.GAME.round_resets.ante >= G.GAME.win_ante and G.GAME.entr_alt then
+  check_for_unlock({type="rift"})
+end
+if G.GAME.round_resets.ante <= G.GAME.win_ante or G.GAME.EECardCharacter then --Only add Jimbo to say a quip if the game over happens when the run is lost
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/UI_definitions.lua"
+pattern = '''    {n=G.UIT.R, config={align = "cm", padding = 0.08}, nodes={
+      UIBox_button({button = 'exit_overlay_menu', label = {localize('b_endless')}, minw = 6.5, maxw = 5, minh = 1.2, scale = 0.7, shadow = true, colour = G.C.BLUE, focus_args = {nav = 'wide', button = 'x',set_button_pip = true}}),'''
+position = "at"
+payload = '''
+    {n=G.UIT.R, config={align = "cm", padding = 0.08}, nodes={
+      UIBox_button({button = 'exit_overlay_menu', label = {localize(G.GAME.TrueEndless and 'b_true_endless' or 'b_endless')}, minw = 6.5, maxw = 5, minh = 1.2, scale = 0.7, shadow = true, colour = G.C.BLUE, focus_args = {nav = 'wide', button = 'x',set_button_pip = true}}),
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/UI_definitions.lua'''
+pattern = '''
+        (G.GAME.used_vouchers["v_retcon"] or G.GAME.used_vouchers["v_directors_cut"]) and
+        UIBox_button({label = {localize('b_reroll_boss'), localize('$')..Cryptid.cheapest_boss_reroll()}, button = "reroll_boss", func = 'reroll_boss_button'}) or nil
+'''
+payload = '''
+        (G.GAME.used_vouchers["v_retcon"] or G.GAME.used_vouchers["v_directors_cut"]) and
+        UIBox_button({label = {G.GAME.EEBuildup and localize('b_cant_reroll') or localize('b_reroll_boss'), G.GAME.EEBuildup and localize('$')..localize("b_infinity") or localize('$')..Cryptid.cheapest_boss_reroll()}, button = "reroll_boss", func = G.GAME.EEBuildup and 'cant_reroll_button' or 'reroll_boss_button'}) or nil
+'''
+position = "at"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "cardarea.lua"
+pattern = "table.sort(self.cards, function (a, b) return a.T.x + a.T.w/2 - 100*((a.pinned and not a.ignore_pinned) and a.sort_id or 0) < b.T.x + b.T.w/2 - 100*((b.pinned and not b.ignore_pinned) and b.sort_id or 0) end)"
+position = "at"
+payload = "if not G.GAME.entr_fastened then table.sort(self.cards, function (a, b) return a.T.x + a.T.w/2 - 100*((a.pinned and not a.ignore_pinned) and a.sort_id or 0) < b.T.x + b.T.w/2 - 100*((b.pinned and not b.ignore_pinned) and b.sort_id or 0) end) end"
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+if G.GAME.round_resets.ante == G.GAME.win_ante and G.GAME.blind:get_type() == 'Boss' then
+'''
+position = "at"
+payload = '''
+if G.GAME.round_resets.ante == G.GAME.win_ante and G.GAME.blind_on_deck == "Boss" then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+if G.GAME.blind:get_type() == 'Boss' then
+  local _handname, _played, _order = 'High Card', -1, 100
+'''
+position = "at"
+payload = '''
+if G.GAME.blind_on_deck == "Boss" then
+  local _handname, _played, _order = 'High Card', -1, 100
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+if G.GAME.blind:get_type() == 'Boss' then
+  G.GAME.voucher_restock = nil
+'''
+position = "at"
+payload = '''
+if G.GAME.blind_on_deck == "Boss" then
+  G.GAME.voucher_restock = nil
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/game_object.lua"]'''
+pattern = '''
+if not (self.type == "win" or self.type == 'loss') then
+    sendWarnMessage(("Invalid type on JimboQuote %s. Value must be 'win' or 'loss'"):format(self.key:lower()), self.set)
+    return
+end
+'''
+position = "at"
+payload = '''
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+if not (quip_type == 'win' or quip_type == 'loss') then return nil end
+'''
+position = "at"
+payload = '''
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/state_events.lua'
+pattern = '''
+-- context.final_scoring_step calculations
+SMODS.calculate_context({full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, final_scoring_step = true})
+'''
+position = 'before'
+payload = '''
+local text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta = Entropy.evaluate_play_misc(text, disp_text, poker_hands, scoring_hand, non_loc_disp_text, percent, percent_delta)
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+pattern = '''
+if v.boss.showdown then
+'''
+position = 'at'
+payload = '''
+if v.boss and v.boss.showdown then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'game.lua'
+pattern = '''
+    if G.SPLASH_BACK then
+        if G.debug_background_toggle then
+            love.graphics.clear({0,1,0,1})
+        else
+            love.graphics.push()
+            G.SPLASH_BACK:translate_container()
+            G.SPLASH_BACK:draw()
+            love.graphics.pop()
+        end
+    end
+'''
+position = 'after'
+payload = '''
+    if G.SPLASH_EE then
+        if G.debug_background_toggle then
+            
+        else
+            love.graphics.push()
+            G.SPLASH_EE:translate_container()
+            G.SPLASH_EE:draw()
+            love.graphics.pop()
+        end
+    end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+if G.GAME.modifiers.no_blind_reward and G.GAME.modifiers.no_blind_reward[type] then _reward = nil end
+'''
+position = 'after'
+payload = '''
+if (G.GAME.modifiers.no_blind_reward and G.GAME.modifiers.no_blind_reward[type]) or ((type == "Big" or type == "Small") and G.GAME.EEBuildup) then _reward = nil end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+if G.GAME.blind then t[#t + 1] = { object = G.GAME.blind, scored_card = G.GAME.blind.children.animatedSprite } end
+'''
+position = "at"
+payload = '''
+if G.GAME.blind and G.GAME.blind.children then t[#t + 1] = { object = G.GAME.blind, scored_card = G.GAME.blind.children.animatedSprite } end
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/card_draw.lua"]'''
+pattern = '''
+if self.debuff then
+    self.children.center:draw_shader('debuff', nil, self.ARGS.send_to_shader)
+    if self.children.front and (self.ability.delayed or not self:should_hide_front()) then
+        self.children.front:draw_shader('debuff', nil, self.ARGS.send_to_shader)
+    end
+end
+'''
+position = "at"
+payload = '''
+if self.debuff then
+    if Entropy.is_EE() then
+      self.children.center:draw_shader('entr_brimstone', nil, self.ARGS.send_to_shader)
+      if self.children.front and (self.ability.delayed or not self:should_hide_front()) then
+          self.children.front:draw_shader('entr_brimstone', nil, self.ARGS.send_to_shader)
+      end
+      if self.children.floating_sprite then
+          if type(self.config.center.soul_pos.draw) == 'function' then
+              self.config.center.soul_pos.draw(self, scale_mod, rotate_mod)
+          elseif self.children.floating_sprite then
+              if self.ability.name == 'Hologram' then
+                  self.hover_tilt = self.hover_tilt*1.5
+                  self.children.floating_sprite:draw_shader('hologram', nil, self.ARGS.send_to_shader, nil, self.children.center, 2*scale_mod, 2*rotate_mod)
+                  self.hover_tilt = self.hover_tilt/1.5
+              else
+                  self.children.floating_sprite:draw_shader('dissolve',0, nil, nil, self.children.center,scale_mod, rotate_mod,nil, 0.1 + 0.03*math.sin(1.8*G.TIMERS.REAL),nil, 0.6)
+                  self.children.floating_sprite:draw_shader('dissolve', nil, nil, nil, self.children.center, scale_mod, rotate_mod)
+              end
+          end
+          if self.edition then 
+              local edition = G.P_CENTERS[self.edition.key]
+              if edition.apply_to_float and self.children.floating_sprite then
+                  self.children.floating_sprite:draw_shader(edition.shader, nil, nil, nil, self.children.center, scale_mod, rotate_mod)                    
+              end
+          end
+      end
+    else
+      self.children.center:draw_shader('debuff', nil, self.ARGS.send_to_shader)
+      if self.children.front and (self.ability.delayed or not self:should_hide_front()) then
+          self.children.front:draw_shader('debuff', nil, self.ARGS.send_to_shader)
+      end
+    end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+delay(0.4); SMODS.ante_end = true; ease_ante(1); SMODS.ante_end = nil; delay(0.4); check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})
+'''
+position = 'at'
+payload = '''
+delay(0.4)
+if not next(SMODS.find_card("j_entr_voidheart")) then
+  SMODS.ante_end = true; ease_ante(Spectrallib.blind_is("bl_entr_entropic_cultist") and (32 - G.GAME.round_resets.ante) or 1)
+  SMODS.ante_end = nil; delay(0.4)
+end
+check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})
+G.GAME.round_resets.blind_choices.Small = get_new_small()
+G.GAME.round_resets.blind_choices.Big = get_new_big()
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+G.FUNCS.draw_from_hand_to_discard()
+if G.GAME.blind_on_deck == "Boss" then
+'''
+position = "at"
+payload = '''
+G.FUNCS.draw_from_hand_to_discard()
+local tocihc
+for i, v in pairs(SMODS.find_card("j_entr_tocihc")) do
+  if pseudorandom("entr_tocihc") < 0.5 then tocihc = true end
+end
+if G.GAME.blind_on_deck == "Boss" and not tocihc then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+if G.GAME.round_resets.blind == G.P_BLINDS.bl_small then
+    G.GAME.round_resets.blind_states.Small = 'Defeated'
+elseif G.GAME.round_resets.blind == G.P_BLINDS.bl_big then
+    G.GAME.round_resets.blind_states.Big = 'Defeated'
+else
+    G.GAME.current_round.voucher = SMODS.get_next_vouchers()
+    G.GAME.round_resets.blind_states.Boss = 'Defeated'
+    for k, v in ipairs(G.playing_cards) do
+        v.ability.played_this_ante = nil
+    end
+end
+'''
+position = "at"
+payload = '''
+local tocihc
+for i, v in pairs(SMODS.find_card("j_entr_tocihc")) do
+  if pseudorandom("entr_tocihc") < 0.5 then tocihc = true end
+end
+if not tocihc then
+  if G.GAME.blind_on_deck == "Small" then
+      G.GAME.round_resets.blind_states.Small = 'Defeated'
+  elseif G.GAME.blind_on_deck == "Big" then
+      G.GAME.round_resets.blind_states.Big = 'Defeated'
+  elseif G.GAME.blind_on_deck ~= "Red" then
+      G.GAME.current_round.voucher = SMODS.get_next_vouchers()
+      G.GAME.round_resets.blind_states.Boss = 'Defeated'
+      for k, v in ipairs(G.playing_cards) do
+          v.ability.played_this_ante = nil
+      end
+  end
+else
+  SMODS.calculate_context({entr_reversing_blind = true})
+  if G.GAME.blind_on_deck == "Small" then
+      G.GAME.round_resets.blind_states.Small = 'Select'
+  elseif G.GAME.blind_on_deck == "Big" then
+      G.GAME.round_resets.blind_states.Big = 'Select'
+  elseif G.GAME.blind_on_deck ~= "Red" then
+      G.GAME.round_resets.blind_states.Boss = 'Select'
+  end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''
+for k, v in pairs(G.GAME.bosses_used) do
+'''
+position = "before"
+payload = '''
+if G.GAME.entr_alt and Cryptid.enabled("set_entr_altpath") then
+  for i, v in pairs(eligible_bosses) do
+    if not G.P_BLINDS[i].altpath then
+      eligible_bosses[i] = nil
+    end
+  end
+end
+if not G.GAME.entr_alt or not Cryptid.enabled("set_entr_altpath") then
+  for i, v in pairs(eligible_bosses) do
+    if G.P_BLINDS[i].altpath then
+      eligible_bosses[i] = nil
+    end
+  end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/misc_functions.lua'''
+pattern = '''
+(blind == 'bl_small' and mix_colours(G.C.BLUE, G.C.BLACK, 0.6) or
+blind == 'bl_big' and mix_colours(G.C.ORANGE, G.C.BLACK, 0.6)) or G.C.BLACK
+'''
+position = "at"
+payload = '''
+((blind == 'bl_small' or blind == 'bl_entr_small') and mix_colours(G.C.BLUE, G.C.BLACK, 0.6) or
+  (blind == 'bl_big' or blind == 'bl_entr_big') and mix_colours(G.C.ORANGE, G.C.BLACK, 0.6)) or G.C.BLACK
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''
+elseif blindname == 'Small Blind' or blindname == 'Big Blind' or blindname == '' then
+'''
+position = "at"
+payload = '''
+elseif blindname == 'Small Blind' or blindname == 'Big Blind' or blindname == '' or blindname == 'entr-Small Blind' or blindname == 'entr-Big Blind' then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/UI_definitions.lua'''
+pattern = '''
+{n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME.current_round, ref_value = 'hands_left'}}, font = G.LANGUAGES['en-us'].font, colours = {G.C.BLUE},shadow = true, rotate = true, scale = 2*scale}),id = 'hand_UI_count'}},
+'''
+position = "at"
+payload = '''
+{n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME.current_round, ref_value = 'hands_left'}}, font = G.LANGUAGES['en-us'].font, colours = {G.C.UI.HANDS},shadow = true, rotate = true, scale = 2*scale}),id = 'hand_UI_count'}},
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = '''functions/UI_definitions.lua'''
+pattern = '''
+{n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME.current_round, ref_value = 'discards_left'}}, font = G.LANGUAGES['en-us'].font, colours = {G.C.RED},shadow = true, rotate = true, scale = 2*scale}),id = 'discard_UI_count'}},
+'''
+position = "at"
+payload = '''
+{n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME.current_round, ref_value = 'discards_left'}}, font = G.LANGUAGES['en-us'].font, colours = {G.C.UI.DISCARDS},shadow = true, rotate = true, scale = 2*scale}),id = 'discard_UI_count'}},
+'''
+match_indent = true

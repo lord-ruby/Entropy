@@ -1,93 +1,85 @@
-Entropy.BlindC = {}
-local blinds = {}
 function Entropy.register_blinds()
-    local order = 12000
+    local bl = {}
     for i, v in pairs(G.P_BLINDS) do
-        order = order + 1
-        Entropy.BlindC[#Entropy.BlindC+1]="entr_"..i
-        blinds[#blinds+1] = {
-            key = "entr_"..i,
-            set = "CBlind",
-            pixel_size = { w = 34, h = 34 },
-            display_size = { w = 68, h = 68 },
-            config = {
-                blind = i,
-                pos = v.pos,
-            },
-            object_type = "Consumable",
-            order=order,
-            dependencies = {
-                items = {
-                    "set_entr_entropic"
-                }
-            },
-            weight = 0,
-            no_doe = true,
-            blpos = v.pos,
-            blatlas = v.atlas,
-            pos = {x = 9999, y = 9999},
-            --soul_pos = { x = 5, y = 0},
-            in_pool = function()
-                return false
-            end,
-            use = function(self, card, area, copier,amt)
-                local bl = "Small"
-                for i, v in pairs(G.GAME.round_resets.blind_states) do
-                    if v == "Select" or v == "Current" then bl = i end
-                end
-                G.GAME.round_resets.blind_choices[bl] = self.config.blind
-                if G.blind_select then        
-                    G.blind_select:remove()
-                    G.blind_prompt_box:remove()
-                    G.STATE_COMPLETE = false
-                else
-                    G.GAME.blind:disable()
-                    G.GAME.blind:set_blind(G.P_BLINDS[self.config.blind])
-                end
-            end,
-            can_use = function(self, card)
-                if not G.GAME.round_resets then return false end
-                if G.STATE ~= G.STATES.BLIND_SELECT and G.STATE ~= G.STATES.SELECTING_HAND then return false end
-                for i, v in pairs(G.GAME.round_resets.blind_states or {}) do
-                    if v == "Select" or (not SMODS.Mods.NotJustYet or (not SMODS.Mods.NotJustYet.can_load and v == "Current")) then return true end
-                end
-                if (to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) or G.GAME.EEBuildup then return false end
-                return false
-            end,
-            loc_vars = function(self,q,c)
-                if self.config.blind ~= "bl_small" and self.config.blind ~= "bl_big" then
-                    q[#q+1]={set="Blind",key=self.config.blind}
-                end
-            end,
-            set_sprites = function(self, card, front, gc)
-                local pos = self.blpos
-                if card.ability and card.ability.glitched_crown then
-                    pos = G.P_CENTERS[card.ability.glitched_crown[card.glitched_index] or self.key].blpos
-                end
-                if not pos then
-                    pos = {x = 0, y = 0}
-                end
-                if not self.discovered then
-                    pos = {x = 9999, y = 9999}
-                end
-                card.children.center.atlas = G.ANIMATION_ATLAS["blind_chips"]
-                card.children.center:set_sprite_pos({x=pos.x or 0, y=pos.y or 0})
-                if gc then card.children.center.T.h = 2 end
-            end,
-            demicoloncompat = true,
-            force_use = function(self, card, area)
-                self:use(card, area)
-            end,
-            order = (v.order or 0) - 1000
-        }
+        if not v.original_mod then
+            bl[#bl+1] = {
+                key = "entr_"..i,
+                set = "CBlind",
+                pixel_size = { w = 34, h = 34 },
+                display_size = { w = 68, h = 68 },
+                config = {
+                    blind = i,
+                    pos = v.pos,
+                },
+                order=order,
+                dependencies = {
+                    items = {
+                        "set_entr_entropic"
+                    }
+                },
+                weight = 0,
+                no_doe = true,
+                blpos = v.pos,
+                blatlas = v.atlas,
+                pos = {x = 9999, y = 9999},
+                --soul_pos = { x = 5, y = 0},
+                use = function(self, card, area, copier,amt)
+                    local bl = "Small"
+                    for i, v in pairs(G.GAME.round_resets.blind_states) do
+                        if v == "Select" or v == "Current" then bl = i end
+                    end
+                    G.GAME.round_resets.blind_choices[bl] = self.config.blind
+                    if G.blind_select then        
+                        G.blind_select:remove()
+                        G.blind_prompt_box:remove()
+                        G.STATE_COMPLETE = false
+                    else
+                        G.GAME.blind:disable()
+                        G.GAME.blind.loc_debuff_lines = {}
+                        G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
+                        G.GAME.blind:set_blind(G.P_BLINDS[self.config.blind])
+                    end
+                end,
+                can_use = function(self, card)
+                    if not G.GAME.round_resets then return false end
+                    if Entropy.is_ee_or_buildup() then return false end
+                    if G.STATE ~= G.STATES.BLIND_SELECT and G.STATE ~= G.STATES.SELECTING_HAND then return false end
+                    for i, v in pairs(G.GAME.round_resets.blind_states or {}) do
+                        if v == "Select" or (not SMODS.Mods.NotJustYet or (not SMODS.Mods.NotJustYet.can_load and v == "Current")) then return true end
+                    end
+                    return false
+                end,
+                loc_vars = function(self,q,c)
+                    if self.config.blind ~= "bl_small" and self.config.blind ~= "bl_big" then
+                        q[#q+1]={set="Blind",key=self.config.blind}
+                    end
+                end,
+                set_sprites = function(self, card, front, gc)
+                    local pos = self.blpos
+                    if card.ability and card.ability.glitched_crown then
+                        pos = G.P_CENTERS[card.ability.glitched_crown[card.glitched_index] or self.key].blpos
+                    end
+                    if not pos then
+                        pos = {x = 0, y = 0}
+                    end
+                    if not self.discovered then
+                        pos = {x = 9999, y = 9999}
+                    end
+                    card.children.center.atlas = G.ANIMATION_ATLAS["blind_chips"]
+                    card.children.center:set_sprite_pos({x=pos.x or 0, y=pos.y or 0})
+                    if gc then card.children.center.T.h = 2 end
+                end,
+                demicoloncompat = true,
+                force_use = function(self, card, area)
+                    self:use(card, area)
+                end,
+                order = (v.cry_order or v.order or 0) - 1000
+            }
+        end
     end
     for i, v in pairs(SMODS.Blind.obj_table) do
-        if not Entropy.BlindTokenBlacklist[i] and not v.no_collection then
-            order = order + 1
-            Entropy.BlindC[#Entropy.BlindC+1]="entr_"..i
-            blinds[#blinds+1] = {
-                object_type = "Consumable",
-                order=order,
+        if not Entropy.BlindTokenBlacklist[i] and not v.no_collection and not v.no_token then
+            bl[#bl+1] = {
                 dependencies = {
                     items = {
                         "set_entr_entropic"
@@ -109,9 +101,6 @@ function Entropy.register_blinds()
                 weight = 0,
                 no_doe = true,
                 --soul_pos = { x = 5, y = 0},
-                in_pool = function()
-                    return false
-                end,
                 use = function(self, card, area, copier,amt)
                     local bl = "Small"
                     for i, v in pairs(G.GAME.round_resets.blind_states) do
@@ -124,20 +113,27 @@ function Entropy.register_blinds()
                         G.STATE_COMPLETE = false
                     else
                         G.GAME.blind:disable()
+                        G.GAME.blind.loc_debuff_lines = {}
+		                G.FUNCS.HUD_blind_debuff(G.HUD_blind:get_UIE_by_ID('HUD_blind_debuff'))
                         G.GAME.blind:set_blind(G.P_BLINDS[self.config.blind])
                     end
                 end,
                 can_use = function(self, card)
                     if not G.GAME.round_resets then return false end
+                    if Entropy.is_ee_or_buildup() then return false end
                     if G.STATE ~= G.STATES.BLIND_SELECT and G.STATE ~= G.STATES.SELECTING_HAND then return false end
                     for i, v in pairs(G.GAME.round_resets.blind_states or {}) do
                         if v == "Select" or (not SMODS.Mods.NotJustYet or (not SMODS.Mods.NotJustYet.can_load and v == "Current")) then return true end
                     end
-                    if (to_big(G.GAME.round_resets.ante) >= to_big(32) and not G.GAME.EEBeaten) or G.GAME.EEBuildup then return false end
                     return false
                 end,
                 loc_vars = function(self,q,c)
-                    q[#q+1]={set="Blind",key=self.config.blind}
+                    if self.config.blind ~= "bl_entr_small" and self.config.blind ~= "bl_entr_big" then
+                        local bl = G.P_BLINDS[self.config.blind]
+                        local func = bl.collection_loc_vars or bl.loc_vars or function() end
+                        local ret = func(bl, {}, G.GAME.Blind)
+                        q[#q+1]={set="Blind",key=self.config.blind, vars = ret and ret.vars}
+                    end
                 end,
                 entr_credits = v.entr_credits,
                 cry_credits = v.cry_credits,
@@ -172,12 +168,16 @@ function Entropy.register_blinds()
                 force_use = function(self, card, area)
                     self:use(card, area)
                 end,
-                order = (v.order or 0) + (v.mod or {priority = 0}).priority
+                order = (v.cry_order or v.order or 0) + (v.mod or {priority = 0}).priority
             }
         end
     end
-    table.sort(blinds, function(a, b) return (a.order or 0 ) < (b.order or 0) end)
-    return {items = blinds}
+    table.sort(bl, function(a, b) return a.order < b.order end)
+    for i, v in pairs(bl) do
+        v.cry_order = v.order
+        v.order = nil
+        SMODS.Consumable(v)
+    end
 end
 
 local set_spritesref = Card.set_sprites

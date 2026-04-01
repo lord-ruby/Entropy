@@ -3,8 +3,7 @@ SMODS.Shader({
     path="solar.fs"
 })
 
-local solar = {
-	object_type = "Edition",
+Entropy.Edition{
 	order = 9000+1,
     key="solar",
     shader="solar",
@@ -27,7 +26,7 @@ local solar = {
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
-		if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
+		Entropy.ensure_ascpow_tutorial(q)
         return {vars={card and card.edition and card.edition.sol or 1.4}}
     end,
     calculate = function(self, card, context)
@@ -62,8 +61,7 @@ SMODS.Shader({
     path="fractured.fs"
 })
 
-local fractured ={
-	object_type = "Edition",
+Entropy.Edition{
 	order = 9000+2,
     key="fractured",
     shader="fractured",
@@ -122,8 +120,7 @@ SMODS.Shader({
     key="sunny",
     path="sunny.fs"
 })
-local sunny = {
-	object_type = "Edition",
+Entropy.Edition{
 	order = 9000-1,
     key="sunny",
     shader="sunny",
@@ -147,7 +144,7 @@ local sunny = {
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
-		if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
+		Entropy.ensure_ascpow_tutorial(q)
         return {vars={card and card.edition and card.edition.sol or 4}}
     end,
     calculate = function(self, card, context)
@@ -181,8 +178,7 @@ SMODS.Shader({
     path="freaky.fs"
 })
 
-local freaky = {
-	object_type = "Edition",
+Entropy.Edition{
 	order = 9000+3,
     key="freaky",
     shader="freaky",
@@ -420,8 +416,7 @@ SMODS.Shader({
     path="neon.fs"
 })
 
-local neon = {
-	object_type = "Edition",
+Entropy.Edition{
 	order = 9000-2,
     key="neon",
     shader="neon",
@@ -443,20 +438,35 @@ local neon = {
     badge_color = HEX("fca849"),
 	disable_base_shader=true,
     loc_vars = function(self,q,card)
+		if G.GAME.modifiers.entr_gfb then
+			return {key = "e_entr_neon_gfb"}
+		end
 		return {vars={card and card.edition and (card.is_playing_card and card:is_playing_card() and card.edition.cost_fac_playing or card.edition.cost_fac) or 0.9}}
     end,
 	entr_credits = {
 		custom={key="shader",text="cassknows"},
 		idea = {"cassknows"}
 	},
+	on_apply = function(card)
+		if G.GAME.modifiers.entr_gfb then
+			change_shop_size(1)
+		end
+	end,
+	on_remove = function(card)
+		if G.GAME.modifiers.entr_gfb then
+			change_shop_size(-1)
+		end	
+	end,
 }
 
 local set_cost_ref = Card.set_cost
 function Card:set_cost()
 	set_cost_ref(self)
-	for i, v in pairs(G.I.CARD) do
-		if v.edition and v.edition.key == "e_entr_neon" and v.area and v.area.config.type ~= "shop" and not v.debuff then
-			self.cost = self.cost * (v:is_playing_card() and v.edition.cost_fac_playing or v.edition.cost_fac) or 1
+	if not G.GAME.modifiers.entr_gfb then
+		for i, v in pairs(G.I.CARD) do
+			if v.edition and v.edition.key == "e_entr_neon" and v.area and v.area.config.type ~= "shop" and not v.debuff then
+				self.cost = self.cost * (v:is_playing_card() and v.edition.cost_fac_playing or v.edition.cost_fac) or 1
+			end
 		end
 	end
 	if Entropy.has_rune("rune_entr_avarice") then
@@ -490,8 +500,7 @@ SMODS.Shader({
     path="lowres.fs"
 })
 
-local lowres = {
-	object_type = "Edition",
+Entropy.Edition{
 	order = 9000-1.75,
     key="lowres",
     shader="lowres",
@@ -547,8 +556,7 @@ SMODS.Shader({
 })
 
 
-local kaleidoscopic = {
-	object_type = "Edition",
+Entropy.Edition{
 	order = 9000+4,
     key="kaleidoscopic",
     shader="kaleidoscopic",
@@ -608,8 +616,7 @@ SMODS.Shader({
     path="gilded.fs"
 })
 
-local gilded = {
-	object_type = "Edition",
+Entropy.Edition{
 	order = 9000+5,
     key="gilded",
     shader="gilded",
@@ -662,6 +669,9 @@ local gilded = {
 
 local card_click = Card.click
 function Card:click(...)
+	if G.GAME.entr_dating_start then 
+		return
+	end
 	if G.SETTINGS.paused and self.edition and G.P_CENTERS[self.edition.key] and G.P_CENTERS[self.edition.key].sound then
 		play_sound(G.P_CENTERS[self.edition.key].sound.sound, G.P_CENTERS[self.edition.key].sound.volume)
 	end
@@ -692,16 +702,3 @@ function Card:click(...)
 	end
 	return card_click(self, ...)
 end
-
-return {
-    items = {
-        solar,
-        fractured,
-		sunny,
-		freaky,
-		neon,
-		lowres,
-		kaleidoscopic,
-		gilded
-    }
-}

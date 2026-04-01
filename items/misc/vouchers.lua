@@ -1,11 +1,10 @@
-local marked = {
+Entropy.Voucher{
     dependencies = {
         items = {
           "set_entr_vouchers",
           "set_entr_inversions",
         }
     },
-	object_type = "Voucher",
     order = -2000,
     key = "marked",
     atlas = "vouchers",
@@ -21,14 +20,13 @@ local marked = {
     }
 }
 
-local trump_card = {
+Entropy.Voucher{
     dependencies = {
         items = {
           "set_entr_vouchers",
           "set_entr_inversions",
         }
     },
-	object_type = "Voucher",
     order = -2000+1,
     key = "trump_card",
     atlas = "vouchers",
@@ -42,14 +40,13 @@ local trump_card = {
     end
 }
 
-local diviner = {
+Entropy.Voucher{
     dependencies = {
         items = {
           "set_entr_vouchers",
           "set_entr_runes",
         }
     },
-	object_type = "Voucher",
     order = -2000+3,
     key = "diviner",
     atlas = "vouchers",
@@ -62,14 +59,13 @@ local diviner = {
     end,
 }
 
-local providence = {
+Entropy.Voucher{
     dependencies = {
         items = {
           "set_entr_vouchers",
           "set_entr_runes",
         }
     },
-	object_type = "Voucher",
     order = -2000+4,
     key = "providence",
     atlas = "vouchers",
@@ -83,13 +79,12 @@ local providence = {
     end
 }
 
-local starter_kit = {
+Entropy.Voucher{
     dependencies = {
         items = {
           "set_entr_vouchers",
         }
     },
-	object_type = "Voucher",
     order = -2000+5,
     key = "starter_kit",
     atlas = "vouchers",
@@ -102,13 +97,12 @@ local starter_kit = {
     end
 }
 
-local expansion_pack = {
+Entropy.Voucher{
     dependencies = {
         items = {
           "set_entr_vouchers",
         }
     },
-	object_type = "Voucher",
     order = -2000+6,
     key = "expansion_pack",
     atlas = "vouchers",
@@ -120,15 +114,4 @@ local expansion_pack = {
     unredeem = function(self, card) 
         G.GAME.deck_voucher_rate = nil
     end
-}
-
-return {
-    items = {
-        marked,
-        trump_card,
-        diviner,
-        providence,
-        starter_kit,
-        expansion_pack
-    }
 }

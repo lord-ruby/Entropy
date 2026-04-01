@@ -1,6 +1,6 @@
-local oekrep = {
+Entropy.Joker{
     order = 400,
-    object_type = "Joker",
+    
     key = "oekrep",
     config = {
         qmult = 4
@@ -45,9 +45,9 @@ local oekrep = {
     end,
 }
 
-local tocihc = {
+Entropy.Joker{
     order = 401,
-    object_type = "Joker",
+    
     key = "tocihc",
     config = {
         qmult = 4
@@ -119,9 +119,9 @@ local tocihc = {
     end
 }
 
-local teluobirt = {
+Entropy.Joker{
     order = 403,
-    object_type = "Joker",
+    
     key = "teluobirt",
     rarity = "entr_reverse_legendary",
     cost = 20,
@@ -186,9 +186,9 @@ local teluobirt = {
     end
 }
 
-local oinac = {
+Entropy.Joker{
     order = 404,
-    object_type = "Joker",
+    
     key = "oinac",
     rarity = "entr_reverse_legendary",
     cost = 20,
@@ -257,52 +257,53 @@ local oinac = {
 		},
 	},
 }
-
-local entropy_card = {
-    order = 405,
-    object_type = "Joker",
-    key = "entropy_card",
-    config = {
-        x_asc_mod = 1,
-        num = 1091 --sun
-    },
-    dependencies = {
-        items = {
-          "set_entr_inversions"
-        }
-    },
-    rarity = "entr_reverse_legendary",
-    cost = 20,
-    
-
-    blueprint_compat = true,
-    eternal_compat = true,
-    pos = { x = 0, y = 3 },
-    soul_pos = { x = 0, y = 2 },
-    atlas = "reverse_legendary",
-    demicoloncompat=true,
-    loc_vars = function(self, info_queue, card)
-        if Entropy.config.asc_power_tutorial then info_queue[#info_queue+1] = {set = "Other", key = "asc_power_tutorial"} end
-        return {
-            vars = {
-                number_format(card.ability.x_asc_mod),
-                number_format(1+card.ability.num*card.ability.x_asc_mod)
+if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
+    Entropy.Joker{
+        order = 405,
+        
+        key = "entropy_card",
+        config = {
+            x_asc_mod = 1,
+            num = 1091 --sun
+        },
+        dependencies = {
+            items = {
+            "set_entr_inversions"
             }
-        }
-    end,
-    calculate = function (self, card, context)
-       if context.joker_main or context.forcetrigger then
+        },
+        rarity = "entr_reverse_legendary",
+        cost = 20,
+        
+
+        blueprint_compat = true,
+        eternal_compat = true,
+        pos = { x = 0, y = 3 },
+        soul_pos = { x = 0, y = 2 },
+        atlas = "reverse_legendary",
+        demicoloncompat=true,
+        loc_vars = function(self, info_queue, card)
+            Entropy.ensure_ascpow_tutorial(info_queue)
             return {
-                x_asc = 1+card.ability.num*card.ability.x_asc_mod
+                vars = {
+                    number_format(card.ability.x_asc_mod),
+                    number_format(1+card.ability.num*card.ability.x_asc_mod)
+                }
             }
-       end
-    end
-}
+        end,
+        calculate = function (self, card, context)
+        if context.joker_main or context.forcetrigger then
+                return {
+                    x_asc = 1+card.ability.num*card.ability.x_asc_mod
+                }
+        end
+        end
+    }
+end
 
 
-local kciroy = {
+Entropy.Joker{
     order = 402,
-    object_type = "Joker",
+    
     key = "kciroy",
     config = {
         csl = 23,
@@ -378,9 +379,9 @@ local kciroy = {
     end
 }
 
-local ybur = {
+Entropy.Joker{
     order = 405,
-    object_type = "Joker",
+    
     key = "ybur",
     config = {
         e_chips = 1,
@@ -407,53 +408,63 @@ local ybur = {
                 card.ability.e_chips_mod,
                 card.ability.active and localize("k_active_ex") or localize("k_inactive_ex")
             },
+            key = G.GAME.modifiers.entr_gfb and "j_entr_ybur_gfb" or nil
         }
     end,
     calculate = function (self, card, context)
         if context.game_over and card.ability.active then
-            for i, card in pairs(SMODS.find_card("j_entr_ybur")) do
-                card.ability.active = false
-                SMODS.scale_card(card, {
-                    ref_table = card.ability,
-                    ref_value = "e_chips",
-                    scalar_value = "e_chips_mod",
-                    message_key = "a_powchips",
-                    message_colour = { 0.8, 0.45, 0.85, 1 }
-                })
+            if not G.GAME.modifiers.entr_gfb then
+                for i, card in pairs(SMODS.find_card("j_entr_ybur")) do
+                    card.ability.active = false
+                    SMODS.scale_card(card, {
+                        ref_table = card.ability,
+                        ref_value = "e_chips",
+                        scalar_value = "e_chips_mod",
+                        message_key = "a_powchips",
+                        message_colour = { 0.8, 0.45, 0.85, 1 }
+                    })
+                end
             end
             return {
-                saved = localize(pseudorandom("ybur") < 0.5 and "k_saved_heroic" or "k_saved_just")
+                saved = G.GAME.modifiers.entr_gfb or (localize(pseudorandom("ybur") < 0.5 and "k_saved_heroic" or "k_saved_just"))
             }
         end
         if context.joker_main or context.forcetrigger then
+            if G.GAME.modifiers.entr_gfb then
+                return {
+                    Eqchips_mod = math.huge,
+                    Eqmult_mod = math.huge
+                }
+            end
             if to_big(card.ability.e_chips) ~= to_big(1) then
                 return {
                     echips = card.ability.e_chips,
                 }
             end
         end
-        if context.skip_blind and not context.blueprint and not context.repetition then
-            card.ability.active = false
-            return {
-                message = localize("k_inactive")
-            }
-        end
-        if (context.end_of_round and not context.individual and not context.repetition) then
-            if G.GAME.blind_on_deck == "Boss" then
-                card.ability.active = true
+        if not G.GAME.modifiers.entr_gfb then
+            if context.skip_blind and not context.blueprint and not context.repetition then
+                card.ability.active = false
                 return {
-                    message = localize("k_reset")
+                    message = localize("k_inactive")
                 }
             end
-        
+            if (context.end_of_round and not context.individual and not context.repetition) then
+                if G.GAME.blind_on_deck == "Boss" then
+                    card.ability.active = true
+                    return {
+                        message = localize("k_reset")
+                    }
+                end
+            end
         end
     end,
     pronouns = "she_her",
 }
 
-local zelavi = {
+Entropy.Joker{
     order = 406,
-    object_type = "Joker",
+    
     key = "zelavi",
     config = {
         x_chips = 1,
@@ -509,9 +520,9 @@ local zelavi = {
     pronouns = "he_they",
 }
 
-local ssac = {
+Entropy.Joker{
     order = 407,
-    object_type = "Joker",
+    
     key = "ssac",
     dependencies = {
         items = {
@@ -582,9 +593,9 @@ local ssac = {
     pronouns = "she_her",
 }
 
-local axeh = {
+Entropy.Joker{
     order = 409,
-    object_type = "Joker",
+    
     key = "axeh",
     config = {
         asc_mod = 3
@@ -625,9 +636,9 @@ local axeh = {
     pronouns = "she_her",
 }
 
-local nokharg  = {
+Entropy.Joker{
     order = 410,
-    object_type = "Joker",
+    
     key = "nokharg",
     dependencies = {
         items = {
@@ -721,20 +732,4 @@ SMODS.Shader{
             }
         }
     end
-}
-
-return {
-    items = {
-        oekrep,
-        tocihc,
-        teluobirt,
-        oinac,
-        kciroy,
-        ybur,
-        ssac,
-        zelavi,
-        axeh,
-        nokharg,
-        SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load and entropy_card or nil, --lazy so this goes here
-    }
 }

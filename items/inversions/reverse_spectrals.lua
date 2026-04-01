@@ -1,5 +1,4 @@
-local changeling = {
-    object_type = "Consumable",
+Entropy.Consumable{
     order = 2000,
     key = "changeling",
     inversion = "c_familiar",
@@ -45,8 +44,7 @@ local changeling = {
     },
 }
 
-local rend = {
-    object_type = "Consumable",
+Entropy.Consumable{
     order = 2000 + 1,
     key = "rend",
     inversion = "c_grim",
@@ -85,13 +83,13 @@ local rend = {
         self:use(card)
     end
 }
-local inscribe = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 2,
     key = "inscribe",
     set = "Omen",
@@ -130,18 +128,18 @@ local inscribe = {
         self:use(card)
     end
 }
-local insignia = Entropy.seal_spectral("insignia", {x=9,y=4}, "entr_silver", 2000+3, "c_talisman", {art = {"Lil. Mr. Slipstream"}})
-local rendezvous = Entropy.seal_spectral("rendezvous", {x=10,y=5}, "entr_crimson",2000+10.5, "c_deja_vu")
-local eclipse = Entropy.seal_spectral("eclipse", {x=12,y=5}, "entr_sapphire",2000+12, "c_trance", {art = {"Lil. Mr. Slipstream"}})
-local calamity = Entropy.seal_spectral("calamity", {x=6,y=6}, "entr_pink",2000+13, "c_medium",{art = {"Lil. Mr. Slipstream"}})
+Entropy.seal_spectral("insignia", {x=9,y=4}, "entr_silver", 2000+3, "c_talisman", {art = {"Lil. Mr. Slipstream"}})
+Entropy.seal_spectral("rendezvous", {x=10,y=5}, "entr_crimson",2000+10.5, "c_deja_vu")
+Entropy.seal_spectral("eclipse", {x=12,y=5}, "entr_sapphire",2000+12, "c_trance", {art = {"Lil. Mr. Slipstream"}})
+Entropy.seal_spectral("calamity", {x=6,y=6}, "entr_pink",2000+13, "c_medium",{art = {"Lil. Mr. Slipstream"}})
 
-local siphon = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 4,
     key = "siphon",
     set = "Omen",
@@ -193,13 +191,13 @@ local siphon = {
     --TODO figure this shit out when force used
 }
 
-local ward = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 5,
     key = "ward",
     set = "Omen",
@@ -241,13 +239,13 @@ local ward = {
     end
 }
 
-local disavow = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 6,
     key = "disavow",
     set = "Omen",
@@ -283,14 +281,14 @@ local disavow = {
     end
 }
 
-local pact = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
           "link"
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 7,
     key = "pact",
     set = "Omen",
@@ -347,7 +345,7 @@ local pact = {
     end
 }
 
-local link = {
+Entropy.Sticker{
     atlas = "entr_stickers",
     pos = { x = 1, y = 1 },
     key = "link",
@@ -356,7 +354,6 @@ local link = {
           "set_entr_inversions",
         }
     },
-    object_type = "Sticker",
     order = 2500 + 0,
     no_sticker_sheet = true,
     prefix_config = { key = false },
@@ -385,13 +382,13 @@ local link = {
     end,
 }
 
-local ichor = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 8,
     key = "ichor",
     set = "Omen",
@@ -432,13 +429,13 @@ local ichor = {
     end
 }
 
-local rejuvenate = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 9,
     key = "rejuvenate",
     set = "Omen",
@@ -498,13 +495,13 @@ local rejuvenate = {
     end
 }
 
-local crypt = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 10,
     key = "crypt",
     set = "Omen",
@@ -558,13 +555,13 @@ local crypt = {
     end
 }
 
-local charm = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 11,
     key = "charm",
     set = "Omen",
@@ -619,13 +616,13 @@ local charm = {
     end
 }
 
-local entropy = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 14,
     key = "entropy",
     set = "Omen",
@@ -683,14 +680,61 @@ SMODS.Shader({
     path="rainbow.fs"
 })
 
+SMODS.ScreenShader({
+    key="vignette",
+    path="vignette.fs",
+    send_vars = function (sprite, card)
+        return {
+            power = G.GAME.entr_vignette_power or 2
+        }
+    end,
+    should_apply = function()
+        return G.GAME.entr_vignette_power or G.entr_invert_enabled
+    end
+})
+	--TODO: special thanks in credits to lily for these two shaders
+SMODS.ScreenShader {
+    key = "flashlight",
+    path = "flashlight.fs",
+    send_vars = function(self)
+		local t = G.TIMERS.REAL or 0
+		t = t - 5000*math.floor(t/5000)
+        return {
+            center_pos = G.entr_flashlight_center or { love.graphics.getWidth() / 2, love.graphics.getHeight() / 2 },
+            dist = G.entr_flashlight_distance or 500,
+			time = t or 0
+        }
+    end,
+    should_apply = function(self)
+        return G.entr_flashlight_enabled
+    end,
+}
 
-local fervour = {
+SMODS.ScreenShader {
+    key = "invert",
+    path = "invertradius.fs",
+    send_vars = function(self)
+        local t = G.TIMERS.REAL or 0
+        t = t - 5000*math.floor(t/5000)
+        return {
+            center_pos = G.entr_invert_center or { love.graphics.getWidth() / 2, love.graphics.getHeight() / 2 },
+            dist = G.entr_invert_distance or 500,
+            time = t or 0
+        }
+    end,
+    should_apply = function(self)
+        return G.entr_invert_enabled
+    end,
+    order = 7
+}
+
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 15,
     key = "fervour",
     set = "Omen",
@@ -931,13 +975,13 @@ local fervour = {
     end
 }
 
-local quasar = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 16,
     key = "quasar",
     set = "Omen",
@@ -1058,13 +1102,13 @@ if Engulf then
     --Engulf.SpecialWhitelist["Omen"] = true
 end
 
-local regenerate = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 33,
     key = "regenerate",
     set = "Omen",
@@ -1121,13 +1165,12 @@ local regenerate = {
     end
 }
 
-local pure = {
+Entropy.Sticker{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Sticker",
     order = 2500+4,
     atlas = "entr_stickers",
     pos = { x = 8, y = 1 },
@@ -1149,13 +1192,13 @@ local pure = {
     end,
 }
 
-local purity = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 34,
     key = "purity",
     set = "Omen",
@@ -1213,13 +1256,13 @@ function Card:calculate_joker(...)
     return ret
 end
 
-local transcend = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 35,
     key = "transcend",
     set = "Omen",
@@ -1261,13 +1304,13 @@ local transcend = {
     },
 }
 
-local weld = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 36,
     key = "weld",
     set = "Omen",
@@ -1313,15 +1356,15 @@ local weld = {
     end
 }
 
-local malediction = Entropy.seal_spectral("malediction", {x=2,y=0}, "entr_amber", 2000+37, "c_entr_enchant", nil, "consumables2")
+Entropy.seal_spectral("malediction", {x=2,y=0}, "entr_amber", 2000+37, "c_entr_enchant", nil, "consumables2")
 
-local idyll = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 2000 + 38,
     key = "idyll",
     set = "Omen",
@@ -1349,38 +1392,4 @@ local idyll = {
     force_use = function(self, card)
         self:use(card)
     end
-}
-
-return {
-    items = {
-        changeling,
-        rend,
-        inscribe,
-        insignia,
-        rendezvous,
-        eclipse,
-        calamity,
-        downpour,
-        script,
-        ward,
-        siphon,
-        disavow,
-        pact,
-        link,
-        ichor,
-        rejuvenate,
-        crypt,
-        charm,
-        entropy,
-        quasar,
-        fervour,
-        regenerate,
-        beyond,
-        pure,
-        purity,
-        transcend,
-        weld,
-        malediction,
-        idyll
-    }
 }

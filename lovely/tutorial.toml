@@ -1,0 +1,101 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+# TUTORIAL - Start Run
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+UIBox_button{id = 'main_menu_play', button = not G.SETTINGS.tutorial_complete and "start_run" or "setup_run", colour = G.C.BLUE, minw = 3.65, minh = 1.55, label = {localize('b_play_cap')}, scale = text_scale*2, col = true},
+'''
+match_indent = true
+position = 'at'
+payload = '''
+UIBox_button{id = 'main_menu_play', button = (not G.SETTINGS.entropy_tutorial_complete and "start_entropy_run") or ("setup_run"), colour = G.C.BLUE, minw = 3.65, minh = 1.55, label = {localize('b_play_cap')}, scale = text_scale*2, col = true},
+'''
+
+# TUTORIAL - Tutorial Controller
+[[patches]]
+[patches.pattern]
+target = 'game.lua'
+pattern = '''
+if not G.SETTINGS.tutorial_complete then G.FUNCS.tutorial_controller() end
+'''
+match_indent = true
+position = 'at'
+payload = '''
+if not G.SETTINGS.entropy_tutorial_complete then G.FUNCS.entropy_tutorial_controller() end
+'''
+
+# TUTORIAL - No skips
+[[patches]]
+[patches.pattern]
+target = 'functions/button_callbacks.lua'
+pattern = '''
+if _tag_container and not G.SETTINGS.tutorial_complete and not G.SETTINGS.tutorial_progress.completed_parts['shop_1'] then _tag_container.states.visible = false
+'''
+match_indent = true
+position = 'after'
+payload = '''
+elseif _tag_container and not G.SETTINGS.entropy_tutorial_complete and not G.SETTINGS.entropy_tutorial_progress.completed_parts['end'] then _tag_container.states.visible = false
+'''
+
+# TUTORIAL - Forced generation
+[[patches]]
+[patches.pattern]
+target = 'game.lua'
+pattern = '''
+local forced_voucher = (G.SETTINGS.tutorial_progress or {}).forced_voucher
+'''
+match_indent = true
+position = 'after'
+payload = '''
+forced_voucher = Entropy.get_forced_voucher()
+'''
+
+# TUTORIAL - Forced Joker
+[[patches]]
+[patches.pattern]
+target = 'game.lua'
+pattern = '''
+self.GAME.round_resets.blind_choices.Boss = get_new_boss()
+'''
+match_indent = true
+position = 'at'
+payload = '''
+self.GAME.round_resets.blind_choices.Boss = (G.SETTINGS.entropy_tutorial_progress or {}).forced_boss or get_new_boss()
+'''
+
+# TUTORIAL - tutorial autocomplete
+[[patches]]
+[patches.pattern]
+target = 'game.lua'
+pattern = '''
+if (not G.SETTINGS.tutorial_complete) and G.SETTINGS.tutorial_progress.completed_parts['big_blind'] then G.SETTINGS.tutorial_complete = true end
+'''
+match_indent = true
+position = 'at'
+payload = '''
+if (not G.SETTINGS.entropy_tutorial_complete) and G.SETTINGS.entropy_tutorial_progress and G.SETTINGS.entropy_tutorial_progress.completed_parts['packs'] then G.SETTINGS.entropy_tutorial_complete = true end
+'''
+
+# TUTORIAL - forced booster
+[[patches]]
+[patches.pattern]
+target = 'game.lua'
+pattern = '''
+local card = Card(G.shop_booster.T.x + G.shop_booster.T.w/2,
+     G.shop_booster.T.y, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[G.GAME.current_round.used_packs[i]], {bypass_discovery_center = true, bypass_discovery_ui = true})
+'''
+match_indent = true
+position = 'at'
+payload = '''
+local cent = G.GAME.current_round.used_packs[i]
+if Entropy.get_forced_booster(i) then
+    cent = Entropy.get_forced_booster(i)
+end
+local card = Card(G.shop_booster.T.x + G.shop_booster.T.w/2,
+     G.shop_booster.T.y, G.CARD_W*1.27, G.CARD_H*1.27, G.P_CARDS.empty, G.P_CENTERS[cent], {bypass_discovery_center = true, bypass_discovery_ui = true})
+'''

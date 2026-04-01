@@ -146,14 +146,13 @@ function Entropy.invert(cards, flip, filter)
 end
 
 function Entropy.seal_spectral(key, sprite_pos, seal,order, inversion, entr_credits, atlas, q_vars)
-    return {
+    Entropy.Consumable{
         dependencies = {
             items = {
               "set_entr_inversions",
               seal
             }
         },
-        object_type = "Consumable",
         order = order,
         key = key,
         set = "Omen",
@@ -189,18 +188,8 @@ function Entropy.seal_spectral(key, sprite_pos, seal,order, inversion, entr_cred
     }
 end
 
-local orig_ref = Spectrallib.card_eval_status_text_eq
-function Spectrallib.card_eval_status_text_eq(card, eval_type, amt, percent, dir, extra, pref, col, sound, vol, ta)
-    if card.area == G.butterfly_jokers and G.deck.cards[1] then
-        Spectrallib.card_eval_status_text_eq(G.deck.cards[1], eval_type, amt, percent, dir, extra, pref, col, sound, vol, true)
-        return
-    end
-    orig_ref(card, eval_type, amt, percent, dir, extra, pref, col, sound, vol, ta)
-end
-
 function Entropy.rare_tag(rarity, key, ascendant, colour, pos, fac, legendary,order)
-    return {
-        object_type = "Tag",
+    Entropy.Tag{
         order = order,
         dependencies = {
           items = {
@@ -245,8 +234,7 @@ function Entropy.rare_tag(rarity, key, ascendant, colour, pos, fac, legendary,or
 end
 
 function Entropy.edition_tag(edition, key, ascendant, pos,order, credits)
-    return {
-        object_type = "Tag",
+    Entropy.Tag{
         dependencies = {
             items = {
                 "set_entr_tags",
@@ -324,27 +312,6 @@ function Entropy.edition_tag(edition, key, ascendant, pos,order, credits)
     }
 end
 
-Entropy.EEWhitelist["bl_final_heart"]=true
-Entropy.EEWhitelist["bl_final_leaf"]=true
-Entropy.EEWhitelist["bl_final_vessel"]=true
-Entropy.EEWhitelist["bl_final_acorn"]=true
-Entropy.EEWhitelist["bl_final_bell"]=true
-Entropy.EEWhitelist["bl_cry_sapphire_stamp"]=true
-Entropy.EEWhitelist["bl_entr_burgundy_baracuda"]=true
-Entropy.EEWhitelist["bl_entr_diamond_dawn"]=true
-Entropy.EEWhitelist["bl_entr_olive_orchard"]=true
-Entropy.EEWhitelist["bl_entr_citrine_comet"]=true
-
-function Entropy.get_EE_blinds()
-    local blinds = {}
-    for i, v in pairs(G.P_BLINDS) do
-        if Entropy.EEWhitelist[i] then
-            blinds[i]=v
-        end
-    end
-    return blinds
-end
-
 function Entropy.get_joker_sum_rarity(loc)
     if not G.jokers or #G.jokers.cards <= 0 then return "none" end
     local rarity = 1
@@ -395,14 +362,6 @@ function Entropy.get_edition_factor(edition)
     return Entropy.EditionFactors[edition.key] or 1
 end
 
-function Entropy.can_ee_spawn()
-    if MP and MP.LOBBY and MP.LOBBY.code then return false end
-    return Cryptid.enabled("bl_entr_endless_entropy_phase_one")
-    and Cryptid.enabled("bl_entr_endless_entropy_phase_two")
-    and Cryptid.enabled("bl_entr_endless_entropy_phase_three")
-    and Cryptid.enabled("bl_entr_endless_entropy_phase_four")
-end
-
 function Card:is_sunny()
     if self.config.center.key == "j_entr_sunny_joker" then return true end
     if self.config.center.key == "m_entr_radiant" then return true end
@@ -443,73 +402,6 @@ function Entropy.what_the_fuck(base, val)
     base.c = to_big(base.c) * to_big(val)
     base.r = to_big(base.r) * to_big(val)
     return Entropy.format_tesseract(base)
-end
-
-function Entropy.is_EE()
-    return G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_one"
-    or G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_two"
-    or G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three"
-    or G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_four"
-end
-
-function Entropy.win_EE()
-    G.GAME.EE_SCREEN = false
-    G.GAME.EE_R = true
-    G.E_MANAGER:add_event(Event({
-        trigger = 'immediate',
-        func = (function()
-            for k, v in pairs(G.I.CARD) do
-                v.sticker_run = nil
-            end
-            
-            play_sound('win')
-            G.SETTINGS.paused = true
-            G.GAME.TrueEndless = true
-            G.FUNCS.overlay_menu{
-                definition = create_UIBox_win(),
-                config = {no_esc = true}
-            }
-            local Jimbo = nil
-
-            G.E_MANAGER:add_event(Event({
-                trigger = 'after',
-                delay = 2.5,
-                blocking = false,
-                func = (function()
-                    if G.OVERLAY_MENU and G.OVERLAY_MENU:get_UIE_by_ID('jimbo_spot') then 
-                        local quip, extra = SMODS.quip("ee_win")
-                        extra.x = 0
-                        extra.y = 5
-                        Jimbo = Card_Character(extra)
-                        local spot = G.OVERLAY_MENU:get_UIE_by_ID('jimbo_spot')
-                        spot.config.object:remove()
-                        spot.config.object = Jimbo
-                        Jimbo.ui_object_updated = true
-                        Jimbo:add_speech_bubble(quip, nil, {quip = true})
-                        Jimbo:say_stuff(5)
-                    end
-                    return true
-                end)
-            }))
-            
-            return true
-        end)
-    }))
-
-    if (not G.GAME.seeded and not G.GAME.challenge) or SMODS.config.seeded_unlocks then
-        G.PROFILES[G.SETTINGS.profile].stake = math.max(G.PROFILES[G.SETTINGS.profile].stake or 1, (G.GAME.stake or 1)+1)
-    end
-    G:save_progress()
-    G.FILE_HANDLER.force = true
-    G.E_MANAGER:add_event(Event({
-        trigger = 'immediate',
-        func = (function()
-            if not G.SETTINGS.paused then
-                G.GAME.current_round.round_text = 'Endless Round '
-                return true
-            end
-        end)
-    }))
 end
 
 Entropy.TMTrainerEffects["mult"] = function(key) return { mult = pseudorandom(key) * 400 } end
@@ -609,272 +501,8 @@ SMODS.Edition:take_ownership("e_cry_glitched", {
     end
 }, true)
 
-function Entropy.change_phase()
-    G.STATE = 1
-    G.STATE_COMPLETE = false
-    local remove_temp = {}
-    for i, v in pairs({G.jokers, G.hand, G.consumeables, G.discard, G.deck}) do
-        for ind, card in pairs(v.cards) do
-            if card.ability then
-                if card.ability.temporary or card.ability.temporary2 or card.ability.void_temporary then
-                    if card.area ~= G.hand and card.area ~= G.play and card.area ~= G.jokers and card.area ~= G.consumeables then card.states.visible = false end
-                    card:remove_from_deck()
-                    G.entr_bypass_rebirth = true
-                    card:start_dissolve()
-                    G.entr_bypass_rebirth = nil
-                    if card.ability.temporary then remove_temp[#remove_temp+1]=card end
-                end
-            end
-        end
-    end
-    if #remove_temp > 0 then
-        SMODS.calculate_context({remove_playing_cards = true, removed=remove_temp})
-    end
-    G.deck:shuffle()
-    G.E_MANAGER:add_event(Event({func = function()
-        G.GAME.ChangingPhase = nil
-        return true
-    end}))
-end
-
-function Entropy.level_suit(suit, card, amt, chips_override)
-    amt = amt or 1
-    local used_consumable = copier or card
-    if not G.GAME.SuitBuffs then G.GAME.SuitBuffs = {} end
-    if not G.GAME.SuitBuffs[suit] then
-        G.GAME.SuitBuffs[suit] = {level = 1, chips = 0}
-    end
-    if not G.GAME.SuitBuffs[suit].chips then G.GAME.SuitBuffs[suit].chips = 0 end
-    if not G.GAME.SuitBuffs[suit].level then G.GAME.SuitBuffs[suit].level = 1 end
-    update_hand_text(
-    { sound = "button", volume = 0.7, pitch = 0.8, delay = 0.3 },
-    { handname = localize(suit,'suits_plural'), chips = number_format(G.GAME.SuitBuffs[suit].chips), mult = "...", level = G.GAME.SuitBuffs[suit].level }
-    )
-    G.GAME.SuitBuffs[suit].chips = G.GAME.SuitBuffs[suit].chips + (chips_override or 10)*amt
-    G.GAME.SuitBuffs[suit].level = G.GAME.SuitBuffs[suit].level + amt
-    for i, v in ipairs(G.I.CARD) do
-        if v.base and v.base.suit == suit then
-            v.ability.suit_bonus = (v.ability.suit_bonus or 0) + (chips_override or 10)*amt
-        end
-    end
-    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
-            play_sound('tarot1')
-            if card then card:juice_up(0.8, 0.5) end
-            G.TAROT_INTERRUPT_PULSE = nil
-            return true 
-        end 
-    }))
-    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
-            play_sound('tarot1')
-            if card then card:juice_up(0.8, 0.5) end
-            G.TAROT_INTERRUPT_PULSE = nil
-            return true 
-        end 
-    }))
-    update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { chips="+"..number_format((chips_override or 10)*amt), StatusText = true })
-    G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
-            play_sound('tarot1')
-            if card then card:juice_up(0.8, 0.5) end
-            G.TAROT_INTERRUPT_PULSE = nil
-            return true 
-        end 
-    }))
-    update_hand_text({ sound = "button", volume = 0.7, pitch = 0.9, delay = 0 }, { level = G.GAME.SuitBuffs[suit].level, chips=number_format(G.GAME.SuitBuffs[suit].chips) })
-    delay(1.3)
-    update_hand_text(
-    { sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
-    { mult = 0, chips = 0, handname = "", level = "" }
-    )
-end
-
-
 function Entropy.can_switch_alt_path()
     return G.GAME.round_resets.blind_states[G.GAME.modifiers.cry_no_small_blind and "Big" or "Small"] == "Upcoming" and Cryptid.enabled("set_entr_altpath") == true
-end
-
-function Entropy.get_iota()
-    return {[G.GAME.iotablind.key] = G.GAME.iotablind}
-end
-
-local function hash(str)
-    local h = 5381
-
-    for i = 1, #str do
-       h = h*32 + h + str:byte(i)
-    end
-    return h
-end
-
-function Entropy.get_daily_challenge()
-    Entropy.update_daily_seed()
-    local seed = Entropy.DAILYSEED
-    --https://tools.aimylogic.com/api/now?tz=Europa/England&format=dd/MM/yyyy to:do use this
-    math.randomseed(hash(seed))
-    G.CHALLENGES["daily"] = Entropy.SpecialDailies[seed] or Entropy.SpecialDailies[os.date("%m").."/"..os.date("%d")] or Entropy.generate_daily()
-end
-function Entropy.generate_daily()
-    Entropy.update_daily_seed()
-    local seed = Entropy.DAILYSEED
-    math.randomseed(hash(seed))
-    local allowed_rules = {
-        "no_shop_jokers",
-        "no_reward",
-        "no_interest",
-        "no_extra_hand_money",
-        "inflation",
-        "all_eternal",
-    }
-    local rules = math.random(0, 1)
-    local generate = {}
-    local arules = {}
-    if rules > 0 then
-        for i = 1, rules do
-            local rule= allowed_rules[math.random(1, #allowed_rules)]
-            while generate[rule] do
-                rule = allowed_rules[math.random(1, #allowed_rules)]
-            end
-            generate[rule] = true
-            table.insert(arules, {id=rule})
-        end
-    end
-    local seed = Entropy.DAILYSEED
-    math.randomseed(hash(seed))
-    table.insert(arules, {id = 'entr_set_seed', value = Entropy.srandom(8, "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890")})
-    return {
-        consumeables = {
-            {id = Entropy.get_in_pool_daily("Consumeables")},
-            math.random(1, 100) < 40 and {id = Entropy.get_in_pool_daily("Consumeables")} or nil,
-        },
-        vouchers = {
-            math.random(1, 100) < 50 and {
-                id = Entropy.get_in_pool_daily("Voucher")
-            } or nil,
-            math.random(1, 100) < 10 and {
-                id = Entropy.get_in_pool_daily("Voucher")
-            } or nil
-        },
-        jokers = {
-            math.random(1, 100) < 75 and {
-                id = Entropy.get_in_pool_daily("Joker")
-            } or nil,
-            math.random(1, 100) < 25 and {
-                id = Entropy.get_in_pool_daily("Joker")
-            } or nil,
-            math.random(1, 100) < 2 and {
-                id = Entropy.get_in_pool_daily("Joker")
-            } or nil
-        },
-        rules = {
-            custom = arules,
-        },
-        key = "c_entr_daily",
-        id = "c_entr_daily",
-        original_key = "daily",
-        registered = true,
-        deck = {
-            type = "Challenge Deck"
-        },
-        restrictions = Entropy.daily_banlist()
-        -- consumeables = {
-        --     {id = G.P_CENTER_POOLS.Consumeables[math.random(1, #G.P_CENTER_POOLS.Consumeables)].key},
-        --     {id = G.P_CENTER_POOLS.Consumeables[math.random(1, #G.P_CENTER_POOLS.Consumeables)].key}
-        -- }
-    }
-end
-
-function Entropy.get_in_pool_daily(pool)
-    local allowed = {
-        entr = true,
-        Cryptid = true
-    }
-    local actual = {}
-    for i, v in pairs(G.P_CENTER_POOLS[pool]) do
-        if (not v.no_doe and v.set ~= "CBlind" and (not v.original_mod or allowed[v.original_mod.id])) and not Entropy.daily_banlistContains(v.key) then
-            actual[#actual+1] = v 
-        end
-    end
-    return actual[math.random(1,#actual)].key
-end
-
-G.FUNCS.start_challenge_run = function(e)
-    if G.OVERLAY_MENU then G.FUNCS.exit_overlay_menu() end
-    local seed = nil
-    for i, v in ipairs(G.CHALLENGES[e.config.id].rules and type(G.CHALLENGES[e.config.id].rules.custom) == "table" and G.CHALLENGES[e.config.id].rules.custom or {}) do
-        if v.id == "entr_set_seed" then seed = v.value end
-    end
-    G.FUNCS.start_run(e, {stake = 1, challenge = G.CHALLENGES[e.config.id], seed =seed})
-  end
-
-  function Entropy.daily_banlist()
-    return {
-        banned_cards = {
-            {id="c_entr_decrement"},
-            {id="c_entr_push"},
-            {id="c_entr_evocation"},
-            {id="c_entr_memory_leak"},
-            {id="c_entr_define"},
-            {id="c_cry_crash"},
-            {id="c_cry_pointer"},
-            {id="c_cry_hook"},
-            {id="c_entr_desync"},
-            {id="c_entr_shatter"},
-            {id="c_entr_break"},
-            {id="c_cry_revert"},
-
-            {id="v_cry_asteroglyph"},
-
-            {id="j_cry_pity_prize"},
-            {id="j_cry_demicolon"},
-            {id="j_cry_crustulum"},
-            {id="j_entr_ieros"},
-            {id="j_entr_dekatria"},
-            {id="j_cry_cotton_candy"},
-            {id="j_cry_coin"},
-            {id="j_cry_copypaste"},
-            {id="j_entr_trapezium_cluster"},
-            {id="j_entr_antidagger"},
-            {id="e_entr_fractured", type="Edition"}
-        },
-        banned_tags = {
-            {id="tag_entr_fractured"},
-            {id="tag_entr_ascendant_fractured"},
-        },
-        banned_other = {
-        }
-    }
-end
-
-function Entropy.daily_banlistContains(key)
-    for i, v in pairs(Entropy.daily_banlist().banned_cards) do
-        if v.id == key then return true end
-    end
-end
-
-function Card:is_food()
-    local food = {
-        j_gros_michel=true,
-		j_egg=true,
-		j_ice_cream=true,
-		j_cavendish=true,
-		j_turtle_bean=true,
-		j_diet_cola=true,
-		j_popcorn=true,
-		j_ramen=true,
-		j_selzer=true,
-    }
-    if food[self.config.center.key] or Cryptid.safe_get(self.config.center, "pools", "Food") then return true end
-end
-
-function Entropy.get_arrow_color(operator)
-    local colours = {
-        [-1] = HEX("a26161"),
-        [0] = G.C.RED,
-        [1] = G.C.EDITION,
-        [2] = G.C.CRY_ASCENDANT,
-        [3] = G.C.CRY_EXOTIC,
-        [4] = Entropy.entropic_gradient
-    }
-    return colours[operator]
 end
 
 function Entropy.Get4bit()
@@ -889,135 +517,6 @@ function Entropy.Get4bit()
         return G.P_CENTERS[Cryptid.random_consumable("4bit_c", nil, "c_fool").key]
     end
     return Entropy.get_pooled_center(ptype)
-end
-
-local card_eval_status_text_ref = card_eval_status_text
-function card_eval_status_text(card, ...)
-    if not card or card.silent then return end
-    if G.deck and card and card.area == G.butterfly_jokers and G.deck.cards[1] then
-        return card_eval_status_text_ref(G.deck.cards[1], ...)
-    else    
-        return card_eval_status_text_ref(card, ...)
-    end
-end
-
-local sell_cardref = Card.sell_card
-function Card:sell_card()
-    if self.ability.set == "Joker" then
-        if Entropy.deck_or_sleeve("butterfly") then
-            local bcard = copy_card(self)
-            bcard.states.visible = false
-            G.jokers:remove_card(bcard)
-            bcard:remove_from_deck()
-            G.butterfly_jokers:emplace(bcard)
-            bcard:add_to_deck()
-        end
-    end
-    sell_cardref(self)
-end
-
-local get_next_tagref = Cryptid.get_next_tag
-function Cryptid.get_next_tag(override)
-    local ref = get_next_tagref and get_next_tagref(override)
-    if next(SMODS.find_card('j_entr_dog_chocolate')) then 
-        if not G.GAME.dog_tags then G.GAME.dog_tags = {} end
-        if G.GAME.dog_tags[(override or G.GAME.blind_on_deck)..G.GAME.round_resets.ante] == nil then
-            for i = 1, #SMODS.find_card('j_entr_dog_chocolate') do
-                if G.GAME.dog_tags[(override or G.GAME.blind_on_deck)..G.GAME.round_resets.ante] ~= true then
-                    G.GAME.dog_tags[(override or G.GAME.blind_on_deck)..G.GAME.round_resets.ante] = pseudorandom_element({true, false, false, false, false}, pseudoseed("dog_chocolate"))
-                end
-            end
-        end
-        if G.GAME.dog_tags[(override or G.GAME.blind_on_deck)..G.GAME.round_resets.ante] then return 'tag_entr_dog' end
-    end
-    if ref then return ref end
-end
-
-function create_UIBox_HUD_blind_doc()
-    local scale = 0.4
-    local stake_sprite = get_stake_sprite(G.GAME.stake or 1, 0.5)
-    G.GAME.blind:change_dim(1.5,1.5)
-  
-    return {n=G.UIT.ROOT, config={align = "cm", minw = 4.5, r = 0.1, colour = G.C.BLACK, emboss = 0.05, padding = 0.05, func = 'HUD_blind_visible', id = 'HUD_blind'}, nodes={
-        {n=G.UIT.R, config={align = "cm", minh = 0.7, r = 0.1, emboss = 0.05, colour = G.C.DYN_UI.MAIN}, nodes={
-          {n=G.UIT.C, config={align = "cm", minw = 3}, nodes={
-            {n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME.blind, ref_value = 'loc_name'}}, colours = {G.C.UI.TEXT_LIGHT},shadow = true, rotate = true, silent = true, float = true, scale = 1.6*scale, y_offset = -4}),id = 'HUD_blind_name'}},
-          }},
-        }},
-        {n=G.UIT.R, config={align = "cm", minh = 2.74, r = 0.1,colour = G.C.DYN_UI.DARK}, nodes={
-          {n=G.UIT.R, config={align = "cm", padding = 0.05}, nodes={
-            {n=G.UIT.R, config={align = "cm", minh = 0.3, maxw = 4.2}, nodes={
-              {n=G.UIT.T, config={ref_table = {val = ''}, ref_value = 'val', scale = scale*0.9, colour = G.C.UI.TEXT_LIGHT, func = 'HUD_blind_debuff_prefix'}},
-              {n=G.UIT.T, config={ref_table = G.GAME.blind.loc_debuff_lines, ref_value = 1, scale = scale*0.9, colour = G.C.UI.TEXT_LIGHT, id = 'HUD_blind_debuff_1', func = 'HUD_blind_debuff'}}
-            }},
-            {n=G.UIT.R, config={align = "cm", minh = 0.3, maxw = 4.2}, nodes={
-              {n=G.UIT.T, config={ref_table = G.GAME.blind.loc_debuff_lines, ref_value = 2, scale = scale*0.9, colour = G.C.UI.TEXT_LIGHT, id = 'HUD_blind_debuff_2', func = 'HUD_blind_debuff'}}
-            }},
-          }},
-          {n=G.UIT.R, config={align = "cl",padding = 0.15}, nodes={
-            {n=G.UIT.O, config={object = G.GAME.blind, draw_layer = 1}},
-            {n=G.UIT.C, config={align = "cm",r = 0.1, padding = 0.05, emboss = 0.05, minw = 2.9, colour = G.C.BLACK}, nodes={
-              {n=G.UIT.R, config={align = "cm", maxw = 2.8}, nodes={
-                {n=G.UIT.T, config={text = localize('ph_blind_score_at_least'), scale = 0.3, colour = G.C.WHITE, shadow = true}}
-              }},
-              {n=G.UIT.R, config={align = "cm", minh = 0.6}, nodes={
-                {n=G.UIT.O, config={w=0.5,h=0.5, colour = G.C.BLUE, object = stake_sprite, hover = true, can_collide = false}},
-                {n=G.UIT.B, config={h=0.1,w=0.1}},
-                {n=G.UIT.T, config={ref_table = G.GAME.blind, ref_value = 'chip_text', scale = 0.001, colour = G.C.RED, shadow = true, id = 'HUD_blind_count', func = 'blind_chip_UI_scale'}}
-              }},
-              {n=G.UIT.R, config={align = "cm", minh = 0.45, maxw = 2.8, func = 'HUD_blind_reward'}, nodes={
-                {n=G.UIT.T, config={text = localize('ph_blind_reward'), scale = 0.3, colour = G.C.WHITE}},
-                {n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME.current_round, ref_value = 'dollars_to_be_earned'}}, colours = {G.C.MONEY},shadow = true, rotate = true, bump = true, silent = true, scale = 0.45}),id = 'dollars_to_be_earned'}},
-              }},
-            }},
-          }},
-        }},
-      }}
-end
-
-function Entropy.collect_files(files)
-    local items = {}
-    for _, v in pairs(files) do
-        local f, err = SMODS.load_file(v..".lua")
-        if f then 
-            local results = f() 
-            if results then
-                if results.init then results.init(results) end
-                if results.items then
-                    for i, result in pairs(results.items) do
-                        if type(result) == "table" then
-                            items[#items+1]=result
-                        end
-                    end
-                end
-            end
-        else error("error in file "..v..": "..err) end
-    end
-    return items
-end
-Entropy.contents = {}
-function Entropy.load_files(files)
-    local items = {}
-    for _, v in pairs(files) do
-        local f, err = SMODS.load_file(v..".lua")
-        if f then 
-            local results = f() 
-            if results then
-                if results.init then results.init(results) end
-                if results.items then
-                    for i, result in pairs(results.items) do
-                        if type(result) == "table" and result.object_type then
-                            if not Entropy.contents[result.object_type] then Entropy.contents[result.object_type] = {} end
-                            result.cry_order = result.order
-                            result.perishable_compat = result.perishable_compat or false
-                            result.blueprint_compat = result.blueprint_compat or false
-                            Entropy.contents[result.object_type][#Entropy.contents[result.object_type]+1]=result
-                        end
-                    end
-                end
-            end
-        else error("error in file "..v..": "..err) end
-    end
 end
 
 function Entropy.has_rune(key)
@@ -1104,20 +603,8 @@ function Entropy.misc_calculations(self, context)
     end
 end
 
-local reset_ref = Cryptid.reset_to_none
-function Cryptid.reset_to_none()
-    if reset_ref then
-        reset_ref()
-    else
-        update_hand_text({delay = 0}, {mult = 0, chips = 0, handname = '', level = ''})
-    end
-    update_hand_text({ delay = 0.1 }, {
-        level = "",
-    })
-end
-
 function Entropy.get_reroll_height()
-    return Entropy.can_switch_alt_path() and 1 or 1.6
+    return (Entropy.can_switch_alt_path() or G.GAME.round_resets.ante == 16 or G.GAME.round_resets.ante == 24) and 1 or 1.6
 end
 
 function Entropy.rubber_ball_scoring(cards)
@@ -1277,6 +764,15 @@ function Entropy.post_create_card(card, from_booster, forced_key)
             card.ability.glitched_crown = gc
         end
     end
+    if G.GAME.modifiers.entr_gfb and next(SMODS.find_card("j_golden")) then
+        card:set_ability(G.P_CENTERS.m_gold)
+        if card.ability.glitched_crown then  
+            for i, v in pairs(card.ability.glitched_crown) do
+                card.ability.glitched_crown[i] = "m_gold"
+            end
+        end
+        SMODS.change_base(card, "entr_nilsuit", "entr_nilrank")
+    end
     if G.GAME.entropy and G.GAME.entropy > 100 then
         G.E_MANAGER:add_event(Event{
             func = function()
@@ -1395,164 +891,6 @@ Entropy.card_area_preview = function(cardArea, desc_nodes, config)
     return uiEX, cardarea
 end
 
-local add_v_ref = SMODS.add_voucher_to_shop
-function SMODS.add_voucher_to_shop(key, ...)
-    local card = add_v_ref(key, ...)
-    if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi) then
-        G.E_MANAGER:add_event(Event{
-            trigger = "before",
-            func = function()
-                SMODS.calculate_context({modify_shop_voucher = true, card = card, first_of_ante = not G.GAME.entr_vouchers_set})
-                G.GAME.entr_vouchers_set = true
-                return true
-            end
-        })
-    else    
-        SMODS.calculate_context({modify_shop_voucher = true, card = card, first_of_ante = not G.GAME.entr_vouchers_set})
-        G.GAME.entr_vouchers_set = true
-    end
-    return card
-end
-
-local asc_col_ref = Spectrallib.get_asc_colour
-function Spectrallib.get_asc_colour(amount, text) 
-    if(G.GAME.Overflow or (G.GAME.badarg and G.GAME.badarg[text])) then return HEX("FF0000") end
-    return to_big(amount) >= to_big(0) and asc_col_ref(amount,  text) or G.C.Entropy.DARK_GRAY
-end
-
-local STP = loadStackTracePlus()
-local utf8 = require("utf8")
-function Entropy.fake_crash(msg)
-    msg = tostring(msg)
-
-    --sendErrorMessage("Oops! The game crashed\n" .. STP.stacktrace(msg), 'StackTrace')
-
-    if not love.window or not love.graphics or not love.event then
-        return
-    end
-
-
-    Entropy.crash_volume = Entropy.crash_volume or G.SETTINGS.SOUND.volume
-    G.SETTINGS.SOUND.volume = 0
-
-    love.graphics.reset()
-    local font = love.graphics.setNewFont("resources/fonts/m6x11plus.ttf", 20)
-
-    local background = {0, 0, 1}
-    if G and G.C and G.C.BLACK then
-        background = G.C.BLACK
-    end
-    love.graphics.clear(background)
-    love.graphics.origin()
-
-    local trace = STP.stacktrace("", 3)
-
-    local sanitizedmsg = {}
-    for char in msg:gmatch(utf8.charpattern) do
-        table.insert(sanitizedmsg, char)
-    end
-    sanitizedmsg = table.concat(sanitizedmsg)
-
-    local err = {}
-
-    table.insert(err, "Oops! The game crashed:")
-    if sanitizedmsg:find("Syntax error: game.lua:4: '=' expected near 'Game'") then
-        table.insert(err,
-            'Duplicate installation of Steamodded detected! Please clean your installation: Steam Library > Balatro > Properties > Installed Files > Verify integrity of game files.')
-    elseif sanitizedmsg:find("Syntax error: game.lua:%d+: duplicate label 'continue'") then
-        table.insert(err,
-            'Duplicate installation of Steamodded detected! Please remove the duplicate steamodded/smods folder in your mods folder.')
-    else
-        table.insert(err, sanitizedmsg)
-    end
-    if #sanitizedmsg ~= #msg then
-        table.insert(err, "Invalid UTF-8 string in error message.")
-    end
-
-    if V and SMODS and SMODS.save_game and V(SMODS.save_game or '0.0.0') ~= V(SMODS.version or '0.0.0') then
-        table.insert(err, 'This crash may be caused by continuing a run that was started on a previous version of Steamodded. Try creating a new run.')
-    end
-
-    if V and V(MODDED_VERSION or '0.0.0') ~= V(RELEASE_VERSION or '0.0.0') then
-        table.insert(err, '\n\nDevelopment version of Steamodded detected! If you are not actively developing a mod, please try using the latest release instead.\n\n')
-    end
-
-    if not V then
-        table.insert(err, '\nA mod you have installed has caused a syntax error through patching. Please share this crash with the mod developer.\n')
-    end
-
-    local success, msg = pcall(getDebugInfoForCrash)
-    if success and msg then
-        table.insert(err, '\n' .. msg)
-    else
-        table.insert(err, "\n" .. "Failed to get additional context :/")
-    end
-
-    for l in trace:gmatch("(.-)\n") do
-        table.insert(err, l)
-    end
-
-    local p = table.concat(err, "\n")
-
-    p = p:gsub("\t", "")
-    p = p:gsub("%[string \"(.-)\"%]", "%1")
-
-    local scrollOffset = 0
-    local endHeight = 0
-
-    local pos = 70
-    local arrowSize = 20
-
-    local function calcEndHeight()
-        local font = love.graphics.getFont()
-        local rw, lines = font:getWrap(p, love.graphics.getWidth() - pos * 2)
-        local lineHeight = font:getHeight()
-        local atBottom = scrollOffset == endHeight and scrollOffset ~= 0
-        endHeight = #lines * lineHeight - love.graphics.getHeight() + pos * 2
-        if (endHeight < 0) then
-            endHeight = 0
-        end
-        if scrollOffset > endHeight or atBottom then
-            scrollOffset = endHeight
-        end
-    end
-
-    p = p .. "\n\nPress ESC to exit\nPress R to restart the game"
-    if love.system then
-        p = p .. "\nPress Ctrl+C or tap to copy this error"
-    end
-
-    if not love.graphics.isActive() then
-        return
-    end
-    love.graphics.clear(background)
-    calcEndHeight()
-    love.graphics.printf(p, pos, pos - scrollOffset, love.graphics.getWidth() - pos * 2)
-    if scrollOffset ~= endHeight then
-        love.graphics.polygon("fill", love.graphics.getWidth() - (pos / 2),
-            love.graphics.getHeight() - arrowSize, love.graphics.getWidth() - (pos / 2) + arrowSize,
-            love.graphics.getHeight() - (arrowSize * 2), love.graphics.getWidth() - (pos / 2) - arrowSize,
-            love.graphics.getHeight() - (arrowSize * 2))
-    end
-    if scrollOffset ~= 0 then
-        love.graphics.polygon("fill", love.graphics.getWidth() - (pos / 2), arrowSize,
-            love.graphics.getWidth() - (pos / 2) + arrowSize, arrowSize * 2,
-            love.graphics.getWidth() - (pos / 2) - arrowSize, arrowSize * 2)
-    end
-    love.graphics.present()
-end
-
-local draw_ref = love.draw
-function love.draw(...)
-    draw_ref(...)
-    if Entropy.do_fake_crash then
-        Entropy.fake_crash(Entropy.do_fake_crash)
-    elseif Entropy.crash_volume then
-        G.SETTINGS.SOUND.volume = Entropy.crash_volume
-        Entropy.crash_volume = nil
-    end
-end
-
 function Entropy.add_perma_bonus(card, key, amount)
     local keys = ({
         xlog_chips = "slib_perma_xlog_chips",
@@ -1647,7 +985,6 @@ function Entropy.get_perma_bonus_vars(self)
         slib_perma_h_x_asc = self.ability.slib_perma_h_x_asc ~= 0 and (self.ability.slib_perma_h_x_asc + 1) or nil,
         slib_perma_exp_asc = self.ability.slib_perma_exp_asc ~= 0 and (self.ability.slib_perma_exp_asc + 1) or nil,
         slib_perma_h_exp_asc = self.ability.slib_perma_h_exp_asc ~= 0 and (self.ability.slib_perma_h_exp_asc + 1) or nil,
-        suit_level = G.GAME.SuitBuffs and G.GAME.SuitBuffs[self.base.suit] and G.GAME.SuitBuffs[self.base.suit].level or nil,
         bonus_mult = self.ability.perma_mult ~= 0 and self.ability.perma_mult or nil,
         bonus_x_mult = self.ability.perma_x_mult ~= 0 and (self.ability.perma_x_mult + 1) or nil,
         bonus_h_chips = self.ability.perma_h_chips ~= 0 and self.ability.perma_h_chips or nil,
@@ -1660,4 +997,88 @@ function Entropy.get_perma_bonus_vars(self)
         bonus_chips = bonus_chips ~= 0 and bonus_chips or nil,
         bonus_repetitions = self.ability.perma_repetitions ~= 0 and self.ability.perma_repetitions or nil,
     }
+end
+
+function G.FUNCS.update_healthbar(e)
+    local c = e.children[1]
+    e.states.drag.can = true
+    c.states.drag.can = true
+    local rt = c.config.ref_table
+    rt.text = string.format("%."..tostring(rt.decimal_places).."f", rt.ref_table[rt.ref_value])
+    c.T.w = (rt.ref_table[rt.ref_value] - rt.min)/(rt.max - rt.min)*rt.w
+    c.config.w = c.T.w
+end
+
+function create_healthbar(args)
+  args = args or {}
+  args.colour = args.colour or G.C.RED
+  args.w = args.w or 1
+  args.h = args.h or 0.5
+  args.label_scale = args.label_scale or 0.5
+  args.text_scale = args.text_scale or 0.3
+  args.min = args.min or 0
+  args.max = args.max or 1
+  args.decimal_places = args.decimal_places or 0
+  args.text = string.format("%."..tostring(args.decimal_places).."f", args.ref_table[args.ref_value])
+  local startval = args.w * (args.ref_table[args.ref_value] - args.min)/(args.max - args.min)
+
+  local t = 
+        {n=G.UIT.C, config={align = "cm", minw = args.w, min_h = args.h, padding = 0.1, r = 0.1, colour = G.C.CLEAR, focus_args = {type = 'slider'}}, nodes={
+          {n=G.UIT.C, config={align = "cl", minw = args.w, r = 0.1,min_h = args.h,collideable = true, hover = true, colour = G.C.BLACK,emboss = 0.05,func = 'update_healthbar', refresh_movement = true}, nodes={
+            {n=G.UIT.B, config={w=startval,h=args.h, r = 0.1, colour = args.colour, ref_table = args, refresh_movement = true, shader = "entr_healthbar"}},
+          }},
+        }}
+  if args.label then 
+    t = {n=G.UIT.R, config={align = "cm", minh = 1, minw = 1, padding = 0.1*args.label_scale, colour = G.C.CLEAR}, nodes={
+      {n=G.UIT.R, config={align = "cm", padding = 0}, nodes={
+        t
+      }}
+    }}
+  end
+  return t
+end
+
+function ease_blind_chips(amt, snd)
+    G.E_MANAGER:add_event(Event{
+        func = function()
+            if snd and type(snd[1]) ~= "table" then
+                snd = {snd}
+            end
+            for i, v in pairs(snd or {{"chips"}}) do
+                play_sound(unpack(v))
+            end
+            G.GAME.blind:juice_up()
+            return true
+        end
+    })
+    G.E_MANAGER:add_event(Event({
+        trigger = 'ease',
+        ref_table = G.GAME.blind,
+        ref_value = 'chips',
+        ease_to = G.GAME.blind.chips + amt,
+        delay = 0.4 ,
+        timer = "REAL",
+        func = (function(t) 
+            G.GAME.blind.chip_text = number_format(G.GAME.blind.chips)
+            G.HUD_blind:recalculate()
+            return t 
+        end),
+        blockable = true,
+    }))
+end
+
+function Entropy.ensure_ascpow_tutorial(q)
+    if G._asc_tutorial_already then return end
+    if Entropy.config.asc_power_tutorial then
+        q[#q+1] = {set = "Other", key = "asc_power_tutorial"}
+        G._asc_tutorial_already = true
+    end
+end
+
+local hover = Card.hover
+function Card:hover(...)
+    G._asc_tutorial_already = nil
+    if not G.GAME.entr_dating_start then
+        return hover(self, ...)
+    end
 end

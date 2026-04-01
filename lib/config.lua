@@ -330,9 +330,10 @@ local entropyTabs = function()
 							["FirstTry"] = true,
 							["Eris"] = true,
 							["WilsontheWolf"] = true,
-							["Soulware"] = true
+							["Soulware"] = true,
+							["bioboi"] = true
 						},
-						music = {gemstonez=true, Grahkon = true}
+						music = {gemstonez=true, Grahkon = true, metanite64 = true}
 					}
 					for i, v in pairs(G.P_CENTERS) do if v.entr_credits then
 						if v.entr_credits.idea then for i, v in pairs(v.entr_credits.idea) do credits.idea[v] = true end end
@@ -347,6 +348,49 @@ local entropyTabs = function()
 					entr_nodes[#entr_nodes+1] = Entropy.generate_credits_nodes(credits.art, "art", entr_nodes)
 					entr_nodes[#entr_nodes+1] = Entropy.generate_credits_nodes(credits.music, "music", entr_nodes)
 				elseif G.ENTROPY_PAGE == 2 then
+					local special = {
+						{name = "cassknows", text = "general assistance throughout the entirety of the mod", colour = HEX("00FF00")},
+						{name = "Lily.Felli", text = "flashlight.fs and invertradius.fs", colour = G.C.ORANGE},
+						{name = "bioboi", text = "writing assistance for EEv4", colour = HEX("996e00")},
+						{name = "missingnumber", text = "spriting assistance for EEv4", colour = G.C.ORANGE},
+						{name = "metanite64", text = "music assistance for EEv4", colour = HEX("ff73e5")},
+						{name = "InvalidOS", text = "design assistance for EEv4", colour = Entropy.entropic_gradient},
+						{name = "notmario", text = "programming assistance for The Joker is You", colour = HEX("ff6868")},
+						{name = "nxkoo_", text = "emotional support", colour = G.C.Entropy.Omen},
+					}
+					local special_nodes = {
+
+					}
+					for i, v in pairs(special) do
+						special_nodes[#special_nodes+1] = {
+							n = G.UIT.R,
+							config = { align = "cm"},
+							nodes = {
+								{
+									n = G.UIT.O,
+									config = {
+										object = DynaText({
+											string = v.name,
+											colours = { v.colour },
+											shadow = true,
+											scale = 0.5,
+										}),
+									},
+								},
+								{
+									n = G.UIT.O,
+									config = {
+										object = DynaText({
+											string = " - "..v.text,
+											colours = { G.C.WHITE },
+											shadow = true,
+											scale = 0.4,
+										}),
+									},
+								},
+							},
+						}
+					end
 					entr_nodes[#entr_nodes+1] = { n = G.UIT.C, config = { align = "tm", padding = 0 }, nodes = {
 						{
 							n = G.UIT.R,
@@ -365,34 +409,7 @@ local entropyTabs = function()
 								},
 							},
 						},
-						{
-							n = G.UIT.R,
-							config = { align = "cm"},
-							nodes = {
-								{
-									n = G.UIT.O,
-									config = {
-										object = DynaText({
-											string = "Lily.Felli",
-											colours = { G.C.IMPORTANT },
-											shadow = true,
-											scale = 0.5,
-										}),
-									},
-								},
-								{
-									n = G.UIT.O,
-									config = {
-										object = DynaText({
-											string = " for: flashlight.fs and invertradius.fs",
-											colours = { G.C.WHITE },
-											shadow = true,
-											scale = 0.4,
-										}),
-									},
-								},
-							},
-						},
+						unpack(special_nodes)
 					} }
 				end
 				entr_nodes[#entr_nodes + 1] = config

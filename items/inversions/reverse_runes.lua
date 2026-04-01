@@ -30,8 +30,7 @@ function Entropy.pact_mark(key)
 end
 
 function Entropy.create_mark(key, order, pos, calculate, credits, loc_vars)
-    return {
-        object_type = "RuneTag",
+    Entropy.RuneTag{
         order = order,
         key = key,
         atlas = "rune_atlas",
@@ -45,15 +44,14 @@ function Entropy.create_mark(key, order, pos, calculate, credits, loc_vars)
     }
 end
 
-local avarice_indicator = Entropy.create_mark("avarice", 7051, {x = 0, y = 4}, nil, nil, function(self, q, rune)
+Entropy.create_mark("avarice", 7051, {x = 0, y = 4}, nil, nil, function(self, q, rune)
     return {
         vars = {
             0.25 ^ (rune.ability.count or 1)
         }
     }
 end)
-local avarice = {
-    object_type = "Consumable",
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=0,y=8},
@@ -109,9 +107,8 @@ local avarice = {
     entr_credits = {art = {"Lil. Mr. Slipstream"}},
 }
 
-local rage_indicator = Entropy.create_mark("rage", 7052, {x = 1, y = 4})
-local rage = {
-    object_type = "Consumable",
+Entropy.create_mark("rage", 7052, {x = 1, y = 4})
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=1,y=8},
@@ -119,6 +116,19 @@ local rage = {
     key = "rage",
     dependencies = {items = {"set_entr_runes", "set_entr_inversions"}},
     inversion = "c_entr_uruz",
+    loc_vars = function(self, _, card)
+        local cards = {}
+        for i, v in pairs(G.playing_cards or {}) do
+            if not SMODS.is_eternal(v) then
+                cards[#cards+1] = v
+            end
+        end
+        return {
+            vars = {
+                math.max(math.floor(#cards/5), math.min(#cards, 5))
+            }
+        }
+    end,
     use = function(self, card)
         local cards = {}
         for i, v in pairs(G.playing_cards) do
@@ -168,9 +178,8 @@ local rage = {
     end
 }
 
-local thorns_indicator = Entropy.create_mark("thorns", 7053, {x = 2, y = 4})
-local thorns = {
-    object_type = "Consumable",
+Entropy.create_mark("thorns", 7053, {x = 2, y = 4})
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=2,y=8},
@@ -228,9 +237,8 @@ local thorns = {
     end
 }
 
-local denial_indicator = Entropy.create_mark("denial", 7054, {x = 3, y = 4})
-local denial = {
-    object_type = "Consumable",
+Entropy.create_mark("denial", 7054, {x = 3, y = 4})
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=3,y=8},
@@ -292,7 +300,7 @@ local denial = {
     end
 }
 
-local chains_indicator = Entropy.create_mark("chains", 7055, {x = 4, y = 4}, function(self, rune, context)
+Entropy.create_mark("chains", 7055, {x = 4, y = 4}, function(self, rune, context)
     if context.hand_drawn and not rune.ability.triggered then
         local card = context.hand_drawn[1]
         if card then
@@ -304,8 +312,7 @@ local chains_indicator = Entropy.create_mark("chains", 7055, {x = 4, y = 4}, fun
         rune.ability.triggered = nil
     end
 end)
-local chains = {
-    object_type = "Consumable",
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=4,y=8},
@@ -337,9 +344,8 @@ local chains = {
     end
 }
 
-local decay_indicator = Entropy.create_mark("decay", 7056, {x = 5, y = 4})
-local decay = {
-    object_type = "Consumable",
+Entropy.create_mark("decay", 7056, {x = 5, y = 4})
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=5,y=8},
@@ -395,7 +401,7 @@ local decay = {
     end
 }
 
-local envy_indicator = Entropy.create_mark("envy", 7057, {x = 6,y = 4}, function(self, mark, context)
+Entropy.create_mark("envy", 7057, {x = 6,y = 4}, function(self, mark, context)
     if #G.jokers.cards > 0 then
         if not mark.ability.joker_number then mark.ability.joker_number = pseudorandom("entr_envy_joker", 1, #G.jokers.cards) end
         if context.retrigger_rune_check and context.other_card == G.jokers.cards[mark.ability.joker_number] then
@@ -409,8 +415,7 @@ local envy_indicator = Entropy.create_mark("envy", 7057, {x = 6,y = 4}, function
         end
     end
 end)
-local envy = {
-    object_type = "Consumable",
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=6,y=8},
@@ -475,9 +480,8 @@ SMODS.calculate_retriggers = function(card, context, _ret)
     return retriggers
 end
 
-local youth_indicator = Entropy.create_mark("youth", 7058, {x = 0,y = 5})
-local youth = {
-    object_type = "Consumable",
+Entropy.create_mark("youth", 7058, {x = 0,y = 5})
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=0,y=9},
@@ -525,9 +529,8 @@ local youth = {
     end
 }
 
-local shards_indicator = Entropy.create_mark("shards", 7059, {x = 1,y = 5})
-local shards = {
-    object_type = "Consumable",
+Entropy.create_mark("shards", 7059, {x = 1,y = 5})
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=1,y=9},
@@ -673,9 +676,8 @@ function Card:shatter(...)
         return shatter(self, ...)
     end
 end
-local desire_indicator = Entropy.create_mark("desire", 7060, {x = 2, y = 5})
-local desire = {
-    object_type = "Consumable",
+Entropy.create_mark("desire", 7060, {x = 2, y = 5})
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=2,y=9},
@@ -741,9 +743,8 @@ local desire = {
     end
 }
 
-local ice_indicator = Entropy.create_mark("ice", 7061, {x = 3, y = 5})
-local ice = {
-    object_type = "Consumable",
+Entropy.create_mark("ice", 7061, {x = 3, y = 5})
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=3,y=9},
@@ -852,9 +853,8 @@ function level_up_hand(card, hand, ...)
     end
 end
 
-local gluttony_indicator = Entropy.create_mark("gluttony", 7062, {x = 4, y = 5})
-local gluttony = {
-    object_type = "Consumable",
+Entropy.create_mark("gluttony", 7062, {x = 4, y = 5})
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=4,y=9},
@@ -900,9 +900,8 @@ function Card:can_sell_card(context)
     return can_sellref(self, context)
 end
 
-local rebirth_indicator = Entropy.create_mark("rebirth", 7063, {x = 5, y = 5})
-local rebirth = {
-    object_type = "Consumable",
+Entropy.create_mark("rebirth", 7063, {x = 5, y = 5})
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=5,y=9},
@@ -939,9 +938,8 @@ local rebirth = {
     end
 }
 
-local despair_indicator = Entropy.create_mark("despair", 7064, {x = 6, y = 5})
-local despair = {
-    object_type = "Consumable",
+Entropy.create_mark("despair", 7064, {x = 6, y = 5})
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=6,y=9},
@@ -1061,9 +1059,8 @@ G.FUNCS.play_cards_from_highlighted = function(e)
     play_ref(e)
 end
 
-local strength_indicator = Entropy.create_mark("strength", 7065, {x = 0, y = 6})
-local strength = {
-    object_type = "Consumable",
+Entropy.create_mark("strength", 7065, {x = 0, y = 6})
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=0,y=10},
@@ -1141,9 +1138,8 @@ local strength = {
     end
 }
 
-local darkness_indicator = Entropy.create_mark("darkness", 7066, {x = 1, y = 6})
-local darkness = {
-    object_type = "Consumable",
+Entropy.create_mark("darkness", 7066, {x = 1, y = 6})
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=1,y=10},
@@ -1191,9 +1187,8 @@ local darkness = {
     end
 }
 
-local freedom_indicator = Entropy.create_mark("freedom", 7067, {x = 2, y = 6})
-local freedom = {
-    object_type = "Consumable",
+Entropy.create_mark("freedom", 7067, {x = 2, y = 6})
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=2,y=10},
@@ -1239,9 +1234,8 @@ local freedom = {
     end
 }
 
-local eternity_indicator = Entropy.create_mark("eternity", 7068, {x = 3, y = 6})
-local eternity = {
-    object_type = "Consumable",
+Entropy.create_mark("eternity", 7068, {x = 3, y = 6})
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=3,y=10},
@@ -1301,7 +1295,7 @@ local eternity = {
     end
 }
 
-local loyalty_indicator = Entropy.create_mark("loyalty", 7069, {x = 4, y = 6}, function(self, rune, context)
+Entropy.create_mark("loyalty", 7069, {x = 4, y = 6}, function(self, rune, context)
     if not rune.ability.hand then rune.ability.hand = 0 end
     if context.final_scoring_step and rune.ability.hand % 2 == 0 then
         rune.ability.hand = rune.ability.hand + 1
@@ -1333,8 +1327,7 @@ end, nil, function(self, q, rune)
         }
     }
 end)
-local loyalty = {
-    object_type = "Consumable",
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=4,y=10},
@@ -1367,7 +1360,7 @@ local loyalty = {
     end
 }
 
-local brimstone_indicator = Entropy.create_mark("brimstone", 7070, {x = 5, y = 6}, function(self, rune, context)
+Entropy.create_mark("brimstone", 7070, {x = 5, y = 6}, function(self, rune, context)
     if context.final_scoring_step and G.GAME.current_round.hands_left <= 0 then
         G.E_MANAGER:add_event(Event{
             func = function()
@@ -1393,8 +1386,7 @@ end, nil, function(self, q, rune)
         }
     }
 end)
-local brimstone = {
-    object_type = "Consumable",
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=5,y=10},
@@ -1433,9 +1425,8 @@ local brimstone = {
     end
 }
 
-local dreams_indicator = Entropy.create_mark("dreams", 7071, {x = 6, y = 6})
-local dreams = {
-    object_type = "Consumable",
+Entropy.create_mark("dreams", 7071, {x = 6, y = 6})
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=6,y=10},
@@ -1480,9 +1471,8 @@ local dreams = {
     end
 }
 
-local energy_indicator = Entropy.create_mark("energy", 7072, {x = 0, y = 7})
-local energy = {
-    object_type = "Consumable",
+Entropy.create_mark("energy", 7072, {x = 0, y = 7})
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=0,y=11},
@@ -1545,9 +1535,8 @@ end
 
 --pact of awakening here
 
-local awakening_indicator = Entropy.create_mark("awakening", 7073, {x = 2, y = 7})
-local awakening = {
-    object_type = "Consumable",
+Entropy.create_mark("awakening", 7073, {x = 2, y = 7})
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=2,y=11},
@@ -1598,9 +1587,8 @@ local awakening = {
     end
 }
 
-local blood_indicator = Entropy.create_mark("blood", 7074, {x = 1, y = 7})
-local blood = {
-    object_type = "Consumable",
+Entropy.create_mark("blood", 7074, {x = 1, y = 7})
+Entropy.Consumable{
     set = "Pact",
     atlas = "rune_atlas",
     pos = {x=1,y=11},
@@ -1672,9 +1660,8 @@ local blood = {
     end
 }
 
-local serpents_indicator = Entropy.create_mark("serpents", 7075, {x = 3, y = 7})
-local serpents = {
-    object_type = "Consumable",
+Entropy.create_mark("serpents", 7075, {x = 3, y = 7})
+Entropy.Consumable{
     set = "Omen",
     atlas = "rune_atlas",
     pos = {x=3,y=11},
@@ -1724,34 +1711,4 @@ local serpents = {
     force_use = function(self, card)
         self:use(card)
     end
-}
-
-return {
-    items = {
-        avarice, avarice_indicator,
-        rage, rage_indicator,
-        thorns, thorns_indicator,
-        denial, denial_indicator,
-        chains, chains_indicator,
-        decay, decay_indicator,
-        envy, envy_indicator,
-        youth, youth_indicator,
-        shards, shards_indicator,
-        desire, desire_indicator,
-        ice, ice_indicator,
-        gluttony, gluttony_indicator,
-        rebirth, rebirth_indicator,
-        despair, despair_indicator,
-        strength, strength_indicator,
-        darkness, darkness_indicator,
-        freedom, freedom_indicator,
-        eternity, eternity_indicator,
-        loyalty, loyalty_indicator,
-        brimstone, brimstone_indicator,
-        dreams, dreams_indicator,
-        energy, energy_indicator,
-        blood, blood_indicator,
-        awakening, awakening_indicator,
-        serpents, serpents_indicator
-    }
 }

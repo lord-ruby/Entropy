@@ -1,5 +1,4 @@
-local jokerinyellow = {
-    object_type = "Joker",
+Entropy.Joker{
     order = -2500,
     dependencies = {
 		items = {
@@ -129,7 +128,7 @@ local jokerinyellow = {
     }
 }
 
-local yellow_sign = {
+Entropy.Sticker{
     atlas = "entr_stickers",
     pos = { x = 5, y = 1 },
     key = "entr_yellow_sign",
@@ -138,7 +137,6 @@ local yellow_sign = {
           "set_cry_cursed",
         }
     },
-    object_type = "Sticker",
     order = -2500,
     no_sticker_sheet = true,
     prefix_config = { key = false },
@@ -157,9 +155,3 @@ function Card:is_suit(suit, ...)
     if self.ability.entr_yellow_sign and suit == "Diamonds" then return true 
     else return suit_ref(self, suit, ...) end
 end
-return {
-    items = {
-        jokerinyellow,
-        yellow_sign
-    }
-} --yellow

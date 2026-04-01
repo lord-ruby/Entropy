@@ -1,10 +1,10 @@
-local memoryleak = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 4000 + 1,
     key = "memory_leak",
     set = "Command",
@@ -50,13 +50,13 @@ local memoryleak = {
     end
 }
 
-local rootkit = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 4000 + 2,
     key = "root_kit",
     set = "Command",
@@ -90,13 +90,13 @@ local rootkit = {
     end
 }
 
-local bootstrap = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 4000 + 3,
     key = "bootstrap",
     set = "Command",
@@ -120,13 +120,13 @@ local bootstrap = {
     end
 }
 
-local quickload = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+4,
     key = "quickload",
     set = "Command",
@@ -154,13 +154,13 @@ local quickload = {
 	},
 }
 
-local detour = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+4.5,
     key = "detour",
     set = "Command",
@@ -196,13 +196,13 @@ local detour = {
 }
 
 
-local break_card = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+5,
     key = "break",
     set = "Command",
@@ -259,13 +259,13 @@ local break_card = {
     end
 }
 
-local new = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+6,
     key = "new",
     set = "Command",
@@ -297,13 +297,13 @@ local new = {
     end,
 }
 
-local interference = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+7,
     key = "interference",
     set = "Command",
@@ -326,13 +326,13 @@ local interference = {
     end,
 }
 
-local constant = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+8,
     key = "constant",
     set = "Command",
@@ -376,14 +376,14 @@ local constant = {
         self:use(card)
     end
 }
-local pseudorandom = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
           "entr_pseudorandom"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+9,
     key = "pseudorandom",
     set = "Command",
@@ -424,13 +424,12 @@ local pseudorandom = {
     end
 }
 
-local pseudorandom_sticker = {
+Entropy.Sticker{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Sticker",
     order = 4500+1,
     atlas = "entr_stickers",
     pos = { x = 5, y = 0 },
@@ -502,13 +501,13 @@ SMODS.Sticker:take_ownership("cry_rigged",{
     end
 },true)
 
-local inherit = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+10,
     key = "inherit",
     set = "Command",
@@ -577,13 +576,13 @@ local inherit = {
 	},
 }
 
-local fork = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+11,
     key = "fork",
     set = "Command",
@@ -640,13 +639,13 @@ local fork = {
     end
 }
 
-local push = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+12,
     key = "push",
     set = "Command",
@@ -716,13 +715,13 @@ local push = {
     end
 }
 
-local increment = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+13,
     key = "increment",
     set = "Command",
@@ -767,13 +766,13 @@ local increment = {
     end
 }
 
-local decrement = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+14,
     key = "decrement",
     set = "Command",
@@ -815,14 +814,14 @@ local decrement = {
     end
 }
 
-local invariant = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
           "entr_pinned"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+15,
     key = "invariant",
     set = "Command",
@@ -853,8 +852,7 @@ local invariant = {
 	},
 }
 
-local pinned = {
-    object_type="Sticker",
+Entropy.Sticker{
     order=4500+2,
     atlas = "entr_stickers",
     pos = { x = 1, y = 0 },
@@ -905,14 +903,14 @@ local pinned = {
     end
 }
 
-local cookies = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
           "set_cry_spooky"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+17,
     key = "cookies",
     set = "Command",
@@ -943,13 +941,13 @@ local cookies = {
     end
 }
 
-local segfault = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+18,
     key = "segfault",
     set = "Command",
@@ -1001,13 +999,13 @@ local segfault = {
     end
 }
 
-local sudo = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+19,
     key = "sudo",
     set = "Command",
@@ -1046,14 +1044,14 @@ local sudo = {
 	},
 }
 
-local overflow = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
           "set_cry_poker_hand_stuff"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+20,
     key = "overflow",
     set = "Command",
@@ -1087,13 +1085,13 @@ local overflow = {
     end
 }
 
-local refactor = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+21,
     key = "refactor",
     set = "Command",
@@ -1156,14 +1154,14 @@ local refactor = {
     end
 }
 
-local hotfix = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
           "entr_hotfix"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+22,
     key = "hotfix",
     set = "Command",
@@ -1194,13 +1192,12 @@ local hotfix = {
         self:use(card)
     end
 }
-local hotfix_sticker = {
+Entropy.Sticker{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Sticker",
     order=4500+3,
     atlas = "entr_stickers",
     pos = { x = 3, y = 0 },
@@ -1244,14 +1241,14 @@ local hotfix_sticker = {
     end
 }
 
-local desync_card = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
           "desync"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+22,
     key = "desync",
     set = "Command",
@@ -1278,13 +1275,13 @@ local desync_card = {
     end
 }
 
-local ctrl_x = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+22,
     key = "ctrl_x",
     set = "Command",
@@ -1359,14 +1356,14 @@ local ctrl_x = {
     end
 }
 
-local multithread = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
           "temporary"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+24,
     key = "multithread",
     set = "Command",
@@ -1409,13 +1406,12 @@ local multithread = {
     end
 }
 
-local temporary = {
+Entropy.Sticker{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Sticker",
     order = 4500+4,
     atlas = "entr_stickers",
     pos = { x = 3, y = 1 },
@@ -1454,13 +1450,13 @@ local temporary = {
     end,
 }
 
-local autostart = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+25,
     key = "autostart",
     set = "Command",
@@ -1500,13 +1496,13 @@ local autostart = {
     end
 }
 
-local echo = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+26,
     key = "echo",
     set = "Command",
@@ -1544,14 +1540,14 @@ local echo = {
     end
 }
 
-local local_card = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
           "temporary"
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+27,
     key = "local",
     set = "Command",
@@ -1590,13 +1586,13 @@ local local_card = {
     end
 }
 
-local interpolate = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+28,
     key = "interpolate",
     set = "Command",
@@ -1634,13 +1630,13 @@ local interpolate = {
     end
 }
 
-local overload = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+28,
     key = "overload",
     set = "Command",
@@ -1667,13 +1663,13 @@ local overload = {
     },
 }
 
-local badarg = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+29,
     key = "badarg",
     set = "Command",
@@ -1715,13 +1711,13 @@ local badarg = {
     }
 }
 
-local transpile = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+30,
     key = "transpile",
     set = "Command",
@@ -1762,13 +1758,13 @@ local transpile = {
     end
 }
 
-local mbr = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Consumable",
+    
     order = 4000+31,
     key = "mbr",
     set = "Command",
@@ -1797,13 +1793,12 @@ local mbr = {
     end,
 }
 
-local desync = {
+Entropy.Sticker{
     dependencies = {
         items = {
           "set_entr_inversions"
         }
     },
-    object_type = "Sticker",
     order = 4500+32,
     atlas = "entr_stickers",
     pos = { x = 7, y = 0 },
@@ -1873,48 +1868,4 @@ local desync = {
             vars = {"context."..(card.ability.context or "none")}
         }
     end
-}
-
-
-return {
-    items = {
-        memoryleak,
-        rootkit,
-        bootstrap,
-        quickload,
-        break_card,
-        new,
-        interference,
-        constant,
-        pseudorandom,
-        pseudorandom_sticker,
-        inherit,
-        fork,
-        push,
-        increment,
-        decrement,
-        invariant,
-        pinned,
-        cookies,
-        segfault,
-        sudo,
-        overflow,
-        refactor,
-        hotfix,
-        hotfix_sticker,
-        multithread,
-        temporary,
-        autostart,
-        ctrl_x,
-        local_card,
-        transpile,
-        detour,
-        mbr,
-        desync,
-        desync_card,
-        badarg,
-        interpolate,
-        overload,
-        echo
-    }
 }

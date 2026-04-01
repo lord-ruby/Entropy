@@ -165,7 +165,7 @@ SMODS.Atlas {
     path = "entr_icon.png",
     px = 34,
     py = 34,
-}:register()
+}
 
 SMODS.Atlas {
     key = 'stakes', 
@@ -194,7 +194,6 @@ SMODS.Atlas { key = 'hc_nils', path = 'entr_nilsuit_hc.png', px = 71, py = 95 }
 SMODS.Atlas { key = 'lc_nils', path = 'entr_nilsuit_lc.png', px = 71, py = 95 }
 
 SMODS.Atlas {
-	object_type = "Atlas",
 	key = "entr_achievements",
 	path = "achievements.png",
 	px = 66,
@@ -400,4 +399,13 @@ SMODS.Atlas {
     path = "void_jokers.png",
     px = 71,
     py = 95,
+}
+
+SMODS.Atlas {
+    key = 'eev4fucksmanybitches',
+    path = 'ee_blinds.png', 
+    px = 42, 
+    py = 42, 
+    frames = 12, 
+    atlas_table = 'ANIMATION_ATLAS'
 }

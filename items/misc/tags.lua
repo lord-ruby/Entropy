@@ -1,5 +1,4 @@
-local dog = {
-	object_type = "Tag",
+Entropy.Tag{
 	order = -10,
 	dependencies = {
 	  items = {
@@ -33,8 +32,7 @@ SMODS.Sound({
 	path = "woof3.ogg",
 })
 
-local neon = {
-	object_type = "Tag",
+Entropy.Tag{
 	order = -9.66,
 	dependencies = {
 	  items = {
@@ -74,8 +72,7 @@ local neon = {
 	shiny_atlas = "entr_shiny_tags",
 }
 
-local lowres = {
-	object_type = "Tag",
+Entropy.Tag{
 	order = -9.33,
 	dependencies = {
 	  items = {
@@ -117,8 +114,7 @@ local lowres = {
 }
 
 
-local sunny = {
-	object_type = "Tag",
+Entropy.Tag{
 	order = -9,
 	dependencies = {
 	  items = {
@@ -161,8 +157,7 @@ local sunny = {
 	shiny_atlas = "entr_shiny_tags",
 }
 
-local solar = {
-	object_type = "Tag",
+Entropy.Tag{
 	order = -8,
 	dependencies = {
 	  items = {
@@ -208,8 +203,7 @@ local solar = {
 	}
 }
 
-local fractured = {
-	object_type = "Tag",
+Entropy.Tag{
 	order = -7,
 	dependencies = {
 	  items = {
@@ -253,8 +247,7 @@ local fractured = {
 }
 
 
-local freaky = {
-	object_type = "Tag",
+Entropy.Tag{
 	order = -6,
 	dependencies = {
 	  items = {
@@ -297,8 +290,7 @@ local freaky = {
 	shiny_atlas = "entr_shiny_tags",
 }
 
-local kaleidoscopic = {
-	object_type = "Tag",
+Entropy.Tag{
 	order = -5,
 	dependencies = {
 	  items = {
@@ -338,8 +330,7 @@ local kaleidoscopic = {
 	min_ante = 4,
 }
 
-local gilded = {
-	object_type = "Tag",
+Entropy.Tag{
 	order = -4,
 	dependencies = {
 	  items = {
@@ -379,8 +370,7 @@ local gilded = {
 	min_ante = 3,
 }
 
-local arcane = {
-	object_type = "Tag",
+Entropy.Tag{
 	order = -3,
 	dependencies = {
 	  items = {
@@ -425,16 +415,9 @@ SMODS.Atlas {
 
 
   local rare = Entropy.rare_tag(3, "rare", true, "Rare", {x=0,y=0}, 0, nil,3)
-  local epic = Entropy.rare_tag("cry_epic", "epic", true, "cry_epic", {x=1,y=0}, 0, nil,4)
   local legendary = Entropy.rare_tag(4, "legendary", true, "Legendary", {x=2,y=0}, 0, true,5)
-  local exotic = Entropy.rare_tag("cry_exotic", "exotic", true, "cry_exotic", {x=3,y=0}, 0, nil,6)
-  local entropic = Entropy.rare_tag("entr_entropic", "entropic", true, "cry_exotic", {x=4,y=0}, 0, nil,7)
 
-  exotic.no_pointer = true
-  entropic.no_pointer = true
-
-  local copying = {
-	object_type = "Tag",
+  Entropy.Tag{
     order = 8,
     dependencies = {
     	items = {
@@ -487,146 +470,71 @@ SMODS.Atlas {
 	end
 }
 
-local voucher = {
-	object_type = "Tag",
-    dependencies = {
-    	items = {
-        	"set_entr_tags",
-        }
-    },
-	order = 9,
-	shiny_atlas="entr_shiny_ascendant_tags",
-	key = "ascendant_voucher",
-	atlas = "ascendant_tags",
-	pos = {x=6,y=0},
-	config = { type = "voucher_add" },
-	in_pool = function() return false end or nil,
-	loc_vars = function(self, info_queue)
-		return { vars = { (SMODS.Mods["Tier3Sub"] and 4 or 3) } }
-	end,
-	apply = function(self, tag, context)
-		if context.type == "voucher_add" then
-			tag:yep("+", G.C.SECONDARY_SET.Voucher, function()
-				SMODS.add_voucher_to_shop(Cryptid.next_tier3_key(true), true)
-				return true
-			end)
-			tag.triggered = true
-		end
-	end,
-	shiny_atlas = "entr_shiny_asc_tags",
-}
+if (SMODS.Mods["Cryptid"] or {}).can_load then
+	Entropy.Tag{
+		dependencies = {
+			items = {
+				"set_entr_tags",
+			}
+		},
+		order = 9,
+		shiny_atlas="entr_shiny_ascendant_tags",
+		key = "ascendant_voucher",
+		atlas = "ascendant_tags",
+		pos = {x=6,y=0},
+		config = { type = "voucher_add" },
+		in_pool = function() return false end or nil,
+		loc_vars = function(self, info_queue)
+			return { vars = { (SMODS.Mods["Tier3Sub"] and 4 or 3) } }
+		end,
+		apply = function(self, tag, context)
+			if context.type == "voucher_add" then
+				tag:yep("+", G.C.SECONDARY_SET.Voucher, function()
+					SMODS.add_voucher_to_shop(Cryptid.next_tier3_key(true), true)
+					return true
+				end)
+				tag.triggered = true
+			end
+		end,
+		shiny_atlas = "entr_shiny_asc_tags",
+	}
+else
+	Entropy.Tag{
+		dependencies = {
+			items = {
+				"set_entr_tags",
+			}
+		},
+		order = 9,
+		shiny_atlas="entr_shiny_ascendant_tags",
+		key = "ascendant_voucher",
+		atlas = "ascendant_tags",
+		pos = {x=6,y=0},
+		config = { type = "voucher_add" },
+		in_pool = function() return false end or nil,
+		loc_vars = function(self, info_queue)
+			return { vars = { (SMODS.Mods["Tier3Sub"] and 4 or 3) }, key = "tag_entr_ascendant_voucher_cryptidless" }
+		end,
+		apply = function(self, tag, context)
+			if context.type == "voucher_add" then
+				tag:yep("+", G.C.SECONDARY_SET.Voucher, function()
+					for i = 1, 2 do
+						SMODS.add_voucher_to_shop(nil, true)
+					end
+					return true
+				end)
+				tag.triggered = true
+			end
+		end,
+		shiny_atlas = "entr_shiny_asc_tags",
+	}
+end
+Entropy.edition_tag("e_negative", "negative", true, {x=1,y=1}, 10.1)
+Entropy.edition_tag("e_foil", "foil", true, {x=2,y=1},10.2)
+Entropy.edition_tag("e_holo", "holo", true, {x=3,y=1},10.3)
+Entropy.edition_tag("e_polychrome", "poly", true, {x=4,y=1},10.4)
 
-local cryptidless_voucher = {
-	object_type = "Tag",
-    dependencies = {
-    	items = {
-        	"set_entr_tags",
-        }
-    },
-	order = 9,
-	shiny_atlas="entr_shiny_ascendant_tags",
-	key = "ascendant_voucher",
-	atlas = "ascendant_tags",
-	pos = {x=6,y=0},
-	config = { type = "voucher_add" },
-	in_pool = function() return false end or nil,
-	loc_vars = function(self, info_queue)
-		return { vars = { (SMODS.Mods["Tier3Sub"] and 4 or 3) }, key = "tag_entr_ascendant_voucher_cryptidless" }
-	end,
-	apply = function(self, tag, context)
-		if context.type == "voucher_add" then
-			tag:yep("+", G.C.SECONDARY_SET.Voucher, function()
-				for i = 1, 2 do
-					SMODS.add_voucher_to_shop(nil, true)
-				end
-				return true
-			end)
-			tag.triggered = true
-		end
-	end,
-	shiny_atlas = "entr_shiny_asc_tags",
-}
-
-local saint =  {
-	object_type = "Tag",
-    dependencies = {
-    	items = {
-        	"set_entr_tags",
-        }
-    },
-	order = 10,
-	shiny_atlas="entr_shiny_ascendant_tags",
-	key = "ascendant_saint",
-	atlas = "ascendant_tags",
-	pos = {x=0,y=1},
-	config = { type = "store_joker_create" },
-	in_pool = function() return false end or nil,
-	loc_vars = function(self, info_queue, tag)
-	end,
-	apply = function(self, tag, context)
-		if context.type == "store_joker_create" then
-			local card = create_card("Joker", context.area, nil, "cry_candy", nil, nil, nil, "entr_saint")
-			create_shop_card_ui(card, "Joker", context.area)
-			card.states.visible = false
-			tag:yep("+", G.C.GREEN, function()
-				card:start_materialize()
-				card.ability.couponed = true
-				card:set_edition(SMODS.poll_edition({guaranteed = true, key = "entr_saint"}))
-				card:set_cost()
-				return true
-			end)
-			tag.triggered = true
-			return card
-		end
-	end,
-	shiny_atlas = "entr_shiny_asc_tags",
-}
-local negative = Entropy.edition_tag("e_negative", "negative", true, {x=1,y=1}, 10.1)
-local foil =Entropy.edition_tag("e_foil", "foil", true, {x=2,y=1},10.2)
-local holo = Entropy.edition_tag("e_holo", "holo", true, {x=3,y=1},10.3)
-local poly = Entropy.edition_tag("e_polychrome", "poly", true, {x=4,y=1},10.4)
-local glass = Entropy.edition_tag("e_cry_glass", "glass", true, {x=5,y=1},10.5)
-
-local better_voucher = {
-	object_type = "Tag",
-    dependencies = {
-    	items = {
-        	"set_entr_tags",
-        }
-    },
-	order = 11,
-	shiny_atlas="entr_shiny_ascendant_tags",
-	key = "ascendant_better_voucher",
-	atlas = "ascendant_tags",
-	pos = {x=6,y=1},
-	config = { type = "voucher_add" },
-	in_pool = function() return false end or nil,
-	loc_vars = function(self, info_queue)
-		return { vars = { (SMODS.Mods["Tier3Sub"] and 4 or 3) } }
-	end,
-	apply = function(self, tag, context)
-		if context.type == "voucher_add" then
-			tag:yep("+", G.C.SECONDARY_SET.Voucher, function()
-				SMODS.add_voucher_to_shop(Cryptid.next_tier3_key(true), true)
-				SMODS.add_voucher_to_shop(Cryptid.next_tier3_key(true), true)
-				return true
-			end)
-			tag.triggered = true
-		end
-	end,
-	shiny_atlas = "entr_shiny_asc_tags",
-}
-
-
-local glitched = Entropy.edition_tag("e_cry_glitched", "glitched", true, {x=0,y=2},12)
-local gold = Entropy.edition_tag("e_cry_gold", "gold", true, {x=1,y=2},13)
-local blur = Entropy.edition_tag("e_cry_blur", "blurry", true, {x=2,y=2},14)
-local m = Entropy.edition_tag("e_cry_m", "m", true, {x=3,y=2},15)
-local mosaic = Entropy.edition_tag("e_cry_mosaic", "mosaic", true, {x=4,y=2},16)
-local astral = Entropy.edition_tag("e_cry_astral", "astral", true, {x=5,y=2},17)
-
-local infdiscard = {
-	object_type = "Tag",
+Entropy.Tag{
     dependencies = {
     	items = {
         	"set_entr_tags",
@@ -655,54 +563,19 @@ local infdiscard = {
 	shiny_atlas = "entr_shiny_asc_tags",
 }
 
-local oversat = Entropy.edition_tag("e_cry_oversat", "oversat", true, {x=0,y=3},18)
-local neon_asc = Entropy.edition_tag("e_entr_neon", "neon", true, {x=7,y=4},18.33)
-local lowres_asc = Entropy.edition_tag("e_entr_lowres", "lowres", true, {x=7,y=3},18.66)
-local sunny_asc = Entropy.edition_tag("e_entr_sunny", "sunny", true, {x=6,y=4},19)
-local solar_asc = Entropy.edition_tag("e_entr_solar", "solar", true, {x=1,y=3},20, {
+Entropy.edition_tag("e_entr_neon", "neon", true, {x=7,y=4},18.33)
+Entropy.edition_tag("e_entr_lowres", "lowres", true, {x=7,y=3},18.66)
+Entropy.edition_tag("e_entr_sunny", "sunny", true, {x=6,y=4},19)
+Entropy.edition_tag("e_entr_solar", "solar", true, {x=1,y=3},20, {
 	art = {"Grahkon"}
 })
-local fractured_asc = Entropy.edition_tag("e_entr_fractured", "fractured", true, {x=6,y=5},20.5)
-local freaky_asc = Entropy.edition_tag("e_entr_freaky", "freaky", true, {x=7,y=5},20.75)
+Entropy.edition_tag("e_entr_fractured", "fractured", true, {x=6,y=5},20.5)
+Entropy.edition_tag("e_entr_freaky", "freaky", true, {x=7,y=5},20.75)
 
-local kaleidoscopic_asc = Entropy.edition_tag("e_entr_kaleidoscopic", "kaleidoscopic", true, {x=7,y=2},20.9)
-local gilded_asc = Entropy.edition_tag("e_entr_gilded", "gilded", true, {x=7,y=0},20.95)
+Entropy.edition_tag("e_entr_kaleidoscopic", "kaleidoscopic", true, {x=7,y=2},20.9)
+Entropy.edition_tag("e_entr_gilded", "gilded", true, {x=7,y=0},20.95)
 
-local cat_asc = {
-	object_type = "Tag",
-    dependencies = {
-    	items = {
-        	"set_entr_tags",
-        }
-    },
-	order = 21,
-	shiny_atlas="entr_shiny_ascendant_tags",
-	atlas = "ascendant_tags",
-	pos = { x = 2, y = 3 },
-	config = { level = 1 },
-	key = "ascendant_cat",
-	name = "entr-Ascendant-Cat Tag",
-	loc_vars = function(self, info_queue, tag)
-		return { vars = { tag.ability and tag.ability.level or 1 } }
-	end,
-	level_func = function(level,one,tag)
-		tag.ability.level2 = (tag.ability.level2 or 0) + 1
-		return level * 2
-	end,
-	set_ability = function(self, tag)
-		tag.ability.level2 = (tag.ability.level2 or 0) + 1
-		tag.level_func = self.level_func
-		tag.get_edition = function(tag)
-			return G.P_CENTER_POOLS.Edition[(tag.ability.level2%#G.P_CENTER_POOLS.Edition)+1]
-		end
-		tag.hover_sound = function() return 'cry_meow'..math.random(4) end
-	end,
-	in_pool = function() return false end,
-	shiny_atlas = "entr_shiny_asc_tags",
-}
-
-local dog_asc = {
-	object_type = "Tag",
+Entropy.Tag{
     dependencies = {
     	items = {
         	"set_entr_tags",
@@ -734,186 +607,7 @@ local dog_asc = {
 	shiny_atlas = "entr_shiny_asc_tags",
 }
 
-local canvas = {
-	object_type = "Tag",
-    dependencies = {
-    	items = {
-        	"set_entr_tags",
-        }
-    },
-	order = 23,
-	shiny_atlas="entr_shiny_ascendant_tags",
-	key = "ascendant_canvas",
-	atlas = "ascendant_tags",
-	pos = {x=4,y=3},
-	config = { type = "store_joker_create" },
-	in_pool = function() return false end or nil,
-	apply = function(self, tag, context)
-		if context.type == "store_joker_create" then
-			local card
-			if not G.GAME.banned_keys["j_cry_canvas"] then
-				card = create_card("Joker", context.area, nil, nil, nil, nil, "j_cry_canvas")
-				create_shop_card_ui(card, "Joker", context.area)
-				card.states.visible = false
-				tag:yep("+", G.C.RED, function()
-					card:start_materialize()
-					card:set_cost()
-					return true
-				end)
-			else
-				tag:nope()
-			end
-			tag.triggered = true
-			return card
-		end
-	end,
-	shiny_atlas = "entr_shiny_asc_tags",
-}
-
-local unbounded = {
-	object_type = "Tag",
-    dependencies = {
-    	items = {
-        	"set_entr_tags",
-        }
-    },
-	order = 24,
-	shiny_atlas="entr_shiny_ascendant_tags",
-	key = "ascendant_unbounded",
-	atlas = "ascendant_tags",
-	pos = {x=5,y=3},
-	config = { type = "new_blind_choice" },
-	in_pool = function() return false end or nil,
-	loc_vars = function(self, info_queue)
-		info_queue[#info_queue + 1] = G.P_CENTERS.p_spectral_normal_1
-		info_queue[#info_queue + 1] = { set = "Spectral", key = "c_cry_pointer" }
-		info_queue[#info_queue + 1] = G.P_CENTERS.c_entr_beyond
-	end,
-	apply = function(self, tag, context)
-		if context.type == "new_blind_choice" then
-			local lock = tag.ID
-			G.CONTROLLER.locks[lock] = true
-			tag:yep("+", G.C.SECONDARY_SET.Spectral, function()
-				local key = "p_entr_unbounded"
-				local card = Card(
-					G.play.T.x + G.play.T.w / 2 - G.CARD_W * 1.27 / 2,
-					G.play.T.y + G.play.T.h / 2 - G.CARD_H * 1.27 / 2,
-					G.CARD_W * 1.27,
-					G.CARD_H * 1.27,
-					G.P_CARDS.empty,
-					G.P_CENTERS[key],
-					{ bypass_discovery_center = true, bypass_discovery_ui = true }
-				)
-				card.cost = 0
-				card.from_tag = true
-				G.FUNCS.use_card({ config = { ref_table = card } })
-				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
-					card:set_edition(nil, true, true)
-				elseif G.GAME.modifiers.cry_force_random_edition then
-					local edition = Cryptid.poll_random_edition()
-					card:set_edition(edition, true, true)
-				end
-				card:start_materialize()
-				G.CONTROLLER.locks[lock] = nil
-				return true
-			end)
-			tag.triggered = true
-			return true
-		end
-	end,
-	shiny_atlas = "entr_shiny_asc_tags",
-}
-
-local unbounded_pack = {
-	object_type = "Booster",
-    dependencies = {
-    	items = {
-        	"set_entr_tags",
-        }
-    },
-	order = 94,
-	shiny_atlas="entr_shiny_ascendant_tags",
-    key = "unbounded",
-    set = "Booster",
-    config = { extra = 2, choose = 1 },
-    loc_vars = function(self, info_queue, card)
-        return {
-            vars = {
-                card.ability.choose,
-                card.ability.extra,
-                colours = {
-                    HEX("FF0000")
-                }
-            },
-        }
-    end,
-    atlas = 'booster', pos = { x = 4, y = 0 },
-    cost = 6,
-    draw_hand = true,
-    weight = 0,
-	in_pool = function() return false end,
-    draw_hand = true,
-	update_pack = SMODS.Booster.update_pack,
-	loc_vars = SMODS.Booster.loc_vars,
-	ease_background_colour = function(self)
-		ease_background_colour_blind(G.STATES.SPECTRAL_PACK)
-	end,
-	create_UIBox = function(self)
-		return create_UIBox_spectral_pack()
-	end,
-	particles = function(self)
-		G.booster_pack_sparkles = Particles(1, 1, 0, 0, {
-			timer = 0.015,
-			scale = 0.1,
-			initialize = true,
-			lifespan = 3,
-			speed = 0.2,
-			padding = -1,
-			attach = G.ROOM_ATTACH,
-			colours = { G.C.WHITE, lighten(G.C.GOLD, 0.2) },
-			fill = true,
-		})
-		G.booster_pack_sparkles.fade_alpha = 1
-		G.booster_pack_sparkles:fade(1, 0)
-	end,
-	create_card = function(self, card, i)
-		if
-			i % 2 == 1
-			and Cryptid.enabled("c_entr_beyond") == true
-			and not G.GAME.banned_keys["c_entr_beyond"]
-			and not (G.GAME.used_jokers["c_entr_beyond"] and not next(find_joker("Showman")))
-		then
-			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_entr_beyond")
-		elseif
-			not (G.GAME.used_jokers["c_cry_pointer"] and not next(find_joker("Showman"))) and not G.GAME.banned_keys["c_cry_pointer"]
-		then
-			return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_cry_pointer")
-		else
-			return create_card("Spectral", G.pack_cards, nil, nil, true, true)
-		end
-	end,
-	hidden = true,
-	group_key = "k_spectral_pack",
-	cry_digital_hallucinations = {
-		colour = G.C.SECONDARY_SET.Spectral,
-		loc_key = "k_plus_spectral",
-		create = function()
-			local ccard
-			if pseudorandom(pseudoseed("diha")) < 0.5 then
-				ccard = create_card("Spectral", G.consumeables, nil, nil, true, true, "c_cry_pointer")
-			else
-				ccard = create_card("Spectral", G.consumeables, nil, nil, true, true, "c_entr_beyond")
-			end
-			ccard:set_edition({ negative = true }, true)
-			ccard:add_to_deck()
-			G.consumeables:emplace(ccard)
-		end,
-	},
-	shiny_atlas = "entr_shiny_asc_tags",
-}
-
-local ejoker = {
-	object_type = "Tag",
+Entropy.Tag{
     dependencies = {
     	items = {
         	"set_entr_tags",
@@ -966,8 +660,7 @@ local ejoker = {
 }
 
 
-local universal = {
-	object_type = "Tag",
+Entropy.Tag{
     dependencies = {
     	items = {
         	"set_entr_tags",
@@ -1006,53 +699,7 @@ local universal = {
 	shiny_atlas = "entr_shiny_asc_tags",
 }
 
-local ebundle = {
-	object_type = "Tag",
-    dependencies = {
-    	items = {
-        	"set_entr_tags",
-        }
-    },
-	order = 27,
-	shiny_atlas="entr_shiny_ascendant_tags",
-	key = "ascendant_ebundle",
-	atlas = "ascendant_tags",
-	pos = {x=1,y=4},
-	config = { type = "new_blind_choice" },
-	in_pool = function() return false end or nil,
-	loc_vars = function(self, info_queue,tag)
-		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_ethereal" }
-		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_console" }
-		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_entr_ascendant_twisted" }
-		info_queue[#info_queue + 1] = { set = "Tag", key = "tag_cry_bundle" }
-	end,
-	apply = function(self, tag, context)
-		if context.type == "new_blind_choice" then
-			local lock = tag.ID
-			G.CONTROLLER.locks[lock] = true
-			tag:yep("+", G.C.ATTENTION, function()
-				local tags = { "ethereal", "cry_console", "entr_ascendant_twisted", "cry_bundle" }
-				for i, v in ipairs(tags) do
-					local _tag = Tag("tag_" .. v, true)
-					_tag.ability.shiny = Cryptid.is_shiny()
-					add_tag(_tag)
-					_tag.ability.no_asc = true
-					if i == 1 then
-						tag.triggered = true
-					end
-				end
-				G.CONTROLLER.locks[lock] = nil
-				return true
-			end)
-			tag.triggered = true
-			return true
-		end
-	end,
-	shiny_atlas = "entr_shiny_asc_tags",
-}
-
-local twisted = {
-	object_type = "Tag",
+Entropy.Tag{
     dependencies = {
     	items = {
         	"set_entr_tags",
@@ -1103,8 +750,7 @@ local twisted = {
 	shiny_atlas = "entr_shiny_asc_tags",
 }
 
-local stock = {
-	object_type = "Tag",
+Entropy.Tag{
     dependencies = {
     	items = {
         	"set_entr_tags",
@@ -1132,8 +778,7 @@ local stock = {
 	shiny_atlas = "entr_shiny_asc_tags",
 }
 
-local blind = {
-	object_type = "Tag",
+Entropy.Tag{
     dependencies = {
     	items = {
         	"set_entr_tags",
@@ -1181,8 +826,7 @@ local blind = {
 	shiny_atlas = "entr_shiny_asc_tags",
 }
 
-local blind_pack = {
-	object_type = "Booster",
+SMODS.Booster{
     dependencies = {
     	items = {
         	"set_entr_tags",
@@ -1228,147 +872,7 @@ local blind_pack = {
 	},
 }
 
-
-local reference = {
-	object_type = "Tag",
-    dependencies = {
-    	items = {
-        	"set_entr_tags",
-        }
-    },
-	order = 30,
-	shiny_atlas="entr_shiny_ascendant_tags",
-	key = "ascendant_reference",
-	atlas = "ascendant_tags",
-	pos = {x=5,y=4},
-	config = { type = "new_blind_choice" },
-	in_pool = function() return false end or nil,
-	loc_vars = function(self, info_queue)
-		info_queue[#info_queue + 1] = G.P_CENTERS.p_entr_reference
-	end,
-	apply = function(self, tag, context)
-		if context.type == "new_blind_choice" then
-			local lock = tag.ID
-			G.CONTROLLER.locks[lock] = true
-			tag:yep("+", G.C.SECONDARY_SET.Spectral, function()
-				local key = "p_entr_reference_pack"
-				local card = Card(
-					G.play.T.x + G.play.T.w / 2 - G.CARD_W * 1.27 / 2,
-					G.play.T.y + G.play.T.h / 2 - G.CARD_H * 1.27 / 2,
-					G.CARD_W * 1.27,
-					G.CARD_H * 1.27,
-					G.P_CARDS.empty,
-					G.P_CENTERS[key],
-					{ bypass_discovery_center = true, bypass_discovery_ui = true }
-				)
-				card.cost = 0
-				card.from_tag = true
-				G.FUNCS.use_card({ config = { ref_table = card } })
-				if G.GAME.modifiers.cry_force_edition and not G.GAME.modifiers.cry_force_random_edition then
-					card:set_edition(nil, true, true)
-				elseif G.GAME.modifiers.cry_force_random_edition then
-					local edition = Cryptid.poll_random_edition()
-					card:set_edition(edition, true, true)
-				end
-				card:start_materialize()
-				G.CONTROLLER.locks[lock] = nil
-				return true
-			end)
-			tag.triggered = true
-			return true
-		end
-	end,
-	shiny_atlas = "entr_shiny_asc_tags",
-}
-
-local reference_pack = {
-	object_type = "Booster",
-    dependencies = {
-    	items = {
-        	"set_entr_tags",
-        }
-    },
-	order = 96,
-	shiny_atlas="entr_shiny_ascendant_tags",
-    key = "reference_pack",
-    set = "Booster",
-    config = { extra = 5, choose = 2 },
-    loc_vars = function(self, info_queue, card)
-        return {
-            vars = {
-                card.ability.choose,
-                card.ability.extra,
-                colours = {
-                    HEX("851628")
-                }
-            },
-        }
-    end,
-    atlas = 'booster', pos = { x = 5, y = 0 },
-    group_key = "k_reference_pack",
-    cost = 8,
-    draw_hand = true,
-    weight = 0,
-	in_pool = function() return false end,
-    hidden = true,
-    kind = "Joker",
-    create_card = function (self, card, i) 
-        return create_card("Reference", area or G.pack_cards, nil, nil, true, true, nil, "reference")
-    end,
-    ease_background_colour = function(self)
-		ease_colour(G.C.DYN_UI.MAIN, G.C.BLUE)
-		ease_background_colour({ new_colour = G.C.RED, special_colour = G.C.BLUE, contrast = 2 })
-	end,
-	cry_digital_hallucinations = {
-		colour = G.C.GREEN,
-		loc_key = "k_reference_pack",
-		create = function()
-			local ccard = create_card("Reference", area or G.pack_cards, nil, nil, true, true, nil, "reference")
-			ccard:set_edition({ negative = true }, true)
-			ccard:add_to_deck()
-			G.jokers:emplace(ccard)
-		end,
-	},
-}
-
-local cavendish = {
-	object_type = "Tag",
-    dependencies = {
-    	items = {
-        	"set_entr_tags",
-        }
-    },
-	order = 31,
-	shiny_atlas="entr_shiny_ascendant_tags",
-	key = "ascendant_cavendish",
-	atlas = "ascendant_tags",
-	pos = {x=0,y=5},
-	config = { type = "immediate" },
-	in_pool = function() return false end or nil,
-	loc_vars = function(self, info_queue,tag)
-		info_queue[#info_queue + 1] = {
-			set = "Joker",
-			key = "j_cavendish",
-			specific_vars = { 3, G.GAME.probabilities.normal or 1, 1000 },
-		}
-	end,
-	apply = function(self, tag, context)
-		if context.type == "immediate" then
-			tag:yep("+", G.C.GOLD, function()
-				local card = create_card("Joker", G.jokers, nil, nil, nil, nil, "j_cavendish")
-				card:add_to_deck()
-				G.jokers:emplace(card)
-				return true
-			end)
-			tag.triggered = true
-			return true
-		end
-	end,
-	shiny_atlas = "entr_shiny_asc_tags",
-}
-
-local credit = {
-	object_type = "Tag",
+Entropy.Tag{
     dependencies = {
     	items = {
         	"set_entr_tags",
@@ -1409,9 +913,7 @@ local credit = {
 	shiny_atlas = "entr_shiny_asc_tags",
 }
 
-
-local topup = {
-	object_type = "Tag",
+Entropy.Tag{
     dependencies = {
     	items = {
         	"set_entr_tags",
@@ -1445,74 +947,7 @@ local topup = {
 	shiny_atlas = "entr_shiny_asc_tags",
 }
 
-local better_topup = {
-	object_type = "Tag",
-    dependencies = {
-    	items = {
-        	"set_entr_tags",
-        }
-    },
-	order = 34,
-	shiny_atlas="entr_shiny_ascendant_tags",
-	key = "ascendant_better_topup",
-	atlas = "ascendant_tags",
-	pos = {x=3,y=5},
-	config = { type = "immediate" },
-	in_pool = function() return false end or nil,
-	loc_vars = function(self, info_queue,tag)
-	end,
-	apply = function(self, tag, context)
-		if context.type == "immediate" then
-			tag:yep("+", G.C.RED, function()
-				for i = 1, 3 do
-					if G.jokers and #G.jokers.cards < G.jokers.config.card_limit then
-						local card = create_card("Joker", G.jokers, nil, 3, nil, nil, nil, "bettertop")
-						card:add_to_deck()
-						G.jokers:emplace(card)
-					end
-				end
-				return true
-			end)
-			tag.triggered = true
-			return true
-		end
-	end,
-	shiny_atlas = "entr_shiny_asc_tags",
-}
-
-local booster = {
-	object_type = "Tag",
-    dependencies = {
-    	items = {
-        	"set_entr_tags",
-        }
-    },
-	order = 35,
-	shiny_atlas="entr_shiny_ascendant_tags",
-	key = "ascendant_booster",
-	atlas = "ascendant_tags",
-	pos = {x=4,y=5},
-	config = { type = "immediate" },
-	in_pool = function() return false end or nil,
-	loc_vars = function(self, info_queue,tag)
-	end,
-	apply = function(self, tag, context)
-		if context.type == "immediate" then
-			tag:yep("+", G.C.GREEN, function()
-				for i = 1, 3 do
-					G.GAME.boostertag = (G.GAME.boostertag or 0) + 1.5
-				end
-				return true
-			end)
-			tag.triggered = true
-			return true
-		end
-	end,
-	shiny_atlas = "entr_shiny_asc_tags",
-}
-
-local effarcire = {
-	object_type = "Tag",
+Entropy.Tag{
     dependencies = {
     	items = {
         	"set_entr_tags",
@@ -1539,8 +974,7 @@ local effarcire = {
 	shiny_atlas = "entr_shiny_asc_tags",
 }
 
-local asc_arcane = {
-	object_type = "Tag",
+Entropy.Tag{
 	order = 37,
 	dependencies = {
 	  items = {
@@ -1565,71 +999,4 @@ local asc_arcane = {
 		end
 	end,
 	shiny_atlas = "entr_shiny_asc_tags",
-}
-
-
-return {
-	items = {
-		dog,
-		sunny,
-		neon,
-		lowres,
-		solar,
-		fractured,
-		kaleidoscopic,
-		gilded,
-		rare,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or epic,
-		legendary,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or exotic,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or entropic,
-		negative,
-		poly,
-		foil,
-		holo,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or glass,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or m,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or gold,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or blur,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or glitched,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or mosaic,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or astral,
-		solar_asc,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and cryptidless_voucher or voucher,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or saint,
-		copying,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or better_voucher,
-		infdiscard,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or cat_asc,
-		dog_asc,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or canvas,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or unbounded,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or unbounded_pack,
-		ejoker,
-		universal,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or ebundle,
-		twisted,
-		stock,
-		blind,
-		blind_pack,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or reference,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or reference_pack,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or cavendish,
-		credit,
-		topup,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or better_topup,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or booster,
-		effarcire,
-		sunny_asc,
-		fractured_asc,
-		not (SMODS.Mods["Cryptid"] or {}).can_load and {} or oversat,
-		freaky,
-		freaky_asc,
-		neon_asc,
-		lowres_asc,
-		kaleidoscopic_asc,
-		gilded_asc,
-		arcane,
-		asc_arcane
-	}
 }

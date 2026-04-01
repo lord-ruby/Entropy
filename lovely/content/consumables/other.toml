@@ -1,0 +1,92 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+# Prevent counting CCD consumables for pack uses
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = "if area == G.consumeables then"
+position = "at"
+payload = "if area == G.consumeables or area == G.hand then"
+match_indent = true
+
+# Fix bugs from removing CCD
+# This really shouldn't be in the card drawing code, but it doesn't really matter since that's where it crashes anyway lol
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if not self.config.center.discovered and (self.ability.consumeable or self.config.center.unlocked) and not self.config.center.demo and not self.bypass_discovery_center then"
+position = "before"
+payload = "if self.ability.set == 'Enhanced' then self.ability.consumeable = nil end"
+match_indent = true
+
+# Remove CCD from enhanced cards
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if center.consumeable then 
+	self.ability.consumeable = center.config
+end  
+'''
+position = "before"
+payload = '''
+if not center.consumeable then
+	self.ability.consumeable = nil
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+if G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED then
+            if self.ability.consumeable.max_highlighted then
+'''
+position = "at"
+payload = '''
+if G.STATE == G.STATES.SELECTING_HAND or G.STATE == G.STATES.TAROT_PACK or G.STATE == G.STATES.SPECTRAL_PACK or G.STATE == G.STATES.PLANET_PACK or G.STATE == G.STATES.SMODS_BOOSTER_OPENED then
+            if self.ability.consumeable and self.ability.consumeable.max_highlighted then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+if self.ability.consumeable.mod_num >= #G.hand.highlighted and #G.hand.highlighted >= (self.ability.consumeable.min_highlighted or 1) then'''
+position = "at"
+payload = '''
+
+if (self.ability.consumeable.max_highlighted or 9999) + (self.area == G.hand and 1 or 0) >= #G.hand.highlighted and #G.hand.highlighted - (self.area == G.hand and 1 or 0) >= (self.ability.consumeable.min_highlighted or 1) then
+'''
+match_indent = true 
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''
+if self.ability.consumeable and self.ability.consumeable.max_highlighted then
+'''
+position = 'after'
+payload = '''
+self.ability.consumeable.mod_num = self.ability.consumeable.mod_num or 0
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''
+SMODS.calculate_context({using_consumeable = true, consumeable = card, area = card.from_area})
+'''
+position = 'before'
+payload = '''
+local center = card.config.center
+if center and center.calculate then
+  center:calculate(card, {using_self = true, consumeable = card, area = card.from_area})
+end
+'''
+match_indent = true

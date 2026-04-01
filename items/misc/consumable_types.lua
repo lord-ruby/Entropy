@@ -1,5 +1,4 @@
 SMODS.ConsumableType({
-	object_type = "ConsumableType",
 	key = "Rune",
 	primary_colour = G.C.Entropy.Rune,
 	secondary_colour = G.C.Entropy.Rune,
@@ -28,7 +27,6 @@ SMODS.UndiscoveredSprite({
 })
 
 SMODS.ConsumableType({
-	object_type = "ConsumableType",
 	key = "Fraud",
 	primary_colour = G.C.Entropy.Fraud,
 	secondary_colour = HEX("a54747"),
@@ -49,7 +47,6 @@ SMODS.UndiscoveredSprite({
 })
 
 SMODS.ConsumableType({
-	object_type = "ConsumableType",
 	key = "Star",
 	primary_colour = G.C.Entropy.Star,
 	secondary_colour = G.C.Entropy.Star,
@@ -60,7 +57,6 @@ SMODS.ConsumableType({
 })
 
 SMODS.ConsumableType({
-	object_type = "ConsumableType",
 	key = "Omen",
 	primary_colour = G.C.Entropy.Omen,
 	secondary_colour = G.C.Entropy.Omen,
@@ -98,7 +94,6 @@ SMODS.UndiscoveredSprite({
 
 if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
 	SMODS.ConsumableType({
-		object_type = "ConsumableType",
 		key = "Command",
 		primary_colour = G.C.Entropy.Command,
 		secondary_colour = G.C.Entropy.Command,
@@ -119,7 +114,6 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
 end
 
 SMODS.ConsumableType({
-	object_type = "ConsumableType",
 	key = "Pact",
 	primary_colour = G.C.Entropy.Pact,
 	secondary_colour = G.C.Entropy.Pact,

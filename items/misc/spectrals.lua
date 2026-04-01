@@ -1,5 +1,4 @@
-local flipside = {
-    object_type = "Consumable",
+Entropy.Consumable{
     order = 1000 + 1,
     key = "flipside",
     atlas = "consumables",
@@ -55,12 +54,11 @@ local flipside = {
     end
 }
 
-local shatter = {
+Entropy.Consumable{
     key = "shatter",
     set = "Spectral",
     
     order = 900+37,
-    object_type = "Consumable",
     config = {limit = 1, csl = 1},
     atlas = "consumables",
     pos = {x=5,y=8},
@@ -96,12 +94,11 @@ local shatter = {
     end
 }
 
-local destiny = {
+Entropy.Consumable{
     key = "destiny",
     set = "Spectral",
     
     order = 900+36,
-    object_type = "Consumable",
     atlas = "consumables",
     immutable = true,
     pos = {x=5,y=7},
@@ -147,12 +144,11 @@ local destiny = {
     weight = 0,    
 }
 
-local lust = {
+Entropy.Consumable{
     key = "lust",
     set = "Spectral",
     
     order = 900+38,
-    object_type = "Consumable",
     config = {limit = 1},
     atlas = "consumables",
     pos = {x=4,y=Cryptid_config.family_mode and 8 or 7},
@@ -208,12 +204,11 @@ function Cryptid.reload_localization()
 end
 
 
-local null = {
+Entropy.Consumable{
     key = "null",
     set = "Spectral",
     
     order = 900+39,
-    object_type = "Consumable",
     config = {create = 5},
     atlas = "consumables",
     pos = {x=3,y=7},
@@ -285,11 +280,10 @@ local null = {
     end
 }
 
-local antithesis = {
+Entropy.Consumable{
     key = "antithesis",
     set = "Spectral",
     order = 1000+2,
-    object_type = "Consumable",
     atlas = "consumables2",
     pos = {x=1,y=3},
     soul_pos = {x = 3, y = 3, extra = {x = 2, y = 3}},
@@ -321,14 +315,13 @@ local antithesis = {
     end
 }
 
-local enchant = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_runes",
           "entr_ornate"
         }
     },
-    object_type = "Consumable",
     order = 900+40,
     key = "enchant",
     set = "Spectral",
@@ -358,13 +351,12 @@ local enchant = {
     end
 }
 
-local manifest = {
+Entropy.Consumable{
     dependencies = {
         items = {
           "set_entr_spectrals",
         }
     },
-    object_type = "Consumable",
     order = 900+41,
     key = "manifest",
     set = "Spectral",
@@ -389,17 +381,4 @@ local manifest = {
     force_use = function(self, card)
         self:use(card)
     end
-}
-
-return {
-    items = {
-        flipside,
-        shatter,
-        destiny,
-        lust,
-        null,
-        antithesis,
-        enchant,
-        manifest
-    }
 }

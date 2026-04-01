@@ -1,0 +1,312 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = '''
+                if pseudorandom('soul_'..v.key.._type..G.GAME.round_resets.ante) > (1 - v.soul_rate) then
+                    forced_key = v.key
+                end
+'''
+position = "at"
+payload = '''
+                if pseudorandom('soul_'..v.key.._type..G.GAME.round_resets.ante) > (1 - v.soul_rate) then
+                    if not G.GAME.banned_keys[v.key] then forced_key = v.key end
+                end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''
+local temp_pool =   (self.ability.name == 'The Wheel of Fortune' and self.eligible_strength_jokers) or 
+                            ((self.ability.name == 'Ectoplasm' or self.ability.name == 'Hex') and self.eligible_editionless_jokers) or {}'''
+position = "at"
+payload = '''
+
+local temp_pool =   (self.ability.name == 'The Wheel of Fortune' and self.eligible_strength_jokers) or 
+                            (self.eligible_editionless_jokers)
+
+if not temp_pool then
+    temp_pool = {}
+    for i, v in pairs(G.jokers.cards) do
+        if not v.edition then
+            temp_pool[#temp_pool+1] = v
+        end
+    end
+end
+'''
+match_indent = true 
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+for _,v in ipairs(available_enhancements) do
+'''
+position = "at"
+payload = '''
+local new_opts = {}
+for _,v in ipairs(available_enhancements) do
+  if not (G.GAME.banned_keys[v.key] or v.no_doe) then
+    new_opts[#new_opts + 1] = v
+  end
+end
+if #new_opts == 0 then
+  new_opts[1] = "m_mult"
+end
+for _,v in ipairs(new_opts) do
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+local seal_poll = pseudorandom(pseudoseed(key or 'stdseal'..G.GAME.round_resets.ante))
+'''
+position = "before"
+payload = '''
+local new_opts = {}
+for _,v in ipairs(available_seals) do
+  if not (G.GAME.banned_keys[v.key] or v.no_doe) then
+    new_opts[#new_opts + 1] = v
+  end
+end
+if #new_opts == 0 then
+  new_opts[1] = "Red"
+end
+available_seals = new_opts
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/UI_definitions.lua'''
+pattern = '''
+        {n=G.UIT.C, config={align = "cr", padding = 0.01, r = 0.1, colour = G.C.CHIPS, minw = 1.1}, nodes={
+          {n=G.UIT.T, config={text = number_format(G.GAME.hands[handname].chips, 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}},
+          {n=G.UIT.B, config={w = 0.08, h = 0.01}}
+        }},
+        {n=G.UIT.T, config={text = "X", scale = 0.45, colour = G.C.MULT}},
+        {n=G.UIT.C, config={align = "cl", padding = 0.01, r = 0.1, colour = G.C.MULT, minw = 1.1}, nodes={
+          {n=G.UIT.B, config={w = 0.08,h = 0.01}},
+          {n=G.UIT.T, config={text = number_format(G.GAME.hands[handname].mult, 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}}
+        }}
+'''
+position = "at"
+payload = '''
+        {n=G.UIT.C, config={align = "cr", padding = 0.01, r = 0.1, colour = (G.GAME.badarg or {})[handname] and HEX("FF0000") or G.C.CHIPS, minw = 1.1}, nodes={
+          {n=G.UIT.T, config={text = (G.GAME.badarg or {})[handname] and "BAD" or number_format(G.GAME.hands[handname].chips, 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}},
+          {n=G.UIT.B, config={w = 0.08, h = 0.01}}
+        }},
+        {n=G.UIT.T, config={text = "X", scale = 0.45, colour = (G.GAME.badarg or {})[handname] and HEX("FF0000") or G.C.MULT}},
+        {n=G.UIT.C, config={align = "cl", padding = 0.01, r = 0.1, colour = (G.GAME.badarg or {})[handname] and HEX("FF0000") or G.C.MULT, minw = 1.1}, nodes={
+          {n=G.UIT.B, config={w = 0.08,h = 0.01}},
+          {n=G.UIT.T, config={text = (G.GAME.badarg or {})[handname] and "ARG" or number_format(G.GAME.hands[handname].mult, 1000000), scale = 0.45, colour = G.C.UI.TEXT_LIGHT}}
+        }}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''
+local new_card = new_card or Card(other.T.x, other.T.y, G.CARD_W*(card_scale or 1), G.CARD_H*(card_scale or 1), G.P_CARDS.empty, G.P_CENTERS.c_base, {playing_card = playing_card, bypass_back = G.GAME.selected_back.pos})
+'''
+position = "at"
+payload = '''
+other.T = other.T or {x = 1, y = 1, w = 1, h = 1}
+local new_card = new_card or Card(other.T.x, other.T.y, G.CARD_W*(card_scale or 1), G.CARD_H*(card_scale or 1), G.P_CARDS.empty, G.P_CENTERS.c_base, {playing_card = playing_card, bypass_back = G.GAME.selected_back.pos})
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''
+                    if not extra or not extra.no_juice then
+                        card:juice_up(0.6, 0.1)
+                        G.ROOM.jiggle = G.ROOM.jiggle + 0.7
+                    end
+'''
+position = "at"
+payload = '''
+                    if not extra or not extra.no_juice and card and card.juice_up then
+                        card:juice_up(0.6, 0.1)
+                        G.ROOM.jiggle = G.ROOM.jiggle + 0.7
+                    end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''game.lua'''
+pattern = '''
+local card = Card(G.shop_booster.T.x + G.shop_booster.T.w/2,
+'''
+position = 'before'
+payload = '''
+if not G.GAME.entr_parakmi_bypass then
+  if (next(find_joker("j_entr_chaos")) or next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi) then
+    local set = Entropy.get_random_set(next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi)
+    local key = Entropy.get_pooled_center(set).key
+    G.GAME.current_round.used_packs[i] = key
+  end
+end
+
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+for _, v in ipairs(SMODS.ConsumableType.ctype_buffer) do
+    if not (v == 'Tarot' or v == 'Planet' or v == 'Spectral') then
+        table.insert(rates, { type = v, val = G.GAME[v:lower()..'_rate'] })
+    end
+end
+'''
+position = 'before'
+payload = '''
+if G.GAME.booster_rate then
+  table.insert(rates, { type = "Booster", val = G.GAME.booster_rate })
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+local args = {set = v.type, area = area, key_append = 'sho'}
+'''
+position = 'after'
+payload = '''
+if G.GAME.booster_rate then
+  if pseudorandom("entr_shop_booster") < G.GAME.booster_rate / _total_weight then args.set = "Booster" end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+for _, v in ipairs(rates) do
+'''
+position = 'before'
+payload = '''
+local _total_weight = 0
+for _, v in ipairs(rates) do
+  _total_weight = _total_weight + v.val or 0
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'functions/common_events.lua'
+pattern = '''
+elseif _type == 'Edition' then _pool[#_pool + 1] = "e_foil"
+'''
+position = 'before'
+payload = '''
+elseif _type == 'Back' then _pool[#_pool + 1] = "b_red"
+elseif _type == 'Sleeve' then _pool[#_pool + 1] = "Sleeve_casl_red"
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/button_callbacks.lua'''
+pattern = '''
+draw_card(G.hand, G.play, 1, 'up', true, card, nil, true) 
+if not card.from_tag then 
+  G.GAME.round_scores.cards_purchased.amt = G.GAME.round_scores.cards_purchased.amt + 1
+end
+e.config.ref_table:open()
+'''
+position = 'before'
+payload = '''
+if area == G.shop_vouchers then
+    G.GAME.current_round.voucher.spawn[card.config.center_key] = nil
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''game.lua'''
+pattern = '''
+for _, key in ipairs(G.GAME.current_round.voucher or {}) do
+    if G.P_CENTERS[key] and G.GAME.current_round.voucher.spawn[key] then
+        SMODS.add_voucher_to_shop(key)
+    end
+end
+'''
+position = "at"
+payload = '''
+for _, key in ipairs(G.GAME.current_round.voucher or {}) do
+    if G.P_CENTERS[key] and G.GAME.current_round.voucher.spawn[key] then
+        local card = SMODS.add_voucher_to_shop(key)
+        if card and G.GAME.current_round.voucher.editions and G.GAME.current_round.voucher.editions[key] then
+            card:set_edition(G.GAME.current_round.voucher.editions[key])
+        end
+    end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+if not (v.name == 'e_negative' and _no_neg) then -- skip return if negative is selected and _no_neg is true
+'''
+position = "at"
+payload = '''
+if not (v.name == 'e_negative' and _no_neg) and not G.GAME.banned_keys[v.name] then -- skip return if negative is selected and _no_neg is true or edition is banned
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''
+for kk, vv in pairs(G.playing_cards) do
+'''
+position = "before"
+payload = '''
+G.playing_cards = G.playing_cards or {}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''game.lua'''
+match_indent = true
+position = 'after'
+pattern = '''
+G.shop_booster:emplace(card)
+'''
+payload = '''
+Entropy.post_create_card(card, nil, nil)
+'''
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+match_indent = true
+position = 'after'
+pattern = '''
+G.shop_booster:emplace(card)
+'''
+payload = '''
+Entropy.post_create_card(card, nil, nil)
+'''

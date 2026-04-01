@@ -1,0 +1,673 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = -1
+
+[[patches]]
+[patches.pattern]
+target = "functions/common_events.lua"
+pattern = 'if card and card.playing_card then SMODS.drawn_cards[#SMODS.drawn_cards+1] = card end'
+position = "after"
+payload = '''
+if card and card.playing_card then
+    if next(SMODS.find_card("j_entr_jokerinyellow")) then
+        for i, v in pairs(G.jokers.cards) do
+            if v.config.center.key == "j_entr_jokerinyellow" then
+                if SMODS.pseudorandom_probability(v, 'kiy', 1, v.ability.extra.odds) then
+                    card.ability.entr_yellow_sign = true
+                end
+            end
+        end
+    end
+end
+if to == G.hand and G.GAME.entr_antithesis_active then
+    G.GAME.antithesis_index = (G.GAME.antithesis_index or 1) + 1
+    if G.P_CENTER_POOLS.Edition[G.GAME.antithesis_index] and G.P_CENTER_POOLS.Edition[G.GAME.antithesis_index].key == "e_negative" then G.GAME.antithesis_index = G.GAME.antithesis_index + 1 end
+    if G.GAME.antithesis_index > #G.P_CENTER_POOLS.Edition then G.GAME.antithesis_index = 2 end
+    if G.P_CENTER_POOLS.Edition[G.GAME.antithesis_index] then card:set_edition(G.P_CENTER_POOLS.Edition[G.GAME.antithesis_index].key) end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+	for _, v in ipairs(G.handlist) do
+		local ui_element = create_UIBox_current_hand_row(v, simple)
+		G.current_hands[index + 1] = ui_element
+		if ui_element then
+			index = index + 1
+		end
+		if index >= 10 then
+			break
+		end
+	end
+'''
+position = "at"
+payload = '''
+	for _, v in ipairs(G.handlist) do
+    if not (G.GAME.atomikos_deleted or {})[v] then
+      local ui_element = create_UIBox_current_hand_row(v, simple)
+      G.current_hands[index + 1] = ui_element
+      if ui_element then
+        index = index + 1
+      end
+      if index >= 10 then
+        break
+      end
+    end
+	end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+local joker_eval, post = eval_card(_card, {cardarea = G.jokers, full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, joker_main = true})
+'''
+position = "at"
+payload = '''
+local joker_eval, post
+if next(SMODS.find_card("j_entr_metamorphosis")) then
+  joker_eval, post = {}, {}
+else
+ joker_eval, post = eval_card(_card, {cardarea = G.jokers, full_hand = G.play.cards, scoring_hand = scoring_hand, scoring_name = text, poker_hands = poker_hands, joker_main = true})
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+local in_scoring = scoring_hand and SMODS.in_scoring(card, context.scoring_hand)
+'''
+position = "at"
+payload = '''
+local area = context.scoring_hand
+if context.cardarea == G.play and G.rubber_cards then area = G.rubber_cards.cards; context.scoring_hand = G.rubber_cards.cards; scoring_hand = G.rubber_cards.cards end
+local in_scoring = scoring_hand and SMODS.in_scoring(card, area)
+if ((area[1]) == card and card.config.center.key == "j_entr_false_vacuum_collapse") or ((area[#area]) == card and card.config.center.key == "j_entr_phoenix_a") then
+  in_scoring = true
+end
+if G.rubber_cards and scoring_hand [_] == scoring_hand [_-1] then
+  card_eval_status_text(
+    card,
+    "extra",
+    nil,
+    nil,
+    nil,
+    { message = localize("k_bounce_ex"), sound = "entr_bounce" }
+  )
+end
+'''
+match_indent = true
+times = 1
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events'''
+pattern = '''
+    for i=1, #scoring_hand do
+        --Highlight all the cards used in scoring and play a sound indicating highlight
+        highlight_card(scoring_hand[i],(i-0.999)/5,'up')
+    end
+'''
+position = "at"
+payload = '''
+    for i=1, #scoring_hand do
+        --Highlight all the cards used in scoring and play a sound indicating highlight
+        local area = context.scoring_hand
+        if scoring_hand[i].area == G.play and G.rubber_cards then area = G.rubber_cards.cards end
+        local in_scoring = scoring_hand and SMODS.in_scoring(card, area)
+        if in_scoring then
+          highlight_card(scoring_hand[i],(i-0.999)/5,'up')
+        end
+    end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = "if G.hand and (#G.hand.highlighted == 1) and G.hand.highlighted[1] and (not G.hand.highlighted[1].edition) then return true end"
+position = "at"
+payload = '''
+if self.area ~= G.hand then
+    return G.hand and (#G.hand.highlighted == 1) and G.hand.highlighted[1] and (not G.hand.highlighted[1].edition)
+else
+    local idx = 1
+    if G.hand.highlighted[1] == self then
+        local idx = 2
+    end
+    return (#G.hand.highlighted == 2) and (not G.hand.highlighted[idx].edition)
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+if next(effects) then
+    SMODS.calculate_card_areas('jokers', context, effects, { main_scoring = true })
+    SMODS.calculate_card_areas('individual', context, effects, { main_scoring = true })
+end
+'''
+position = "at"
+payload = '''
+if next(effects) then
+    if card.config.center.key == "j_entr_false_vacuum_collapse" then
+      card.config.center:calculate(card, {individual = true, card = card})
+    end
+    SMODS.calculate_card_areas('jokers', context, effects, { main_scoring = true })
+    SMODS.calculate_card_areas('individual', context, effects, { main_scoring = true })
+    if card.config.center.key == "j_entr_phoenix_a" then
+      local ret = card.config.center:calculate(card, {individual = true, card = card})
+      SMODS.calculate_effect(ret, card)
+    end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''
+if self.cost > 0 then 
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+'''
+position = 'at'
+payload = '''
+if self.ability.beast_mark then
+    local cards = {}
+    for i, v in pairs(G.playing_cards) do if not SMODS.is_eternal(v) then cards[#cards+1] = v end end
+    local num = type(self.ability.beast_mark) == "number" and self.ability.beast_mark or 1
+    pseudoshuffle(cards, "entr_beast_mark")
+    for i = 1, num do
+      local card = cards[i]
+      card.area:remove_card(card)
+      G.hand:emplace(card)
+      delay(1)
+      SMODS.destroy_cards(card)
+    end
+      delay(2)
+      G.E_MANAGER:add_event(Event{
+        func = function()
+          G.STATE = G.STATES.SMODS_BOOSTER_OPENED
+          SMODS.OPENED_BOOSTER = self
+          return true
+        end
+      })
+elseif self.cost > 0 then 
+            G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''
+if booster_obj and SMODS.Centers[booster_obj.key] then
+    G.STATE = G.STATES.SMODS_BOOSTER_OPENED
+    SMODS.OPENED_BOOSTER = self
+end
+'''
+position = 'at'
+payload = '''
+if not self.ability.beast_mark then
+   if booster_obj and SMODS.Centers[booster_obj.key] then
+      G.STATE = G.STATES.SMODS_BOOSTER_OPENED
+      SMODS.OPENED_BOOSTER = self
+    end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''
+if self.cost ~= 0 then
+            ease_dollars(-self.cost)
+            inc_career_stat('c_shop_dollars_spent', self.cost)
+        end
+'''
+position = 'at'
+payload = '''
+if self.ability.beast_mark then
+    local cards = {}
+    for i, v in pairs(G.playing_cards) do if not SMODS.is_eternal(v) then cards[#cards+1] = v end end
+    local num = type(self.ability.beast_mark) == "number" and self.ability.beast_mark or 1
+    pseudoshuffle(cards, "entr_beast_mark")
+    for i = 1, num do
+      local card = cards[i]
+      card.area:remove_card(card)
+      G.hand:emplace(card)
+      delay(1)
+      G.E_MANAGER:add_event(Event{
+        func = function()
+          --G.hand.cards[1]:flip()
+          return true
+        end
+      })
+      delay(1)
+      SMODS.destroy_cards(card)
+    end
+    delay(2)
+elseif self.cost ~= 0 then
+    ease_dollars(-self.cost)
+    inc_career_stat('c_shop_dollars_spent', self.cost)
+end
+'''
+match_indent = true
+
+
+[[patches]]
+[patches.pattern]
+target = 'functions/UI_definitions.lua'
+pattern = '''
+if card.opening then return true end
+'''
+position = 'after'
+payload = '''
+local free_pack = SMODS.find_card('v_ortalab_anti_inv')
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''
+G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.hand.highlighted[i]:flip();play_sound('card1', percent);G.hand.highlighted[i]:juice_up(0.3, 0.3);return true end }))
+'''
+position = 'at'
+payload = '''
+if G.hand.highlighted[i] then
+  local c = G.hand.highlighted[i]
+  G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() c:flip();play_sound('card1', percent); c:juice_up(0.3, 0.3);return true end }))
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = 'card.lua'
+pattern = '''
+for i=1, #G.hand.highlighted do
+    local percent = 0.85 + (i-0.999)/(#G.hand.highlighted-0.998)*0.3
+    G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() G.hand.highlighted[i]:flip();play_sound('tarot2', percent, 0.6);G.hand.highlighted[i]:juice_up(0.3, 0.3);return true end }))
+end
+'''
+position = 'at'
+payload = '''
+for i=1, #G.hand.highlighted do
+  local c = G.hand.highlighted[i]
+  local percent = 0.85 + (i-0.999)/(#G.hand.highlighted-0.998)*0.3
+  if c then
+    G.E_MANAGER:add_event(Event({trigger = 'after',delay = 0.15,func = function() c:flip();play_sound('tarot2', percent, 0.6);c:juice_up(0.3, 0.3);return true end }))
+  end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+match_indent = true
+position = 'at'
+pattern = '''
+p.current = G.GAME.hands[hand][name] or p.default_value
+'''
+payload = '''
+if G.entr_add_to_stats then
+
+else
+  p.current = G.GAME.hands[hand][name] or p.default_value
+end
+'''
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+match_indent = true
+position = 'at'
+pattern = '''
+G.GAME.hands[hand][parameter] = args.func(G.GAME.hands[hand][parameter], hand, parameter)
+'''
+payload = '''
+local c = G.GAME.hands[hand][parameter]
+G.GAME.hands[hand][parameter] = args.func(G.GAME.hands[hand][parameter], hand, parameter)
+local diff = c - G.GAME.hands[hand][parameter]
+if G.entr_add_to_stats then
+  SMODS.Scoring_Parameters[parameter].current = SMODS.Scoring_Parameters[parameter].current + diff
+  update_hand_text({nopulse = nil, delay = 0}, {[parameter] = SMODS.Scoring_Parameters[parameter].current})
+end
+'''
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+match_indent = true
+position = 'at'
+pattern = '''
+update_hand_text({delay = 0}, {[parameter] = G.GAME.hands[hand][parameter], StatusText = true})
+'''
+payload = '''
+local c = G.GAME.hands[hand][parameter]
+update_hand_text({delay = 0}, {[parameter] = G.entr_add_to_stats and SMODS.Scoring_Parameters[parameter].current or G.GAME.hands[hand][parameter], StatusText = true})
+'''
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/card_draw.lua"]'''
+match_indent = true
+position = 'at'
+pattern = '''
+if self.ability.name == 'The Soul' and (self.config.center.discovered or self.bypass_discovery_center) then
+'''
+payload = '''
+if (self.ability.name == 'The Soul' or self.ability.epitach_consumeable == "c_soul") and (self.config.center.discovered or self.bypass_discovery_center) then
+'''
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+match_indent = true
+position = 'at'
+pattern = '''
+for _, v in ipairs(SMODS.PokerHandPart.obj_buffer) do
+  parts[v] = SMODS.PokerHandParts[v].func(hand) or {}
+end
+for k, _hand in pairs(SMODS.PokerHands) do
+  results[k] = _hand.evaluate(parts, hand) or {}
+end
+'''
+payload = '''
+for _, v in ipairs(SMODS.PokerHandPart.obj_buffer) do
+  parts[v] = SMODS.PokerHandParts[v].func(hand) or {}
+end
+local recalc
+for i, v in pairs(SMODS.find_card("j_entr_planetarium")) do
+  if v.ability.extra.hand == "Straight Flush" then recalc = true end
+end
+for k, _hand in pairs(SMODS.PokerHands) do
+  G.calced_hand = k
+  if recalc then
+    for _, v in ipairs(SMODS.PokerHandPart.obj_buffer) do
+      if (v == "_straight" and (k == "Straight" or k == "Straight Flush"))
+      or ( v == "_2" and (k == "Pair" or k == "Two Pair" or k == "Full House" or k == "Flush House"))
+      or ( v == "_3" and (k == "Three of a Kind" or k == "Full House"))
+      or ( v == "_4" and (k == "Four of a Kind"))
+      or ( v == "_5" and (k == "Five of a Kind" or k == "Flush Five"))
+      or ( v == "_flush" and (k == "Flush" or k == "Flush House" or k == "Flush Five" or k == "Straight Flush"))
+      or (SMODS.PokerHandParts[v].original_mod and _hand.original_mods)
+      or v == "_highest"
+      then
+        parts[v] = SMODS.PokerHandParts[v].func(hand) or {}
+      else
+        parts[v] = {}
+      end
+    end
+  end
+  results[k] = _hand.evaluate(parts, hand) or {}
+end
+G.calced_hand = nil
+'''
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/card_draw.lua"]'''
+pattern = '''
+else
+    self.children.floating_sprite:draw_shader('dissolve',0, nil, nil, self.children.center,scale_mod, rotate_mod,nil, 0.1 + 0.03*math.sin(1.8*G.TIMERS.REAL),nil, 0.6)
+    self.children.floating_sprite:draw_shader('dissolve', nil, nil, nil, self.children.center, scale_mod, rotate_mod)
+end
+'''
+position = "before"
+payload = '''
+elseif self.config.center.rarity == "entr_reverse_legendary" and not self.config.center.no_rlegendary_outline then
+    -- kind of a hack tbh
+    local color = self.config.center.rlegendary_colour
+    if type(color) == "table" and #color == 4 then
+        Entropy.current_rlegendary_gradient = color
+    end
+
+    self.children.floating_sprite:draw_shader('entr_pulseoutline', 0, nil, nil, self.children.center,scale_mod, rotate_mod,nil, 0.1 + 0.03*math.sin(1.8*G.TIMERS.REAL), nil, 0.6)
+    self.children.floating_sprite:draw_shader('entr_pulseoutline', nil, nil, nil, self.children.center, scale_mod, rotate_mod)
+    Entropy.current_rlegendary_gradient = nil
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+if G.GAME.round_resets.blind == G.P_BLINDS.bl_small then
+    G.GAME.round_resets.blind_states.Small = 'Current'
+    G.GAME.current_boss_streak = 0
+    blhash = 'S'
+elseif G.GAME.round_resets.blind == G.P_BLINDS.bl_big then
+    G.GAME.round_resets.blind_states.Big = 'Current'
+    G.GAME.current_boss_streak = 0
+    blhash = 'B'
+else
+    G.GAME.round_resets.blind_states.Boss = 'Current'
+    blhash = 'L'
+end
+'''
+position = "at"
+payload = '''
+if G.GAME.blind_on_deck == "Small" then
+    G.GAME.round_resets.blind_states.Small = 'Current'
+    G.GAME.current_boss_streak = 0
+    blhash = 'S'
+elseif G.GAME.blind_on_deck == "Big" then
+    G.GAME.round_resets.blind_states.Big = 'Current'
+    G.GAME.current_boss_streak = 0
+    blhash = 'B'
+else
+    G.GAME.round_resets.blind_states.Boss = 'Current'
+    blhash = 'L'
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+if not G.GAME.won and G.GAME.round_resets.ante >= G.GAME.win_ante and G.GAME.blind:get_type() == 'Boss' then
+'''
+position = "at"
+payload = '''
+if not G.GAME.won and G.GAME.round_resets.ante >= G.GAME.win_ante and G.GAME.blind_on_deck == 'Boss' then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/button_callbacks.lua'''
+pattern = '''
+if G.ARGS.score_intensity.earned_score >= G.ARGS.score_intensity.required_score and G.ARGS.score_intensity.required_score > 0 then
+  _F.intensity = ((G.pack_cards and not G.pack_cards.REMOVED) or (G.TAROT_INTERRUPT)) and 0 or math.max(0., math.log(G.ARGS.score_intensity.earned_score, 5)-2)
+else
+'''
+position = "at"
+payload = '''
+local val = e.config.id
+val = val and (val:gsub("flame_", ""):gsub("_chips", ""):gsub("_mult", "") or "") or nil
+local final_score = G.ARGS.score_intensity.earned_score
+if val and G.GAME.blind and G.GAME.blind.in_blind then
+  for i, v in pairs(G.I.CARD) do
+    if v.config and v.config.center_key == "j_entr_unstable_rift" and tostring(v.ability.extra.val) == tostring(val) then
+      final_score = v.ability.extra.mult * v.ability.extra.chips
+    end
+  end
+end
+if final_score >= G.ARGS.score_intensity.required_score and G.ARGS.score_intensity.required_score > 0 then
+  _F.intensity = ((G.pack_cards and not G.pack_cards.REMOVED) or (G.TAROT_INTERRUPT)) and 0 or math.max(0., math.log(final_score, 5)-2)
+else
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+G.E_MANAGER:add_event(Event({
+  trigger = 'ease',
+  blocking = false,
+  ref_table = G.GAME,
+  ref_value = 'chips',
+  ease_to = G.GAME.chips + math.floor( SMODS.calculate_round_score() ),
+  delay =  0.5,
+  func = (function(t) return math.floor(t) end)
+}))
+'''
+position = "after"
+payload = '''
+if G.GAME.current_round.hands_left <= 0 and next(SMODS.find_card("j_entr_unstable_rift")) then
+	play_sound("entr_void_generic", 1.25, 3)
+	G.E_MANAGER:add_event(Event{
+	trigger = "after",
+	func = function()
+		for i, v in pairs(G.jokers.cards) do
+			if v.config.center.key == "j_entr_unstable_rift" then
+				v.ability.extra.mult = 0
+				v.ability.extra.chips = 0
+			end
+		end
+		return true
+	end
+	})
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+end
+
+if not instant and not displayed then
+	update_hand_text({sound = 'button', volume = 0.7, pitch = 1.1, delay = 0}, vals_after_level or {mult = 0, chips = 0, handname = '', level = ''})
+end
+'''
+position = "before"
+payload = '''
+if next(SMODS.find_card("j_entr_generator_meltdown")) and (args.level_up or 1) > 0 then
+	local m = G.GAME.hands[hand].mult
+	local c = G.GAME.hands[hand].chips
+	G.GAME.hands[hand].mult = m * 0.75 + c * 0.25
+	G.GAME.hands[hand].chips = c * 0.75 + m * 0.25
+	if not instant then
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			func = (function() 
+				ease_colour(G.C.UI_CHIPS, HEX("c678b4"))
+				ease_colour(G.C.UI_MULT, HEX("c678b4"))
+				return true
+			end)
+		}))
+		G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.9, func = function()
+							play_sound('entr_void_swap', nil, 3)
+							if args.from then args.from:juice_up(0.8, 0.5) end
+							G.TAROT_INTERRUPT_PULSE = nil
+							return true end }))
+		update_hand_text({delay = 1}, {handname = localize(hand, "poker_hands"), level = G.GAME.hands[hand].level, mult = "???", chips = "???", StatusText = true})
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay =  2,
+			func = (function() 
+					ease_colour(G.C.UI_CHIPS, G.C.BLUE, 2)
+					ease_colour(G.C.UI_MULT, G.C.RED, 2)
+				return true
+			end)
+		}))
+		G.E_MANAGER:add_event(Event({
+			trigger = 'after',
+			delay =  2,
+			func = (function() 
+				G.C.UI_CHIPS[1], G.C.UI_CHIPS[2], G.C.UI_CHIPS[3], G.C.UI_CHIPS[4] = G.C.BLUE[1], G.C.BLUE[2], G.C.BLUE[3], G.C.BLUE[4]
+				G.C.UI_MULT[1], G.C.UI_MULT[2], G.C.UI_MULT[3], G.C.UI_MULT[4] = G.C.RED[1], G.C.RED[2], G.C.RED[3], G.C.RED[4]
+				return true
+			end)
+		}))
+	end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+for h=1, effect.repetitions do
+    table.insert(ret, _type == "joker_retrigger" and effect or { retriggers = effect})
+end
+'''
+position = "at"
+payload = '''
+for h=1, effect.repetitions do
+    if _type ~= "joker_retrigger" and next(SMODS.find_card("j_entr_caledscratch")) then
+      SMODS.calculate_effect({
+        message = localize("k_nope_ex"),
+        card = effect.message_card or effect_card.scored_card or effect_card,
+        message_card = effect.message_card or effect_card.scored_card or effect_card,
+        colour = Entropy.void_gradient
+      })
+      SMODS.calculate_context({entr_repetition_blocked = true, other_card = effect.message_card or effect_card.scored_card or effect_card})
+    else
+      table.insert(ret, _type == "joker_retrigger" and effect or { retriggers = effect})
+    end
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+scaling_message = scaling_message or {
+  message = localize(args.message_key and {type='variable',key=args.message_key,vars={args.message_key =='a_xmult' and args.ref_table[args.ref_value] or scalar_value}} or 'k_upgrade_ex'),
+'''
+position = "at"
+payload = '''
+local send_var = scalar_value
+local send_total = {
+  a_xmult = true,
+  a_xchips = true,
+  a_emult = true,
+  a_echips = true,
+}
+if send_total[args.message_key] or args.send_total then send_var = args.ref_table[args.ref_value] end
+scaling_message = scaling_message or {
+  message = localize(args.message_key and {type='variable',key=args.message_key,vars={ send_var }} or 'k_upgrade_ex'),
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+if cards[i].shattered then
+  cards[i]:shatter()
+elseif cards[i].destroyed then
+  cards[i]:start_dissolve(nil, i == #cards)
+end
+'''
+position = "at"
+payload = '''
+if cards[i] then
+  if cards[i].shattered then
+    cards[i]:shatter()
+  elseif cards[i].destroyed then
+    cards[i]:start_dissolve(nil, i == #cards)
+  end
+end
+'''
+match_indent = true

@@ -82,10 +82,9 @@ end
 local planets = {}
 local order = 0
 
-function Entropy.register_reverse_planet(key, handname, sprite_pos, func, cost,level, name,set_badges,loc_vars,config, new_key, calc, art, atlas)
+function Entropy.register_reverse_planet(key, handname, sprite_pos, func, cost,level, name,set_badges,loc_vars,config, new_key, calc, art, atlas, inv)
   order = order + 1
-  planets[#planets+1]={
-    object_type="Consumable",
+  Entropy.Consumable{
     order = order - 200,
     key = new_key,
     set = "Star",
@@ -104,6 +103,7 @@ function Entropy.register_reverse_planet(key, handname, sprite_pos, func, cost,l
     pos = sprite_pos,
     set_card_type_badge = set_badges,
     
+    inversion = inv,
     
     can_bulk_use = true,
     use = function(self, card, area, copier)
@@ -120,7 +120,7 @@ function Entropy.register_reverse_planet(key, handname, sprite_pos, func, cost,l
         return true
 	  end,
     loc_vars = loc_vars or function(self, q, card)
-      if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
+      Entropy.ensure_ascpow_tutorial(q)
         if G.GAME.hands[card.ability.handname] then
             return {
               vars = {
@@ -236,7 +236,7 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
     odds = 5
   },
   loc_vars = function(self,q,card) 
-    if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
+    Entropy.ensure_ascpow_tutorial(q)
     local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.odds)
     return {
       vars = {
@@ -290,7 +290,7 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
   end}
   Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="nstar", new_key = "strange_star", sprite_pos={x=9,y=2},prefix = "cry",
   loc_vars = function(self,q,card) 
-    if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
+    Entropy.ensure_ascpow_tutorial(q)
     return {
       vars = {
         G.GAME.strange_star or 0,
@@ -305,7 +305,7 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
   }
   Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="sunplanet", new_key = "nemesis", sprite_pos={x=10,y=2},prefix = "cry", config = {extra = 0.1},
     loc_vars = function(self,q,card) 
-      if Entropy.config.asc_power_tutorial then q[#q+1] = {set = "Other", key = "asc_power_tutorial"} end
+      Entropy.ensure_ascpow_tutorial(q)
       local levelone = (G.GAME.nemesislevel and G.GAME.nemesislevel or 0) + 1
       local planetcolourone = G.C.HAND_LEVELS[math.min(levelone, 7)]
       if levelone == 1 then
@@ -453,8 +453,7 @@ end, config = {amt = 1, hands = 3}, loc_vars = function(self, q, card) return {v
 function Entropy.register_reverse_planets()
   Entropy.StarLocs = {}
     for i, v in pairs(Entropy.ReversePlanets) do
-		Entropy.register_reverse_planet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name,v.set_badges,v.loc_vars,v.config,v.new_key, v.calc, v.art, v.atlas)
-        planets[#planets].inversion = "c_"..((v.prefix and v.prefix.."_") or "")..v.key
+		Entropy.register_reverse_planet(v.key,v.name,v.sprite_pos,v.func,v.cost,v.level,v.name,v.set_badges,v.loc_vars,v.config,v.new_key, v.calc, v.art, v.atlas, "c_"..((v.prefix and v.prefix.."_") or "")..v.key)
 	end
 end
 
@@ -707,7 +706,3 @@ function Entropy.reverse_suit_calc(self, card, context)
     end
   end
 end
-
-return {
-  items = planets
-}

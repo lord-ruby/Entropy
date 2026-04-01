@@ -19,23 +19,23 @@ local decs = {
 				name = "Prismatic Card",
 				text = {
 					"{X:slib_emult,C:white}^#1#{} Mult",
-					"increase by {X:slib_emult,C:white}^#2#{}",
-					"when card is scored."
+					"This card gains {X:slib_emult,C:white}^#2#{}",
+					"mult when scored."
 				}
 			},
 			m_entr_dark = {
 				name = "Dark Card",
 				text = {
 					"{X:blue,C:white}X#2#{} Chips when held in hand",
-					"Increase by {X:blue,C:white}X#1#{} for each",
-					"{C:attention}unique{} suit in played hand"
+					"This card gains {X:blue,C:white}X#1#{} Chips",
+					"for each {C:attention}unique{} suit in played hand"
 				}
 			},
 			m_entr_ceramic = {
 				name = "Ceramic Card",
 				text = {
-					"Has its own {C:attention}rank{} and",
-					"counts as every {C:attention}suit{}",
+					"This card has its own {C:attention}rank{}",
+					"and counts as every {C:attention}suit{}.",
 					"When scored, {C:red}destroy{} this card",
 					"When destroyed, create a {C:attention}random{} consumable"
 				}
@@ -287,7 +287,7 @@ local decs = {
 			j_entr_surreal_joker = {
 				name = "Surreal Joker",
 				text = {
- 					"Mult {X:entr_eqmult,C:white} = #1#{}"
+ 					"Mult {X:entr_eqmult,C:white}=#1#{}"
 				}
 			},
 			j_entr_tesseract = {
@@ -297,6 +297,22 @@ local decs = {
 					"degrees counterclockwise",
 					"and Chips by {X:dark_edition,C:white}#1#{}",
 					"degrees clockwise"
+				}
+			},
+			j_entr_tesseract_gfb = {
+				name = "Tesseract",
+				text = {
+					{
+						"Rotates Mult by {X:dark_edition,C:white}#1#{}",
+						"degrees counterclockwise",
+						"and Chips by {X:dark_edition,C:white}#1#{}",
+						"degrees clockwise"
+					},
+					{
+						"This Joker gains {X:dark_edition,C:white}+#2#{}",
+						"degrees if played hand has",
+						"exactly {C:attention}4{} cards"
+					}
 				}
 			},
 			j_entr_epitachyno = {
@@ -381,14 +397,14 @@ local decs = {
 				text = {
 					"Fixed {C:green}50%{} chance to not",
 					"progress when beating a Blind",
-					"and obtain the Blind's {C:attention}skip Tag{}",
+					"then obtain the Blind's {C:attention}skip Tag{}",
 				}
 			},
 			j_entr_teluobirt = {
 				name = "Teluobirt",
 				text = {
 					"Scored {C:attention}Jacks{} give {X:chips,C:white}XChips{}",
-					"equal to the {C:attention}number{} of played Jacks",
+					"equal to the {C:attention}number{} of played Jacks.",
 					"Retrigger {C:attention}scored{} Jacks based on their",
 					"order in the played hand"
 				}
@@ -400,7 +416,7 @@ local decs = {
 					"when a {C:attention}face{} card is destroyed by this Joker",
 					"{C:attention}Played{} cards are destroyed",
 					"and a card with +1 rank is drawn to the {C:attention}hand{}",
-					"{C:inactive}(Currently {}{X:slib_echips,C:white}^#2#{} {C:inactive}Chips){}"
+					"{C:inactive}(Currently {X:slib_echips,C:white}^#2#{} {C:inactive}Chips){}"
 				}
 			},
 			j_entr_entropy_card = {
@@ -409,7 +425,7 @@ local decs = {
 					"{X:gold,C:white}X#1#{} Ascension Power for",
 					"each {C:attention}sun_with_face{} emoji in",
 					"Entropy's #ascended-hands-worship channel",
-					"{C:inactive}(Currently{} {X:gold,C:white}X#2#{}{C:inactive}){}",
+					"{C:inactive}(Currently {X:gold,C:white}X#2#{}{C:inactive}){}",
 					"{C:blue,s:0.7}https://discord.gg/beqqy4Bb7m{}",
 				}
 			},
@@ -497,6 +513,12 @@ local decs = {
 					"{C:inactive}(Currently #1#){}"
 				}
 			},
+			j_entr_recursive_joker_gfb = {
+				name = "Recursive Joker",
+				text = {
+					"{CANVAS:DESC_CANVAS} {}"
+				}
+			},
 			j_entr_trapezium_cluster = {
 				name = "Trapezium Cluster",
 				text = {
@@ -565,6 +587,14 @@ local decs = {
 					"Joker to the left gains {C:attention}#1#%{}",
 					"of its sell value as {C:purple}xValues{}",
 					"then decrease this value by {C:attention}#2#{}"
+				}
+			},
+			j_entr_insatiable_dagger_gfb = {
+				name = "Insatiable Dagger",
+				text = {
+					"Increases values of {C:attention}Joker",
+					"to the right by {X:attention,C:white}X#1#{}",
+					"at the end of the shop"
 				}
 			},
 			j_entr_rusty_shredder = {
@@ -1177,6 +1207,7 @@ local decs = {
                 text = {
                     "Earn {C:money}$#1#{} for every",
 					"{C:money}$#2#{} {C:inactive}[$#3#]{} spent",
+					"at the end of round",
 					"{C:inactive}(Currently {C:money}$#4#{C:inactive}){}"
                 },
             },
@@ -1209,6 +1240,12 @@ local decs = {
                     "{X:mult,C:white}X#1#{} Mult per {C:red}Pact{}",
 					"card used this run",
 					"{C:inactive}(Currently {X:mult,C:white}X#2#{C:inactive} Mult){}"
+                },
+            },
+			j_entr_chalice_of_blood_gfb = {
+                name = "Chalice of {C:red}Blood{}",
+                text = {
+                    "'Only for those who are {C:entr_zenith}worthy{}'"
                 },
             },
 			j_entr_torn_photograph = {
@@ -1342,12 +1379,29 @@ local decs = {
 					"{C:inactive}(Must have room)"
                 },
             },
+			j_entr_matryoshka_dolls_gfb = {
+                name = "Matryoshka Dolls",
+                text = {
+                    "{X:blue,C:white}X#1#{} Chips",
+					"When Blind is selected",
+					"create a {C:attention}copy{} of this Joker",
+					"with {X:blue,C:white}0.5{} fewer XChips",
+					"{C:inactive}(Must have room)"
+                },
+            },
 			j_entr_menger_sponge = {
                 name = "Menger Sponge",
                 text = {
                     "{C:blue}+#1#{} Chips",
 					"Multiplies by {X:attention,C:white}X#2#{} at end of round",
 					"{C:red}Resets{} when the Boss Blind is defeated"
+                },
+            },
+			j_entr_menger_sponge_gfb = {
+                name = "Menger Sponge",
+                text = {
+                    "{C:blue}+#1#{} Chips",
+					"Multiplies by {X:attention,C:white}(sin(#1#)+1)X#2#{} at end of round",
                 },
             },
 			j_entr_arbitration = {
@@ -1373,6 +1427,13 @@ local decs = {
                     "{C:blue}+#1#{} Chip#<s>1#",
 					"for each Ante",
 					"{C:inactive}(Currently {C:blue}#2#{C:inactive} Chip#<s>2#)"
+                },
+            },
+			j_entr_fourty_benadryls_gfb = {
+                name = "Fourty Benadryls",
+                text = {
+                    "Go directly to",
+					"Ante {C:red}32{}"
                 },
             },
 			j_entr_red_fourty = {
@@ -1448,6 +1509,15 @@ local decs = {
                     "Sell this card to",
 					"create a free",
 					"{C:attention}Blind Token{}",
+					"{C:inactive}(Must have room)"
+                },
+            },
+			j_entr_blind_collectible_pack_gfb = {
+                name = "Plant Collectible Pack",
+                text = {
+                    "Sell this card to",
+					"create a free",
+					"{C:attention}Plant Blind Token{}",
 					"{C:inactive}(Must have room)"
                 },
             },
@@ -1590,6 +1660,37 @@ local decs = {
 					}
                 },
             },
+
+			j_entr_polaroid_gfb = {
+				name = "The Polaroid",
+				text = {
+					{
+						"Use this Joker to create",
+						"a {C:attention}Photograph",
+						"{C:inactive}(Must have room)"
+					},
+					{
+						"This Joker gains {C:attention}#2#{} use#<s>2#",
+						"when defeating a Blind",
+						"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+					}
+                },
+			},
+			j_entr_polaroid_gfbn = {
+				name = "The Negative",
+				text = {
+					{
+						"Use this Joker to create",
+						"a {C:attention}Photograph",
+						"{C:inactive}(Must have room)"
+					},
+					{
+						"This Joker gains {C:attention}#2#{} use#<s>2#",
+						"when defeating a Blind",
+						"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+					}
+                },
+			},
 			j_entr_car_battery = {
                 name = "Car Battery",
                 text = {
@@ -1682,6 +1783,12 @@ local decs = {
 					"{C:inactive}(Currently {X:slib_echips,C:white}^#1#{C:inactive} Chips, #3#)"
                 },
             },
+			j_entr_ybur_gfb = {
+				name = "Ruby Prime",
+				text = {
+					"I CAN {C:red}TANK{} {C:entr_zenith}ANY{} ATTACK"
+				}
+			},
 			j_entr_zelavi = {
                 name = "Zelevai",
                 text = {
@@ -1788,6 +1895,13 @@ local decs = {
 					"{C:inactive}(May overflow, max of 16)"
                 },
             },
+			j_entr_fork_bomb_gfb = {
+				name = "Fork Bomb",
+				text = {
+					"When {C:attention}Blind{} is selected",
+					"create a {C:attention}copy{} of this Joker",
+				}
+			},
 			j_entr_solar_panel = {
                 name = "Solar Panel",
                 text = {
@@ -1984,6 +2098,13 @@ local decs = {
 					"when sold"
                 },
             },
+			j_entr_elderberries_gfb = {
+				name = "Elderberries",
+				text = {
+					"Forcibly use {C:spectral}Ankh{} when sold",
+					"{C:green}0.3%{} chance to use {C:spectral}The Soul{} instead"
+				}
+			},
 			j_entr_nostalgic_d6 = {
                 name = "Nostalgic D6",
                 text = {
@@ -2060,6 +2181,27 @@ local decs = {
 					"{C:inactive}(Currently {C:blue}+#1# {C:inactive}Chips)"
                 },
             },
+
+			j_entr_milk_gfb = {
+                name = "Strawberry Milk",
+                text = {
+					"This Joker gains {C:red}+#2#{}",
+					"Mult when a round is won",
+					"in more than {C:attention}one{} hand",
+					"Turns into {C:attention}Strawberry Yogurt{} after",
+					"reaching {C:red}#3#{} Mult",
+					"{C:inactive}(Currently {C:red}+#1# {C:inactive}Mult)"
+                },
+            },
+			j_entr_yogurt_gfb = {
+                name = "Strawberry Yogurt",
+                text = {
+					"This Joker loses {C:red}#2#{}",
+					"Mult when any Mult effect",
+					"is triggered",
+					"{C:inactive}(Currently {C:red}+#1# {C:inactive}Mult)"
+                },
+            },
 			j_entr_box_of_chocolates = {
                 name = "Box of Chocolates",
                 text = {
@@ -2102,6 +2244,9 @@ local decs = {
 					"card with the same {C:attention}suit{}"
                 },
             },
+			j_entr_fasciation_gfb = {
+				name = "Why the long Face?"
+			},
 			j_entr_amaryllis = {name = "Amaryllis", text = {""}},
 			j_entr_amaryllis_white = {
                 name = "White Amaryllis",
@@ -2672,8 +2817,8 @@ local decs = {
 				name = "Mutagenesis",
 				text = {
 					{
-						"Effects from {C:attention}Enhancements{} or",
-						"{C:dark_edition}Editions{} are added to this Joker",
+						"Effects from {C:attention}Playing Cards{}",
+						"are added to this Joker",
 					},
 					{
 						"{s:0} "
@@ -2772,6 +2917,186 @@ local decs = {
 						"{s:0} "
 					}
 				}
+			},
+
+			j_lusty_joker_gfb = {
+				name = "Freaky Joker",
+				text= {
+					"Player Cards with",
+					"{C:hearts}#2#{} suit give",
+					"{X:entr_freaky,C:white}Xlog_#1#(Chips){} Chips when scored"
+				}
+			},
+			j_space_joker_gfb = {
+				name = "Space Joker",
+				text = {
+					"{C:green}#1# in #2#{} chance to add",
+					"{C:dark_edition}Foil{}, {C:dark_edition}Holographic{}, or",
+					"{C:dark_edition}Polychrome{} edition",
+					"to a random Joker"
+				}
+			},
+			j_hanging_chad_gfb = {
+				name = "Hanging Chad",
+				text = {
+					{
+						"Retrigger first scored",
+						"or held in hand cards",
+						"{C:attention}#1#{} additional times"
+					},
+					{
+						"{C:red,E:1}hows that for a rework,",
+						"{C:red,E:1}losers."
+					}
+				}
+			},
+			j_smiley_gfb = {
+				name = "Sunny Face",
+				text = {
+					"Played {C:attention}face{} cards",
+					"give {C:gold}+#1#{} Ascension Power",
+					"when scored"
+				}
+			},
+			j_blueprint_gfb = {
+				name = "Crimsonprint",
+				text = {
+					{
+						"Copies ability of",
+						"{C:attention}Joker{} to the left"
+					},
+					{
+						"{C:red,E:1}well never liked that{}",
+						"{C:red,E:1}blue guy anyway{}",
+					}
+				}
+			},
+			j_brainstorm_gfb = {
+				name = "Brainstorm",
+				text = {
+					{
+						"Copies the ability",
+						"of rightmost {C:attention}Joker"
+					},
+					{
+						"{C:red,E:1}you might wanna wash",
+						"{C:red,E:1}your hands after picking",
+						"{C:red,E:1}up this one"
+					}
+				}
+			},
+			j_stone_gfb = {
+				name = "Stone Joker",
+				text = {
+					"Replace all playing cards with",
+					"{C:attention}Stone Cards{} at",
+					"the end of the shop"
+				}
+			},
+			j_golden_gfb = {
+				name = "Midas Touch",
+				text = {
+					"All shop and booster pack",
+					"items are {C:attention}Gold Cards{}"
+				}
+			},
+			j_joker_gfb = {
+				name = "Jorker",
+				text = {
+					"{C:mult}+#1#{} Mult, {C:mult}-#1#{} Mult",
+					"{C:mult}+#1#{} Mult, {C:mult}-#1#{} Mult",
+					"{C:mult}+#1#{} Mult, {C:mult}-#1#{} Mult",
+					"{C:mult}+#1#{} Mult, {C:mult}-#1#{} Mult",
+					"{C:mult}+#1#{} Mult, {C:mult}-#1#{} Mult",
+					"{C:mult}+#1#{} Mult, {C:mult}-#1#{} Mult",
+					"{C:mult}+#1#{} Mult, {C:mult}-#1#{} Mult",
+					"{C:mult}+#1#{} Mult, {C:mult}-#1#{} Mult",
+					"{C:mult}+#1#{} Mult, {C:mult}-#1#{} Mult",
+					"{C:mult}+#1#{} Mult, {C:mult}-#1#{} Mult",
+					"{C:mult}+#1#{} Mult",
+				}
+			},
+			j_entr_searing_joke_gfb = {
+				name = "Negative Pulse",
+				text = {
+					{
+						"Use this Joker to reduce",
+						"the rank of all cards",
+						"held in hand by {C:attention}2{}",
+						"{C:inactive}(2's and 3's get destroyed)"
+					},
+					{
+						"This Joker gains {C:attention}#2#{} use#<s>2#",
+						"when defeating a Boss Blind",
+						"{C:inactive}(Currently {C:attention}#1#{C:inactive} use#<s>1#)"
+					}
+				}
+			},
+			j_entr_gros_michel_2 = {
+				name = "Gros Michel {s:1.5,C:red}2",
+				text = {
+					"{X:slib_emult,C:white}^#1#{} Mult",
+                    "{C:green}#2# in #3#{} chance this",
+                    "card is destroyed",
+                    "at end of round",
+				}
+			},
+			j_photograph_gfb = { name = "#2#" },
+			j_banner_gfb = {
+				name = "Banner",
+				text = {
+					{
+						"{C:chips}+#1#{} Chips for",
+						"each remaining",
+						"{C:attention}discard",
+					}, 
+					{
+						"When a card is sold",
+						"banish it too"
+					}
+				}
+			},
+            j_chaos_gfb = {
+                name = "Chaos the Clown",
+                text = {
+					"This Joker gains {C:chips}+#2#{} Chips",
+					"per {C:attention}reroll{} in the shop",
+					"{C:green}All rerolls are free{}",
+					"{C:inactive}(Currently {C:chips}+#1#{C:inactive} chips)",
+                },
+            },
+			j_diet_cola_gfb = {
+				name = "Diet Cola",
+				text = {
+					"When a Joker is sold",
+					"create the corresponding",
+					"{C:entr_zenith}Rarity{} {C:attention}Tag{}"
+				}
+			},
+			j_credit_card_gfb = {
+				name = "Credit Card",
+				text = {
+					{
+						"Go up to",
+						"{C:red}-$#1#{} in debt",
+					},
+					{
+						"If in {C:red}debt{}",
+						"multiply money by {X:money,C:white}X1.25{}",
+						"at the end of the shop"
+					}
+				}
+			},
+			j_certificate_gfb = {
+				name = "Certificate",
+				text = {
+					{
+						"When round begins,",
+						"add a random {C:attention}Certificate{}",
+						"with a random",
+						"{C:attention}seal{} to your hand"
+					},
+				}
 			}
 		},
 		Blind = {
@@ -2799,14 +3124,16 @@ local decs = {
 			bl_entr_scarlet_sun = {
 				name = "Scarlet Sun",
 				text = {
-					"All cards add Ascension Power",
-					"-1X Ascension Power"
+					"-0.25 Ascension Power after",
+					"scoring per Joker triggered",
+					"this blind"
 				}
 			},
 			bl_entr_burgundy_baracuda = {
 				name = "Burgundy Barracuda",
 				text = {
-					"1 in 2 played cards are destroyed",
+					"1 in 2 played",
+					"cards are destroyed"
 				}
 			},
 			bl_entr_diamond_dawn = {
@@ -2826,8 +3153,17 @@ local decs = {
 			bl_entr_citrine_comet = {
 				name = "Citrine Comet",
 				text = {
-					"Selected cards destroy adjacent cards",
-					"with a 1 in 2 chance"
+					"Selected cards destroy",
+					"adjacent cards with a",
+					"1 in 2 chance"
+				}
+			},
+			bl_entr_entropic_cultist = {
+				name = "Entropic Cultist",
+				text = {
+					"Copies 3 random Showdowns",
+					"Go directly to ante 32",
+					"when defeated"
 				}
 			},
 			bl_entr_endless_entropy_phase_one = {
@@ -2836,72 +3172,97 @@ local decs = {
 					"???",
 				}
 			},
-			bl_entr_endless_entropy_phase_two = {
+			bl_entr_ee_church = {
+				name = "Ekklisia",
+				text= {"???"}
+			},
+			bl_entr_ee_puppet = {
+				name = "Piercing Puppet",
+				text= {"???"}
+			},
+			bl_entr_ee_erebus = {
+				name = "Erebus",
+				text= {"???"}
+			},
+			bl_entr_ee_decay = {
 				name = "Deceitful Decay",
-				text = {
-					"All you know shall crumble,",
-					"dust to dust.",
-					"(Jokers and hand levels removed)"
-				}
+				text= {"???"}
 			},
-			bl_entr_endless_entropy_phase_three = {
+			bl_entr_ee_extinction = {
+				name = "Exaleipsi",
+				text= {"???"}
+			},
+			bl_entr_ee_nadir = {
 				name = "Nameless Nadir",
-				text = {
-					"Void subsumes you,",
-					"(Debuff leftmost Joker slot(s),",
-					"you must lose this Blind)"
-				}
+				text= {"???"}
 			},
-			bl_entr_endless_entropy_phase_four = {
+			bl_entr_ee_euphoria = {
+				name = "Efforia",
+				text= {"???"}
+			},
+			bl_entr_ee_fracture = {
+				name = "Fervent Fracture",
+				text= {"???"}
+			},
+			bl_entr_ee_feast = {
+				name = "Eorti",
+				text= {"???"}
+			},
+			bl_entr_ee_cleave = {
+				name = "Calamitous Cleaver",
+				text= {"???"}
+			},
+			bl_entr_ee_desperation = {
 				name = "Endless Entropy",
-				text = {
-					"You are but a speck of dust",
-					"in the face of the universe.",
-					"(Entropy is endless)"
-				}
+				text= {"???"}
 			},
 			bl_entr_alabaster_anchor = {
 				name = "Alabaster Anchor",
 				text = {
-					"Playing hands, discarding, and selecting/unselecting playing cards",
-					"temporarily decreases Joker values by 5%"
+					"Playing hands, discarding, and",
+					"selecting/unselecting playing cards",
+					"temporarily decreases Joker",
+					"values by 5%"
 				}
 			},
 			--alt blinds
 			bl_entr_alpha = {
 				name = "Alpha",
 				text = {
-					"First scored card each hand",
-					"is destroyed"
+					"First scored card each",
+					"hand is destroyed"
 				}
 			},
 			bl_entr_beta = {
 				name = "Beta",
 				text = {
 					"-1 hand size",
-					"-1 more hand size per hand played"
+					"-1 more hand size",
+					"per hand played"
 				}
 			},
 			bl_entr_gamma = {
 				name = "Gamma",
 				text = {
-					"Divide base Mult based on the",
-					"number of unplayed suits"
+					"Divide base Mult",
+					"based on the number",
+					"of unplayed suits"
 				}
 			},
 			bl_entr_delta = {
 				name = "Delta",
 				text = {
-					"Divide final Mult based on the",
-					"number of played hands",
-					"in this Blind"
+					"Divide final Mult based",
+					"on the number of played",
+					"hands in this Blind"
 				}
 			},
 			bl_entr_epsilon = {
 				name = "Epsilon",
 				text = {
-					"Divide final Mult based on the",
-					"number of played cards"
+					"Divide final Mult",
+					"based on the number",
+					"of played cards"
 				}
 			},
 			bl_entr_zeta = {
@@ -2928,7 +3289,8 @@ local decs = {
 			bl_entr_iota = {
 				name = "Iota",
 				text = {
-					"Applies the effects of #1#",
+					"Applies the effects",
+					"of #1#",
 					"Changes every hand played"
 				}
 			},
@@ -2984,15 +3346,17 @@ local decs = {
 			bl_entr_rho = {
 				name = "Rho",
 				text = {
-					"Divide final Mult based on the",
+					"Divide final Mult",
+					"based on the",
 					"number of played ranks"
 				}
 			},
 			bl_entr_sigma = {
 				name = "Sigma",
 				text = {
-					"Hands and discards are now",
-					"a shared resource"
+					"Hands and discards",
+					"are now a shared",
+					"resource"
 				}
 			},
 			bl_entr_tau = {
@@ -3021,8 +3385,9 @@ local decs = {
 			bl_entr_chi = {
 				name = "Chi",
 				text = {
-					"The first scored card",
-					"of each rank is debuffed"
+					"The first scored",
+					"card of each",
+					"rank is debuffed"
 				}
 			},
 			bl_entr_psi = {
@@ -3085,6 +3450,27 @@ local decs = {
 					"card is selected"
 				}
 			},
+
+			bl_entr_small = {
+				name = "Small Blind",
+				text = {
+					
+				}
+			},
+			bl_entr_big = {
+				name = "Big Blind",
+				text = {
+					
+				}
+			},
+
+			bl_entr_paw = {
+				name = "The Paw",
+				text = {
+					"All non Freaky Edition",
+					"cards are debuffed"
+				}
+			}
 		},
 		Edition = {
 			e_entr_solar = {
@@ -3119,6 +3505,13 @@ local decs = {
 				text = {
 					"Passively provides",
 					"{C:attention}X#1#{} shop costs"
+				},
+			},
+			e_entr_neon_gfb = {
+				name = "Neon",
+				text = {
+					"Passively provides",
+					"{C:attention}+1{} shop slot"
 				},
 			},
 			e_entr_lowres = {
@@ -3349,7 +3742,8 @@ local decs = {
 				name = "The Feast",
 				text = {
 					"{C:attention}Sell{} and {C:attention}destroy{}",
-					"#<up to >1##1# selected card#<s>1#",
+					"#<up to >1##1# selected Card#<s>1#",
+					"Voucher#<s>1#, or Booster Pack#<s>1#",
 					"from the {C:attention}shop{}",
 					"for {X:attention,C:white}X#2#{} their buy cost"
 				}
@@ -3357,8 +3751,8 @@ local decs = {
 			c_entr_servant = {
 				name = "The Servant",
 				text = {
-					"Create {C:attention}#1#{} random consumable#<s>1# of an",
-					"{C:red}Inverted{} type of #<up to >2#{C:attention}#2#{} selected card#<s>2#",
+					"Create {C:attention}#1#{} random Consumable#<s>1# of the",
+					"{C:red}Inverted{} type of #<up to >2#{C:attention}#2#{} selected consumables#<s>2#",
 					"{C:inactive}(Must have room){}"
 				}
 			},
@@ -3381,7 +3775,8 @@ local decs = {
 				name = "The Dagger",
 				text = {
 					"Destroy {C:attention}#1#{} selected playing card#<s>1#",
-					"and add {X:dark_edition,C:white}X#2#{} the Chips",
+					"and add {X:dark_edition,C:white}X#2#{}",
+					"the selected card#<s>1# Chips",
 					"to your {C:attention}most played{} hand's Chips"
 				}
 			},
@@ -3725,7 +4120,7 @@ local decs = {
 				},
 			},
 			v_entr_providence = {
-				name = "Providence",
+				name = "{E:entr_shader}Providence{}",
 				text = {
 					"Runes have {C:purple,E:1}enhanced{} effects",
 				},
@@ -4407,7 +4802,7 @@ local decs = {
 			c_entr_cleanse = {
 				name = "Cleanse",
 				text = {
-					"{C:attention}Strip{} the suit and rank",
+					"{C:attention}Remove{} the suit and rank",
 					"from {C:attention}all{} cards in hand",
 					"{C:gold}$#1#{} for each Chip taken"
 				}
@@ -4458,9 +4853,9 @@ local decs = {
 			c_entr_inscribe = {
 				name = "Inscribe",
 				text = {
-					"Multiply the {C:attention}base{} Chips",
-					"of numbered cards in hand by {X:chips,C:white}X#1#{}",
-					"then {C:attention}debuff{} all numbered cards",
+					"Multiply the Chips of all numbered",
+					"cards in hand by {X:chips,C:white}X#1#{}",
+					"Then {C:attention}debuff{} all numbered cards",
 					"in hand for 1 round"
 				}
 			},
@@ -4476,8 +4871,8 @@ local decs = {
 			c_entr_changeling = {
 				name = "Changeling",
 				text = {
-					"Convert {C:attention}#1#{} cards in hand",
-					"to {C:attention}random{} Editioned face cards",
+					"Convert {C:attention}#1#{} random cards",
+					"held in hand into {C:dark_edition}Editioned{} face cards"
 				}
 			},
 			c_entr_ward = {
@@ -4500,7 +4895,7 @@ local decs = {
 				name = "Bind",
 				text = {
 					"{C:attention}Link{} up to {C:attention}#1#{}",
-					"cards together, all modifications",
+					"cards together. All modifications",
 					"affect all of the linked cards"
 				}
 			},
@@ -4517,9 +4912,9 @@ local decs = {
 				text = {
 					"Add a random {C:attention}Seal{},",
 					"{C:attention}Enhancement{}, and {C:attention}Edition{}",
-					"to 1 selected card, then",
+					"to 1 selected card held in hand, then",
 					"convert {C:attention}#1#{} other cards",
-					"into this card, {C:gold}#2#{}",
+					"held in hand into this card, {C:gold}#2#{}",
 				}
 			},
 			c_entr_crypt = {
@@ -4940,6 +5335,54 @@ local decs = {
 					"{C:attention}Radiant Card{}"
 				}
 			},
+			c_lovers_gfb = {
+				name = "The Lovers",
+				text = {
+					"Applies {C:entr_freaky}Freaky{}",
+					"to {C:attention}#1#{} selected card"
+				}
+			},
+			c_star_gfb = {
+				name = "The Star",
+				text = {
+					"Enhances {C:attention}#1#{} selected",
+					"cards into a",
+					"{C:attention}Supernova Card{}"
+				}
+			},
+			c_sun_gfb = {
+				name = "The Sun",
+				text = {
+					"Enhances {C:attention}#1#{} selected",
+					"cards into a",
+					"{C:attention}Sunny Joker Card{}"
+				}
+			},
+			c_world_gfb = {
+				name = "The World",
+				text = {
+					"Enhances {C:attention}#1#{} selected",
+					"cards into an",
+					"{C:attention}Earth Card{}"
+				}
+			},
+			c_moon_gfb = {
+				name = "The Moon",
+				text = {
+					"Enhances {C:attention}#1#{} selected",
+					"cards into a",
+					"{C:attention}To the Moon Card{}"
+				}
+			},
+			c_death_gfb = {
+				name = "Death",
+				text = {
+					"Select {C:attention}#1#{} cards,",
+					"convert the {C:attention}right{} card",
+					"into the {C:attention}left{} card",
+					"{C:inactive}(Drag to rearrange)"
+				}
+			}
 		},
 		Spectral = {
 			c_entr_flipside = {
@@ -5023,6 +5466,16 @@ local decs = {
 					"skip Tags"
 				}
 			},
+
+			c_talisman_gfb = {
+				name = "Download Amulet Free Working 2026",
+				text = {
+					"Add a {C:attention}Gold Seal{}",
+					"to {C:attention}1{} selected",
+					"card in your hand",
+					"{C:red}WARNING: UNSTABLE"
+				}
+			}
 		},
 		Stake = {
 			stake_entr_copper = {
@@ -5065,10 +5518,24 @@ local decs = {
 			stake_entr_zenith = {
 				name = "Zenith Stake",
 				text = {
-					"{E:1,C:entr_zenith}All Blinds are Endless Entropy{}",
-					"{s:0.8}Applies all previous Stakes",
+					"what if {E:1,C:entr_zenith}Endless Entropy{}",
+					"had {C:green}WhatsApp{}",
+					"Ruby Crimsonfang          15:23",
+					"{C:inactive}I NEED SUPERBOSSES!           ",
+					"Evil Ruby Crimsonfang  	15:28",
+					"{C:inactive}I NEED SUPERBOSSES!           ",
+					"Baron          		  14:23",
+					"{C:inactive}I HATE YOU I HATE YOU!        ",
 				},
 			},
+			stake_entr_gfb = {
+				name =  "Ruby 'Crimsonfang' Presents: The Joker is you, an opera",
+				text = {
+					"Enjoy.",
+					"Unlocks cannot be earned on",
+					"this stake"
+				}
+			}
 		},
 		Tag= {
 			tag_entr_dog = {
@@ -6493,7 +6960,7 @@ local decs = {
 				text = {
 					"Randomly {C:red}destroy{} {C:attention}20%{}",
 					"of your {C:attention}full{} deck",
-					"{C:inactive}(Minimum of 5)"
+					"{C:inactive}(Minimum of 5, Currently #1#)"
 				}
 			},
 			c_entr_thorns = {
@@ -6651,7 +7118,7 @@ local decs = {
 			c_entr_blood = {
 				name = "Pact of Blood",
 				text = {
-					"Randomly link {C:attention}#1#{}",
+					"Link {C:attention}#1#{} random",
 					"playing cards from your",
 					"{C:attention}full deck{} together"
 				}
@@ -7341,6 +7808,152 @@ local decs = {
 				"Just be careful not to {C:attention,E:1}crash{} the game,",
 				"as that'll probably happen before you lose...",
 			},
+
+			entr_tut_intro_1 = {
+				"Hello there! My name is {C:red}Ruby{}, I'm here",
+				"to help you learn the ropes of {C:entr_entropic}Entropy{}"
+			},
+			entr_tut_intro_2 = {
+				"The mechanics of this mod are",
+				"not too different from Vanilla."
+			},
+			entr_tut_intro_3 = {
+				"But there are a few new things",
+				"I need to introduce you to."
+			},
+			entr_tut_intro_4 = {
+				"For now I'll see you in the shop.",
+			},
+
+			entr_ap_1 = {
+				"Nicely done, now you can see what",
+				"the {C:entr_entropic}Entropy{} shop has to offer."
+			},
+			entr_ap_2 = {
+				"Try buying this {C:gold}Sunny{} Devil"
+			},
+			entr_ap_3 = {
+				"This is one of the {C:attention}#1#{} Jokers added by this mod"
+			},
+			entr_ap_4 = {
+				"This one adds {C:gold}+2{} Ascension Power,",
+				"You may be wondering what that does"
+			},
+			entr_ap_5 = {
+				"Well. every {C:gold}+1{} Ascension Power",
+				"multiplies both {C:blue}Chips{} and {C:red}Mult{} by {X:purple,C:white}X1.25{}"
+			},
+			entr_ap_6 = {
+				"so {C:gold}+2{} would be Two triggers of",
+				"{X:purple,C:white}X1.25{} to both or roughly {X:purple,C:white}X1.56{}"
+			},
+			entr_ap_7 = {
+				"If you want to know the exact",
+				"formula its {X:gold,C:white}X(1.25 ^ Power)"
+			},
+			entr_ap_8 = {
+				"Lets try this {C:attention}Joker{} in the next round."
+			},
+
+			entr_alt_1 = {
+				"Welcome to the post. Boss Blind shop",
+				"This will be mostly the same however",
+				"there is one difference."
+			},
+			entr_alt_2 = {
+				"You may have noticed this new",
+				"{C:purple}purple{} shop button"
+			},
+			entr_alt_3 = {
+				"In {C:entr_entropic}Entropy{} there are",
+				"two differences for your run which can impact",
+				"the {C:red}Difficulty{} and {C:entr_void}Rewards{}"
+			},
+			entr_alt_4 = {
+				"The Main path has the regular Blinds",
+				"including those from {C:attention}Vanilla{} and some",
+				"new Blinds from {C:entr_entropic}Entropy{}"
+			},
+			entr_alt_5 = {
+				"The Alternate path also known as {C:purple}The Flipside{}",
+				"has new Blinds that only show up here",
+				"but are generally more difficult"
+			},
+			entr_alt_6 = {
+				"It also has a higher chance of {C:red}Twisted Packs{} and",
+				"you might see some new {C:entr_void}Jokers{}. So keep an eye out"
+			},
+			entr_alt_7 = {
+				"You may switch Paths once",
+				"in every Post-Boss Blind shop"
+			},
+			entr_alt_8 = {
+				"For now lets switch {C:purple}Path{} and",
+				"ill see you in the next shop"
+			},
+
+			entr_packs_1 = {
+				"Now lets take a look at",
+				"Booster Packs in the shop"
+			},
+			entr_packs_2 = {
+				"Try buying this {C:red}Twisted{}",
+				"Pack which has been added",
+				"by {C:entr_entropic}Entropy{}"
+			},
+			entr_packs_3 = {
+				"Twisted Packs are booster packs",
+				"that only contain Inverted Consumables",
+			},
+			entr_packs_4 = {
+				"{C:red}Inverted{} Consumables are cards",
+				"based off of existing {C:spectral}Consumables{}",
+				"but warped in some way"
+			},
+			entr_packs_5 = {
+				"For Example, This card is {C:entr_omen}Charm{}",
+				"and it is the counterpart to {C:spectral}Hex{}",
+				"from Vanilla Balatro"
+			},
+			entr_packs_6 = {
+				"These consumables can also be",
+				"obtained in other ways such as",
+				"from {C:spectral}Flipside{} or {C:purple}Dagaz{}"
+			},
+			entr_packs_7 = {
+				"Inverted consumables may",
+				"always be selected from a pack"
+			},
+			entr_packs_8 = {
+				"Lets try using {C:entr_omen}Charm{}"
+			},
+			entr_packs_9 = {
+				"Now onto changes to existing",
+				"Booster Packs. Try buying",
+				"this {C:attention}Celestial Pack{}"
+			},
+			entr_packs_10 = {
+				"You may have noticed a new",
+				"{C:purple{}Consumable Type{} in this pack"
+			},
+			entr_packs_11 = {
+				"These are runes, They have a small chance",
+				"to replace {C:purple}Tarots{} in Arcana Packs",
+				"and {C:blue}Planets{} in Celestial Packs"
+			},
+			entr_packs_12 = {
+				"Runes do not have their own",
+				"Booster pack so this chance",
+				"is the main way to obtain them"
+			},
+			entr_packs_13 = {
+				"Lets try using this Rune",
+				"to take advantage of its effect"
+			},
+			entr_packs_14 = {
+				"Well, Ill leave you to it now."
+			}
+
 		},
 		achievement_names = {
 			ach_entr_event_horizon = "Event Horizon",
@@ -7425,6 +8038,7 @@ local decs = {
 			k_entr_reverse_legendary = "Legendary?",
 			k_entr_void = "Void",
 			k_entr_zenith = "Zenith",
+			k_entr_reverse_zenith = "Zenith?",
 			k_fraud = "Fraud",
 			b_fraud_cards = "Fraud Cards",
 
@@ -7596,9 +8210,11 @@ local decs = {
 			k_joker_in_greek = "Jokers in Greek",
 			k_mirrored_in_crimson = "Mirrored in Crimson",
 			k_freebird = "Freebird",
-			k_portal_reference = "The Part Where She Kills You",
+			k_ruby_reference = "Mors Caloris",
 			k_entropy_is_endless = "Entropy Is Endless",
 			k_snd_ominous = "snd_ominous",
+			k_ee_goodmusic = "A Fervent Dreamers Lovesong",
+			k_ee_badmusic = "Utmost Devotion",
 
 			k_plus_rune = "+1 Rune",
 			k_plus_star = "+1 Star",
@@ -7610,6 +8226,7 @@ local decs = {
 
 			k_switch_ex = "Switch!",
 			k_bounce_ex = "Bounce!",
+			b_challenge_me = "CHALLENGE",
 
 			ph_red_1 = "???",
 			ph_red_2 = "???",
@@ -7630,6 +8247,73 @@ local decs = {
                 "below into {C:entr_void}#1#{}:",
                 "{s:0.1} "
             }
+		},
+		gfb_quips = {
+			{"32 ANTES", "AND WHAT DO YOU", "HAVE TO SHOW FOR IT"},
+			{"MATHISFUN", "SEAL OF", "APPROVAL"},
+			{"NOW WITH", "20% EXTRA", "[server moderation]"},
+			{"WOULDNT YOU", "LIKE TO KNOW", "WEATHERBOY"},
+			{"MORE", "VOUCHOIDS", "TOMORROW"},
+			{"WOOF WOOF", "BARK BARK"},
+			{"HEY MY", "VOUCHERS ARE", "UP HERE BUDDY"},
+			{"6", "", "7"},
+			{"YOU ALREADY", "BOUGHT ONE", "YOU GREEDY BASTARD"},
+			{"VOUCHER?", "I HARDLY KNOW HER"},
+			{"", ":sun_with_face:"},
+			{"I HAVE", "NO VOUCHER", "AND I MUST SCREAM"},
+			{"THIS", "HEXES", "ME"},
+			{"WE OUTTA", "", "VOUCHER"},
+			{"GREETINGS", "VOUCHERS OF", "BALATRO"},
+			{"QUANTUM RANKS", "PR MERGED", "TOMORROW"},
+			{"LETS", "TAKE A", "LOOK"},
+			{"ATTEMPT TO INDEX", "GLOBAL 'VOUCHER'", "(A NIL VALUE)"},
+			{"", "SPONSORED BY RAID", "SHADOW LEGENDS"},
+			{"NOTHING", "EVER", "HAPPENS"},
+			{"AT THE SHOP", "WHERE THE VOUCHERS AT", "REDEEM WANT BOING BOING"},
+			{"", "=0 VOUCHERS", ""},
+			{"SILLY", "AHH", "VOUCHABLES"},
+			{"|   | |", "------", "| |   | _"},
+			{"SORRY JIMBO, I CAN'T GIVE CREDIT,", "MAYBE COME BACK WHEN YOU'RE A LITTLE", "MMMMMMMMMMRICHER"},
+			{"I'M SURPRISED THAT", "YOU READ ALL", "OF THESE QUIPS"},
+			{"YOU COULD SAY", "IT'S A BIT", "ENTROPIC"},
+			{"", "TS ENTROPYING ME"},
+			{"I CAN", "TANK IT"},
+			{"HOT SINGLE", "BOSS BLINDS IN", "YOUR AREA"},
+			{"ENDLESS ENTROPY", "WANTS TO CHAT"},
+			{"WHY", "SO", "SERIOUS?"},
+			{"GONE", "REDUCED TO", "ATOMS"},
+			{"VOUCHER?", "MORE LIKE", "VOUCHEEKS"},
+			{"GUARANTEE", "MAGIC TRICK", "NEXT ANTE"},
+			{"", "BOO", ""},
+			{"TRUST ME BRO", "ANTIMATTER", "NEXT ANTE"},
+			{"NEVER GONNA GIVE YOU UP", "NEVER GONNA LET YOU DOWN", "NEVER GONNA RUN AROUND AND DESERT YOU"},
+			{"DONT", "PLAY", "TANGENTS"},
+			{":chud:"},
+			{"TODAY", "WE", "FEAST"},
+			{ "YOU", "MIGHT BE", "COOKED" },
+			{ "BREAD", ">", "KEY" },
+			{ "LOL", "lmao,", "even" },
+			{ "SHOULD HAVE", "GOT THE", "SKIP TAG" },
+			{ "WTF", "IS", "A KILOMETER" },
+			{ "500", "CONSUMABLE", "SLOTS" },
+			{ "AUGUST", "12TH", "2036" },
+			{ "MODS,", "GIVE THEM", "THE PLANT" },
+			{ "DEEZ", "NUTS", "haha gottem" },
+			{ "LOREM", "IPSUM", "DOLOR SIT" },
+			{ "NO VOUCHERS?", ":megamind:", "" },
+			{ "PLEASE SPEED", "I NEED THIS", "" },
+			{ "SCARY", "CHILDRENDERS", "CREEPYPASTA" }, -- this is an injoke from another friendgroup lol
+			{ "", "RE R", "" }, -- another injoke of the same nature
+			{ "", "EMPLOYMENT", "" },
+			{ "", "IMG_4750.png", "" },
+			{ "TS", "VOUCHERSLOP", "" },
+			{ "1.1", "TOMORROW", "(trust)" },
+			{"TODO:", "WRITE MORE QUIPS"},
+			{"yo voucher", "voucher: yo"},
+			{"VOUCHERSLOP"},
+			{"SMODS.JimboQuip"},
+			{"VOUCHER", "I HARDLY", "KNOW HER"},
+			{"RUBY", "'ENTROPY'", "CRIMSONFANG"}
 		},
 		labels = {
 			banana = "Banana",
@@ -7820,7 +8504,9 @@ for i, v in pairs(decs.descriptions.Blind) do
 	CBlind["c_entr_"..i] = {
 		name=(v.name or "Blind").." Token",
 		text={
-			"Use to change the upcoming Blind",
+			"Use to change the",
+			"upcoming or current",
+			"Blind"
 		}
 	}
 end
@@ -7830,7 +8516,9 @@ for i, v in pairs(G.localization.descriptions.Blind) do
 	CBlind["c_entr_"..i] = {
 		name=(type(v.name) ~= "table" and v.name or "Blind").." Token",
 		text={
-			"Use to change the upcoming Blind",
+			"Use to change the",
+			"upcoming or current",
+			"Blind"
 		}
 	}
 end

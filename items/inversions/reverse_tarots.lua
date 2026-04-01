@@ -1,8 +1,8 @@
-local master = {
+SMODS.Consumable {
     key = "master",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901,
     dependencies = {
         items = {
@@ -79,11 +79,11 @@ local master = {
     end
 }
 
-local mason = {
+SMODS.Consumable {
     key = "mason",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901 + 1,
     dependencies = {
         items = {
@@ -127,11 +127,11 @@ local mason = {
     end
 }
 
-local oracle = {
+SMODS.Consumable {
     key = "oracle",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901 + 2,
     dependencies = {
         items = {
@@ -181,11 +181,11 @@ local oracle = {
 }
 
 
-local princess = {
+SMODS.Consumable {
     key = "princess",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901 + 3,
     dependencies = {
         items = {
@@ -222,11 +222,11 @@ local princess = {
     }
 }
 
-local servant = {
+SMODS.Consumable {
     key = "servant",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901 + 4,
     dependencies = {
         items = {
@@ -288,11 +288,11 @@ local servant = {
 	
 }
 
-local heretic = {
+SMODS.Consumable {
     key = "heretic",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901 + 5.5,
     dependencies = {
         items = {
@@ -350,11 +350,11 @@ local heretic = {
     end
 }
 
-local feud = {
+SMODS.Consumable {
     key = "feud",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901 + 6,
     dependencies = {
         items = {
@@ -406,11 +406,11 @@ local feud = {
 }
 
 
-local scar = {
+SMODS.Consumable {
     key = "scar",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901 + 7,
     dependencies = {
         items = {
@@ -451,13 +451,12 @@ local scar = {
 }
 
 
-local scarred = {
+Entropy.Sticker{
     dependencies = {
         items = {
           "set_entr_inversions",
         }
     },
-    object_type = "Sticker",
     order = -901,
     atlas = "entr_stickers",
     pos = { x = 6, y = 1 },
@@ -478,11 +477,11 @@ local scarred = {
     end,
 }
 
-local dagger = {
+SMODS.Consumable {
     key = "dagger",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901 + 8,
     dependencies = {
         items = {
@@ -542,11 +541,11 @@ local dagger = {
     end
 }
 
-local earl = {
+SMODS.Consumable {
     key = "earl",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901 + 9,
     dependencies = {
         items = {
@@ -590,11 +589,11 @@ local earl = {
     end
 }
 
-local whetstone = {
+SMODS.Consumable {
     key = "whetstone",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901+10,
     dependencies = {
         items = {
@@ -669,11 +668,11 @@ local whetstone = {
     end
 }
 
-local endurance = {
+SMODS.Consumable {
     key = "endurance",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901+11,
     dependencies = {
         items = {
@@ -720,11 +719,11 @@ local endurance = {
 	
 }
 
-local advisor = {
+SMODS.Consumable {
     key = "advisor",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901+12,
     dependencies = {
         items = {
@@ -775,11 +774,11 @@ local advisor = {
     end
 }
 
-local statue = {
+SMODS.Consumable {
     key = "statue",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901+13,
     dependencies = {
         items = {
@@ -832,11 +831,11 @@ local statue = {
     end
 }
 
-local feast = {
+SMODS.Consumable {
     key = "feast",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901+14,
     dependencies = {
         items = {
@@ -881,11 +880,11 @@ local feast = {
     },
 }
 
-local companion = {
+SMODS.Consumable {
     key = "companion",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901+15,
     dependencies = {
         items = {
@@ -928,11 +927,11 @@ local companion = {
     end
 }
 
-local village = {
+SMODS.Consumable {
     key = "village",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901+16,
     dependencies = {
         items = {
@@ -973,11 +972,11 @@ local village = {
     end
 }
 
-local ocean = {
+SMODS.Consumable {
     key = "ocean",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901+17,
     dependencies = {
         items = {
@@ -1022,11 +1021,11 @@ local ocean = {
     end
 }
 
-local forest = {
+SMODS.Consumable {
     key = "forest",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901+18,
     dependencies = {
         items = {
@@ -1071,11 +1070,11 @@ local forest = {
     end
 }
 
-local mountain = {
+SMODS.Consumable {
     key = "mountain",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901+19,
     dependencies = {
         items = {
@@ -1120,11 +1119,11 @@ local mountain = {
     end
 }
 
-local forgiveness = {
+SMODS.Consumable {
     key = "forgiveness",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901+20,
     dependencies = {
         items = {
@@ -1161,11 +1160,11 @@ local forgiveness = {
     end
 }
 
-local tent = {
+SMODS.Consumable {
     key = "tent",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901+21,
     dependencies = {
         items = {
@@ -1207,11 +1206,11 @@ local tent = {
     end
 }
 
-local frail = {
+SMODS.Consumable {
     key = "frail",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901+33,
     dependencies = {
         items = {
@@ -1270,11 +1269,11 @@ local frail = {
     end
 }
 
-local inferno = {
+SMODS.Consumable {
     key = "inferno",
     set = "Fraud",
     atlas = "fraud",
-    object_type = "Consumable",
+    
     order = -901+34,
     dependencies = {
         items = {
@@ -1313,35 +1312,5 @@ local inferno = {
     end,
     entr_credits = {
         art = {"LFMoth"}
-    }
-}
-
-return {
-    items = {
-        master,
-        statue,
-        whetstone,
-        feast,
-        servant,
-        endurance,
-        scarred,
-        scar,
-        dagger,
-        forgiveness,
-        feud,
-        advisor,
-        heretic,
-        earl,
-        mason,
-        princess,
-        oracle,
-        ocean,
-        forest,
-        mountain,
-        tent,
-        companion,
-        village,
-        frail,
-        inferno
     }
 }
