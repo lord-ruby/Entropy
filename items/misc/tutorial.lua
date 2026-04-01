@@ -43,6 +43,12 @@ G.FUNCS.entropy_tutorial_controller = function()
     G.FUNCS.entropy_tutorial_part('packs')
     G.SETTINGS.entropy_tutorial_progress.completed_parts['packs'] = true
     G:save_progress()
+	G.E_MANAGER:add_event(Event{
+		func = function()
+			G.F_SKIP_TUTORIAl = true
+			return true
+		end
+	})
   end
 end
 
@@ -456,6 +462,7 @@ G.FUNCS.skip_entr_tutorial_section = function(e)
     if G.OVERLAY_TUTORIAL.content then G.OVERLAY_TUTORIAL.content:remove() end
     G.OVERLAY_TUTORIAL:remove()
     G.OVERLAY_TUTORIAL = nil
+	G.F_SKIP_TUTORIA = true
     G.E_MANAGER:clear_queue('tutorial')   
 end
 
