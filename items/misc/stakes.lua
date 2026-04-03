@@ -832,7 +832,7 @@ function Entropy.inject_gfb()
     SMODS.Joker:take_ownership("brainstorm", {
         calculate = function(self, card, context)
             local other_joker = nil
-            local ret = SMODS.blueprint_effect(card, G.jokers.cards[#G.jokers.cards], context)
+            local ret = SMODS.blueprint_effect(card, G.jokers.cards[G.GAME.modifiers.entr_gfb and #G.jokers.cards or 1], context)
             if ret then
                 ret.colour = G.GAME.modifiers.entr_gfb and G.C.BLUE or G.C.RED
             end
