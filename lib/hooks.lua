@@ -1163,8 +1163,11 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
         end
 	end
     if card and card.ability and card.ability.consumeable then
-        for i, a in pairs(SMODS.get_card_areas('jokers')) do
-            for _, c in pairs(a.cards) do
+        local _joker_areas = SMODS.get_card_areas('jokers')
+        if _joker_areas then
+            for i, a in pairs(_joker_areas) do
+                if a.cards then
+                    for _, c in pairs(a.cards) do
                 if c.config.center.calculate then
                     local ret = c.config.center:calculate(c, {
                         get_consumable_type = true,
@@ -1183,7 +1186,9 @@ function create_card(_type, area, legendary, _rarity, skip_materialize, soulable
                         break
                     end
                 end
+                end
             end
+        end
         end
     end
     if card and card.ability and card.ability.consumeable then
@@ -2157,13 +2162,18 @@ local add_tagref = add_tag
 function add_tag(_tag, ...)
     if type(_tag) == "table" then
         if not _tag.ability.added_to_deck then
-            for i, v in pairs(SMODS.get_card_areas('jokers')) do
-                for a, card in pairs(v.cards) do
+            local _joker_areas = SMODS.get_card_areas('jokers')
+            if _joker_areas then
+                for i, v in pairs(_joker_areas) do
+                    if v.cards then
+                        for a, card in pairs(v.cards) do
                     local res = card:calculate_joker({tag_create = true, tag = _tag})
                     if res and res.tag then
                         _tag = res.tag
                     end
+                    end
                 end
+            end
             end
         end
         add_tagref(_tag, ...)
@@ -3119,12 +3129,17 @@ function Cryptid.get_interest(add_rows)
         local rate = Cryptid.interest_rate()
         local interest = math.min(math.floor(G.GAME.dollars / rate), G.GAME.interest_cap / 5)
         interest = interest * G.GAME.interest_amount
-        for _, a in pairs(SMODS.get_card_areas("jokers")) do
-            for i, c in pairs(a.cards) do
+        local _joker_areas = SMODS.get_card_areas("jokers")
+        if _joker_areas then
+            for _, a in pairs(_joker_areas) do
+                if a.cards then
+                    for i, c in pairs(a.cards) do
                 if c.config.center.cry_calc_interest then
                     interest = c.config.center:cry_calc_interest(c, interest)
                 end
+                end
             end
+        end
         end
         G.GAME.interest_cap = cap
         return interest
