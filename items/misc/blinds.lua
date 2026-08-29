@@ -22,14 +22,7 @@ Entropy.Blind{
 		return G.P_BLINDS.bl_entr_sunny_joker
 	end,
 	set_blind = function(self)
-        G.GAME.blindentrassist.states.visible = true
-		G.GAME.blindentrassist:set_entrassist_blind(G.P_BLINDS.bl_entr_sunny_joker)
-		G.GAME.blindentrassist:change_dim(0.75,0.75)
-
-		G.GAME.blind.effect.asc = 0
-	end,
-	load = function()
-		G.GAME.blindentrassist:change_dim(0.75,0.75)
+        G.GAME.blind.effect.asc = 0
 	end,
 	calculate = function(self, blind, context)
 		if context.post_trigger then
@@ -41,10 +34,6 @@ Entropy.Blind{
 			}
 		end
 	end,
-	defeat = function()
-		G.GAME.blindentrassist.states.visible = false
-        G.GAME.blindentrassist:change_dim(0,0)
-	end
 }
 
 Entropy.Blind{
@@ -197,32 +186,6 @@ Entropy.Blind{
 		end
 	end,
 }
--- Entropy.EEBlacklist = {
--- 	bl_cry_obsidian_orb=true,
--- 	bl_entr_endless_entropy_phase_one=true,
--- 	bl_entr_endless_entropy_phase_two=true,
--- 	bl_entr_endless_entropy_phase_three=true,
--- 	bl_entr_endless_entropy_phase_four=true,
--- 	bl_cry_lemon_trophy = true,
--- 	bl_cry_lavender_loop=true,
--- 	bl_cry_vermillion_virus=true,
--- 	bl_cry_turquoise_tornado=true,
--- 	bl_mf_violet_vessel_dx = true,
--- 	bl_mf_cerulean_bell_dx = true,
--- 	bl_mf_needle_dx = true,
--- 	bl_mf_manacle_dx = true,
--- 	bl_mf_pillar_dx = true,
--- 	bl_mf_serpent_dx = true,
--- 	bl_mf_club_dx = true,
--- 	bl_mf_goad_dx = true,
--- 	bl_mf_window_dx = true,
--- 	bl_mf_head_dx = true,
--- 	bl_mf_arm_dx = true,
--- 	bl_mf_wheel_dx = true,
--- 	bl_mf_house_dx = true,
--- 	bl_mf_psychic_dx = true,
--- 	bl_mf_hook_dx = true,
--- }
 
 Entropy.Blind{
 	dependencies = {
@@ -339,7 +302,7 @@ end
 
 function Entropy.defeat_abyss()
 	G.GAME.abyss_just_lost = nil
-	G.GAME.abyss_size_mod = (G.GAME.abyss_size_mod or 1) * 1.5
+	G.GAME.abyss_size_mod = (G.GAME.abyss_size_mod or 1) * 1.75
 	G.GAME.abyss_blinds = G.GAME.abyss_blinds or {}
 	G.GAME.abyss_blinds[#G.GAME.abyss_blinds+1] = get_new_boss()
 end

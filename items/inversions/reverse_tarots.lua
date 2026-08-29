@@ -70,7 +70,7 @@ SMODS.Consumable {
 			} or nil,
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"MrVarius"}
     },
     demicoloncompat = true,
@@ -118,7 +118,7 @@ SMODS.Consumable {
         }
     end,
     
-	entr_credits = {
+	slib_credits = {
         art = {"Lyman"}
     },
     demicoloncompat = true,
@@ -168,14 +168,14 @@ SMODS.Consumable {
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"MrVarius"}
     },
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)
     end,
-    entr_credits = {
+    slib_credits = {
         idea = {"cassknows"}
     },
 }
@@ -216,7 +216,7 @@ SMODS.Consumable {
         self:use(card)
     end,
 	
-    entr_credits = {
+    slib_credits = {
         idea = {"user324897"},
         art = {"Lyman"}
     }
@@ -240,7 +240,13 @@ SMODS.Consumable {
     inversion = "c_emperor",
     pos = {x=4, y = 0},
     use = function(self, card, area, copier)
-        local cards = Entropy.get_highlighted_cards({{cards = G.I.CARD}}, card, 1, card.ability.select)
+        local cards = {}
+        for i, v in pairs(G.I.CARD) do
+            if getmetatable(v) == Card then
+                cards[#cards+1] = v
+            end
+        end
+        local cards = Entropy.get_highlighted_cards({cards}, card, 1, card.ability.select)
         for i, v in pairs(cards) do
             if v.config and v.config.center and Entropy.inversion(v.config.center) and v.ability and v.ability.consumeable then
                 local set = G.P_CENTERS[Entropy.inversion(v.config.center)].set
@@ -264,7 +270,13 @@ SMODS.Consumable {
         end
     end,
     can_use = function(self, card)
-        local cards = Entropy.get_highlighted_cards({{cards = G.I.CARD}}, card, 1, card.ability.select)
+        local cards = {}
+        for i, v in pairs(G.I.CARD) do
+            if getmetatable(v) == Card then
+                cards[#cards+1] = v
+            end
+        end
+        local cards = Entropy.get_highlighted_cards({cards}, card, 1, card.ability.select)
         local num = #cards
         local offset = 0
         if card.area == G.consumeables.cards then offset = -1 end
@@ -278,7 +290,7 @@ SMODS.Consumable {
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lyman"}
     },
     demicoloncompat = true,
@@ -340,7 +352,7 @@ SMODS.Consumable {
     end,
     
 	
-    entr_credits = {
+    slib_credits = {
         idea = {"notmario"},
         art = {"MrVarius"}
     },
@@ -425,7 +437,7 @@ SMODS.Consumable {
     use = function(self, card, area, copier)
         local cards = Entropy.get_highlighted_cards({G.hand}, card, 1, card.ability.select)
         for i, v in pairs(cards) do
-            Entropy.apply_sticker(v, "scarred")
+            v:add_sticker("scarred", true)
             v:juice_up()
         end
 
@@ -532,7 +544,7 @@ SMODS.Consumable {
         }
     end,
     
-	entr_credits = {
+	slib_credits = {
         art = {"Lyman"}
     },
     demicoloncompat = true,
@@ -580,7 +592,7 @@ SMODS.Consumable {
         }
     end,
     
-	entr_credits = {
+	slib_credits = {
         art = {"HexaCryonic"}
     },
     demicoloncompat = true,
@@ -659,7 +671,7 @@ SMODS.Consumable {
         }
     end,
     
-	entr_credits = {
+	slib_credits = {
         art = {"MrVarius"}
     },
     demicoloncompat = true,
@@ -765,7 +777,7 @@ SMODS.Consumable {
     can_use = function(self, card)
         return G.STATE == G.STATES.SELECTING_HAND
 	end,
-    entr_credits = {
+    slib_credits = {
         art = {"Ein13"}
     },
     demicoloncompat = true,
@@ -822,7 +834,7 @@ SMODS.Consumable {
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"LFMoth"}
     },
     demicoloncompat = true,
@@ -875,7 +887,7 @@ SMODS.Consumable {
         }
     end,
     
-	entr_credits = {
+	slib_credits = {
         art = {"Lyman"}
     },
 }
@@ -917,7 +929,7 @@ SMODS.Consumable {
         }
     end,
     
-	entr_credits = {
+	slib_credits = {
         idea = {"Lyman"},
         art = {"Lyman"}
     },
@@ -963,7 +975,7 @@ SMODS.Consumable {
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Ein13"}
     },
     demicoloncompat = true,
@@ -1061,7 +1073,7 @@ SMODS.Consumable {
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"notmario"}
     },
     demicoloncompat = true,
@@ -1110,7 +1122,7 @@ SMODS.Consumable {
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"LFMoth"}
     },
     demicoloncompat = true,
@@ -1150,7 +1162,7 @@ SMODS.Consumable {
         local num = G.GAME.jokers_sold and #G.GAME.jokers_sold or 0
         return num > 0
     end,
-    entr_credits = {
+    slib_credits = {
         idea = {"cassknows"},
         art = {"Ein13"}
     },
@@ -1310,7 +1322,7 @@ SMODS.Consumable {
     force_use = function(self, card)
         self:use(card)
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"LFMoth"}
     }
 }

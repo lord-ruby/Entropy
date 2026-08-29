@@ -249,3 +249,13 @@ payload = '''
 if G.GAME.seeded and not G.GAME.modifiers.entr_gfb then G.forced_seed = G.GAME.pseudorandom.seed end
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/common_events.lua'''
+pattern = '''--Fill all remaining info if this is the main desc'''
+position = "before"
+payload = '''
+Entropy.add_boxes(_c, card, info_queue, desc_nodes, specific_vars, full_UI_table, cfg)
+'''
+match_indent = true

@@ -258,17 +258,17 @@ function SMODS.injectItems(...)
         })
         SMODS.ObjectTypes.BlindTokens:inject()
 
-        -- G.P_CENTERS.c_entr_bl_entr_alabaster_anchor.entr_credits = {idea = {"cassknows"}}
-        -- G.P_CENTERS.c_entr_bl_entr_burgundy_baracuda.entr_credits = {idea = {"cassknows"}}
-        -- G.P_CENTERS.c_entr_bl_entr_citrine_comet.entr_credits = {idea = {"cassknows"}}
-        -- G.P_CENTERS.c_entr_bl_entr_diamond_dawn.entr_credits = {idea = {"cassknows"}}
-        -- G.P_CENTERS.c_entr_bl_entr_olive_orchard.entr_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_alabaster_anchor.slib_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_burgundy_baracuda.slib_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_citrine_comet.slib_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_diamond_dawn.slib_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_olive_orchard.slib_credits = {idea = {"cassknows"}}
 
-        -- G.P_CENTERS.c_entr_bl_entr_styx.entr_credits = {idea = {"cassknows"}}
-        -- G.P_CENTERS.c_entr_bl_entr_choir.entr_credits = {idea = {"cassknows"}}
-        -- G.P_CENTERS.c_entr_bl_entr_pandora.entr_credits = {idea = {"cassknows"}}
-        -- G.P_CENTERS.c_entr_bl_entr_cassandra.entr_credits = {idea = {"cassknows"}}
-        -- G.P_CENTERS.c_entr_bl_entr_labyrinth.entr_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_styx.slib_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_choir.slib_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_pandora.slib_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_cassandra.slib_credits = {idea = {"cassknows"}}
+        -- G.P_CENTERS.c_entr_bl_entr_labyrinth.slib_credits = {idea = {"cassknows"}}
 
         if MP then
             function MP.DECK.ban_card(card_id)
@@ -557,6 +557,9 @@ local _loading_funcs = {
 local hooks = {}
 for i, v in pairs(_loading_funcs) do
     Entropy[v] = function(tbl, ...)
+        if tbl.blueprint_compat == nil then tbl.blueprint_compat = true end
+        if tbl.perishable_compat == nil then tbl.perishable_compat = true end
+        if tbl.eternal_compat == nil then tbl.eternal_compat = true end
         Entropy.contents[v] = Entropy.contents[v] or {}
         Entropy.contents[v][#Entropy.contents[v]+1] = tbl
     end

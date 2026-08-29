@@ -29,7 +29,7 @@ Entropy.Enhancement{
             SMODS.destroy_cards{card}
         end
 	end,
-	entr_credits = {
+	slib_credits = {
 		art = {"Lil. Mr. Slipstream"}
 	},
 }
@@ -50,6 +50,11 @@ Entropy.Enhancement{
 	end,
 	in_pool = function()
 		return false
+	end,
+	loc_vars = function()
+		return {
+			key = G.GAME.modifiers.entr_gfb and "m_entr_disavowed_gfb"
+		}
 	end
 }
 
@@ -91,7 +96,7 @@ Entropy.Enhancement{
 			}
 		end
 	end,
-	entr_credits = {
+	slib_credits = {
 		art = {"Lil. Mr. Slipstream"}
 	}
 }
@@ -286,7 +291,7 @@ Entropy.Enhancement{
 			}))
 		end
 	end,	
-	entr_credits = {
+	slib_credits = {
 		art = {"gudusername_53951"}
 	},
 	demicoloncompat = true
@@ -333,7 +338,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"aduckted"}
     },
     demicoloncompat = true,
@@ -416,7 +421,7 @@ Entropy.Enhancement{
 			}
 		end
 	end,
-	entr_credits = {
+	slib_credits = {
 		art = {"Lil. Mr. Slipstream"}
 	}
 }
@@ -459,7 +464,7 @@ Entropy.Enhancement{
 			end
 		end
 	end,
-	entr_credits = {
+	slib_credits = {
 		art = {"Lil. Mr. Slipstream"}
 	}
 }
@@ -505,7 +510,6 @@ Entropy.Enhancement{
 			G.E_MANAGER:add_event(Event{
 				func = function()
 					SMODS.destroy_cards(card)
-					card.ability.temporary2 = true
 					return true
 				end
 			})
@@ -560,7 +564,7 @@ Entropy.Enhancement{
 			return {}
         end
 	end,
-	entr_credits = {
+	slib_credits = {
 		art = {"Lil. Mr. Slipstream"}
 	}
 }

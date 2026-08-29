@@ -73,7 +73,7 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
         end,
         loc_vars = function(self, info_queue, card)
         end,
-        entr_credits = {
+        slib_credits = {
             art = {"Grahkon"}
         }
     }
@@ -107,7 +107,7 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
                 )
             end
         end,
-        entr_credits = {
+        slib_credits = {
             art = {"Lil. Mr. Slipstream"}
         }
     }

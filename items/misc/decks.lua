@@ -14,13 +14,10 @@ Entropy.Back{
         G.GAME.modifiers.entr_twisted = true
         G.GAME.round_resets.path_toggled = true
         G.GAME.entr_alt = not G.GAME.entr_alt
-        G.GAME.round_resets.blind_choices.Boss = get_new_boss()
-        G.GAME.round_resets.blind_choices.Small = get_new_small()
-        G.GAME.round_resets.blind_choices.Big = get_new_big()
         ease_background_colour{new_colour = Spectrallib.get_bg_colour(), contrast = 1}
         if G.ARGS.spin then G.ARGS.spin.real = (G.SETTINGS.reduced_motion and 0 or 1)*(G.GAME.entr_alt and 0.3 or -0.3) end
     end,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}}
+    slib_credits = {art = {"Lil. Mr. Slipstream"}}
 }
 
 Entropy.Back{
@@ -37,7 +34,7 @@ Entropy.Back{
     apply = function(self)
         G.GAME.modifiers.ccd2 = true
     end,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}}
+    slib_credits = {art = {"Lil. Mr. Slipstream"}}
 }
 
 
@@ -68,7 +65,7 @@ Entropy.Back{
         local c = create_card("Spectral", G.consumeables, nil, nil, nil, nil, "c_entr_destiny") 
         c.ability.cry_absolute = true
         c.ability.entr_aleph = true
-        c.ability.eternal = true
+        c:add_sticker("eternal", true)
         c:add_to_deck()
         G.consumeables:emplace(c)
         c:set_edition("e_negative")
@@ -76,7 +73,7 @@ Entropy.Back{
       end}))
   end,
   config = { vouchers = { "v_magic_trick", "v_illusion" } },
-  entr_credits = {
+  slib_credits = {
     art = {"Lil. Mr. Slipstream"}
   }
 }
@@ -97,7 +94,7 @@ Entropy.Back{
     Entropy.last_csl = nil
     Entropy.last_slots = nil
   end,
-  entr_credits = {
+  slib_credits = {
       idea = {"cassknows"},
       art = {"Lil. Mr. Slipstream"}
   },
@@ -162,7 +159,7 @@ Entropy.Back{
         end
     end
   end,
-  entr_credits = {
+  slib_credits = {
     art = {"mailingway"}
   }
 }
@@ -218,10 +215,14 @@ function Card:generate_UIBox_ability_table(vars_only)
         self.config.center = center
         self.ability.name = center.name
         self.ability.set = center.set
-        local ret = generate_UIBox_ability_tableref(self, vars_only)
+        local ok, ret = pcall(generate_UIBox_ability_tableref, self, vars_only)
         self.ability = a
         self.config.center = conf
-        return ret
+        if ok then
+            return ret
+        else
+            return generate_UIBox_ability_tableref(self, vars_only)
+        end
     else
         return generate_UIBox_ability_tableref(self, vars_only)
     end
@@ -288,7 +289,7 @@ Entropy.Back{
     change_shop_size(-1)
     G.GAME.modifiers.glitched_items = (G.GAME.modifiers.glitched_items or 1) + 1
   end,
-  entr_credits = {
+  slib_credits = {
     art = {"LFMoth"}
   }
 }
@@ -394,15 +395,12 @@ if CardSleeves then
         G.GAME.modifiers.entr_twisted = true
         G.GAME.round_resets.path_toggled = true
         G.GAME.entr_alt = not G.GAME.entr_alt
-        G.GAME.round_resets.blind_choices.Boss = get_new_boss()
-        G.GAME.round_resets.blind_choices.Small = get_new_small()
-        G.GAME.round_resets.blind_choices.Big = get_new_big()
         ease_background_colour{new_colour = Spectrallib.get_bg_colour(), contrast = 1}
         if G.ARGS.spin then
           G.ARGS.spin.real = (G.SETTINGS.reduced_motion and 0 or 1)*(G.GAME.entr_alt and 0.3 or -0.3)
         end
       end,
-      entr_credits = {art = {"Lil. Mr. Slipstream"}}
+      slib_credits = {art = {"Lil. Mr. Slipstream"}}
     }
     CardSleeves.Sleeve {
       key = "ccd2",
@@ -411,7 +409,7 @@ if CardSleeves then
       apply = function()
         G.GAME.modifiers.ccd2 = true
       end,
-      entr_credits = {art = {"Lil. Mr. Slipstream"}}
+      slib_credits = {art = {"Lil. Mr. Slipstream"}}
     }
 
     CardSleeves.Sleeve {
@@ -435,14 +433,14 @@ if CardSleeves then
             local c = create_card("Spectral", G.consumeables, nil, nil, nil, nil, "c_entr_destiny") 
             c.ability.cry_absolute = true
             c.ability.entr_aleph = true
-            c.ability.eternal = true
+            c:add_sticker("eternal", true)
             c:add_to_deck()
             G.consumeables:emplace(c)
             c:set_edition("e_negative")
             return true
           end}))
       end,
-      entr_credits = {art = {"Lil. Mr. Slipstream"}}
+      slib_credits = {art = {"Lil. Mr. Slipstream"}}
     }
 
   CardSleeves.Sleeve {
@@ -455,7 +453,7 @@ if CardSleeves then
       Entropy.last_csl = nil
       Entropy.last_slots = nil
     end,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}}
+    slib_credits = {art = {"Lil. Mr. Slipstream"}}
   }
 
 
@@ -517,7 +515,7 @@ if CardSleeves then
 		change_shop_size(-1)
 		G.GAME.modifiers.glitched_items = (G.GAME.modifiers.glitched_items or 0) + 2
     end,
-    entr_credits = {art = {"LFMoth"}}
+    slib_credits = {art = {"LFMoth"}}
   }
 
   CardSleeves.Sleeve {

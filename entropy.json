@@ -1,0 +1,21 @@
+{
+    "name": "Entropy",
+    "id": "entr",
+    "version": "2.0.0",
+    "website_url": "https://github.com/lord-ruby/Entropy/tree/main",
+    "description": "A Chaotic Balatro mod focused on Inverted Consumables and expanding on Vanilla mechanics in various other ways. Generally Vanilla adjacent but not exactly Vanilla+",
+    "prefix": "entr",
+    "author": ["Ruby", "The Entropy Discord"],
+    "main_file": "Entropy.lua",
+    "priority": 666,
+    "badge_colour": "FE0001",
+    "dependencies": [
+        "Steamodded (>=26.829.0)",
+        "Spectrallib"
+    ],
+    "conflicts": [
+    ],
+    "allow_redistribution": true,
+    "icon_path": "entr_icon.png",
+    "badge_shader": "entr_brimstone_badge"
+}

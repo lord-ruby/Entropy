@@ -122,7 +122,7 @@ Entropy.Joker{
 			end
 		end
     end,
-    entr_credits = {
+    slib_credits = {
         idea = {"cassknows"},
         art = {"cassknows"}
     }

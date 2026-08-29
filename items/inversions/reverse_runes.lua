@@ -104,7 +104,7 @@ Entropy.Consumable{
     force_use = function(self, card)
         self:use(card)
     end,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
 }
 
 Entropy.create_mark("rage", 7052, {x = 1, y = 4})
@@ -172,7 +172,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -231,7 +231,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -294,7 +294,7 @@ Entropy.Consumable{
         }
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -304,7 +304,7 @@ Entropy.create_mark("chains", 7055, {x = 4, y = 4}, function(self, rune, context
     if context.hand_drawn and not rune.ability.triggered then
         local card = context.hand_drawn[1]
         if card then
-            card.ability.eternal = true
+            card:add_sticker("eternal", true)
         end
         rune.ability.triggered = true
     end
@@ -338,7 +338,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -395,14 +395,14 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
 }
 
 Entropy.create_mark("envy", 7057, {x = 6,y = 4}, function(self, mark, context)
-    if #G.jokers.cards > 0 then
+    if G.jokers and #G.jokers.cards > 0 then
         if not mark.ability.joker_number then mark.ability.joker_number = pseudorandom("entr_envy_joker", 1, #G.jokers.cards) end
         if context.retrigger_rune_check and context.other_card == G.jokers.cards[mark.ability.joker_number] then
             return {
@@ -450,7 +450,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -523,7 +523,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -574,7 +574,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -737,7 +737,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -819,7 +819,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -869,7 +869,7 @@ Entropy.Consumable{
     use = function(self, card)
         Entropy.handle_card_limit(G.consumeables, math.min(card.ability.slots, 20))
         for i, v in pairs(G.I.CARD) do
-            if v.ability and v.ability.consumeable then v.ability.eternal = true end
+            if v.ability and v.ability.consumeable then v:add_sticker("eternal", true) end
         end
         G.E_MANAGER:add_event(Event({trigger = 'after', delay = 0.2, func = function()
             play_sound('entr_pacts')
@@ -888,7 +888,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -932,7 +932,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1003,7 +1003,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1132,7 +1132,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1181,7 +1181,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1228,7 +1228,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1267,7 +1267,7 @@ Entropy.Consumable{
         end 
         local joker = pseudorandom_element(cards, pseudoseed("entr_strength"))
         if joker then
-            joker.ability.eternal = true
+            joker:add_sticker("eternal", true)
             joker:juice_up()
         end
         local hand = "High Card"
@@ -1289,7 +1289,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1354,7 +1354,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1419,7 +1419,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1465,7 +1465,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1518,7 +1518,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1581,7 +1581,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1654,7 +1654,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end
@@ -1707,7 +1707,7 @@ Entropy.Consumable{
         return true
     end,
     demicoloncompat = true,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}},
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
     end

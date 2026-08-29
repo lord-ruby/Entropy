@@ -1,0 +1,448 @@
+SMODS.Atlas {
+    key = "exotic_jokers",
+    path = "exotic_jokers.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas {
+    key = "jokers",
+    path = "jokers.png",
+    px = 71,
+    py = 95
+}
+
+SMODS.Atlas {
+    key = "consumables",
+    path = "other_consumables.png",
+    px = 71,
+    py = 95
+}
+SMODS.Atlas { 
+    key = 'enhancements', 
+    path = 'enhancements.png', 
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas { 
+    key = 'seals', 
+    path = 'seals.png', 
+    px = 71, 
+    py = 95 
+}
+Entropy.GamesetAtlas = SMODS.Atlas {
+	key = "gameset",
+	path = "entr_gameset.png",
+	px = 29,
+	py = 29,
+}
+
+SMODS.Atlas { 
+    key = 'entr_stickers', 
+    path = 'stickers.png', 
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas { 
+    key = 'antireal_joker', 
+    path = 'antireal_joker.png', 
+    px = 71, 
+    py = 95
+}
+
+SMODS.Atlas { 
+    key = 'reverse_legendary', 
+    path = 'reverse_legendaries.png', 
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas {
+    key = 'tags',
+    path = 'tags.png',
+    px = 34,
+    py = 34
+}
+
+SMODS.Atlas {
+    key = 'ascendant_tags',
+    path = 'ascendant_tags.png',
+    px = 34,
+    py = 34
+}
+
+SMODS.Atlas {
+    key = 'shiny_tags',
+    path = 'shiny_tags.png',
+    px = 34,
+    py = 34
+}
+
+
+SMODS.Atlas {
+    key = 'shiny_asc_tags',
+    path = 'shiny_ascendant_tags.png',
+    px = 34,
+    py = 34
+}
+
+SMODS.Atlas { 
+    key = 'vouchers', 
+    path = 'vouchers.png', 
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas { 
+    key = 'booster', 
+    path = 'boosters.png', 
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas { 
+    key = 'fraud', 
+    path = 'reverse_tarots.png', 
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas { 
+    key = 'decks', 
+    path = 'decks.png', 
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas { 
+    key = 'crypt_deck', 
+    path = 'crypt_decks.png', 
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas { 
+    key = 'sleeves', 
+    path = 'sleeves.png', 
+    px = 73, 
+    py = 95 
+}
+
+SMODS.Atlas {
+    key = 'blinds', 
+    path = 'blinds.png', 
+    px = 34, 
+    py = 34, 
+    frames = 21, 
+    atlas_table = 'ANIMATION_ATLAS'
+}
+
+SMODS.Atlas {
+    key = 'redroom', 
+    path = 'blinds.png', 
+    px = 34, 
+    py = 34, 
+    frames = 8, 
+    atlas_table = 'ANIMATION_ATLAS'
+}
+
+SMODS.Atlas { 
+    key = 'ruby_atlas', 
+    path = 'ruby.png', 
+    px = 71, 
+    py = 95 
+}
+SMODS.Atlas { 
+    key = 'grahkon_atlas', 
+    path = 'grahkon.png', 
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas {
+    key = 'stakes', 
+    path = 'stakes.png', 
+    px = 29, 
+    py = 29
+}
+
+SMODS.Atlas { 
+    key = 'xekanos_atlas', 
+    path = 'xekanos.png', 
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas { 
+    key = 'ee_atlas', 
+    path = 'ee_atlas.png', 
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas { key = 'hc_nilr', path = 'entr_nilrank_hc.png', px = 71, py = 95 }
+SMODS.Atlas { key = 'lc_nilr', path = 'entr_nilrank_lc.png', px = 71, py = 95 }
+SMODS.Atlas { key = 'hc_nils', path = 'entr_nilsuit_hc.png', px = 71, py = 95 }
+SMODS.Atlas { key = 'lc_nils', path = 'entr_nilsuit_lc.png', px = 71, py = 95 }
+
+SMODS.Atlas {
+	key = "entr_achievements",
+	path = "achievements.png",
+	px = 66,
+	py = 66,
+}
+
+
+SMODS.Atlas {
+    key = 'altblinds', 
+    path = 'alt_blinds.png', 
+    px = 34, 
+    py = 34, 
+    frames = 1, 
+    atlas_table = 'ANIMATION_ATLAS'
+}
+
+SMODS.Atlas {
+    key = 'altshowdowns', 
+    path = 'alt_showdowns.png', 
+    px = 34, 
+    py = 34, 
+    frames = 1, 
+    atlas_table = 'ANIMATION_ATLAS'
+}
+
+SMODS.Atlas { 
+    key = 'placeholder', 
+    path = 'placeholders.png', 
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas { 
+    key = 'undiscovered', 
+    path = 'undiscovered.png', 
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas { 
+    key = 'rune_indicators', 
+    path = 'rune_indicators.png', 
+    px = 40, 
+    py = 40
+}
+
+SMODS.Atlas { 
+    key = 'rune_atlas', 
+    path = 'runes.png',
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas { 
+    key = 'consumables2', 
+    path = 'second_consumables.png',
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas { 
+    key = 'cry_banana', 
+    path = 'cry_banana.png',
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas { 
+    key = 'crossmod_jokers', 
+    path = 'crossmod/crossmod_jokers.png',
+    px = 71, 
+    py = 95 
+}
+SMODS.Atlas { 
+    key = 'crossmod_consumables', 
+    path = 'crossmod/crossmod_consumables.png',
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas { 
+    key = 'entr_stake_stickers', 
+    path = 'stake_stickers.png', 
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas { 
+    key = 'prismatic_shard', 
+    path = 'prismatic_shard.png', 
+    px = 71, 
+    py = 95 
+}
+
+SMODS.Atlas {
+    key = 'crossmod_tags',
+    path = 'crossmod/crossmod_tags.png',
+    px = 34,
+    py = 34
+}
+
+if (SMODS.Mods.vallkarri or {}).can_load then
+    SMODS.Atlas {
+        key = "aes",
+        path = "crossmod/valk_aesthetics.png",
+        px = 71,
+        py = 95,
+    }
+end
+
+SMODS.Atlas {
+    key = 'curses_big',
+    path = 'curses_big.png',
+    px = 75,
+    py = 75,
+    atlas_table = 'ANIMATION_ATLAS',
+    frames = 17,
+    fps = 8
+}
+
+SMODS.Atlas {
+        key = "marked",
+        path = "hold_me.png",
+        px = 71,
+        py = 95,
+    }
+
+if (SMODS.Mods.Blindside or {}).can_load then
+    SMODS.Atlas {
+        key = 'blindside_tags',
+        path = 'crossmod/blindside_tags.png',
+        px = 34,
+        py = 34
+    }
+    SMODS.Atlas {
+        key = 'blindside_blinds',
+        path = 'crossmod/blindside_blinds.png',
+        px = 71,
+        py = 95
+    }
+end
+
+if FinisherBossBlindStringMap then
+    SMODS.Atlas {
+        key = 'finity_jokers',
+        path = 'crossmod/finity_jokers.png',
+        px = 71,
+        py = 95
+    }
+end
+
+SMODS.Atlas {
+    key = "searing",
+    path = "searingjokesheet.png",
+    px = 43,
+    py = 9,
+}
+
+SMODS.Atlas {
+    key = "planetarium",
+    path = "planetarium.png",
+    px = 71,
+    py = 95,
+}
+
+SMODS.Atlas {
+    key = "modlogo",
+    path = "logo.png",
+    px = 583,
+    py = 280,
+}
+
+SMODS.Atlas {
+    key = "apeirostemma",
+    path = "apeirostemma.png",
+    px = 71,
+    py = 95,
+}
+
+SMODS.Atlas {
+    key = "rubysoul_big",
+    path = "ruby.png",
+    px = 71*3,
+    py = 95,
+}
+
+SMODS.Atlas {
+    key = "titlecard",
+    path = "titlecard.png",
+    px = 122,
+    py = 122,
+}
+
+SMODS.Atlas {
+    key = "curse_icons",
+    path = "curse_icons.png",
+    px = 34,
+    py = 34,
+}
+
+SMODS.Atlas {
+    key = "void_jokers",
+    path = "void_jokers.png",
+    px = 71,
+    py = 95,
+}
+
+SMODS.Atlas {
+    key = 'ee_blinds',
+    path = 'superboss/ee_blinds.png', 
+    px = 42, 
+    py = 42, 
+    frames = 12, 
+    atlas_table = 'ANIMATION_ATLAS'
+}
+
+SMODS.Atlas {
+    key = 'intro_door',
+    path = 'superboss/intro_door.png', 
+    px = 480, 
+    py = 480, 
+    frames = 1,
+    fps = 1,
+    atlas_table = 'ANIMATION_ATLAS'
+}
+SMODS.Atlas {
+    key = 'intro_door_anim',
+    path = 'superboss/intro_door_anim.png', 
+    px = 480, 
+    py = 480, 
+    frames = 5,
+    fps = 2,
+    atlas_table = 'ANIMATION_ATLAS'
+}
+
+SMODS.Atlas {
+    key = 'hypnotism',
+    path = 'hypnotism.png', 
+    px = 71, 
+    py = 95, 
+    frames = 3,
+    fps = 5,
+    atlas_table = 'ANIMATION_ATLAS'
+}
+
+SMODS.Atlas {
+    key = 'tap',
+    path = 'tap.png', 
+    px = 96, 
+    py = 96, 
+}
+
+SMODS.Atlas {
+    key = 'karma',
+    path = 'karma.png', 
+    px = 32, 
+    py = 32, 
+}

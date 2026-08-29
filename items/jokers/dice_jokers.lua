@@ -20,6 +20,7 @@ Entropy.Joker{
             }
         end
     end,
+    attributes = {"mod_chance"},
 }
 
 Entropy.Joker{
@@ -52,6 +53,7 @@ Entropy.Joker{
             }
         end
     end,
+    attributes = {"mod_chance"},
 }
 
 Entropy.Joker{
@@ -69,6 +71,7 @@ Entropy.Joker{
     pos = { x = 2, y = 5 },
     atlas = "jokers",
     demicoloncompat = true,
+    attributes = {"mod_chance"},
 }
 
 Entropy.Joker{
@@ -122,6 +125,7 @@ Entropy.Joker{
             }
         end
     end,
+    attributes = {"mod_chance", "scaling", "reset"},
 }
 
 Entropy.Joker{
@@ -200,6 +204,7 @@ Entropy.Joker{
             })
         end
     end,
+    attributes = {"mod_chance", "scaling", "destroy_card", "chance"},
 }
 
 Entropy.Joker{
@@ -278,6 +283,7 @@ Entropy.Joker{
             end
         end
     end,
+    attributes = {"chance", "retrigger", "joker", "enhancements"},
 }
 
 Entropy.Joker{
@@ -300,28 +306,48 @@ Entropy.Joker{
         max_m2 = 1.25
     },
     pools = {["Dice"] = true},
+    loc_vars = function()
+        return {
+            key = G.GAME.modifiers.entr_gfb and "j_entr_d100_gfb"
+        }
+    end,
     calculate = function(self, card, context)
-        if context.mod_probability and context.trigger_obj and not context.blueprint and not context.repetition and context.trigger_obj.ability then
-            local num = context.numerator * (context.trigger_obj.ability.immutable and context.trigger_obj.ability.immutable.d100_modifier or 1)
-            local denom = context.denominator * (context.trigger_obj.ability.immutable and context.trigger_obj.ability.immutable.d100_d_modifier or 1)
-            return {
-                numerator = num,
-                denominator = denom
-            }
-        end
-        if context.pseudorandom_result and context.trigger_obj then
-            local pcard = context.trigger_obj
-            if not pcard.ability.immutable then
-                pcard.ability.immutable = {}
+        if G.GAME.modifiers.entr_gfb then
+            if context.setting_blind then
+                local cards = {}
+                for i, v in pairs(G.jokers.cards) do
+                    if v ~= card then
+                        cards[#cards+1] = v
+                    end
+                end
+                Entropy.flip_then(cards, function(c)
+                    c:set_ability(SMODS.poll_object{set = "Joker", guaranteed = true})
+                end)
             end
-            pcard.ability.immutable.d100_d_modifier = pseudorandom("d100_d", card.ability.min_m * 1000, card.ability.max_m * 1000)/1000
-            pcard.ability.immutable.d100_modifier = pseudorandom("d100", card.ability.min_m2 * 1000, card.ability.max_m2 * 1000)/1000
-            return {
-                message = localize("k_randomised"),
-                colour = G.C.GREEN
-            }
+        else
+            if context.mod_probability and context.trigger_obj and not context.blueprint and not context.repetition and context.trigger_obj.ability then
+                local num = context.numerator * (context.trigger_obj.ability.immutable and context.trigger_obj.ability.immutable.d100_modifier or 1)
+                local denom = context.denominator * (context.trigger_obj.ability.immutable and context.trigger_obj.ability.immutable.d100_d_modifier or 1)
+                return {
+                    numerator = num,
+                    denominator = denom
+                }
+            end
+            if context.pseudorandom_result and context.trigger_obj then
+                local pcard = context.trigger_obj
+                if not pcard.ability.immutable then
+                    pcard.ability.immutable = {}
+                end
+                pcard.ability.immutable.d100_d_modifier = pseudorandom("d100_d", card.ability.min_m * 1000, card.ability.max_m * 1000)/1000
+                pcard.ability.immutable.d100_modifier = pseudorandom("d100", card.ability.min_m2 * 1000, card.ability.max_m2 * 1000)/1000
+                return {
+                    message = localize("k_randomised"),
+                    colour = G.C.GREEN
+                }
+            end
         end
     end,
+    attributes = {"mod_chance", "modify_card"},
 }
 
 Entropy.Joker{
@@ -343,6 +369,7 @@ Entropy.Joker{
     calculate = function(self, card, context)
         if context.setting_blind then
             if #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit then
+                G.GAME.joker_buffer = G.GAME.joker_buffer + 1
                 G.E_MANAGER:add_event(Event{
                     func = function()
                         local card = SMODS.add_card{
@@ -350,14 +377,16 @@ Entropy.Joker{
                             area = G.jokers,
                             key_append = "entr_capsule_machine"
                         }
-                        card.ability.perishable = true
-                        card.ability.perish_tally = 5
+                        card:add_sticker("perishable", true)
+                        G.GAME.joker_buffer = 0
                         return true
                     end
                 })
+                return nil, true
             end
         end
     end,
+    attributes = {"generation", "joker"},
 }
 
 Entropy.Joker{
@@ -414,7 +443,8 @@ Entropy.Joker{
     use = function(self, card)
         card.ability.left = card.ability.left - 1
         Entropy.reduce_cards(Entropy.get_highlighted_cards({G.jokers}, card, 1, 1), card)
-    end
+    end,
+    attributes = {"modify_card", "joker"},
 }
 
 Entropy.Joker{
@@ -483,11 +513,12 @@ Entropy.Joker{
             if G.GAME.modifiers.glitched_items then
                 local gc = {p_card.config.center.key}
                 for i = 1, G.GAME.modifiers.glitched_items - 1 do
-                    gc[#gc+1] = Entropy.get_pooled_center(p_card.config.center.set).key
+                    gc[#gc+1] = SMODS.poll_object{set = p_card.config.center.set}
                 end
                 p_card.ability.glitched_crown = gc
             end
         end
     end,
-    entr_credits = {idea = {"Grahkon"}}
+    slib_credits = {idea = {"Grahkon"}},
+    attributes = {"economy", "generation"},
 }

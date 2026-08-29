@@ -157,7 +157,7 @@ function Entropy.register_reverse_planet(key, handname, sprite_pos, func, cost,l
     force_use = function(self, card, area)
       self:use(card, area)
     end,
-    entr_credits = art and {
+    slib_credits = art and {
       art = {art}
     } or nil
   }
@@ -209,18 +209,18 @@ function Entropy.bdwarf(self, card, area, copier, number)
 end
 
 Entropy.ReversePlanets = {
-  {name="Pair",key="mercury",sprite_pos={x=7,y=0}, new_key="hydrae", art="Binary"},
-  {name="Three of a Kind",key="venus",sprite_pos={x=8,y=0},new_key="vega", art="Binary"},
-  {name="Full House",key="earth",sprite_pos={x=9,y=0},new_key="polaris", art="Binary"},
-  {name="Four of a Kind",key="mars",sprite_pos={x=10,y=0},new_key="cassiopeiae", art="Binary"},
-  {name="Flush",key="jupiter",sprite_pos={x=11,y=0},new_key="pegasi", art="Binary"},
-  {name="Straight",key="saturn",sprite_pos={x=12,y=0},new_key="persei", art="Binary"},
-  {name="Two Pair",key="uranus",sprite_pos={x=6,y=1},new_key="ophiuchi", art="Binary"},
-  {name="Straight Flush",key="neptune",sprite_pos={x=7,y=1},new_key="carinae", art="Binary"},
-  {name="High Card",key="pluto",sprite_pos={x=6,y=0},new_key="regulus", art="Binary"},
-  {name="Five of a Kind",key="planet_x",sprite_pos={x=9,y=1},new_key="tauri", art="Binary"},
-  {name="Flush House",key="ceres",sprite_pos={x=8,y=1},new_key="procyon", art="Binary"},
-  {name="Flush Five",key="eris",sprite_pos={x=10,y=1},new_key="sirius", art="Binary"},
+  {name="Pair",key="mercury",sprite_pos={x=7,y=0}, new_key="hydrae", art="Callirhoe"},
+  {name="Three of a Kind",key="venus",sprite_pos={x=8,y=0},new_key="vega", art="Callirhoe"},
+  {name="Full House",key="earth",sprite_pos={x=9,y=0},new_key="polaris", art="Callirhoe"},
+  {name="Four of a Kind",key="mars",sprite_pos={x=10,y=0},new_key="cassiopeiae", art="Callirhoe"},
+  {name="Flush",key="jupiter",sprite_pos={x=11,y=0},new_key="pegasi", art="Callirhoe"},
+  {name="Straight",key="saturn",sprite_pos={x=12,y=0},new_key="persei", art="Callirhoe"},
+  {name="Two Pair",key="uranus",sprite_pos={x=6,y=1},new_key="ophiuchi", art="Callirhoe"},
+  {name="Straight Flush",key="neptune",sprite_pos={x=7,y=1},new_key="carinae", art="Callirhoe"},
+  {name="High Card",key="pluto",sprite_pos={x=6,y=0},new_key="regulus", art="Callirhoe"},
+  {name="Five of a Kind",key="planet_x",sprite_pos={x=9,y=1},new_key="tauri", art="Callirhoe"},
+  {name="Flush House",key="ceres",sprite_pos={x=8,y=1},new_key="procyon", art="Callirhoe"},
+  {name="Flush Five",key="eris",sprite_pos={x=10,y=1},new_key="sirius", art="Callirhoe"},
 }
 -- Spectrum Compat
 if (SMODS.Mods["SpectrumAPI"] or {}).can_load then
@@ -271,13 +271,13 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
   }
   Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="cry_Bulwark", new_key = "dyson_swarm", key="asteroidbelt",sprite_pos={x=12,y=1},prefix = "cry",set_badges = function(self, card, badges)
     badges[1] = create_badge(localize("k_planet_dyson_swarm"), get_type_colour(self or card.config, card), nil, 1.2)
-  end, art="Binary"}
+  end, art="Callirhoe"}
   Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="cry_Clusterfuck", new_key = "dark_matter", key="void",sprite_pos={x=11,y=1},prefix = "cry",set_badges = function(self, card, badges)
     badges[1] = create_badge("", get_type_colour(self or card.config, card), nil, 1.2)
-  end, art="Binary"}
+  end, art="Callirhoe"}
   Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="cry_UltPair", key="marsmoons", new_key = "binarystars", sprite_pos={x=6,y=2},prefix = "cry",set_badges = function(self, card, badges)
     badges[1] = create_badge(localize("k_planet_binary_star"), get_type_colour(self or card.config, card), nil, 1.2)
-  end, art="Binary"}
+  end, art="Callirhoe"}
   Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="cry_None", key="nibiru", new_key = "deadcore", sprite_pos={x=11,y=2},prefix = "cry",set_badges = function(self, card, badges)
     
 		if badges[1] and badges[1].remove then
@@ -301,7 +301,7 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
   func = function(self,card,area,copier,number)
     Entropy.strange_single(self,card,area,copier,number)
   end,
-  calc = function() end, art="Binary"
+  calc = function() end, art="Callirhoe"
   }
   Entropy.ReversePlanets[#Entropy.ReversePlanets+1] = {name="", key="sunplanet", new_key = "nemesis", sprite_pos={x=10,y=2},prefix = "cry", config = {extra = 0.1},
     loc_vars = function(self,q,card) 

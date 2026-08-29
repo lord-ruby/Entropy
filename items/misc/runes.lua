@@ -261,9 +261,11 @@ function add_rune(_tag, no_copy)
     discover_card(G.P_RUNES[_tag.key])
     unlock_card(G.P_RUNES[_tag.key])
   
-    for i = 1, #G.runes do
-        if G.runes[i].apply_to_run then
-            G.runes[i]:apply_to_run({type = 'tag_add', tag = _tag})
+    if not _tag.from_load then
+        for i = 1, #G.runes do
+            if G.runes[i].apply_to_run then
+                G.runes[i]:apply_to_run({type = 'tag_add', tag = _tag})
+            end
         end
     end
     
@@ -281,7 +283,7 @@ function add_rune(_tag, no_copy)
     if G.P_RUNES[_tag.key] and G.P_RUNES[_tag.key].add_to_deck then
         G.P_RUNES[_tag.key]:add_to_deck(_tag)
     end
-    if not no_copy then
+    if not no_copy and not _tag.from_load then
         SMODS.calculate_context({ entr_add_rune = true, rune = _tag })
     end
     if G.runes_visible then
@@ -428,7 +430,7 @@ function Entropy.create_rune(key, pos, indicator_key, order, credits, loc_vars, 
         atlas = "rune_atlas",
         pos = pos,
         soul_pos = soul_pos,
-        entr_credits = credits,
+        slib_credits = credits,
         order = order,
         key = key,
         soul_set = spectral and "Rune" or nil,
@@ -746,9 +748,6 @@ Entropy.RuneTag{
             G.E_MANAGER:add_event(Event{
                 func = function()
                     SMODS.destroy_cards(cards, nil, true)
-                    for i, v in pairs(cards) do
-                        v.ability.temporary2 = true
-                    end
                     return true
                 end
             })

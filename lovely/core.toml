@@ -106,3 +106,27 @@ if G.GAME.entr_dating_start then
   Entropy.draw_dating()
 end
 '''
+
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/overrides.lua"]'
+match_indent = true
+position = 'at'
+pattern = '''
+assert(not edition_type, "Tried to apply more than one edition.")
+'''
+payload = '''
+if edition_type then return end
+'''
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils/weights.lua"]'''
+pattern = '''
+elseif set == 'Blind' then default = "bl_hook"
+'''
+position = "at"
+payload = '''
+elseif set == 'Blind' then default = args.blind_type == "small" and "bl_small" or args.blind_type == "big" and "bl_big" or "bl_hook"
+'''
+match_indent = true

@@ -39,7 +39,7 @@ Entropy.Consumable{
     force_use = function(self, card)
         self:use(card)
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
     },
 }
@@ -75,7 +75,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
     },
     demicoloncompat = true,
@@ -120,7 +120,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
     },
     demicoloncompat = true,
@@ -185,7 +185,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         idea = {"user324897"}
     },
     --TODO figure this shit out when force used
@@ -229,7 +229,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         idea = {"CapitalChirp"},
         art = {"Lil. Mr. Slipstream"}
     },
@@ -271,7 +271,7 @@ Entropy.Consumable{
     loc_vars = function(self, q, card)
         q[#q+1] = G.P_CENTERS.m_entr_disavowed
     end,
-    entr_credits = {
+    slib_credits = {
         idea = {"CapitalChirp"},
         art = {"Lil. Mr. Slipstream"}
     },
@@ -336,7 +336,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
     },
     demicoloncompat = true,
@@ -420,7 +420,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         idea = {"cassknows"},
     },
     demicoloncompat = true,
@@ -485,7 +485,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         idea = {"user324897"},
         art = {"Lil. Mr. Slipstream"}
     },
@@ -546,7 +546,7 @@ Entropy.Consumable{
             main_end = main_end[1]
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
     },
     demicoloncompat = true,
@@ -591,7 +591,7 @@ Entropy.Consumable{
                 guaranteed = true
             })
             v:set_edition(edition)
-            v.ability.eternal = true
+            v:add_sticker("eternal", true)
 
         end
     end,
@@ -607,7 +607,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         idea = {"user324897"}
     },
     demicoloncompat = true,
@@ -666,7 +666,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"},
     },
     demicoloncompat = true,
@@ -966,7 +966,7 @@ Entropy.Consumable{
         }
     end,
     no_select = true,
-    entr_credits = {
+    slib_credits = {
         custom = {key="card_art", text="gudusername_53951"}
     },
     demicoloncompat = true,
@@ -1046,7 +1046,7 @@ Entropy.Consumable{
         return true
 	end,
     no_select = true,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
     },
     demicoloncompat = true,
@@ -1109,6 +1109,79 @@ Entropy.Consumable{
         }
     },
     
+    order = 2000 + 32,
+    key = "ruin",
+    set = "Omen",
+    
+    inversion = "c_entr_destiny",
+	
+    atlas = "consumables2",
+    config = {
+        extra = {
+            create = 4,
+            limit = 1
+        }
+    },
+	pos = {x=0,y=4},
+    use = function(self, card, area, copier)
+        local num = card.ability.extra.create
+        local card = pseudorandom_element(G.playing_cards, pseudoseed("entr_ruin"))
+        for i = 1, num do
+            if G.hand and #G.hand.cards > 0 then
+                G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+                local _card = copy_card(card, nil, nil, G.playing_card)
+                _card:add_to_deck()
+                _card:set_edition(SMODS.poll_object{type = "Edition", guaranteed = true, no_negative = true})
+                _card:set_ability(SMODS.poll_object{type = "Enhanced", guaranteed = true})
+                G.deck.config.card_limit = G.deck.config.card_limit + 1
+                table.insert(G.playing_cards, _card)
+                G.hand:emplace(_card)
+                _card.states.visible = nil
+
+                G.E_MANAGER:add_event(Event({
+                    func = function()
+                        _card:start_materialize()
+                        return true
+                    end
+                })) 
+            else
+                G.playing_card = (G.playing_card and G.playing_card + 1) or 1
+                local _card = copy_card(card, nil, nil, G.playing_card)
+                _card:add_to_deck()
+                _card:set_edition(SMODS.poll_object{type = "Edition", guaranteed = true, no_negative = true})
+                _card:set_ability(SMODS.poll_object{type = "Enhanced", guaranteed = true})
+                G.deck.config.card_limit = G.deck.config.card_limit + 1
+                table.insert(G.playing_cards, _card)
+                G.deck:emplace(_card)
+            end
+        end
+        SMODS.destroy_cards(Entropy.get_highlighted_cards({G.jokers}, card, 1, num))
+    end,
+    can_use = function(self, card)
+        local num = #Entropy.get_highlighted_cards({G.jokers}, card, 1, card.ability.extra.limit)
+        return num > 0 and num <= card.ability.extra.limit
+	end,
+    loc_vars = function(self, q, card)
+        return {
+            vars = {
+                card.ability.extra.create,
+                card.ability.extra.limit
+            }
+        }
+    end,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
+Entropy.Consumable{
+    dependencies = {
+        items = {
+          "set_entr_inversions",
+        }
+    },
+    
     order = 2000 + 33,
     key = "regenerate",
     set = "Omen",
@@ -1156,7 +1229,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
     },
     demicoloncompat = true,
@@ -1213,7 +1286,7 @@ Entropy.Consumable{
     --soul_pos = { x = 5, y = 0},
     use = function(self, card, area, copier)
         for i, v in pairs(Entropy.get_highlighted_cards({G.jokers}, card, 1, card.ability.limit)) do
-            Entropy.apply_sticker(v, "entr_pure")
+            v:add_sticker("entr_pure", true)
             v:juice_up()
         end
 
@@ -1279,8 +1352,8 @@ Entropy.Consumable{
         Entropy.flip_then(Entropy.get_highlighted_cards({G.consumeables, G.hand, G.pack_cards, G.shop_jokers, G.shop_vouchers, G.shop_booster, G.jokers}, card, 1, card.ability.limit), function(card)
             if card.config.center.key == "j_entr_parakmi" then
                 check_for_unlock({ type = "parakmi_transcend" })
-            end
-            card:set_ability(Entropy.get_pooled_center(Entropy.get_random_set(true)))
+            end            
+            card:set_ability(G.P_CENTERS[SMODS.poll_object{set = Entropy.get_random_set(true)}])
 
         end)
     end,
@@ -1299,7 +1372,7 @@ Entropy.Consumable{
     force_use = function(self, card)
         self:use(card)
     end,
-    entr_credits = {
+    slib_credits = {
         idea = {"cassknows"}
     },
 }
@@ -1311,7 +1384,7 @@ Entropy.Consumable{
         }
     },
     
-    order = 2000 + 36,
+    order = 7024,
     key = "weld",
     set = "Omen",
     
@@ -1347,7 +1420,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
     },
     demicoloncompat = true,

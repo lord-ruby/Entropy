@@ -46,17 +46,17 @@ if (SMODS.Mods["vallkarri"] or {}).can_load then
                     for i, v in pairs(G.shop_jokers.cards) do
                         v:set_edition("e_negative")
                         v:set_eternal(true)
-                        v.ability.eternal = true
+                        v:add_sticker("eternal", true)
                     end
                     for i, v in pairs(G.shop_booster.cards) do
                         v:set_edition("e_negative")
                         v:set_eternal(true)
-                        v.ability.eternal = true
+                        v:add_sticker("eternal", true)
                     end
                     for i, v in pairs(G.shop_vouchers.cards) do
                         v:set_edition("e_negative")
                         v:set_eternal(true)
-                        v.ability.eternal = true
+                        v:add_sticker("eternal", true)
                     end
                     return true
                 end)
@@ -176,7 +176,7 @@ if (SMODS.Mods["vallkarri"] or {}).can_load then
                     v.edition
                 }
             },
-            entr_credits = v.credits
+            slib_credits = v.credits
         }
         order = order + 1
     end

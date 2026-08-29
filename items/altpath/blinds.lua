@@ -354,6 +354,7 @@ Entropy.Blind{
 
 local function _set_iota()
 	G.GAME.iotablind = pseudorandom_element(G.P_BLINDS).key
+	G.GAME.entr_bypass_alt = true
 	while not G.P_BLINDS[G.GAME.iotablind].boss 
 		or G.P_BLINDS[G.GAME.iotablind].boss.showdown 
 		or G.P_BLINDS[G.GAME.iotablind].altpath 
@@ -361,6 +362,7 @@ local function _set_iota()
 	do
 		G.GAME.iotablind = pseudorandom_element(G.P_BLINDS).key
 	end
+	G.GAME.entr_bypass_alt = nil
 end
 
 function Entropy.get_iota()
@@ -489,7 +491,7 @@ end
 
 local always_scoresref = SMODS.always_scores
 function SMODS.always_scores(card, ...)
-	if card.config.center.key == "j_entr_false_vacuum_collapse" or card.config.center.key == "phoenix_a" then return true end
+	if card.config.center.key == "j_entr_false_vacuum_collapse" or card.config.center.key == "phoenix_a" or card.config.center.key == "j_entr_broken_god" then return true end
 	return always_scoresref(card, ...)
 end
 
@@ -616,7 +618,7 @@ Entropy.Blind{
 				G.E_MANAGER:add_event(Event{
 					trigger = "after",
 					func = function()
-						c.ability.eternal = true
+						c:add_sticker("eternal", true)
 						c:juice_up()
 						return true
 					end
@@ -1286,3 +1288,19 @@ Entropy.Blind{
         return G.GAME.entr_alt
     end,
 }
+
+
+SMODS.ScreenShader({
+    key="water",
+    path="water.fs",
+    send_vars = function (sprite, card)
+        local t = G.TIMERS.REAL or 0
+        t = t - 5000*math.floor(t/5000)
+        return {
+            realtime = t,
+        }
+    end,
+    should_apply = function()
+        return G.GAME.entr_alt
+    end
+})

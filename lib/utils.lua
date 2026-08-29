@@ -79,6 +79,7 @@ function Entropy.invert(cards, flip, filter)
                 end
             end
             if i then
+                local shop = c.children.price or nil
                 local ret = {}
                 if c.config.center.calculate then
                     ret = c.config.center:calculate(c, {being_inverted = true}) or {}
@@ -95,6 +96,9 @@ function Entropy.invert(cards, flip, filter)
                         end
                     end
                     c.ability.fromflipside = false
+                    if shop then
+                        create_shop_card_ui(c)
+                    end
                     SMODS.calculate_context({entr_consumable_inverted = true, card = c})
                 end
                 if next(ret or {}) then
@@ -119,6 +123,7 @@ function Entropy.invert(cards, flip, filter)
                 end
             end
             if i then
+                local shop = c.center.price
                 local ret = {}
                 if c.config.center.calculate then
                     ret = c.config.center:calculate(c, {being_inverted = true})
@@ -134,6 +139,9 @@ function Entropy.invert(cards, flip, filter)
                             c.ability.glitched_crown[i] = Entropy.FlipsideInversions[v]
                         end
                     end
+                    if shop then
+                        create_shop_card_ui(c)
+                    end
                     c.ability.fromflipside = false
                     SMODS.calculate_context({entr_consumable_inverted = true, card = c})
                 end
@@ -145,7 +153,7 @@ function Entropy.invert(cards, flip, filter)
     end
 end
 
-function Entropy.seal_spectral(key, sprite_pos, seal,order, inversion, entr_credits, atlas, q_vars)
+function Entropy.seal_spectral(key, sprite_pos, seal,order, inversion, slib_credits, atlas, q_vars)
     Entropy.Consumable{
         dependencies = {
             items = {
@@ -180,7 +188,7 @@ function Entropy.seal_spectral(key, sprite_pos, seal,order, inversion, entr_cred
                 }
             }
         end,
-        entr_credits = entr_credits,
+        slib_credits = slib_credits,
         demicoloncompat = true,
         force_use = function(self, card)
             self:use(card)
@@ -308,7 +316,7 @@ function Entropy.edition_tag(edition, key, ascendant, pos,order, credits)
         loc_vars = function(s,q,c)
             q[#q+1] = edition and G.P_CENTERS[edition] or nil
         end,
-        entr_credits = credits
+        slib_credits = credits
     }
 end
 
@@ -516,7 +524,7 @@ function Entropy.Get4bit()
     if ptype == "Consumeable" then
         return G.P_CENTERS[Cryptid.random_consumable("4bit_c", nil, "c_fool").key]
     end
-    return Entropy.get_pooled_center(ptype)
+    return G.P_CENTERS[SMODS.poll_object{set = ptype}]
 end
 
 function Entropy.has_rune(key)
@@ -584,10 +592,10 @@ function Entropy.misc_calculations(self, context)
             if v == other_card then index = i; break end
         end
         if index then
-            if other_card.area.cards[index+1] and other_card.area.cards[index+1].seal == "entr_crimson" then
+            if other_card.area.cards[index+1] and other_card.area.cards[index+1].seal == "entr_crimson" and not other_card.area.cards[index+1].debuffed then
                 c_repetitions = c_repetitions + 1
             end
-            if other_card.area.cards[index-1] and other_card.area.cards[index-1].seal == "entr_crimson" then
+            if other_card.area.cards[index-1] and other_card.area.cards[index-1].seal == "entr_crimson" and not other_card.area.cards[index-1].debuffed then
                 c_repetitions = c_repetitions + 1
             end
         end
@@ -598,6 +606,50 @@ function Entropy.misc_calculations(self, context)
                 }}
             else
                 return {repetitions = c_repetitions, colour =  HEX("8a0050"), message = localize("k_again_ex"), message_card = context.other_card}
+            end
+        end
+    end
+    if context.retrigger_joker_check then
+        if context.other_card.ability and context.other_card.ability.entr_temp_retriggers then
+            local trig = context.other_card.ability.entr_temp_retriggers
+            context.other_card.ability.entr_temp_retriggers = nil
+            return {
+                repetitions = trig,
+                card = context.other_card,
+                message_card = context.other_card
+            }
+        end
+    end
+    if context.after then
+        if next(SMODS.find_card("j_entr_exhume")) then
+            Entropy.discard_specific(G.hand.cards)
+            for i, v in pairs(G.play.cards) do
+                local p = nil
+                for i, c in pairs(SMODS.find_card("j_entr_exhume")) do
+                    if SMODS.pseudorandom_probability(card, 'entr_exhume', 1, c.ability.extra.odds) then
+                        p = true
+                    end
+                end
+                if p then
+                    local card = v
+                    v.entr_no_discard = true
+                    G.E_MANAGER:add_event(Event{
+                        trigger = "after",
+                        delay = 0.1,
+                        func = function()
+                            card.area:remove_card(card)
+                            G.hand:emplace(card)
+                            return true
+                        end
+                    })
+                end
+            end
+        end
+    end
+    if context.pressing_play and G.GAME.ee_hellfire_debuff then
+        for i, v in pairs(G.hand.cards) do
+            if pseudorandom("ee_hellfire") < 0.5 then
+                SMODS.debuff_card(v)
             end
         end
     end
@@ -708,28 +760,26 @@ function Entropy.post_create_card(card, from_booster, forced_key)
         set = "Booster"
     end
     if Entropy.inversion(card) and not G.SETTINGS.paused and (G.GAME.modifiers.entr_twisted or set == "Planet" and G.GAME.entr_princess) and not card.multiuse and (not card.ability or not card.ability.fromflipside) and card.config.center.rarity ~= "entr_void" then
-        if card.config.center_key ~= "c_entr_flipside" then
-            local ret = {}
-            if card.config.center.calculate then
-                ret = card.config.center:calculate(card, {being_inverted = true}) or {}
+        local ret = {}
+        if card.config.center.calculate and card.config.center_key ~= "c_entr_flipside" and card.config.center.key ~= "c_entr_flipside_omen" then
+            ret = card.config.center:calculate(card, {being_inverted = true}) or {}
+        end
+        if not ret.prevent_inversion then
+            if (Entropy.allow_spawning(G.P_CENTERS[key]) and Entropy.allow_spawning(G.P_CENTERS[Entropy.inversion(card)])) or forced_key or card.config.center.hidden then
+                local c = G.P_CENTERS[Entropy.inversion(card)]
+                key = c.key
+                card:set_ability(c)
+                set = c.set
+                
+            else
+                local c = G.P_CENTERS[SMODS.poll_object{set = G.P_CENTERS[Entropy.inversion(card)].set}]
+                key = c.key
+                card:set_ability(c)
+                set = c.set
             end
-            if not ret.prevent_inversion then
-                if (Entropy.allow_spawning(G.P_CENTERS[key]) and Entropy.allow_spawning(G.P_CENTERS[Entropy.inversion(card)])) or forced_key or card.config.center.hidden then
-                    local c = G.P_CENTERS[Entropy.inversion(card)]
-                    key = c.key
-                    card:set_ability(c)
-                    set = c.set
-                    
-                else
-                    local c = Entropy.get_pooled_center(G.P_CENTERS[Entropy.inversion(card)].set)
-                    key = c.key
-                    card:set_ability(c)
-                    set = c.set
-                end
-            end
-            if next(ret) and (not card.area or card.area.config.type ~= "shop") then
-                SMODS.calculate_effect(ret, card)
-            end
+        end
+        if next(ret) and (not card.area or card.area.config.type ~= "shop") then
+            SMODS.calculate_effect(ret, card)
         end
     end
     if Entropy.inversion(card) and not G.SETTINGS.paused and G.GAME.entr_perma_inversions and G.GAME.entr_perma_inversions[key] and not card.multiuse and (not card.ability or not card.ability.fromflipside) then
@@ -753,7 +803,7 @@ function Entropy.post_create_card(card, from_booster, forced_key)
     if G.GAME.modifiers.glitched_items and not (set == "Default" or set == "Enhanced") then
         local gc = {key}
         for i = 1, G.GAME.modifiers.glitched_items - 1 do
-            gc[#gc+1] = Entropy.get_pooled_center(set).key
+            gc[#gc+1] = SMODS.poll_object{set = set}
         end
         if from_booster then
             G.E_MANAGER:add_event(Event({trigger = 'after', blockable = false, blocking = false, func = function()
@@ -795,9 +845,11 @@ function SMODS.get_next_vouchers()
             vouchers.spawn = {}
             for i, v in ipairs(vouchers) do
                 local set = Entropy.get_random_set(next(find_joker("j_entr_parakmi")) or G.GAME.modifiers.entr_parakmi)
-                local key = Entropy.get_pooled_center(set).key
-                vouchers.spawn[key] = true
-                vouchers[i] = key
+                local key = SMODS.poll_object{set = set, guaranteed = true}
+                if key then
+                    vouchers.spawn[key] = true
+                    vouchers[i] = key
+                end
             end
         end
     end
@@ -928,18 +980,19 @@ function Entropy.add_perma_bonus(card, key, amount)
 end
 
 function Entropy.calc_perma_bonus_joker(card)
+    local self = card
     local ret = {}
-    local chips = card:get_chip_bonus()
+    local chips = self.ability.perma_bonus
     if chips ~= 0 then
         ret.chips = chips
     end
 
-    local mult = card:get_chip_mult()
+    local mult = (not self.ability.extra_enhancement and self.ability.perma_mult) or 0
     if mult ~= 0 then
         ret.mult = mult
     end
 
-    local x_mult = SMODS.multiplicative_stacking(card.ability.x_mult or 1, (not card.ability.extra_enhancement and card.ability.perma_x_mult) or 0)
+    local x_mult = SMODS.multiplicative_stacking(1, (not card.ability.extra_enhancement and card.ability.perma_x_mult) or 0)
     if x_mult > 0 then
         ret.x_mult = x_mult
     end
@@ -949,7 +1002,7 @@ function Entropy.calc_perma_bonus_joker(card)
         ret.p_dollars = p_dollars
     end
 
-    local x_chips = card:get_chip_x_bonus()
+    local x_chips = SMODS.multiplicative_stacking(1, (not self.ability.extra_enhancement and self.ability.perma_x_chips) or 0)
     if x_chips > 0 then
         ret.x_chips = x_chips
     end
@@ -974,6 +1027,7 @@ function Entropy.calc_perma_bonus_joker(card)
 end
 
 function Entropy.get_perma_bonus_vars(self)
+    if not self then return {} end
     return { playing_card = not not self.base.colour, value = self.base.value, suit = self.base.suit, colour = self.base.colour,
         nominal_chips = to_big(self.ability.perma_bonus) > to_big(0) and self.ability.perma_bonus or nil,
         bonus_x_chips = self.ability.perma_x_chips ~= 0 and (self.ability.perma_x_chips + 1) or nil,
@@ -1080,5 +1134,31 @@ function Card:hover(...)
     G._asc_tutorial_already = nil
     if not G.GAME.entr_dating_start then
         return hover(self, ...)
+    end
+end
+
+local poll_obj = SMODS.poll_object
+function SMODS.poll_object(args, ...)
+    if args.set then args.type = args.set end
+    if args.rarity then
+        args.rarity = ({
+            Common = 1,
+            Uncommon = 2,
+            Rare = 3,
+            Legendary = 4
+        })[args.rarity] or args.rarity
+        args.pool = G.P_JOKER_RARITY_POOLS[args.rarity]
+    end
+    if args.type == "CBlind" then
+        return pseudorandom_element(G.P_CENTER_POOLS.CBlind, pseudoseed(args.key_append or "cblind")).key 
+    end
+    return poll_obj(args, ...)
+end
+
+function Entropy.iter_for(tables, func)
+    for i, v in pairs(tables) do
+        for k, p in pairs(v) do
+            func(k, p)
+        end
     end
 end

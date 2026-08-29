@@ -128,7 +128,7 @@ Entropy.Joker{
             card.ability.suit = card2 and card2.base.suit or card.ability.suit
         end
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"cassknows"}
     }
 }
@@ -208,7 +208,7 @@ if not Entropy.ValkarriOverCryptid or not Entropy.MDJOverCryptid then
                 return Entropy.random_forcetrigger(card, card and card.ability.forcetrigger or 5, context)
             end
         end,
-        entr_credits = {
+        slib_credits = {
             idea = {"cassknows"}
         },
     }
@@ -284,7 +284,7 @@ Entropy.Joker{
 			Cryptid.notification_overlay("antireal")
 		end
 	end,
-    entr_credits = {
+    slib_credits = {
 	idea = {"cassknows"},
 	art = {"notmario", "cassknows"}
     }
@@ -333,15 +333,14 @@ Entropy.Joker{
                         local card = create_card("Joker", G.jokers)
                         card:set_edition("e_cry_oversat")
                         card:add_to_deck()
-                        card.ability.perishable = true
-                        card.ability.perish_tally = 5
+                        card:add_sticker("perishable", true)
                         G.jokers:emplace(card)
                     end
                 end
             end
         end
     end,
-    entr_credits = {
+    slib_credits = {
         idea = {"Lyman"},
         art = {"Lyman"}
     }
@@ -439,7 +438,7 @@ Entropy.Joker{
             return nil, true
         end
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"LFMoth"}
     }
 }
@@ -505,7 +504,7 @@ Entropy.Joker{
             return nil, true
         end
     end,
-    entr_credits = {
+    slib_credits = {
         idea = {"axo"},
         art = {"Lil. Mr. Slipstream"},
     }

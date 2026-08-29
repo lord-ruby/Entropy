@@ -139,7 +139,7 @@ Entropy.Joker{
             }
         end
     end,
-    entr_credits = {
+    slib_credits = {
         idea = {"cassknows"}
     }
 }
@@ -215,7 +215,7 @@ Entropy.Joker{
             card.ability.immutable_temp_fac = 1
         end
     end,
-	entr_credits = {
+	slib_credits = {
         art = {"Lil. Mr. Slipstream"}
     },
 }
@@ -271,7 +271,7 @@ if (SMODS.Mods.Cryptid or {}).can_load then
                 end)
             end
         end,
-        entr_credits = {
+        slib_credits = {
             art = {"Lil. Mr. Slipstream"}
         },
     }

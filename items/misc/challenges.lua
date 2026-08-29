@@ -29,6 +29,10 @@ end
 
 local gsr = Game.start_run
 function Game:start_run(args)
+    if G.SPLASH_EE and (not args.savetable or not (G.SAVED_GAME and G.SAVED_GAME.GAME and G.SAVED_GAME.GAME.EEBuildup)) then
+        G.SPLASH_EE:remove()
+        G.SPLASH_EE = nil
+    end
     G.C.UI.HANDS = copy_table(G.C.BLUE)
     G.C.UI.DISCARDS = copy_table(G.C.RED)
     G.GAME.EE_SCREEN = nil
@@ -42,10 +46,6 @@ function Game:start_run(args)
     G.HUD_curses = {}
     G.runes = {}
 	gsr(self, args)
-    if not args.savetext then
-        G.GAME.round_resets.blind_choices.Small = get_new_small() or G.GAME.round_resets.blind_choices.Small
-        G.GAME.round_resets.blind_choices.Big = get_new_big() or G.GAME.round_resets.blind_choices.Big
-    end
 	if G.GAME.modifiers.entr_starting_ante_mten and not args.savetext then
         ease_ante(-11, nil, true)
 	end
@@ -80,10 +80,6 @@ function Game:start_run(args)
     if G.GAME.cry_percrate and not G.GAME.cry_percrate["rune"] then G.GAME.cry_percrate["rune"] = 0 end
     G.jokers.config.highlighted_limit = 1e100
     G.consumeables.config.highlighted_limit = 1e100
-    if G.SPLASH_EE and not Entropy.is_EE() then
-        G.SPLASH_EE:remove()
-        G.SPLASH_EE = nil
-    end
     if Entropy.is_EE() then
        Entropy.create_ee_splash()
     end

@@ -15,7 +15,7 @@ Entropy.Voucher{
     unredeem = function(self, card) 
         G.GAME.Marked = nil
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Grahkon"}
     }
 }

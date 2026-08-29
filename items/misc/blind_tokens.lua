@@ -73,7 +73,8 @@ function Entropy.register_blinds()
                 force_use = function(self, card, area)
                     self:use(card, area)
                 end,
-                order = (v.cry_order or v.order or 0) - 1000
+                order = (v.cry_order or v.order or 0) - 1000,
+                allow_duplicates = true
             }
         end
     end
@@ -135,7 +136,7 @@ function Entropy.register_blinds()
                         q[#q+1]={set="Blind",key=self.config.blind, vars = ret and ret.vars}
                     end
                 end,
-                entr_credits = v.entr_credits,
+                slib_credits = v.slib_credits,
                 cry_credits = v.cry_credits,
                 set_sprites = function(self, card, front, gc)
                     local pos = self.blpos
@@ -168,7 +169,8 @@ function Entropy.register_blinds()
                 force_use = function(self, card, area)
                     self:use(card, area)
                 end,
-                order = (v.cry_order or v.order or 0) + (v.mod or {priority = 0}).priority
+                order = (v.cry_order or v.order or 0) + (v.mod or {priority = 0}).priority,
+                allow_duplicates = true
             }
         end
     end

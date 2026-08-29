@@ -120,6 +120,13 @@ local entrConfigTab = function()
 			min = 25, 
 			max = 100
 		})
+		entr_nodes[#entr_nodes + 1] = create_toggle({
+			label = localize("k_entr_sensitive_content"),
+			active_colour = HEX("40c76d"),
+			ref_table = Entropy.config,
+			ref_value = "hide_sensitive_content",
+			callback = Cryptid.reload_localization,
+		})
 	end
 	return {
 		n = G.UIT.ROOT,
@@ -186,8 +193,8 @@ function Entropy.generate_credits_nodes(table, type)
 	for i, v in pairs(table) do
 		local cards_with_credit = {}
 		for _, v in pairs(G.P_CENTERS) do
-			if v.entr_credits then
-				for i2, v2 in pairs(v.entr_credits) do
+			if v.slib_credits then
+				for i2, v2 in pairs(v.slib_credits) do
 					for i3, v3 in pairs(v2) do
 						if v3 == i then
 							cards_with_credit[#cards_with_credit+1] = v
@@ -198,9 +205,9 @@ function Entropy.generate_credits_nodes(table, type)
 			end
 			::continue::
 		end
-		if i == "lord.ruby" then
+		if i == "crimsonseraphim" then
 			for _, v in pairs(G.P_CENTERS) do
-				if v.set ~= "Content Set" and v.set ~= "CBlind" and (not v.entr_credits or not v.entr_credits.art or not v.entr_credits.idea or not v.entr_credits.code) then
+				if v.set ~= "Content Set" and v.set ~= "CBlind" and (not v.slib_credits or not v.slib_credits.art or not v.slib_credits.idea or not v.slib_credits.code) then
 					cards_with_credit[#cards_with_credit+1] = v
 				end
 			end
@@ -315,7 +322,7 @@ local entropyTabs = function()
 						},
 						idea = {},
 						code = {
-							["lord.ruby"]=true, 
+							["crimsonseraphim"]=true, 
 							["cassknows"]=true, 
 							["SleepyG11"]=true, 
 							["hayaunderscore"]=true, 
@@ -331,14 +338,15 @@ local entropyTabs = function()
 							["Eris"] = true,
 							["WilsontheWolf"] = true,
 							["Soulware"] = true,
-							["bioboi"] = true
+							["bioboi"] = true,
+							["noritheavali"] = true
 						},
 						music = {gemstonez=true, Grahkon = true, metanite64 = true}
 					}
-					for i, v in pairs(G.P_CENTERS) do if v.entr_credits then
-						if v.entr_credits.idea then for i, v in pairs(v.entr_credits.idea) do credits.idea[v] = true end end
-						if v.entr_credits.art then for i, v in pairs(v.entr_credits.art) do credits.art[v] = true end end
-						if v.entr_credits.code then for i, v in pairs(v.entr_credits.code) do credits.code[v] = true end end
+					for i, v in pairs(G.P_CENTERS) do if v.slib_credits then
+						if v.slib_credits.idea then for i, v in pairs(v.slib_credits.idea) do credits.idea[v] = true end end
+						if v.slib_credits.art then for i, v in pairs(v.slib_credits.art) do credits.art[v] = true end end
+						if v.slib_credits.code then for i, v in pairs(v.slib_credits.code) do credits.code[v] = true end end
 					end end
 					settings = { n = G.UIT.C, config = { align = "tl", padding = 0.05 }, nodes = {} }
 
@@ -356,7 +364,6 @@ local entropyTabs = function()
 						{name = "metanite64", text = "music assistance for EEv4", colour = HEX("ff73e5")},
 						{name = "InvalidOS", text = "design assistance for EEv4", colour = Entropy.entropic_gradient},
 						{name = "notmario", text = "programming assistance for The Joker is You", colour = HEX("ff6868")},
-						{name = "nxkoo_", text = "emotional support", colour = G.C.Entropy.Omen},
 					}
 					local special_nodes = {
 
@@ -449,16 +456,161 @@ local entropyTabs = function()
 				}	
 			end,
 		},
+		{
+			label = "References",
+			tab_definition_function = function()
+				entr_nodes = {
+					{
+						n = G.UIT.R,
+						config = { align = "cm" },
+						nodes = {
+						},
+					},
+				}
+				local refs = {}
+				for i, v in pairs(Entropy.references) do
+					refs[#refs+1] = G.P_CENTERS[i]
+				end
+				G.ENTERED_FILTER = G.ENTERED_FILTER or ""
+				local text = create_text_input({
+					colour = G.C.RED,
+					hooked_colour = darken(copy_table(G.C.RED), 0.3),
+					w = 3,
+					h = 1,
+					max_length = 100,
+					extended_corpus = true,
+					prompt_text = "",
+					ref_table = G,
+					ref_value = "ENTERED_FILTER",
+					keyboard_offset = 1,
+					config = { align = "cm", id = "ENTRTEXTINP" },
+					callback = function()
+						Entropy.FILTER = G.ENTERED_FILTER
+						G.ENTERED_FILTER = ""
+						Entropy.filtered_centers = Entropy.search_centers(Entropy.FILTER, refs)
+						Entropy.selected_center = Entropy.filtered_centers[1]
+						G.FUNCS["openModUI_entr"]()
+					end
+				})
+				Entropy.filtered_centers = Entropy.filtered_centers or Entropy.search_centers("", refs)
+				Entropy.selected_center = Entropy.selected_center or Entropy.filtered_centers[1]
+				text.config.id = "ENTRTEXTINP"
+				local dropdown = SMODS.GUI.dropdown_select({
+					ref_table = Entropy,
+					ref_value = "selected_center",
+					options = Entropy.filtered_centers or {}
+				})
+
+				if G.REFERENCE_AREA then
+					G.REFERENCE_AREA:remove()
+				end
+				G.REFERENCE_AREA = CardArea(
+					G.ROOM.T.w / 2, G.ROOM.T.h / 2, G.CARD_W, G.CARD_H, { type = "title" }
+				)
+				local t_nodes = {}
+				if Entropy.selected_center and G.P_CENTERS[Entropy.selected_center] then
+					G.REFERENCE_AREA:emplace(SMODS.create_card{area = G.REFERENCE_AREA, key = Entropy.selected_center, no_edition = true})
+					for i, v in pairs(Entropy.references[Entropy.selected_center]) do
+						entr_nodes[#entr_nodes+1] = {
+							n = G.UIT.R,
+							config = {
+								align = "cm",
+							},
+							nodes = {
+								{
+									n = G.UIT.O,
+									config = { object = DynaText({
+										string = v,
+										colours = { G.C.WHITE },
+										shadow = true,
+										scale = 0.4,
+									}) },
+								}
+							}
+						}
+					end
+				end
+				entr_nodes[#entr_nodes+1] = {
+					n = G.UIT.R,
+					config = {
+						align = "cm",
+					},
+					nodes = {
+						{
+							n = G.UIT.O,
+							config = {
+								object = G.REFERENCE_AREA,
+							},
+						}
+					}
+				}
+
+				entr_nodes[#entr_nodes+1] = SMODS.GUI.dropdown_select({
+					ref_table = Entropy,
+					ref_value = "selected_center",
+					options = Entropy.filtered_centers or {},
+					colour = Entropy.reverse_legendary_gradient,
+					id = "entr_reference_select",
+					ui_type = G.UIT.R,
+					close_on_select = true,
+					no_unselect = true,
+					max_menu_h = 4,
+					max_item_w = 5,
+					dropdown_element_def = function (option, args)
+						local center = G.P_CENTERS[option] or {set = ""}
+						return {n = G.UIT.T, config = {maxw = 4, text = localize{type = "name_text", set = center.set, key = option}, scale = 0.3, colour = G.C.UI.TEXT_LIGHT}}
+					end,
+					callback = "entr_set_references",
+					display_choice_func = function(option)
+						local center = G.P_CENTERS[option] or {set = ""}
+						return localize{type = "name_text", set = center.set, key = option}
+					end
+				})
+				return {
+					n = G.UIT.ROOT,
+					config = {
+						emboss = 0.05,
+						minh = 6,
+						r = 0.1,
+						minw = 10,
+						align = "cm",
+						padding = 0.2,
+						colour = G.C.BLACK,
+					},
+					nodes = {
+						{
+							n = G.UIT.R,
+							config = { align = "cm" },
+							nodes = {
+								text
+							},
+						},
+						unpack(entr_nodes),
+					},
+				}
+			end,
+		}
 	}
 end
 
 G.FUNCS.entr_set_credits_page = function(args)
-	G.ENTROPY_PAGE = args.cycle_config.current_option
+	if args.cycle_config then
+		G.ENTROPY_PAGE = args.cycle_config.current_option
+	end
 	G.FUNCS["openModUI_entr"]()
 end
 G.FUNCS.entr_set_config_page = function(args)
 	G.ENTROPY_PAGE_2 = args.cycle_config.current_option
 	G.FUNCS["openModUI_entr"]()
+end
+
+G.FUNCS.entr_set_references = function(args)
+	G.E_MANAGER:add_event(Event{
+		func = function()
+			G.FUNCS["openModUI_entr"]()
+			return true
+		end
+	})
 end
 
 SMODS.current_mod.custom_ui = function(nodes)
@@ -504,3 +656,146 @@ SMODS.current_mod.ui_config = {
 }
 
 SMODS.current_mod.extra_tabs = entropyTabs
+
+function Entropy.get_order(a)
+	sets = {
+		Joker = 0,
+		Tarot = 10000,
+		Planet = 20000,
+		Spectral = 30000,
+		Rune = 40000,
+		Fraud = 50000,
+		Star = 60000,
+		Omen = 70000,
+		Pact = 80000,
+		Voucher = 90000,
+		Booster = 100000,
+		Back = 110000
+	}
+	return (G.P_CENTERS[a].cry_order or G.P_CENTERS[a].order or 0) + (sets[G.P_CENTERS[a].set] or 0)
+end
+
+function Entropy.search_centers(str, tbl)
+    local cent = {}
+	local cents = {}
+	if str == "" or not str then
+		for i, v in pairs(tbl or G.P_CENTERS) do
+			cents[#cents+1] = v.key
+		end
+		table.sort(cents, function(a, b) return Entropy.get_order(a) < Entropy.get_order(b) end)
+		return cents
+	end
+    for i, v in pairs(tbl or G.P_CENTERS) do
+		if not v.no_collection then 
+			local refs = string.find(v.key or "", string.lower(str)) or string.find(v.name or "", string.lower(str))
+				or string.find(v.original_key or "", string.lower(str)) or string.find(string.lower(localize{type = "name_text", set = v.set, key = v.key} or ""), string.lower(str))
+			if not refs then
+				for i, r in pairs(Entropy.references[v.key] or {}) do
+					if string.find(string.lower(r), string.lower(str)) then
+						refs = true
+					end
+				end
+			end
+			if refs then
+				if not cent[v.key] then
+					cents[#cents+1] = v.key
+				end
+				cent[v.key] = v.key
+			end
+			local mod = (v.mod or {display_name = "", id = "", prefix = ""})
+			if string.find(string.lower(mod.display_name or ""), string.lower(str)) or string.find(string.lower(mod.id or ""), string.lower(str)) 
+				or string.find(string.lower(mod.prefix or ""), string.lower(str))
+			then
+				if not cent[v.key] then
+					cents[#cents+1] = v.key
+				end
+				cent[v.key] = v.key
+			end
+		end
+    end
+	table.sort(cents, function(a, b) return Entropy.get_order(a) < Entropy.get_order(b) end)
+    return cents
+end
+
+Entropy.references = {
+	j_entr_surreal_joker = {"The Son of Man - René Magritte"},
+	j_entr_strawberry_pie = {"Celeste - Maddy Makes Games inc."},
+	j_entr_dr_sunshine = {"Dr Sunshine is Dead - Will Wood"},
+	j_entr_devilled_suns = {"Devil Vortex Saws - ToshDeluxe", "Bingus - rawdogcomics"},
+	j_entr_crimson_flask = {"Crimson Heart - Balatro"},
+	j_entr_qu = {"Qu - All Tomorrows"},
+	j_entr_memento_mori = {"Memento Mori - Will Wood"},
+	j_entr_chalice_of_blood = {"Chalice of the Blood God - Calamity Mod"},
+	j_entr_torn_photograph = {"Torn Photograph - TBOI"},
+	j_entr_oops_alles = {"Calculating Screen - Talisman"},
+	j_entr_masterful_gambit = {"Hyperaccelerated Bongcloud Opening - u/enlightened-creature"},
+	j_entr_girldinner = {"Pups Gotta Eat - Puppychan"},
+	j_entr_jokers_against_humanity = {"Cards Against Humanity"},
+	j_entr_prayer_card = {"Prayer Card - TBOI"},
+	j_entr_grape_juice = {"Jesus Juice - TBOI"},
+	j_entr_petrichor = {"Petrichor V - Risk of Rain"},
+	j_entr_otherworldly_joker = {"Alternia - Homestuck"},
+	j_entr_error = {"I AM ERROR - TBOI"},
+	j_entr_thirteen_of_stars = {"Thirteen of Stars - Homestuck"},
+	j_entr_prismatic_shard = {"The Community - Calamity Mod"},
+	j_entr_redkey = {"Red Key - TBOI"},
+	j_entr_car_battery = {"Car Battery - TBOI"},
+	j_entr_black_rose_green_sun = {"Black Rose, Green Sun - Homestuck"},
+	j_entr_fast_food = {"Burger King (1999-2020)"},
+	j_entr_antipattern = {"Einstein Tiling - David Smith"},
+	j_entr_spiral_of_ants = {"Spiral of Ants - Lemon Demon"},
+	j_entr_blooming_crimson = {"Shattered Community - Calamity Mod"},
+	j_entr_overpump = {"Ultrakill"},
+	j_entr_shadow_crystal = {"Shadow Crystal - Deltarune"},
+	j_entr_meridian = {"Blood Meridian - Cormac McCarthy"},
+	j_entr_kitchenjokers = {"r/kitchencels"},
+	j_entr_stand_arrow = {"Stand Arrow - JJBA"},
+	j_entr_magic_skin = {"Magic Skin - TBOI"},
+	j_entr_echo_chamber = {"Echo Chamber - TBOI"},
+	j_entr_twisted_pair = {"Twisted Pair - TBOI"},
+	j_entr_void_cradle = {"Void Cradle - Risk of Rain"},
+	j_entr_pound_of_flesh = {"Pound of Flesh - TBOI"},
+	j_entr_fthof = {"Force the Hand of Fate - Cookie Clicker"},
+	j_entr_searing_joke = {"Searing Blow - Slay the Spire"},
+	j_entr_ancestral_recall = {"Ancestral Recall - MTG"},
+	j_entr_planetarium = {"Planetarium - TBOI"},
+	j_entr_midnight = {"Midnight Crew - Problem Sleuth"},
+	j_entr_quadrants = {"Quadrants - Homestuck"},
+	j_entr_hidden_gem = {"Hidden Gem - STS2"},
+	j_entr_bloodletting = {"Bloodletting - STS2"},
+	j_entr_record_disc = {"Scratch Construct - Homestuck"},
+	j_entr_demon_form = {"Demon Form - STS2"},
+	j_entr_broken_god = {"Mekhane - SCP"},
+	j_entr_rivulet = {"Rivulet - Rain World"},
+	j_entr_big_walk = {"Big Walk"},
+	j_entr_infinite_loop = {"BaBa Is You"},
+	j_entr_dice_shard = {"Spindown Dice - TBOI"},
+	j_entr_apoptosis = {"Void Items - Risk of Rain 2"},
+	j_entr_egocentrism = {"Egocentrism - Risk of Rain 2", "Void Items - Risk of Rain 2"},
+	j_entr_generator_meltdown = {"Void Items - Risk of Rain 2"},
+	j_entr_voidheart = {"Voidheart - Hollow Knight", "Void Items - Risk of Rain 2"},
+	j_entr_unstable_rift = {"Void Items - Risk of Rain 2"},
+	j_entr_pluripotent_larvae = {"Pluripotent Larva - Risk of Rain 2", "Void Items - Risk of Rain 2"},
+	j_entr_desiderium = {"Void Items - Risk of Rain 2"},
+	j_entr_nadir = {"Void Items - Risk of Rain 2"},
+	j_entr_yaldabaoth = {"Void Items - Risk of Rain 2"},
+	j_entr_mutagenesis = {"Void Items - Risk of Rain 2"},
+	j_entr_crooked_penny = {"Crooked Penny - TBOI", "Void Items - Risk of Rain 2"},
+	j_entr_phoenix_a = {"Void Items - Risk of Rain 2"},
+	j_entr_antimatter_sheath = {"Dark Matter Sheath - Calamity Mod", "Void Items - Risk of Rain 2"},
+	j_entr_caledscratch = {"Caledscratch - Homestuck", "Void Items - Risk of Rain 2"},
+	j_entr_apoptosis = {"Nyx - Homestuck", "Void Items - Risk of Rain 2"},
+	j_entr_ruby = {"Homestuck"},
+	j_entr_slipstream = {"Homestuck"},
+	j_entr_cass = {"Homestuck"},
+	j_entr_hexa = {"Homestuck"},
+
+	b_entr_crafting = {"Tainted Cain - TBOI"},
+	b_entr_doc = {"SCP"},
+
+	v_entr_providence = {"Tarot Cloth - TBOI"},
+
+	c_entr_wormhole = {"The Interloper - Outer Wilds"},
+	c_entr_destiny = {"Bag of Crafting - TBOI"},
+	c_entr_feud = {"The Princess Bride"},
+}

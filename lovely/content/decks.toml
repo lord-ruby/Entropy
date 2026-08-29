@@ -39,7 +39,7 @@ if G.GAME.modifiers.ccd2 then
             "Consumeables",
             "Consumeables",
         }, pseudoseed("redefined"))
-        local center = Entropy.get_pooled_center(ptype)
+        local center = SMODS.poll_object{set = ptype}
         v:set_ability(center)
         discover_card(center)
     end

@@ -1,0 +1,11 @@
+SMODS.Attribute{key = "nilsuit"}
+SMODS.Attribute{key = "nilrank"}
+SMODS.Attribute{key = "sunny"}
+SMODS.Attribute{key = "eqmoney"}
+SMODS.Attribute{key = "ccd"} --used to signify any form of non standard cards as enhancements
+SMODS.Attribute{key = "inverted"}
+SMODS.Attribute{key = "fraud"}
+SMODS.Attribute{key = "star"}
+SMODS.Attribute{key = "omen"}
+SMODS.Attribute{key = "rune"}
+SMODS.Attribute{key = "pact"}

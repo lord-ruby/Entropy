@@ -9,5 +9,6 @@ return {
 	["curses_enabled"] = true,
 	["corrupted_speed"] = 100,
 	["profile_prefix"] = true,
-	["asc_power_tutorial"] = true
+	["asc_power_tutorial"] = true,
+	["hide_sensitive_content"] = false,
 }

@@ -160,12 +160,12 @@ position = "at"
 payload = '''
 if next(effects) then
     if card.config.center.key == "j_entr_false_vacuum_collapse" then
-      card.config.center:calculate(card, {individual = true, card = card})
+      card.config.center:calculate(card, {individual = true, card = card, cardarea = card.area})
     end
     SMODS.calculate_card_areas('jokers', context, effects, { main_scoring = true })
     SMODS.calculate_card_areas('individual', context, effects, { main_scoring = true })
-    if card.config.center.key == "j_entr_phoenix_a" then
-      local ret = card.config.center:calculate(card, {individual = true, card = card})
+    if card.config.center.key == "j_entr_phoenix_a" or card.config.center.key == "j_entr_broken_god" then
+      local ret = card.config.center:calculate(card, {individual = true, card = card, cardarea = card.area})
       SMODS.calculate_effect(ret, card)
     end
 end
@@ -606,8 +606,8 @@ match_indent = true
 [patches.pattern]
 target = '''=[SMODS _ "src/utils.lua"]'''
 pattern = '''
-for h=1, effect.repetitions do
-    table.insert(ret, _type == "joker_retrigger" and effect or { retriggers = effect})
+ for h=1, effect.repetitions do
+    table.insert(ret, _type and effect or { retriggers = effect})
 end
 '''
 position = "at"
@@ -623,6 +623,7 @@ for h=1, effect.repetitions do
       SMODS.calculate_context({entr_repetition_blocked = true, other_card = effect.message_card or effect_card.scored_card or effect_card})
     else
       table.insert(ret, _type == "joker_retrigger" and effect or { retriggers = effect})
+      SMODS.calculate_context({entr_repetition_occured = true, other_card = effect.message_card or effect_card.scored_card or effect_card})
     end
 end
 '''
@@ -669,5 +670,80 @@ if cards[i] then
     cards[i]:start_dissolve(nil, i == #cards)
   end
 end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Spectrallib "Entropy/card_buttons.lua"]'''
+pattern = '''
+center.can_use and center:can_use(e.config.ref_table) and not e.config.ref_table.debuff
+'''
+position = "at"
+payload = '''
+(not center.can_use or center:can_use(e.config.ref_table)) and not e.config.ref_table.debuff
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Spectrallib "Entropy/card_buttons.lua"]'''
+pattern = '''
+if center.use then
+    center:use(e.config.ref_table)
+end
+'''
+position = "at"
+payload = '''
+if center.use then
+    center:use(e.config.ref_table)
+else
+  Spectrallib.forcetrigger({
+      card = card, 
+      colour = G.C.PURPLE,
+      message_card = card
+  })
+  G.E_MANAGER:add_event(Event{
+      trigger = "after",
+      func = function()
+          card:start_dissolve()
+          return true
+      end
+  })
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS Spectrallib "Entropy/card_buttons.lua"]'''
+pattern = '''
+if ((card.area == G.jokers or card.area == G.consumeables) and G.jokers and card.config.center.use) and not card.debuff and card.config.center.set == "Joker" and (not card.config.center.needs_use_button or card.config.center:needs_use_button(card)) then
+'''
+position = "at"
+payload = '''
+if ((card.area == G.jokers or card.area == G.consumeables) and G.jokers and (card.config.center.use or next(SMODS.find_card("j_entr_hypnotism")))) and not card.debuff and card.config.center.set == "Joker" and (not card.config.center.needs_use_button or card.config.center:needs_use_button(card)) then
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/overrides.lua"]'''
+pattern = '''
+local popup_direction = (self.children.buy_button or (self.area and self.area.config.view_deck) or (self.area and self.area.config.type == 'shop')) and 'cl' or
+  (self.params.run_select_stake_tower) and 'cl' or
+  (self.params.run_select_selection_choice and self.params.stake) and 'bm' or
+  ((self.T.y > G.CARD_H*0.8 and self.T.y < G.CARD_H*1.8) or self.params.run_select_selection_choice ) and ((self.T.x > G.ROOM.T.w*0.4) and "cl" or "cr") or
+  (self.T.y < G.CARD_H*0.8) and 'bm' or
+  'tm'
+'''
+position = "at"
+payload = '''
+local popup_direction = self.config.h_popup_dir or (self.children.buy_button or (self.area and self.area.config.view_deck) or (self.area and self.area.config.type == 'shop')) and 'cl' or
+  (self.params.run_select_stake_tower) and 'cl' or
+  (self.params.run_select_selection_choice and self.params.stake) and 'bm' or
+  ((self.T.y > G.CARD_H*0.8 and self.T.y < G.CARD_H*1.8) or self.params.run_select_selection_choice ) and ((self.T.x > G.ROOM.T.w*0.4) and "cl" or "cr") or
+  (self.T.y < G.CARD_H*0.8) and 'bm' or
+  'tm'
 '''
 match_indent = true

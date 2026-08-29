@@ -109,7 +109,7 @@ Entropy.Consumable{
         G.GAME.UsingBootstrap = true
     end,
     can_use = function() return true end,
-	entr_credits = {
+	slib_credits = {
 		idea = {
 			"cassknows",
 		},
@@ -147,7 +147,7 @@ Entropy.Consumable{
 	end,
     loc_vars = function(self, q, card)
     end,
-    entr_credits = {
+    slib_credits = {
 		idea = {
 			"cassknows",
 		},
@@ -248,7 +248,7 @@ Entropy.Consumable{
         return {
         }
     end,
-    entr_credits = {
+    slib_credits = {
 		idea = {
 			"cassknows",
 		},
@@ -403,7 +403,7 @@ Entropy.Consumable{
         }
         for i, v in pairs(allowed) do
             for ind, card in pairs(G[i] and G[i].cards or {}) do
-                Entropy.apply_sticker(card, "entr_pseudorandom")
+                card:add_sticker("entr_pseudorandom", true)
             end
         end
     end,
@@ -413,7 +413,7 @@ Entropy.Consumable{
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "entr_pseudorandom", set="Other"}
     end,
-    entr_credits = {
+    slib_credits = {
 		idea = {
 			"cassknows",
 		},
@@ -569,7 +569,7 @@ Entropy.Consumable{
         return {
         }
     end,
-    entr_credits = {
+    slib_credits = {
 		idea = {
 			"cassknows",
 		},
@@ -704,7 +704,7 @@ Entropy.Consumable{
             }
         }
     end,
-	entr_credits = {
+	slib_credits = {
 		idea = {
 			"cassknows",
 		},
@@ -755,7 +755,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
 		idea = {
 			"cassknows",
 		},
@@ -834,7 +834,8 @@ Entropy.Consumable{
     },
     pos = {x=4,y=3},
     use = function(self, card, area, copier)
-        Entropy.apply_sticker(Entropy.get_highlighted_cards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.extra)[1], "entr_pinned")
+        local card = Entropy.get_highlighted_cards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.extra)[1]
+        card:add_sticker("entr_pinned", true)
         local card = Entropy.get_highlighted_cards({G.shop_jokers, G.shop_booster, G.shop_vouchers}, card, 1, card.ability.extra)[1]
         card:juice_up()
 
@@ -845,7 +846,7 @@ Entropy.Consumable{
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "entr_pinned", set="Other"}
     end,
-    entr_credits = {
+    slib_credits = {
 		idea = {
 			"cassknows",
 		},
@@ -1037,7 +1038,7 @@ Entropy.Consumable{
 	end,
     loc_vars = function(self, q, card)
     end,
-    entr_credits = {
+    slib_credits = {
 		idea = {
 			"cassknows",
 		},
@@ -1074,7 +1075,7 @@ Entropy.Consumable{
 	end,
     loc_vars = function(self, q, card)
     end,
-    entr_credits = {
+    slib_credits = {
 		idea = {
 			"cassknows",
 		},
@@ -1143,7 +1144,7 @@ Entropy.Consumable{
         local num = Entropy.get_highlighted_cards({G.jokers}, card, 1, 1)
         return #num == 1
 	end,
-    entr_credits = {
+    slib_credits = {
 		idea = {
 			"cassknows",
 		},
@@ -1171,7 +1172,8 @@ Entropy.Consumable{
     atlas = "consumables",
     pos = {x=1,y=5},
     use = function(self, card, area, copier)
-        Entropy.apply_sticker(Entropy.get_highlighted_cards({G.hand, G.jokers, G.consumeables}, card, 1, 1)[1], "entr_hotfix")
+        local code = Entropy.get_highlighted_cards({G.hand, G.jokers, G.consumeables}, card, 1, 1)[1]
+        code:add_Sticker("entr_hotfix", true)
         local card = Entropy.get_highlighted_cards({G.hand, G.jokers, G.consumeables}, card, 1, 1)[1]
         card:juice_up()
 
@@ -1182,7 +1184,7 @@ Entropy.Consumable{
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "entr_hotfix", set="Other"}
     end,
-    entr_credits = {
+    slib_credits = {
 		idea = {
 			"cassknows",
 		},
@@ -1258,7 +1260,8 @@ Entropy.Consumable{
     atlas = "consumables",
     pos = {x=0,y=5},
     use = function(self, card, area, copier)
-        Entropy.apply_sticker(Entropy.get_highlighted_cards({G.jokers, G.consumeables}, card, 1, 1)[1], "desync")
+        local card = Entropy.get_highlighted_cards({G.jokers, G.consumeables}, card, 1, 1)[1]
+        card:add_sticker("desync", true)
         local card = Entropy.get_highlighted_cards({G.jokers, G.consumeables}, card, 1, 1)[1]
         card:juice_up()
 
@@ -1395,7 +1398,7 @@ Entropy.Consumable{
     loc_vars = function(self, q, card)
         q[#q+1] = {key = "temporary", set="Other"}
     end,
-    entr_credits = {
+    slib_credits = {
 		idea = {
 			"cassknows",
 		},
@@ -1483,7 +1486,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
 		idea = {
 			"cassknows",
 		},
@@ -1577,7 +1580,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Grahkon"}
     },
     demicoloncompat = true,
@@ -1658,7 +1661,7 @@ Entropy.Consumable{
     force_use = function(self, card)
         self:use(card)
     end,
-    entr_credits = {
+    slib_credits = {
         idea = {"cassknows"}
     },
 }
@@ -1705,7 +1708,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"cassknows"},
         idea = {"cassknows"}
     }
@@ -1748,7 +1751,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Grahkon"},
         idea = {"Grahkon"}
     },

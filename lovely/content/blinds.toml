@@ -159,7 +159,7 @@ if next(SMODS.find_card("j_entr_voidheart")) then
 end
 if Entropy.is_EE() then
     G.GAME.EECardCharacter = true
-    if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" then
+    if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_nadir" then
       if to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then return end
       game_over = true
     end
@@ -189,18 +189,17 @@ pattern = '''
 position = "at"
 payload = '''
     if not G.STATE_COMPLETE then
-        if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.key == "bl_entr_endless_entropy_phase_three" and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then
+        if G.GAME.blind and G.GAME.blind.config and G.GAME.blind.config.blind.entr_lose_instead and to_big(G.GAME.chips) < to_big(G.GAME.blind.chips) then
           G.GAME.chips = 0
           G.GAME.round_resets.lost = false
-          G.GAME.blind:set_blind(G.P_BLINDS["bl_entr_endless_entropy_phase_two"])
-          Entropy.change_phase()
-          G.GAME.blind:juice_up()
-          G.GAME.current_round.hands_left = G.GAME.round_resets.hands
-          ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
-          ease_discard(
-            math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
-          )
-          G.FUNCS.draw_from_discard_to_deck()
+          G.GAME.blind:set_blind(G.P_BLINDS[G.GAME.blind.config.blind.next_phase])
+					Entropy.change_phase()
+					G.GAME.blind:juice_up()
+					ease_hands_played(G.GAME.round_resets.hands-G.GAME.current_round.hands_left)
+					ease_discard(
+						math.max(0, G.GAME.round_resets.discards + G.GAME.round_bonus.discards) - G.GAME.current_round.discards_left
+					)
+					G.FUNCS.draw_from_discard_to_deck()
           G.STATE = 1
           G.STATE_COMPLETE = false
         else
@@ -492,8 +491,6 @@ if not next(SMODS.find_card("j_entr_voidheart")) then
   SMODS.ante_end = nil; delay(0.4)
 end
 check_for_unlock({type = 'ante_up', ante = G.GAME.round_resets.ante + 1})
-G.GAME.round_resets.blind_choices.Small = get_new_small()
-G.GAME.round_resets.blind_choices.Big = get_new_big()
 '''
 match_indent = true
 
@@ -564,31 +561,6 @@ match_indent = true
 
 [[patches]]
 [patches.pattern]
-target = '''functions/common_events.lua'''
-pattern = '''
-for k, v in pairs(G.GAME.bosses_used) do
-'''
-position = "before"
-payload = '''
-if G.GAME.entr_alt and Cryptid.enabled("set_entr_altpath") then
-  for i, v in pairs(eligible_bosses) do
-    if not G.P_BLINDS[i].altpath then
-      eligible_bosses[i] = nil
-    end
-  end
-end
-if not G.GAME.entr_alt or not Cryptid.enabled("set_entr_altpath") then
-  for i, v in pairs(eligible_bosses) do
-    if G.P_BLINDS[i].altpath then
-      eligible_bosses[i] = nil
-    end
-  end
-end
-'''
-match_indent = true
-
-[[patches]]
-[patches.pattern]
 target = '''functions/misc_functions.lua'''
 pattern = '''
 (blind == 'bl_small' and mix_colours(G.C.BLUE, G.C.BLACK, 0.6) or
@@ -635,5 +607,58 @@ pattern = '''
 position = "at"
 payload = '''
 {n=G.UIT.O, config={object = DynaText({string = {{ref_table = G.GAME.current_round, ref_value = 'discards_left'}}, font = G.LANGUAGES['en-us'].font, colours = {G.C.UI.DISCARDS},shadow = true, rotate = true, scale = 2*scale}),id = 'discard_UI_count'}},
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''functions/state_events.lua'''
+pattern = '''
+G.E_MANAGER:add_event(Event({
+  trigger = 'ease',
+  blocking = false,
+  ref_table = G.GAME,
+  ref_value = 'chips',
+  ease_to = G.GAME.chips + math.floor( SMODS.calculate_round_score() ),
+  delay =  0.5,
+  func = (function(t) return math.floor(t) end)
+}))
+'''
+position = "at"
+payload = '''
+if not G.GAME.blind.config.blind.prevent_score_change or not G.GAME.blind.config.blind:prevent_score_change(G.GAME.blind) then
+  G.E_MANAGER:add_event(Event({
+  trigger = 'ease',
+  blocking = false,
+  ref_table = G.GAME,
+  ref_value = 'chips',
+  ease_to = G.GAME.chips + math.floor( SMODS.calculate_round_score() ),
+  delay =  0.5,
+  func = (function(t) return math.floor(t) end)
+}))
+end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''cardarea.lua'''
+pattern = '''
+local backwards = nil
+'''
+position = "before"
+payload = '''
+if G.GAME.puppet_hands then
+  local hand = text
+  local allowed
+  for i, v in pairs(G.GAME.puppet_hands) do
+      if v == hand then 
+          allowed = true
+      end
+  end
+  if not allowed then
+    G.boss_throw_hand = true
+  end
+end
 '''
 match_indent = true

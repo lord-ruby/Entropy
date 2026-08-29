@@ -1,0 +1,185 @@
+SMODS.Sound({
+	key = "music_entropic",
+	path = "music_entropic.ogg",
+	select_music_track = function()
+		return Entropy.config
+        and Entropy.config.entropic_music
+        and #Cryptid.advanced_find_joker(nil, "entr_entropic", nil, nil, true) ~= 0 and 10^200
+	end,
+})
+SMODS.Sound({
+	key = "music_red_room",
+	path = "music_red_room.ogg",
+	select_music_track = function()
+		return (G.GAME.blind and G.GAME.blind.name == "bl_entr_red") and 10^5
+	end,
+})
+if next(SMODS.find_mod("Cryptid")) then
+	SMODS.Sound({
+		key = "music_freebird",
+		path = "music_freebird.ogg",
+		select_music_track = function()
+			return next(SMODS.find_card("j_entr_antireal")) and Entropy.config.freebird and 10^200
+		end,
+	})
+end
+
+SMODS.Sound({
+	key = "music_fall",
+	path = "music_fall.ogg",
+	select_music_track = function()
+		return (Entropy.is_ee_or_buildup() or (G.GAME.EE_FADE or 0) > 0) and Entropy.can_ee_spawn() and 10^302
+	end,
+})
+
+-- SMODS.Sound({
+-- 	key = "music_entropy_is_endless",
+-- 	path = "music_entropy_is_endless.ogg",
+-- 	select_music_track = function()
+-- 		return G.GAME.blind and G.GAME.blind.config.blind.is_ee and 10^306
+-- 	end,
+-- })
+
+SMODS.Sound({
+	key = "music_entropic_ominous",
+	path = "music_entropic_ominous.ogg",
+	select_music_track = function()
+		local ferv = G.entr_invert_enabled
+		for i, v in pairs((G.pack_cards or {cards = {}}).cards or {}) do
+			if v.config.center.key == "c_entr_fervour" then ferv = true; break end
+		end
+		return (ferv and G.GAME.entropy and G.GAME.entropy > 100) and 10^300
+	end,
+})
+
+SMODS.Sound({
+	key = "e_solar",
+	path = "e_solar.ogg",
+})
+
+SMODS.Sound({
+	key = "e_rizz",
+	path = "e_rizz.ogg",
+	volume = 0.7
+})
+
+SMODS.Sound({
+	key = "polaroid",
+	path = "polaroid.ogg",
+	volume = 1.4
+})
+
+SMODS.Sound({
+	key = "bounce",
+	path = "bounce.ogg",
+	volume = 1.4
+})
+
+SMODS.Sound({
+	key = "e_lowres",
+	path = "e_lowres.ogg",
+	volume = 1.2
+})
+
+SMODS.Sound({
+	key = "e_gilded",
+	path = "e_gilded.ogg",
+	volume = 1.3
+})
+
+SMODS.Sound({
+	key = "e_kaleidoscopic",
+	path = "e_kaleidoscopic.ogg",
+	volume = 0.9
+})
+
+SMODS.Sound({
+	key = "e_fractured",
+	path = "e_fractured.ogg",
+	volume = 1.2,
+})
+
+SMODS.Sound({
+	key = "e_neon",
+	path = "e_neon.ogg",
+	volume = 1.2
+})
+
+SMODS.Sound({
+	key = "pacts",
+	path = "pacts.ogg",
+})
+
+SMODS.Sound({
+	key = "runes",
+	path = "runes.ogg",
+})
+
+SMODS.Sound({
+	key = "invert",
+	path = "sfx_invert.ogg",
+	volume = 1.3
+})
+
+SMODS.Sound({
+	key = "entropic_summon",
+	path = "entropic_summon.ogg",
+	volume = 2
+})
+
+SMODS.Sound({
+	key = "void_generic",
+	path = "void_generic.ogg",
+	volume = 2
+})
+
+SMODS.Sound({
+	key = "void_swap",
+	path = "void_swap.ogg",
+	volume = 2
+})
+
+SMODS.Sound({
+	key = "void_suck",
+	path = "void_suck.ogg",
+	volume = 2
+})
+
+SMODS.Sound({
+	key = "void_suck",
+	path = "void_suck.ogg",
+	volume = 2
+})
+
+SMODS.Sound({
+	key = "snd_ominous",
+	path = "snd_ominous.ogg",
+	volume = 2
+})
+
+SMODS.Sound({
+	key = "record_scratch",
+	path = "record_scratch.ogg",
+	volume = 2
+})
+
+SMODS.Sound({
+	key = "karma_gain",
+	path = "KarmaMeterRise.ogg",
+	volume = 2
+})
+SMODS.Sound({
+	key = "karma_gain_b",
+	path = "KarmaMeterRiseB.ogg",
+	volume = 2
+})
+SMODS.Sound({
+	key = "karma_loss",
+	path = "KarmaMeterFall.ogg",
+	volume = 2
+})
+SMODS.Sound({
+	key = "karma_loss_b",
+	path = "KarmaMeterFallB.ogg",
+	volume = 2
+})

@@ -54,7 +54,7 @@ function Card:update(dt)
 	end
 	if self.entr_aleph then
 		self.ability.entr_aleph = true
-		self.ability.eternal = true
+		self:add_sticker("eternal", true)
 	end
     if self.cry_absolute then
         self.cry_absolute = nil
@@ -62,7 +62,7 @@ function Card:update(dt)
 
         self.entr_aleph = true
         self.ability.entr_aleph = true
-		self.ability.eternal = true
+		self:add_sticker("eternal", true)
     end
 end
 

@@ -43,7 +43,7 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
                 }
             }
         end,
-        entr_credits = {
+        slib_credits = {
             idea = {"Athebyne"}
         },
 
@@ -104,7 +104,7 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
             return not (G.STATE == G.STATES.SMODS_BOOSTER_OPENED)
         end,
         loc_vars = function(self, q, card) return {vars = {math.min(card.ability.boosters, 20)}} end,
-        entr_credits = {
+        slib_credits = {
             idea = {"Athebyne"}
         },
 
@@ -157,7 +157,7 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
                 }
             }
         end,
-        entr_credits = {
+        slib_credits = {
             idea = {"Athebyne"}
         },
 
@@ -211,7 +211,7 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
                 }
             }
         end,
-        entr_credits = {
+        slib_credits = {
             idea = {"Athebyne"}
         },
 
@@ -266,7 +266,7 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
         in_pool = function(self)
             return BUNCOMOD.funcs.exotic_in_pool()
         end,
-        entr_credits = {
+        slib_credits = {
             idea = {"Athebyne"}
         },
         demicoloncompat = true,
@@ -320,7 +320,7 @@ if (SMODS.Mods["Bunco"] or {}).can_load then
         in_pool = function(self)
             return BUNCOMOD.funcs.exotic_in_pool()
         end,
-        entr_credits = {
+        slib_credits = {
             idea = {"Athebyne"}
         },
         demicoloncompat = true,

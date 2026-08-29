@@ -101,7 +101,7 @@ if FinisherBossBlindStringMap then
         atlas = "ee_atlas",
         pos = {x=0, y=0},
         soul_pos = {x = 4, y = 3, extra = {x=0,y=1}},
-        entr_credits = {
+        slib_credits = {
             art = {"missingnumber"}
         },
         loc_vars = function(self, q, card)
@@ -157,7 +157,7 @@ if FinisherBossBlindStringMap then
         atlas = "finity_jokers",
         pos = {x=0, y=0},
         soul_pos = {x = 1, y = 0},
-        entr_credits = {
+        slib_credits = {
             art = {"missingnumber"}
         },
         config = {
@@ -198,7 +198,7 @@ if FinisherBossBlindStringMap then
         atlas = "finity_jokers",
         pos = {x=0, y=3},
         soul_pos = {x = 1, y = 3},
-        entr_credits = {
+        slib_credits = {
             art = {"missingnumber"}
         },
         config = {
@@ -236,8 +236,7 @@ if FinisherBossBlindStringMap then
                         copy:add_to_deck()
                         G.jokers:emplace(copy)
                         copy:set_edition("e_negative")
-                        copy.ability.perishable = true
-                        copy.ability.perish_tally = 5
+                        copy:add_sticker("perishable", true)
                     end
                 end
             end
@@ -260,7 +259,7 @@ if FinisherBossBlindStringMap then
         atlas = "finity_jokers",
         pos = {x=0, y=1},
         soul_pos = {x = 1, y = 1},
-        entr_credits = {
+        slib_credits = {
             art = {"missingnumber"}
         },
         config = {
@@ -306,7 +305,7 @@ if FinisherBossBlindStringMap then
         atlas = "finity_jokers",
         pos = {x=0, y=4},
         soul_pos = {x = 1, y = 4},
-        entr_credits = {
+        slib_credits = {
             art = {"missingnumber"}
         },
         calculate = function(self, card, context)
@@ -336,7 +335,7 @@ if FinisherBossBlindStringMap then
         atlas = "finity_jokers",
         pos = {x=0, y=2},
         soul_pos = {x = 1, y = 2},
-        entr_credits = {
+        slib_credits = {
             art = {"missingnumber"}
         },
         config = {
@@ -383,7 +382,7 @@ if FinisherBossBlindStringMap then
         atlas = "finity_jokers",
         pos = {x=0, y=5},
         soul_pos = {x = 1, y = 5},
-        entr_credits = {
+        slib_credits = {
             art = {"missingnumber"}
         },
         config = {
@@ -417,7 +416,7 @@ if FinisherBossBlindStringMap then
             return false
         end,
     }
-    FinisherBossBlindStringMap["bl_entr_endless_entropy_phase_four"] = {"j_entr_endlessentropy", "Endless Entropy"}
+    FinisherBossBlindStringMap["bl_entr_endless_entropy"] = {"j_entr_endlessentropy", "Endless Entropy"}
     FinisherBossBlindStringMap["bl_entr_scarlet_sun"] = {"j_entr_scarlet_sun", "Scarlet Sun"}
     FinisherBossBlindStringMap["bl_entr_olive_orchard"] = {"j_entr_olive_orchard", "Olive Orchard"}
     FinisherBossBlindStringMap["bl_entr_burgundy_baracuda"] = {"j_entr_burgundy_baracuda", "Burgundy Baracuda"}

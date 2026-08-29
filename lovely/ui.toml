@@ -211,6 +211,9 @@ end
 if card and card.ability and card.ability.debuff_timer and first_pass then
   info_queue[#info_queue+1] = {set="Other", key="temporary_debuff_tooltip", vars = {card.ability.debuff_timer}}
 end
+if card and card.ability and card.ability.entr_temp_retriggers and first_pass then
+  info_queue[#info_queue+1] = {set="Other", key="temporary_retriggers_tooltip", vars = {card.ability.entr_temp_retriggers}}
+end
 '''
 match_indent = true
 
@@ -739,5 +742,30 @@ if G.blind_select then
   G.blind_select:remove()
   G.blind_select = nil
 end
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/ui.lua"]'''
+pattern = '''
+maxh = args.max_menu_h,
+'''
+position = "after"
+payload = '''
+maxw = args.max_menu_w,
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/ui.lua"]'''
+pattern = '''
+minw = args.max_menu_h and (parent_width - 0.55) or (parent_width - 0.3)
+'''
+position = "before"
+payload = '''
+maxw = args.max_item_w,
+minh = 0.3,
 '''
 match_indent = true

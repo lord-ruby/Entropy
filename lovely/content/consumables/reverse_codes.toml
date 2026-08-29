@@ -224,7 +224,7 @@ pattern = '''
 {n=G.UIT.O, config={object = DynaText({scale = 0.7, string = localize('ph_unscored_hand'), maxw = 9, colours = {G.C.WHITE},float = true, shadow = true, silent = true, pop_in = 0, pop_in_rate = 6})}},
 '''
 payload = '''
-{n=G.UIT.O, config={object = DynaText({scale = 0.7, string = G.bad_arg and localize('ph_hand_notreal') or localize('ph_unscored_hand'), maxw = 9, colours = {G.C.WHITE},float = true, shadow = true, silent = true, pop_in = 0, pop_in_rate = 6})}},
+{n=G.UIT.O, config={object = DynaText({scale = 0.7, string = Entropy.get_unscored_text(), maxw = 9, colours = {G.C.WHITE},float = true, shadow = true, silent = true, pop_in = 0, pop_in_rate = 6})}},
 '''
 position = "at"
 match_indent = true

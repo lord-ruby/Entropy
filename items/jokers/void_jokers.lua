@@ -29,6 +29,27 @@ local function name_text_better(key)
     return ret_strings
 end
 
+local gen_ui = SMODS.Center.generate_ui
+SMODS.Center.generate_ui = function(center, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+    local ret = gen_ui(center, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+    if center.set == "Joker" then
+        local vars = Entropy.get_perma_bonus_vars(card)
+        if vars and vars.nominal_chips then
+            localize{type = 'other', key = 'card_chips', nodes = desc_nodes, vars = {vars.nominal_chips}}
+        end
+        SMODS.localize_perma_bonuses(vars, desc_nodes)
+    end
+    return ret
+end
+
+local calc_joker = Card.calculate_joker
+function Card:calculate_joker(context, ...)
+    return SMODS.merge_effects({
+        calc_joker(self, context, ...) or {},
+        context.joker_main and Entropy.calc_perma_bonus_joker(self) or {}
+    })
+end
+
 function Entropy.generate_void_invert_uibox(center, info_queue, card, desc_nodes, specific_vars, full_UI_table)
     -- generate normal joker ui
     SMODS.Center.generate_ui(center, info_queue, card, desc_nodes, specific_vars, full_UI_table)
@@ -195,7 +216,7 @@ Entropy.Joker{
         }
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
-    entr_credits = {{art = "pangaea47"}}
+    slib_credits = {{art = "pangaea47"}}
 }
 
 Entropy.Joker{
@@ -341,7 +362,7 @@ Entropy.Joker{
         end
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
-    entr_credits = {{art = "pangaea47"}}
+    slib_credits = {{art = "pangaea47"}}
 }
 
 Entropy.Joker{
@@ -375,7 +396,7 @@ Entropy.Joker{
         q[#q+1] = G.P_BLINDS.bl_entr_abyss
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
-    entr_credits = {{art = "pangaea47"}}
+    slib_credits = {{art = "pangaea47"}}
 }
 
 Entropy.Joker{
@@ -456,7 +477,7 @@ Entropy.Joker{
             G.GAME.entr_perma_inversions[v] = self.key
         end
     end,
-    entr_credits = {{art = "pangaea47"}}
+    slib_credits = {{art = "pangaea47"}}
 }
 
 local calc_score = SMODS.calculate_round_score
@@ -698,7 +719,7 @@ Entropy.Joker{
                     func = function()
                         play_sound("entr_void_suck")
                         card.ability.extra.stored_jokers[#card.ability.extra.stored_jokers+1] = c.config.center.key
-                        c:start_dissolve()
+                        SMODS.destroy_cards(c)
                         return true
                     end
                 })
@@ -715,7 +736,7 @@ Entropy.Joker{
         for i, v in pairs(card.ability.extra.stored_jokers) do q[#q+1] = G.P_CENTERS[v] end
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
-    entr_credits = {{art = "pangaea47"}}
+    slib_credits = {{art = "pangaea47"}}
 }
 
 
@@ -843,11 +864,6 @@ Entropy.Joker{
         "j_entr_jestradiol",
         "j_entr_nucleotide"        
     },
-    calculate = function(self, card, context)
-        if context.joker_main then
-            return Entropy.calc_perma_bonus_joker(card)
-        end
-    end,
     add_to_deck = function(self)
         G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
         for i, v in pairs(self.corruptions) do
@@ -858,14 +874,7 @@ Entropy.Joker{
         for i, v in pairs(card.ability.extra.stored_jokers) do q[#q+1] = G.P_CENTERS[v] end
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
-    generate_extra_ui = function(center, info_queue, card, desc_nodes, specific_vars, full_UI_table)
-        local vars = Entropy.get_perma_bonus_vars(card)
-        if vars and vars.nominal_chips then
-            localize{type = 'other', key = 'card_chips', nodes = desc_nodes, vars = {vars.nominal_chips}}
-        end
-        SMODS.localize_perma_bonuses(vars, desc_nodes)
-    end,
-    entr_credits = {{art = "pangaea47"}}
+    slib_credits = {{art = "pangaea47"}}
 }
 
 Entropy.Joker{
@@ -894,7 +903,7 @@ Entropy.Joker{
         "j_credit_card",
         "j_egg",
         "j_entr_tenner",        
-        "j_entr_oops_all_es",
+        "j_entr_oops_alles",
         "j_entr_masterful_gambit",
         "j_entr_rugpull",
         "j_entr_hash_miner",
@@ -913,7 +922,7 @@ Entropy.Joker{
         }
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
-    entr_credits = {{art = "pangaea47"}}
+    slib_credits = {{art = "pangaea47"}}
 }
 
 Entropy.Joker{
@@ -1031,7 +1040,7 @@ Entropy.Joker{
         }
     end,
     generate_ui = Entropy.generate_void_invert_uibox,
-    entr_credits = {{art = "pangaea47"}}
+    slib_credits = {{art = "pangaea47"}}
 }
 
 Entropy.Joker{
@@ -1261,15 +1270,27 @@ Entropy.Joker{
         end
     end,
     can_use = function(self, card)
-        local c = Entropy.get_highlighted_cards({{cards=G.I.CARD}}, card, 1, 1)
+        local cards = {}
+        for i, v in pairs(G.I.CARD) do
+            if getmetatable(v) == Card then
+                cards[#cards+1] = v
+            end
+        end
+        local c = Entropy.get_highlighted_cards({cards}, card, 1, 1)
         local cost = 0
         for i, v in pairs(c) do
             cost = cost + card.ability.extra.mod * (card.sell_cost + v.sell_cost)
         end
-        return G.GAME.dollars + (G.GAME.bankrupt_at or 0) >= cost
+        return G.GAME.dollars + (G.GAME.bankrupt_at or 0) >= cost and c and #c > 0
     end,
     use = function(self, card)
-        local c = Entropy.get_highlighted_cards({{cards=G.I.CARD}}, card, 1, 1)
+        local cards = {}
+        for i, v in pairs(G.I.CARD) do
+            if getmetatable(v) == Card then
+                cards[#cards+1] = v
+            end
+        end
+        local c = Entropy.get_highlighted_cards({cards}, card, 1, 1)
         local cost = 0
         for i, v in pairs(c) do
             cost = cost + card.ability.extra.mod * (card.sell_cost + v.sell_cost)
@@ -1292,7 +1313,13 @@ Entropy.Joker{
     end,
     loc_vars = function(self, q, card)
         q[#q+1] = {set = "Other", key = "void_temporary"}
-        local c = Entropy.get_highlighted_cards({{cards=G.I.CARD}}, card, 1, 1)
+        local cards = {}
+        for i, v in pairs(G.I.CARD) do
+            if getmetatable(v) == Card then
+                cards[#cards+1] = v
+            end
+        end
+        local c = Entropy.get_highlighted_cards({cards}, card, 1, 1)
         local cost = 0
         for i, v in pairs(c) do
             cost = cost + card.ability.extra.mod * ((card.sell_cost or 10) + (v.sell_cost or 0))

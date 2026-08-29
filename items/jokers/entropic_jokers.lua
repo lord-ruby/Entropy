@@ -129,9 +129,10 @@ Entropy.Joker{
         })
         card.ability.left = card.ability.left - 1
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Grahkon"}
-    }
+    },
+    attributes = {"forcetrigger", "activated", "scaling"},
 }
 
 Entropy.Joker{
@@ -197,7 +198,7 @@ Entropy.Joker{
             end
         end
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
     },
     generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
@@ -227,6 +228,7 @@ Entropy.Joker{
             })
         end
     end,
+    attributes = {"modify_card", "asc", "rank"},
 }
 
 if Cryptid.big_num_blacklist then Cryptid.big_num_blacklist["j_entr_xekanos"] = true end
@@ -270,9 +272,10 @@ Entropy.Joker{
             end
         end
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
-    }
+    },
+    attributes = {"scaling", "on_sell", "joker"},
 }
 
 Entropy.Joker{
@@ -320,6 +323,7 @@ Entropy.Joker{
             }
         end
     end,
+    attributes = {"planet", "star", "joker"},
 }
 
 Entropy.Joker{
@@ -399,9 +403,10 @@ Entropy.Joker{
             message = localize("k_upgrade_ex"),
         }
 	end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
-    }
+    },
+    attributes = {"scaling", "joker"},
 }
 
 Entropy.Joker{
@@ -453,7 +458,8 @@ Entropy.Joker{
 				return true
 			end,
 		}))
-    end
+    end,
+    attributes = {"modify_card", "passive"},
 }
 
 Entropy.Joker{
@@ -503,7 +509,8 @@ Entropy.Joker{
                 add_tag(tag)
             end
         end
-    end
+    end,
+    attributes = {"generation"},
 }
 
 Entropy.Joker{
@@ -557,12 +564,13 @@ Entropy.Joker{
     calculate_dollar_bonus = function()
         return G.jokers.config.card_limit-#G.jokers.cards
     end,
-	entr_credits = {
+	slib_credits = {
         art = {"Lil. Mr. Slipstream"}
     },
     remove_from_deck = function()
         if G.jokers.config.card_limit <= 1 then G.jokers.config.card_limit = 1; G.jokers.config.true_card_limit = 1 end
-    end
+    end,
+    attributes = {"joker_slot", "activated", "scaling", "economy"},
 }
 
 if Cryptid.big_num_blacklist then Cryptid.big_num_blacklist["j_entr_katarraktis"] = true end
@@ -620,10 +628,11 @@ Entropy.Joker{
             end
         end
     end,
-    entr_credits = {
+    slib_credits = {
         idea = {"cassknows"},
         art = {"cassknows"}
-    }
+    },
+    attributes = {"retrigger", "joker_slot", "joker"},
 }
 
 SMODS.Font {
@@ -653,9 +662,10 @@ Entropy.Joker{
     demicoloncompat = true,
     soul_pos = { x = 2, y = 4, extra = { x = 1, y = 4 } },
     atlas = "exotic_jokers",
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
-    }
+    },
+    attributes = {"modify_card", "joker"},
 }
 
 Entropy.Joker{
@@ -702,9 +712,10 @@ Entropy.Joker{
             end
         end
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
-    }
+    },
+    attributes = {"modify_card", "enhancement", "discard"},
 }
 
 
@@ -768,7 +779,8 @@ Entropy.Joker{
     end,
     remove_from_deck = function()
         G.GAME.hands["High Card"].operator = nil
-    end
+    end,
+    attributes = {"hand_type"},
 }
 
 Entropy.Joker{
@@ -868,7 +880,8 @@ Entropy.Joker{
             }
         }
     end,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}}
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
+    attributes = {"retrigger", "joker", "activated", "scaling"},
 }
 
 SMODS.DrawStep({
@@ -981,6 +994,11 @@ Entropy.Joker{
             }
         end
     end,
+    attributes = {
+        "xblindsize",  "economy", "generation", "twisted", "mod_chance", "chance", 
+        "eqchps", "chips", "xchips", "echips", "eqmult", "mult", "xmult", "emult",
+        "asc", "xasc", "easc", "hands", "modify_card", "destroy_card"
+    },
 }
 
 Entropy.Joker{
@@ -1016,5 +1034,6 @@ Entropy.Joker{
             }
         end
     end,
-    entr_credits = {art = {"Lil. Mr. Slipstream"}}
+    slib_credits = {art = {"Lil. Mr. Slipstream"}},
+    attributes = {"mod_chance", "echips"},
 }

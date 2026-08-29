@@ -47,12 +47,12 @@ local pack = {
 			G.consumeables:emplace(ccard)
 		end,
 	},
-    entr_credits = {art = {"LFMoth"}}
+    slib_credits = {art = {"LFMoth"}}
 }
 local pack2 = SMODS.shallow_copy(pack)
 SMODS.Booster(pack)
 pack2.pos.y = 1
-pack2.entr_credits = {art = {"Lil. Mr. Slipstream"}}
+pack2.slib_credits = {art = {"Lil. Mr. Slipstream"}}
 pack2.key = "twisted_pack_normal_2"
 pack2.order = -1005
 SMODS.Booster(pack2)
@@ -102,12 +102,12 @@ local jumbo = {
 			G.consumeables:emplace(ccard)
 		end,
 	},
-    entr_credits = {art = {"Lil. Mr. Slipstream"}}
+    slib_credits = {art = {"Lil. Mr. Slipstream"}}
 }
 local jumbo2 = SMODS.shallow_copy(jumbo)
 SMODS.Booster(jumbo)
 jumbo2.pos.y = 1
-jumbo2.entr_credits = {art = {"Binary"}}
+jumbo2.slib_credits = {art = {"Callirhoe"}}
 jumbo2.key = "twisted_pack_jumbo_2"
 jumbo2.order = -1003
 SMODS.Booster(jumbo2)
@@ -158,7 +158,7 @@ local mega = {
 			G.consumeables:emplace(ccard)
 		end,
 	},
-    entr_credits = {art = {"Lil. Mr. Slipstream"}}
+    slib_credits = {art = {"Lil. Mr. Slipstream"}}
 }
 local mega2 = SMODS.shallow_copy(mega)
 SMODS.Booster(mega)

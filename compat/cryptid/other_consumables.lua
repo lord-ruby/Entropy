@@ -34,7 +34,7 @@ local rift = {
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
     },
     demicoloncompat = true,
@@ -83,7 +83,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
     },
     demicoloncompat = true,
@@ -332,7 +332,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
     },
     demicoloncompat = true,
@@ -401,7 +401,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
     },
 }
@@ -432,8 +432,8 @@ Entropy.Consumable{
         local orig = Entropy.get_highlighted_cards({G.shop_booster, G.shop_jokers, G.shop_vouchers, G.hand, G.consumeables, G.jokers, G.pack_cards}, card2, 1, 1)[1]
         local newcard = copy_card(orig)
         newcard:add_to_deck()
-        newcard.ability.perishable = true
-        newcard.ability.banana = true
+        newcard:add_sticker("perishable", true)
+        newcard:add_sticker("banana", true)
         newcard.area = orig.area
         if newcard.ability.set == "Booster" and orig.area ~= G.hand then
             newcard.area = G.consumeables
@@ -464,7 +464,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
     },
     demicoloncompat = true,
@@ -515,7 +515,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"LFMoth"}
     },
     demicoloncompat = true,
@@ -636,7 +636,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
     },
     demicoloncompat = true,
@@ -837,7 +837,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"}
     },
     demicoloncompat = true,
@@ -953,7 +953,7 @@ Entropy.Consumable{
         }
     end,
     
-    entr_credits = {
+    slib_credits = {
         art = {"Grahkon"}
     },
     demicoloncompat = true,
@@ -1026,7 +1026,7 @@ Entropy.Consumable{
 			} or nil,
         }
     end,
-    entr_credits = {
+    slib_credits = {
         idea = {"cassknows"},
         art = {"Grahkon"}
     },
@@ -1074,7 +1074,7 @@ Entropy.Consumable{
     end,
     
 	
-    entr_credits = {
+    slib_credits = {
         art = {"LFMoth"}
     },
     demicoloncompat = true,
@@ -1127,7 +1127,7 @@ Entropy.Consumable{
     force_use = function(self, card)
         self:use(card)
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"LFMoth"}
     }
 }
@@ -1186,7 +1186,7 @@ Entropy.Consumable{
     force_use = function(self, card)
         self:use(card)
     end,
-    entr_credits = {
+    slib_credits = {
         idea = {"cassknows"},
         art = {"LFMoth"}
     },

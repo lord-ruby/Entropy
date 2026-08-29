@@ -24,7 +24,7 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
             x = 5,
             y = 5
         },
-        entr_credits = {
+        slib_credits = {
             art = { "LFMoth" },
             idea = { "LFMoth" },
             code = { "LFMoth" },
@@ -85,7 +85,7 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
         set_badges = function(self, card, badges)
             SMODS.create_mod_badges({ mod = SMODS.find_mod("HotPotato")[1] }, badges)
         end,
-        entr_credits = {
+        slib_credits = {
             art = { "LFMoth" },
             idea = { "LFMoth" },
             code = { "LFMoth" },
@@ -146,7 +146,7 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
             x = 7,
             y = 5
         },
-        entr_credits = {
+        slib_credits = {
             art = { "LFMoth" },
             idea = { "LFMoth" },
             code = { "LFMoth" },
@@ -203,7 +203,7 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
             x = 8,
             y = 5
         },
-        entr_credits = {
+        slib_credits = {
             art = { "LFMoth" },
             idea = { "LFMoth" },
             code = { "LFMoth" },
@@ -259,7 +259,7 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
             x = 5,
             y = 6
         },
-        entr_credits = {
+        slib_credits = {
             art = { "LFMoth" },
             idea = { "LFMoth" },
             code = { "LFMoth" },
@@ -315,7 +315,7 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
             x = 6,
             y = 6
         },
-        entr_credits = {
+        slib_credits = {
             art = { "LFMoth" },
             idea = { "LFMoth" },
             code = { "LFMoth" },
@@ -375,7 +375,7 @@ if (SMODS.Mods["HotPotato"] or {}).can_load then
             x = 7,
             y = 6
         },
-        entr_credits = {
+        slib_credits = {
             art = { "LFMoth" },
             idea = { "LFMoth" },
             code = { "LFMoth" },

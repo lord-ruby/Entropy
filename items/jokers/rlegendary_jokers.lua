@@ -143,7 +143,7 @@ Entropy.Joker{
             },
         }
     end,
-    entr_credits = {
+    slib_credits = {
 		idea = {
 			"cassknows",
 		},
@@ -251,7 +251,7 @@ Entropy.Joker{
 			}
         end
     end,
-	entr_credits = {
+	slib_credits = {
 		idea = {
 			"cassknows",
 		},
@@ -264,7 +264,7 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
         key = "entropy_card",
         config = {
             x_asc_mod = 1,
-            num = 1318 --sun
+            num = 1091 --sun
         },
         dependencies = {
             items = {
@@ -340,7 +340,7 @@ Entropy.Joker{
             },
         }
     end,
-    entr_credits = {
+    slib_credits = {
 		idea = {
 			"cassknows",
 		},
@@ -397,8 +397,8 @@ Entropy.Joker{
     cost = 20,
     blueprint_compat = true,
     eternal_compat = true,
-    pos = {x=4, y=0},
-    soul_pos = {x = 0, y = 0}, 
+    pos = {x=3, y=0},
+    soul_pos = {x = 5, y = 0}, 
     atlas = "ruby_atlas",
     demicoloncompat=true,
     loc_vars = function(self, info_queue, card)
@@ -475,7 +475,7 @@ Entropy.Joker{
           "set_entr_inversions"
         }
     },
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"},
         idea = {"Lil. Mr. Slipstream"},
     },
@@ -536,7 +536,7 @@ Entropy.Joker{
     soul_pos = {x = 1, y = 2},
     atlas = "ruby_atlas",
     demicoloncompat=true,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"},
         idea = {"cassknows"},
     },
@@ -613,7 +613,7 @@ Entropy.Joker{
     soul_pos = {x = 1, y = 4},
     atlas = "ruby_atlas",
     demicoloncompat=true,
-    entr_credits = {
+    slib_credits = {
         art = {"HexaCryonic"},
         idea = {"HexaCryonic"},
     },
@@ -653,7 +653,7 @@ Entropy.Joker{
     soul_pos = {x = 1, y = 0},
     atlas = "grahkon_atlas",
     demicoloncompat=true,
-    entr_credits = {
+    slib_credits = {
         art = {"Lil. Mr. Slipstream"},
         idea = {"Grahkon"},
     },

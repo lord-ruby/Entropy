@@ -50,7 +50,7 @@ Entropy.Edition{
 			card.config.trigger = nil
 		end
 	end,
-	entr_credits = {
+	slib_credits = {
 		custom={key="shader",text="cassknows"}
 	},
 }
@@ -111,7 +111,7 @@ Entropy.Edition{
 			return Entropy.random_forcetrigger(card, card and card.edition and card.edition.retrig or 3, context)
 		end
 	end,
-	entr_credits = {
+	slib_credits = {
 		custom={key="shader",text="cassknows"},
 		idea = {"cassknows"}
 	},
@@ -168,7 +168,7 @@ Entropy.Edition{
 			card.config.trigger = nil
 		end
 	end,
-	entr_credits = {
+	slib_credits = {
 		custom={key="shader",text="cassknows"}
 	}
 }
@@ -224,7 +224,7 @@ Entropy.Edition{
 			card.config.trigger = nil
 		end
 	end,
-	entr_credits = {
+	slib_credits = {
 		custom={key="shader",text="cassknows"},
 		idea = {"cassknows"}
 	},
@@ -443,7 +443,7 @@ Entropy.Edition{
 		end
 		return {vars={card and card.edition and (card.is_playing_card and card:is_playing_card() and card.edition.cost_fac_playing or card.edition.cost_fac) or 0.9}}
     end,
-	entr_credits = {
+	slib_credits = {
 		custom={key="shader",text="cassknows"},
 		idea = {"cassknows"}
 	},
@@ -544,7 +544,7 @@ Entropy.Edition{
 	on_remove = function(card)
 		Cryptid.manipulate(card, { value = 4 }, nil, true)		
 	end,
-	entr_credits = {
+	slib_credits = {
 		custom={key="shader",text="cassknows"},
 		idea = {"cassknows"}
 	},
@@ -605,7 +605,7 @@ Entropy.Edition{
 			end
 		end
 	end,
-	entr_credits = {
+	slib_credits = {
 		custom={key="shader",text="cassknows"},
 		idea = {"cassknows"}
 	},

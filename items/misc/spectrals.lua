@@ -11,14 +11,26 @@ Entropy.Consumable{
     },
     set = "Spectral",
     can_use = function(self, card)
-        local cards = Entropy.get_highlighted_cards({{cards = G.I.CARD}}, card, 1, card.ability.select)
+        local cards = {}
+        for i, v in pairs(G.I.CARD) do
+            if getmetatable(v) == Card then
+                cards[#cards+1] = v
+            end
+        end
+        local cards = Entropy.get_highlighted_cards({cards}, card, 1, card.ability.select)
         cards = Entropy.filter_table(cards, function(card)
             return Entropy.inversion(card) or card.config.center.key == "c_entr_flipside"
         end)
         return #cards > 0 and #cards <= card.ability.select
     end,
     use = function(self, card)
-        local cards = Entropy.get_highlighted_cards({{cards = G.I.CARD}}, card, 1, card.ability.select)
+        local cards = {}
+        for i, v in pairs(G.I.CARD) do
+            if getmetatable(v) == Card then
+                cards[#cards+1] = v
+            end
+        end
+        local cards = Entropy.get_highlighted_cards({cards}, card, 1, card.ability.select)
         local actual = Entropy.filter_table(cards, function(card)
             return Entropy.inversion(card)
         end)
@@ -36,7 +48,7 @@ Entropy.Consumable{
             card:start_dissolve()
             Entropy.invert(cards2, true, true)
             return {
-                prevent_inversion = true1
+                prevent_inversion = true
             }
         end
     end,
@@ -46,6 +58,39 @@ Entropy.Consumable{
                 card.ability.select,
             }
         }
+    end,
+    can_be_pulled = true,
+    demicoloncompat = true,
+    force_use = function(self, card)
+        self:use(card)
+    end
+}
+
+Entropy.Consumable{
+    order = 7023,
+    key = "flipside_omen",
+    atlas = "consumables2",
+    pos={x=4,y=3},
+    dependencies = {
+        items={"set_entr_inversions"}
+    },
+    config = {
+        select = 1
+    },
+    set = "Omen",
+    inversion = "c_entr_flipside",
+    can_use = function(self, card)
+        return G.P_CENTERS.c_entr_flipside:can_use(card)
+    end,
+    use = function(self, card)
+        return G.P_CENTERS.c_entr_flipside:use(card)
+    end,
+    can_be_inverted = true,
+    calculate = function(self, card, context)
+        return G.P_CENTERS.c_entr_flipside:calculate(card, context)
+    end,
+    loc_vars = function(self, q, card)
+        return G.P_CENTERS.c_entr_flipside:loc_vars(q, card)
     end,
     can_be_pulled = true,
     demicoloncompat = true,
@@ -84,7 +129,7 @@ Entropy.Consumable{
             card.ability.csl
         }}
     end,
-    entr_credits = {
+    slib_credits = {
         idea = {"cassknows"},
         art = {"cassknows"}
     },
@@ -176,7 +221,7 @@ Entropy.Consumable{
             card.ability.limit
         }}
     end,
-    entr_credits = {
+    slib_credits = {
         art = {"missingnumber"}
     },
     demicoloncompat = true,
@@ -189,9 +234,14 @@ function Cryptid.reload_localization()
     SMODS.handle_loc_file(Entropy.path)
     if G.P_CENTERS.c_entr_lust then
         G.P_CENTERS.c_entr_lust.pos = {x=4,y=Cryptid_config.family_mode and 8 or 7}
+
+        G.P_CENTERS.j_entr_bloodletting.pos = Entropy.config.hide_sensitive_content and {x=3,y=19} or {x=0,y=18}
         for i, v in ipairs(G.I.CARD) do
             if v.config.center_key == "c_entr_lust" then
                 v.children.center:set_sprite_pos({x=4,y=Cryptid_config.family_mode and 8 or 7})
+            end
+            if v.config.center_key == "j_entr_bloodletting" then
+                v.children.center:set_sprite_pos(Entropy.config.hide_sensitive_content and {x=3,y=19} or {x=0,y=18})
             end
         end
     end
@@ -306,7 +356,7 @@ Entropy.Consumable{
     can_use = function(self, card)
         return true
 	end,
-    entr_credits = {
+    slib_credits = {
         idea = {"cassknows"}
     },
     demicoloncompat = true,
@@ -344,7 +394,7 @@ Entropy.Consumable{
             }
         }
     end,
-    entr_credits = entr_credits,
+    slib_credits = slib_credits,
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)
@@ -376,7 +426,7 @@ Entropy.Consumable{
             q[#q+1] = G.P_TAGS[Entropy.AscendedTags[G.GAME.round_resets.blind_tags.Big] or G.GAME.round_resets.blind_tags.Big]
         end
     end,
-    entr_credits = entr_credits,
+    slib_credits = slib_credits,
     demicoloncompat = true,
     force_use = function(self, card)
         self:use(card)

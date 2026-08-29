@@ -198,7 +198,7 @@ Entropy.Tag{
 		end
 	end,
 	shiny_atlas = "entr_shiny_tags",
-	entr_credits = {
+	slib_credits = {
 		art = {"Grahkon"}
 	}
 }
