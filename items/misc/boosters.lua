@@ -19,6 +19,7 @@ local pack = {
             },
         }
     end,
+    attributes = {"inverted", "normal"},
     atlas = 'booster', pos = { x = 0, y = 0 },
     group_key = "k_inverted_pack",
     cost = 4,
@@ -77,6 +78,7 @@ local jumbo = {
             },
         }
     end,
+    attributes = {"inverted", "jumbo"},
     atlas = 'booster', pos = { x = 1, y = 0 },
     group_key = "k_inverted_pack",
     cost = 6,
@@ -133,6 +135,7 @@ local mega = {
             },
         }
     end,
+    attributes = {"inverted", "mega"},
     atlas = 'booster', pos = { x = 2, y = 0 },
     group_key = "k_inverted_pack",
     cost = 8,
@@ -198,7 +201,7 @@ function create_inverted_card(area, seed)
                     calculate_runes({generate_rare_consumable = true})
                     Entropy.has_rune("rune_entr_oss").triggered = true
                 end
-                return SMODS.create_card{key = "j_entr_nyx"}
+                return SMODS.create_card{key = "j_entr_nyx", skip_materialize = true, area = G.pack_cards}
             end
         end
         return SMODS.create_card{set = "Joker", rarity = "entr_void"}
@@ -210,7 +213,7 @@ function create_inverted_card(area, seed)
                 calculate_runes({generate_rare_consumable = true})
                 Entropy.has_rune("rune_entr_oss").triggered = true
             end
-            return create_card(G.P_CENTERS[c].set, area or G.pack_cards, nil, nil, true, true, c)
+            return SMODS.create_card{key = c.key, skip_materialize = true, area = G.pack_cards}
         end
     else
         if Entropy.has_rune("rune_entr_mannaz") and (Entropy.has_rune("rune_entr_mannaz").num_triggered or 0) <= 1 then
@@ -220,7 +223,7 @@ function create_inverted_card(area, seed)
                 Entropy.has_rune("rune_entr_mannaz").triggered = true
             end
             G.entr_dont_calculate = true
-            return create_card("Spectral", area or G.pack_cards, nil, nil, true, true, nil, "rune_entr_mannaz")
+            return SMODS.create_card{set = "Spectral", key_append = "rune_entr_mannaz", skip_materialize = true, area = G.pack_cards}
         end
     end
     local rune
@@ -229,9 +232,9 @@ function create_inverted_card(area, seed)
         if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
     end
     if rune then
-        return create_card("Pact", G.pack_cards, nil, nil, true, true, nil, "spe")
+        return SMODS.create_card{set = "Pact", skip_materialize = true, area = G.pack_cards}
     end
-    return create_card("Twisted", area or G.pack_cards, nil, nil, true, true, nil, "twisted_card")
+    return SMODS.create_card{attributes = {"inverted_consumable"}, types = {"Consumeables"}, skip_materialize = true, area = G.pack_cards}
 end
 
 SMODS.Booster{
@@ -255,6 +258,7 @@ SMODS.Booster{
             },
         }
     end,
+    attributes = {"voucher", "normal"},
     atlas = 'booster', pos = { x = 6, y = 0 },
     group_key = "k_voucher_pack",
     cost = 10,

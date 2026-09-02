@@ -31,14 +31,6 @@ SMODS.current_mod.optional_features = {
     object_weights = true
 }
 
-if not Spectrallib.mod_whitelist then Cryptid.mod_whitelist = {} end
-Spectrallib.mod_whitelist["Entropy"] = true
-if not Spectrallib.mod_gameset_whitelist then Cryptid.mod_gameset_whitelist = {} end
-Spectrallib.mod_gameset_whitelist["entr"] = true
-Spectrallib.mod_gameset_whitelist["Entropy"] = true
-
---Entropy.update_daily_seed()
-
 if Entropy.config.family_mode then
     Cryptid_config.family_mode = true
 end
@@ -52,6 +44,12 @@ for i, category in pairs(Entropy.contents) do
             item.perishable_compat = item.perishable_compat or false
             item.blueprint_compat = item.blueprint_compat or false
             item.eternal_compat = item.eternal_compat or false
+            if item.inversion then
+                item.attributes = item.attributes or {}
+                item.attributes[#item.attributes+1] = "inverted"
+                item.attributes[#item.attributes+1] = "inverted_consumable"
+                Entropy.item = item
+            end
             item.order = nil
             SMODS[i](item)
         end

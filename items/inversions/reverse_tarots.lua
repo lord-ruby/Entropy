@@ -1,4 +1,4 @@
-SMODS.Consumable {
+Entropy.Consumable {
     key = "master",
     set = "Fraud",
     atlas = "fraud",
@@ -79,7 +79,7 @@ SMODS.Consumable {
     end
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "mason",
     set = "Fraud",
     atlas = "fraud",
@@ -127,7 +127,7 @@ SMODS.Consumable {
     end
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "oracle",
     set = "Fraud",
     atlas = "fraud",
@@ -181,7 +181,7 @@ SMODS.Consumable {
 }
 
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "princess",
     set = "Fraud",
     atlas = "fraud",
@@ -222,7 +222,7 @@ SMODS.Consumable {
     }
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "servant",
     set = "Fraud",
     atlas = "fraud",
@@ -300,7 +300,7 @@ SMODS.Consumable {
 	
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "heretic",
     set = "Fraud",
     atlas = "fraud",
@@ -362,7 +362,7 @@ SMODS.Consumable {
     end
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "feud",
     set = "Fraud",
     atlas = "fraud",
@@ -418,7 +418,7 @@ SMODS.Consumable {
 }
 
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "scar",
     set = "Fraud",
     atlas = "fraud",
@@ -489,7 +489,7 @@ Entropy.Sticker{
     end,
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "dagger",
     set = "Fraud",
     atlas = "fraud",
@@ -553,7 +553,7 @@ SMODS.Consumable {
     end
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "earl",
     set = "Fraud",
     atlas = "fraud",
@@ -601,7 +601,7 @@ SMODS.Consumable {
     end
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "whetstone",
     set = "Fraud",
     atlas = "fraud",
@@ -680,7 +680,7 @@ SMODS.Consumable {
     end
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "endurance",
     set = "Fraud",
     atlas = "fraud",
@@ -731,7 +731,7 @@ SMODS.Consumable {
 	
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "advisor",
     set = "Fraud",
     atlas = "fraud",
@@ -786,7 +786,7 @@ SMODS.Consumable {
     end
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "statue",
     set = "Fraud",
     atlas = "fraud",
@@ -843,7 +843,7 @@ SMODS.Consumable {
     end
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "feast",
     set = "Fraud",
     atlas = "fraud",
@@ -892,7 +892,7 @@ SMODS.Consumable {
     },
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "companion",
     set = "Fraud",
     atlas = "fraud",
@@ -939,7 +939,7 @@ SMODS.Consumable {
     end
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "village",
     set = "Fraud",
     atlas = "fraud",
@@ -984,7 +984,7 @@ SMODS.Consumable {
     end
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "ocean",
     set = "Fraud",
     atlas = "fraud",
@@ -1033,7 +1033,7 @@ SMODS.Consumable {
     end
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "forest",
     set = "Fraud",
     atlas = "fraud",
@@ -1082,7 +1082,7 @@ SMODS.Consumable {
     end
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "mountain",
     set = "Fraud",
     atlas = "fraud",
@@ -1131,7 +1131,7 @@ SMODS.Consumable {
     end
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "forgiveness",
     set = "Fraud",
     atlas = "fraud",
@@ -1172,7 +1172,7 @@ SMODS.Consumable {
     end
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "tent",
     set = "Fraud",
     atlas = "fraud",
@@ -1218,7 +1218,7 @@ SMODS.Consumable {
     end
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "frail",
     set = "Fraud",
     atlas = "fraud",
@@ -1281,7 +1281,7 @@ SMODS.Consumable {
     end
 }
 
-SMODS.Consumable {
+Entropy.Consumable {
     key = "inferno",
     set = "Fraud",
     atlas = "fraud",

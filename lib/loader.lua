@@ -7,6 +7,13 @@ function SMODS.injectItems(...)
         Cryptid.pin_debuff["entr_entropic"] = true
         Cryptid.pin_debuff["entr_reverse_legendary"] = true
     end
+    for i, v in pairs(G.P_CENTERS) do
+        if v.inversion then 
+            Entropy.FlipsidePureInversions[v.inversion]=i 
+            Entropy.FlipsideInversions[v.inversion]=i 
+            Entropy.FlipsideInversions[i]=v.inversion
+        end
+    end
     loadmodsref(...)
     for i, v in pairs(G.P_TAGS) do
         if v.blindside then
@@ -298,30 +305,11 @@ function SMODS.injectItems(...)
             MP.DECK.ban_card("j_entr_prayer_card")
             MP.DECK.ban_card("c_entr_raido")
         end
-        for i, v in pairs(G.P_CENTERS) do
-            if v.inversion then 
-                Entropy.FlipsidePureInversions[v.inversion]=i 
-                Entropy.FlipsideInversions[v.inversion]=i 
-                Entropy.FlipsideInversions[i]=v.inversion
-            end
-        end
         for i, v in pairs(G.P_BLINDS) do
             if v.altpath then
                 Entropy.AltBlinds[#Entropy.AltBlinds+1] = v
             end
         end
-        SMODS.ObjectType({
-            key = "Twisted",
-            default = "c_entr_memory_leak",
-            cards = {},
-            inject = function(self)
-                SMODS.ObjectType.inject(self)
-                for i, v in pairs(Entropy.FlipsidePureInversions) do
-                    if G.P_CENTERS[v] then self:inject_card(G.P_CENTERS[v]) end
-                end
-            end,
-        })
-        SMODS.ObjectTypes.Twisted:inject()
         SMODS.ObjectTypes.Sunny:inject()
         SMODS.ObjectType({
             key = "RedeemableBacks",
@@ -560,6 +548,11 @@ for i, v in pairs(_loading_funcs) do
         if tbl.blueprint_compat == nil then tbl.blueprint_compat = true end
         if tbl.perishable_compat == nil then tbl.perishable_compat = true end
         if tbl.eternal_compat == nil then tbl.eternal_compat = true end
+        if tbl.inversion then
+            tbl.attributes = tbl.attributes or {}
+            tbl.attributes[#tbl.attributes+1] = "inverted"
+            tbl.attributes[#tbl.attributes+1] = "inverted_consumable"
+        end
         Entropy.contents[v] = Entropy.contents[v] or {}
         Entropy.contents[v][#Entropy.contents[v]+1] = tbl
     end

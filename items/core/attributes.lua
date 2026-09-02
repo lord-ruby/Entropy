@@ -9,3 +9,4 @@ SMODS.Attribute{key = "star"}
 SMODS.Attribute{key = "omen"}
 SMODS.Attribute{key = "rune"}
 SMODS.Attribute{key = "pact"}
+SMODS.Attribute{key = "inverted_consumable"}
