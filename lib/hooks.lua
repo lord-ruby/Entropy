@@ -2324,65 +2324,6 @@ function Blind:debuff_hand(cards, hand, handname, check)
     end
 end
 
-if Entropy.config.omega_aleph then
-    local card_removeref = Card.remove
-    function Card:remove(...)
-        local areas = {
-            
-        }
-        if G.SETTINGS.paused or not self.entr_aleph or self.ability.bypass_aleph or self.bypass_selfdestruct or self.children.price or self.base.suit then
-            return card_removeref(self, ...)
-        else
-            if self.entr_aleph then
-                local card2 = copy_card(self)
-                card2:add_to_deck()
-                if self.area then 
-                    local ind = #self.area.cards
-                    for i, v in ipairs(self.area.cards) do
-                        if v == self then ind = i end
-                    end
-                    self.area.cards[ind] = card2
-                    card2.area = self.area
-                end
-                local ref = card_removeref(self, ...)
-                self = nil
-
-                if card2.ability.name == "Popcorn" then
-                    card2.ability.mult = card2.ability.mult - card2.ability.extra
-                end
-
-                if card2.ability.name == "Turtle Bean" then
-                    card2.ability.extra.h_size = card2.ability.extra.h_size - card2.ability.extra.h_mod
-                end
-                if card2.ability.name == "Ramen" then
-                    card2.ability.x_mult = card2.ability.x_mult - card2.ability.extra
-                end
-                if card2.ability.name == "Seltzer" then
-                    card2.ability.extra = card2.ability.extra - 1
-                end
-                if card2.ability.name == "Ice Cream" then
-                    card2.ability.extra.chips = card2.ability.extra.chips - card2.ability.extra.chip_mod
-                end
-                return ref
-            end
-        end
-    end
-
-    local cardarea_removeref = CardArea.remove_card
-    function CardArea:remove_card(card, ...)
-        if not card or not card.entr_aleph or G.SETTINGS.paused or card.ability.bypass_aleph or card.bypass_selfdestruct or card.children.price or card.base.suit then
-            return cardarea_removeref(self, card, ...)
-        end
-    end
-
-    local keyef = Controller.key_press_update
-    function Controller:key_press_update(key, dt)
-        if not _RELEASE_MODE and key == "r" then
-            if self.hovering.target and self.hovering.target.ability then self.hovering.target.ability.bypass_aleph = true end
-        end
-        keyef(self, key, dt)
-    end
-end
 local add_ref = CardArea.emplace
 function CardArea:emplace(card, location, stay_flipped)
     if card and not card.set_card_area then

@@ -8602,7 +8602,6 @@ local decs = {
 			cry_notif_antireal_d2 = "which is copyrighted and can't be",
 			cry_notif_antireal_d3 = "used for streams and videos.",
 
-			k_entr_omega_aleph = "Aleph sticker stops self destruction (Unstable, Must Restart Game)",
 			k_entr_corrupted_speed = "Corrupted Deck Cycling Speed (%)",
 
 			k_saved_skullcry = "The power of Zenith Stake saves you",
