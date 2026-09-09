@@ -7,13 +7,6 @@ function SMODS.injectItems(...)
         Cryptid.pin_debuff["entr_entropic"] = true
         Cryptid.pin_debuff["entr_reverse_legendary"] = true
     end
-    for i, v in pairs(G.P_CENTERS) do
-        if v.inversion then 
-            Entropy.FlipsidePureInversions[v.inversion]=i 
-            Entropy.FlipsideInversions[v.inversion]=i 
-            Entropy.FlipsideInversions[i]=v.inversion
-        end
-    end
     loadmodsref(...)
     for i, v in pairs(G.P_TAGS) do
         if v.blindside then
@@ -246,6 +239,14 @@ function SMODS.injectItems(...)
             end,
         })
         SMODS.ObjectTypes.Reference:inject()
+
+        for i, v in pairs(G.P_CENTERS) do
+            if v.inversion then 
+                Entropy.FlipsidePureInversions[v.inversion]=i 
+                Entropy.FlipsideInversions[v.inversion]=i 
+                Entropy.FlipsideInversions[i]=v.inversion
+            end
+        end
 
         local c = {}
 
