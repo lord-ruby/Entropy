@@ -362,7 +362,6 @@ if SMODS.Mods.Cryptid and SMODS.Mods.Cryptid.can_load then
         create_card = function(self, card, i)
             if
                 i % 2 == 1
-                and Cryptid.enabled("c_entr_beyond") == true
                 and not G.GAME.banned_keys["c_entr_beyond"]
                 and not (G.GAME.used_jokers["c_entr_beyond"] and not next(find_joker("Showman")))
             then

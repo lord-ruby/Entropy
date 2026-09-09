@@ -9791,7 +9791,7 @@ function CardArea:remove_card(card, ...)
                 for i, v in pairs(self.cards or {}) do
                     if v.ability.already_big_and_fat then
                         Spectrallib.manipulate(v, {
-                            value = 1/(self.cards[i-1].ability.extra and self.cards[i-1].ability.extra.temp_values or 1.5)
+                            value = 1/(self.cards[i-1] and self.cards[i-1].ability.extra and self.cards[i-1].ability.extra.temp_values or 1.5)
                         })
                         v.ability.already_big_and_fat = nil
                     end
@@ -9811,7 +9811,7 @@ function copy_card(card, ...)
         local pos = 0
         for i, v in pairs(card.area.cards) do if v == card then pos = i end end
         Spectrallib.manipulate(copy, {
-            value = 1/(card.area.cards[pos-1].ability.extra and card.area.cards[pos-1].ability.extra.temp_values or 1.5)
+            value = 1/(card.area.cards[pos-1] and card.area.cards[pos-1].ability.extra and card.area.cards[pos-1].ability.extra.temp_values or 1.5)
         })
         copy.ability.already_big_and_fat = nil
     end

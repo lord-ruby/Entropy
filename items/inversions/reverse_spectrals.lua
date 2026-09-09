@@ -1354,7 +1354,7 @@ Entropy.Consumable{
                 check_for_unlock({ type = "parakmi_transcend" })
             end            
             card:set_ability(G.P_CENTERS[SMODS.poll_object{set = Entropy.get_random_set(true)}])
-
+            if card.area.config.type == "shop" then create_shop_card_ui(card) end
         end)
     end,
     can_use = function(self, card)

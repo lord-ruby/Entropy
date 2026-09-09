@@ -1402,6 +1402,7 @@ end
 local set_abilityref = Card.set_ability
 function Card:set_ability(center, ...)
     if type(center) == "string" then center = G.P_CENTERS[center] end
+    if not center then return end
     if center and Entropy.is_inverted(center) and G.GAME.next_inversions_prophecy and not G.SETTINGS.paused and center.set ~= "Joker" then
         set_abilityref(self, G.P_CENTERS[G.GAME.next_inversions_prophecy], ...)
         G.GAME.inversions_prophecy_counter = (G.GAME.inversions_prophecy_counter or 2) - 1
@@ -1470,13 +1471,9 @@ SMODS.Booster:take_ownership_by_kind('Spectral', {
 	create_card = function(self, card, i)
 		G.GAME.entropy = G.GAME.entropy or 0
 		if to_big(pseudorandom("doc")) < to_big(1 - 0.997^(G.GAME.entropy/2)) and Entropy.deck_or_sleeve("doc") then
-            if Cryptid.enabled("c_entr_beyond") == true then
-			    return create_card("Omen", G.pack_cards, nil, nil, true, true, "c_entr_beyond")
-            elseif Cryptid.enabled("c_entr_fervour") then
-                return create_card("Omen", G.pack_cards, nil, nil, true, true, "c_entr_fervour")
-            end
+            return create_card("Omen", G.pack_cards, nil, nil, true, true, "c_entr_beyond")
 		elseif to_big(pseudorandom("doc")) < to_big(1 - 0.996^(G.GAME.entropy/2)) and Entropy.deck_or_sleeve("doc") then
-            if Cryptid.enabled("c_cry_gateway") == true then
+            if G.P_CENTERS.c_cry_gateway and Cryptid.enabled("c_cry_gateway") == true then
 			    return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_cry_gateway")
             else
                 return create_card("Spectral", G.pack_cards, nil, nil, true, true, "c_soul")

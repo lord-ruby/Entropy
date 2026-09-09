@@ -130,3 +130,15 @@ payload = '''
 elseif set == 'Blind' then default = args.blind_type == "small" and "bl_small" or args.blind_type == "big" and "bl_big" or "bl_hook"
 '''
 match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = '''=[SMODS _ "src/utils.lua"]'''
+pattern = '''
+if v and type(v) == 'table' and v.config.center.key == key and (count_debuffed or not v.debuff) then
+'''
+position = "at"
+payload = '''
+if v and type(v) == 'table' and v.config and v.config.center and v.config.center.key == key and (count_debuffed or not v.debuff) then
+'''
+match_indent = true

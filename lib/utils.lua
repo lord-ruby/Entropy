@@ -510,7 +510,7 @@ SMODS.Edition:take_ownership("e_cry_glitched", {
 }, true)
 
 function Entropy.can_switch_alt_path()
-    return G.GAME.round_resets.blind_states[G.GAME.modifiers.cry_no_small_blind and "Big" or "Small"] == "Upcoming" and Cryptid.enabled("set_entr_altpath") == true
+    return G.GAME.round_resets.blind_states[G.GAME.modifiers.cry_no_small_blind and "Big" or "Small"] == "Upcoming"
 end
 
 function Entropy.Get4bit()

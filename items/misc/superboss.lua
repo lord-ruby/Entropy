@@ -34,7 +34,7 @@ end
 
 function Entropy.can_ee_spawn()
     if MP and MP.LOBBY and MP.LOBBY.code then return false end
-    return Cryptid.enabled("bl_entr_brimstone")
+    return true
 end
 
 function Entropy.is_EE()

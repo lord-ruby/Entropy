@@ -226,6 +226,9 @@ function create_inverted_card(area, seed)
             return SMODS.create_card{set = "Spectral", key_append = "rune_entr_mannaz", skip_materialize = true, area = G.pack_cards}
         end
     end
+    if G.GAME.modifiers.entr_parakmi then
+        return SMODS.create_card{set = Entropy.get_random_set(G.GAME.modifiers.entr_parakmi)}
+    end
     local rune
     if pseudorandom("entr_generate_rune") < 0.06 then rune = true end
     if G.GAME.entr_diviner then
