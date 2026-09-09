@@ -151,15 +151,13 @@ function Entropy.register_blinds()
                     if not self.discovered then
                         pos = {x = 9999, y = 9999}
                     end
-                    if atlas and G.ANIMATION_ATLAS[atlas] and atlas ~= "blind_chips" then
-                        card.children.center.sprite_pos = {x=pos.x or 0, y=pos.y or 0}
-                        card.children.center.atlas = G.ANIMATION_ATLAS[atlas]
-                        card.children.center:reset()
-                        card.children.center.atlas = G.ANIMATION_ATLAS[atlas]
-                    else
-                        card.children.center.atlas = G.ANIMATION_ATLAS["blind_chips"]
-                        card.children.center:set_sprite_pos({x=pos.x or 0, y=pos.y or 0})
-                    end
+                    card.children.center:remove()
+                    card.children.center = SMODS.create_sprite(0, 0, 1, 1, atlas or "blind_chips", {x=pos.x or 0, y=pos.y or 0})
+                    card.children.center.states.hover = card.states.hover
+                    card.children.center.states.click = card.states.click
+                    card.children.center.states.drag = card.states.drag
+                    card.children.center.states.collide.can = false
+                    card.children.center:set_role({major = card, role_type = 'Glued', draw_major = card})
                     if gc then card.children.center.T.h = 2 end
                 end,
                 set_badges = function(self, card, badges)
