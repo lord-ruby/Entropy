@@ -25,16 +25,6 @@ local entrConfigTab = function()
 		right_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.1 }, nodes = {} }
 		config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }
 		entr_nodes[#entr_nodes + 1] = config
-		entr_nodes[#entr_nodes + 1] = UIBox_button({
-			colour = G.C.CRY_GREENGRADIENT,
-			button = "your_collection_content_sets",
-			label = { localize("b_content_sets") },
-			count = modsCollectionTally(G.P_CENTER_POOLS["Content Set"]),
-			minw = 5,
-			minh = 1.7,
-			scale = 0.6,
-			id = "your_collection_jokers",
-		})
 		entr_nodes[#entr_nodes + 1] = config
 		entr_nodes[#entr_nodes + 1] = create_toggle({
 			label = localize("k_entr_profile_prefix"),
@@ -68,16 +58,6 @@ local entrConfigTab = function()
 		right_settings = { n = G.UIT.C, config = { align = "tl", padding = 0.1 }, nodes = {} }
 		config = { n = G.UIT.R, config = { align = "tm", padding = 0 }, nodes = { left_settings, right_settings } }
 		entr_nodes[#entr_nodes + 1] = config
-		entr_nodes[#entr_nodes + 1] = UIBox_button({
-			colour = G.C.CRY_GREENGRADIENT,
-			button = "your_collection_content_sets",
-			label = { localize("b_content_sets") },
-			count = modsCollectionTally(G.P_CENTER_POOLS["Content Set"]),
-			minw = 5,
-			minh = 1.7,
-			scale = 0.6,
-			id = "your_collection_jokers",
-		})
 		entr_nodes[#entr_nodes + 1] = config
 		if SMODS.Mods["Cryptid"] and SMODS.Mods["Cryptid"].can_load then
 			entr_nodes[#entr_nodes + 1] = create_toggle({
