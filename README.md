@@ -7,9 +7,8 @@ Generally Vanilla adjacent but not exactly Vanilla+
 
 Entropy currently adds:
 
-<img width="791" height="614" alt="image" src="https://github.com/user-attachments/assets/3475e225-0f0e-48c8-8cf6-2f3bb59bbd0c" />
-<img width="594" height="328" alt="image" src="https://github.com/user-attachments/assets/daad445e-865c-4bca-b316-14b1451d93a0" />
-<img width="366" height="109" alt="image" src="https://github.com/user-attachments/assets/d7f9cd8e-a061-401f-8a3f-90710df67746" />
+<img width="747" height="565" alt="image" src="https://github.com/user-attachments/assets/fc0a417d-4d77-4d20-850f-ea176c89f0ef" />
+<img width="555" height="319" alt="image" src="https://github.com/user-attachments/assets/3c515bbf-4b66-4c1c-9116-2d595b79b037" />
 
 ## Contact
 For enquiries please join the [Entropy Discord](https://discord.gg/beqqy4Bb7m)
