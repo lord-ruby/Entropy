@@ -167,7 +167,7 @@ Entropy.Seal{
             G.E_MANAGER:add_event(Event({
                 func = function()
                     if G.consumeables.config.card_count < G.consumeables.config.card_limit then
-                        local c = create_card("Twisted", G.consumeables, nil, nil, true, true, nil, "twisted") 
+                        local c = SMODS.create_card{attributes = {"inverted_consumable"}, types = {"Consumeables"}, key_append = "twisted"}
                         c:add_to_deck()
                         G.consumeables:emplace(c)
                     end
@@ -177,7 +177,7 @@ Entropy.Seal{
             SMODS.calculate_context({remove_playing_cards = true, removed={card}})
         end
         if context.forcetrigger then
-            local c = create_card("Twisted", G.consumeables, nil, nil, true, true, nil, "twisted") 
+            local c = SMODS.create_card{attributes = {"inverted_consumable"}, types = {"Consumeables"}, key_append = "twisted"}
             c:add_to_deck()
             G.consumeables:emplace(c)
         end

@@ -1135,7 +1135,40 @@ Entropy.Consumable{
     slib_credits = {art = {"Lil. Mr. Slipstream"}},
     force_use = function(self, card)
         self:use(card)
-    end
+    end,
+    generate_ui = function(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+        SMODS.Center.generate_ui(self, info_queue, card, desc_nodes, specific_vars, full_UI_table)
+        
+        local card
+        local cards = {}
+        for i, v in pairs(G.playing_cards) do
+            if (v.ability.entr_times_played or 0) > (card and card.ability.entr_times_played or 0) then
+                if v.T then            
+                    card = v
+                    cards[#cards+1] = v
+                end
+            end
+        end 
+        if not card then card = pseudorandom_element(cards, pseudoseed("entr_strength")) end
+
+        if card then
+            local s = card:save()
+            local c = Card(0,0, G.CARD_W, G.CARD_H, pseudorandom_element(G.P_CARDS,pseudoseed("")), G.P_CENTERS.c_base)
+            c:load(s)
+            c.ability = SMODS.shallow_copy(c.ability)
+            c.ability.entr_marked_bypass = true
+            card.ability.entr_marked_bypass = nil    
+            Entropy.card_area_preview(G.entrCardsPrev, desc_nodes, {
+                cards = {c},
+                override = true,
+                w = 1,
+                h = 0.6,
+                ml = 0,
+                scale = 0.5,
+                func_delay = 1.0,
+            })
+        end
+    end,
 }
 
 Entropy.create_mark("darkness", 7066, {x = 1, y = 6})
