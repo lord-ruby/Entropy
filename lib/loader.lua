@@ -20,7 +20,6 @@ function SMODS.injectItems(...)
             SMODS.ObjectTypes.bld_obj_blindside.cards[#SMODS.ObjectTypes.bld_obj_blindside.cards+1] = v.key
         end
     end
-    G.ASSET_ATLAS["cry_gameset"] = Entropy.GamesetAtlas
     if StockingStuffer then StockingStuffer.Ruby.get_dummy = Entropy.get_dummy end
     if not G.entr_hooked then
 

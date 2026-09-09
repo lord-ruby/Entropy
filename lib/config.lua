@@ -61,14 +61,6 @@ local entrConfigTab = function()
 			})
 		end
 		entr_nodes[#entr_nodes + 1] = create_toggle({
-				label = localize("k_entr_omega_aleph"),
-				active_colour = HEX("40c76d"),
-				ref_table = Entropy.config,
-				ref_value = "omega_aleph",
-				callback = function()
-				end,
-			})
-		entr_nodes[#entr_nodes + 1] = create_toggle({
 			label = localize("k_entr_asc_tutorial"),
 			active_colour = HEX("40c76d"),
 			ref_table = Entropy.config,
