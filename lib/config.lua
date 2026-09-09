@@ -1,23 +1,6 @@
 Entropy.config = SMODS.current_mod.config
 local entrConfigTab = function()
 	entr_nodes = {
-		{
-			n = G.UIT.R,
-			config = { align = "cm" },
-			nodes = {
-				{
-					n = G.UIT.O,
-					config = {
-						object = DynaText({
-							string = localize("cry_set_enable_features"),
-							colours = { G.C.WHITE },
-							shadow = true,
-							scale = 0.4,
-						}),
-					},
-				},
-			},
-		},
 	}
 	if not G.ENTROPY_PAGE_2 then G.ENTROPY_PAGE_2 = 1 end
 	if G.ENTROPY_PAGE_2 == 1 then
