@@ -215,10 +215,10 @@ function Card:generate_UIBox_ability_table(vars_only)
         self.config.center = center
         self.ability.name = center.name
         self.ability.set = center.set
-        local ok, ret = pcall(generate_UIBox_ability_tableref, self, vars_only)
+        local ret = generate_UIBox_ability_tableref(self, vars_only)
         self.ability = a
         self.config.center = conf
-        if ok then
+        if ret then
             return ret
         else
             return generate_UIBox_ability_tableref(self, vars_only)

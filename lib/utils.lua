@@ -1027,9 +1027,9 @@ function Entropy.calc_perma_bonus_joker(card)
 end
 
 function Entropy.get_perma_bonus_vars(self)
-    if not self then return {} end
+    if not self or not self.ability.perma_bonus then return {} end
     return { playing_card = not not self.base.colour, value = self.base.value, suit = self.base.suit, colour = self.base.colour,
-        nominal_chips = to_big(self.ability.perma_bonus) > to_big(0) and self.ability.perma_bonus or nil,
+        nominal_chips = to_big(self.ability.perma_bonus or 0) > to_big(0) and self.ability.perma_bonus or nil,
         bonus_x_chips = self.ability.perma_x_chips ~= 0 and (self.ability.perma_x_chips + 1) or nil,
         slib_perma_xlog_chips = self.ability.slib_perma_xlog_chips ~= 0 and self.ability.slib_perma_xlog_chips or nil,
         slib_perma_h_xlog_chips = self.ability.slib_perma_h_xlog_chips ~= 0 and self.ability.slib_perma_h_xlog_chips or nil,
