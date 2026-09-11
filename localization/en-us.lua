@@ -8672,6 +8672,7 @@ local decs = {
 			k_snd_ominous = "snd_ominous",
 			k_ee_goodmusic = "A Fervent Dreamers Lovesong",
 			k_ee_badmusic = "Utmost Devotion",
+			k_2 = "2%",
 
 			k_plus_rune = "+1 Rune",
 			k_plus_star = "+1 Star",

@@ -25,7 +25,8 @@ if Penumbra then
     Penumbra.register_track({key = "entr_music_freebird", loc_key = "k_freebird", author = "Lynyrd Skynyrd"})
     Penumbra.register_track({key = "entr_music_fall", loc_key = "k_ruby_reference", author = "crimsonseraphim", icon_path = "assets/sounds/covers/eeintro.png"})
     Penumbra.register_track({key = "entr_music_entropy_is_endless", loc_key = "k_entropy_is_endless", author = "gemstonez"})
-    Penumbra.register_track({key = "entr_music_entropic_ominous", loc_key = "k_snd_ominous", author = "crimsonseraphim"})
+    Penumbra.register_track({key = "entr_music_2", loc_key = "k_2", author = "ENNWAY!", icon_path = "assets/sounds/covers/nilk.png"})
+    Penumbra.register_track({key = "entr_music_entropic_ominous", loc_key = "k_snd_ominous", author = "crimsonseraphim", icon_path = "assets/sounds/covers/ominous.png"})
     Penumbra.register_track({key = "entr_music_endless_entropy_is_verysexy", loc_key = "k_ee_goodmusic", author = "metanite64", icon_path = "assets/sounds/covers/eegood.png"})
     Penumbra.register_track({key = "entr_music_endless_entropy_is_verymean", loc_key = "k_ee_badmusic", author = "metanite64", icon_path = "assets/sounds/covers/eebad.png"})
 end

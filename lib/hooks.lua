@@ -3029,8 +3029,8 @@ function copy_card(old, new, ...)
         math.randomseed(os.time())
         copy.ability.extra.val = math.random() --gay ass woke transgender math.random because syncing is for losers
     end
-    if not G.SETTINGS.paused and G.deck and G.GAME.modifiers.entr_copper and pseudorandom("entr_copper_stake") < 0.33 and (ret.config.center.set == "Default" or ret.config.center.set == "Enhanced") then
-        ret:set_ability(G.P_CENTERS.m_entr_disavowed)
+    if not G.SETTINGS.paused and G.deck and G.GAME.modifiers.entr_copper and pseudorandom("entr_copper_stake") < 0.33 and (copy.config.center.set == "Default" or copy.config.center.set == "Enhanced") then
+        copy:set_ability(G.P_CENTERS.m_entr_disavowed)
     end
     return copy
 end

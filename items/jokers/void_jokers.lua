@@ -166,6 +166,7 @@ Entropy.Joker{
             asc = 0.5
         }
     },
+    attributes = {"asc"},
     add_to_deck = function(self)
         G.GAME.entr_perma_inversions = G.GAME.entr_perma_inversions or {}
         for i, v in pairs(self.corruptions) do
