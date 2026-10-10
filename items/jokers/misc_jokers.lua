@@ -1742,7 +1742,7 @@ Entropy.Joker{
         if context.first_hand_drawn or context.forcetrigger then
             local card = pseudorandom_element(G.hand.cards, pseudoseed("qu_card"))
             Entropy.flip_then({card}, function(card)
-                local elem = G.P_CENTERS[SMODS.poll_object({set = "Twisted"})]
+                local elem = G.P_CENTERS[SMODS.poll_object({attributes = {"inverted_consumable"}, types = {"Consumeables"},})]
                 card:set_ability(elem)
             end)
             G.E_MANAGER:add_event(Event({
@@ -4430,7 +4430,8 @@ Entropy.Joker{
                     func = function()
                         SMODS.add_card{
                             area = G.consumeables,
-                            set = "Twisted",
+                            attributes = {"inverted_consumable"},
+                            types = {"Consumeables"},
                             key_append = "entr_otherworldly"
                         }
                         G.GAME.consumeable_buffer = 0
@@ -6636,7 +6637,8 @@ Entropy.Joker{
                         func = function()
                             G.GAME.consumeable_buffer = 0
                             SMODS.add_card{
-                                set = "Twisted",
+                                attributes = {"inverted_consumable"},
+                                types = {"Consumeables"},
                                 area = G.consumeables,
                                 key_append = "entr_blood_orange"
                             }         

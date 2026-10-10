@@ -960,11 +960,13 @@ Entropy.Joker{
                 G.E_MANAGER:add_event(Event{
                     func = function()
                         SMODS.add_card{
-                            set = "Twisted",
+                            attributes = {"inverted_consumable"},
+                            types = {"Consumeables"},
                             area = G.consumeables   
                         }
                         SMODS.add_card{
-                            set = "Twisted",
+                            attributes = {"inverted_consumable"},
+                            types = {"Consumeables"},
                             area = G.consumeables   
                         }
                         return true

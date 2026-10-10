@@ -1275,7 +1275,8 @@ Entropy.RuneTag{
                         SMODS.calculate_context({entr_consumable_inverted = true, card = card})
                         if #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit and G.GAME.providence then
                             SMODS.add_card{
-                                set = "Twisted",
+                                attributes = {"inverted_consumable"},
+                                types = {"Consumeables"},
                                 area = G.consumeables,
                                 key_append = "entr_dagaz"
                             }
