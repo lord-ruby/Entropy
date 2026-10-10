@@ -29,11 +29,13 @@ function Entropy.inversion_queue(card, _c, first_pass)
     local info_queue = {}
     if (Entropy.inversion(card) or _c.key == "c_entr_flipside" or _c.corruptions) and first_pass and Entropy.show_flipside(card, _c) and Entropy.config.inversion_queues > 1 and not c then 
         if _c.key ~= "c_entr_flipside" and _c.key ~= Entropy.inversion(card) and not _c.corruptions then
-          local inversion = G.P_CENTERS[Entropy.inversion(_c)] 
-          info_queue[#info_queue+1] = {key = "inversion_allowed", set = "Other", vars = {G.localization.descriptions[inversion.set][inversion.key].name}}
-          if Entropy.config.inversion_queues > 2 then
-            info_queue[#info_queue+1] = inversion
-          end
+            local inversion = G.P_CENTERS[Entropy.inversion(_c)] 
+            if inversion then
+                info_queue[#info_queue+1] = {key = "inversion_allowed", set = "Other", vars = {G.localization.descriptions[inversion.set][inversion.key].name}}
+                if Entropy.config.inversion_queues > 2 then
+                    info_queue[#info_queue+1] = inversion
+                end
+            end
         elseif Entropy.show_flipside(card, _c) and Entropy.config.inversion_queues > 1 then
           info_queue[#info_queue+1] = {key = "inversion_allowed", set = "Other", vars = {"???"}}
         end

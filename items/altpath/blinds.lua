@@ -819,12 +819,12 @@ Entropy.Blind{
 		end
 	end,
 	disable = function()
-		Entropy.change_selection_limit(-G.GAME.tau)
+		Entropy.change_selection_limit(-(G.GAME.tau or 0))
 		G.GAME.tau = nil
 	end,
 	defeat = function()
 		if not G.GAME.blind.disabled then
-			Entropy.change_selection_limit(-G.GAME.tau)
+			Entropy.change_selection_limit(-(G.GAME.tau or 0))
 			G.GAME.tau = nil
 		end
 	end,

@@ -146,18 +146,17 @@ function Entropy.inject_gfb()
             return { vars = {card.ability.extra}, key = G.GAME.modifiers.entr_gfb and "j_baron_gfb" or nil }
         end,
         calculate = function(self, card, context)
-            if G.GAME.modifiers.entr_gfb then
-                 if context.individual and context.cardarea == G.hand and not context.end_of_round and context.other_card:get_id() == 13 then
-                    if context.other_card.debuff then
-                        return {
-                            message = localize('k_debuffed'),
-                            colour = G.C.RED
-                        }
-                    else
-                        return {
-                            x_chips = card.ability.extra
-                        }
-                    end
+            if context.individual and context.cardarea == G.hand and not context.end_of_round and context.other_card:get_id() == 13 then
+                if context.other_card.debuff then
+                    return {
+                        message = localize('k_debuffed'),
+                        colour = G.C.RED
+                    }
+                else
+                    return {
+                        x_chips = G.GAME.modifiers.entr_gfb and card.ability.extra or nil,
+                        x_mult = G.GAME.modifiers.entr_gfb and nil or card.ability.extra
+                    }
                 end
             end
         end,
@@ -763,17 +762,6 @@ function Entropy.inject_gfb()
                 end
             end
         end,
-        add_to_deck = function(self, card, from_debuff)
-            if G.GAME.modifiers.entr_gfb then
-                card.ability.extra.free_rerolls_given = 0
-                SMODS.change_free_rerolls(G.GAME.modifiers.entr_gfb and 1 or card.ability.extra)
-            end
-        end,
-        remove_from_deck = function(self, card, from_debuff)
-            if not G.GAME.modifiers.entr_gfb then
-                SMODS.change_free_rerolls(G.GAME.modifiers.entr_gfb and (-1 - card.ability.extra.free_rerolls_given) or -card.ability.extra)
-            end
-        end
     })
 
     SMODS.Joker:take_ownership("diet_cola", {
