@@ -18,7 +18,8 @@ if RevosVault then
         calculate = function(self, card, context)
             if context.setting_blind or context.forcetrigger then
                 SMODS.add_card{
-                    set = "Twisted",
+                    attributes = {"inverted_consumable"},
+                    types = {"Consumeables"},
                     area = G.consumeables,
                     edition = G.GAME.used_vouchers["v_crv_printerup"] == true and "e_negative" or nil
                 }
